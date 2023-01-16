@@ -2248,17 +2248,7 @@ var presslst =
     {
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
-        {
             context.pressed = 1;
-        }
-        else
-        {
-            headobj.enabled = 0;
-            footobj.enabled = 0;
-            bodyobj.enabled = 0;
-            pageresize();
-        }
-
         context.refresh();
     }
 },
