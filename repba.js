@@ -1857,8 +1857,6 @@ var panlst =
 
         if (context.pressed)
         {
-            x = Math.clamp(THUMBORDER,rect.width-2*THUMBORDER,x);
-            y = Math.clamp(THUMBORDER,rect.height-2*THUMBORDER,y);
             clearTimeout(context.panpress);
             context.panpress = setTimeout(function() { context.pressed = 0; },200)
             positxobj.set((x/rect.width)*100);
