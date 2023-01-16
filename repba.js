@@ -4907,6 +4907,9 @@ var footlst =
 [
     new function()
     {
+        this.draw = function (context, rect, user, time)
+        {
+        }
     },
     new function()
     {
