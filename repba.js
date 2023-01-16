@@ -3244,8 +3244,8 @@ var templatelst =
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
         loomobj.split(url.zoom, "25-90", loomobj.length());
         poomobj.split(url.zoom, "0-90", poomobj.length());
-        traitobj.split(100, "0.1-1.0", traitobj.length());
-        scapeobj.split(50, "0.1-1.0", scapeobj.length());
+        traitobj.split(99, "0.1-1.0", traitobj.length());
+        scapeobj.split(99, "0.1-1.0", scapeobj.length());
    }
 },
 {
