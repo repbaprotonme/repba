@@ -2256,8 +2256,7 @@ var presslst =
             headobj.enabled = 0;
             footobj.enabled = 0;
             bodyobj.enabled = 0;
-            headcnvctx.show(0,0,0,0);
-            footcnvctx.show(0,0,0,0);
+            pageresize();
         }
 
         context.refresh();
