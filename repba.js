@@ -2772,8 +2772,8 @@ var thumblst =
     {
         var th = heightobj.getcurrent().getcurrent();
         var headers = headcnv.height*2;
-        var width = rect.width-THUMBORDER*2;
-        var height = rect.height-headers-THUMBORDER*2;
+        var width = rect.width-THUMBORDER;
+        var height = rect.height-headers-THUMBORDER;
         if (width < 0 || height < 0)
             return;
         var r = calculateAspectRatioFit(photo.image.width, photo.image.height, width*th, height*th);
