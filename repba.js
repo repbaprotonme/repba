@@ -1862,7 +1862,7 @@ var panlst =
             clearTimeout(context.panpress);
             context.panpress = setTimeout(function() { context.pressed = 0; },200)
             positxobj.set((x/rect.width)*100);
-            posityobj.set((y/rect.height)*100));
+            posityobj.set((y/rect.height)*100);
             context.refresh();
         }
         else if (context.iszoomrect)
