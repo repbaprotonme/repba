@@ -513,26 +513,29 @@ function drawslices()
         delete context.zoomctrl;
         if (context.setcolumncomplete)
         {
-            if (!globalobj.masterload && headcnv.height)
+            if (!globalobj.masterload && headobj.enabled)
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            if (footcnv.height)
+            if (footobj.enabled)
                 footobj.getcurrent().draw(footcnvctx, footcnvctx.rect(), 0);
             bodyobj.set(0)
-            if (_8cnvctx.enabled)
+            if (!headobj.enabled && thumbobj.enabled)
             {
-                bodyobj.set(2)
-            }
-            else if (bodyobj.enabled)
-            {
-                bodyobj.set(bodyobj.enabled)
-            }
-            else if (!headobj.enabled)
-            {
-                thumbobj.getcurrent().draw(context, rect, 0, 0);
-                bodyobj.set(1)
-            }
+                if (_8cnvctx.enabled)
+                {
+                    bodyobj.set(2)
+                }
+                else if (bodyobj.enabled)
+                {
+                    bodyobj.set(bodyobj.enabled)
+                }
+                else if (!headobj.enabled)
+                {
+                    thumbobj.getcurrent().draw(context, rect, 0, 0);
+                    bodyobj.set(1)
+                }
 
-            bodyobj.getcurrent().draw(context, rect, 0, 0);
+                bodyobj.getcurrent().draw(context, rect, 0, 0);
+            }
         }
 
         context.setcolumncomplete = 1;
@@ -2248,7 +2251,22 @@ var presslst =
     {
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
+        {
             context.pressed = 1;
+        }
+        else
+        {
+            colorobj.enabled = 0;
+            context.tapping = 0;
+            context.isthumbrect = 0;
+            headobj.enabled = 0;
+            footobj.enabled = 0;
+            thumbobj.enabled = thumbobj.enabled?0:1;
+            pageresize();
+            context.refresh();
+            reset();
+        }
+
         context.refresh();
     }
 },
@@ -2842,6 +2860,7 @@ var thumblst =
 ];
 
 var thumbobj = new makeoption("THUMB", thumblst);
+thumbobj.enabled = 1;
 
 var getbuttonfrompoint = function (context, x, y)
 {

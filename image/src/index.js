@@ -8,7 +8,7 @@ export default {
       }
       case 'GET':
       {
-            const { searchParams, href, search } = new URL(request.url)
+//            const { searchParams, href, search } = new URL(request.url)
             var j = request.url.split("/")
             let id = j[j.length-2]
             let options = j[j.length-1]
