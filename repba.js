@@ -2790,8 +2790,10 @@ var thumblst =
             jp = 1;
         }
 
-        var x = Math.floor(Math.nub(positxobj.getcurrent(), positxobj.length(), w, rect.width));
-        var y = Math.floor(Math.nub(posityobj.getcurrent(), posityobj.length(), h, rect.height));
+        var x = Math.clamp(THUMBORDER,rect.width-THUMBORDER,
+            Math.floor(Math.nub(positxobj.getcurrent(), positxobj.length(), w, rect.width)));
+        var y = Math.clamp(THUMBORDER,rect.height-THUMBORDER,
+            Math.floor(Math.nub(posityobj.getcurrent(), posityobj.length(), h, rect.height)));
 
         context.thumbrect = new rectangle(x,y,w,h);
         context.save();
@@ -3241,7 +3243,7 @@ var templatelst =
     {
         var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 99;
         posityobj.set(y);
-        url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : window.innerWidth>window.innerHeight?50:100;
+        url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : window.innerWidth>window.innerHeight?75:100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
