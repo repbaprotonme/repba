@@ -2790,8 +2790,8 @@ var thumblst =
             jp = 1;
         }
 
-        var x = Math.floor(Math.nub(positxobj.current(), positxobj.length(), w, rect.width));
-        var y = Math.floor(Math.nub(posityobj.current(), posityobj.length(), h, rect.height));
+        var x = Math.floor(Math.nub(positxobj.getcurrent(), positxobj.length(), w, rect.width));
+        var y = Math.floor(Math.nub(posityobj.getcurrent(), posityobj.length(), h, rect.height));
 
         context.thumbrect = new rectangle(x,y,w,h);
         context.save();
