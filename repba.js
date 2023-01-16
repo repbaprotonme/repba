@@ -2254,6 +2254,16 @@ var presslst =
         {
             context.pressed = 1;
         }
+        else if (bodyobj.enabled)
+        {
+            bodyobj.enabled = 0;
+            colorobj.enabled = 0;
+            context.isthumbrect = 0;
+            context.tapping = 0;
+            pageresize();
+            context.refresh();
+            reset();
+        }
         else
         {
             colorobj.enabled = 0;
@@ -4846,7 +4856,8 @@ var headlst =
                             0,
                             new Layer(
                             [
-                                (bodyobj.enabled == 3 || bodyobj.enabled == 6) ? new Fill(HEADBACK):0,
+                                (bodyobj.enabled == 4 || bodyobj.enabled == 6) ? new Fill(HEADBACK):0,
+
                                 new Shrink(new Text("white", "center", "middle",0,0,1),20,20),
                             ]),
                             0,
