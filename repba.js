@@ -2771,6 +2771,8 @@ var thumblst =
     draw: function (context, rect, user, time)
     {
         var th = heightobj.getcurrent().getcurrent();
+        rect.shrink(THUMBORDER,THUMBORDER);
+
         var width = rect.width;
         var height = rect.height;
         var r = calculateAspectRatioFit(photo.image.width, photo.image.height, width*th, height*th);
@@ -2810,7 +2812,7 @@ var thumblst =
                 thumbcontext.drawImage(photo.image,0,0,w,h);
             }
 
-            context.drawImage(context.thumbcanvas, x, y, w, h);//todo
+            context.drawImage(context.thumbcanvas, x, y, w, h);
         }
 
         var r = new rectangle(x,y,w,h);
