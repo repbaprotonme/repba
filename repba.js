@@ -2771,11 +2771,8 @@ var thumblst =
     draw: function (context, rect, user, time)
     {
         var th = heightobj.getcurrent().getcurrent();
-        var headers = headcnv.height*2;
-        var width = rect.width-THUMBORDER;
-        var height = rect.height-headers-THUMBORDER;
-        if (width < 0 || height < 0)
-            return;
+        var width = rect.width;
+        var height = rect.height;
         var r = calculateAspectRatioFit(photo.image.width, photo.image.height, width*th, height*th);
         var h = Math.floor(r.height);
         var w = Math.floor(r.width);
