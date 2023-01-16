@@ -2254,18 +2254,6 @@ var presslst =
         {
             context.pressed = 1;
         }
-        else if (bodyobj.enabled)
-        {
-            bodyobj.enabled = 0;
-            colorobj.enabled = 0;
-            context.isthumbrect = 0;
-            context.tapping = 0;
-            headobj.enabled = 1;
-            footobj.enabled = 1;
-            pageresize();
-            context.refresh();
-            reset();
-        }
         else
         {
             colorobj.enabled = 0;
@@ -5203,7 +5191,7 @@ function masterhide(x, y)
         context.isthumbrect = 0;
         headobj.enabled = headobj.enabled?0:1;
         footobj.enabled = headobj.enabled;
-        thumbobj.enabled = 0;
+        thumbobj.enabled = 1;
         context.refresh();
         reset();
     }
