@@ -2771,6 +2771,8 @@ var thumblst =
     draw: function (context, rect, user, time)
     {
         var th = heightobj.getcurrent().getcurrent();
+        rect.x += THUMBORDER/2;
+        rect.y += THUMBORDER/2;
         rect.shrink(THUMBORDER,THUMBORDER);
 
         var width = rect.width;
