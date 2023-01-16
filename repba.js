@@ -2790,9 +2790,9 @@ var thumblst =
             jp = 1;
         }
 
-        var x = Math.clamp(THUMBORDER,rect.width-THUMBORDER,
+        var x = Math.clamp(THUMBORDER,rect.width-THUMBORDER*2,
             Math.floor(Math.nub(positxobj.getcurrent(), positxobj.length(), w, rect.width)));
-        var y = Math.clamp(THUMBORDER,rect.height-THUMBORDER,
+        var y = Math.clamp(THUMBORDER,rect.height-THUMBORDER*2,
             Math.floor(Math.nub(posityobj.getcurrent(), posityobj.length(), h, rect.height)));
 
         context.thumbrect = new rectangle(x,y,w,h);
@@ -3241,7 +3241,7 @@ var templatelst =
     name: "LANDSCAPE",
     init: function (j)
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : window.innerWidth>window.innerHeight?99:50;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 99;
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : window.innerWidth>window.innerHeight?50:100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
