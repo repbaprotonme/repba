@@ -1,4 +1,4 @@
-//todo: https://obfuscator.io..i .i.i
+//todo: https://obfuscator.io..i .i.i....................
 //todo: safari max size
 
 /* ++ += ==
@@ -13,9 +13,6 @@ const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*2;
 const SWIPETIME = 20;
 const THUMBORDER = 6;
-const THUMBLINE = 1;
-const THUMBLINEIN = 4.0;
-const THUMBLINEOUT = 4.0;
 const JULIETIME = 100;
 const DELAY = 10000000;
 const HNUB = 10;
