@@ -2260,6 +2260,8 @@ var presslst =
             colorobj.enabled = 0;
             context.isthumbrect = 0;
             context.tapping = 0;
+            headobj.enabled = 1;
+            footobj.enabled = 1;
             pageresize();
             context.refresh();
             reset();
