@@ -2254,16 +2254,6 @@ var presslst =
         {
             context.pressed = 1;
         }
-        else if (bodyobj.enabled)
-        {
-            bodyobj.enabled = 0;
-            colorobj.enabled = 0;
-            context.isthumbrect = 0;
-            context.tapping = 0;
-            pageresize();
-            context.refresh();
-            reset();
-        }
         else
         {
             colorobj.enabled = 0;
