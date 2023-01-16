@@ -1,4 +1,4 @@
-//todo: https://obfuscator.io..i .i.i
+//todo: https://obfuscator.io
 //todo: safari max size
 
 /* ++ += ==
@@ -34,7 +34,7 @@ const HEADBACK = "rgba(0,0,0,0.4)";
 const MENUCOLOR = "rgba(0,0,0,0.50)";
 const BUTTONBACK = "rgba(0,0,0,0.25)";
 const OPTIONFILL = "rgb(255,255,255)";
-const THUMBFILL = "rgba(0,0,0,0.5)";
+const THUMBFILL = "rgba(0,0,0,0.25)";
 const THUMBFILL2 = "rgba(0,0,0,0.40)";
 const THUMBSTROKE = "rgba(255,255,255,0.75)";
 const ARROWFILL = "white";
@@ -54,7 +54,6 @@ url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.virtualcols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 24;
 url.autostart = url.searchParams.has("a") ? Number(url.searchParams.get("a")) : 1;
 url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 4;
-
 url.filepath = function() { return url.origin + "/data/"; }
 
 Math.clamp = function (min, max, val)
