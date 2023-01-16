@@ -5191,7 +5191,7 @@ function masterhide(x, y)
         context.isthumbrect = 0;
         headobj.enabled = headobj.enabled?0:1;
         footobj.enabled = headobj.enabled;
-        thumbobj.enabled = 1;
+        thumbobj.enabled = 0;
         context.refresh();
         reset();
     }
