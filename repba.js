@@ -2256,6 +2256,7 @@ var presslst =
         }
         else
         {
+            bodyobj.enabled = 0;
             colorobj.enabled = 0;
             context.tapping = 0;
             context.isthumbrect = 0;
