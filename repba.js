@@ -1,4 +1,4 @@
-//todo: https://obfuscator.io..i .i.
+//todo: https://obfuscator.io..i .i.i
 //todo: safari max size
 
 /* ++ += ==
@@ -3201,7 +3201,7 @@ var templatelst =
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
         loomobj.split(url.zoom, "0-50", loomobj.length());
         poomobj.split(url.zoom, "0-50", poomobj.length());
-        traitobj.split(url.height, "0.1-1.0", traitobj.length());
+        traitobj.split(url.height, "0.1-1.0", traitobj.length()); 
         scapeobj.split(url.height, "0.1-1.0", scapeobj.length());
     }
 },
