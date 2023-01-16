@@ -1,0 +1,2 @@
+NAME=${PWD##*/}
+echo $NAME

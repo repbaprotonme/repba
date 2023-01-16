@@ -1,0 +1,9 @@
+vim /etc/ssh/sshd_config
+AllowUsers scott
+sudo systemctl restart sshd
+sudo useradd -M greg
+sudo usermod -d /srv/http/data/neptune -m greg
+sudo passwd greg  #123
+sudo chown -R greg /srv/http/data/neptune
+sudo chmod r-o reportbase.com
+chmod 755 imgs #drwxr-xr-x

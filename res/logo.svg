@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="512" height="512" viewBox="0 0 512 512" xml:space="preserve">
+<desc>Created with Fabric.js 4.6.0</desc>
+<defs>
+</defs>
+<g transform="matrix(0.6 -0.86 0.86 0.6 256.46 260.41)" id="Gj4atooac4X2-jt492b4i"  >
+<filter id="SVGID_0" y="-22%" height="144%" x="-20%" width="140%" >
+	<feGaussianBlur in="SourceAlpha" stdDeviation="0"></feGaussianBlur>
+	<feOffset dx="-0.98" dy="5.57" result="oBlur" ></feOffset>
+	<feFlood flood-color="rgb(0,0,0)" flood-opacity="1"/>
+	<feComposite in2="oBlur" operator="in" />
+	<feMerge>
+		<feMergeNode></feMergeNode>
+		<feMergeNode in="SourceGraphic"></feMergeNode>
+	</feMerge>
+</filter>
+<g style="filter: url(#SVGID_0);" vector-effect="non-scaling-stroke"   >
+		<g transform="matrix(0.7 0 0 0.7 -44.81 -44.28)" id="BmYbp9bfYqt6B97l3dKU7"  >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-235.99, -236.08)" d="M 471.776 291.642 C 467.452 200.512 392.201 127.95499999999998 300 127.95499999999998 L 82.009 127.95499999999998 L 99.238 96.02199999999999 C 100.754 93.213 95.56 91.05099999999999 92.812 93.34799999999998 L 2.733000000000004 168.798 C -0.910999999999996 171.849 -0.910999999999996 176.315 2.733000000000004 179.369 L 92.812 254.816 C 95.56 257.116 100.753 254.954 99.238 252.142 L 82.009 220.213 L 147.578 220.213 L 293.895 220.213 C 295.912 220.058 297.943 219.957 300 219.957 C 342.116 219.957 376.602 252.51299999999998 379.721 293.828 C 379.875 295.84499999999997 379.977 297.876 379.977 299.933 C 379.977 342.045 347.417 376.531 306.106 379.65 C 305.382 379.707 304.651 379.748 303.924 379.78799999999995 L 452.355 379.78799999999995 C 464.886 355.92499999999995 471.982 328.75699999999995 471.982 299.93399999999997 C 471.981 297.152 471.908 294.39 471.776 291.642" stroke-linecap="round" />
+</g>
+		<g transform="matrix(0.7 0 0 0.7 44.81 44.28)" id="nKushXTEJOB8niACghd5T"  >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(108,59,244); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-364.01, -363.92)" d="M 597.268 420.628 L 507.18800000000005 345.182 C 504.44000000000005 342.882 499.254 345.04400000000004 500.766 347.853 L 517.992 379.789 L 452.35499999999996 379.789 L 303.924 379.789 L 300 379.789 L 300 379.90999999999997 C 257.89 379.90999999999997 223.405 347.354 220.28 306.03599999999994 C 220.129 304.02199999999993 220.024 301.99199999999996 220.024 299.93399999999997 C 220.024 257.82099999999997 252.583 223.33599999999996 293.895 220.21399999999997 L 147.581 220.21399999999997 C 135.08999999999997 244.04399999999998 128.02499999999998 271.164 128.02499999999998 299.93399999999997 C 128.02499999999998 302.712 128.099 305.477 128.224 308.22499999999997 C 132.552 399.35499999999996 207.79999999999998 471.912 300 471.912 L 300 472.044 L 517.991 472.044 L 500.765 503.977 C 499.253 506.789 504.43899999999996 508.95099999999996 507.187 506.65099999999995 L 597.267 431.20099999999996 C 600.911 428.148 600.911 423.683 597.268 420.628" stroke-linecap="round" />
+</g>
+</g>
+</g>
+</svg>

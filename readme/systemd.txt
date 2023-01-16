@@ -1,0 +1,8 @@
+chmod 664 /etc/systemd/system/rocket.service
+systemctl daemon-reload
+systemctl enable rocket.service
+systemctl enable certbot.timer
+
+#todo systemctl start rocket.service
+#todo systemctl status rocket.service
+

@@ -1,0 +1,2 @@
+npx wrangler init d1
+wrangler generate short-linker https://github.com/cloudflare/worker-template

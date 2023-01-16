@@ -1,0 +1,11 @@
+async function handleRequest(request) {
+  if(request.method == "POST") {
+    return new Response('Hello POST worker!', {
+      headers: { 'content-type': 'text/plain' },
+    })
+  }
+  return new Response('Hi worker', {
+    headers: { 'content-type': 'text/plain' },
+  })
+}
+

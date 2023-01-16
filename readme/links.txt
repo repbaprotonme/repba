@@ -1,0 +1,292 @@
+https://vectr.com/design/editor/f8a8e900-89ee-415a-91be-d9072312dba1
+
+[]
+pastebin
+https://www.klgrth.io/
+
+[]
+command line
+https://www.commandlinefu.com/commands/browse
+
+[]
+image utilities
+https://www.shutterstock.com/image-resizer
+https://cloudconvert.com/
+https://www.iloveimg.com/crop-image
+https://www.onlineimagetool.com/en/convert-png-jpg-webp-gif
+https://www.ezyzip.com/open-comic-book-files-online.html
+https://onlinepngtools.com
+
+[]
+icons
+https://www.iconsdb.com/custom-color/fullscreen-enter-icon.html
+https://thenounproject.com/
+
+[]
+https://freemusicarchive.org
+https://spotify.com
+https://soundcloud.com/ 
+music player
+
+[]
+rust
+https://play.rust-lang.org/
+https://doc.rust-lang.org/rust-by-example/index.html
+https://doc.rust-lang.org/book/
+https://stevedonovan.github.io/rust-gentle-intro/readme.html
+https://doc.rust-lang.org/std/index.html
+https://www.tutorialspoint.com/rust/index.htm
+https://cheats.rs/#data-structures
+https://play.rust-lang.org/
+https://github.com/warycat/rustgym
+https://michaelsalim.co.uk/blog/rust-from-0-to-80-for-js-dev/
+
+[]
+programming tests
+https://leetcode.com/
+
+[]
+board, templates, graphics
+https://miro.com/app/board/uXjVOY6fQAM=/
+
+[]
+https://my.vultr.com/network/
+webserver
+
+[]
+https://stackblitz.com/edit/node-ekxhjb
+https://onecompiler.com/javascript/3xksew9sp
+https://playcode.io/771387/
+https://codepen.io/reportbase/pen/JjprZjy
+javascript 
+
+[]
+https://jsonhero.io/j/JZw4Wx9Mgj6r/editor  #json editor
+
+[]
+auth
+https://auth0.com/docs/libraries/auth0js
+authentification
+https://manage.auth0.com/dashboard/us/dev-yqx9io6k/
+
+[]
+title = smugmug
+path = https://www.smugmug.com/
+describe = photo sharing for photographers
+
+[]
+title = reddit
+path = https://www.reddit.com/
+artfarnaa
+
+[]
+3d/drawing
+https://www.tshsoft.de/
+https://www.canva.com/
+gigapan,
+panoraven,
+https://www.prodibi.com
+https://photo-sphere-viewer.js.org/
+https://www.google.com/streetview/
+juicbox.net,
+https://micr.io/
+airpano.com
+krpano.com
+https://kuula.co/
+https://smartframe.io/
+sirv.com 
+
+[]
+https://vimeo.com/user143177427
+video
+
+[]
+title = proton
+path = https://protonmail.com
+describe = email client
+repba
+
+[]
+title = tiktok
+path = https://www.tiktok.com/@tombrinkman8?lang=en
+describe = video
+
+[]
+path = https://www.smashingmagazine.com/2021/10/object-fit-background-size-css/
+title = squeeze photo
+
+[]
+title = lipsum
+path = https://www.lipsum.com/
+
+[]
+title = picsum
+path = https://picsum.photos/
+
+[]
+title = Obfuscator
+path = https://obfuscator.io/
+
+[]
+https://www.webpagetest.org
+https://3perf.com/talks/web-perf-101/
+web page html tests
+
+[]
+describe javascript tutorial
+path https://javascript.info/
+https://www.30secondsofcode.org/js/p/1
+https://github.com/trekhleb/javascript-algorithms
+
+[]
+upload photo sites
+https://postimages.org/
+https://files.fm/
+https://img.vision/
+
+[]
+https://www.artstation.com
+artstation
+artist sell stuff here
+
+[]
+image editor
+https://vectr.com/design/editor/2c43fa8f-b08f-4bca-8a7a-5fffb1047eb2
+https://doodlemaker.com/
+https://ydraw.com/
+https://sketch.io/sketchpad/
+https://yqnn.github.io/svg-path-editor/
+https://editor.method.ac/
+https://pqina.nl/  #has good blog about canvas and js
+https://editor.method.ac/  #svg editor
+https://boxy-svg.com/app
+
+[]
+https://dropbox.com
+dropbox 
+replace dl=0 with raw=1
+
+[]
+path = https://www.quora.com/
+title = quora
+
+[]
+jobs sites
+https://jobot.com/
+https://remotedevjobs.co/blog/remote-job-hunting
+https://millo.co/
+
+[]
+old pictures
+https://artvee.com/
+https://militarymaps.rct.uk/
+https://picryl.com/
+https://www.panorama-photo.net/
+
+[]
+https://www.freepik.com/home
+https://depositphotos.com
+https://www.wallpaperflare.com/
+https://contributor.stock.adobe.com/en/uploads
+https://www.pexels.com
+https://www.pixabay.com
+https://www.gettyimages.com
+https://picsart.com/
+https://unsplash.com/plus
+
+[]
+https://play.google.com/books
+https://mail.google.com
+https://youtube.com
+https://drive.google.com/drive/u/0/my-drive
+https://voice.google.com
+https://calendar.google.com/calendar/render?pli=1#main_7
+https://news.google.com/news/?ned=us&gl=US&hl=en
+https://contacts.google.com
+https://photos.google.com/
+https://www.google.com/maps
+https://play.google.com
+https://play.google.com/movies?hl=en_US
+google
+
+[]
+https://www.desmos.com/    #calcualor
+Equation Visualizer.  Math
+
+[]
+https://bigthink.com/
+ttps://nautil.us
+https://serialpodcast.org/
+https://www.npr.org/podcasts/510282/pop-culture-happy-hour
+https://www.slashdot.org
+https://samharris.org/
+https://www.wnycstudios.org/shows/radiolab
+https://www.dancarlin.com/
+https://www.npr.org/programs/ted-radio-hour/
+https://www.pbs.org/show/newshour/
+https://podbay.fm/show/81210923
+https://www.youtube.com/channel/UCu5jfQcpRLm9xhmlSd5S8xw
+https://www.youtube.com/watch?v=1sl5KJ69qiA 
+https://www.youtube.com/channel/UCdJa8L2rQJ6vPzgSDc_xQqA
+https://dailygalaxy.com/
+https://www.bbcearth.com
+https://www.smashingmagazine.com/
+
+[]
+https://news.ycombinator.com/
+https://www.axios.com
+News
+
+[]
+https://www.dwitter.net
+canvas javascript snippits
+
+[]
+path = https://affinity.serif.com/en-us/
+help = https://affinity.help
+forum = https://forum.affinity.serif.com/
+title = Affinity 
+color = #31819d
+describe = svg editor
+
+[]
+https://dash.cloudflare.com
+Cloudflare
+https://developers.cloudflare.com/workers/tutorials
+https://egghead.io/courses/build-a-serverless-api-with-cloudflare-workers-d67ca551
+
+[]
+path = https://digital.darkhorse.com/bookshelf
+title = Comics
+
+[]
+https://github.com
+Github
+
+[]
+path = https://dcc.godaddy.com/domains/?ci=
+title = Godaddy
+
+[]
+htps://lichess.org/
+Chess
+
+[]
+https://twitter.com/
+Twitter
+reportbase@gmail.com
+
+[]
+https://www.tumblr.com/dashboard
+https://repba.tumblr.com
+https://repba.tumblr.com/archive
+Tumbler
+tom@repba.com
+
+[]
+https://www.epicgames.com/store/en-US/
+Epic 
+
+
+
+
