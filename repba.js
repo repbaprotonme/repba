@@ -2244,7 +2244,6 @@ var presslst =
     name: "BOSS",
     pressup: function (context, rect, x, y)
     {
-        thumbobj.enabled = 0;
         context.pinching = 0;
         context.tapping = 0;
         context.isthumbrect = 0;
