@@ -2244,6 +2244,7 @@ var presslst =
     name: "BOSS",
     pressup: function (context, rect, x, y)
     {
+        context.isthumbrect = 0;
         context.pressed = 0;
         context.refresh();
     },
