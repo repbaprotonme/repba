@@ -518,24 +518,21 @@ function drawslices()
             if (footobj.enabled)
                 footobj.getcurrent().draw(footcnvctx, footcnvctx.rect(), 0);
             bodyobj.set(0)
-            if (!headobj.enabled)
+            if (_8cnvctx.enabled)
             {
-                if (_8cnvctx.enabled)
-                {
-                    bodyobj.set(2)
-                }
-                else if (bodyobj.enabled)
-                {
-                    bodyobj.set(bodyobj.enabled)
-                }
-                else if (!headobj.enabled && thumbobj.enabled)
-                {
-                    thumbobj.getcurrent().draw(context, rect, 0, 0);
-                    bodyobj.set(1)
-                }
-
-                bodyobj.getcurrent().draw(context, rect, 0, 0);
+                bodyobj.set(2)
             }
+            else if (bodyobj.enabled)
+            {
+                bodyobj.set(bodyobj.enabled)
+            }
+            else if (!headobj.enabled && thumbobj.enabled)
+            {
+                thumbobj.getcurrent().draw(context, rect, 0, 0);
+                bodyobj.set(1)
+            }
+
+            bodyobj.getcurrent().draw(context, rect, 0, 0);
         }
 
         context.setcolumncomplete = 1;
