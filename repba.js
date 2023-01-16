@@ -3222,9 +3222,9 @@ var templatelst =
     name: "WIDE",
     init: function ()
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 50;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 99;
         posityobj.set(y);
-        url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 50;
+        url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
@@ -3238,9 +3238,9 @@ var templatelst =
     name: "LANDSCAPE",
     init: function (j)
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 50;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 99;
         posityobj.set(y);
-        url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 50;
+        url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
