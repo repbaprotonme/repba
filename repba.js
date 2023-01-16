@@ -5186,10 +5186,19 @@ function masterhide(x, y)
         colorobj.enabled = 0;
         context.tapping = 0;
         context.isthumbrect = 0;
-        thumbobj.enabled = 1;
-        headobj.enabled = headobj.enabled?0:1;
-        footobj.enabled = headobj.enabled;
-        pageresize();
+        if (thumbobj.enabled)
+        {
+            thumbobj.enabled = 0;  
+            headobj.enabled = 1;
+            footobj.enabled = 1;
+        }
+        else
+        {
+            thumbobj.enabled = 1;  
+            headobj.enabled = 0;
+            footobj.enabled = 0;
+        }
+
         context.refresh();
         reset();
     }
