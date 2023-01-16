@@ -5186,6 +5186,7 @@ function masterhide(x, y)
         colorobj.enabled = 0;
         context.tapping = 0;
         context.isthumbrect = 0;
+        thumbobj.enabled = 1;
         headobj.enabled = headobj.enabled?0:1;
         footobj.enabled = headobj.enabled;
         pageresize();
