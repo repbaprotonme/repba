@@ -518,7 +518,7 @@ function drawslices()
             if (footobj.enabled)
                 footobj.getcurrent().draw(footcnvctx, footcnvctx.rect(), 0);
             bodyobj.set(0)
-            if (!headobj.enabled && thumbobj.enabled)
+            if (!headobj.enabled && )
             {
                 if (_8cnvctx.enabled)
                 {
@@ -528,7 +528,7 @@ function drawslices()
                 {
                     bodyobj.set(bodyobj.enabled)
                 }
-                else if (!headobj.enabled)
+                else if (!headobj.enabled && thumbobj.enabled)
                 {
                     thumbobj.getcurrent().draw(context, rect, 0, 0);
                     bodyobj.set(1)
