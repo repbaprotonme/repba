@@ -3645,8 +3645,6 @@ fetch(path)
         templateobj.set(j);
         templateobj.getcurrent().init();
 
-        positxobj.data = window.innerWidth;
-        posityobj.data = window.innerHeight;
         traitobj.set(url.height);
         scapeobj.set(url.height);
         poomobj.set(url.zoom);
