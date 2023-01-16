@@ -4581,13 +4581,6 @@ function reset()
 
 function resize()
 {
-    positxobj.data = window.innerWidth;
-    posityobj.data = window.innerHeight;
-    if (positxobj.current() >= window.innerWidth)
-        positxobj.set(window.innerWidth-10);
-    if (posityobj.current() >= window.innerHeight)
-        posityobj.set(window.innerHeight-10);
-
     reset();
     menuhide();
     var n = eventlst.findIndex(function(a){return a.name == "_4cnvctx";})
