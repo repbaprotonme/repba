@@ -2259,9 +2259,12 @@ var presslst =
             colorobj.enabled = 0;
             context.tapping = 0;
             context.isthumbrect = 0;
+            if (headobj.enabled)
+                thumbobj.enabled = 1;
+            else
+                thumbobj.enabled = thumbobj.enabled?0:1;
             headobj.enabled = 0;
             footobj.enabled = 0;
-            thumbobj.enabled = thumbobj.enabled?0:1;
             pageresize();
             context.refresh();
             reset();
