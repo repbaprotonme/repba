@@ -3238,14 +3238,16 @@ var templatelst =
     name: "LANDSCAPE",
     init: function (j)
     {
-        posityobj.set(99);
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 99;
+        posityobj.set(y);
+        url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
         loomobj.split(url.zoom, "25-90", loomobj.length());
         poomobj.split(url.zoom, "0-90", poomobj.length());
-        traitobj.split(99, "0.1-1.0", traitobj.length());
-        scapeobj.split(99, "0.1-1.0", scapeobj.length());
+        traitobj.split(url.height, "0.1-1.0", traitobj.length());
+        scapeobj.split(url.height, "0.1-1.0", scapeobj.length());
    }
 },
 {
