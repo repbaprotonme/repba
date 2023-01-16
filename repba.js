@@ -2772,8 +2772,8 @@ var thumblst =
     {
         var th = heightobj.getcurrent().getcurrent();
         var headers = headcnv.height*2;
-        var width = rect.width-THUMBORDER*2;
-        var height = rect.height-headers-THUMBORDER*2;
+        var width = rect.width-THUMBORDER*4;
+        var height = rect.height-headers-THUMBORDER*4;
         if (width < 0 || height < 0)
             return;
         var r = calculateAspectRatioFit(photo.image.width, photo.image.height, width*th, height*th);
@@ -2787,10 +2787,8 @@ var thumblst =
             jp = 1;
         }
 
-        var x = Math.clamp(THUMBORDER,rect.width-THUMBORDER*3,
-            Math.floor(Math.nub(positxobj.getcurrent(), positxobj.length(), w, rect.width)));
-        var y = Math.clamp(THUMBORDER,rect.height-THUMBORDER*3,
-            Math.floor(Math.nub(posityobj.getcurrent(), posityobj.length(), h, rect.height)));
+        var x = Math.floor(Math.nub(positxobj.getcurrent(), positxobj.length(), w, rect.width));
+        var y = Math.floor(Math.nub(posityobj.getcurrent(), posityobj.length(), h, rect.height));
 
         context.thumbrect = new rectangle(x,y,w,h);
         context.save();
