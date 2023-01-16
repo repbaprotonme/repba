@@ -3243,7 +3243,7 @@ var templatelst =
     {
         var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : window.innerHeight-ALIEXTENT;
         posityobj.set(y);
-        url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 75;
+        url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : window.innerWidth>window.innerHeigt?50:100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
