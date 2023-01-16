@@ -3193,7 +3193,7 @@ var templatelst =
     name: "SIDESCROLL",
     init: function ()
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : window.innerHeight-10;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : window.innerHeight-THUMBORDER;
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
@@ -3209,7 +3209,7 @@ var templatelst =
     name: "ULTRAWIDE",
     init: function ()
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : window.innerHeight-10;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : window.innerHeight-THUMBORDER;
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
@@ -3225,7 +3225,7 @@ var templatelst =
     name: "WIDE",
     init: function ()
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : window.innerHeight-10;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : window.innerHeight-ALIEXTENT;
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : (window.innerWidth>window.innerHeight?75:100);
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
@@ -3241,7 +3241,7 @@ var templatelst =
     name: "LANDSCAPE",
     init: function (j)
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : window.innerHeight-10;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : window.innerHeight-ALIEXTENT;
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 75;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
