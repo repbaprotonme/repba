@@ -1861,8 +1861,8 @@ var panlst =
             y = Math.clamp(THUMBORDER,rect.height-2*THUMBORDER,y);
             clearTimeout(context.panpress);
             context.panpress = setTimeout(function() { context.pressed = 0; },200)
-            positxobj.set(x);
-            posityobj.set(y);
+            positxobj.set((x/rect.width)*100);
+            posityobj.set((y/rect.height)*100));
             context.refresh();
         }
         else if (context.iszoomrect)
@@ -3160,7 +3160,7 @@ var templatelst =
     init: function ()
     {
         rowobj.enabled = 1;
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : Math.floor(window.innerHeight/2);
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 50;
         posityobj.set(y);
         galleryobj.maxmegapix = 4000000;
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 75;
@@ -3177,7 +3177,7 @@ var templatelst =
     name: "PORTRAIT",
     init: function ()
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : Math.floor(window.innerHeight/2);
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 50;
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 75;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
@@ -3193,7 +3193,7 @@ var templatelst =
     name: "SIDESCROLL",
     init: function ()
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : window.innerHeight-THUMBORDER;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 99;
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
@@ -3209,7 +3209,7 @@ var templatelst =
     name: "ULTRAWIDE",
     init: function ()
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : window.innerHeight-THUMBORDER;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 99;
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
@@ -3225,7 +3225,7 @@ var templatelst =
     name: "WIDE",
     init: function ()
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : window.innerHeight-THUMBORDER;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 99;
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : (window.innerWidth>window.innerHeight?75:100);
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
@@ -3241,7 +3241,7 @@ var templatelst =
     name: "LANDSCAPE",
     init: function (j)
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : window.innerHeight-THUMBORDER;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 99;
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : window.innerWidth>window.innerHeight?50:100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
@@ -3257,7 +3257,7 @@ var templatelst =
     name: "EXTRATALL",
     init: function ()
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : Math.floor(window.innerHeight/2);
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 50;
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 75;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
@@ -3273,7 +3273,7 @@ var templatelst =
     name: "TALL",
     init: function ()
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : Math.floor(window.innerHeight/2);
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 50;
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 75;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
@@ -3289,7 +3289,7 @@ var templatelst =
     name: "LEGEND",
     init: function ()
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : Math.floor(window.innerHeight/2);
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 50;
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 75;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
@@ -5063,9 +5063,9 @@ var j = url.searchParams.has("h") ? Number(url.searchParams.get("h")) : 0;
 headobj.enabled = j;
 footobj.enabled = j;
 var infobj = new makeoption("", 3);
-var positxobj = new makeoption("POSITIONX", window.innerWidth);
-var posityobj = new makeoption("POSITIONY", window.innerHeight);
-var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : Math.floor(window.innerWidth/2);
+var positxobj = new makeoption("POSITIONX", 100);
+var posityobj = new makeoption("POSITIONY", 100);
+var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 50);
 positxobj.set(x);
 
 function menushow(context)
