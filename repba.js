@@ -2771,9 +2771,7 @@ var thumblst =
     draw: function (context, rect, user, time)
     {
         var th = heightobj.getcurrent().getcurrent();
-        rect.x += THUMBORDER/2;
-        rect.y += THUMBORDER/2;
-        rect.shrink(THUMBORDER,THUMBORDER);
+        rect.shrink(THUMBORDER*2,THUMBORDER*2);
 
         var width = rect.width;
         var height = rect.height;
@@ -2788,8 +2786,8 @@ var thumblst =
             jp = 1;
         }
 
-        var x = Math.floor(Math.nub(positxobj.getcurrent(), positxobj.length(), w, width));
-        var y = Math.floor(Math.nub(posityobj.getcurrent(), posityobj.length(), h, height));
+        var x = Math.floor(Math.nub(positxobj.getcurrent(), positxobj.length(), w, width))+THUMBORDER;
+        var y = Math.floor(Math.nub(posityobj.getcurrent(), posityobj.length(), h, height))+THUMBORDER;
 
         context.thumbrect = new rectangle(x,y,w,h);
         context.save();
