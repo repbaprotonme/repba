@@ -3299,7 +3299,6 @@ var bodylst =
             context.moveprev = new rectangle()
             context.movenext = new rectangle()
             var zoom = zoomobj.getcurrent();
-            var j = headcnv.height;
             var a =
                     new Col([60,0,60],
                     [
@@ -3432,7 +3431,7 @@ var bodylst =
             var w = Math.min(ALIEXTENT*8,rect.width-ALIEXTENT);
             var rowlst = [0,0,0,0,0,0];
             var rowheight = 40;
-            rowlst.length = Math.floor(Math.min(rowlst.length,(rect.height-ALIEXTENT*3)/rowheight))
+            rowlst.length = Math.floor(Math.min(rowlst.length,(rect.height-headcnv.height-footcnv.height-ALIEXTENT)/rowheight))
             var h = rowheight*rowlst.length;
             var title = galleryobj.getcurrent().title;
             var a = new Message(w,h,title,new RowA(rowlst,
