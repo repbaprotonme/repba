@@ -3303,9 +3303,8 @@ var bodylst =
             var a =
                     new Col([60,0,60],
                     [
-                        j?0:new Row([90,60,0],
+                        new Row([60,0],
                         [
-                            0,
                             new Layer(
                             [
                                 new Rectangle(context.moveprev),
@@ -3315,9 +3314,8 @@ var bodylst =
                             0,
                         ]),
                         0,
-                        j?0:new Row([90,60,0],
+                        new Row([60,0],
                         [
-                            0,
                             new Layer(
                             [
                                 new Rectangle(context.movenext),
@@ -4930,7 +4928,7 @@ var footlst =
                 context.timefooter = setInterval(function ()
                 {
                     _4cnvctx.tab()
-                }, 400);
+                }, 40);
             }
             else
             {
