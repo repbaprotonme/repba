@@ -212,7 +212,7 @@ var guidelst =
             for (var n = 0; n < channelobj.length(); n++)
             {
                 var k = channelobj.data[n];
-                context.strokeStyle = "rgba(255,255,255,0.4)";
+                context.strokeStyle = THUMBSTROKE;
                 context.lineWidth = 3;
                 var j = rect.y + (k/100)*rect.height;
                 context.moveTo(rect.x, j);
@@ -252,7 +252,7 @@ var guidelst =
             for (var n = 0; n < colobj.length(); n++)
             {
                 var k = colobj.data[n];
-                context.strokeStyle = "rgba(255,255,255,0.4)";
+                context.strokeStyle = THUMBSTROKE;
                 context.lineWidth = 3;
                 var j = rect.x + (k/100)*rect.width;
                 context.moveTo(j, rect.y);
@@ -295,7 +295,7 @@ var guidelst =
             for (var n = 0; n < colobj.length(); n++)
             {
                 var k = colobj.data[n];
-                context.strokeStyle = "rgba(255,255,255,0.4)";
+                context.strokeStyle = THUMBSTROKE;
                 context.lineWidth = 3;
                 var j = rect.x + (k/100)*rect.width;
                 context.moveTo(j, rect.y);
@@ -305,7 +305,7 @@ var guidelst =
             for (var n = 0; n < channelobj.length(); n++)
             {
                 var k = channelobj.data[n];
-                context.strokeStyle = "rgba(255,255,255,0.4)";
+                context.strokeStyle = THUMBSTROKE;
                 context.lineWidth = 3;
                 var j = rect.y + (k/100)*rect.height;
                 context.moveTo(rect.x, j);
@@ -872,14 +872,14 @@ var Message = function (width, height, title, func)
                         [
                             new Layer(
                             [
-                                context.movingpage == -1 ? new Fill("rgba(0,0,150,0.75)") : 0,
+                                context.movingpage == -1 ? new Fill(THUMBSELECT) : 0,
                                 new Rectangle(context.moveprev),
                                 new Shrink(new Arrow(ARROWFILL,270),ARROWBORES,ARROWBORES),
                             ]),
                             new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
                             new Layer(
                             [
-                                context.movingpage == 1 ? new Fill("rgba(0,0,150,0.75)") : 0,
+                                context.movingpage == 1 ? new Fill(THUMBSELECT) : 0,
                                 new Rectangle(context.movenext),
                                 new Shrink(new Arrow(ARROWFILL,90),ARROWBORES,ARROWBORES),
                             ]),
@@ -1272,7 +1272,7 @@ var makehammer = function (context, v, t)
     ham.get("swipe").set({ direction: Hammer.DIRECTION_ALL });
     ham.get('swipe').set({ velocity: 0.6});//0.30
 	ham.get('swipe').set({ threshold: 20});//10
-	ham.get('press').set({ time: 250 });//251
+	ham.get('press').set({ time: 400 });//251
 
 	ham.on("pinch", function (evt)
 	{
@@ -1608,7 +1608,6 @@ var wheelst =
         }
         else if (zoom || ctrl)
         {
-            context.slideshow = 0;//todo
             var zoom = zoomobj.getcurrent()
             zoom.add(5);
             contextobj.reset();
@@ -2203,22 +2202,6 @@ var mouselst =
     enter: function (evt) { },
     up: function (evt) { },
 	move: function (context, rect, x, y) { },
-},
-{
-    name: "MENU",
-    down: function (evt) { },
- 	up: function (evt) { },
- 	enter: function (evt) { },
-	out: function (context, evt) { },
-	move: function (context, rect, x, y) { },
-},
-{
-    name: "BOSS",
-    down: function (evt) { },
- 	ep: function (evt) { },
- 	enter: function (evt) { },
-	out: function (context, evt) { },
-	move: function (context, rect, x, y) { }
 },
 ];
 
@@ -3370,19 +3353,19 @@ var bodylst =
                                 new Rectangles(),
                                 new Layer(
                                 [
-                                    new Fill(context.tapindex == 1 ? "rgba(0,0,150,0.75)" : MENUCOLOR),
+                                    new Fill(context.tapindex == 1 ? MENUSELECT : MENUCOLOR),
                                     new Rectangle(context.menudown),
                                     new Shrink(new Arrow(ARROWFILL,0),20,20),
                                 ]),
                                 new Layer(
                                 [
-                                    new Fill(context.tapindex == 2 ? "rgba(0,0,150,0.75)" : MENUCOLOR),
+                                    new Fill(context.tapindex == 2 ? MENUSELECT : MENUCOLOR),
                                     new Rectangle(context.menuhome),
                                     new Shrink(new Circle("white"),20,20)
                                 ]),
                                 new Layer(
                                 [
-                                    new Fill(context.tapindex == 3 ? "rgba(0,0,150,0.75)" : MENUCOLOR),
+                                    new Fill(context.tapindex == 3 ? MENUSELECT : MENUCOLOR),
                                     new Rectangle(context.menuup),
                                     new Shrink(new Arrow(ARROWFILL,180),20,20),
                                 ]),
@@ -3415,19 +3398,19 @@ var bodylst =
                 [
                     new Layer(
                     [
-                        context.tapindex == 1 ? new Fill("rgba(0,0,150,0.5)") : 0,
+                        context.tapindex == 1 ? new Fill(MENUSELECT) : 0,
                         new Rectangle(context.openimage),
                         new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
                     ]),
                     new Layer(
                     [
-                        context.tapindex == 2 ? new Fill("rgba(0,0,150,0.5)") : 0,
+                        context.tapindex == 2 ? new Fill(MENUSELECT) : 0,
                         new Rectangle(context.uploadpanel),
                         new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
                     ]),
                     new Layer(
                     [
-                        context.tapindex == 3 ? new Fill("rgba(0,0,150,0.5)") : 0,
+                        context.tapindex == 3 ? new Fill(MENUSELECT) : 0,
                         new Rectangle(context.accountpanel),
                         new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
                     ]),
@@ -3504,19 +3487,19 @@ var bodylst =
                     new Layer(
                     [
                         new Rectangle(context.login),
-                        context.tapindex == 1 ? new Fill("rgba(0,0,150,0.5)") : 0,
+                        context.tapindex == 1 ? new Fill(MENUSELECT) : 0,
                         new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
                     ]),
                     new Layer(
                     [
                         new Rectangle(context.logout),
-                        context.tapindex == 2 ? new Fill("rgba(0,0,150,0.5)") : 0,
+                        context.tapindex == 2 ? new Fill(MENUSELECT) : 0,
                         new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
                     ]),
                     new Layer(
                     [
                         new Rectangle(context.account),
-                        context.tapindex == 3 ? new Fill("rgba(0,0,150,0.5)") : 0,
+                        context.tapindex == 3 ? new Fill(MENUSELECT) : 0,
                         new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
                     ]),
                 ]));
