@@ -4789,7 +4789,7 @@ var headlst =
             context.font = "1rem Archivo Black";
             var j = rect.width < 420 ? (rect.width-ALIEXTENT*4):180;
             var s = _5cnvctx.enabled || _8cnvctx.enabled;
-            var a = new ColA([ALIEXTENT,0,ALIEXTENT,j,ALIEXTENT,0,ALIEXTENT],
+            var a = new Col([ALIEXTENT,0,ALIEXTENT,j,ALIEXTENT,0,ALIEXTENT],
                 [
                     new Layer(
                     [
@@ -4852,28 +4852,34 @@ var headlst =
                 ]);
 
             var s;
-            if (globalobj.promptedfile)
+            if (colorobj.enabled)
             {
-                    s = "...";
+                s = _4cnvctx.timeobj.getcurrent().toFixed(1);
+            }
+            else if (globalobj.promptedfile)
+            {
+                s = "...";
             }
             else if (infobj.current() == 0)
+            {
+                s = (galleryobj.current()+1).toFixed(0);
+            }
+            else if (infobj.current() == 1)
             {
                 s = (galleryobj.current()+1).toFixed(0);
                 if (rect.width >= 400)
                     s += " of "+galleryobj.length()
             }
-            else if (infobj.current() == 1)
+            else if (infobj.current() == 2)
             {
                 s = galleryobj.getcurrent().title;
             }
-            else if (infobj.current() == 2)
+            else if (infobj.current() == 3)
             {
                 s = galleryobj.getcurrent().width + "x"+ galleryobj.getcurrent().height;
             }
 
-            var j = _4cnvctx.timeobj.getcurrent().toFixed(1);
-            var e = globalobj.promptedfile?"1 of 1":j;
-            a.draw(context, rect, [0,0,0,colorobj.enabled?e:s,0,0,0], time);
+            a.draw(context, rect, s, time);
             context.restore()
 		};
 	},
@@ -5027,7 +5033,7 @@ var headobj = new makeoption("", headlst);
 var j = url.searchParams.has("h") ? Number(url.searchParams.get("h")) : 0;
 headobj.enabled = j;
 footobj.enabled = j;
-var infobj = new makeoption("", 3);
+var infobj = new makeoption("", 4);
 var positxobj = new makeoption("POSITIONX", 100);
 var posityobj = new makeoption("POSITIONY", 100);
 var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 50;
