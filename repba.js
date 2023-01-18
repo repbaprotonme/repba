@@ -1133,8 +1133,8 @@ addressobj.full = function ()
         "&n="+url.timemain+
         "&s="+url.slidetop+
         "&f="+url.slidefactor+
-        "&x="+positxobj.current()+
-        "&y="+posityobj.current()+
+        "&x="+positxobj.current().toFixed(0)+
+        "&y="+posityobj.current().toFixed(0)+
         "&o="+Number(height.current()).toFixed(2)+
         "&z="+Number(zoom.current()).toFixed(2)+
         "&r="+(100*rowobj.berp()).toFixed(2)+
@@ -3136,7 +3136,9 @@ var templatelst =
     init: function ()
     {
         rowobj.enabled = 1;
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 50;
+        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 95;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 95;
+        positxobj.set(x);
         posityobj.set(y);
         galleryobj.maxmegapix = 4000000;
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 75;
