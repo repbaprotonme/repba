@@ -4647,6 +4647,7 @@ function reset()
 
 function resize()
 {
+    delete _4cnvctx.thumbcanvas;
     reset();
     menuhide();
     var n = eventlst.findIndex(function(a){return a.name == "_4cnvctx";})
@@ -4658,6 +4659,7 @@ function resize()
 
 function escape()
 {
+    delete _4cnvctx.thumbcanvas;
     clearInterval(_4cnvctx.timemain);
     colorobj.enabled = 0;
     bodyobj.enabled = 0;
