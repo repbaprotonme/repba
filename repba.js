@@ -4929,8 +4929,6 @@ var footlst =
             }
             else if (context.progresscircle.hitest(x,y))
             {
-                if (screenfull.isEnabled)
-                    screenfull.toggle();
             }
             else
             {
@@ -4944,8 +4942,8 @@ var footlst =
             clearInterval(context.timefooter);
             if (context.progresscircle.hitest(x,y))
             {
-                _4cnvctx.autodirect = -1;
-                _4cnvctx.tab();
+                if (screenfull.isEnabled)
+                    screenfull.toggle();
             }
             else if (context.keyzoomup && context.keyzoomup.hitest(x,y))
             {
