@@ -1,3 +1,7 @@
+https://www.makeuseof.com/install-test-web-server-chromebook-linux/
+/usr/share/nginx/html
+http://100.115.92.200/
+sudo systemctl start nginx
 sudo systemctl enable nginx
 sudo systemctl restart nginx
 

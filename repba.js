@@ -1123,7 +1123,7 @@ var addressobj = {}
 addressobj.full = function ()
 {
     var zoom = zoomobj.getcurrent();
-    var out = url.origin;
+    var out = url.href;
     out +=
         "/?p="+galleryobj.getcurrent().title+
         "&h="+headobj.enabled+
@@ -2526,7 +2526,7 @@ var taplst =
             {
                 context.tapindex = 0;
                 context.refresh();
-                authClient.redirectToLoginPage()
+                //authClient.redirectToLoginPage()
             },400)
         }
         else if (context.zoomctrl && context.zoomctrl.hitest(x,y))
@@ -2549,7 +2549,7 @@ var taplst =
             {
                 context.tapindex = 0;
                 context.refresh();
-                authClient.logout(true)
+                //authClient.logout(true)
             },400)
         }
         else if (context.account && context.account.hitest(x,y))
@@ -2561,7 +2561,7 @@ var taplst =
             {
                 context.tapindex = 0;
                 context.refresh();
-                authClient.redirectToAccountPage()
+                //authClient.redirectToAccountPage()
             },400)
         }
         else if (context.menudown && context.menudown.hitest(x,y))
@@ -2643,7 +2643,7 @@ var taplst =
                 bodyobj.enabled = 0;
                 context.tapindex = 0;
                 context.refresh();
-                window.location.href = "http://image.reportbase.com";
+                window.location.href = "http://upload.reportbase.com";
             }, 400)
         }
         else if (context.accountpanel && context.accountpanel.hitest(x,y))
@@ -3685,9 +3685,11 @@ galleryobj.path = function()
     return s;
 }
 
-authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+//authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
 
 var path = "https://reportbase.com/gallery/" + url.path;
+if (url.protocol == "http:")
+    path = "HOME.json";
 fetch(path)
   .then(function (response)
   {
@@ -3844,6 +3846,10 @@ fetch(path)
 
         slices.data.push({ title:"Account", path: "ADDIMG", func: function()
         {
+            bodyobj.enabled = 6;
+            menuhide();
+            _4cnvctx.refresh();
+            /*
              authClient.getAuthenticationInfoOrNull(false)
                 .then(function(client)
                 {
@@ -3852,11 +3858,12 @@ fetch(path)
                     menuhide();
                     _4cnvctx.refresh();
                 })
+            */
         }});
 
         slices.data.push({ title:"Upload", path: "UPLOAD", func: function()
         {
-            window.location.href = "http://image.reportbase.com";
+            window.location.href = "http://upload.reportbase.com";
         }});
 
         slices.data.push({ title:"Download", path: "DOWNLOAD", func: function()
@@ -4834,6 +4841,9 @@ var headlst =
             }
             else if (context.picture.hitest(x,y))
             {
+                bodyobj.enabled = (bodyobj.enabled==4)?0:4;
+                _4cnvctx.refresh();
+                /*
                  authClient.getAuthenticationInfoOrNull(false)
                     .then(function(client)
                     {
@@ -4841,6 +4851,7 @@ var headlst =
                         bodyobj.enabled = (bodyobj.enabled==4)?0:4;
                         _4cnvctx.refresh();
                     })
+                */
             }
             else if (context.nextpage.hitest(x,y))
             {
