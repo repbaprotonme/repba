@@ -3144,7 +3144,7 @@ var templatelst =
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 36;
         loomobj.split(url.zoom, "70-85", loomobj.length());
-        poomobj.split(url.zoom, "35-85", poomobj.length());
+        poomobj.split(url.zoom, "50-85", poomobj.length());
         traitobj.split(url.height, "0.1-1.0", traitobj.length());
         scapeobj.split(url.height, "0.1-1.0", scapeobj.length());
     }
@@ -3160,7 +3160,7 @@ var templatelst =
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 36;
         loomobj.split(url.zoom, "70-95", loomobj.length());
-        poomobj.split(url.zoom, "35-95", poomobj.length());
+        poomobj.split(url.zoom, "50-95", poomobj.length());
         traitobj.split(url.height, "0.1-1.0", traitobj.length());
         scapeobj.split(url.height, "0.1-1.0", scapeobj.length());
     }
@@ -3224,7 +3224,7 @@ var templatelst =
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
         loomobj.split(url.zoom, "25-90", loomobj.length());
-        poomobj.split(url.zoom, "0-90", poomobj.length());
+        poomobj.split(url.zoom, "25-90", poomobj.length());
         traitobj.split(url.height, "0.1-1.0", traitobj.length());
         scapeobj.split(url.height, "0.1-1.0", scapeobj.length());
    }
@@ -3240,7 +3240,7 @@ var templatelst =
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 36;
         loomobj.split(url.zoom, "90-95", loomobj.length());
-        poomobj.split(url.zoom, "60-90", poomobj.length());
+        poomobj.split(url.zoom, "70-90", poomobj.length());
         traitobj.split(url.height, "0.1-1.0", traitobj.length());
         scapeobj.split(url.height, "0.1-1.0", scapeobj.length());
     }
@@ -3256,7 +3256,7 @@ var templatelst =
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 36;
         loomobj.split(url.zoom, "80-90", loomobj.length());
-        poomobj.split(url.zoom, "50-90", poomobj.length());
+        poomobj.split(url.zoom, "60-90", poomobj.length());
         traitobj.split(url.height, "0.1-1.0", traitobj.length());
         scapeobj.split(url.height, "0.1-1.0", scapeobj.length());
     }
@@ -4929,11 +4929,8 @@ var footlst =
             }
             else if (context.progresscircle.hitest(x,y))
             {
-                clearInterval(context.timefooter);
-                context.timefooter = setInterval(function ()
-                {
-                    _4cnvctx.tab()
-                }, 40);
+                if (screenfull.isEnabled)
+                    screenfull.toggle();
             }
             else
             {
@@ -5008,6 +5005,7 @@ var footlst =
                     0,
                     new Layer(
                        [
+                           screenfull.isFullscreen ? new Circle("black") : 0,
                            new ProgressCircle(1),
                            new Rectangle(context.progresscircle),
                        ]),
