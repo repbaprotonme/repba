@@ -3658,8 +3658,6 @@ fetch(path)
         templateobj.set(j);
         templateobj.getcurrent().init();
 
-        poomobj.set(url.zoom);
-        loomobj.set(url.zoom);
         pretchobj.split(60, "40-90", pretchobj.length());
         letchobj.split(60, "40-90", letchobj.length());
         speedxobj.split(1.25, "1-20", speedxobj.length());
