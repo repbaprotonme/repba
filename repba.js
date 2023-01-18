@@ -3141,7 +3141,7 @@ var templatelst =
         positxobj.set(x);
         posityobj.set(y);
         galleryobj.maxmegapix = 4000000;
-        url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 75;
+        url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 50;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 36;
@@ -3155,9 +3155,11 @@ var templatelst =
     name: "PORTRAIT",
     init: function ()
     {
+        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 95;
         var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 50;
+        positxobj.set(x);
         posityobj.set(y);
-        url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 75;
+        url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 50;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 36;
