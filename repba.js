@@ -5063,8 +5063,6 @@ footobj.enabled = j;
 var infobj = new makeoption("", 4);
 var positxobj = new makeoption("POSITIONX", 100);
 var posityobj = new makeoption("POSITIONY", 100);
-var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 50;
-positxobj.set(x);
 
 function menushow(context)
 {
