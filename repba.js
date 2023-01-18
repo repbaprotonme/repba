@@ -5007,7 +5007,7 @@ var footlst =
                     0,
                     new Layer(
                        [
-                           screenfull.isFullscreen ? new Shink(new Circle("black"),8,8) : 0,
+                           screenfull.isFullscreen ? new Shrink(new Circle("black"),8,8) : 0,
                            new ProgressCircle(1),
                            new Rectangle(context.progresscircle),
                        ]),
