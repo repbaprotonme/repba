@@ -3176,7 +3176,7 @@ var templatelst =
     {
         var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 50;
         var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 100;
-        posityobj.set(x);
+        positxobj.set(x);
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
@@ -3194,7 +3194,7 @@ var templatelst =
     {
         var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 50;
         var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 100;
-        posityobj.set(x);
+        positxobj.set(x);
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
@@ -3212,7 +3212,7 @@ var templatelst =
     {
         var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 100;
         var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 100;
-        posityobj.set(x);
+        positxobj.set(x);
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
@@ -3230,7 +3230,7 @@ var templatelst =
     {
         var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 100;
         var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 100;
-        posityobj.set(x);
+        positxobj.set(x);
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
