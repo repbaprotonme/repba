@@ -4399,7 +4399,7 @@ var Shadow  = function (panel)
         context.shadowOffsetX = 1;
         context.shadowOffsetY = 1;
         context.shadowColor = "black"
-        panel(context, rect, user, time);
+        panel.draw(context, rect, user, time);
         context.restore();
     };
 };
