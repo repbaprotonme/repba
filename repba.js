@@ -3135,6 +3135,7 @@ var templatelst =
     name: "COMIC",
     init: function ()
     {
+        url.autostart = 0;
         rowobj.enabled = 1;
         var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 95;
         var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 95;
@@ -3145,8 +3146,8 @@ var templatelst =
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 36;
-        loomobj.split(url.zoom, "70-85", loomobj.length());
-        poomobj.split(url.zoom, "50-85", poomobj.length());
+        loomobj.split(url.zoom, "80-90", loomobj.length());
+        poomobj.split(url.zoom, "50-90", poomobj.length());
         traitobj.split(url.height, "0.1-1.0", traitobj.length());
         scapeobj.split(url.height, "0.1-1.0", scapeobj.length());
     }
