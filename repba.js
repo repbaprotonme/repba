@@ -3137,8 +3137,8 @@ var templatelst =
     {
         url.autostart = 0;
         rowobj.enabled = 1;
-        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 95;
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 95;
+        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 100;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 100;
         positxobj.set(x);
         posityobj.set(y);
         galleryobj.maxmegapix = 4000000;
@@ -3156,8 +3156,8 @@ var templatelst =
     name: "PORTRAIT",
     init: function ()
     {
-        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 95;
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 50;
+        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 100;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 100;
         positxobj.set(x);
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 50;
@@ -3174,7 +3174,9 @@ var templatelst =
     name: "SIDESCROLL",
     init: function ()
     {
+        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 50;
         var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 100;
+        posityobj.set(x);
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
@@ -3190,7 +3192,9 @@ var templatelst =
     name: "ULTRAWIDE",
     init: function ()
     {
+        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 50;
         var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 100;
+        posityobj.set(x);
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
@@ -3206,7 +3210,9 @@ var templatelst =
     name: "WIDE",
     init: function ()
     {
+        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 100;
         var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 100;
+        posityobj.set(x);
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
@@ -3222,7 +3228,9 @@ var templatelst =
     name: "LANDSCAPE",
     init: function (j)
     {
+        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 100;
         var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 100;
+        posityobj.set(x);
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
@@ -3238,7 +3246,9 @@ var templatelst =
     name: "EXTRATALL",
     init: function ()
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 50;
+        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 100;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 100;
+        positxobj.set(x);
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 75;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
@@ -3254,7 +3264,9 @@ var templatelst =
     name: "TALL",
     init: function ()
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 50;
+        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 100;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 100;
+        positxobj.set(x);
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 75;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
@@ -3270,7 +3282,9 @@ var templatelst =
     name: "LEGEND",
     init: function ()
     {
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 50;
+        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 100;
+        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 100;
+        positxobj.set(x);
         posityobj.set(y);
         url.height = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 75;
         url.zoom = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
