@@ -1132,8 +1132,10 @@ addressobj.full = function ()
         "&n="+url.timemain+
         "&s="+url.slidetop+
         "&f="+url.slidefactor+
-        "&x="+positxobj.current().toFixed(2)+
-        "&y="+posityobj.current().toFixed(2)+
+        "&xp="+positxpobj.current().toFixed(2)+
+        "&yp="+positypobj.current().toFixed(2)+
+        "&xl="+positxlobj.current().toFixed(2)+
+        "&yl="+positylobj.current().toFixed(2)+
         "&o="+traitobj.current()+
         "&u="+scapeobj.current()+
         "&z="+loomobj.current()+
@@ -1854,9 +1856,11 @@ var panlst =
         if (context.pressed)
         {
             clearTimeout(context.panpress);
-            context.panpress = setTimeout(function() { context.pressed = 0; },200)
-            positxobj.set((x/rect.width)*100);
-            posityobj.set((y/rect.height)*100);
+            context.panpress = setTimeout(function() { context.pressed = 0; },200);
+            var positx = positxobj.getcurrent();
+            var posity = posityobj.getcurrent();
+            positx.set((x/rect.width)*100);
+            posity.set((y/rect.height)*100);
             context.refresh();
         }
         else if (context.iszoomrect)
@@ -2769,8 +2773,10 @@ var thumblst =
             jp = 1;
         }
 
-        var x = Math.floor(Math.nub(positxobj.getcurrent(), positxobj.length(), w, width))+THUMBORDER;
-        var y = Math.floor(Math.nub(posityobj.getcurrent(), posityobj.length(), h, height))+THUMBORDER;
+        var positx = positxobj.getcurrent();
+        var posity = posityobj.getcurrent();
+        var x = Math.floor(Math.nub(positx.getcurrent(), positx.length(), w, width))+THUMBORDER;
+        var y = Math.floor(Math.nub(posity.getcurrent(), posity.length(), h, height))+THUMBORDER;
 
         context.thumbrect = new rectangle(x,y,w,h);
         context.save();
@@ -3044,6 +3050,8 @@ function resetcanvas()
     heightobj.set(window.landscape);
     stretchobj.set(window.landscape);
     zoomobj.set(window.landscape);
+    positxobj.set(window.landscape);
+    posityobj.set(window.landscape);
 
     if (!photo.image.height)
         return;
@@ -3138,10 +3146,14 @@ var templatelst =
     {
         url.autostart = 0;
         rowobj.enabled = 1;
-        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 50;
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 90;
-        positxobj.set(x);
-        posityobj.set(y);
+        var xp = url.searchParams.has("xp") ? Number(url.searchParams.get("xp")) : 50;
+        var yp = url.searchParams.has("yp") ? Number(url.searchParams.get("yp")) : 90;
+        positxpobj.set(xp);
+        positypobj.set(yp);
+        var xl = url.searchParams.has("xl") ? Number(url.searchParams.get("xl")) : 50;
+        var yl = url.searchParams.has("yl") ? Number(url.searchParams.get("yl")) : 50;
+        positxlobj.set(xl);
+        positylobj.set(yl);
         galleryobj.maxmegapix = 4000000;
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 36;
@@ -3150,7 +3162,7 @@ var templatelst =
         loomobj.split(z, "80-90", loomobj.length());
         poomobj.split(b, "50-90", poomobj.length());
         var o  = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 40;
-        var u  = url.searchParams.has("u") ? Number(url.searchParams.get("u")) : 40;
+        var u  = url.searchParams.has("u") ? Number(url.searchParams.get("u")) : 70;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
     }
@@ -3159,10 +3171,14 @@ var templatelst =
     name: "PORTRAIT",
     init: function ()
     {
-        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 50;
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 90;
-        positxobj.set(x);
-        posityobj.set(y);
+        var xp = url.searchParams.has("xp") ? Number(url.searchParams.get("xp")) : 50;
+        var yp = url.searchParams.has("yp") ? Number(url.searchParams.get("yp")) : 90;
+        positxpobj.set(xp);
+        positypobj.set(yp);
+        var xl = url.searchParams.has("xl") ? Number(url.searchParams.get("xl")) : 50;
+        var yl = url.searchParams.has("yl") ? Number(url.searchParams.get("yl")) : 50;
+        positxlobj.set(xl);
+        positylobj.set(yl);
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 36;
         var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
@@ -3170,7 +3186,7 @@ var templatelst =
         loomobj.split(z, "70-95", loomobj.length());
         poomobj.split(b, "50-95", poomobj.length());
         var o  = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 40;
-        var u  = url.searchParams.has("u") ? Number(url.searchParams.get("u")) : 40;
+        var u  = url.searchParams.has("u") ? Number(url.searchParams.get("u")) : 70;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
     }
@@ -3179,10 +3195,14 @@ var templatelst =
     name: "SIDESCROLL",
     init: function ()
     {
-        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 50;
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 100;
-        positxobj.set(x);
-        posityobj.set(y);
+        var xp = url.searchParams.has("xp") ? Number(url.searchParams.get("xp")) : 50;
+        var yp = url.searchParams.has("yp") ? Number(url.searchParams.get("yp")) : 100;
+        positxpobj.set(xp);
+        positypobj.set(yp);
+        var xl = url.searchParams.has("xl") ? Number(url.searchParams.get("xl")) : 50;
+        var yl = url.searchParams.has("yl") ? Number(url.searchParams.get("yl")) : 100;
+        positxlobj.set(xl);
+        positylobj.set(yl);
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
         var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
@@ -3199,10 +3219,14 @@ var templatelst =
     name: "ULTRAWIDE",
     init: function ()
     {
-        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 50;
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 100;
-        positxobj.set(x);
-        posityobj.set(y);
+        var xp = url.searchParams.has("xp") ? Number(url.searchParams.get("xp")) : 50;
+        var yp = url.searchParams.has("yp") ? Number(url.searchParams.get("yp")) : 100;
+        positxpobj.set(xp);
+        positypobj.set(yp);
+        var xl = url.searchParams.has("xl") ? Number(url.searchParams.get("xl")) : 50;
+        var yl = url.searchParams.has("yl") ? Number(url.searchParams.get("yl")) : 100;
+        positxlobj.set(xl);
+        positylobj.set(yl);
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 72;
         var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
@@ -3219,10 +3243,14 @@ var templatelst =
     name: "WIDE",
     init: function ()
     {
-        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 50;
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 90;
-        positxobj.set(x);
-        posityobj.set(y);
+        var xp = url.searchParams.has("xp") ? Number(url.searchParams.get("xp")) : 50;
+        var yp = url.searchParams.has("yp") ? Number(url.searchParams.get("yp")) : 100;
+        positxpobj.set(xp);
+        positypobj.set(yp);
+        var xl = url.searchParams.has("xl") ? Number(url.searchParams.get("xl")) : 50;
+        var yl = url.searchParams.has("yl") ? Number(url.searchParams.get("yl")) : 85;
+        positxlobj.set(xl);
+        positylobj.set(yl);
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
         var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
@@ -3239,10 +3267,14 @@ var templatelst =
     name: "LANDSCAPE",
     init: function (j)
     {
-        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 50;
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 90;
-        positxobj.set(x);
-        posityobj.set(y);
+        var xp = url.searchParams.has("xp") ? Number(url.searchParams.get("xp")) : 50;
+        var yp = url.searchParams.has("yp") ? Number(url.searchParams.get("yp")) : 100;
+        positxpobj.set(xp);
+        positypobj.set(yp);
+        var xl = url.searchParams.has("xl") ? Number(url.searchParams.get("xl")) : 50;
+        var yl = url.searchParams.has("yl") ? Number(url.searchParams.get("yl")) : 85;
+        positxlobj.set(xl);
+        positylobj.set(yl);
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
         var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
@@ -3259,10 +3291,14 @@ var templatelst =
     name: "EXTRATALL",
     init: function ()
     {
-        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 50;
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 90;
-        positxobj.set(x);
-        posityobj.set(y);
+        var xp = url.searchParams.has("xp") ? Number(url.searchParams.get("xp")) : 50;
+        var yp = url.searchParams.has("yp") ? Number(url.searchParams.get("yp")) : 90;
+        positxpobj.set(xp);
+        positypobj.set(yp);
+        var xl = url.searchParams.has("xl") ? Number(url.searchParams.get("xl")) : 50;
+        var yl = url.searchParams.has("yl") ? Number(url.searchParams.get("yl")) : 90;
+        positxlobj.set(xl);
+        positylobj.set(yl);
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 36;
         var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
@@ -3279,10 +3315,14 @@ var templatelst =
     name: "TALL",
     init: function ()
     {
-        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 50;
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 90;
-        positxobj.set(x);
-        posityobj.set(y);
+        var xp = url.searchParams.has("xp") ? Number(url.searchParams.get("xp")) : 50;
+        var yp = url.searchParams.has("yp") ? Number(url.searchParams.get("yp")) : 90;
+        positxpobj.set(xp);
+        positypobj.set(yp);
+        var xl = url.searchParams.has("xl") ? Number(url.searchParams.get("xl")) : 50;
+        var yl = url.searchParams.has("yl") ? Number(url.searchParams.get("yl")) : 90;
+        positxlobj.set(xl);
+        positylobj.set(yl);
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 36;
         var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
@@ -3299,10 +3339,14 @@ var templatelst =
     name: "LEGEND",
     init: function ()
     {
-        var x = url.searchParams.has("x") ? Number(url.searchParams.get("x")) : 100;
-        var y = url.searchParams.has("y") ? Number(url.searchParams.get("y")) : 100;
-        positxobj.set(x);
-        posityobj.set(y);
+        var xp = url.searchParams.has("xp") ? Number(url.searchParams.get("xp")) : 50;
+        var yp = url.searchParams.has("yp") ? Number(url.searchParams.get("yp")) : 90;
+        positxpobj.set(xp);
+        positypobj.set(yp);
+        var xl = url.searchParams.has("xl") ? Number(url.searchParams.get("xl")) : 50;
+        var yl = url.searchParams.has("yl") ? Number(url.searchParams.get("yl")) : 90;
+        positxlobj.set(xl);
+        positylobj.set(yl);
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 36;
         guideobj.set(1);
@@ -5076,8 +5120,12 @@ var j = url.searchParams.has("h") ? Number(url.searchParams.get("h")) : 0;
 headobj.enabled = j;
 footobj.enabled = j;
 var infobj = new makeoption("", 4);
-var positxobj = new makeoption("POSITIONX", 100);
-var posityobj = new makeoption("POSITIONY", 100);
+var positxpobj = new makeoption("POSITIONX", 100);
+var positypobj = new makeoption("POSITIONY", 100);
+var positxlobj = new makeoption("POSITIONX", 100);
+var positylobj = new makeoption("POSITIONY", 100);
+var positxobj = new makeoption("POSITIONX", [positxpobj,positxlobj]);
+var posityobj = new makeoption("POSITIONY", [positypobj,positylobj]);
 
 function menushow(context)
 {
