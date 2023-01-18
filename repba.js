@@ -4391,6 +4391,19 @@ var Expand = function (panel, extentw, extenth)
     };
 };
 
+var Shadow  = function (panel)
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.save();
+        context.shadowOffsetX = 1;
+        context.shadowOffsetY = 1;
+        context.shadowColor = "black"
+        panel(context, rect, user, time);
+        context.restore();
+    };
+};
+
 var Shrink = function (panel, extentw, extenth)
 {
     this.draw = function (context, rect, user, time)
@@ -5007,7 +5020,7 @@ var footlst =
                     0,
                     new Layer(
                        [
-                           screenfull.isFullscreen ? new Shrink(new Circle("black"),8,8) : 0,
+                           screenfull.isFullscreen ? new Shadow(new Shrink(new Circle("white"),4,4)) : 0,
                            new ProgressCircle(1),
                            new Rectangle(context.progresscircle),
                        ]),
