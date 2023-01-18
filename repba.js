@@ -3185,8 +3185,8 @@ var templatelst =
         posityobj.set(y);
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
-        var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
-        var b = url.searchParams.has("b") ? Number(url.searchParams.get("b")) : 50;
+        var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
+        var b = url.searchParams.has("b") ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "80-90", loomobj.length());
         poomobj.split(b, "50-90", poomobj.length());
         var o  = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
@@ -3205,8 +3205,8 @@ var templatelst =
         posityobj.set(y);
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 72;
-        var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
-        var b = url.searchParams.has("b") ? Number(url.searchParams.get("b")) : 50;
+        var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
+        var b = url.searchParams.has("b") ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "80-90", loomobj.length());
         poomobj.split(b, "50-90", poomobj.length());
         var o  = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
@@ -3225,8 +3225,8 @@ var templatelst =
         posityobj.set(y);
         url.slidetop = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 24;
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
-        var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
-        var b = url.searchParams.has("b") ? Number(url.searchParams.get("b")) : 50;
+        var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
+        var b = url.searchParams.has("b") ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "80-90", loomobj.length());
         poomobj.split(b, "50-90", poomobj.length());
         var o  = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
