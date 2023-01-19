@@ -3304,8 +3304,8 @@ var templatelst =
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 72;
         var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
         var b = url.searchParams.has("b") ? Number(url.searchParams.get("b")) : 0;
-        loomobj.split(z, "0-75", loomobj.length());
-        poomobj.split(b, "0-75", poomobj.length());
+        loomobj.split(z, "0-50", loomobj.length());
+        poomobj.split(b, "0-50", poomobj.length());
         var o  = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         var u  = url.searchParams.has("u") ? Number(url.searchParams.get("u")) : 100;
         traitobj.split(o, "0.1-1.0", traitobj.length());
@@ -3328,8 +3328,8 @@ var templatelst =
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
         var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
         var b = url.searchParams.has("b") ? Number(url.searchParams.get("b")) : 0;
-        loomobj.split(z, "20-80", loomobj.length());
-        poomobj.split(b, "20-80", poomobj.length());
+        loomobj.split(z, "0-70", loomobj.length());
+        poomobj.split(b, "0-70", poomobj.length());
         var o  = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         var u  = url.searchParams.has("u") ? Number(url.searchParams.get("u")) : 50;
         traitobj.split(o, "0.1-1.0", traitobj.length());
@@ -3352,8 +3352,8 @@ var templatelst =
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
         var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
         var b = url.searchParams.has("b") ? Number(url.searchParams.get("b")) : 50;
-        loomobj.split(z, "60-95", loomobj.length());
-        poomobj.split(b, "30-95", poomobj.length());
+        loomobj.split(z, "60-85", loomobj.length());
+        poomobj.split(b, "30-85", poomobj.length());
         var o  = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         var u  = url.searchParams.has("u") ? Number(url.searchParams.get("u")) : 50;
         traitobj.split(o, "0.1-1.0", traitobj.length());
