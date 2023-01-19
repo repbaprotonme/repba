@@ -1760,8 +1760,8 @@ var pinchlst =
         context.heightsave = heightobj.getcurrent().getcurrent()
         var obj = zoomobj.getcurrent();
         context.pinchsave = obj.getcurrent()
-        if (context.pinchsave < 2)
-            context.pinchsave = 2;
+        if (context.pinchsave < 1)
+            context.pinchsave = 1;
     },
     pinchend: function (context)
     {
