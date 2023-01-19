@@ -49,11 +49,9 @@ let loaded = new Set()
 function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) + min); }
 
 let url = new URL(window.location.href);
-url.time = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : TIMEOBJ/2;
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.autostart = url.searchParams.has("a") ? Number(url.searchParams.get("a")) : 1;
 url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 4;
-url.filepath = function() { return url.origin + "/data/"; }
 
 Math.clamp = function (min, max, val)
 {
@@ -1724,8 +1722,6 @@ var pinchlst =
     name: "BOSS",
     pinch: function (context, scale)
     {
-        var pt = context.getweightedpoint(scale,0);
-        scale = pt.x;
         if (context.isthumbrect)
         {
             var obj = heightobj.getcurrent();
@@ -1740,15 +1736,20 @@ var pinchlst =
         {
             var obj = zoomobj.getcurrent();
             var data = obj.data;
-            if (context.pinchsave < 5)
-                scale *= 2;
             var k = Math.clamp(data[0], data[data.length-1], scale*context.pinchsave);
             var j = Math.berp(data[0], data[data.length-1], k);
             var e = Math.lerp(0,obj.length(),j)/100;
             var f = Math.floor(obj.length()*e);
-            if (f == 1)
-                f = 0;
-            obj.set(f);
+            if (scale > 1 && obj.current() < 10)
+            {
+                obj.set(f+1);
+                context.pinchsave = zoomobj.getcurrent().getcurrent();
+            }
+            else
+            {
+                obj.set(f);
+            }
+
             contextobj.reset();
         }
 
@@ -1757,15 +1758,23 @@ var pinchlst =
     pinchstart: function (context, rect, x, y)
     {
         context.clearpoints();
+        context.pinching = 1;
         context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (context.isthumbrect)
+        {
             delete context.thumbcanvas;
-        context.pinching = 1;
-        context.heightsave = heightobj.getcurrent().getcurrent()
-        var obj = zoomobj.getcurrent();
-        context.pinchsave = obj.getcurrent()
-        if (context.pinchsave == 0)
-            context.pinchsave = 1;
+            context.heightsave = heightobj.getcurrent().getcurrent()
+        }
+        else
+        {
+            if (headobj.enabled)
+            {
+                bodyobj.enabled = 9;
+                _4cnvctx.refresh();
+            }
+
+            context.pinchsave = zoomobj.getcurrent().getcurrent();
+        }
     },
     pinchend: function (context)
     {
@@ -2027,16 +2036,6 @@ var panlst =
 
 CanvasRenderingContext2D.prototype.clearpoints = function()
 {
-    this.w1 = this.w2 = this.w3 =
-    this.w4 = this.w5 = this.w6 = this.w7 =
-    this.w8 = this.w9 = this.w10 =
-    this.w11 = this.w12 = this.w9 = this.w10 = this.w11 =
-    this.w12 = this.w13 = this.w14 =
-    this.w15 = this.w16 = this.w17 =
-    this.w18 = this.w19 = this.w20 =
-    this.w21 = this.w22 = this.w23 =
-    this.w24 = this.w25 = this.w26 =
-    this.w27 = this.w28 = this.w29 = this.w30 =
     this.x1 = this.x2 = this.x3 =
     this.x4 = this.x5 = this.x6 = this.x7 =
     this.x8 = this.x9 = this.x10 =
@@ -3886,7 +3885,8 @@ fetch(path)
         if (j >= 0)
             galleryobj.set(j);
 
-        _4cnvctx.timeobj.set(url.time);
+        var time = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : TIMEOBJ/2;
+        _4cnvctx.timeobj.set(time);
 
         function project()
         {
