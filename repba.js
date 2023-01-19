@@ -12,7 +12,7 @@ const IFRAME = window !== window.parent;
 const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*2;
 const SWIPETIME = 20;
-const THUMBORDER = 6;
+const THUMBORDER = 4;
 const JULIETIME = 100;
 const DELAY = 10000000;
 const HNUB = 10;
@@ -36,7 +36,7 @@ const BUTTONBACK = "rgba(0,0,0,0.25)";
 const OPTIONFILL = "rgb(255,255,255)";
 const THUMBFILL = "rgba(0,0,0,0.25)";
 const THUMBFILL2 = "rgba(0,0,0,0.40)";
-const THUMBSTROKE = "rgba(255,255,255,0.75)";
+const THUMBSTROKE = "rgba(255,255,255,0.7)";
 const ARROWFILL = "white";
 const SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
@@ -1125,7 +1125,7 @@ addressobj.full = function ()
     var zoom = zoomobj.getcurrent();
     var out = url.href;
     out +=
-        "/?p="+galleryobj.getcurrent().title+
+        "?p="+galleryobj.getcurrent().title+
         "&h="+headobj.enabled+
         "&v="+url.virtualcols+
         "&a="+url.autostart+
@@ -1708,13 +1708,14 @@ var pinchlst =
         }
         else
         {
-            var obj = stretchobj.getcurrent();
+            var obj = zoomobj.getcurrent();
             var data = obj.data;
             var k = Math.clamp(data[0], data[data.length-1], scale*context.pinchsave);
             var j = Math.berp(data[0], data[data.length-1], k);
             var e = Math.lerp(0,obj.length(),j)/100;
             var f = Math.max(0,Math.floor(obj.length()*e));
             obj.set(f);
+            contextobj.reset();
         }
 
         context.refresh();
@@ -1726,8 +1727,8 @@ var pinchlst =
             delete context.thumbcanvas;
         context.pinching = 1;
         context.heightsave = heightobj.getcurrent().getcurrent()
-        var stretch = stretchobj.getcurrent()
-        context.pinchsave = stretch.getcurrent()
+        var obj = zoomobj.getcurrent()
+        context.pinchsave = obj.getcurrent()
     },
     pinchend: function (context)
     {
@@ -1855,8 +1856,6 @@ var panlst =
 
         if (context.pressed)
         {
-            clearTimeout(context.panpress);
-            context.panpress = setTimeout(function() { context.pressed = 0; },200);
             var positx = positxobj.getcurrent();
             var posity = posityobj.getcurrent();
             positx.set((x/rect.width)*100);
@@ -1865,7 +1864,7 @@ var panlst =
         }
         else if (context.iszoomrect)
         {
-            var zoom = zoomobj.getcurrent()
+            var zoom = stretchobj.getcurrent()
             var m = (y - context.zoomctrl.y)/context.zoomctrl.height;
             m = Math.floor((1-m)*zoom.length());
             zoom.set(m);
@@ -2526,12 +2525,12 @@ var taplst =
             {
                 context.tapindex = 0;
                 context.refresh();
-                //authClient.redirectToLoginPage()
+                authClient.redirectToLoginPage()
             },400)
         }
         else if (context.zoomctrl && context.zoomctrl.hitest(x,y))
         {
-            var zoom = zoomobj.getcurrent();
+            var zoom = stretchobj.getcurrent();
             var a = (y-context.zoomctrl.y)/context.zoomctrl.height;
             var b = Math.floor(zoom.length()*(1-a));
             zoom.set(b);
@@ -2549,7 +2548,7 @@ var taplst =
             {
                 context.tapindex = 0;
                 context.refresh();
-                //authClient.logout(true)
+                authClient.logout(true)
             },400)
         }
         else if (context.account && context.account.hitest(x,y))
@@ -2561,7 +2560,7 @@ var taplst =
             {
                 context.tapindex = 0;
                 context.refresh();
-                //authClient.redirectToAccountPage()
+                authClient.redirectToAccountPage()
             },400)
         }
         else if (context.menudown && context.menudown.hitest(x,y))
@@ -2800,8 +2799,10 @@ var thumblst =
                 var thumbcontext = context.thumbcanvas.getContext('2d');
                 thumbcontext.drawImage(photo.image,0,0,w,h);
             }
-
+                
+            context.globalAlpha = alphaobj.berp();
             context.drawImage(context.thumbcanvas, x, y, w, h);
+            context.globalAlpha = 1.0;
         }
 
         var r = new rectangle(x,y,w,h);
@@ -2857,6 +2858,9 @@ var thumblst =
 
 var thumbobj = new makeoption("THUMB", thumblst);
 thumbobj.enabled = 1;
+
+var alphaobj = new makeoption("ALPHA", 100);
+alphaobj.set(100)
 
 var getbuttonfrompoint = function (context, x, y)
 {
@@ -3484,7 +3488,7 @@ var bodylst =
                     new Layer(
                     [
                         context.tapindex == 2 ? new Fill(MENUSELECT) : 0,
-                        new Rectangle(context.uploadpanel),
+                        //new Rectangle(context.uploadpanel),
                         new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
                     ]),
                     new Layer(
@@ -3633,7 +3637,7 @@ var bodylst =
                     new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
                 ]));
 
-            a.draw(context, rect, zoomobj.getcurrent(), 0);
+            a.draw(context, rect, stretchobj.getcurrent(), 0);
             context.restore();
         }
     },
@@ -3685,7 +3689,7 @@ galleryobj.path = function()
     return s;
 }
 
-//authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
 
 var path = "https://reportbase.com/gallery/" + url.path;
 if (url.protocol == "http:")
@@ -3846,10 +3850,6 @@ fetch(path)
 
         slices.data.push({ title:"Account", path: "ADDIMG", func: function()
         {
-            bodyobj.enabled = 6;
-            menuhide();
-            _4cnvctx.refresh();
-            /*
              authClient.getAuthenticationInfoOrNull(false)
                 .then(function(client)
                 {
@@ -3858,12 +3858,12 @@ fetch(path)
                     menuhide();
                     _4cnvctx.refresh();
                 })
-            */
         }});
-
+        
         slices.data.push({ title:"Upload", path: "UPLOAD", func: function()
         {
-            window.location.href = "http://upload.reportbase.com";
+            menuhide();
+            //window.location.href = "http://upload.reportbase.com";
         }});
 
         slices.data.push({ title:"Download", path: "DOWNLOAD", func: function()
@@ -4841,9 +4841,6 @@ var headlst =
             }
             else if (context.picture.hitest(x,y))
             {
-                bodyobj.enabled = (bodyobj.enabled==4)?0:4;
-                _4cnvctx.refresh();
-                /*
                  authClient.getAuthenticationInfoOrNull(false)
                     .then(function(client)
                     {
@@ -4851,7 +4848,6 @@ var headlst =
                         bodyobj.enabled = (bodyobj.enabled==4)?0:4;
                         _4cnvctx.refresh();
                     })
-                */
             }
             else if (context.nextpage.hitest(x,y))
             {
@@ -5016,7 +5012,7 @@ var footlst =
                 clearInterval(context.timefooter);
                 context.timefooter = setInterval(function ()
                 {
-                    var zoom = zoomobj.getcurrent()
+                    var zoom = stretchobj.getcurrent()
                     zoom.add(1);
                     contextobj.reset();
                 }, 20);
@@ -5026,7 +5022,7 @@ var footlst =
                 clearInterval(context.timefooter);
                 context.timefooter = setInterval(function ()
                 {
-                    var zoom = zoomobj.getcurrent()
+                    var zoom = stretchobj.getcurrent()
                     zoom.add(-1);
                     contextobj.reset();
                 }, 20);
@@ -5053,7 +5049,7 @@ var footlst =
             {
                 bodyobj.enabled = 8;
                 _4cnvctx.refresh();
-                var zoom = zoomobj.getcurrent();
+                var zoom = stretchobj.getcurrent();
                 if (zoom.current() >= zoom.length()-1)
                     return;
                 zoom.add(4);
@@ -5063,7 +5059,7 @@ var footlst =
             {
                 bodyobj.enabled = 8;
                 _4cnvctx.refresh();
-                var zoom = zoomobj.getcurrent();
+                var zoom = stretchobj.getcurrent();
                 if (!zoom.current())
                     return;
                 zoom.add(-4);
