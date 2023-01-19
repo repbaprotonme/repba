@@ -1740,10 +1740,14 @@ var pinchlst =
         {
             var obj = zoomobj.getcurrent();
             var data = obj.data;
+            if (context.pinchsave < 5)
+                scale *= 2;
             var k = Math.clamp(data[0], data[data.length-1], scale*context.pinchsave);
             var j = Math.berp(data[0], data[data.length-1], k);
             var e = Math.lerp(0,obj.length(),j)/100;
-            var f = Math.max(0,Math.floor(obj.length()*e));
+            var f = Math.floor(obj.length()*e);
+            if (f == 1)
+                f = 0;
             obj.set(f);
             contextobj.reset();
         }
@@ -1760,7 +1764,7 @@ var pinchlst =
         context.heightsave = heightobj.getcurrent().getcurrent()
         var obj = zoomobj.getcurrent();
         context.pinchsave = obj.getcurrent()
-        if (context.pinchsave < 1)
+        if (context.pinchsave == 0)
             context.pinchsave = 1;
     },
     pinchend: function (context)
@@ -3300,8 +3304,8 @@ var templatelst =
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 72;
         var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
         var b = url.searchParams.has("b") ? Number(url.searchParams.get("b")) : 0;
-        loomobj.split(z, "0-50", loomobj.length());
-        poomobj.split(b, "0-50", poomobj.length());
+        loomobj.split(z, "0-75", loomobj.length());
+        poomobj.split(b, "0-75", poomobj.length());
         var o  = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         var u  = url.searchParams.has("u") ? Number(url.searchParams.get("u")) : 100;
         traitobj.split(o, "0.1-1.0", traitobj.length());
@@ -3325,8 +3329,8 @@ var templatelst =
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
         var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 0;
         var b = url.searchParams.has("b") ? Number(url.searchParams.get("b")) : 0;
-        loomobj.split(z, "0-75", loomobj.length());
-        poomobj.split(b, "0-75", poomobj.length());
+        loomobj.split(z, "20-80", loomobj.length());
+        poomobj.split(b, "20-80", poomobj.length());
         var o  = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         var u  = url.searchParams.has("u") ? Number(url.searchParams.get("u")) : 50;
         traitobj.split(o, "0.1-1.0", traitobj.length());
@@ -3349,8 +3353,8 @@ var templatelst =
         url.slidefactor = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 48;
         var z = url.searchParams.has("z") ? Number(url.searchParams.get("z")) : 50;
         var b = url.searchParams.has("b") ? Number(url.searchParams.get("b")) : 50;
-        loomobj.split(z, "25-90", loomobj.length());
-        poomobj.split(b, "25-90", poomobj.length());
+        loomobj.split(z, "60-95", loomobj.length());
+        poomobj.split(b, "30-95", poomobj.length());
         var o  = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 100;
         var u  = url.searchParams.has("u") ? Number(url.searchParams.get("u")) : 50;
         traitobj.split(o, "0.1-1.0", traitobj.length());
@@ -3730,6 +3734,54 @@ var bodylst =
             context.restore();
         }
     },
+    new function()
+    {
+        this.draw = function (context, rect, user, time)
+        {
+            if (rect.height < 480)
+                return;
+            context.zoomctrl = new rectangle()
+            context.save();
+            var w = 60;
+            var h = Math.min(480,rect.height-ALIEXTENT*4);
+            var a = new Centered(w,h, 
+                    new Layer(
+                    [
+                        new Rectangle(context.zoomctrl),
+                        new Fill(THUMBFILL),
+                        new Stroke(THUMBSTROKE,THUMBORDER),
+                        new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
+                    ])
+                );
+
+            a.draw(context, rect, zoomobj.getcurrent(), 0);
+            context.restore();
+        }
+    },
+    new function()
+    {
+        this.draw = function (context, rect, user, time)
+        {
+            if (rect.height < 480)
+                return;
+            context.stretchctrl = new rectangle()
+            context.save();
+            var w = 60;
+            var h = Math.min(480,rect.height-ALIEXTENT*4);
+            var a = new Centered(w,h, 
+                    new Layer(
+                    [
+                        new Rectangle(context.stretchctrl),
+                        new Fill(THUMBFILL),
+                        new Stroke(THUMBSTROKE,THUMBORDER),
+                        new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
+                    ])
+                );
+
+            a.draw(context, rect, stretchobj.getcurrent(), 0);
+            context.restore();
+        }
+    },
 ];
 
 var bodyobj = new makeoption("", bodylst);
@@ -3927,6 +3979,20 @@ fetch(path)
         {
             promptFile().then(function(files) { dropfiles(files); })
         }});
+
+        slices.data.push({title:"Stretch", path: "STRETCH", func: function(rect, x, y)
+        {
+            bodyobj.enabled = 10;
+            menuhide();
+            _4cnvctx.refresh();
+        }})
+
+        slices.data.push({title:"Sort", path: "SORT", func: function(rect, x, y)
+        {
+            bodyobj.enabled = 9;
+            menuhide();
+            _4cnvctx.refresh();
+        }})
         
         slices.data.push({title:"Debug", path: "DEBUG", func: function(rect, x, y)
         {
@@ -5144,6 +5210,8 @@ var footlst =
             }
             else if (context.keyzoomup && context.keyzoomup.hitest(x,y))
             {
+                bodyobj.enabled = 10;
+                _4cnvctx.refresh();
                 var zoom = stretchobj.getcurrent();
                 if (zoom.current() >= zoom.length()-1)
                     return;
@@ -5152,6 +5220,8 @@ var footlst =
             }
             else if (context.keyzoomdown && context.keyzoomdown.hitest(x,y))
             {
+                bodyobj.enabled = 10;
+                _4cnvctx.refresh();
                 var zoom = stretchobj.getcurrent();
                 if (!zoom.current())
                     return;
