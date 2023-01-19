@@ -1727,7 +1727,7 @@ var pinchlst =
             delete context.thumbcanvas;
         context.pinching = 1;
         context.heightsave = heightobj.getcurrent().getcurrent()
-        var obj = zoomobj.getcurrent()
+        var obj = zoomobj.getcurrent();
         context.pinchsave = obj.getcurrent()
     },
     pinchend: function (context)
@@ -3627,8 +3627,8 @@ var bodylst =
                 return;
             context.zoomctrl = new rectangle()
             context.save();
-            var w = ALIEXTENT;
-            var h = Math.min(640,rect.height-ALIEXTENT*4);
+            var w = 60;
+            var h = Math.min(480,rect.height-ALIEXTENT*4);
             var a = new Centered(w,h, new Layer(
                 [
                     new Rectangle(context.zoomctrl),
