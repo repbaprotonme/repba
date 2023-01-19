@@ -1,0 +1,24 @@
+name = "upload"
+main = "src/index.js"
+account_id = "41f6f507a22c7eec431dbc5e9670c73d"
+compatibility_date = "2022-04-05"
+
+kv_namespaces = [
+    { binding = "MY_KV", id = "0fa41388238d45819a302d18ecdb3d5b" }
+]
+
+[[r2_buckets]]
+binding = 'MY_BUCKET' 
+bucket_name = 'bucket1'
+
+routes = [
+    { pattern = "reportbase.com/upload", zone_id = "41f6f507a22c7eec431dbc5e9670c73d" }
+]
+
+# The needed parts for compatibility
+compatibility_flags = [ "formdata_parser_supports_files" ]
+workers_dev = false
+
+
+
+
