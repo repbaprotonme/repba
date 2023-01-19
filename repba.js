@@ -1710,6 +1710,8 @@ var pinchlst =
         {
             var obj = zoomobj.getcurrent();
             var data = obj.data;
+            var pt = context.getweightedpoint(scale,0);
+            scale = pt.x;
             var k = Math.clamp(data[0], data[data.length-1], scale*context.pinchsave);
             var j = Math.berp(data[0], data[data.length-1], k);
             var e = Math.lerp(0,obj.length(),j)/100;
@@ -1722,6 +1724,7 @@ var pinchlst =
     },
     pinchstart: function (context, rect, x, y)
     {
+        context.clearpoints();
         context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (context.isthumbrect)
             delete context.thumbcanvas;
@@ -1729,8 +1732,6 @@ var pinchlst =
         context.heightsave = heightobj.getcurrent().getcurrent()
         var obj = zoomobj.getcurrent();
         context.pinchsave = obj.getcurrent()
-        if (context.pinchsave < 0.5)
-            context.pinchsave = 0.5;
     },
     pinchend: function (context)
     {
