@@ -1729,6 +1729,8 @@ var pinchlst =
         context.heightsave = heightobj.getcurrent().getcurrent()
         var obj = zoomobj.getcurrent();
         context.pinchsave = obj.getcurrent()
+        if (context.pinchsave < 0.5)
+            context.pinchsave = 0.5;
     },
     pinchend: function (context)
     {
@@ -1868,7 +1870,7 @@ var panlst =
             var m = (y - context.zoomctrl.y)/context.zoomctrl.height;
             m = Math.floor((1-m)*zoom.length());
             zoom.set(m);
-            contextobj.reset();
+            context.refresh();
         }
         else if (context.isthumbrect && !headobj.enabled)
         {
@@ -2534,7 +2536,7 @@ var taplst =
             var a = (y-context.zoomctrl.y)/context.zoomctrl.height;
             var b = Math.floor(zoom.length()*(1-a));
             zoom.set(b);
-            contextobj.reset()
+            context.refresh();
         }
         else if (context.deleteimage && context.deleteimage.hitest(x,y))
         {
@@ -5014,8 +5016,8 @@ var footlst =
                 {
                     var zoom = stretchobj.getcurrent()
                     zoom.add(1);
-                    contextobj.reset();
-                }, 20);
+                    _4cnvctx.refresh();
+                }, 4);
             }
             else if (context.keyzoomdown && context.keyzoomdown.hitest(x,y))
             {
@@ -5024,8 +5026,8 @@ var footlst =
                 {
                     var zoom = stretchobj.getcurrent()
                     zoom.add(-1);
-                    contextobj.reset();
-                }, 20);
+                    _4cnvctx.refresh();
+                }, 4);
             }
             else if (context.progresscircle.hitest(x,y))
             {
@@ -5048,22 +5050,20 @@ var footlst =
             else if (context.keyzoomup && context.keyzoomup.hitest(x,y))
             {
                 bodyobj.enabled = 8;
-                _4cnvctx.refresh();
                 var zoom = stretchobj.getcurrent();
                 if (zoom.current() >= zoom.length()-1)
                     return;
                 zoom.add(4);
-                contextobj.reset()
+                _4cnvctx.refresh();
             }
             else if (context.keyzoomdown && context.keyzoomdown.hitest(x,y))
             {
                 bodyobj.enabled = 8;
-                _4cnvctx.refresh();
                 var zoom = stretchobj.getcurrent();
                 if (!zoom.current())
                     return;
                 zoom.add(-4);
-                contextobj.reset()
+                _4cnvctx.refresh();
             }
             else if (context.leftab.hitest(x,y))
             {
