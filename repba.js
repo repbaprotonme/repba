@@ -1696,6 +1696,8 @@ var pinchlst =
     name: "BOSS",
     pinch: function (context, scale)
     {
+        var pt = context.getweightedpoint(scale,0);
+        scale = pt.x;
         if (!headobj.enabled && context.isthumbrect)
         {
             var obj = heightobj.getcurrent();
@@ -1710,8 +1712,6 @@ var pinchlst =
         {
             var obj = zoomobj.getcurrent();
             var data = obj.data;
-            var pt = context.getweightedpoint(scale,0);
-            scale = pt.x;
             var k = Math.clamp(data[0], data[data.length-1], scale*context.pinchsave);
             var j = Math.berp(data[0], data[data.length-1], k);
             var e = Math.lerp(0,obj.length(),j)/100;
