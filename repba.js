@@ -1216,12 +1216,6 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
         if (rowobj.resetnew)
             rowobj.set(0);
 
-        if (zoomobj.resetnew)
-        {
-            poomobj.set(0);
-            loomobj.set(0);
-        }
-            
         galleryobj.rotate(j);
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         contextobj.reset();
@@ -3265,7 +3259,6 @@ var templatelst =
     name: "SIDESCROLL",
     init: function ()
     {
-        zoomobj.resetnew = 1;
         var xp = url.searchParams.has("xp") ? Number(url.searchParams.get("xp")) : 50;
         var yp = url.searchParams.has("yp") ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3290,7 +3283,6 @@ var templatelst =
     name: "ULTRAWIDE",
     init: function ()
     {
-        zoomobj.resetnew = 1;
         var xp = url.searchParams.has("xp") ? Number(url.searchParams.get("xp")) : 50;
         var yp = url.searchParams.has("yp") ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
