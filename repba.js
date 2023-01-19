@@ -3316,7 +3316,6 @@ var templatelst =
     name: "WIDE",
     init: function ()
     {
-        zoomobj.resetnew = 1;
         var xp = url.searchParams.has("xp") ? Number(url.searchParams.get("xp")) : 50;
         var yp = url.searchParams.has("yp") ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3987,7 +3986,7 @@ fetch(path)
             _4cnvctx.refresh();
         }})
 
-        slices.data.push({title:"Sort", path: "SORT", func: function(rect, x, y)
+        slices.data.push({title:"Zoom", path: "ZOOM", func: function(rect, x, y)
         {
             bodyobj.enabled = 9;
             menuhide();
