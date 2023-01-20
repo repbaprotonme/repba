@@ -1715,9 +1715,9 @@ var pinchlst =
         else
         {
             var f = Math.floor(obj.length()*e);
-            if (scale > 1 && obj.current() < (obj.length()*0.01))
+            if (scale > 1 && obj.current() < (obj.length()*0.15))
             {
-                obj.set(f+1);
+                obj.set(f+2);
                 context.savepinch = obj.getcurrent();
             }
             else
