@@ -1933,20 +1933,7 @@ var panlst =
             y = pt?pt.y:y;
 
             var k = guideobj.getcurrent();
-            if (context.freepan)
-            {
-                k.pan(context, rect, x, y, type);
-            }
-            else if ((type == "panleft" || type == "panright"))
-            {
-                k.pan(context, rect, x, context.starty, type);
-                context.startx = x;
-            }
-            else if ((type == "panup" || type == "pandown"))
-            {
-                k.pan(context, rect, context.startx, y, type);
-                context.starty = y;
-            }
+            k.pan(context, rect, x, y, type);
         }
         else
         {
@@ -1954,8 +1941,9 @@ var panlst =
             x = pt?pt.x:x;
             y = pt?pt.y:y;
 
-            if ((type == "panleft" || type == "panright"))
+            if (context.pantype != 2 && (type == "panleft" || type == "panright"))
             {
+                context.pantype = 1 
                 context.autodirect = (type == "panleft")?-1:1;
                 var len = context.timeobj.length();
                 var diff = context.startx-x;
@@ -1968,8 +1956,9 @@ var panlst =
                 context.timeobj.set(j);
                 context.refresh()
             }
-            else if ((type == "panup" || type == "pandown"))
+            else if (context.pantype != 1 && (type == "panup" || type == "pandown"))
             {
+                context.pantype = 2 
                 var zoom = zoomobj.getcurrent()
                 if (Number(zoom.getcurrent()))
                 {
@@ -1997,6 +1986,7 @@ var panlst =
         clearInterval(footcnvctx.timefooter);
         context.startx = x;
         context.starty = y;
+        context.pantype = 0;
         context.startt = context.timeobj.current();
         var zoom = zoomobj.getcurrent()
         context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
@@ -3854,7 +3844,6 @@ fetch(path)
             var context = contextlst[n];
             context.index = n;
             context.imageSmoothingEnabled = false;
-            context.freepan = 1;
             context.enabled = 0;
             context.canvas.width = 1;
             context.canvas.height = 1;
