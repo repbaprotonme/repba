@@ -460,10 +460,10 @@ function drawslices()
             context.drawImage(slice.canvas, slice.x, 0, context.colwidth, rect.height,
               slice.bx, 0, stretchwidth, rect.height);
 
-            if (colorobj.enabled)
+            if (colorobj.enabled && m%2)
             {
-                context.globalAlpha = 0.75;
-                var a = new Fill(colorobj.data[m]);
+                context.globalAlpha = 0.40;
+                var a = new Fill("rgba(0,0,0,0.5)");
                 a.draw(context, new rectangle(slice.bx,0,stretchwidth,rect.height), 0, 0);
                 context.globalAlpha = 1.0;
             }
@@ -480,13 +480,6 @@ function drawslices()
             slice.strechwidth = w;
             context.drawImage(slice.canvas, 0, 0, context.colwidth, rect.height,
                   x, 0, w, rect.height);
-            if (colorobj.enabled)
-            {
-                context.globalAlpha = 0.75;
-                var a = new Fill(colorobj.data[0]);
-                a.draw(context, new rectangle(x,0,w,rect.height), 0, 0);
-                context.globalAlpha = 1.0;
-            }
         }
 
         context.restore();
@@ -5099,7 +5092,7 @@ var headlst =
             var s;
             if (colorobj.enabled)
             {
-                s = _4cnvctx.timeobj.getcurrent().toFixed(1);
+                s = _4cnvctx.slicewidth.toFixed(0) 
             }
             else if (globalobj.promptedfile)
             {
@@ -5122,6 +5115,10 @@ var headlst =
             else if (infobj.current() == 3)
             {
                 s = galleryobj.getcurrent().width + "x"+ galleryobj.getcurrent().height;
+            }
+            else if (infobj.current() == 4)
+            {
+                s = _4cnvctx.timeobj.getcurrent().toFixed(1);
             }
 
             a.draw(context, rect, s, time);
@@ -5274,7 +5271,7 @@ var headobj = new makeoption("", headlst);
 var j = url.searchParams.has("h") ? Number(url.searchParams.get("h")) : 0;
 headobj.enabled = j;
 footobj.enabled = j;
-var infobj = new makeoption("", 4);
+var infobj = new makeoption("", 5);
 var positxpobj = new makeoption("POSITIONX", 100);
 var positypobj = new makeoption("POSITIONY", 100);
 var positxlobj = new makeoption("POSITIONX", 100);
