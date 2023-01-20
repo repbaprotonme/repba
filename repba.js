@@ -384,7 +384,7 @@ function drawslices()
         else
             context.lastime = context.timeobj.current();
 
-        if (!menuenabled() && !context.pinching && !context.panning && context.timemain)
+        if (!menuenabled() && !context.panning && context.timemain)
         {
             if ( context.slidestop - context.slidereduce > 0)
             {
@@ -1636,14 +1636,6 @@ var wheelst =
         }
         else if (isthumbrect)
         {
-            context.pinching = 1;
-            clearTimeout(globalobj.pinch);
-            globalobj.pinch = setTimeout(function()
-                {
-                    context.pinching = 0;
-                    context.refresh();
-                }, 500);
-
             heightobj.getcurrent().add(heightobj.length()*0.01);
             context.refresh();
         }
@@ -1684,14 +1676,6 @@ var wheelst =
         }
         else if (isthumbrect)
         {
-            context.pinching = 1;
-            clearTimeout(globalobj.pinch);
-            globalobj.pinch = setTimeout(function()
-                {
-                    context.pinching = 0;
-                    context.refresh();
-                }, 500);
-
             heightobj.getcurrent().add(-heightobj.length()*0.01);
             context.refresh();
         }
@@ -1716,28 +1700,25 @@ var pinchlst =
     name: "BOSS",
     pinch: function (context, scale)
     {
+        var obj = context.obj;
+        var data = obj.data;
+        var k = Math.clamp(data[0], data[data.length-1], scale*context.savepinch);
+        var j = Math.berp(data[0], data[data.length-1], k);
+        var e = Math.lerp(0,obj.length(),j)/obj.length();
+        
         if (context.isthumbrect)
         {
-            var obj = heightobj.getcurrent();
-            var data = obj.data;
-            var k = Math.clamp(data[0], data[data.length-1], scale*context.heightsave);
-            var j = Math.berp(data[0], data[data.length-1], k);
-            var e = Math.lerp(0,obj.length(),j)/100;
             var f = Math.max(20,Math.floor(obj.length()*e));
             obj.set(f);
+            context.refresh();
         }
         else
         {
-            var obj = zoomobj.getcurrent();
-            var data = obj.data;
-            var k = Math.clamp(data[0], data[data.length-1], scale*context.pinchsave);
-            var j = Math.berp(data[0], data[data.length-1], k);
-            var e = Math.lerp(0,obj.length(),j)/obj.length();
             var f = Math.floor(obj.length()*e);
             if (scale > 1 && obj.current() < (obj.length()*0.01))
             {
                 obj.set(f+1);
-                context.pinchsave = zoomobj.getcurrent().getcurrent();
+                context.savepinch = obj.getcurrent();
             }
             else
             {
@@ -1746,38 +1727,33 @@ var pinchlst =
 
             contextobj.reset();
         }
-
-        context.refresh();
     },
     pinchstart: function (context, rect, x, y)
     {
+        delete context.thumbcanvas; 
         context.clearpoints();
         context.pinching = 1;
         context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (context.isthumbrect)
         {
-            delete context.thumbcanvas;
-            context.heightsave = heightobj.getcurrent().getcurrent()
+            context.obj = heightobj.getcurrent(); 
         }
         else
         {
             if (headobj.enabled)
-            {
                 bodyobj.enabled = 9;
-                _4cnvctx.refresh();
-            }
-
-            context.pinchsave = zoomobj.getcurrent().getcurrent();
+            context.obj = zoomobj.getcurrent();
         }
+        
+        context.savepinch = context.obj.getcurrent()
     },
     pinchend: function (context)
     {
-        setTimeout(function()
+        clearTimeout(context.pinchtime);
+        context.pinchtime = setTimeout(function()
         {
             context.isthumbrect = 0;
-            context.tapping = 0;
             context.pinching = 0;
-            context.refresh();
             addressobj.update();
         }, 100);
     },
@@ -1926,21 +1902,16 @@ var panlst =
             zoom.set(m);
             contextobj.reset();
         }
-        else if (context.isthumbrect && !headobj.enabled)
+        else if (context.isthumbrect)
         {
             var pt = context.getweightedpoint(x,y);
             x = pt?pt.x:x;
             y = pt?pt.y:y;
-
             var k = guideobj.getcurrent();
             k.pan(context, rect, x, y, type);
         }
         else
         {
-            var pt = context.getweightedpoint(x,y);
-            x = pt?pt.x:x;
-            y = pt?pt.y:y;
-
             if (context.pantype != 2 && (type == "panleft" || type == "panright"))
             {
                 context.pantype = 1 
@@ -1953,6 +1924,8 @@ var panlst =
                     j = len+j-1;
                 else if (j >= len)
                     j = j-len-1;
+                if (Number.isNaN(j))
+                    return;
                 context.timeobj.set(j);
                 context.refresh()
             }
@@ -2261,8 +2234,6 @@ var presslst =
     name: "BOSS",
     pressup: function (context, rect, x, y)
     {
-        context.pinching = 0;
-        context.tapping = 0;
         context.isthumbrect = 0;
         context.pressed = 0;
         context.refresh();
@@ -2274,30 +2245,9 @@ var presslst =
         {
             context.pressed = 1;
         }
-        else if (bodyobj.enabled)
-        {
-            bodyobj.enabled = 0;
-            colorobj.enabled = 0;
-            context.isthumbrect = 0;
-            context.tapping = 0;
-            pageresize();
-            context.refresh();
-            reset();
-        }
         else
         {
-            colorobj.enabled = 0;
-            context.tapping = 0;
-            context.isthumbrect = 0;
-            if (headobj.enabled)
-                thumbobj.enabled = 1;
-            else
-                thumbobj.enabled = thumbobj.enabled?0:1;
-            headobj.enabled = 0;
-            footobj.enabled = 0;
-            pageresize();
-            context.refresh();
-            reset();
+            masterhide(x,y);
         }
 
         context.refresh();
@@ -2330,9 +2280,8 @@ var swipelst =
     {
         setTimeout(function()
         {
-            evt.preventDefault();
             var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
-            if (!headobj.enabled && isthumbrect)
+            if (isthumbrect)
                 return;
             context.autodirect = evt.type == "swipeleft"?-1:1;
             context.tab();
@@ -3814,7 +3763,7 @@ authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", en
 
 var path = "https://reportbase.com/gallery/" + url.path;
 if (url.protocol == "http:")
-    path = "SUIC.json";
+    path = "HOME.json";
 fetch(path)
   .then(function (response)
   {
@@ -3850,6 +3799,7 @@ fetch(path)
             context.autodirect = -1;
             context.font = "400 1rem Archivo Black";
             context.fillText("  ", 0, 0);
+            context.lst = [];
             context.slideshow = 0;
             context.lastime = 0;
             context.slidereduce = 0;
@@ -5396,18 +5346,9 @@ function masterhide(x, y)
         menuhide();
         context.refresh();
     }
-    else if (bodyobj.enabled)
-    {
-        bodyobj.enabled = 0;
-        colorobj.enabled = 0;
-        context.isthumbrect = 0;
-        context.tapping = 0;
-        pageresize();
-        context.refresh();
-        reset();
-    }
     else
     {
+        bodyobj.enabled = 0;
         colorobj.enabled = 0;
         context.tapping = 0;
         context.isthumbrect = 0;
