@@ -1715,9 +1715,15 @@ var pinchlst =
         else
         {
             var f = Math.floor(obj.length()*e);
+            scale = parseFloat(scale).toFixed(2);
             if (scale > 1 && obj.current() < (obj.length()*0.15))
             {
                 obj.set(f+2);
+                context.savepinch = obj.getcurrent();
+            }
+            else if (scale <= 1 && obj.current() < (obj.length()*0.15))
+            {
+                obj.set(f-2);
                 context.savepinch = obj.getcurrent();
             }
             else
@@ -3669,11 +3675,22 @@ var bodylst =
         {
             if (rect.height < 480)
                 return;
+            context.stretchctrl = new rectangle()
             context.zoomctrl = new rectangle()
             context.save();
-            var w = 60;
+            var w = 150;
             var h = Math.min(480,rect.height-ALIEXTENT*4);
             var a = new Centered(w,h, 
+                new ColA([60,0,60],
+                [
+                    new Layer(
+                    [
+                        new Rectangle(context.stretchctrl),
+                        new Fill(THUMBFILL),
+                        new Stroke(THUMBSTROKE,THUMBORDER),
+                        new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
+                    ]),
+                    0,
                     new Layer(
                     [
                         new Rectangle(context.zoomctrl),
@@ -3681,37 +3698,13 @@ var bodylst =
                         new Stroke(THUMBSTROKE,THUMBORDER),
                         new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
                     ])
-                );
+                ]));
 
-            a.draw(context, rect, zoomobj.getcurrent(), 0);
+            a.draw(context, rect, [stretchobj.getcurrent(),0,zoomobj.getcurrent()], 0);
             context.restore();
         }
     },
-    new function()
-    {
-        this.draw = function (context, rect, user, time)
-        {
-            if (rect.height < 480)
-                return;
-            context.stretchctrl = new rectangle()
-            context.save();
-            var w = 60;
-            var h = Math.min(480,rect.height-ALIEXTENT*4);
-            var a = new Centered(w,h, 
-                    new Layer(
-                    [
-                        new Rectangle(context.stretchctrl),
-                        new Fill(THUMBFILL),
-                        new Stroke(THUMBSTROKE,THUMBORDER),
-                        new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
-                    ])
-                );
-
-            a.draw(context, rect, stretchobj.getcurrent(), 0);
-            context.restore();
-        }
-    },
-];
+ ];
 
 var bodyobj = new makeoption("", bodylst);
 url.path = "HOME";
@@ -3910,20 +3903,6 @@ fetch(path)
             promptFile().then(function(files) { dropfiles(files); })
         }});
 
-        slices.data.push({title:"Stretch", path: "STRETCH", func: function(rect, x, y)
-        {
-            bodyobj.enabled = 10;
-            menuhide();
-            _4cnvctx.refresh();
-        }})
-
-        slices.data.push({title:"Zoom", path: "ZOOM", func: function(rect, x, y)
-        {
-            bodyobj.enabled = 9;
-            menuhide();
-            _4cnvctx.refresh();
-        }})
-        
         slices.data.push({title:"Debug", path: "DEBUG", func: function(rect, x, y)
         {
             colorobj.enabled = 1;
@@ -5140,7 +5119,7 @@ var footlst =
             }
             else if (context.keyzoomup && context.keyzoomup.hitest(x,y))
             {
-                bodyobj.enabled = 10;
+                bodyobj.enabled = 9;
                 _4cnvctx.refresh();
                 var zoom = stretchobj.getcurrent();
                 if (zoom.current() >= zoom.length()-1)
@@ -5150,7 +5129,7 @@ var footlst =
             }
             else if (context.keyzoomdown && context.keyzoomdown.hitest(x,y))
             {
-                bodyobj.enabled = 10;
+                bodyobj.enabled = 9;
                 _4cnvctx.refresh();
                 var zoom = stretchobj.getcurrent();
                 if (!zoom.current())
