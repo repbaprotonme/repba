@@ -1746,7 +1746,7 @@ var pinchlst =
         }
         else
         {
-            if (headobj.enabled)
+            if (headobj.enabled && bodyobj.enabled != 8)
                 bodyobj.enabled = 9;
             context.obj = zoomobj.getcurrent();
         }
@@ -1889,6 +1889,12 @@ var panlst =
             var stretch = stretchobj.getcurrent()
             var m = (y - context.stretchctrl.y)/context.stretchctrl.height;
             m = Math.floor((1-m)*stretch.length());
+            if (window.landscape())
+            {
+                m = (x - context.stretchctrl.x)/context.stretchctrl.width;
+                m = Math.floor(m*stretch.length());
+            }
+
             stretch.set(m);
             context.refresh();
         }
@@ -1897,6 +1903,12 @@ var panlst =
             var obj = virtualcolsobj;
             var m = (y - context.slicectrl.y)/context.slicectrl.height;
             m = Math.floor((1-m)*obj.length());
+            if (window.landscape())
+            {
+                m = (x - context.slicectrl.x)/context.slicectrl.width;
+                m = Math.floor(m*obj.length());
+            }
+
             obj.set(m);
             contextobj.reset();
         }
@@ -1905,6 +1917,12 @@ var panlst =
             var zoom = zoomobj.getcurrent()
             var m = (y - context.zoomctrl.y)/context.zoomctrl.height;
             m = Math.floor((1-m)*zoom.length());
+            if (window.landscape())
+            {
+                m = (x - context.zoomctrl.x)/context.zoomctrl.width;
+                m = Math.floor(m*zoom.length());
+            }
+
             zoom.set(m);
             contextobj.reset();
         }
@@ -2527,6 +2545,12 @@ var taplst =
             var stretch = stretchobj.getcurrent();
             var a = (y-context.stretchctrl.y)/context.stretchctrl.height;
             var b = Math.floor(stretch.length()*(1-a));
+            if (window.landscape())
+            {
+                var a = (x-context.stretchctrl.x)/context.stretchctrl.width;
+                var b = Math.floor(stretch.length()*a);
+            }
+
             stretch.set(b);
             context.refresh();
         }
@@ -2535,6 +2559,11 @@ var taplst =
             var obj = virtualcolsobj;
             var a = (y-context.slicectrl.y)/context.slicectrl.height;
             var b = Math.floor(obj.length()*(1-a));
+            if (window.landscape())
+            {
+                var a = (x-context.slicectrl.x)/context.slicectrl.width;
+                var b = Math.floor(obj.length()*a);
+            }
             obj.set(b);
             contextobj.reset();
         }
@@ -2543,6 +2572,11 @@ var taplst =
             var zoom = zoomobj.getcurrent();
             var a = (y-context.zoomctrl.y)/context.zoomctrl.height;
             var b = Math.floor(zoom.length()*(1-a));
+            if (window.landscape())
+            {
+                var a = (x-context.zoomctrl.x)/context.zoomctrl.width;
+                var b = Math.floor(zoom.length()*a);
+            }
             zoom.set(b);
             contextobj.reset();
         }
@@ -3054,13 +3088,13 @@ function resetcanvas()
     window.leftrect = new rectangle(0,0,window.innerWidth/2,window.innerHeight);
     window.rightrect = new rectangle(window.innerWidth/2,0,window.innerWidth/2,window.innerHeight);
     window.rect = new rectangle(0,0,window.innerWidth,window.innerHeight);
-    window.landscape = window.rect.width > window.rect.height?1:0;
-    window.portrait = window.rect.width < window.rect.height?1:0;
-    heightobj.set(window.landscape);
-    stretchobj.set(window.landscape);
-    zoomobj.set(window.landscape);
-    positxobj.set(window.landscape);
-    posityobj.set(window.landscape);
+    window.landscape = function(){return window.rect.width > window.rect.height?1:0;}
+    window.portrait = function(){return window.rect.width < window.rect.height?1:0;}
+    heightobj.set(window.landscape());
+    stretchobj.set(window.landscape());
+    zoomobj.set(window.landscape());
+    positxobj.set(window.landscape());
+    posityobj.set(window.landscape());
 
     if (!photo.image.height)
         return;
@@ -3628,44 +3662,42 @@ var bodylst =
     {
         this.draw = function (context, rect, user, time)
         {
-            if (rect.height < 480)
-                return;
             context.stretchctrl = new rectangle()
             context.zoomctrl = new rectangle()
             context.slicectrl = new rectangle()
             context.save();
             colorobj.enabled = 1;
-            var w = 240;
-            var h = Math.min(480,rect.height-ALIEXTENT*4);
-            var a = new Centered(w,h, 
-                new ColA([60,0,60,0,60],
-                [
+            if (window.innerWidth < window.innerHeight)
+            {
+                var w = 60;
+                var h = Math.min(rect.height/3,Math.max(270,rect.height-ALIEXTENT*4));
+                var a = new Centered(w,h, 
                     new Layer(
                     [
                         new Rectangle(context.slicectrl),
                         new Fill(THUMBFILL),
                         new Stroke(THUMBSTROKE,THUMBORDER),
                         new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
-                    ]),
-                    0,
-                    new Layer(
-                    [
-                        new Rectangle(context.stretchctrl),
-                        new Fill(THUMBFILL),
-                        new Stroke(THUMBSTROKE,THUMBORDER),
-                        new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
-                    ]),
-                    0,
-                    new Layer(
-                    [
-                        new Rectangle(context.zoomctrl),
-                        new Fill(THUMBFILL),
-                        new Stroke(THUMBSTROKE,THUMBORDER),
-                        new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
-                    ])
-                ]));
+                    ]));
 
-            a.draw(context, rect, [virtualcolsobj,0,stretchobj.getcurrent(),0,zoomobj.getcurrent()], 0);
+                a.draw(context, rect, virtualcolsobj, 0);
+            }
+            else
+            {
+                var w = Math.min(rect.width/3,Math.max(640,rect.width-ALIEXTENT*4));
+                var h = 60;
+                var a = new Centered(w,h, 
+                    new Layer(
+                    [
+                        new Rectangle(context.slicectrl),
+                        new Fill(THUMBFILL),
+                        new Stroke(THUMBSTROKE,THUMBORDER),
+                        new CurrentHPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
+                    ]));
+
+                a.draw(context, rect, virtualcolsobj, 0);
+            }
+
             context.restore();
         }
     },
@@ -3673,34 +3705,62 @@ var bodylst =
     {
         this.draw = function (context, rect, user, time)
         {
-            if (rect.height < 480)
-                return;
             context.stretchctrl = new rectangle()
             context.zoomctrl = new rectangle()
             context.save();
-            var w = 150;
-            var h = Math.min(480,rect.height-ALIEXTENT*4);
-            var a = new Centered(w,h, 
-                new ColA([60,0,60],
-                [
-                    new Layer(
+            if (window.innerWidth < window.innerHeight)
+            {
+                var w = 150;
+                var h = Math.min(rect.height/3,Math.max(270,rect.height-ALIEXTENT*5));
+                var a = new Centered(w,h, 
+                    new ColA([60,0,60],
                     [
-                        new Rectangle(context.stretchctrl),
-                        new Fill(THUMBFILL),
-                        new Stroke(THUMBSTROKE,THUMBORDER),
-                        new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
-                    ]),
-                    0,
-                    new Layer(
-                    [
-                        new Rectangle(context.zoomctrl),
-                        new Fill(THUMBFILL),
-                        new Stroke(THUMBSTROKE,THUMBORDER),
-                        new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
-                    ])
-                ]));
+                        new Layer(
+                        [
+                            new Rectangle(context.stretchctrl),
+                            new Fill(THUMBFILL),
+                            new Stroke(THUMBSTROKE,THUMBORDER),
+                            new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
+                        ]),
+                        0,
+                        new Layer(
+                        [
+                            new Rectangle(context.zoomctrl),
+                            new Fill(THUMBFILL),
+                            new Stroke(THUMBSTROKE,THUMBORDER),
+                            new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
+                        ])
+                    ]));
 
-            a.draw(context, rect, [stretchobj.getcurrent(),0,zoomobj.getcurrent()], 0);
+                a.draw(context, rect, [stretchobj.getcurrent(),0,zoomobj.getcurrent()], 0);
+            }
+            else
+            {
+                var w = Math.min(rect.width/3,Math.max(640,rect.width-ALIEXTENT*5));
+                var h = 150;
+                var a = new Centered(w,h, 
+                    new RowA([60,0,60],
+                    [
+                        new Layer(
+                        [
+                            new Rectangle(context.stretchctrl),
+                            new Fill(THUMBFILL),
+                            new Stroke(THUMBSTROKE,THUMBORDER),
+                            new CurrentHPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
+                        ]),
+                        0,
+                        new Layer(
+                        [
+                            new Rectangle(context.zoomctrl),
+                            new Fill(THUMBFILL),
+                            new Stroke(THUMBSTROKE,THUMBORDER),
+                            new CurrentHPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
+                        ])
+                    ]));
+
+                a.draw(context, rect, [stretchobj.getcurrent(),0,zoomobj.getcurrent()], 0);
+            }
+
             context.restore();
         }
     },
@@ -3903,7 +3963,7 @@ fetch(path)
             promptFile().then(function(files) { dropfiles(files); })
         }});
 
-        slices.data.push({title:"Debug", path: "DEBUG", func: function(rect, x, y)
+        slices.data.push({title:"Slices", path: "SLICES", func: function(rect, x, y)
         {
             colorobj.enabled = 1;
             bodyobj.enabled = 8;
@@ -4649,11 +4709,18 @@ var CurrentHPanel = function (panel, extent)
 {
     this.draw = function (context, rect, user, time)
     {
+        context.save();
 	    var current = user.current();
         var length = user.length();
         var nub = Math.nub(current, length, extent, rect.width);
         var r = new rectangle(rect.x + nub, rect.y, extent, rect.height);
         panel.draw(context, r, 0, time);
+        context.font = "1rem Archivo Black";
+        context.shadowOffsetX = 0;
+        context.shadowOffsetY = 0;
+        var t = new Text("black", "center", "middle",0, 0, 0);
+        t.draw(context, r, (user.current()+1).toFixed(0), 0);
+        context.restore();
     };
 };
 
@@ -4661,10 +4728,17 @@ var CurrentVPanel = function (panel, extent, rev)
 {
     this.draw = function (context, rect, user, time)
     {
+        context.save();
         var k = rev ? user.length() - user.current() : user.current();
         var nub = Math.nub(k, user.length(), extent, rect.height);
         var r = new rectangle(rect.x, rect.y + nub, rect.width, extent);
         panel.draw(context, r, 0, time);
+        context.font = "1rem Archivo Black";
+        context.shadowOffsetX = 0;
+        context.shadowOffsetY = 0;
+        var t = new Text("black", "center", "middle",0, 0, 0);
+        t.draw(context, r, (user.current()+1).toFixed(0), 0);
+        context.restore();
     };
 };
 
@@ -4726,6 +4800,7 @@ function reset()
 
 function resize()
 {
+    bodyobj.enabled = 0;
     delete _4cnvctx.thumbcanvas;
     reset();
     menuhide();
@@ -5325,9 +5400,13 @@ function masterhide(x, y)
         menuhide();
         context.refresh();
     }
-    else
+    else if (bodyobj.enabled)
     {
         bodyobj.enabled = 0;
+        context.refresh();
+    }
+    else
+    {
         colorobj.enabled = 0;
         context.tapping = 0;
         context.isthumbrect = 0;
