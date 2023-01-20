@@ -1614,19 +1614,19 @@ var wheelst =
         var stretch = (context.stretchctrl && context.stretchctrl.hitest(x,y))
         if (slice)
         {
-            virtualcolsobj.add(2);
+            virtualcolsobj.add(virtualcolsobj.length()*0.02);
             contextobj.reset();
         }
         else if (stretch || alt)
         {
             var stretch = stretchobj.getcurrent()
-            stretch.add(2);
+            stretch.add(stretch.length()*0.02);
             contextobj.reset();
         }
         else if (zoom || ctrl)
         {
             var zoom = zoomobj.getcurrent()
-            zoom.add(2);
+            zoom.add(-zoom.length()*0.02);
             contextobj.reset();
         }
         else if (shift)
@@ -1644,7 +1644,7 @@ var wheelst =
                     context.refresh();
                 }, 500);
 
-            heightobj.getcurrent().add(1);
+            heightobj.getcurrent().add(heightobj.length()*0.01);
             context.refresh();
         }
         else
@@ -1663,18 +1663,18 @@ var wheelst =
         if (zoom || ctrl)
         {
             var zoom = zoomobj.getcurrent()
-            zoom.add(-2);
+            zoom.add(zoom.length()*0.02);
             contextobj.reset();
         }
         else if (slice)
         {
-            virtualcolsobj.add(-2);
+            virtualcolsobj.add(-virtualcolsobj.length()*0.02);
             contextobj.reset();
         }
         else if (stretch || alt)
         {
             var stretch = stretchobj.getcurrent()
-            stretch.add(-2);
+            stretch.add(-stretch.length()*0.02);
             contextobj.reset();
         }
         else if (shift)
@@ -1692,7 +1692,7 @@ var wheelst =
                     context.refresh();
                 }, 500);
 
-            heightobj.getcurrent().add(-1);
+            heightobj.getcurrent().add(-heightobj.length()*0.01);
             context.refresh();
         }
         else
@@ -1732,9 +1732,9 @@ var pinchlst =
             var data = obj.data;
             var k = Math.clamp(data[0], data[data.length-1], scale*context.pinchsave);
             var j = Math.berp(data[0], data[data.length-1], k);
-            var e = Math.lerp(0,obj.length(),j)/100;
+            var e = Math.lerp(0,obj.length(),j)/obj.length();
             var f = Math.floor(obj.length()*e);
-            if (scale > 1 && obj.current() < 10)
+            if (scale > 1 && obj.current() < (obj.length()*0.01))
             {
                 obj.set(f+1);
                 context.pinchsave = zoomobj.getcurrent().getcurrent();
@@ -3824,7 +3824,7 @@ authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", en
 
 var path = "https://reportbase.com/gallery/" + url.path;
 if (url.protocol == "http:")
-    path = "HOME.json";
+    path = "SUIC.json";
 fetch(path)
   .then(function (response)
   {
