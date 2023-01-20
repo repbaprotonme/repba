@@ -3662,8 +3662,6 @@ var bodylst =
     {
         this.draw = function (context, rect, user, time)
         {
-            context.stretchctrl = new rectangle()
-            context.zoomctrl = new rectangle()
             context.slicectrl = new rectangle()
             context.save();
             colorobj.enabled = 1;
@@ -4801,6 +4799,7 @@ function reset()
 function resize()
 {
     bodyobj.enabled = 0;
+    colorobj.enabled = 0;
     delete _4cnvctx.thumbcanvas;
     reset();
     menuhide();
@@ -5402,6 +5401,7 @@ function masterhide(x, y)
     }
     else if (bodyobj.enabled)
     {
+        colorobj.enabled = 0;
         bodyobj.enabled = 0;
         context.refresh();
     }
