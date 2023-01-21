@@ -3720,8 +3720,7 @@ var bodylst =
                                 new Rectangle(context.zoomctrl),
                                 new Fill(THUMBFILL),
                                 new Stroke(THUMBSTROKE,THUMBORDER),
-                                new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1,
-                                    "BLACK")
+                                new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1, "BLACK")
                             ]),
                         ]),
                         0,
@@ -3733,8 +3732,7 @@ var bodylst =
                                 new Rectangle(context.stretchctrl),
                                 new Fill(THUMBFILL),
                                 new Stroke(THUMBSTROKE,THUMBORDER),
-                                new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1, 
-                                    "BLACK")
+                                new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1, "BLACK")
                             ]),
                         ])
                     ]));
@@ -3765,8 +3763,7 @@ var bodylst =
                             new Rectangle(context.zoomctrl),
                             new Fill(THUMBFILL),
                             new Stroke(THUMBSTROKE,THUMBORDER),
-                            new CurrentHPanel(new Fill(THUMBSTROKE), ALIEXTENT, 
-                                "BLACK")
+                            new CurrentHPanel(new Fill(THUMBSTROKE), ALIEXTENT, "BLACK")
                         ]),
                         new Text("white", "center", "middle",0,0,1),
                         new Layer(
@@ -3774,8 +3771,7 @@ var bodylst =
                             new Rectangle(context.stretchctrl),
                             new Fill(THUMBFILL),
                             new Stroke(THUMBSTROKE,THUMBORDER),
-                            new CurrentHPanel(new Fill(THUMBSTROKE), ALIEXTENT, 
-                                "BLACK"),
+                            new CurrentHPanel(new Fill(THUMBSTROKE), ALIEXTENT, "BLACK"),
                         ]),
                     ]));
 
@@ -4740,7 +4736,7 @@ var CurrentHPanel = function (panel, extent, clr)
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
         var t = new Text(clr, "center", "middle",0, 0, 0);
-        t.draw(context, r, (user.current()+1).toFixed(0), 0);
+        //t.draw(context, r, (user.current()+1).toFixed(0), 0);
         context.restore();
     };
 };
