@@ -36,7 +36,8 @@ const BUTTONBACK = "rgba(0,0,0,0.25)";
 const OPTIONFILL = "rgb(255,255,255)";
 const THUMBFILL = "rgba(0,0,0,0.25)";
 const THUMBFILL2 = "rgba(0,0,0,0.40)";
-const THUMBSTROKE = "rgba(255,255,255,0.7)";
+const THUMBSTROKE = "rgba(255,255,255,0.75)";
+const THUMBDARK = "rgba(0,0,0,,0.75)";
 const ARROWFILL = "white";
 const SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
@@ -343,7 +344,6 @@ var guidelst =
 
 var colorlst =
     [
-      'green', 'blue', 'orange', 'purple', 'brown',
       '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
       '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
       '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
@@ -355,7 +355,7 @@ var colorlst =
       '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF',
     ];
 
-var colorobj = new makeoption("COLOR", [...colorlst, ...colorlst, ...colorlst, ...colorlst]);
+var colorobj = new makeoption("COLOR", colorlst);
 var speedxobj = new makeoption("SPEEDX", 100);
 var speedyobj = new makeoption("SPEEDY", 100);
 var guideobj = new makeoption("GUIDE", guidelst);
@@ -463,7 +463,7 @@ function drawslices()
             if (colorobj.enabled && m%2)
             {
                 context.globalAlpha = 0.40;
-                var a = new Fill("rgba(0,0,0,0.5)");
+                var a = new Fill("rgba(0,0,0,0.75)");
                 a.draw(context, new rectangle(slice.bx,0,stretchwidth,rect.height), 0, 0);
                 context.globalAlpha = 1.0;
             }
@@ -1698,6 +1698,7 @@ var pinchlst =
         var k = Math.clamp(data[0], data[data.length-1], scale*context.savepinch);
         var j = Math.berp(data[0], data[data.length-1], k);
         var e = Math.lerp(0,obj.length(),j)/obj.length();
+        delete context.thumbcanvas; 
         
         if (context.isthumbrect)
         {
@@ -1729,7 +1730,6 @@ var pinchlst =
     },
     pinchstart: function (context, rect, x, y)
     {
-        delete context.thumbcanvas; 
         context.clearpoints();
         context.pinching = 1;
         context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
@@ -1741,7 +1741,7 @@ var pinchlst =
         {
             if (headobj.enabled && bodyobj.enabled != 8)
                 bodyobj.enabled = 9;
-            context.obj = zoomobj.getcurrent();
+            context.obj = pinchobj.getcurrent().getcurrent();
         }
         
         context.savepinch = context.obj.getcurrent()
@@ -1753,8 +1753,9 @@ var pinchlst =
         {
             context.isthumbrect = 0;
             context.pinching = 0;
+            context.refresh();
             addressobj.update();
-        }, 100);
+        }, 400);
     },
 },
 ];
@@ -1762,9 +1763,9 @@ var pinchlst =
 var rowobj = new makeoption("ROW", window.innerHeight);
 rowobj.set(window.innerHeight*(url.row/100));
 
-pretchobj = new makeoption("PORTSTRETCH", 100);
-letchobj = new makeoption("LANDSTRETCH", 100);
-stretchobj = new makeoption("STRETCH", [pretchobj,letchobj]);
+var pretchobj = new makeoption("PORTSTRETCH", 100);
+var letchobj = new makeoption("LANDSTRETCH", 100);
+var stretchobj = new makeoption("STRETCH", [pretchobj,letchobj]);
 
 var poomobj = new makeoption("PORTZOOM", 100);
 var loomobj = new makeoption("LANDZOOM", 100);
@@ -1773,6 +1774,8 @@ var zoomobj = new makeoption("ZOOM", [poomobj,loomobj]);
 var traitobj = new makeoption("TRAIT", 100);
 var scapeobj = new makeoption("SCAPE", 100);
 var heightobj = new makeoption("HEIGHT", [traitobj,scapeobj]);
+
+var pinchobj = new makeoption("PINCH", [zoomobj,stretchobj]);
 
 function promptFile()
 {
@@ -1879,6 +1882,7 @@ var panlst =
         }
         else if (context.isstretchrect)
         {
+            pinchobj.set(1)
             var stretch = stretchobj.getcurrent()
             var m = (y - context.stretchctrl.y)/context.stretchctrl.height;
             m = Math.floor((1-m)*stretch.length());
@@ -1907,6 +1911,7 @@ var panlst =
         }
         else if (context.iszoomrect)
         {
+            pinchobj.set(0)
             var zoom = zoomobj.getcurrent()
             var m = (y - context.zoomctrl.y)/context.zoomctrl.height;
             m = Math.floor((1-m)*zoom.length());
@@ -2535,6 +2540,7 @@ var taplst =
         }
         else if (context.stretchctrl && context.stretchctrl.hitest(x,y))
         {
+            pinchobj.set(1);
             var stretch = stretchobj.getcurrent();
             var a = (y-context.stretchctrl.y)/context.stretchctrl.height;
             var b = Math.floor(stretch.length()*(1-a));
@@ -2562,6 +2568,7 @@ var taplst =
         }
         else if (context.zoomctrl && context.zoomctrl.hitest(x,y))
         {
+            pinchobj.set(0);
             var zoom = zoomobj.getcurrent();
             var a = (y-context.zoomctrl.y)/context.zoomctrl.height;
             var b = Math.floor(zoom.length()*(1-a));
@@ -2572,9 +2579,6 @@ var taplst =
             }
             zoom.set(b);
             contextobj.reset();
-        }
-        else if (context.deleteimage && context.deleteimage.hitest(x,y))
-        {
         }
         else if (context.logout && context.logout.hitest(x,y))
         {
@@ -2821,7 +2825,7 @@ var thumblst =
 
         var blackfill = new Fill(THUMBFILL);
 
-        if ((context.isthumbrect && jp) || context.tapping || context.pressed)
+        if ((context.isthumbrect && jp) || context.tapping || context.pressed || context.pinching)
         {
             blackfill.draw(context, context.thumbrect, 0, 0);
             guideobj.getcurrent().draw(context, context.thumbrect, 0, 0);
@@ -3683,7 +3687,7 @@ var bodylst =
                         new Rectangle(context.slicectrl),
                         new Fill(THUMBFILL),
                         new Stroke(THUMBSTROKE,THUMBORDER),
-                        new CurrentHPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
+                        new CurrentHPanel(new Fill(THUMBSTROKE), ALIEXTENT, "BLACK"),
                     ]));
 
                 a.draw(context, rect, virtualcolsobj, 0);
@@ -3699,57 +3703,83 @@ var bodylst =
             context.stretchctrl = new rectangle()
             context.zoomctrl = new rectangle()
             context.save();
+            context.font = "1rem Archivo Black";
+            var j = pinchobj.current();
             if (window.innerWidth < window.innerHeight)
             {
                 var w = 150;
-                var h = Math.min(rect.height/3,Math.max(270,rect.height-ALIEXTENT*5));
+                var h = Math.min(rect.height/2,Math.max(320,rect.height-ALIEXTENT*4));
                 var a = new Centered(w,h, 
                     new ColA([60,0,60],
                     [
-                        new Layer(
+                        new RowA([50,0],
                         [
-                            new Rectangle(context.stretchctrl),
-                            new Fill(THUMBFILL),
-                            new Stroke(THUMBSTROKE,THUMBORDER),
-                            new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
+                            new Text("white", "center", "middle",0,1,1),
+                            new Layer(
+                            [
+                                new Rectangle(context.zoomctrl),
+                                new Fill(THUMBFILL),
+                                new Stroke(THUMBSTROKE,THUMBORDER),
+                                new CurrentVPanel(new Fill(j==0?THUMBDARK:THUMBSTROKE), ALIEXTENT, 1,
+                                    j==0?"WHITE":"BLACK")
+                            ]),
                         ]),
                         0,
-                        new Layer(
+                        new RowA([50,0],
                         [
-                            new Rectangle(context.zoomctrl),
-                            new Fill(THUMBFILL),
-                            new Stroke(THUMBSTROKE,THUMBORDER),
-                            new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
+                            new Text("white", "center", "middle",0,1,1),
+                            new Layer(
+                            [
+                                new Rectangle(context.stretchctrl),
+                                new Fill(THUMBFILL),
+                                new Stroke(THUMBSTROKE,THUMBORDER),
+                                new CurrentVPanel(new Fill(j==1?THUMBDARK:THUMBSTROKE), ALIEXTENT, 1, 
+                                    j==1?"WHITE":"BLACK")
+                            ]),
                         ])
                     ]));
 
-                a.draw(context, rect, [stretchobj.getcurrent(),0,zoomobj.getcurrent()], 0);
+                a.draw(context, rect, 
+                [
+                    [
+                        "Zoom",
+                        zoomobj.getcurrent(),
+                    ],
+                    0,
+                    [
+                        "Stretch",
+                        stretchobj.getcurrent()
+                    ]
+                ], 0);
             }
             else
             {
                 var w = Math.min(rect.width/3,Math.max(640,rect.width-ALIEXTENT*5));
-                var h = 150;
+                var h = 190;
                 var a = new Centered(w,h, 
-                    new RowA([60,0,60],
+                    new RowA([50,60,50,60],
                     [
-                        new Layer(
-                        [
-                            new Rectangle(context.stretchctrl),
-                            new Fill(THUMBFILL),
-                            new Stroke(THUMBSTROKE,THUMBORDER),
-                            new CurrentHPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
-                        ]),
-                        0,
+                        new Text("white", "center", "middle",0,0,1),
                         new Layer(
                         [
                             new Rectangle(context.zoomctrl),
                             new Fill(THUMBFILL),
                             new Stroke(THUMBSTROKE,THUMBORDER),
-                            new CurrentHPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
-                        ])
+                            new CurrentHPanel(new Fill(j==0?THUMBDARK:THUMBSTROKE), ALIEXTENT, 
+                                j==0?"WHITE":"BLACK")
+                        ]),
+                        new Text("white", "center", "middle",0,0,1),
+                        new Layer(
+                        [
+                            new Rectangle(context.stretchctrl),
+                            new Fill(THUMBFILL),
+                            new Stroke(THUMBSTROKE,THUMBORDER),
+                            new CurrentHPanel(new Fill(j==1?THUMBDARK:THUMBSTROKE), ALIEXTENT, 
+                                j==1?"WHITE":"BLACK"),
+                        ]),
                     ]));
 
-                a.draw(context, rect, [stretchobj.getcurrent(),0,zoomobj.getcurrent()], 0);
+                a.draw(context, rect, ["Zoom",zoomobj.getcurrent(),"Stretch",stretchobj.getcurrent()], 0);
             }
 
             context.restore();
@@ -4370,8 +4400,8 @@ var Circle = function (color, scolor, width)
     	context.beginPath();
         context.arc(rect.x + rect.width / 2, rect.y + rect.height / 2, radius, 0, 2 * Math.PI, false);
         context.fillStyle = color;
-        context.shadowOffsetX = 1;
-        context.shadowOffsetY = 1;
+        context.shadowOffsetX = 0;
+        context.shadowOffsetY = 0;
         context.fill();
         if (width)
         {
@@ -4696,7 +4726,7 @@ var ImagePanel = function (shrink)
 	};
 };
 
-var CurrentHPanel = function (panel, extent)
+var CurrentHPanel = function (panel, extent, clr)
 {
     this.draw = function (context, rect, user, time)
     {
@@ -4709,13 +4739,13 @@ var CurrentHPanel = function (panel, extent)
         context.font = "1rem Archivo Black";
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
-        var t = new Text("black", "center", "middle",0, 0, 0);
+        var t = new Text(clr, "center", "middle",0, 0, 0);
         t.draw(context, r, (user.current()+1).toFixed(0), 0);
         context.restore();
     };
 };
 
-var CurrentVPanel = function (panel, extent, rev)
+var CurrentVPanel = function (panel, extent, rev, clr)
 {
     this.draw = function (context, rect, user, time)
     {
@@ -4727,7 +4757,7 @@ var CurrentVPanel = function (panel, extent, rev)
         context.font = "1rem Archivo Black";
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
-        var t = new Text("black", "center", "middle",0, 0, 0);
+        var t = new Text(clr, "center", "middle",0, 0, 0);
         t.draw(context, r, (user.current()+1).toFixed(0), 0);
         context.restore();
     };
