@@ -4740,7 +4740,7 @@ var CurrentHPanel = function (panel, extent, clr)
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
         var t = new Text(clr, "center", "middle",0, 0, 0);
-        t.draw(context, r, (user.current()+1).toFixed(0), 0);
+        //t.draw(context, r, (user.current()+1).toFixed(0), 0);
         context.restore();
     };
 };
