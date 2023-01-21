@@ -1,4 +1,5 @@
-curl https://reportbase.com/unsplash 
+# /* ++ += ==
+curl -H "Content-Type: application/json" -d '{"query": "guitar"}' https://reportbase.com/unsplash?query=guitar
 
 
 

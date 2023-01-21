@@ -3707,10 +3707,10 @@ var bodylst =
             var j = pinchobj.current();
             if (window.innerWidth < window.innerHeight)
             {
-                var w = 150;
+                var w = ALIEXTENT*2+30;
                 var h = Math.min(rect.height/2,Math.max(320,rect.height-ALIEXTENT*4));
                 var a = new Centered(w,h, 
-                    new ColA([60,0,60],
+                    new ColA([ALIEXTENT,0,ALIEXTENT],
                     [
                         new RowA([50,0],
                         [
@@ -3753,9 +3753,9 @@ var bodylst =
             else
             {
                 var w = Math.min(rect.width/3,Math.max(640,rect.width-ALIEXTENT*5));
-                var h = 190;
+                var h = ALIEXTENT*2+100;
                 var a = new Centered(w,h, 
-                    new RowA([50,60,50,60],
+                    new RowA([0,ALIEXTENT,0,ALIEXTENT],
                     [
                         new Text("white", "center", "middle",0,0,1),
                         new Layer(

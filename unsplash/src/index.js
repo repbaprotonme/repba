@@ -2,7 +2,10 @@ export default
 {
 	async fetch(request, env, ctx) 
     {
-        const response = await fetch("https://api.unsplash.com/photos", 
+        //todo: params
+        //todo: console log
+        const {query} = await request.json();
+        const response = await fetch('https://api.unsplash.com/search/photos?query=${query}', 
         {
             headers:
             {
@@ -11,7 +14,14 @@ export default
         });
 
         const data = await response.json();
-        return new Response(JSON.stringify(data),
+        const images = data.results.map(image => (
+        {
+            id: image.id,
+            image: image.urls.small,
+            link: image.links.html,
+        }));
+
+        return new Response(JSON.stringify(images),
         {
             headers:
             {
