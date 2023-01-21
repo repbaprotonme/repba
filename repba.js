@@ -5181,8 +5181,8 @@ var footlst =
                 clearInterval(context.timefooter);
                 context.timefooter = setInterval(function ()
                 {
-                    var zoom = stretchobj.getcurrent()
-                    zoom.add(1);
+                    var obj = pinchobj.getcurrent().getcurrent()
+                    obj.add(1);
                     _4cnvctx.refresh();
                 }, 4);
             }
@@ -5191,8 +5191,8 @@ var footlst =
                 clearInterval(context.timefooter);
                 context.timefooter = setInterval(function ()
                 {
-                    var zoom = stretchobj.getcurrent()
-                    zoom.add(-1);
+                    var obj = pinchobj.getcurrent().getcurrent()
+                    obj.add(-1);
                     _4cnvctx.refresh();
                 }, 4);
             }
@@ -5218,20 +5218,20 @@ var footlst =
             {
                 bodyobj.enabled = 9;
                 _4cnvctx.refresh();
-                var zoom = stretchobj.getcurrent();
-                if (zoom.current() >= zoom.length()-1)
+                var obj = pinchobj.getcurrent().getcurrent()
+                if (obj.current() >= obj.length()-1)
                     return;
-                zoom.add(4);
+                obj.add(4);
                 _4cnvctx.refresh();
             }
             else if (context.keyzoomdown && context.keyzoomdown.hitest(x,y))
             {
                 bodyobj.enabled = 9;
                 _4cnvctx.refresh();
-                var zoom = stretchobj.getcurrent();
-                if (!zoom.current())
+                var obj = pinchobj.getcurrent().getcurrent()
+                if (!obj.current())
                     return;
-                zoom.add(-4);
+                obj.add(-4);
                 _4cnvctx.refresh();
             }
             else if (context.leftab.hitest(x,y))
