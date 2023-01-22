@@ -373,7 +373,6 @@ for (var n = TIMEMID*0.9; n < TIMEMID*1.1; ++n)
 for (var n = TIMEMID*1.1; n > TIMEMID*0.9; --n)
     rotatelst.push(n);
 var rotateobj = new makeoption("LISTD", rotatelst);
-rotateobj.enabled = 1;
 
 function drawslices()
 {
@@ -1215,7 +1214,6 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     clearTimeout(globalobj.move);
     globalobj.move = setTimeout(function()
     {
-        rotateobj.enabled = 1;
         delete _4cnvctx.thumbcanvas;
         delete photo.image;
         _4cnvctx.setcolumncomplete = 0;
@@ -1242,6 +1240,9 @@ CanvasRenderingContext2D.prototype.hide = function ()
 CanvasRenderingContext2D.prototype.tab = function ()
 {
     var context = this;
+    if (context.slidestop > 0)
+        rotateobj.enabled = 0;
+
     context.slidestart = context.timeobj.current();
     context.slidestop = (context.timeobj.length()/context.virtualwidth)*url.slidetop;
     if (rotateobj.enabled)
@@ -3204,6 +3205,7 @@ var templatelst =
     name: "COMIC",
     init: function (j)
     {
+        rotateobj.enabled = 1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3229,6 +3231,7 @@ var templatelst =
     name: "PORTRAIT",
     init: function (j)
     {
+        rotateobj.enabled = 1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3253,6 +3256,7 @@ var templatelst =
     name: "SIDESCROLL",
     init: function (j)
     {
+        rotateobj.enabled = 0;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3277,6 +3281,7 @@ var templatelst =
     name: "ULTRAWIDE",
     init: function (j)
     {
+        rotateobj.enabled = 0;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3301,6 +3306,7 @@ var templatelst =
     name: "WIDE",
     init: function ()
     {
+        rotateobj.enabled = 1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3325,6 +3331,7 @@ var templatelst =
     name: "LANDSCAPE",
     init: function (j)
     {
+        rotateobj.enabled = 1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3349,6 +3356,7 @@ var templatelst =
     name: "EXTRATALL",
     init: function (j)
     {
+        rotateobj.enabled = 1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3373,6 +3381,7 @@ var templatelst =
     name: "TALL",
     init: function (j)
     {
+        rotateobj.enabled = 1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3397,6 +3406,7 @@ var templatelst =
     name: "LEGEND",
     init: function (j)
     {
+        rotateobj.enabled = 1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -4182,6 +4192,11 @@ var ContextObj = (function ()
                         templateobj.set(j);
                         templateobj.getcurrent().init(0);
                     }
+                    else
+                    {
+                        _4cnvctx.slidestop = 0; 
+                        rotateobj.enabled = this.aspect < 3.0;
+                    }
 
                     clearInterval(context.timemain);
                     context.timemain = 0;
@@ -4827,6 +4842,8 @@ function resize()
     bodyobj.enabled = 0;
     colorobj.enabled = 0;
     rotateobj.enabled = 0;
+    clearInterval(_4cnvctx.timemain);
+    _4cnvctx.timemain = 0;
     delete _4cnvctx.thumbcanvas;
     reset();
     menuhide();
