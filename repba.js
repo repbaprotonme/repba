@@ -1215,6 +1215,7 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     clearTimeout(globalobj.move);
     globalobj.move = setTimeout(function()
     {
+        rotateobj.enabled = 1;
         delete _4cnvctx.thumbcanvas;
         delete photo.image;
         _4cnvctx.setcolumncomplete = 0;
