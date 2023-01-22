@@ -844,10 +844,12 @@ var Centered = function (width, height, func)
         var a = new Col([0,width,0],
             [
                 0,
-                new Row([0,height,0],
+                new Row([headcnv.height,0,height,0,footcnv.height],
                 [
                     0,
+                    0,
                     func,
+                    0,
                     0,
                 ]),
                 0,
@@ -3789,7 +3791,7 @@ var bodylst =
             }
             else
             {
-                var w = Math.min(rect.width/3,Math.max(640,rect.width-ALIEXTENT*5));
+                var w = Math.min(rect.width/2,Math.max(640,rect.width-ALIEXTENT*4));
                 var h = ALIEXTENT*2+100;
                 var a = new Centered(w,h, 
                     new RowA([0,ALIEXTENT,0,ALIEXTENT],
