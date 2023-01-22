@@ -394,9 +394,9 @@ function drawslices()
 
         if (!menuenabled() && !context.panning && context.timemain)
         {
-            if ( context.slidestop - context.slidereduce > 0)
+            context.slidestop -= context.slidereduce;
+            if (context.slidestop > 0)
             {
-                context.slidestop -= context.slidereduce;
                 if (rotateobj.enabled)
                 {
                     rotateobj.rotate(1);
@@ -1242,8 +1242,6 @@ CanvasRenderingContext2D.prototype.hide = function ()
 CanvasRenderingContext2D.prototype.tab = function ()
 {
     var context = this;
-    if (context.slidestop > 0)
-        rotateobj.enabled = 0;
 
     context.slidestart = context.timeobj.current();
     context.slidestop = (context.timeobj.length()/context.virtualwidth)*url.slidetop;
@@ -1833,7 +1831,6 @@ function dropfiles(files)
         return;
     delete _4cnvctx.thumbcanvas;
     delete photo.image;
-    rotateobj.enabled = 1;
     colorobj.enabled = 0;
     _4cnvctx.tapping = 0;
     _4cnvctx.isthumbrect = 0;
@@ -2007,6 +2004,7 @@ var panlst =
 	panstart: function (context, rect, x, y)
 	{
         clearInterval(footcnvctx.timefooter);
+        rotateobj.enabled = 0;
         context.startx = x;
         context.starty = y;
         context.pantype = 0;
@@ -2436,17 +2434,20 @@ var keylst =
         else if (evt.key == "Tab")
         {
             evt.preventDefault();
+            rotateobj.enabled = 0;
             context.autodirect = evt.shiftKey ? 1 : -1;
             context.tab();
         }
         else if (evt.key == "ArrowLeft" || evt.key == "h")
         {
             evt.preventDefault();
+            rotateobj.enabled = 0;
             context.autodirect = 1;
             context.tab();
         }
         else if (evt.key == "ArrowRight" || evt.key == "l")
         {
+            rotateobj.enabled = 0;
             context.autodirect = -1;
             evt.preventDefault();
             context.tab();
@@ -2455,6 +2456,7 @@ var keylst =
         {
             if (!rowobj.current())
                 return;
+            rotateobj.enabled = 0;
             context.moveup();
             contextobj.reset();
             evt.preventDefault();
@@ -2463,12 +2465,14 @@ var keylst =
         {
             if (rowobj.current() >= rowobj.length()-1)
                 return;
+            rotateobj.enabled = 0;
             context.movedown();
             contextobj.reset();
             evt.preventDefault();
         }
         else if (evt.key == "\\")
         {
+            rotateobj.enabled = 0;
             headobj.enabled = 1;
             footobj.enabled = 1;
             colorobj.enabled=colorobj.enabled?0:1;
@@ -3207,7 +3211,6 @@ var templatelst =
     name: "COMIC",
     init: function (j)
     {
-        rotateobj.enabled = 1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3233,7 +3236,6 @@ var templatelst =
     name: "PORTRAIT",
     init: function (j)
     {
-        rotateobj.enabled = 1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3258,7 +3260,6 @@ var templatelst =
     name: "SIDESCROLL",
     init: function (j)
     {
-        rotateobj.enabled = 0;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3283,7 +3284,6 @@ var templatelst =
     name: "ULTRAWIDE",
     init: function (j)
     {
-        rotateobj.enabled = 0;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3308,7 +3308,6 @@ var templatelst =
     name: "WIDE",
     init: function ()
     {
-        rotateobj.enabled = 1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3333,7 +3332,6 @@ var templatelst =
     name: "LANDSCAPE",
     init: function (j)
     {
-        rotateobj.enabled = 1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3358,7 +3356,6 @@ var templatelst =
     name: "EXTRATALL",
     init: function (j)
     {
-        rotateobj.enabled = 1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3383,7 +3380,6 @@ var templatelst =
     name: "TALL",
     init: function (j)
     {
-        rotateobj.enabled = 1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3408,7 +3404,6 @@ var templatelst =
     name: "LEGEND",
     init: function (j)
     {
-        rotateobj.enabled = 1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -4014,6 +4009,7 @@ fetch(path)
 
         slices.data.push({title:"Open", path: "OPEN", func: function()
         {
+            menuhide();
             promptFile().then(function(files) { dropfiles(files); })
         }});
 
@@ -4049,7 +4045,7 @@ fetch(path)
         slices.data.push({ title:"Upload", path: "UPLOAD", func: function()
         {
             menuhide();
-            //window.location.href = "http://upload.reportbase.com";
+            promptFile().then(function(files) { dropfiles(files); })
         }});
 
         slices.data.push({ title:"Download", path: "DOWNLOAD", func: function()
@@ -4197,9 +4193,9 @@ var ContextObj = (function ()
                     else
                     {
                         _4cnvctx.slidestop = 0; 
-                        rotateobj.enabled = this.aspect < 3.0;
                     }
 
+                    rotateobj.enabled = this.aspect < 3.0;
                     clearInterval(context.timemain);
                     context.timemain = 0;
                     pageresize();
@@ -5031,8 +5027,15 @@ var headlst =
             }
             else if (context.picture.hitest(x,y))
             {
-                infobj.rotate(1);
-                _4cnvctx.refresh();
+                if (globalobj.promptedfile)
+                {
+                    promptFile().then(function(files) { dropfiles(files); })
+                }
+                else
+                {
+                    infobj.rotate(1);
+                    _4cnvctx.refresh();
+                }
             }
             else if (context.nextpage.hitest(x,y))
             {
@@ -5135,7 +5138,7 @@ var headlst =
             var s;
             if (globalobj.promptedfile)
             {
-                s = "images@repba.com";
+                s = "Upload";
             }
             else if (infobj.current() == 0)
             {
