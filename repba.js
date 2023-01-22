@@ -5493,17 +5493,4 @@ window.addEventListener("load", async () =>
 {
 });
 
-fetch('https://reportbase.com/cors').then(function (response) 
-{
-	if (response.ok) 
-    {
-		return response.json();
-	};
-
-	return Promise.reject(response);
-}).then(function (data) {
-	console.log(data);
-}).catch(function (error) {
-	console.warn(error);
-});
 
