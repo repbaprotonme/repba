@@ -30,7 +30,7 @@ const PROGRESSFALL = "rgba(0,0,0,0.5)";
 const SCROLLNUB = "rgba(0,0,0,0.5)";
 const SCROLLNAB = "rgba(0,0,0,0.5)";
 const SCROLLBACK = "rgba(255,255,255,0.75)";
-const HEADBACK = "rgba(0,0,0,0.4)";
+const HEADBACK = "rgba(0,0,0,0.2)";
 const MENUCOLOR = "rgba(0,0,0,0.50)";
 const BUTTONBACK = "rgba(0,0,0,0.25)";
 const OPTIONFILL = "rgb(255,255,255)";
@@ -1815,6 +1815,13 @@ function dropfiles(files)
         return;
     delete _4cnvctx.thumbcanvas;
     delete photo.image;
+    colorobj.enabled = 0;
+    _4cnvctx.tapping = 0;
+    _4cnvctx.isthumbrect = 0;
+    thumbobj.enabled = 1;
+    headobj.enabled = 0;
+    footobj.enabled = 0;
+    pageresize();
     _4cnvctx.setcolumncomplete = 0;
     globalobj.promptedfile = URL.createObjectURL(files[0]);
     contextobj.reset();
@@ -4136,7 +4143,7 @@ var ContextObj = (function ()
                 photo.image.crossOrigin = 1;
                 photo.image.original = path;
                 photo.image.src = path;
-                if (url.autostart)
+                if (url.autostart)//todo
                     globalobj.masterload = 1;
 
                 photo.image.onerror =
@@ -4990,10 +4997,7 @@ var headlst =
 	{
     	this.press = function (context, rect, x, y)
         {
-            if (context.picture.hitest(x,y))
-                infobj.rotate(1);
-            else
-                bodyobj.enabled = bodyobj.enabled==8?0:8;
+            bodyobj.enabled = bodyobj.enabled==8?0:8;
             _4cnvctx.refresh();
         }
 
@@ -5011,13 +5015,8 @@ var headlst =
             }
             else if (context.picture.hitest(x,y))
             {
-                 authClient.getAuthenticationInfoOrNull(false)
-                    .then(function(client)
-                    {
-                        globalobj.user = client?client.user:0;
-                        bodyobj.enabled = (bodyobj.enabled==4)?0:4;
-                        _4cnvctx.refresh();
-                    })
+                infobj.rotate(1);
+                _4cnvctx.refresh();
             }
             else if (context.nextpage.hitest(x,y))
             {
@@ -5030,11 +5029,9 @@ var headlst =
             }
             else if (context.leftab.hitest(x,y))
             {
-                masterhide(x, 0)
             }
             else if (context.rightab.hitest(x,y))
             {
-                masterhide(x, 0)
             }
 
             _4cnvctx.refresh();
@@ -5058,72 +5055,71 @@ var headlst =
             context.font = "1rem Archivo Black";
             var j = rect.width < 420 ? (rect.width-ALIEXTENT*4):180;
             var s = _5cnvctx.enabled || _8cnvctx.enabled;
-            var a = new Col([ALIEXTENT,0,ALIEXTENT,j,ALIEXTENT,0,ALIEXTENT],
+            var a = new Layer(
                 [
-                    new Layer(
+                    new Fill(HEADBACK),
+                    new Col([ALIEXTENT,0,ALIEXTENT,j,ALIEXTENT,0,ALIEXTENT],
                     [
-                        s ? new Fill(BUTTONBACK) : 0,
-                        new PagePanel(s?0.115:0.1),
-                        new Rectangle(context.page),
-                    ]),
-                    new Rectangle(context.leftab),
-                    globalobj.promptedfile?0:new Layer(
-                    [
-                        new Rectangle(context.prevpage),
-                        new Row([HNUB,0,HNUB],
+                        globalobj.promptedfile?0:new Layer(
                         [
-                            0,
-                            new Layer(
-                            [
-                                _4cnvctx.movingpage == -1 ?
-                                    new Shrink(new Circle(SCROLLNAB,"white",3),0,0) : 0,
-                                new Shrink(new Arrow(ARROWFILL,270),ARROWBORES,ARROWBORES-HNUB),
-                            ]),
-                            0,
+                            s ? new Fill(BUTTONBACK) : 0,
+                            new PagePanel(s?0.115:0.1),
+                            new Rectangle(context.page),
                         ]),
-                    ]),
-                    new Layer(
-                    [
-                        new Rectangle(context.picture),
-                        new Row([HNUB,0,HNUB],
+                        new Rectangle(context.leftab),
+                        globalobj.promptedfile?0:new Layer(
                         [
-                            0,
-                            new Layer(
+                            new Rectangle(context.prevpage),
+                            new Row([HNUB,0,HNUB],
                             [
-                                (bodyobj.enabled == 4 || bodyobj.enabled == 6) ? new Fill(HEADBACK):0,
-
-                                new Shrink(new Text("white", "center", "middle",0,0,1),20,20),
+                                0,
+                                new Layer(
+                                [
+                                    _4cnvctx.movingpage == -1 ?
+                                        new Shrink(new Circle(SCROLLNAB,"white",3),0,0) : 0,
+                                    new Shrink(new Arrow(ARROWFILL,270),ARROWBORES,ARROWBORES-HNUB),
+                                ]),
+                                0,
                             ]),
-                            0,
                         ]),
-                    ]),
-                    globalobj.promptedfile?0:new Layer(
-                    [
-                        new Rectangle(context.nextpage),
-                        new Row([HNUB,0,HNUB],
+                        new Layer(
                         [
-                            0,
-                            new Layer(
+                            new Rectangle(context.picture),
+                            new Row([HNUB,0,HNUB],
                             [
-                                _4cnvctx.movingpage == 1 ? new Shrink(new Circle(SCROLLNAB,"white",3),0,0) : 0,
-                                new Shrink(new Arrow(ARROWFILL,90),ARROWBORES,ARROWBORES-HNUB),
+                                0,
+                                new Shrink(new Text("white", "center", "middle",0,1,1),20,20),
+                                0,
                             ]),
-                            0,
                         ]),
-                    ]),
-                    new Rectangle(context.rightab),
-                    new Layer(
-                    [
-                        _9cnvctx.enabled ? new Fill(BUTTONBACK):0,
-                        new OptionPanel((!_9cnvctx.enabled)?0.1:0.115),
-                        new Rectangle(context.option),
+                        globalobj.promptedfile?0:new Layer(
+                        [
+                            new Rectangle(context.nextpage),
+                            new Row([HNUB,0,HNUB],
+                            [
+                                0,
+                                new Layer(
+                                [
+                                    _4cnvctx.movingpage == 1 ? new Shrink(new Circle(SCROLLNAB,"white",3),0,0) : 0,
+                                    new Shrink(new Arrow(ARROWFILL,90),ARROWBORES,ARROWBORES-HNUB),
+                                ]),
+                                0,
+                            ]),
+                        ]),
+                        new Rectangle(context.rightab),
+                        new Layer(
+                        [
+                            _9cnvctx.enabled ? new Fill(BUTTONBACK):0,
+                            new OptionPanel((!_9cnvctx.enabled)?0.1:0.115),
+                            new Rectangle(context.option),
+                        ])
                     ])
-                ]);
+               ]);
 
             var s;
             if (globalobj.promptedfile)
             {
-                s = "...";
+                s = "images@repba.com";
             }
             else if (infobj.current() == 0)
             {
@@ -5245,11 +5241,9 @@ var footlst =
             }
             else if (context.leftab.hitest(x,y))
             {
-                masterhide(x, 0)
             }
             else if (context.rightab.hitest(x,y))
             {
-                masterhide(x, 0)
             }
 
             addressobj.update();
@@ -5268,31 +5262,34 @@ var footlst =
             context.leftab = new rectangle()
             context.rightab = new rectangle()
 
-            var a =
-               new Col([0,20,90,20,ALIEXTENT-16,20,90,20,0],
+            var a = new Layer(
                [
-                    new Rectangle(context.leftab),
-                    0,
-                    new Layer(
-                    [
-                        new Rectangle(context.keyzoomdown),
-                        new Minus(ARROWFILL),
-                    ]),
-                    0,
-                    new Layer(
-                       [
-                           screenfull.isFullscreen ? new Shadow(new Shrink(new Circle("rgb(255,155,0)"),7,7)) : 0,
-                           new ProgressCircle(1),
-                           new Rectangle(context.progresscircle),
-                       ]),
-                    0,
-                    new Layer(
-                    [
-                        new Rectangle(context.keyzoomup),
-                        new Plus(ARROWFILL),
-                    ]),
-                    0,
-                    new Rectangle(context.rightab),
+                   new Fill(HEADBACK),
+                   new Col([0,20,90,20,ALIEXTENT-16,20,90,20,0],
+                   [
+                        new Rectangle(context.leftab),
+                        0,
+                        new Layer(
+                        [
+                            new Rectangle(context.keyzoomdown),
+                            new Minus(ARROWFILL),
+                        ]),
+                        0,
+                        new Layer(
+                           [
+                               screenfull.isFullscreen ? new Shadow(new Shrink(new Circle("rgb(255,155,0)"),7,7)) : 0,
+                               new ProgressCircle(1),
+                               new Rectangle(context.progresscircle),
+                           ]),
+                        0,
+                        new Layer(
+                        [
+                            new Rectangle(context.keyzoomup),
+                            new Plus(ARROWFILL),
+                        ]),
+                        0,
+                        new Rectangle(context.rightab),
+                   ])
                ]);
 
             a.draw(context, rect, _4cnvctx.timeobj, 0);
