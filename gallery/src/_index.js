@@ -7,6 +7,7 @@ export default {
       case 'PUT':
         await env.MY_BUCKET.put(key, request.body);
         return new Response(`Put ${key} successfully!`);
+
       case 'GET':
         const object = await env.MY_BUCKET.get(key);
         if (object === null)
