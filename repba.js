@@ -369,9 +369,9 @@ virtualcolsobj.set(cols);
 var rotatelst = [];
 var k = Math.floor( TIMEMID*0.9)
 var j = Math.floor( TIMEMID*1.1)
-for (var n = k; n < j; n+=0.5)
+for (var n = k; n < j; n+=0.25)
     rotatelst.push(n);
-for (var n = j; n > k; n-=0.5)
+for (var n = j; n > k; n-=0.25)
     rotatelst.push(n);
 var rotateobj = new makeoption("LISTD", rotatelst);
 
@@ -1246,12 +1246,16 @@ CanvasRenderingContext2D.prototype.tab = function ()
 
     context.slidestart = context.timeobj.current();
     context.slidestop = (context.timeobj.length()/context.virtualwidth)*url.slidetop;
+    var time = url.time;
+    context.slidereduce = url.slidefactor?context.slidestop/url.slidefactor:0;
     if (rotateobj.enabled)
+    {
         context.slidereduce = context.slidestop/4000;
-    else
-        context.slidereduce = url.slidefactor?context.slidestop/url.slidefactor:0;
+        time = url.time/3; 
+    }
+
     clearInterval(context.timemain);
-    context.timemain = setInterval(function () { drawslices() }, url.timemain);
+    context.timemain = setInterval(function () { drawslices() }, time);
 }
 
 CanvasRenderingContext2D.prototype.refresh = function ()
