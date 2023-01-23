@@ -1734,12 +1734,12 @@ var pinchlst =
         {
             var f = Math.floor(obj.length()*e);
             scale = parseFloat(scale).toFixed(2);
-            if (scale > 1 && obj.current() < (obj.length()*0.15) && pinchobj.current())
+            if (scale >=  1 && obj.current() < (obj.length()*0.15) && !pinchobj.current())
             {
                 obj.set(f+2);
                 context.savepinch = obj.getcurrent();
             }
-            else if (scale <= 1 && obj.current() < (obj.length()*0.15) && pinchobj.current())
+            else if (scale <= 1 && obj.current() < (obj.length()*0.15) && !pinchobj.current())
             {
                 obj.set(f-2);
                 context.savepinch = obj.getcurrent();
@@ -3218,7 +3218,7 @@ var templatelst =
         url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
-        loomobj.split(z, "70-80", loomobj.length());
+        loomobj.split(z, "70-90", loomobj.length());
         poomobj.split(b, "40-80", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 40;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
