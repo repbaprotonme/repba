@@ -369,9 +369,9 @@ virtualcolsobj.set(cols);
 var rotatelst = [];
 var k = Math.floor( TIMEMID*0.9)
 var j = Math.floor( TIMEMID*1.1)
-for (var n = k; n < j; n+=0.25)
+for (var n = k; n < j; n+=0.5)
     rotatelst.push(n);
-for (var n = j; n > k; n-=0.25)
+for (var n = j; n > k; n-=0.5)
     rotatelst.push(n);
 var rotateobj = new makeoption("LISTD", rotatelst);
 
@@ -1243,7 +1243,6 @@ CanvasRenderingContext2D.prototype.hide = function ()
 CanvasRenderingContext2D.prototype.tab = function ()
 {
     var context = this;
-
     context.slidestart = context.timeobj.current();
     context.slidestop = (context.timeobj.length()/context.virtualwidth)*url.slidetop;
     var time = url.time;
