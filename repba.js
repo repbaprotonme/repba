@@ -21,7 +21,6 @@ const ARROWBORES = 22;
 const DELAYCENTER = 3.926;
 const TIMEOBJ = 3926;
 const TIMEMID = TIMEOBJ/2;
-const FONTHEIGHT = 16;
 const MENUSELECT = "rgba(0,0,100,0.85)";
 const MENUTAP = "rgba(200,0,0,0.75)";
 const THUMBSELECT = "rgba(0,0,255,0.25)";
@@ -53,7 +52,7 @@ function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.autostart = url.searchParams.has("a") ? Number(url.searchParams.get("a")) : 1;
-url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 12;
+url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 18;
 
 Math.clamp = function (min, max, val)
 {
@@ -1722,10 +1721,11 @@ var pinchlst =
         var k = Math.clamp(data[0], data[data.length-1], scale*context.savepinch);
         var j = Math.berp(data[0], data[data.length-1], k);
         var e = Math.lerp(0,obj.length(),j)/obj.length();
-        delete context.thumbcanvas; 
         
         if (context.isthumbrect)
         {
+            context.pinching = 1;
+            delete context.thumbcanvas; 
             var f = Math.floor(obj.length()*e);
             obj.set(f);
             context.refresh();
@@ -1755,8 +1755,7 @@ var pinchlst =
     pinchstart: function (context, rect, x, y)
     {
         context.clearpoints();
-        context.pinching = 1;
-        context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
+        context.isthumbrect = context.thumbrect && context.thumbrect.expand(40,40).hitest(x,y);
         if (context.isthumbrect)
         {
             context.obj = heightobj.getcurrent(); 
@@ -2441,13 +2440,11 @@ var keylst =
         else if (evt.key == "ArrowLeft" || evt.key == "h")
         {
             evt.preventDefault();
-            rotateobj.enabled = 0;
             context.autodirect = 1;
             context.tab();
         }
         else if (evt.key == "ArrowRight" || evt.key == "l")
         {
-            rotateobj.enabled = 0;
             context.autodirect = -1;
             evt.preventDefault();
             context.tab();
@@ -2456,7 +2453,6 @@ var keylst =
         {
             if (!rowobj.current())
                 return;
-            rotateobj.enabled = 0;
             context.moveup();
             contextobj.reset();
             evt.preventDefault();
@@ -2465,14 +2461,12 @@ var keylst =
         {
             if (rowobj.current() >= rowobj.length()-1)
                 return;
-            rotateobj.enabled = 0;
             context.movedown();
             contextobj.reset();
             evt.preventDefault();
         }
         else if (evt.key == "\\")
         {
-            rotateobj.enabled = 0;
             headobj.enabled = 1;
             footobj.enabled = 1;
             colorobj.enabled=colorobj.enabled?0:1;
@@ -2835,10 +2829,10 @@ var thumblst =
         var w = Math.floor(r.width);
 
         var jp = 0;
-        if (h < ALIEXTENT)
+        if (h < 20)
         {
-            h = ALIEXTENT;
-            jp = 1;
+            h = 20;
+            jp
         }
 
         var positx = positxobj.getcurrent();
@@ -5017,9 +5011,23 @@ var headlst =
 		{
             if (context.page.hitest(x,y))
             {
-                _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-                menushow(_8cnvctx)
-                _4cnvctx.refresh();
+                if (globalobj.promptedfile)
+                {
+                    colorobj.enabled = 0;
+                    context.tapping = 0;
+                    context.isthumbrect = 0;
+                    thumbobj.enabled = 1;
+                    headobj.enabled = 0;
+                    footobj.enabled = 0;
+                    pageresize();
+                    reset();
+                }
+                else
+                {
+                    _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+                    menushow(_8cnvctx)
+                    _4cnvctx.refresh();
+                }
             }
             else if (context.prevpage.hitest(x,y))
             {
@@ -5079,7 +5087,7 @@ var headlst =
                     new Fill(HEADBACK),
                     new Col([ALIEXTENT,0,ALIEXTENT,j,ALIEXTENT,0,ALIEXTENT],
                     [
-                        globalobj.promptedfile?0:new Layer(
+                        new Layer(
                         [
                             s ? new Fill(BUTTONBACK) : 0,
                             new PagePanel(s?0.115:0.1),
@@ -5138,7 +5146,7 @@ var headlst =
             var s;
             if (globalobj.promptedfile)
             {
-                s = "Upload";
+                s = "Open ...";
             }
             else if (infobj.current() == 0)
             {
@@ -5361,7 +5369,7 @@ function menushow(context)
     _4cnvctx.refresh();
 }
 
-var PagePanel = function (size)
+var ClosePanel = function (size)
 {
     this.draw = function (context, rect, user, time)
     {
@@ -5380,6 +5388,39 @@ var PagePanel = function (size)
         ])
 
         a.draw(context, rect, user, time);
+        context.restore()
+    }
+};
+
+var PagePanel = function (size)
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.save()
+        if (globalobj.promptedfile)
+        {
+            context.font = "1.25rem Archivo Black";
+            var a = new Text("white", "center", "middle", 0, 1, 1);
+            a.draw(context, rect, "X", time);
+        }
+        else
+        {
+            var j = rect.width*size;
+            var k = j/2;
+            var e = new Fill(OPTIONFILL);
+            var a = new Layer(
+            [
+                new Row( [0, rect.height*0.35, 0],
+                [
+                    0,
+                    new Col ([0,j,k,j,k,j,0], [0,e,0,e,0,e,0,]),
+                    0,
+                ]),
+            ])
+
+            a.draw(context, rect, user, time);
+        }
+
         context.restore()
     }
 };
