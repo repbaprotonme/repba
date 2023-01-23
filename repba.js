@@ -3,7 +3,7 @@
 
 /* ++ += ==
 Copyright 2017 Tom Brinkman
-http://www.reportbase.comk
+http://www.reportbase.com
 */
 
 const ISMOBILE = window.matchMedia("only screen and (max-width: 760px)").matches;
@@ -367,9 +367,11 @@ var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 24;
 virtualcolsobj.set(cols);
 
 var rotatelst = [];
-for (var n = TIMEMID*0.9; n < TIMEMID*1.1; ++n)
+var k = Math.floor( TIMEMID*0.9)
+var j = Math.floor( TIMEMID*1.1)
+for (var n = k; n < j; n+=0.5)
     rotatelst.push(n);
-for (var n = TIMEMID*1.1; n > TIMEMID*0.9; --n)
+for (var n = j; n > k; n-=0.5)
     rotatelst.push(n);
 var rotateobj = new makeoption("LISTD", rotatelst);
 
@@ -2014,7 +2016,6 @@ var panlst =
         context.isstretchrect = context.stretchctrl && context.stretchctrl.hitest(x,y);
         context.isslicerect = context.slicectrl && context.slicectrl.hitest(x,y);
         clearInterval(context.timemain);
-        rotateobj.enabled = 0;
         context.timemain = 0;
         context.panning = 1;
         context.clearpoints();
