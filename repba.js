@@ -519,7 +519,7 @@ function drawslices()
         delete context.slicectrl;
         if (context.setcolumncomplete)
         {
-            if (headobj.enabled)
+            if (!context.panning && headobj.enabled && !context.timemain)
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             if (footobj.enabled)
                 footobj.getcurrent().draw(footcnvctx, footcnvctx.rect(), 0);
@@ -3215,7 +3215,7 @@ var templatelst =
     name: "COMIC",
     init: function (j)
     {
-        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.2;
+        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.25;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3241,7 +3241,7 @@ var templatelst =
     name: "PORTRAIT",
     init: function (j)
     {
-        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.2;
+        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.25;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3266,7 +3266,7 @@ var templatelst =
     name: "SIDESCROLL",
     init: function (j)
     {
-        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.05;
+        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3275,8 +3275,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 100;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 12;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 144;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 54;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-50", loomobj.length());
@@ -3291,7 +3291,7 @@ var templatelst =
     name: "ULTRAWIDE",
     init: function (j)
     {
-        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.05;
+        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.10;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3300,8 +3300,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 100;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 12;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 144;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 54;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-50", loomobj.length());
@@ -3316,7 +3316,7 @@ var templatelst =
     name: "WIDE",
     init: function ()
     {
-        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.1;
+        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.15;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3325,8 +3325,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 85;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 12;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 144;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 6;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 24;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-70", loomobj.length());
@@ -3341,7 +3341,7 @@ var templatelst =
     name: "LANDSCAPE",
     init: function (j)
     {
-        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.1;
+        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.20;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3350,8 +3350,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 85;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 12;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 144;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 54;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "60-85", loomobj.length());
@@ -3366,7 +3366,7 @@ var templatelst =
     name: "EXTRATALL",
     init: function (j)
     {
-        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.2;
+        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.25;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3375,8 +3375,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 90;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 24;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 54;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "90-95", loomobj.length());
@@ -3391,7 +3391,7 @@ var templatelst =
     name: "TALL",
     init: function (j)
     {
-        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.2;
+        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.25;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3400,8 +3400,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 90;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 24;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 54;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "80-90", loomobj.length());
@@ -3416,7 +3416,7 @@ var templatelst =
     name: "LEGEND",
     init: function (j)
     {
-        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.2;
+        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.25;
         channelobj = new makeoption("CHANNELS", [0,25,50,75,100]);
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 100;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 50;
@@ -4209,7 +4209,7 @@ var ContextObj = (function ()
                         _4cnvctx.slidestop = 0; 
                     }
 
-                    rotateobj.enabled = this.aspect < 3.0;
+                    rotateobj.enabled = 1;
                     clearInterval(context.timemain);
                     context.timemain = 0;
                     pageresize();
