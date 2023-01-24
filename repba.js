@@ -3244,8 +3244,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 50;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 24;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 54;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "70-90", loomobj.length());
@@ -3406,15 +3406,15 @@ var templatelst =
     {
         channelobj = new makeoption("CHANNELS", [0,25,50,75,99]);
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 100;
-        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 0;
+        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 50;
         positxpobj.set(xp);
         positypobj.set(yp);
         var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 100;
-        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 0;
+        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 50;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 9;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 128;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 54;
         guideobj.set(1);
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
