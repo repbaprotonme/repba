@@ -1207,7 +1207,6 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
 
     if (_4cnvctx.movingpage || !loaded.has(path) || galleryobj.length() == 1)
     {
-        masterload()
         _4cnvctx.movingpage = 0;
         this.refresh();
         return;
@@ -1246,12 +1245,12 @@ CanvasRenderingContext2D.prototype.tab = function ()
     var context = this;
     context.slidestart = context.timeobj.current();
     context.slidestop = (context.timeobj.length()/context.virtualwidth)*url.slidetop;
-    context.slidesmin = 0.15;
+    context.slidesmin = 0.15;//todo url
     var time = url.time;
     context.slidereduce = url.slidefactor?context.slidestop/url.slidefactor:0;
     if (rotateobj.enabled)
     {
-        context.slidereduce = context.slidestop/40000;
+        context.slidereduce = context.slidestop/40000;//todo url
         time = url.time/3; 
     }
 
@@ -1762,7 +1761,8 @@ var pinchlst =
     pinchstart: function (context, rect, x, y)
     {
         context.clearpoints();
-        context.isthumbrect = context.thumbrect && context.thumbrect.expand(40,40).hitest(x,y);
+        context.isthumbrect = context.thumbrect && context.thumbrect.expand &&
+            context.thumbrect.expand(40,40).hitest(x,y);
         if (context.isthumbrect)
         {
             context.obj = heightobj.getcurrent(); 
@@ -4206,7 +4206,7 @@ var ContextObj = (function ()
                     resetcanvas(context);
                     seteventspanel(new YollPanel());
                     contextobj.reset()
-                    masterload();
+                    setTimeout(function() { masterload(); }, 2000);
                     if (url.autostart)
                     {
                         if (!_4cnvctx.movingpage)
