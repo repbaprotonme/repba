@@ -396,6 +396,7 @@ function drawslices()
         if (!menuenabled() && !context.panning && context.timemain)
         {
             context.slidestop -= context.slidereduce;
+            context.slidestop = Math.max(context.slidesmin, context.slidestop);
             if (context.slidestop > 0)
             {
                 if (rotateobj.enabled)
@@ -1245,6 +1246,7 @@ CanvasRenderingContext2D.prototype.tab = function ()
     var context = this;
     context.slidestart = context.timeobj.current();
     context.slidestop = (context.timeobj.length()/context.virtualwidth)*url.slidetop;
+    context.slidesmin = 0.15;
     var time = url.time;
     context.slidereduce = url.slidefactor?context.slidestop/url.slidefactor:0;
     if (rotateobj.enabled)
@@ -3268,8 +3270,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 100;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 0.25;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 10000;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 12;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 144;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-50", loomobj.length());
@@ -3292,8 +3294,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 100;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 0.25;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 10000;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 12;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 144;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-50", loomobj.length());
@@ -3316,8 +3318,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 85;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 0.25;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 10000;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 12;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 144;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-70", loomobj.length());
@@ -3340,8 +3342,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 85;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 0.5;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 10000;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 12;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 144;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "60-85", loomobj.length());
@@ -3404,7 +3406,7 @@ var templatelst =
     name: "LEGEND",
     init: function (j)
     {
-        channelobj = new makeoption("CHANNELS", [0,25,50,75,99]);
+        channelobj = new makeoption("CHANNELS", [0,25,50,75,100]);
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 100;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 50;
         positxpobj.set(xp);
