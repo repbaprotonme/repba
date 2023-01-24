@@ -3268,8 +3268,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 100;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 24;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 48;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 0.25;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 10000;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-50", loomobj.length());
@@ -3292,7 +3292,7 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 100;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 0.5;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 0.25;
         url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 10000;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
@@ -3316,7 +3316,7 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 85;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 0.5;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 0.25;
         url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 10000;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
