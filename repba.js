@@ -367,14 +367,18 @@ var virtualcolsobj = new makeoption("VIRTCOLSOBJ", 100);
 var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 24;
 virtualcolsobj.set(cols);
 
-var rotatelst = [];
-var k = Math.floor( TIMEMID*0.7)
-var j = Math.floor( TIMEMID*1.3)
-for (var n = k; n < j; n+=0.4)
-    rotatelst.push(n);
-for (var n = j; n > k; n-=0.4)
-    rotatelst.push(n);
-var rotateobj = new makeoption("LISTD", rotatelst);
+var rotateobj = new makeoption("ROTATEOBJ", []);
+rotateobj.init = function(e)
+{
+    var rotatelst = [];
+    var k = Math.floor(TIMEMID*0.7)
+    var j = Math.floor(TIMEMID*1.3)
+    for (var n = k; n < j; n+=e)
+        rotatelst.push(n);
+    for (var n = j; n > k; n-=e)
+        rotatelst.push(n);
+    rotateobj.data  = rotatelst;
+}
 
 function drawslices()
 {
@@ -519,7 +523,7 @@ function drawslices()
         delete context.slicectrl;
         if (context.setcolumncomplete)
         {
-            if (!context.panning && headobj.enabled && !context.timemain)
+            if (headobj.enabled)
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             if (footobj.enabled)
                 footobj.getcurrent().draw(footcnvctx, footcnvctx.rect(), 0);
@@ -1223,9 +1227,6 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
         delete _4cnvctx.thumbcanvas;
         delete photo.image;
         _4cnvctx.setcolumncomplete = 0;
-        
-        if (rowobj.resetnew)
-            rowobj.set(0);
 
         galleryobj.rotate(j);
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -1298,9 +1299,9 @@ var makehammer = function (context, v, t)
 	context.ham = ham;
     ham.get("pan").set({ direction: Hammer.DIRECTION_ALL });
     ham.get("swipe").set({ direction: Hammer.DIRECTION_ALL });
-    ham.get('swipe').set({ velocity: 0.6});//0.30
-	ham.get('swipe').set({ threshold: 20});//10
-	ham.get('press').set({ time: 400 });//251
+    ham.get('swipe').set({ velocity: 0.3});//0.30
+	ham.get('swipe').set({ threshold: 10});//10
+	ham.get('press').set({ time: 350 });//251
 
 	ham.on("pinch", function (evt)
 	{
@@ -1793,7 +1794,6 @@ var pinchlst =
 ];
 
 var rowobj = new makeoption("ROW", window.innerHeight);
-rowobj.set(window.innerHeight*(url.row/100));
 
 var pretchobj = new makeoption("PORTSTRETCH", 100);
 var letchobj = new makeoption("LANDSTRETCH", 100);
@@ -3215,7 +3215,9 @@ var templatelst =
     name: "COMIC",
     init: function (j)
     {
+        rowobj.initialize = 0;
         url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.25;
+        rotateobj.init(url.slidesmin)
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3226,7 +3228,7 @@ var templatelst =
         positylobj.set(yl);
         galleryobj.maxmegapix = 4000000;
         url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 54;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "70-90", loomobj.length());
@@ -3242,6 +3244,7 @@ var templatelst =
     init: function (j)
     {
         url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.25;
+        rotateobj.init(url.slidesmin)
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3266,7 +3269,8 @@ var templatelst =
     name: "SIDESCROLL",
     init: function (j)
     {
-        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.1;
+        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.10;
+        rotateobj.init(url.slidesmin)
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3291,7 +3295,8 @@ var templatelst =
     name: "ULTRAWIDE",
     init: function (j)
     {
-        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.10;
+        url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.15;
+        rotateobj.init(url.slidesmin)
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3317,6 +3322,7 @@ var templatelst =
     init: function ()
     {
         url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.15;
+        rotateobj.init(url.slidesmin)
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3342,6 +3348,7 @@ var templatelst =
     init: function (j)
     {
         url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.20;
+        rotateobj.init(url.slidesmin)
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3367,6 +3374,7 @@ var templatelst =
     init: function (j)
     {
         url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.25;
+        rotateobj.init(url.slidesmin)
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3392,6 +3400,7 @@ var templatelst =
     init: function (j)
     {
         url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.25;
+        rotateobj.init(url.slidesmin)
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3417,6 +3426,7 @@ var templatelst =
     init: function (j)
     {
         url.slidesmin = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0.25;
+        rotateobj.init(url.slidesmin)
         channelobj = new makeoption("CHANNELS", [0,25,50,75,100]);
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 100;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 50;
@@ -3899,6 +3909,13 @@ fetch(path)
         speedxobj.split(1.25, "1-20", speedxobj.length());
         speedyobj.split(1.25, "1-20", speedyobj.length());
 
+        if (typeof galleryobj.row !== "undefined")
+            rowobj.initialize = galleryobj.row;
+        if (typeof rowobj.initialize !== "undefined")
+            rowobj.set(window.innerHeight*(rowobj.initialize/100));
+        else
+            rowobj.set(window.innerHeight*(url.row/100));
+
         if (typeof galleryobj.quality  === "undefined")
             galleryobj.quality = 75;
         if (typeof galleryobj.galleryobj  === "undefined")
@@ -4005,6 +4022,7 @@ fetch(path)
             k.title = k[0];
             k.width = k[1];
             k.height = k[2];
+            k.row = k[3];
             k.index = n;
             k.path = "PROJECT";
             k.func = project;
@@ -4216,6 +4234,12 @@ var ContextObj = (function ()
                     contextobj.resize(context);
                     resetcanvas(context);
                     seteventspanel(new YollPanel());
+
+                    if (typeof galleryobj.getcurrent().row !== "undefined")
+                        rowobj.set(window.innerHeight*(galleryobj.getcurrent().row/100));
+                    else if (typeof rowobj.initialize !== "undefined")
+                        rowobj.set(window.innerHeight*(rowobj.initialize/100));
+
                     contextobj.reset()
                     setTimeout(function() { masterload(); }, 2000);
                     if (url.autostart)
