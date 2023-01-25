@@ -19,6 +19,7 @@ const HNUB = 10;
 const ALIEXTENT = 60;
 const ARROWBORES = 22;
 const DELAYCENTER = 3.926;
+const SLICERADIUS = 131000;
 const TIMEOBJ = 3926;
 const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(0,0,100,0.85)";
@@ -52,7 +53,7 @@ function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.autostart = url.searchParams.has("a") ? Number(url.searchParams.get("a")) : 1;
-url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 9;
+url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 4;
 url.reducefactor = url.searchParams.has("c") ? Number(url.searchParams.get("c")) : 40000;
 url.speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 4;
 
@@ -365,7 +366,7 @@ var guideobj = new makeoption("GUIDE", guidelst);
 var colobj = new makeoption("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new makeoption("CHANNELS", [0,10,20,30,40,50,60,70,80,90]);
 
-var virtualcolsobj = new makeoption("VIRTCOLSOBJ", 100);
+var virtualcolsobj = new makeoption("VIRTCOLSOBJ", 200);
 var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 24;
 virtualcolsobj.set(cols);
 
@@ -423,6 +424,8 @@ function drawslices()
         if (!slice)
             break;
         context.save();
+        if (colorobj.enabled)
+            context.clear();
         context.translate(-context.colwidth, 0);
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
@@ -466,17 +469,9 @@ function drawslices()
 
             slice.visible = 1;
             slice.strechwidth = stretchwidth;
+            var wid = colorobj.enabled ? context.colwidth : stretchwidth;
             context.drawImage(slice.canvas, slice.x, 0, context.colwidth, rect.height,
-              slice.bx, 0, stretchwidth, rect.height);
-
-            if (colorobj.enabled && m%2)
-            {
-                context.globalAlpha = 0.40;
-                var a = new Fill("rgba(0,0,0,0.75)");
-                a.draw(context, new rectangle(slice.bx,0,stretchwidth,rect.height), 0, 0);
-                context.globalAlpha = 1.0;
-            }
-
+              slice.bx, 0, wid, rect.height);
             bx = bx2;
         }
 
@@ -487,8 +482,9 @@ function drawslices()
             var slice = slicelst[0];
             slice.visible = 1;
             slice.strechwidth = w;
+            var wid = colorobj.enabled ? context.colwidth : w;
             context.drawImage(slice.canvas, 0, 0, context.colwidth, rect.height,
-                  x, 0, w, rect.height);
+                  x, 0, wid, rect.height);
         }
 
         context.restore();
@@ -3133,7 +3129,6 @@ function resetcanvas()
     context.virtualsize = ((context.virtualwidth * context.virtualheight)/1000000).toFixed(1) + "MP";
     var y = Math.clamp(0,context.canvas.height-1,context.canvas.height*rowobj.berp());
     context.nuby = Math.nub(y, context.canvas.height, context.imageheight, photo.image.height);
-    const SLICERADIUS = 131000;
 
     context.virtualspeed = FIREFOX?0:TIMEOBJ/context.virtualwidth/url.speed;
     var rotatelst = [];
@@ -3172,13 +3167,17 @@ function resetcanvas()
     context.colwidth = context.bwidth/slices;
     var slice = 0;
     context.sliceobj.data = []
-    canvaslst = []
 
     var j = 0;
     for (var n = 0; n < canvaslen; ++n)
     {
-        var cnv = document.createElement("canvas");
-        canvaslst.push(cnv);
+        if (!canvaslst[n])
+        {
+            var cnv = document.createElement("canvas");
+            canvaslst[n] = cnv;
+        }
+
+        var cnv = canvaslst[n];
         if (cnv.height != context.canvas.height)
             cnv.height = context.canvas.height;
         if (cnv.width != context.bwidth)
@@ -3188,7 +3187,7 @@ function resetcanvas()
         ctx.drawImage(photo.image,
             n*gwidth, context.nuby, gwidth, context.imageheight,
             0, 0, context.bwidth, cnv.height);
-
+        
         for (var e = 0; e < slices; ++e)
         {
             var k = {};
@@ -3227,7 +3226,7 @@ var templatelst =
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "70-90", loomobj.length());
-        poomobj.split(b, "40-80", poomobj.length());
+        poomobj.split(b, "50-80", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 40;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
         traitobj.split(o, "0.1-1.0", traitobj.length());
@@ -3294,7 +3293,7 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 100;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 36;
         url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 54;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
@@ -3318,12 +3317,12 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 85;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 6;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 24;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 12;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36; 
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
-        loomobj.split(z, "0-70", loomobj.length());
-        poomobj.split(b, "0-70", poomobj.length());
+        loomobj.split(z, "0-80", loomobj.length());
+        poomobj.split(b, "0-80", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 100;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 50;
         traitobj.split(o, "0.1-1.0", traitobj.length());
@@ -3346,8 +3345,8 @@ var templatelst =
         url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 54;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
-        loomobj.split(z, "60-85", loomobj.length());
-        poomobj.split(b, "30-85", poomobj.length());
+        loomobj.split(z, "50-85", loomobj.length());
+        poomobj.split(b, "50-85", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 100;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 50;
         traitobj.split(o, "0.1-1.0", traitobj.length());
@@ -3904,7 +3903,8 @@ fetch(path)
         {
             var context = contextlst[n];
             context.index = n;
-            context.imageSmoothingEnabled = false;
+            context.imageSmoothingEnabled = true;
+            context.imageSmoothingQuality = "high";
             context.enabled = 0;
             context.canvas.width = 1;
             context.canvas.height = 1;
