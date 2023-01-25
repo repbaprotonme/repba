@@ -52,9 +52,9 @@ function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.autostart = url.searchParams.has("a") ? Number(url.searchParams.get("a")) : 1;
-url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 18;
+url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 9;
 url.reducefactor = url.searchParams.has("c") ? Number(url.searchParams.get("c")) : 40000;
-url.speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 20;
+url.speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 4;
 
 Math.clamp = function (min, max, val)
 {
@@ -358,6 +358,7 @@ var colorlst =
     ];
 
 var colorobj = new makeoption("COLOR", colorlst);
+
 var speedxobj = new makeoption("SPEEDX", 100);
 var speedyobj = new makeoption("SPEEDY", 100);
 var guideobj = new makeoption("GUIDE", guidelst);
@@ -369,18 +370,6 @@ var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 24;
 virtualcolsobj.set(cols);
 
 var rotateobj = new makeoption("ROTATEOBJ", []);
-rotateobj.init = function(e)
-{
-    var rotatelst = [];
-    var k = Math.floor(TIMEMID*0.7)
-    var j = Math.floor(TIMEMID*1.3)
-    for (var n = k; n < j; n+=e)
-        rotatelst.push(n);
-    for (var n = j; n > k; n-=e)
-        rotatelst.push(n);
-    rotateobj.data  = rotatelst;
-}
-rotateobj.init(url.speed/100)
 
 function drawslices()
 {
@@ -403,7 +392,7 @@ function drawslices()
         if (!menuenabled() && !context.panning && context.timemain)
         {
             context.slidestop -= context.slidereduce;
-            context.slidestop = Math.max(url.speed/100, context.slidestop);
+            context.slidestop = Math.max(context.virtualspeed, context.slidestop);
             if (context.slidestop > 0)
             {
                 if (rotateobj.enabled)
@@ -523,7 +512,6 @@ function drawslices()
         delete context.stretchctrl;
         delete context.zoomctrl;
         delete context.slicectrl;
-        delete context.speedtrl;
         if (context.setcolumncomplete)
         {
             if (headobj.enabled)
@@ -1153,7 +1141,7 @@ addressobj.full = function ()
         "&s="+url.slidetop+
         "&f="+url.slidefactor+
         "&c="+url.reducefactor+
-        "&c="+url.speed+
+        "&g="+url.speed+
         "&xp="+positxpobj.current().toFixed(2)+
         "&yp="+positypobj.current().toFixed(2)+
         "&xl="+positxlobj.current().toFixed(2)+
@@ -1252,16 +1240,12 @@ CanvasRenderingContext2D.prototype.tab = function ()
     var context = this;
     context.slidestart = context.timeobj.current();
     context.slidestop = (context.timeobj.length()/context.virtualwidth)*url.slidetop;
-    var time = url.time;
     context.slidereduce = url.slidefactor?context.slidestop/url.slidefactor:0;
     if (rotateobj.enabled)
-    {
         context.slidereduce = context.slidestop/url.reducefactor;
-        time = url.time/3; 
-    }
 
     clearInterval(context.timemain);
-    context.timemain = setInterval(function () { drawslices() }, time);
+    context.timemain = setInterval(function () { drawslices() }, url.timemain);
 }
 
 CanvasRenderingContext2D.prototype.refresh = function ()
@@ -2024,7 +2008,6 @@ var panlst =
         context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         context.iszoomrect = context.zoomctrl && context.zoomctrl.hitest(x,y);
         context.isstretchrect = context.stretchctrl && context.stretchctrl.hitest(x,y);
-        context.isspeedrect = context.speedctrl && context.speedctrl.hitest(x,y);
         context.isslicerect = context.slicectrl && context.slicectrl.hitest(x,y);
         clearInterval(context.timemain);
         context.timemain = 0;
@@ -3151,6 +3134,16 @@ function resetcanvas()
     var y = Math.clamp(0,context.canvas.height-1,context.canvas.height*rowobj.berp());
     context.nuby = Math.nub(y, context.canvas.height, context.imageheight, photo.image.height);
     const SLICERADIUS = 131000;
+
+    context.virtualspeed = FIREFOX?0:TIMEOBJ/context.virtualwidth/url.speed;
+    var rotatelst = [];
+    var k = Math.floor(TIMEMID*0.7)
+    var j = Math.floor(TIMEMID*1.3)
+    for (var n = k; n < j; n+=context.virtualspeed)
+        rotatelst.push(n);
+    for (var n = j; n > k; n-=context.virtualspeed)
+        rotatelst.push(n);
+    rotateobj.data  = rotatelst;
 
     let slicelst = [];
     for (let n = 499; n >= 1; n=n-1)
