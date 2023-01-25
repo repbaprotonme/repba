@@ -54,6 +54,7 @@ url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.autostart = url.searchParams.has("a") ? Number(url.searchParams.get("a")) : 1;
 url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 18;
 url.reducefactor = url.searchParams.has("c") ? Number(url.searchParams.get("c")) : 40000;
+url.speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 20;
 
 Math.clamp = function (min, max, val)
 {
@@ -370,7 +371,6 @@ virtualcolsobj.set(cols);
 var rotateobj = new makeoption("ROTATEOBJ", []);
 rotateobj.init = function(e)
 {
-    e /= 100;
     var rotatelst = [];
     var k = Math.floor(TIMEMID*0.7)
     var j = Math.floor(TIMEMID*1.3)
@@ -380,6 +380,7 @@ rotateobj.init = function(e)
         rotatelst.push(n);
     rotateobj.data  = rotatelst;
 }
+rotateobj.init(url.speed/100)
 
 function drawslices()
 {
@@ -402,7 +403,7 @@ function drawslices()
         if (!menuenabled() && !context.panning && context.timemain)
         {
             context.slidestop -= context.slidereduce;
-            context.slidestop = Math.max(speedobj.getcurrent()/100, context.slidestop);
+            context.slidestop = Math.max(url.speed/100, context.slidestop);
             if (context.slidestop > 0)
             {
                 if (rotateobj.enabled)
@@ -1152,11 +1153,11 @@ addressobj.full = function ()
         "&s="+url.slidetop+
         "&f="+url.slidefactor+
         "&c="+url.reducefactor+
+        "&c="+url.speed+
         "&xp="+positxpobj.current().toFixed(2)+
         "&yp="+positypobj.current().toFixed(2)+
         "&xl="+positxlobj.current().toFixed(2)+
         "&yl="+positylobj.current().toFixed(2)+
-        "&g="+speedobj.current()+
         "&o="+traitobj.current()+
         "&u="+scapeobj.current()+
         "&z="+loomobj.current()+
@@ -1630,18 +1631,12 @@ var wheelst =
     {
         var thumb = context.thumbrect && context.thumbrect.hitest(x,y);
         var slice = (context.slicectrl && context.slicectrl.hitest(x,y))
-        var speed = (context.speedctrl && context.speedctrl.hitest(x,y))
         var zoom = (context.zoomctrl && context.zoomctrl.hitest(x,y))
         var stretch = (context.stretchctrl && context.stretchctrl.hitest(x,y))
         if (slice)
         {
             virtualcolsobj.add(virtualcolsobj.length()*0.02);
             contextobj.reset();
-        }
-        else if (speed)
-        {
-            speedobj.add(speedobj.length()*0.02);
-            _4cnvctx.tab();
         }
         else if (stretch || alt)
         {
@@ -1679,18 +1674,12 @@ var wheelst =
         var thumb = context.thumbrect && context.thumbrect.hitest(x,y);
         var zoom = (context.zoomctrl && context.zoomctrl.hitest(x,y))
         var slice = (context.slicectrl && context.slicectrl.hitest(x,y))
-        var speed = (context.speedctrl && context.speedctrl.hitest(x,y))
         var stretch = (context.stretchctrl && context.stretchctrl.hitest(x,y))
         if (zoom || ctrl)
         {
             var zoom = zoomobj.getcurrent()
             zoom.add(zoom.length()*0.02);
             contextobj.reset();
-        }
-        else if (speed)
-        {
-            speedobj.add(-speedobj.length()*0.02);
-            _4cnvctx.tab();
         }
         else if (slice)
         {
@@ -1947,20 +1936,6 @@ var panlst =
 
             stretch.set(m);
             context.refresh();
-        }
-        else if (context.isspeedrect)
-        {
-            var obj = speedobj;
-            var m = (y - context.speedctrl.y)/context.speedctrl.height;
-            m = Math.floor((1-m)*obj.length());
-            if (window.landscape())
-            {
-                m = (x - context.speedctrl.x)/context.speedctrl.width;
-                m = Math.floor(m*obj.length());
-            }
-
-            obj.set(m);
-            _4cnvctx.tab();
         }
         else if (context.isslicerect)
         {
@@ -2614,21 +2589,6 @@ var taplst =
             stretch.set(b);
             context.refresh();
         }
-        else if (context.speedctrl && context.speedctrl.hitest(x,y))
-        {
-            var obj = speedobj;
-            var a = (y-context.speedctrl.y)/context.speedctrl.height;
-            var b = Math.floor(obj.length()*(1-a));
-            if (window.landscape())
-            {
-                var a = (x-context.speedctrl.x)/context.speedctrl.width;
-                var b = Math.floor(obj.length()*a);
-            }
-
-            obj.set(b);
-            contextobj.reset();
-            _4cnvctx.tab();
-        }
         else if (context.slicectrl && context.slicectrl.hitest(x,y))
         {
             var obj = virtualcolsobj;
@@ -3260,9 +3220,6 @@ var templatelst =
     init: function (j)
     {
         rowobj.initialize = 0;
-        var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 25;
-        speedobj.set(speed)
-        rotateobj.init(speed)
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3288,9 +3245,6 @@ var templatelst =
     name: "PORTRAIT",
     init: function (j)
     {
-        var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 25;
-        speedobj.set(speed)
-        rotateobj.init(speed)
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3315,9 +3269,6 @@ var templatelst =
     name: "SIDESCROLL",
     init: function (j)
     {
-        var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 5;
-        speedobj.set(speed)
-        rotateobj.init(speed)
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3342,9 +3293,6 @@ var templatelst =
     name: "ULTRAWIDE",
     init: function (j)
     {
-        var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 5;
-        speedobj.set(speed)
-        rotateobj.init(speed)
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3369,9 +3317,6 @@ var templatelst =
     name: "WIDE",
     init: function ()
     {
-        var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 10;
-        speedobj.set(speed)
-        rotateobj.init(speed)
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3396,9 +3341,6 @@ var templatelst =
     name: "LANDSCAPE",
     init: function (j)
     {
-        var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 15;
-        speedobj.set(speed)
-        rotateobj.init(speed)
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3423,9 +3365,6 @@ var templatelst =
     name: "EXTRATALL",
     init: function (j)
     {
-        var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 25;
-        speedobj.set(speed)
-        rotateobj.init(speed)
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3450,9 +3389,6 @@ var templatelst =
     name: "TALL",
     init: function (j)
     {
-        var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 25;
-        speedobj.set(speed)
-        rotateobj.init(speed)
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3477,9 +3413,6 @@ var templatelst =
     name: "LEGEND",
     init: function (j)
     {
-        var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 25;
-        speedobj.set(speed)
-        rotateobj.init(speed)
         channelobj = new makeoption("CHANNELS", [0,25,50,75,100]);
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 100;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 50;
@@ -3653,14 +3586,13 @@ var bodylst =
             context.save();
             context.font = "1rem Archivo Black";
             var w = Math.min(ALIEXTENT*8,rect.width-ALIEXTENT);
-            var rowlst = [0,0,0,0,0,0];
+            var rowlst = [0,0,0,0,0];
             var rowheight = 40;
             rowlst.length = Math.floor(Math.min(rowlst.length,(rect.height-headcnv.height-footcnv.height-ALIEXTENT)/rowheight))
             var h = rowheight*rowlst.length;
             var title = galleryobj.getcurrent().title;
             var a = new Message(w,h,title,new RowA(rowlst,
                     [
-                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
                         new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
                         new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
                         new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
@@ -3689,7 +3621,6 @@ var bodylst =
                 "Virtual Size: "+context.virtualwidth.toFixed(0)+"x"+context.virtualheight,
                 "Slices: "+visibles.toFixed(0)+" / "+context.sliceobj.length(),
                 "Slice Width: "+context.slicewidth.toFixed(0),
-                "Window: "+window.rect.width+"x"+window.rect.height,
             ],
             0);
          }
@@ -3887,55 +3818,6 @@ var bodylst =
                     ]));
 
                 a.draw(context, rect, ["Zoom",zoomobj.getcurrent(),"Stretch",stretchobj.getcurrent()], 0);
-            }
-
-            context.restore();
-        }
-    },
-    new function()
-    {
-        this.draw = function (context, rect, user, time)
-        {
-            context.speedctrl = new rectangle()
-            context.save();
-            context.font = "1rem Archivo Black";
-            if (window.innerWidth < window.innerHeight)
-            {
-                var w = ALIEXTENT;
-                var h = Math.min(rect.height/2,Math.max(320,rect.height-ALIEXTENT*4));
-                var a = new Centered(w,h, 
-                    new RowA([50,0],
-                    [
-                        new Text("white", "center", "middle",0,1,1),
-                        new Layer(
-                        [
-                            new Rectangle(context.speedctrl),
-                            new Fill(THUMBFILL),
-                            new Stroke(THUMBSTROKE,THUMBORDER),
-                            new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
-                        ])
-                    ]));
-
-                a.draw(context, rect, ["Speed",virtualcolsobj], 0);
-            }
-            else
-            {
-                var w = Math.min(rect.width/2,Math.max(320,rect.width-ALIEXTENT*4));
-                var h = ALIEXTENT+50;
-                var a = new Centered(w,h, 
-                    new RowA([0,ALIEXTENT],
-                    [
-                        new Text("white", "center", "middle",0,1,1),
-                        new Layer(
-                        [
-                            new Rectangle(context.speedctrl),
-                            new Fill(THUMBFILL),
-                            new Stroke(THUMBSTROKE,THUMBORDER),
-                            new CurrentHPanel(new Fill(THUMBSTROKE), ALIEXTENT, "BLACK"),
-                        ])
-                    ]))
-
-                a.draw(context, rect, ["Speed",speedobj], 0);
             }
 
             context.restore();
@@ -4165,13 +4047,6 @@ fetch(path)
         slices.data.push({title:"Zoom", path: "ZOOM", func: function(rect, x, y)
         {
             bodyobj.enabled = 9;
-            menuhide();
-            _4cnvctx.refresh();
-        }})
-
-        slices.data.push({title:"Speed", path: "SPEED", func: function(rect, x, y)
-        {
-            bodyobj.enabled = 10;
             menuhide();
             _4cnvctx.refresh();
         }})
@@ -5492,7 +5367,6 @@ var j = url.searchParams.has("h") ? Number(url.searchParams.get("h")) : 0;
 headobj.enabled = j;
 footobj.enabled = j;
 var infobj = new makeoption("", 4);
-var speedobj = new makeoption("SPEED", 500);
 var positxpobj = new makeoption("POSITIONX", 100);
 var positypobj = new makeoption("POSITIONY", 100);
 var positxlobj = new makeoption("POSITIONX", 100);
