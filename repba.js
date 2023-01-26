@@ -358,8 +358,9 @@ var colorlst =
 
 var colorobj = new makeoption("COLOR", colorlst);
 
-var speedobj = new makeoption("SPEED", [2,3,4]);
-speedobj.set = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 1;
+var speedobj = new makeoption("SPEED", [1,2,3,4,5,6,7,8,9]);
+var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 4;
+speedobj.set(speed); 
 
 var speedxobj = new makeoption("SPEEDX", 100);
 var speedyobj = new makeoption("SPEEDY", 100);
@@ -818,19 +819,6 @@ var Empty = function()
     }
 };
 
-var ScrollPanel = function(obj, rev)
-{
-    this.draw = function (context, rect, user, time)
-    {
-        context.save();
-        context.shadowOffsetX = 1;
-        context.shadowOffsetY = 1;
-        context.shadowColor = "black"
-        var a = new CurrentVPanel(new Fill(SCROLLNAB), Math.min(ALIEXTENT*2, rect.height/4), rev);
-        a.draw(context, rect, obj, 0);
-        context.restore();
-    }
-}
 
 var Centered = function (width, height, func)
 {
@@ -876,14 +864,14 @@ var Message = function (width, height, title, func)
                         [
                             new Layer(
                             [
-                                context.movingpage == -1 ? new Fill(THUMBSELECT) : 0,
+                                context.movingpage == -1 ? new Fill("rgb(255,155,0)") : 0,
                                 new Rectangle(context.moveprev),
                                 new Shrink(new Arrow(ARROWFILL,270),ARROWBORES,ARROWBORES),
                             ]),
                             new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
                             new Layer(
                             [
-                                context.movingpage == 1 ? new Fill(THUMBSELECT) : 0,
+                                context.movingpage == 1 ? new Fill("rgb(255,155,0)") : 0,
                                 new Rectangle(context.movenext),
                                 new Shrink(new Arrow(ARROWFILL,90),ARROWBORES,ARROWBORES),
                             ]),
@@ -918,29 +906,17 @@ var Fill = function (color)
     };
 };
 
-var SpeedPanel = function ()
+var TabPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
-        context.save();
-        context.shadowOffsetX = 0;
-        context.shadowOffsetY = 0;
-        context.shadowColor = "black"
-		context.fillStyle = "white";
-        var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
-        var e = speedobj.getcurrent();
-        if (e ==  2)
-            r.shrink(22,27);
-        else if (e ==  3)
-            r.shrink(25,30);
-        else if (e ==  4)
-            r.shrink(28,33);
-        var a = new Circle("rgba(0,0,0,0)","white",2);
-        a.draw(context, r, 0, 0);
-
-        context.restore();
+        var a = new Shrink(new Arrow(ARROWFILL,270),22,26);
+        a.draw(context, rect, user, time);
+        rect.x += 16;
+        var a = new Shrink(new Arrow(ARROWFILL,90),22,26);
+        a.draw(context, rect, user, time);
     }
-};
+}
 
 var FullScreen = function ()
 {
@@ -949,20 +925,125 @@ var FullScreen = function ()
         context.save();
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
-        context.shadowColor = "black"
-		context.fillStyle = "white";
-        var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
+		context.strokeStyle = "white";
+
         if (screenfull.isFullscreen)
-            r.shrink(22,28);
+        {
+            var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
+            r.shrink(20,25);
+            var x = r.x+8;
+            var y = r.y;
+            var path = new Path2D();
+            path.moveTo(x,y);
+            y += 8;
+            path.lineTo(x,y);
+            x -= 8;
+            path.lineTo(x,y);
+            context.lineWidth = 3;
+            context.stroke(path);
+
+            var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
+            r.shrink(20,25);
+            var x = r.x+16;
+            var y = r.y;
+            var path = new Path2D();
+            path.moveTo(x,y);
+            y += 8;
+            path.lineTo(x,y);
+            x += 8;
+            path.lineTo(x,y);
+            context.lineWidth = 3;
+            context.stroke(path);
+
+            var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
+            r.shrink(20,25);
+            var x = r.x+24;
+            var y = r.y+16;
+            var path = new Path2D();
+            path.moveTo(x,y);
+            x -= 8;
+            path.lineTo(x,y);
+            y += 8;
+            path.lineTo(x,y);
+            context.lineWidth = 3;
+            context.stroke(path);
+
+            var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
+            r.shrink(20,25);
+            var x = r.x;
+            var y = r.y+16;
+            var path = new Path2D();
+            path.moveTo(x,y);
+            x += 8;
+            path.lineTo(x,y);
+            y += 8;
+            path.lineTo(x,y);
+            context.lineWidth = 3;
+            context.stroke(path);
+        }
         else
-            r.shrink(25,30);
-        var whitestroke = new Stroke("WHITE",screenfull.isFullscreen?3:2);
-        whitestroke.draw(context, r, 0, 0);
+        {
+            var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
+            r.shrink(20,25);
+            var x = r.x;
+            var y = r.y;
+            var path = new Path2D();
+            y += 8 
+            path.moveTo(x,y);
+            y -= 8;
+            path.lineTo(x,y);
+            x += 8;
+            path.lineTo(x,y);
+            context.lineWidth = 3;
+            context.stroke(path);
+
+            var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
+            r.shrink(20,25);
+            var x = r.x+24;
+            var y = r.y;
+            var path = new Path2D();
+            y += 8;
+            path.moveTo(x,y);
+            y -= 8;
+            path.lineTo(x,y);
+            x -= 8;
+            path.lineTo(x,y);
+            context.lineWidth = 3;
+            context.stroke(path);
+
+            var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
+            r.shrink(20,25);
+            var x = r.x+24;
+            var y = r.y;
+            var path = new Path2D();
+            y += 16;
+            path.moveTo(x,y);
+            y += 8;
+            path.lineTo(x,y);
+            x -= 8;
+            path.lineTo(x,y);
+            context.lineWidth = 3;
+            context.stroke(path);
+
+            var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
+            r.shrink(20,25);
+            var x = r.x;
+            var y = r.y;
+            var path = new Path2D();
+            y += 16;
+            path.moveTo(x,y);
+            y += 8;
+            path.lineTo(x,y);
+            x += 8;
+            path.lineTo(x,y);
+            context.lineWidth = 3;
+            context.stroke(path);
+        }
 
         context.restore();
     }
 };
- 
+
 var ProgressCircle = function ()
 {
     this.draw = function (context, rect, user, time)
@@ -2033,7 +2114,6 @@ var panlst =
 	panstart: function (context, rect, x, y)
 	{
         clearInterval(footcnvctx.timefooter);
-        rotateobj.enabled = 0;
         context.startx = x;
         context.starty = y;
         context.pantype = 0;
@@ -2043,8 +2123,7 @@ var panlst =
         context.iszoomrect = context.zoomctrl && context.zoomctrl.hitest(x,y);
         context.isstretchrect = context.stretchctrl && context.stretchctrl.hitest(x,y);
         context.isslicerect = context.slicectrl && context.slicectrl.hitest(x,y);
-        clearInterval(context.timemain);
-        context.timemain = 0;
+        rotateobj.enabled = 0;
         context.panning = 1;
         context.clearpoints();
         context.refresh();
@@ -2582,9 +2661,6 @@ var taplst =
 	tap: function (context, rect, x, y, shift, ctrl)
 	{
         clearInterval(footcnvctx.timefooter);
-        clearInterval(context.timemain);
-        context.timemain = 0;
-        rotateobj.enabled = 0;
         context.pressed = 0;
         if (context.moveprev && context.moveprev.hitest(x,y))
         {
@@ -4275,6 +4351,9 @@ var ContextObj = (function ()
                     else if (typeof rowobj.initialize !== "undefined")
                         rowobj.set(window.innerHeight*(rowobj.initialize/100));
 
+                    if (context.timemain)
+                        rotateobj.enabled = 1;
+
                     contextobj.reset()
                     setTimeout(function() { masterload(); }, 2000);
                     if (rotateobj.enabled)
@@ -5354,8 +5433,8 @@ var footlst =
             }
             else if (context.leftab.hitest(x,y))
             {
-                speedobj.rotate(-1);
-                contextobj.reset();
+                rotateobj.enabled = 0;
+                _4cnvctx.tab();
             }
             else if (context.rightab.hitest(x,y))
             {
@@ -5391,8 +5470,8 @@ var footlst =
                    [
                         new Layer(
                         [
-                            new SpeedPanel(),
                             new Rectangle(context.leftab),
+                            new TabPanel(),
                         ]),
                         0,
                         new Layer(
@@ -5590,13 +5669,11 @@ function masterhide(x, y)
     if (menuenabled())
     {
         menuhide();
-        context.refresh();
     }
     else if (bodyobj.enabled)
     {
         colorobj.enabled = 0;
         bodyobj.enabled = 0;
-        context.refresh();
     }
     else
     {
@@ -5607,9 +5684,9 @@ function masterhide(x, y)
         headobj.enabled = headobj.enabled?0:1;
         footobj.enabled = headobj.enabled;
         pageresize();
-        context.refresh();
-        reset();
     }
+        
+    context.refresh();
 }
 
 function pageresize()
