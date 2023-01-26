@@ -359,7 +359,7 @@ var colorlst =
 var colorobj = new makeoption("COLOR", colorlst);
 
 var speedobj = new makeoption("SPEED", [1,2,3,4,5,6,7,8,9]);
-var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 4;
+var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 5;
 speedobj.set(speed); 
 
 var speedxobj = new makeoption("SPEEDX", 100);
