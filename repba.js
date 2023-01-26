@@ -916,7 +916,27 @@ var Fill = function (color)
     };
 };
 
-var ProgressCircle = function (rev)
+var FullScreen = function ()
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.save();
+        context.shadowOffsetX = 1;
+        context.shadowOffsetY = 1;
+        context.shadowColor = "black"
+	    var path = new Path2D();
+        path.moveTo(rect.x, rect.y+20);
+		path.lineTo(rect.x,rect.y);
+		path.lineTo(rect.x+20,rect.y);
+		context.fillStyle = "white";
+		context.stroke(path);
+        //todo
+
+        context.restore();
+    }
+};
+ 
+var ProgressCircle = function ()
 {
     this.draw = function (context, rect, user, time)
     {
@@ -4218,8 +4238,6 @@ var ContextObj = (function ()
                         _4cnvctx.slidestop = 0; 
                     }
 
-                    clearInterval(context.timemain);
-                    context.timemain = 0;
                     pageresize();
                     contextobj.resize(context);
                     resetcanvas(context);
@@ -4238,7 +4256,8 @@ var ContextObj = (function ()
                             context.autodirect = -1;
                         else
                             context.autodirect = _4cnvctx.movingpage==1?-1:1
-                        _4cnvctx.tab();
+                        if (!_4cnvctx.timemain)
+                            _4cnvctx.tab();
                     }
                 }
 			}
@@ -5271,7 +5290,7 @@ var footlst =
             clearInterval(context.timefooter);
             if (context.progresscircle.hitest(x,y))
             {
-                if (rotateobj.enabled)
+                if (_4cnvctx.timemain)
                 {
                     clearInterval(_4cnvctx.timemain);
                     _4cnvctx.timemain = 0;
@@ -5316,6 +5335,13 @@ var footlst =
             }
             else if (context.rightab.hitest(x,y))
             {
+                if (screenfull.isEnabled)
+                {
+                    if (screenfull.isFullscreen)
+                        screenfull.exit();
+                    else
+                        screenfull.request();
+                }
             }
 
             addressobj.update();
@@ -5337,7 +5363,7 @@ var footlst =
             var a = new Layer(
                [
                    new Fill(HEADBACK),
-                   new Col([0,20,90,20,ALIEXTENT-16,20,90,20,0],
+                   new Col([60,0,80,20,ALIEXTENT-16,20,80,0,60],
                    [
                         new Rectangle(context.leftab),
                         0,
@@ -5349,8 +5375,8 @@ var footlst =
                         0,
                         new Layer(
                            [
-                               rotateobj.enabled ? new Shadow(new Shrink(new Circle("rgb(255,155,0)"),7,7)) : 0,
-                               new ProgressCircle(1),
+                               _4cnvctx.timemain ? new Shadow(new Shrink(new Circle("rgb(255,155,0)"),7,7)) : 0,
+                               new ProgressCircle(),
                                new Rectangle(context.progresscircle),
                            ]),
                         0,
@@ -5360,7 +5386,11 @@ var footlst =
                             new Plus(ARROWFILL),
                         ]),
                         0,
-                        new Rectangle(context.rightab),
+                        new Layer(
+                        [
+                            new FullScreen(),
+                            new Rectangle(context.rightab),
+                        ]),
                    ])
                ]);
 
