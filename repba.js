@@ -54,7 +54,6 @@ let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 9;
 url.reducefactor = url.searchParams.has("c") ? Number(url.searchParams.get("c")) : 40000;
-url.speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 3;
 
 Math.clamp = function (min, max, val)
 {
@@ -358,6 +357,9 @@ var colorlst =
     ];
 
 var colorobj = new makeoption("COLOR", colorlst);
+
+var speedobj = new makeoption("SPEED", [2,3,4]);
+speedobj.set = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 1;
 
 var speedxobj = new makeoption("SPEEDX", 100);
 var speedyobj = new makeoption("SPEEDY", 100);
@@ -916,21 +918,46 @@ var Fill = function (color)
     };
 };
 
+var SpeedPanel = function ()
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.save();
+        context.shadowOffsetX = 0;
+        context.shadowOffsetY = 0;
+        context.shadowColor = "black"
+		context.fillStyle = "white";
+        var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
+        var e = speedobj.getcurrent();
+        if (e ==  2)
+            r.shrink(22,27);
+        else if (e ==  3)
+            r.shrink(25,30);
+        else if (e ==  4)
+            r.shrink(28,33);
+        var a = new Circle("rgba(0,0,0,0)","white",2);
+        a.draw(context, r, 0, 0);
+
+        context.restore();
+    }
+};
+
 var FullScreen = function ()
 {
     this.draw = function (context, rect, user, time)
     {
         context.save();
-        context.shadowOffsetX = 1;
-        context.shadowOffsetY = 1;
+        context.shadowOffsetX = 0;
+        context.shadowOffsetY = 0;
         context.shadowColor = "black"
-	    var path = new Path2D();
-        path.moveTo(rect.x, rect.y+20);
-		path.lineTo(rect.x,rect.y);
-		path.lineTo(rect.x+20,rect.y);
 		context.fillStyle = "white";
-		context.stroke(path);
-        //todo
+        var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
+        if (screenfull.isFullscreen)
+            r.shrink(22,28);
+        else
+            r.shrink(25,30);
+        var whitestroke = new Stroke("WHITE",screenfull.isFullscreen?3:2);
+        whitestroke.draw(context, r, 0, 0);
 
         context.restore();
     }
@@ -1155,11 +1182,11 @@ addressobj.full = function ()
         "&s="+url.slidetop+
         "&f="+url.slidefactor+
         "&c="+url.reducefactor+
-        "&g="+url.speed+
         "&xp="+positxpobj.current().toFixed(2)+
         "&yp="+positypobj.current().toFixed(2)+
         "&xl="+positxlobj.current().toFixed(2)+
         "&yl="+positylobj.current().toFixed(2)+
+        "&g="+speedobj.current()+
         "&o="+traitobj.current()+
         "&u="+scapeobj.current()+
         "&z="+loomobj.current()+
@@ -3156,10 +3183,10 @@ function resetcanvas()
     var y = Math.clamp(0,context.canvas.height-1,context.canvas.height*rowobj.berp());
     context.nuby = Math.nub(y, context.canvas.height, context.imageheight, photo.image.height);
 
-    context.virtualspeed = FIREFOX?0:TIMEOBJ/context.virtualwidth/url.speed;
+    context.virtualspeed = FIREFOX?0:TIMEOBJ/context.virtualwidth/speedobj.getcurrent();
     var rotatelst = [];
-    var k = Math.floor(TIMEMID*0.8)
-    var j = Math.floor(TIMEMID*1.2)
+    var k = Math.floor(TIMEMID*0.9)
+    var j = Math.floor(TIMEMID*1.1)
     for (var n = k; n < j; n+=context.virtualspeed)
         rotatelst.push(n);
     for (var n = j; n > k; n-=context.virtualspeed)
@@ -5156,7 +5183,7 @@ var headlst =
                                 new Layer(
                                 [
                                     _4cnvctx.movingpage == -1 ?
-                                        new Shrink(new Circle(SCROLLNAB,"white",3),0,0) : 0,
+                                        new Circle(SCROLLNAB,"white",3) : 0,
                                     new Shrink(new Arrow(ARROWFILL,270),ARROWBORES,ARROWBORES-HNUB),
                                 ]),
                                 0,
@@ -5180,7 +5207,7 @@ var headlst =
                                 0,
                                 new Layer(
                                 [
-                                    _4cnvctx.movingpage == 1 ? new Shrink(new Circle(SCROLLNAB,"white",3),0,0) : 0,
+                                    _4cnvctx.movingpage == 1 ? new Circle(SCROLLNAB,"white",3) : 0,
                                     new Shrink(new Arrow(ARROWFILL,90),ARROWBORES,ARROWBORES-HNUB),
                                 ]),
                                 0,
@@ -5278,11 +5305,6 @@ var footlst =
             else if (context.progresscircle.hitest(x,y))
             {
             }
-            else
-            {
-                bodyobj.enabled = bodyobj.enabled==8?0:8;
-                _4cnvctx.refresh();
-            }
         };
 
         this.tap = function (context, rect, x, y)
@@ -5332,6 +5354,8 @@ var footlst =
             }
             else if (context.leftab.hitest(x,y))
             {
+                speedobj.rotate(-1);
+                contextobj.reset();
             }
             else if (context.rightab.hitest(x,y))
             {
@@ -5365,7 +5389,11 @@ var footlst =
                    new Fill(HEADBACK),
                    new Col([60,0,80,20,ALIEXTENT-16,20,80,0,60],
                    [
-                        new Rectangle(context.leftab),
+                        new Layer(
+                        [
+                            new SpeedPanel(),
+                            new Rectangle(context.leftab),
+                        ]),
                         0,
                         new Layer(
                         [
