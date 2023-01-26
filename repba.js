@@ -52,7 +52,6 @@ function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) 
 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
-url.autostart = url.searchParams.has("a") ? Number(url.searchParams.get("a")) : 1;
 url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 5;
 url.reducefactor = url.searchParams.has("c") ? Number(url.searchParams.get("c")) : 40000;
 url.speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 5;
@@ -1132,7 +1131,6 @@ addressobj.full = function ()
         "?p="+galleryobj.getcurrent().title+
         "&h="+headobj.enabled+
         "&v="+virtualcolsobj.current()+
-        "&a="+url.autostart+
         "&n="+url.timemain+
         "&s="+url.slidetop+
         "&f="+url.slidefactor+
@@ -1272,8 +1270,8 @@ var makehammer = function (context, v, t)
 	context.ham = ham;
     ham.get("pan").set({ direction: Hammer.DIRECTION_ALL });
     ham.get("swipe").set({ direction: Hammer.DIRECTION_ALL });
-    ham.get('swipe').set({ velocity: 0.3});//0.30
-	ham.get('swipe').set({ threshold: 10});//10
+    ham.get('swipe').set({ velocity: 0.6});//0.30
+	ham.get('swipe').set({ threshold: 20});//10
 	ham.get('press').set({ time: 350 });//251
 
 	ham.on("pinch", function (evt)
@@ -3140,8 +3138,8 @@ function resetcanvas()
 
     context.virtualspeed = FIREFOX?0:TIMEOBJ/context.virtualwidth/url.speed;
     var rotatelst = [];
-    var k = Math.floor(TIMEMID*0.7)
-    var j = Math.floor(TIMEMID*1.3)
+    var k = Math.floor(TIMEMID*0.8)
+    var j = Math.floor(TIMEMID*1.2)
     for (var n = k; n < j; n+=context.virtualspeed)
         rotatelst.push(n);
     for (var n = j; n > k; n-=context.virtualspeed)
@@ -3327,7 +3325,7 @@ var templatelst =
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 12;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36; 
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 72; 
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-80", loomobj.length());
@@ -4025,7 +4023,6 @@ fetch(path)
 
         var slices = _9cnvctx.sliceobj;
         slices.data= [];
-        slices.data.push({title:"Refresh", path: "REFRESH", func: function(){location.reload();}})
 
         slices.data.push({ title:"Upload", path: "UPLOAD", func: function()
         {
@@ -4221,7 +4218,6 @@ var ContextObj = (function ()
                         _4cnvctx.slidestop = 0; 
                     }
 
-                    rotateobj.enabled = 1;
                     clearInterval(context.timemain);
                     context.timemain = 0;
                     pageresize();
@@ -4236,7 +4232,7 @@ var ContextObj = (function ()
 
                     contextobj.reset()
                     setTimeout(function() { masterload(); }, 2000);
-                    if (url.autostart)
+                    if (rotateobj.enabled)
                     {
                         if (!_4cnvctx.movingpage)
                             context.autodirect = -1;
@@ -5275,8 +5271,19 @@ var footlst =
             clearInterval(context.timefooter);
             if (context.progresscircle.hitest(x,y))
             {
-                if (screenfull.isEnabled)
-                    screenfull.toggle();
+                if (rotateobj.enabled)
+                {
+                    clearInterval(_4cnvctx.timemain);
+                    _4cnvctx.timemain = 0;
+                    rotateobj.enabled = 0;
+                }
+                else
+                {
+                    rotateobj.enabled = 1;
+                    _4cnvctx.tab();
+                }
+
+                _4cnvctx.refresh();
             }
             else if (context.keyzoomup && context.keyzoomup.hitest(x,y))
             {
@@ -5342,7 +5349,7 @@ var footlst =
                         0,
                         new Layer(
                            [
-                               screenfull.isFullscreen ? new Shadow(new Shrink(new Circle("rgb(255,155,0)"),7,7)) : 0,
+                               rotateobj.enabled ? new Shadow(new Shrink(new Circle("rgb(255,155,0)"),7,7)) : 0,
                                new ProgressCircle(1),
                                new Rectangle(context.progresscircle),
                            ]),
