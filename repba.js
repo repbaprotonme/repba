@@ -52,9 +52,9 @@ function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) 
 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
-url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 5;
+url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 9;
 url.reducefactor = url.searchParams.has("c") ? Number(url.searchParams.get("c")) : 40000;
-url.speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 5;
+url.speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 3;
 
 Math.clamp = function (min, max, val)
 {
