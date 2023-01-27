@@ -358,8 +358,11 @@ var colorlst =
 
 var colorobj = new makeoption("COLOR", colorlst);
 
-var speedobj = new makeoption("SPEED", [1,2,3,4,5,6,7,8,9]);
-var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 5;
+var lst = [];
+for (var n = 1; n <= 100; n+=0.25)
+    lst.push(n);
+var speedobj = new makeoption("SPEED", lst);
+var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 40;
 speedobj.set(speed); 
 
 var speedxobj = new makeoption("SPEEDX", 100);
@@ -510,6 +513,7 @@ function drawslices()
         delete context.stretchctrl;
         delete context.zoomctrl;
         delete context.slicectrl;
+        delete context.speedctrl;
         if (context.setcolumncomplete)
         {
             if (headobj.enabled)
@@ -608,7 +612,7 @@ function drawslices()
         }
 
         var a = new CurrentVPanel(new Fill("white"), 90, 1);
-        a.draw(context, new rectangle(0,0,14,rect.height), context.timeobj, 0); 
+        a.draw(context, new rectangle(5,0,10,rect.height), context.timeobj, 0); 
     }
 }
 
@@ -1716,22 +1720,23 @@ var wheelst =
     name: "BOSS",
     up: function (context, x, y, ctrl, shift, alt)
     {
-        var thumb = context.thumbrect && context.thumbrect.hitest(x,y);
-        var slice = (context.slicectrl && context.slicectrl.hitest(x,y))
-        var zoom = (context.zoomctrl && context.zoomctrl.hitest(x,y))
-        var stretch = (context.stretchctrl && context.stretchctrl.hitest(x,y))
-        if (slice)
+        if (context.slicectrl && context.slicectrl.hitest(x,y))
         {
             virtualcolsobj.add(virtualcolsobj.length()*0.02);
             contextobj.reset();
         }
-        else if (stretch || alt)
+        else if ((context.stretchctrl && context.stretchctrl.hitest(x,y)) || alt)
         {
             var stretch = stretchobj.getcurrent()
             stretch.add(stretch.length()*0.02);
             contextobj.reset();
         }
-        else if (zoom || ctrl)
+        else if (context.speedctrl && context.speedctrl.hitest(x,y))
+        {
+            speedobj.add(2);
+            contextobj.reset();
+        }
+        else if ((context.zoomctrl && context.zoomctrl.hitest(x,y)) || ctrl)
         {
             var zoom = zoomobj.getcurrent()
             zoom.add(-zoom.length()*0.02);
@@ -1742,7 +1747,7 @@ var wheelst =
             rowobj.add(-rowobj.length()*0.05);
             contextobj.reset();
         }
-        else if (thumb)
+        else if (context.thumbrect && context.thumbrect.hitest(x,y))
         {
             var obj = heightobj.getcurrent();
             var h = obj.getcurrent()*window.innerHeight;
@@ -1758,22 +1763,23 @@ var wheelst =
 	},
  	down: function (context, x, y, ctrl, shift, alt)
     {
-        var thumb = context.thumbrect && context.thumbrect.hitest(x,y);
-        var zoom = (context.zoomctrl && context.zoomctrl.hitest(x,y))
-        var slice = (context.slicectrl && context.slicectrl.hitest(x,y))
-        var stretch = (context.stretchctrl && context.stretchctrl.hitest(x,y))
-        if (zoom || ctrl)
+        if ((context.zoomctrl && context.zoomctrl.hitest(x,y)) || ctrl)
         {
             var zoom = zoomobj.getcurrent()
             zoom.add(zoom.length()*0.02);
             contextobj.reset();
         }
-        else if (slice)
+        else if (context.speedctrl && context.speedctrl.hitest(x,y))
+        {
+            speedobj.add(-2);
+            contextobj.reset();
+        }
+        else if (context.slicectrl && context.slicectrl.hitest(x,y))
         {
             virtualcolsobj.add(-virtualcolsobj.length()*0.02);
             contextobj.reset();
         }
-        else if (stretch || alt)
+        else if ((context.stretchctrl && context.stretchctrl.hitest(x,y)) || alt)
         {
             var stretch = stretchobj.getcurrent()
             stretch.add(-stretch.length()*0.02);
@@ -1784,7 +1790,7 @@ var wheelst =
             rowobj.add(rowobj.length()*0.05);
             contextobj.reset();
         }
-        else if (thumb)
+        else if (context.thumbrect && context.thumbrect.hitest(x,y))
         {
             var obj = heightobj.getcurrent();
             var h = obj.getcurrent()*window.innerHeight;
@@ -2023,7 +2029,7 @@ var panlst =
             posity.set((y/rect.height)*100);
             context.refresh();
         }
-        else if (context.isstretchrect)
+        else if (context.stretchctrl && context.stretchctrl.hitest(x,y))
         {
             pinchobj.set(1)
             var stretch = stretchobj.getcurrent()
@@ -2038,7 +2044,21 @@ var panlst =
             stretch.set(m);
             context.refresh();
         }
-        else if (context.isslicerect)
+        else if (context.speedctrl && context.speedctrl.hitest(x,y))
+        {
+            var obj = speedobj;
+            var m = (y - context.speedctrl.y)/context.speedctrl.height;
+            m = Math.floor((1-m)*obj.length());
+            if (window.landscape())
+            {
+                m = (x - context.speedctrl.x)/context.speedctrl.width;
+                m = Math.floor(m*obj.length());
+            }
+
+            obj.set(m);
+            contextobj.reset();
+        }
+        else if (context.slicectrl && context.slicectrl.hitest(x,y))
         {
             var obj = virtualcolsobj;
             var m = (y - context.slicectrl.y)/context.slicectrl.height;
@@ -2052,7 +2072,7 @@ var panlst =
             obj.set(m);
             contextobj.reset();
         }
-        else if (context.iszoomrect)
+        else if (context.zoomctrl && context.zoomctrl.hitest(x,y))
         {
             pinchobj.set(0)
             var zoom = zoomobj.getcurrent()
@@ -2115,6 +2135,8 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
 	{
+        rotateobj.enabled  = 0;
+        context.slidereduce = url.slidefactor?context.slidestop/url.slidefactor:0;
         clearInterval(footcnvctx.timefooter);
         context.startx = x;
         context.starty = y;
@@ -2122,9 +2144,6 @@ var panlst =
         context.startt = context.timeobj.current();
         var zoom = zoomobj.getcurrent()
         context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
-        context.iszoomrect = context.zoomctrl && context.zoomctrl.hitest(x,y);
-        context.isstretchrect = context.stretchctrl && context.stretchctrl.hitest(x,y);
-        context.isslicerect = context.slicectrl && context.slicectrl.hitest(x,y);
         context.panning = 1;
         context.clearpoints();
         context.refresh();
@@ -2136,9 +2155,6 @@ var panlst =
             context.pressed = 0;
             context.panning = 0;
             context.isthumbrect = 0;
-            context.isslicerect = 0;
-            context.iszoomrect = 0;
-            context.isstretchrect = 0;
             var zoom = zoomobj.getcurrent()
             delete context.startx;
             delete context.starty;
@@ -2683,7 +2699,6 @@ var taplst =
             {
                 context.tapindex = 0;
                 context.refresh();
-                authClient.redirectToLoginPage()
             },400)
         }
         else if (context.stretchctrl && context.stretchctrl.hitest(x,y))
@@ -2700,6 +2715,19 @@ var taplst =
 
             stretch.set(b);
             context.refresh();
+        }
+        else if (context.speedctrl && context.speedctrl.hitest(x,y))
+        {
+            var obj = speedobj;
+            var a = (y-context.speedctrl.y)/context.speedctrl.height;
+            var b = Math.floor(obj.length()*(1-a));
+            if (window.landscape())
+            {
+                var a = (x-context.speedctrl.x)/context.speedctrl.width;
+                var b = Math.floor(obj.length()*a);
+            }
+            obj.set(b);
+            contextobj.reset();
         }
         else if (context.slicectrl && context.slicectrl.hitest(x,y))
         {
@@ -2737,7 +2765,6 @@ var taplst =
             {
                 context.tapindex = 0;
                 context.refresh();
-                authClient.logout(true)
             },400)
         }
         else if (context.account && context.account.hitest(x,y))
@@ -2749,7 +2776,6 @@ var taplst =
             {
                 context.tapindex = 0;
                 context.refresh();
-                authClient.redirectToAccountPage()
             },400)
         }
         else if (context.menudown && context.menudown.hitest(x,y))
@@ -3263,7 +3289,8 @@ function resetcanvas()
     var y = Math.clamp(0,context.canvas.height-1,context.canvas.height*rowobj.berp());
     context.nuby = Math.nub(y, context.canvas.height, context.imageheight, photo.image.height);
 
-    context.virtualspeed = FIREFOX?0:TIMEOBJ/context.virtualwidth/speedobj.getcurrent();
+    var speed = speedobj.getcurrent()/10;
+    context.virtualspeed = FIREFOX?0:TIMEOBJ/context.virtualwidth/speed;
     var rotatelst = [];
     var k = Math.floor(TIMEMID*0.9)
     var j = Math.floor(TIMEMID*1.1)
@@ -3428,7 +3455,7 @@ var templatelst =
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 36;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 54;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-50", loomobj.length());
@@ -3949,6 +3976,55 @@ var bodylst =
             context.restore();
         }
     },
+    new function()
+    {
+        this.draw = function (context, rect, user, time)
+        {
+            context.speedctrl = new rectangle()
+            context.save();
+            context.font = "1rem Archivo Black";
+            if (window.innerWidth < window.innerHeight)
+            {
+                var w = ALIEXTENT;
+                var h = Math.min(rect.height/2,Math.max(320,rect.height-ALIEXTENT*4));
+                var a = new Centered(w,h, 
+                    new RowA([50,0],
+                    [
+                        new Text("white", "center", "middle",0,1,1),
+                        new Layer(
+                        [
+                            new Rectangle(context.speedctrl),
+                            new Fill(THUMBFILL),
+                            new Stroke(THUMBSTROKE,THUMBORDER),
+                            new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
+                        ])
+                    ]));
+
+                a.draw(context, rect, ["Speed",speedobj], 0);
+            }
+            else
+            {
+                var w = Math.min(rect.width/2,Math.max(320,rect.width-ALIEXTENT*4));
+                var h = ALIEXTENT+50;
+                var a = new Centered(w,h, 
+                    new RowA([0,ALIEXTENT],
+                    [
+                        new Text("white", "center", "middle",0,1,1),
+                        new Layer(
+                        [
+                            new Rectangle(context.speedctrl),
+                            new Fill(THUMBFILL),
+                            new Stroke(THUMBSTROKE,THUMBORDER),
+                            new CurrentHPanel(new Fill(THUMBSTROKE), ALIEXTENT, "BLACK"),
+                        ])
+                    ]))
+
+                a.draw(context, rect, ["Speed",speedobj], 0);
+            }
+
+            context.restore();
+        }
+    },
   ];
 
 var bodyobj = new makeoption("", bodylst);
@@ -3994,14 +4070,10 @@ galleryobj.path = function()
     h = Math.floor(h);
     var q = this.quality;
     var s = 'https://reportbase.com/image/'+name+'/w='+w+',h='+h+',quality='+q;
-//    var s = "res/RES.0000.jpg";
     return s;
 }
 
-authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
-
 var path = "https://reportbase.com/gallery/" + url.path;
-//var path = "res/RES.json";
 fetch(path)
   .then(function (response)
   {
@@ -4067,7 +4139,7 @@ fetch(path)
 
         function project()
         {
-           menuhide();
+            menuhide();
             galleryobj.set(this.index);
             var k = addressobj.full();
             window.location.href = k;
@@ -4156,6 +4228,13 @@ fetch(path)
             menuhide();
             promptFile().then(function(files) { dropfiles(files); })
         }});
+        
+        slices.data.push({title:"Speed", path: "SPEED", func: function(rect, x, y)
+        {
+            bodyobj.enabled = 10;
+            menuhide();
+            _4cnvctx.refresh();
+        }})
 
         slices.data.push({title:"Slices", path: "SLICES", func: function(rect, x, y)
         {
@@ -4180,18 +4259,12 @@ fetch(path)
             _4cnvctx.refresh();
         }})
 
+        /*
         slices.data.push({ title:"Account", path: "ADDIMG", func: function()
         {
-             authClient.getAuthenticationInfoOrNull(false)
-                .then(function(client)
-                {
-                    globalobj.user = client?client.user:0;
-                    bodyobj.enabled = 6;
-                    menuhide();
-                    _4cnvctx.refresh();
-                })
         }});
-        
+        */
+
         slices.data.push({ title:"Download", path: "DOWNLOAD", func: function()
         {
             context.refresh();
@@ -5217,7 +5290,7 @@ var headlst =
             var s = _5cnvctx.enabled || _8cnvctx.enabled;
             var a = new Layer(
                 [
-                    new Fill(globalobj.promptedfile?"rgba(0,0,255,0.5)":HEADBACK),
+                    new Fill(globalobj.promptedfile?"black":HEADBACK),
                     new Col([ALIEXTENT,0,ALIEXTENT,j,ALIEXTENT,0,ALIEXTENT],
                     [
                         new Layer(
