@@ -4339,8 +4339,8 @@ var ContextObj = (function ()
                     else if (typeof rowobj.initialize !== "undefined")
                         rowobj.set(window.innerHeight*(rowobj.initialize/100));
 
-                    if (context.timemain)
-                        rotateobj.enabled = 1;
+                    rotateobj.enabled = 1;
+                    _4cnvctx.tab();
 
                     contextobj.reset()
                     setTimeout(function() { masterload(); }, 2000);
