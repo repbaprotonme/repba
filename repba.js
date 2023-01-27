@@ -606,6 +606,9 @@ function drawslices()
             context.draw(context, context.rect(), j.slice, 0);
             context.restore();
         }
+
+        var a = new CurrentVPanel(new Fill("white"), 90, 1);
+        a.draw(context, new rectangle(0,0,14,rect.height), context.timeobj, 0); 
     }
 }
 
@@ -1970,16 +1973,27 @@ var panlst =
  	leftright: function (context, rect, x, y, type) { },
 	pan: function (context, rect, x, y, type)
     {
-        var jvalue = ((context.timeobj.length()/context.virtualheight)*(context.starty-y));
-        var j = context.startt - jvalue;
-        var len = context.timeobj.length();
-        if (j < 0)
-            j = len+j-1;
-        else if (j >= len)
-            j = j-len-1;
-        j = j % context.timeobj.length();
-        context.timeobj.set(j);
-        context.refresh()
+        if (x < ALIEXTENT)
+        {
+            var obj = context.timeobj;
+            var m = y/rect.height;
+            m = Math.floor((1-m)*obj.length());
+            obj.set(m);
+            context.refresh()
+        }
+        else
+        {
+            var jvalue = ((context.timeobj.length()/context.virtualheight)*(context.starty-y));
+            var j = context.startt - jvalue;
+            var len = context.timeobj.length();
+            if (j < 0)
+                j = len+j-1;
+            else if (j >= len)
+                j = j-len-1;
+            j = j % context.timeobj.length();
+            context.timeobj.set(j);
+            context.refresh()
+        }
     },
 	panstart: function (context, rect, x, y)
     {
@@ -3613,27 +3627,27 @@ var bodylst =
                         0,
                         0,
                         0,
-                        new Row([0,30,ALIEXTENT,ALIEXTENT,ALIEXTENT,30,0],
+                        new Row([0,30,80,80,80,30,0],
                             [
                                 0,
                                 new Rectangles(),
                                 new Layer(
                                 [
-                                    new Fill(context.tapindex == 1 ? MENUSELECT : MENUCOLOR),
+                                    new Fill(context.tapindex == 1 ? "rgb(255,155,0)" : MENUCOLOR),
                                     new Rectangle(context.menudown),
-                                    new Shrink(new Arrow(ARROWFILL,0),20,20),
+                                    new Col([0,17,0],[0,new Row([0,17,0],[0,new Arrow(ARROWFILL,0),0]),0]),
                                 ]),
                                 new Layer(
                                 [
-                                    new Fill(context.tapindex == 2 ? MENUSELECT : MENUCOLOR),
+                                    new Fill(context.tapindex == 2 ? "rgb(255,155,0)" : MENUCOLOR),
                                     new Rectangle(context.menuhome),
-                                    new Shrink(new Circle("white"),20,20)
+                                    new Col([0,17,0],[0,new Row([0,17,0],[0,new Circle("white"),0]),0]),
                                 ]),
                                 new Layer(
                                 [
-                                    new Fill(context.tapindex == 3 ? MENUSELECT : MENUCOLOR),
+                                    new Fill(context.tapindex == 3 ? "rgb(255,155,0)"  : MENUCOLOR),
                                     new Rectangle(context.menuup),
-                                    new Shrink(new Arrow(ARROWFILL,180),20,20),
+                                    new Col([0,17,0],[0,new Row([0,17,0],[0,new Arrow(ARROWFILL,180),0]),0]),
                                 ]),
                                 new Rectangles(),
                                 0,
@@ -4136,12 +4150,6 @@ fetch(path)
 
         var slices = _9cnvctx.sliceobj;
         slices.data= [];
-
-        slices.data.push({ title:"Upload", path: "UPLOAD", func: function()
-        {
-            menuhide();
-            promptFile().then(function(files) { dropfiles(files); })
-        }});
 
         slices.data.push({title:"Open", path: "OPEN", func: function()
         {
@@ -4885,7 +4893,7 @@ var ImagePanel = function (shrink)
 	};
 };
 
-var CurrentHPanel = function (panel, extent, clr)
+var CurrentHPanel = function (panel, extent)
 {
     this.draw = function (context, rect, user, time)
     {
@@ -4895,16 +4903,11 @@ var CurrentHPanel = function (panel, extent, clr)
         var nub = Math.nub(current, length, extent, rect.width);
         var r = new rectangle(rect.x + nub, rect.y, extent, rect.height);
         panel.draw(context, r, 0, time);
-        context.font = "1rem Archivo Black";
-        context.shadowOffsetX = 0;
-        context.shadowOffsetY = 0;
-        var t = new Text(clr, "center", "middle",0, 0, 0);
-        //t.draw(context, r, (user.current()+1).toFixed(0), 0);
         context.restore();
     };
 };
 
-var CurrentVPanel = function (panel, extent, rev, clr)
+var CurrentVPanel = function (panel, extent, rev)
 {
     this.draw = function (context, rect, user, time)
     {
@@ -4913,11 +4916,6 @@ var CurrentVPanel = function (panel, extent, rev, clr)
         var nub = Math.nub(k, user.length(), extent, rect.height);
         var r = new rectangle(rect.x, rect.y + nub, rect.width, extent);
         panel.draw(context, r, 0, time);
-        context.font = "1rem Archivo Black";
-        context.shadowOffsetX = 0;
-        context.shadowOffsetY = 0;
-        var t = new Text(clr, "center", "middle",0, 0, 0);
-    //    t.draw(context, r, (user.current()+1).toFixed(0), 0);
         context.restore();
     };
 };
@@ -5219,7 +5217,7 @@ var headlst =
             var s = _5cnvctx.enabled || _8cnvctx.enabled;
             var a = new Layer(
                 [
-                    new Fill(globalobj.promptedfile?"red":HEADBACK),
+                    new Fill(globalobj.promptedfile?"rgba(0,0,255,0.5)":HEADBACK),
                     new Col([ALIEXTENT,0,ALIEXTENT,j,ALIEXTENT,0,ALIEXTENT],
                     [
                         new Layer(
