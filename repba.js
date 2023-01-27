@@ -2432,6 +2432,9 @@ var swipelst =
         setTimeout(function()
         {
             context.autodirect = evt.type == "swipeleft"?-1:1;
+            clearInterval(context.timemain);
+            context.timemain = 0;
+            rotateobj.enabled = 0;
             context.tab();
         }, SWIPETIME);
     },
