@@ -5293,7 +5293,7 @@ var headlst =
             var s;
             if (globalobj.promptedfile)
             {
-                s = "Open ...";
+                s = "Upload";
             }
             else if (infobj.current() == 0)
             {
