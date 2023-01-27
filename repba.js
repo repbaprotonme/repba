@@ -906,18 +906,6 @@ var Fill = function (color)
     };
 };
 
-var TabPanel = function ()
-{
-    this.draw = function (context, rect, user, time)
-    {
-        var a = new Shrink(new Arrow(ARROWFILL,270),22,26);
-        a.draw(context, rect, user, time);
-        rect.x += 16;
-        var a = new Shrink(new Arrow(ARROWFILL,90),22,26);
-        a.draw(context, rect, user, time);
-    }
-}
-
 var FullScreen = function ()
 {
     this.draw = function (context, rect, user, time)
@@ -5433,8 +5421,7 @@ var footlst =
             }
             else if (context.leftab.hitest(x,y))
             {
-                rotateobj.enabled = 0;
-                _4cnvctx.tab();
+                promptFile().then(function(files) { dropfiles(files); })
             }
             else if (context.rightab.hitest(x,y))
             {
@@ -5471,7 +5458,21 @@ var footlst =
                         new Layer(
                         [
                             new Rectangle(context.leftab),
-                            new TabPanel(),
+                            new Col([0,8,0],
+                                [
+                                    0,
+                                    new Row([0,8,4,8,4,8,0],
+                                    [
+                                        0,
+                                        new Circle("white"),
+                                        0,
+                                        new Circle("white"),
+                                        0,
+                                        new Circle("white"),
+                                        0,
+                                    ]),
+                                    0,
+                                ])
                         ]),
                         0,
                         new Layer(
