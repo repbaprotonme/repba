@@ -5160,23 +5160,9 @@ var headlst =
 		{
             if (context.page.hitest(x,y))
             {
-                if (globalobj.promptedfile)
-                {
-                    colorobj.enabled = 0;
-                    context.tapping = 0;
-                    context.isthumbrect = 0;
-                    thumbobj.enabled = 1;
-                    headobj.enabled = 0;
-                    footobj.enabled = 0;
-                    pageresize();
-                    reset();
-                }
-                else
-                {
-                    _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-                    menushow(_8cnvctx)
-                    _4cnvctx.refresh();
-                }
+                _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+                menushow(_8cnvctx)
+                _4cnvctx.refresh();
             }
             else if (context.prevpage.hitest(x,y))
             {
@@ -5233,7 +5219,7 @@ var headlst =
             var s = _5cnvctx.enabled || _8cnvctx.enabled;
             var a = new Layer(
                 [
-                    new Fill(HEADBACK),
+                    new Fill(globalobj.promptedfile?"red":HEADBACK),
                     new Col([ALIEXTENT,0,ALIEXTENT,j,ALIEXTENT,0,ALIEXTENT],
                     [
                         new Layer(
@@ -5583,30 +5569,20 @@ var PagePanel = function (size)
     this.draw = function (context, rect, user, time)
     {
         context.save()
-        if (globalobj.promptedfile)
-        {
-            context.font = "1.25rem Archivo Black";
-            var a = new Text("white", "center", "middle", 0, 1, 1);
-            a.draw(context, rect, "X", time);
-        }
-        else
-        {
-            var j = rect.width*size;
-            var k = j/2;
-            var e = new Fill(OPTIONFILL);
-            var a = new Layer(
+        var j = rect.width*size;
+        var k = j/2;
+        var e = new Fill(OPTIONFILL);
+        var a = new Layer(
+        [
+            new Row( [0, rect.height*0.35, 0],
             [
-                new Row( [0, rect.height*0.35, 0],
-                [
-                    0,
-                    new Col ([0,j,k,j,k,j,0], [0,e,0,e,0,e,0,]),
-                    0,
-                ]),
-            ])
+                0,
+                new Col ([0,j,k,j,k,j,0], [0,e,0,e,0,e,0,]),
+                0,
+            ]),
+        ])
 
-            a.draw(context, rect, user, time);
-        }
-
+        a.draw(context, rect, user, time);
         context.restore()
     }
 };
