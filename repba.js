@@ -2111,7 +2111,6 @@ var panlst =
         context.iszoomrect = context.zoomctrl && context.zoomctrl.hitest(x,y);
         context.isstretchrect = context.stretchctrl && context.stretchctrl.hitest(x,y);
         context.isslicerect = context.slicectrl && context.slicectrl.hitest(x,y);
-        rotateobj.enabled = 0;
         context.panning = 1;
         context.clearpoints();
         context.refresh();
