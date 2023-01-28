@@ -60,25 +60,45 @@ if (url.searchParams.has("login"))
     var k = url.searchParams.get("login");
     var j = JSON.parse(k);
     localStorage.setItem("access_token", j.access_token);
-
 }
 
 var spotify = {}
-spotify.access_token = localStorage.getItem("access_token"); 
+spotify.access_token = "BQBkzMAtwUqNc_syF57ybvVcEgEIdzxonpM2ySGrJOFK8Po7cdQMSqar_0XrRk1z8mTISrG3b98QN-342Z1Bc2mkdyloZzhMJGVcLh1Jva3XEa057rnm" 
+    //localStorage.getItem("access_token"); 
 
-    fetch("https://api.spotify.com/v1/me",
-       {
-            headers: 
-           { 
-               'Accept': 'application/json',
-               'Content-Type': 'application/json',
-               'Authorization': 'Bearer ' + spotify.access_token,
-           }         
-       })
-      .then(function (response)
-      {
-         console.log(response.json());
-      })
+fetch('https://api.spotify.com/v1/artists/21E3waRsmPlU7jZsS13rcj', {
+            method: 'GET', headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + spotify.access_token,
+            }
+        })
+            .then((response) => {
+                console.log(response.json().then(
+                    (data) => 
+                    { 
+                        console.log(data) 
+                        var a =1;
+                    }
+                ));
+            });
+
+fetch('https://api.spotify.com/v1/me', {
+            method: 'GET', headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + spotify.access_token,
+            }
+        })
+            .then((response) => {
+                console.log(response.json().then(
+                    (data) => 
+                    { 
+                        console.log(data) 
+                        var a =1;
+                    }
+                ));
+            });
 
 Math.clamp = function (min, max, val)
 {
