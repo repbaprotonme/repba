@@ -72,7 +72,7 @@ spotify.access_token = localStorage.getItem("access_token");
            { 
                'Accept': 'application/json',
                'Content-Type': 'application/json',
-               'Authorization': 'Bearer ' + spotifiy.access_token,
+               'Authorization': 'Bearer ' + spotify.access_token,
            }         
        })
       .then(function (response)
