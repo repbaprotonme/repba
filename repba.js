@@ -61,22 +61,24 @@ if (url.searchParams.has("login"))
     var j = JSON.parse(k);
     localStorage.setItem("access_token", j.access_token);
 
-   fetch("https://api.spotify.com/v1/me",
+}
+
+var spotify = {}
+spotify.access_token = localStorage.getItem("access_token"); 
+
+    fetch("https://api.spotify.com/v1/me",
        {
             headers: 
            { 
+               'Accept': 'application/json',
                'Content-Type': 'application/json',
-               'Authorization': 'Bearer ' + j.access_token,
+               'Authorization': 'Bearer ' + spotifiy.access_token,
            }         
        })
       .then(function (response)
       {
          console.log(response.json());
       })
-}
-
-var spotify = {}
-spotify.access_token = localStorage.getItem("access_token"); 
 
 Math.clamp = function (min, max, val)
 {
