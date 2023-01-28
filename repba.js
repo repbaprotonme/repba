@@ -55,6 +55,16 @@ url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 9;
 url.reducefactor = url.searchParams.has("c") ? Number(url.searchParams.get("c")) : 40000;
 
+if (url.searchParams.has("login"))
+{
+    var k = url.searchParams.get("login");
+    var j = JSON.parse(k);
+    localStorage.setItem("access_token", j.access_token);
+}
+
+var spotify = {}
+spotify.access_token = localStorage.getItem("access_token"); 
+
 Math.clamp = function (min, max, val)
 {
     if (typeof val === "undefined" || Number.isNaN(val) || val == null)
@@ -358,12 +368,9 @@ var colorlst =
 
 var colorobj = new makeoption("COLOR", colorlst);
 
-var lst = [];
-for (var n = 1; n <= 100; n+=0.25)
-    lst.push(n);
-var speedobj = new makeoption("SPEED", lst);
-var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 40;
-speedobj.set(speed); 
+var speedobj = new makeoption("SPEED", [10,20,30,40,50,60,70,80,90,100]);
+var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 50;
+speedobj.set(speed);
 
 var speedxobj = new makeoption("SPEEDX", 100);
 var speedyobj = new makeoption("SPEEDY", 100);
@@ -5290,7 +5297,7 @@ var headlst =
             var s = _5cnvctx.enabled || _8cnvctx.enabled;
             var a = new Layer(
                 [
-                    new Fill(globalobj.promptedfile?"black":HEADBACK),
+                    new Fill(HEADBACK),
                     new Col([ALIEXTENT,0,ALIEXTENT,j,ALIEXTENT,0,ALIEXTENT],
                     [
                         new Layer(
@@ -5300,7 +5307,7 @@ var headlst =
                             new Rectangle(context.page),
                         ]),
                         new Rectangle(context.leftab),
-                        globalobj.promptedfile?0:new Layer(
+                        new Layer(
                         [
                             new Rectangle(context.prevpage),
                             new Row([HNUB,0,HNUB],
@@ -5325,7 +5332,7 @@ var headlst =
                                 0,
                             ]),
                         ]),
-                        globalobj.promptedfile?0:new Layer(
+                        new Layer(
                         [
                             new Rectangle(context.nextpage),
                             new Row([HNUB,0,HNUB],
