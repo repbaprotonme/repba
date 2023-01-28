@@ -60,6 +60,19 @@ if (url.searchParams.has("login"))
     var k = url.searchParams.get("login");
     var j = JSON.parse(k);
     localStorage.setItem("access_token", j.access_token);
+
+   fetch("https://api.spotify.com/v1/me",
+       {
+            headers: 
+           { 
+               'Content-Type': 'application/json',
+               'Authorization': 'Bearer ' + j.access_token,
+           }         
+       })
+      .then(function (response)
+      {
+         console.log(response.json());
+      })
 }
 
 var spotify = {}
