@@ -3811,7 +3811,7 @@ var bodylst =
 
                 a.draw(context, rect,
                 [
-                    globalobj.user ? globalobj.user.email; "Login",
+                    globalobj.user ? globalobj.user.email: "Login",
                     "Logout",
                     "Setup"
                 ],
