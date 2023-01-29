@@ -52,7 +52,6 @@ function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) 
 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
-url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 6;
 url.reducefactor = url.searchParams.has("c") ? Number(url.searchParams.get("c")) : 40000;
 
 Math.clamp = function (min, max, val)
@@ -359,8 +358,12 @@ var colorlst =
 var colorobj = new makeoption("COLOR", colorlst);
 
 var speedobj = new makeoption("SPEED", 100);
-var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 40;
-speedobj.set(speed);
+var k = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 40;
+speedobj.set(k);
+
+var timemain = new makeoption("TIMEMAIN", 30);
+var k = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 12;
+timemain.set(k);
 
 var speedxobj = new makeoption("SPEEDX", 100);
 var speedyobj = new makeoption("SPEEDY", 100);
@@ -508,6 +511,7 @@ function drawslices()
         delete context.zoomctrl;
         delete context.slicectrl;
         delete context.speedctrl;
+        delete context.timemainctrl;
 
         if (context.hidedisplay)
         {
@@ -1253,8 +1257,6 @@ addressobj.full = function ()
     out +=
         "?p="+galleryobj.getcurrent().title+
         "&h="+headobj.enabled+
-        "&v="+virtualcolsobj.current()+
-        "&n="+url.timemain+
         "&s="+url.slidetop+
         "&f="+url.slidefactor+
         "&c="+url.reducefactor+
@@ -1262,6 +1264,8 @@ addressobj.full = function ()
         "&yp="+positypobj.current().toFixed(2)+
         "&xl="+positxlobj.current().toFixed(2)+
         "&yl="+positylobj.current().toFixed(2)+
+        "&v="+virtualcolsobj.current()+
+        "&n="+timemain.current()+
         "&g="+speedobj.current()+
         "&o="+traitobj.current()+
         "&u="+scapeobj.current()+
@@ -1354,7 +1358,7 @@ CanvasRenderingContext2D.prototype.tab = function ()
         context.slidereduce = context.slidestop/url.reducefactor;
 
     clearInterval(context.timemain);
-    context.timemain = setInterval(function () { drawslices() }, url.timemain);
+    context.timemain = setInterval(function () { drawslices() }, timemain.getcurrent());
 }
 
 CanvasRenderingContext2D.prototype.refresh = function ()
@@ -1733,6 +1737,10 @@ var wheelst =
             stretch.add(stretch.length()*0.02);
             contextobj.reset();
         }
+        else if (context.timemainctrl && context.timemainctrl.hitest(x,y))
+        {
+            //todo
+        }
         else if (context.speedctrl && context.speedctrl.hitest(x,y))
         {
             speedobj.add(2);
@@ -1770,6 +1778,10 @@ var wheelst =
             var zoom = zoomobj.getcurrent()
             zoom.add(zoom.length()*0.02);
             contextobj.reset();
+        }
+        else if (context.timemainctrl && context.timemainctrl.hitest(x,y))
+        {
+            //todo
         }
         else if (context.speedctrl && context.speedctrl.hitest(x,y))
         {
@@ -2045,6 +2057,20 @@ var panlst =
 
             stretch.set(m);
             context.refresh();
+        }
+        else if (context.timemainctrl && context.timemainctrl.hitest(x,y))
+        {
+            var obj = timemain;
+            var m = (y - context.timemainctrl.y)/context.timemainctrl.height;
+            m = Math.floor((1-m)*obj.length());
+            if (window.landscape())
+            {
+                m = (x - context.timemainctrl.x)/context.timemainctrl.width;
+                m = Math.floor(m*obj.length());
+            }
+
+            obj.set(m);
+            context.tab();
         }
         else if (context.speedctrl && context.speedctrl.hitest(x,y))
         {
@@ -2720,6 +2746,19 @@ var taplst =
 
             stretch.set(b);
             context.refresh();
+        }
+        else if (context.timemainctrl && context.timemainctrl.hitest(x,y))
+        {
+            var obj = timemain;
+            var a = (y-context.timemainctrl.y)/context.timemainctrl.height;
+            var b = Math.floor(obj.length()*(1-a));
+            if (window.landscape())
+            {
+                var a = (x-context.timemainctrl.x)/context.timemainctrl.width;
+                var b = Math.floor(obj.length()*a);
+            }
+            obj.set(b);
+            context.tab();
         }
         else if (context.speedctrl && context.speedctrl.hitest(x,y))
         {
@@ -3920,45 +3959,81 @@ var bodylst =
         this.draw = function (context, rect, user, time)
         {
             context.speedctrl = new rectangle()
+            context.timemainctrl = new rectangle()
             context.save();
             context.font = "1rem Archivo Black";
+            var j = pinchobj.current();
             if (window.innerWidth < window.innerHeight)
             {
-                var w = ALIEXTENT;
+                var w = ALIEXTENT*2+30;
                 var h = Math.min(rect.height/2,Math.max(320,rect.height-ALIEXTENT*4));
                 var a = new Centered(w,h, 
-                    new RowA([50,0],
+                    new ColA([ALIEXTENT,0,ALIEXTENT],
                     [
-                        new Text("white", "center", "middle",0,1,1),
-                        new Layer(
+                        new RowA([50,0],
                         [
-                            new Rectangle(context.speedctrl),
-                            new Fill(THUMBFILL),
-                            new Stroke(THUMBSTROKE,THUMBORDER),
-                            new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1),
+                            new Text("white", "center", "middle",0,1,1),
+                            new Layer(
+                            [
+                                new Rectangle(context.timemainctrl),
+                                new Fill(THUMBFILL),
+                                new Stroke(THUMBSTROKE,THUMBORDER),
+                                new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1, "BLACK")
+                            ]),
+                        ]),
+                        0,
+                        new RowA([50,0],
+                        [
+                            new Text("white", "center", "middle",0,1,1),
+                            new Layer(
+                            [
+                                new Rectangle(context.speedctrl),
+                                new Fill(THUMBFILL),
+                                new Stroke(THUMBSTROKE,THUMBORDER),
+                                new CurrentVPanel(new Fill(THUMBSTROKE), ALIEXTENT, 1, "BLACK")
+                            ]),
                         ])
                     ]));
 
-                a.draw(context, rect, ["Speed",speedobj], 0);
+                a.draw(context, rect, 
+                [
+                    [
+                        "Timer",
+                        timemain,
+                    ],
+                    0,
+                    [
+                        "Speed",
+                        speedobj
+                    ]
+                ], 0);
             }
             else
             {
-                var w = Math.min(rect.width/2,Math.max(320,rect.width-ALIEXTENT*4));
-                var h = ALIEXTENT+50;
+                var w = Math.min(rect.width/2,Math.max(640,rect.width-ALIEXTENT*4));
+                var h = ALIEXTENT*2+100;
                 var a = new Centered(w,h, 
-                    new RowA([0,ALIEXTENT],
+                    new RowA([0,ALIEXTENT,0,ALIEXTENT],
                     [
-                        new Text("white", "center", "middle",0,1,1),
+                        new Text("white", "center", "middle",0,0,1),
+                        new Layer(
+                        [
+                            new Rectangle(context.timemainctrl),
+                            new Fill(THUMBFILL),
+                            new Stroke(THUMBSTROKE,THUMBORDER),
+                            new CurrentHPanel(new Fill(THUMBSTROKE), ALIEXTENT, "BLACK")
+                        ]),
+                        new Text("white", "center", "middle",0,0,1),
                         new Layer(
                         [
                             new Rectangle(context.speedctrl),
                             new Fill(THUMBFILL),
                             new Stroke(THUMBSTROKE,THUMBORDER),
                             new CurrentHPanel(new Fill(THUMBSTROKE), ALIEXTENT, "BLACK"),
-                        ])
-                    ]))
+                        ]),
+                    ]));
 
-                a.draw(context, rect, ["Speed",speedobj], 0);
+                a.draw(context, rect, ["Timer",timemain,"Speed",speedobj], 0);
             }
 
             context.restore();
