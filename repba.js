@@ -55,17 +55,6 @@ url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 9;
 url.reducefactor = url.searchParams.has("c") ? Number(url.searchParams.get("c")) : 40000;
 
-if (url.searchParams.has("spotify"))
-{
-    var k = url.searchParams.get("spotify");
-    localStorage.setItem("spotify", k);
-}
-
-var spotify = {}
-var k = localStorage.getItem("spotify");
-if (k)
-    spotify = JSON.parse(k);
-
 Math.clamp = function (min, max, val)
 {
     if (typeof val === "undefined" || Number.isNaN(val) || val == null)
@@ -2707,6 +2696,7 @@ var taplst =
             {
                 context.tapindex = 0;
                 context.refresh();
+                authClient.redirectToLoginPage()                                                                                               
             },400)
         }
         else if (context.stretchctrl && context.stretchctrl.hitest(x,y))
@@ -2773,6 +2763,7 @@ var taplst =
             {
                 context.tapindex = 0;
                 context.refresh();
+                authClient.logout(true)
             },400)
         }
         else if (context.account && context.account.hitest(x,y))
@@ -2878,6 +2869,7 @@ var taplst =
                 context.tapindex = 0;
                 bodyobj.enabled = 6;
                 context.refresh();
+                authClient.redirectToAccountPage()
             }, 400)
         }
         else if (context.delimage && context.delimage.hitest(x,y))
@@ -4258,6 +4250,15 @@ fetch(path)
             _4cnvctx.refresh();
         }})
 
+        slices.data.push({title:"Login", path: "LOGIN", func: function ()
+        {
+            headobj.enabled = 1;
+            footobj.enabled = 1;
+            bodyobj.enabled = 4;
+            menuhide();
+            _4cnvctx.refresh();
+        }})
+
         slices.data.push({title:"Info", path: "INFO", func: function(rect, x, y)
         {
             headobj.enabled = 1;
@@ -4273,32 +4274,6 @@ fetch(path)
             var obj = galleryobj.getcurrent();
             window.open("https://reportbase.com/image/"+obj.title+"/w="+obj.width,"Reportbase");
         }});
-
-        fetch('https://api.spotify.com/v1/browse/featured-playlists', {
-            method: 'GET', headers: 
-            {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + spotify.access_token,
-            }
-        })
-            .then((response) => 
-            {
-                console.log(response.json().then(
-                    (data) => 
-                    { 
-                        var slices = _9cnvctx.sliceobj;
-                        _6cnvctx.sliceobj.data = lst;
-                        _6cnvctx.buttonheight = 180;
-                        _6cnvctx.delayinterval = DELAYCENTER / lst.length;
-                        _6cnvctx.virtualheight = lst.length*_6cnvctx.buttonheight;
-                        _6cnvctx.rvalue = 1;
-                        _6cnvctx.slidereduce = 0.75;
-                        slices.data.push({title:"Playlists", path: "PLAY", func: function(){menushow(_6cnvctx); }})
-                    }
-                ));
-            });
-
 
         slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
 
@@ -5810,4 +5785,10 @@ window.addEventListener("load", async () =>
 {
 });
 
+authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+authClient.getAuthenticationInfoOrNull(false)
+    .then(function(client)
+    {
+        globalobj.user = client.user;
+    })
 
