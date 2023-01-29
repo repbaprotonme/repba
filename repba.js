@@ -2775,6 +2775,7 @@ var taplst =
             {
                 context.tapindex = 0;
                 context.refresh();
+                authClient.redirectToAccountPage()
             },400)
         }
         else if (context.menudown && context.menudown.hitest(x,y))
@@ -2859,7 +2860,7 @@ var taplst =
                 window.location.href = "http://upload.reportbase.com";
             }, 400)
         }
-        else if (context.accountpanel && context.accountpanel.hitest(x,y))
+        else if (context.accountpanel && context.accountpanel.hitest(x,y))//todo
         {
             context.tapindex = 3;
             context.refresh();
@@ -2869,7 +2870,6 @@ var taplst =
                 context.tapindex = 0;
                 bodyobj.enabled = 6;
                 context.refresh();
-                authClient.redirectToAccountPage()
             }, 400)
         }
         else if (context.delimage && context.delimage.hitest(x,y))
@@ -3811,7 +3811,7 @@ var bodylst =
 
                 a.draw(context, rect,
                 [
-                    "Login",
+                    globalobj.user ? globalobj.user.email; "Login",
                     "Logout",
                     "Setup"
                 ],
