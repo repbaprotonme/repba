@@ -3448,7 +3448,7 @@ var templatelst =
         positylobj.set(yl);
         url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
         url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36; 
-        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0kk;
+        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-80", loomobj.length());
         poomobj.split(b, "0-80", poomobj.length());
