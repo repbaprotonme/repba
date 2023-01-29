@@ -5225,12 +5225,6 @@ var headlst =
     },
 	new function ()
 	{
-    	this.press = function (context, rect, x, y)
-        {
-            bodyobj.enabled = bodyobj.enabled==8?0:8;
-            _4cnvctx.refresh();
-        }
-
     	this.tap = function (context, rect, x, y)
 		{
             if (context.page.hitest(x,y))
@@ -5245,18 +5239,8 @@ var headlst =
             }
             else if (context.picture.hitest(x,y))
             {
-                if (globalobj.promptedfile)
-                {
-                    if (globalobj.user)
-                        promptFile().then(function(files) { dropfiles(files); })
-                    else
-                        authClient.redirectToLoginPage()                                                                                               
-                }
-                else
-                {
-                    infobj.rotate(1);
-                    _4cnvctx.refresh();
-                }
+                infobj.rotate(1);
+                _4cnvctx.refresh();
             }
             else if (context.nextpage.hitest(x,y))
             {
@@ -5266,12 +5250,6 @@ var headlst =
             {
                 _4cnvctx.refresh();
                 menushow(_9cnvctx);
-            }
-            else if (context.leftab.hitest(x,y))
-            {
-            }
-            else if (context.rightab.hitest(x,y))
-            {
             }
 
             _4cnvctx.refresh();
@@ -5289,8 +5267,6 @@ var headlst =
             context.prevpage = new rectangle()
             context.nextpage = new rectangle()
             context.thumbnail = new rectangle()
-            context.leftab = new rectangle()
-            context.rightab = new rectangle()
             context.picture = new rectangle()
             context.font = "1rem Archivo Black";
             var j = rect.width < 420 ? (rect.width-ALIEXTENT*4):180;
@@ -5306,7 +5282,7 @@ var headlst =
                             new PagePanel(s?0.115:0.1),
                             new Rectangle(context.page),
                         ]),
-                        new Rectangle(context.leftab),
+                        0,
                         new Layer(
                         [
                             new Rectangle(context.prevpage),
@@ -5346,7 +5322,7 @@ var headlst =
                                 0,
                             ]),
                         ]),
-                        new Rectangle(context.rightab),
+                        0,
                         new Layer(
                         [
                             _9cnvctx.enabled ? new Fill(BUTTONBACK):0,
@@ -5357,11 +5333,7 @@ var headlst =
                ]);
 
             var s;
-            if (globalobj.promptedfile)
-            {
-                s = globalobj.user ? "Upload" : "Login";
-            }
-            else if (infobj.current() == 0)
+            if (infobj.current() == 0)
             {
                 s = (galleryobj.current()+1).toFixed(0);
             }
@@ -5381,6 +5353,71 @@ var headlst =
             }
 
             a.draw(context, rect, s, time);
+            context.restore()
+		};
+	},
+	new function ()
+	{
+    	this.tap = function (context, rect, x, y)
+		{
+            if (context.page.hitest(x,y))
+            {
+                _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+                menushow(_8cnvctx)
+                _4cnvctx.refresh();
+            }
+            else if (context.picture.hitest(x,y))
+            {
+                /*
+                if (globalobj.user)
+                    promptFile().then(function(files) { dropfiles(files); })
+                else
+                    authClient.redirectToLoginPage()                                                                                               
+                */
+            }
+            else if (context.option.hitest(x,y))
+            {
+                _4cnvctx.refresh();
+                menushow(_9cnvctx);
+            }
+
+            _4cnvctx.refresh();
+		};
+
+		this.draw = function (context, rect, user, time)
+		{
+            context.clear()
+            context.save()
+            context.shadowOffsetX = 1;
+            context.shadowOffsetY = 1;
+            context.shadowColor = "black"
+            context.page = new rectangle()
+            context.option = new rectangle()
+            context.font = "1rem Archivo Black";
+            var j = rect.width < 420 ? (rect.width-ALIEXTENT*4):180;
+            var s = _5cnvctx.enabled || _8cnvctx.enabled;
+            var a = new Layer(
+                [
+                    new Fill(HEADBACK),
+                    new Col([ALIEXTENT,0,ALIEXTENT],
+                    [
+                        new Layer(
+                        [
+                            s ? new Fill(BUTTONBACK) : 0,
+                            new PagePanel(s?0.115:0.1),
+                            new Rectangle(context.page),
+                        ]),
+                        0,
+                        new Layer(
+                        [
+                            _9cnvctx.enabled ? new Fill(BUTTONBACK):0,
+                            new OptionPanel((!_9cnvctx.enabled)?0.1:0.115),
+                            new Rectangle(context.option),
+                        ])
+                    ])
+               ]);
+
+            a.draw(context, rect, 0, time);
             context.restore()
 		};
 	},
@@ -5434,9 +5471,6 @@ var footlst =
                     else
                         _4cnvctx.refresh();
                 }, 4);
-            }
-            else if (context.progresscircle.hitest(x,y))
-            {
             }
         };
 
@@ -5750,7 +5784,7 @@ function pageresize()
 {
     var h = headobj.enabled ? ALIEXTENT : 0;
     headcnvctx.show(0,0,window.innerWidth,h);
-    headobj.set(h?1:0);
+    headobj.set(h?(globalobj.promptedfile?2:1):0);
     headham.panel = headobj.getcurrent();
     var h = footobj.enabled ? (SAFARI?90:70) : 0;
     footcnvctx.show(0,window.innerHeight-h, window.innerWidth, h);
