@@ -5247,7 +5247,10 @@ var headlst =
             {
                 if (globalobj.promptedfile)
                 {
-                    promptFile().then(function(files) { dropfiles(files); })
+                    if (globalobj.user)
+                        promptFile().then(function(files) { dropfiles(files); })
+                    else
+                        authClient.redirectToLoginPage()                                                                                               
                 }
                 else
                 {
@@ -5356,7 +5359,7 @@ var headlst =
             var s;
             if (globalobj.promptedfile)
             {
-                s = "Upload";
+                s = globalobj.user ? "Upload" : "Login";
             }
             else if (infobj.current() == 0)
             {
