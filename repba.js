@@ -58,46 +58,13 @@ url.reducefactor = url.searchParams.has("c") ? Number(url.searchParams.get("c"))
 if (url.searchParams.has("login"))
 {
     var k = url.searchParams.get("login");
-    var j = JSON.parse(k);
-    localStorage.setItem("access_token", j.access_token);
+    localStorage.setItem("login", k);
 }
 
 var spotify = {}
-spotify.access_token = localStorage.getItem("access_token"); 
-
-fetch('https://api.spotify.com/v1/artists/21E3waRsmPlU7jZsS13rcj', {
-            method: 'GET', headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + spotify.access_token,
-            }
-        })
-            .then((response) => {
-                console.log(response.json().then(
-                    (data) => 
-                    { 
-                        console.log(data) 
-                        var a =1;
-                    }
-                ));
-            });
-
-fetch('https://api.spotify.com/v1/me', {
-            method: 'GET', headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + spotify.access_token,
-            }
-        })
-            .then((response) => {
-                console.log(response.json().then(
-                    (data) => 
-                    { 
-                        console.log(data) 
-                        var a =1;
-                    }
-                ));
-            });
+var str = localStorage.getItem("login");
+if (str)
+    spotify = JSON.parse(str);
 
 Math.clamp = function (min, max, val)
 {
@@ -4300,12 +4267,6 @@ fetch(path)
             _4cnvctx.refresh();
         }})
 
-        /*
-        slices.data.push({ title:"Account", path: "ADDIMG", func: function()
-        {
-        }});
-        */
-
         slices.data.push({ title:"Download", path: "DOWNLOAD", func: function()
         {
             context.refresh();
@@ -4313,7 +4274,34 @@ fetch(path)
             window.open("https://reportbase.com/image/"+obj.title+"/w="+obj.width,"Reportbase");
         }});
 
+        fetch('https://api.spotify.com/v1/browse/featured-playlists', {
+            method: 'GET', headers: 
+            {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + spotify.access_token,
+            }
+        })
+            .then((response) => 
+            {
+                console.log(response.json().then(
+                    (data) => 
+                    { 
+                        var slices = _9cnvctx.sliceobj;
+                        _6cnvctx.sliceobj.data = lst;
+                        _6cnvctx.buttonheight = 180;
+                        _6cnvctx.delayinterval = DELAYCENTER / lst.length;
+                        _6cnvctx.virtualheight = lst.length*_6cnvctx.buttonheight;
+                        _6cnvctx.rvalue = 1;
+                        _6cnvctx.slidereduce = 0.75;
+                        slices.data.push({title:"Playlists", path: "PLAY", func: function(){menushow(_6cnvctx); }})
+                    }
+                ));
+            });
+
+
         slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
+
         slices.data.push({title:"Fullscreen", path: "FULLSCREEN", func: function ()
         {
             if (screenfull.isEnabled)
