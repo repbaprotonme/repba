@@ -63,8 +63,7 @@ if (url.searchParams.has("login"))
 }
 
 var spotify = {}
-spotify.access_token = "BQBkzMAtwUqNc_syF57ybvVcEgEIdzxonpM2ySGrJOFK8Po7cdQMSqar_0XrRk1z8mTISrG3b98QN-342Z1Bc2mkdyloZzhMJGVcLh1Jva3XEa057rnm" 
-    //localStorage.getItem("access_token"); 
+spotify.access_token = localStorage.getItem("access_token"); 
 
 fetch('https://api.spotify.com/v1/artists/21E3waRsmPlU7jZsS13rcj', {
             method: 'GET', headers: {
@@ -404,7 +403,7 @@ var colorlst =
 var colorobj = new makeoption("COLOR", colorlst);
 
 var speedobj = new makeoption("SPEED", [10,20,30,40,50,60,70,80,90,100]);
-var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 50;
+var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 5;
 speedobj.set(speed);
 
 var speedxobj = new makeoption("SPEEDX", 100);
