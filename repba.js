@@ -358,8 +358,8 @@ var colorlst =
 
 var colorobj = new makeoption("COLOR", colorlst);
 
-var speedobj = new makeoption("SPEED", 100);//[10,20,30,40,50,60,70,80,90,100]);
-var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 50;
+var speedobj = new makeoption("SPEED", 50);
+var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 25;
 speedobj.set(speed);
 
 var speedxobj = new makeoption("SPEEDX", 100);
@@ -3258,7 +3258,7 @@ function resetcanvas()
     var y = Math.clamp(0,context.canvas.height-1,context.canvas.height*rowobj.berp());
     context.nuby = Math.nub(y, context.canvas.height, context.imageheight, photo.image.height);
 
-    var speed = speedobj.getcurrent()/10;
+    var speed = Math.max(0.1,speedobj.getcurrent()/10);
     context.virtualspeed = FIREFOX?0:TIMEOBJ/context.virtualwidth/speed;
     var rotatelst = [];
     var k = Math.floor(TIMEMID*0.8)
@@ -3366,6 +3366,7 @@ var templatelst =
     name: "PORTRAIT",
     init: function (j)
     {
+        globalobj.rotate = 1
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3462,6 +3463,7 @@ var templatelst =
     name: "LANDSCAPE",
     init: function (j)
     {
+        globalobj.rotate = 1
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3486,6 +3488,7 @@ var templatelst =
     name: "EXTRATALL",
     init: function (j)
     {
+        globalobj.rotate = 1
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3510,6 +3513,7 @@ var templatelst =
     name: "TALL",
     init: function (j)
     {
+        globalobj.rotate = 1
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3534,6 +3538,7 @@ var templatelst =
     name: "LEGEND",
     init: function (j)
     {
+        globalobj.rotate = 1
         channelobj = new makeoption("CHANNELS", [0,25,50,75,100]);
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 100;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 50;
@@ -4359,8 +4364,9 @@ var ContextObj = (function ()
                         rowobj.set(window.innerHeight*(galleryobj.getcurrent().row/100));
                     else if (typeof rowobj.initialize !== "undefined")
                         rowobj.set(window.innerHeight*(rowobj.initialize/100));
-
-                    //rotateobj.enabled = 1;
+                   
+                    if (globalobj.rotate)
+                        rotateobj.enabled = 1;
                     _4cnvctx.tab();
 
                     contextobj.reset()
@@ -4991,9 +4997,6 @@ function resize()
 {
     bodyobj.enabled = 0;
     colorobj.enabled = 0;
-    rotateobj.enabled = 0;
-    clearInterval(_4cnvctx.timemain);
-    _4cnvctx.timemain = 0;
     delete _4cnvctx.thumbcanvas;
     reset();
     menuhide();
@@ -5007,8 +5010,6 @@ function resize()
 function escape()
 {
     delete _4cnvctx.thumbcanvas;
-    clearInterval(_4cnvctx.timemain);
-    rotateobj.enabled = 0;
     colorobj.enabled = 0;
     bodyobj.enabled = 0;
     _4cnvctx.tapping = 0;
