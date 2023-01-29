@@ -55,16 +55,16 @@ url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 9;
 url.reducefactor = url.searchParams.has("c") ? Number(url.searchParams.get("c")) : 40000;
 
-if (url.searchParams.has("login"))
+if (url.searchParams.has("spotify"))
 {
-    var k = url.searchParams.get("login");
-    localStorage.setItem("login", k);
+    var k = url.searchParams.get("spotify");
+    localStorage.setItem("spotify", k);
 }
 
 var spotify = {}
-var str = localStorage.getItem("login");
-if (str)
-    spotify = JSON.parse(str);
+var k = localStorage.getItem("spotify");
+if (k)
+    spotify = JSON.parse(k);
 
 Math.clamp = function (min, max, val)
 {

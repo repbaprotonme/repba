@@ -32,7 +32,7 @@ export default
         
         const results = await response.json();
         var k = JSON.stringify(results);
-        var j = 'https://reportbase.com?login=' + k;
+        var j = 'https://reportbase.com?spotify=' + k;
         return Response.redirect(j, 301);
         //return new Response(k, { headers: { 'content-type': 'text/html;charset=UTF-8', }, });
 	},
