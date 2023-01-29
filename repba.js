@@ -19,7 +19,7 @@ const HNUB = 10;
 const ALIEXTENT = 60;
 const ARROWBORES = 22;
 const DELAYCENTER = 3.926;
-const SLICERADIUS = 131000;
+const SLICERADIUS = 130900;
 const TIMEOBJ = 3926;
 const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(0,0,100,0.85)";
@@ -52,7 +52,7 @@ function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) 
 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
-url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 9;
+url.timemain = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 6;
 url.reducefactor = url.searchParams.has("c") ? Number(url.searchParams.get("c")) : 40000;
 
 Math.clamp = function (min, max, val)
@@ -358,8 +358,8 @@ var colorlst =
 
 var colorobj = new makeoption("COLOR", colorlst);
 
-var speedobj = new makeoption("SPEED", [10,20,30,40,50,60,70,80,90,100]);
-var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 5;
+var speedobj = new makeoption("SPEED", 100);//[10,20,30,40,50,60,70,80,90,100]);
+var speed = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 50;
 speedobj.set(speed);
 
 var speedxobj = new makeoption("SPEEDX", 100);
@@ -492,9 +492,6 @@ function drawslices()
         context.restore();
         delete context.addimage;
         delete context.selectrect;
-        delete context.accountpanel;
-        delete context.uploadpanel;
-        delete context.openimage;
         delete context.delimage;
         delete context.moveprev;
         delete context.movenext;
@@ -511,7 +508,13 @@ function drawslices()
         delete context.zoomctrl;
         delete context.slicectrl;
         delete context.speedctrl;
-        if (context.setcolumncomplete)
+
+        if (context.hidedisplay)
+        {
+            headcnvctx.clear();
+            footcnvctx.clear();
+        }
+        else if (context.setcolumncomplete)
         {
             if (headobj.enabled)
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -1289,12 +1292,14 @@ history.pushState(null, null, document.URL);
 
 CanvasRenderingContext2D.prototype.moveup = function()
 {
-    rowobj.add(-100);
+    var k = rowobj.length()/channelobj.length()
+    rowobj.add(-k);
 }
 
 CanvasRenderingContext2D.prototype.movedown = function()
 {
-    rowobj.add(100);
+    var k = rowobj.length()/channelobj.length()
+    rowobj.add(k);
 }
 
 CanvasRenderingContext2D.prototype.movepage = function(j)
@@ -2096,6 +2101,7 @@ var panlst =
         {
             if (context.pantype != 2 && (type == "panleft" || type == "panright"))
             {
+                context.panning = 1;
                 context.pantype = 1 
                 context.autodirect = (type == "panleft")?-1:1;
                 var len = context.timeobj.length();
@@ -2135,15 +2141,14 @@ var panlst =
         rotateobj.enabled  = 0;
         context.slidereduce = url.slidefactor?context.slidestop/url.slidefactor:0;
         clearInterval(footcnvctx.timefooter);
+        context.hidedisplay = 0;
         context.startx = x;
         context.starty = y;
         context.pantype = 0;
         context.startt = context.timeobj.current();
         var zoom = zoomobj.getcurrent()
         context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
-        context.panning = 1;
         context.clearpoints();
-        context.refresh();
     },
     panend: function (context, rect, x, y)
 	{
@@ -2410,6 +2415,7 @@ var presslst =
     {
         context.isthumbrect = 0;
         context.pressed = 0;
+        context.hidedisplay = 0;
         context.refresh();
     },
     press: function (context, rect, x, y)
@@ -2421,7 +2427,7 @@ var presslst =
         }
         else
         {
-            masterhide(x,y);
+            context.hidedisplay = 1;
         }
 
         context.refresh();
@@ -2678,6 +2684,7 @@ var taplst =
 	tap: function (context, rect, x, y, shift, ctrl)
 	{
         clearInterval(footcnvctx.timefooter);
+        context.hidedisplay = 0;
         context.pressed = 0;
         if (context.moveprev && context.moveprev.hitest(x,y))
         {
@@ -2833,44 +2840,6 @@ var taplst =
             if (screenfull.isEnabled)
                 screenfull.toggle();
             context.refresh();
-        }
-        else if (context.openimage && context.openimage.hitest(x,y))
-        {
-            context.tapindex = 1;
-            context.refresh();
-            clearInterval(globalobj.tapthumb);
-            globalobj.tapthumb = setTimeout(function()
-            {
-                bodyobj.enabled = 0;
-                context.tapindex = 0;
-                context.refresh();
-                promptFile().then(function(files) { dropfiles(files); })
-            }, 400)
-        }
-        else if (context.uploadpanel && context.uploadpanel.hitest(x,y))
-        {
-            context.tapindex = 2;
-            context.refresh();
-            clearInterval(globalobj.tapthumb);
-            globalobj.tapthumb = setTimeout(function()
-            {
-                bodyobj.enabled = 0;
-                context.tapindex = 0;
-                context.refresh();
-                window.location.href = "http://upload.reportbase.com";
-            }, 400)
-        }
-        else if (context.accountpanel && context.accountpanel.hitest(x,y))//todo
-        {
-            context.tapindex = 3;
-            context.refresh();
-            clearInterval(globalobj.tapthumb);
-            globalobj.tapthumb = setTimeout(function()
-            {
-                context.tapindex = 0;
-                bodyobj.enabled = 6;
-                context.refresh();
-            }, 400)
         }
         else if (context.delimage && context.delimage.hitest(x,y))
         {
@@ -3292,8 +3261,8 @@ function resetcanvas()
     var speed = speedobj.getcurrent()/10;
     context.virtualspeed = FIREFOX?0:TIMEOBJ/context.virtualwidth/speed;
     var rotatelst = [];
-    var k = Math.floor(TIMEMID*0.9)
-    var j = Math.floor(TIMEMID*1.1)
+    var k = Math.floor(TIMEMID*0.8)
+    var j = Math.floor(TIMEMID*1.2)
     for (var n = k; n < j; n+=context.virtualspeed)
         rotatelst.push(n);
     for (var n = j; n > k; n-=context.virtualspeed)
@@ -3371,7 +3340,6 @@ var templatelst =
     name: "COMIC",
     init: function (j)
     {
-        channelobj = new makeoption("CHANNELS", [0,25,50,75,100]);
         rowobj.initialize = 0;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
@@ -3696,40 +3664,6 @@ var bodylst =
     {
         this.draw = function (context, rect, user, time)
         {
-            context.accountpanel = new rectangle()
-            context.uploadpanel = new rectangle()
-            context.openimage = new rectangle()
-            var w = Math.min(ALIEXTENT*8,rect.width-ALIEXTENT);
-            var h = 40*3;
-            var a = new Message(w,h,galleryobj.getcurrent().title,new RowA([0,0,0],
-                [
-                    new Layer(
-                    [
-                        context.tapindex == 1 ? new Fill(MENUSELECT) : 0,
-                        new Rectangle(context.openimage),
-                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                    ]),
-                    new Layer(
-                    [
-                        context.tapindex == 2 ? new Fill(MENUSELECT) : 0,
-                        //new Rectangle(context.uploadpanel),
-                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                    ]),
-                    new Layer(
-                    [
-                        context.tapindex == 3 ? new Fill(MENUSELECT) : 0,
-                        new Rectangle(context.accountpanel),
-                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                    ]),
-                ]));
-
-                a.draw(context, rect,
-                [
-                    "Open",
-                    "Upload",
-                    "Account",
-                ],
-                0);
         }
     },
     new function()
@@ -4426,7 +4360,7 @@ var ContextObj = (function ()
                     else if (typeof rowobj.initialize !== "undefined")
                         rowobj.set(window.innerHeight*(rowobj.initialize/100));
 
-                    rotateobj.enabled = 1;
+                    //rotateobj.enabled = 1;
                     _4cnvctx.tab();
 
                     contextobj.reset()
