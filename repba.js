@@ -4254,7 +4254,7 @@ fetch(path)
         {
             headobj.enabled = 1;
             footobj.enabled = 1;
-            bodyobj.enabled = 4;
+            bodyobj.enabled = 6;
             menuhide();
             _4cnvctx.refresh();
         }})
