@@ -1,0 +1,29 @@
+{  
+    "template": "PORTRAIT",  
+    "title": "High-resolution",  
+    "datam": 
+    [    
+        { 
+            "name": "image1",
+            "title": "Image One",
+            "describe": "",
+            "copyright": "",
+            "src": "res/RES.0000.jpg",
+            "width": 1998, 
+            "height": 3002, 
+            "quality": 85, 
+            "row": 10 
+        },
+        { 
+            "name": "image2",
+            "title": "Image Two",
+            "describe": "",
+            "copyright": "",
+            "src": "res/RES.0000.jpg",
+            "width": 1998, 
+            "height": 3002, 
+            "quality": 85, 
+            "row": 10 
+        }
+    ]
+}
