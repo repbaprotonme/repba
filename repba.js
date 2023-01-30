@@ -63,7 +63,7 @@ Math.clamp = function (min, max, val)
     return (val < min) ? min : (val > max) ? max : val;
 };
 
-let makeoption = function (title, data)
+let Data = function (title, data)
 {
     this.title = title.toLowerCase().replace(/\./g, "");
     this.fulltitle = title;
@@ -356,27 +356,27 @@ var colorlst =
       '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF',
     ];
 
-var colorobj = new makeoption("COLOR", colorlst);
+var colorobj = new Data("COLOR", colorlst);
 
-var speedobj = new makeoption("SPEED", 100);
+var speedobj = new Data("SPEED", 100);
 var k = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 40;
 speedobj.set(k);
 
-var timemain = new makeoption("TIMEMAIN", 30);
+var timemain = new Data("TIMEMAIN", 30);
 var k = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 12;
 timemain.set(k);
 
-var speedxobj = new makeoption("SPEEDX", 100);
-var speedyobj = new makeoption("SPEEDY", 100);
-var guideobj = new makeoption("GUIDE", guidelst);
-var colobj = new makeoption("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
-var channelobj = new makeoption("CHANNELS", [0,10,20,30,40,50,60,70,80,90]);
+var speedxobj = new Data("SPEEDX", 100);
+var speedyobj = new Data("SPEEDY", 100);
+var guideobj = new Data("GUIDE", guidelst);
+var colobj = new Data("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
+var channelobj = new Data("CHANNELS", [0,10,20,30,40,50,60,70,80,90]);
 
-var virtualcolsobj = new makeoption("VIRTCOLSOBJ", 200);
+var virtualcolsobj = new Data("VIRTCOLSOBJ", 200);
 var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 24;
 virtualcolsobj.set(cols);
 
-var rotateobj = new makeoption("ROTATEOBJ", []);
+var rotateobj = new Data("ROTATEOBJ", []);
 
 function drawslices()
 {
@@ -727,8 +727,8 @@ function setevents(context, obj)
     context.swipeleftright_ = k.swipeleftright;
     context.swipeupdown_ = k.swipeupdown;
 
-    var k = drawlst.findIndex(function (a) {return a.name == obj.draw});
-    k = drawlst[k];
+    var k = menulst.findIndex(function (a) {return a.name == obj.draw});
+    k = menulst[k];
     context.draw = k.draw;
 
     var k = taplst.findIndex(function (a) {return a.name == obj.tap});
@@ -1315,7 +1315,7 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     if (!_4cnvctx.setcolumncomplete)
         return;
     galleryobj.rotate(j);
-    var path = galleryobj.getcurrent().title;
+    var path = galleryobj.getcurrent().src;
     galleryobj.rotate(-j);
 
     if (_4cnvctx.movingpage || !loaded.has(path) || galleryobj.length() == 1)
@@ -1908,21 +1908,21 @@ var pinchlst =
 },
 ];
 
-var rowobj = new makeoption("ROW", window.innerHeight);
+var rowobj = new Data("ROW", window.innerHeight);
 
-var pretchobj = new makeoption("PORTSTRETCH", 100);
-var letchobj = new makeoption("LANDSTRETCH", 100);
-var stretchobj = new makeoption("STRETCH", [pretchobj,letchobj]);
+var pretchobj = new Data("PORTSTRETCH", 100);
+var letchobj = new Data("LANDSTRETCH", 100);
+var stretchobj = new Data("STRETCH", [pretchobj,letchobj]);
 
-var poomobj = new makeoption("PORTZOOM", 100);
-var loomobj = new makeoption("LANDZOOM", 100);
-var zoomobj = new makeoption("ZOOM", [poomobj,loomobj]);
+var poomobj = new Data("PORTZOOM", 100);
+var loomobj = new Data("LANDZOOM", 100);
+var zoomobj = new Data("ZOOM", [poomobj,loomobj]);
 
-var traitobj = new makeoption("TRAIT", 100);
-var scapeobj = new makeoption("SCAPE", 100);
-var heightobj = new makeoption("HEIGHT", [traitobj,scapeobj]);
+var traitobj = new Data("TRAIT", 100);
+var scapeobj = new Data("SCAPE", 100);
+var heightobj = new Data("HEIGHT", [traitobj,scapeobj]);
 
-var pinchobj = new makeoption("PINCH", [zoomobj,stretchobj]);
+var pinchobj = new Data("PINCH", [zoomobj,stretchobj]);
 
 function promptFile()
 {
@@ -2428,7 +2428,7 @@ var mouselst =
 },
 ];
 
-var mouseobj = new makeoption("MOUSE", mouselst);
+var mouseobj = new Data("MOUSE", mouselst);
 
 var presslst =
 [
@@ -3080,10 +3080,10 @@ var thumblst =
 },
 ];
 
-var thumbobj = new makeoption("THUMB", thumblst);
+var thumbobj = new Data("THUMB", thumblst);
 thumbobj.enabled = 1;
 
-var alphaobj = new makeoption("ALPHA", 100);
+var alphaobj = new Data("ALPHA", 100);
 alphaobj.set(100)
 
 var getbuttonfrompoint = function (context, x, y)
@@ -3110,7 +3110,7 @@ var getbuttonfrompoint = function (context, x, y)
 	return k<lst.length?k:-1;
 }
 
-var drawlst =
+var menulst =
 [
 {
     name: "DEFAULT",
@@ -3206,7 +3206,7 @@ var drawlst =
         a.draw(context, rect,
         [
             0,
-            (user.index+1).toFixed(0),
+            user.name,
             user.title,
             user.width+"x"+user.height,
             0
@@ -3579,7 +3579,7 @@ var templatelst =
     init: function (j)
     {
         globalobj.rotate = 1
-        channelobj = new makeoption("CHANNELS", [0,25,50,75,100]);
+        channelobj = new Data("CHANNELS", [0,25,50,75,100]);
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 100;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 50;
         positxpobj.set(xp);
@@ -3603,7 +3603,7 @@ var templatelst =
 },
 ];
 
-var templateobj = new makeoption("TEMPLATE", templatelst);
+var templateobj = new Data("TEMPLATE", templatelst);
 
 var bodylst =
 [
@@ -3623,27 +3623,27 @@ var bodylst =
             context.movenext = new rectangle()
             var zoom = zoomobj.getcurrent();
             var a =
-                    new Col([60,0,60],
+                    new Col([80,0,80],
                     [
-                        new Row([60,0],
+                        new Row([80,0],
                         [
-                            globalobj.promptedfile?0:new Layer(
+                            new Shrink(new Layer(
                             [
                                 new Rectangle(context.moveprev),
                                 new Shrink(new Circle(_4cnvctx.movingpage == -1?"red":SCROLLNAB,"white",3),10,10),
                                 new Shrink(new Arrow(ARROWFILL,270),22,22),
-                            ]),
+                            ]),10,10),
                             0,
                         ]),
                         0,
-                        new Row([60,0],
+                        new Row([80,0],
                         [
-                            globalobj.promptedfile?0:new Layer(
+                            new Shrink(new Layer(
                             [
                                 new Rectangle(context.movenext),
                                 new Shrink(new Circle(_4cnvctx.movingpage == 1?"red":SCROLLNAB,"white",3),10,10),
                                 new Shrink(new Arrow(ARROWFILL,90),22,22),
-                            ]),
+                            ]),10,10),
                             0,
                         ]),
                     ]);
@@ -4042,7 +4042,7 @@ var bodylst =
     },
   ];
 
-var bodyobj = new makeoption("", bodylst);
+var bodyobj = new Data("", bodylst);
 url.path = "HOME";
 url.project = 0;
 if (url.searchParams.has("p"))
@@ -4054,12 +4054,11 @@ if (url.searchParams.has("p"))
         url.project = Number(k[1]);
 }
 
-var galleryobj = new makeoption("", 0);
+var galleryobj = new Data("", 0);
 galleryobj.mode = 0;
 galleryobj.path = function()
 {
-    var n = galleryobj.current();
-    var k = galleryobj.datam[n];
+    var k = galleryobj.getcurrent();
     var src = k.src;
     var w = k.width;
     var h = k.height;
@@ -4092,7 +4091,7 @@ galleryobj.path = function()
 }
 
 var path = "https://reportbase.com/gallery/" + url.path;
-if (url.protocol == "1http:")
+if (url.protocol == "http:")
 {
     path = "res/RES"
     url.path = "RES"
@@ -4129,33 +4128,6 @@ fetch(path)
         if (typeof galleryobj.galleryobj  === "undefined")
             galleryobj.maxmegapix = 9000000;
 
-        for (var n = 0; n < contextlst.length; ++n)
-        {
-            var context = contextlst[n];
-            context.index = n;
-            context.imageSmoothingEnabled = true;
-            context.imageSmoothingQuality = "high";
-            context.enabled = 0;
-            context.canvas.width = 1;
-            context.canvas.height = 1;
-            context.autodirect = -1;
-            context.font = "400 1rem Archivo Black";
-            context.fillText("  ", 0, 0);
-            context.lst = [];
-            context.slideshow = 0;
-            context.lastime = 0;
-            context.slidereduce = 0;
-            context.slidestop = 0;
-            context.buttonheight = ALIEXTENT/2;
-            setevents(context, eventlst[n]);
-            context.sliceobj = new makeoption("", []);
-            context.timeobj = new makeoption("", TIMEOBJ);
-            context.timeobj.set(TIMEOBJ/2);
-        }
-
-        var time = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : TIMEOBJ/2;
-        _4cnvctx.timeobj.set(time);
-
         function project()
         {
             menuhide();
@@ -4163,20 +4135,6 @@ fetch(path)
             var k = addressobj.full();
             window.location.href = k;
         }
-
-        var slices = _5cnvctx.sliceobj;
-        slices.data= [];
-        var items = galleryobj.length();
-        for (var n = 0; n < items; ++n)
-        {
-            var k = galleryobj.data[n];
-            slices.data.push({index:n, title:k, path: "PROJECT", func: project})
-        }
-
-        _5cnvctx.buttonheight = 240;
-        _5cnvctx.delayinterval = DELAYCENTER / slices.data.length;
-        _5cnvctx.rvalue = 10;
-        _5cnvctx.virtualheight = slices.data.length*_5cnvctx.buttonheight;
 
         var lst =
         [
@@ -4218,10 +4176,7 @@ fetch(path)
         _7cnvctx.rvalue = 1;
         _7cnvctx.slidereduce = 0.75;
 
-        var slices = _8cnvctx.sliceobj;
-        slices.data = galleryobj.data;
-        var datam = galleryobj.datam && galleryobj.datam[n];
-        if (!datam)
+        if (!galleryobj.datam)
         {
             galleryobj.datam = []
             for (var n = 0; n < galleryobj.data.length; ++n)
@@ -4231,7 +4186,6 @@ fetch(path)
                 k.width = k[1];
                 k.height = k[2];
                 k.row = k[3];
-                k.index = n;
                 k.func = project;
 
                 var j = {}
@@ -4244,9 +4198,14 @@ fetch(path)
                 j.name = "";
                 j.title = "";
                 j.copyright = "";
+                j.func = project;
                 galleryobj.datam[n] = j;
             }
         }
+            
+        galleryobj.data = galleryobj.datam;
+        _8cnvctx.sliceobj.data = galleryobj.data;
+        galleryobj.set(url.project);
 
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
         _8cnvctx.buttonheight = ALIEXTENT;
@@ -4350,6 +4309,34 @@ var ContextObj = (function ()
     {
         this.ANCHOR = 0;
         this.CURRENT = 0;
+
+        for (var n = 0; n < contextlst.length; ++n)
+        {
+            var context = contextlst[n];
+            context.index = n;
+            context.imageSmoothingEnabled = true;
+            context.imageSmoothingQuality = "high";
+            context.enabled = 0;
+            context.canvas.width = 1;
+            context.canvas.height = 1;
+            context.autodirect = -1;
+            context.font = "400 1rem Archivo Black";
+            context.fillText("  ", 0, 0);
+            context.lst = [];
+            context.slideshow = 0;
+            context.lastime = 0;
+            context.slidereduce = 0;
+            context.slidestop = 0;
+            context.buttonheight = ALIEXTENT/2;
+            setevents(context, eventlst[n]);
+            context.sliceobj = new Data("", []);
+            context.timeobj = new Data("", TIMEOBJ);
+            context.timeobj.set(TIMEOBJ/2);
+        }
+
+        var time = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : TIMEOBJ/2;
+        _4cnvctx.timeobj.set(time);
+
     }
 
     init.prototype =
@@ -4417,7 +4404,7 @@ var ContextObj = (function ()
                 photo.image.onerror =
                     photo.image.onabort = function(e)
                 {
-                //    location.reload();//todo
+                    location.reload();//todo
                 }
 
                 photo.image.onload = function()
@@ -4498,23 +4485,23 @@ var contextobj = new ContextObj();
 
 function masterload()
 {
-    var imglst = [];
+    var lst = [];
     var k = galleryobj.current();
     var size = 4;
     for (var n = 0; n < size; ++n)
     {
         galleryobj.rotate(1);
-        imglst[n] = new Image();
-        imglst[n].src = galleryobj.path();
-        imglst[n].title = galleryobj.getcurrent().title
-        imglst[n].onload = function() { loaded.add(this.title); }
+        lst[n] = new Image();
+        lst[n].src = galleryobj.path();
+        lst[n].srcs = galleryobj.path();
+        lst[n].onload = function() { loaded.add(this.srcs); }
     }
 
     galleryobj.rotate(-5);
     var img = new Image();
     img.src = galleryobj.path();
-    img.path = galleryobj.getcurrent().title
-    img.onload = function() { loaded.add(this.path); }
+    img.srcs = galleryobj.path();
+    img.onload = function() { loaded.add(this.srcs); }
     galleryobj.set(k);
 }
 
@@ -5637,18 +5624,18 @@ var footlst =
     },
 ];
 
-var footobj = new makeoption("", footlst);
-var headobj = new makeoption("", headlst);
+var footobj = new Data("", footlst);
+var headobj = new Data("", headlst);
 var j = url.searchParams.has("h") ? Number(url.searchParams.get("h")) : 0;
 headobj.enabled = j;
 footobj.enabled = j;
-var infobj = new makeoption("", 4);
-var positxpobj = new makeoption("POSITIONX", 100);
-var positypobj = new makeoption("POSITIONY", 100);
-var positxlobj = new makeoption("POSITIONX", 100);
-var positylobj = new makeoption("POSITIONY", 100);
-var positxobj = new makeoption("POSITIONX", [positxpobj,positxlobj]);
-var posityobj = new makeoption("POSITIONY", [positypobj,positylobj]);
+var infobj = new Data("", 4);
+var positxpobj = new Data("POSITIONX", 100);
+var positypobj = new Data("POSITIONY", 100);
+var positxlobj = new Data("POSITIONX", 100);
+var positylobj = new Data("POSITIONY", 100);
+var positxobj = new Data("POSITIONX", [positxpobj,positxlobj]);
+var posityobj = new Data("POSITIONY", [positypobj,positylobj]);
 
 function menushow(context)
 {
