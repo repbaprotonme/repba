@@ -1926,7 +1926,7 @@ function promptFile()
 {
     var input = document.createElement("input");
     input.type = "file";
-    input.multiple = 0;
+    input.multiple = true;
     input.accept = "image/*";
     return new Promise(function(resolve)
     {
@@ -4240,7 +4240,10 @@ fetch(path)
         slices.data.push({title:"Open", path: "OPEN", func: function()
         {
             menuhide();
-            promptFile().then(function(files) { dropfiles(files); })
+            promptFile().then(function(files) 
+            { 
+                dropfiles(files); 
+            })
         }});
         
         slices.data.push({title:"Speed", path: "SPEED", func: function(rect, x, y)
@@ -5378,12 +5381,6 @@ var headlst =
             }
             else if (context.picture.hitest(x,y))
             {
-                /*
-                if (globalobj.user)
-                    promptFile().then(function(files) { dropfiles(files); })
-                else
-                    authClient.redirectToLoginPage()                                                                                               
-                */
             }
             else if (context.option.hitest(x,y))
             {
@@ -5563,7 +5560,7 @@ var footlst =
             var a = new Layer(
                [
                    new Fill(HEADBACK),
-                   new Col([60,0,80,20,ALIEXTENT-16,20,80,0,60],
+                   new Col([60,0,80,20,ALIEXTENT-16,20,80,0,60,10],
                    [
                         new Layer(
                         [
@@ -5609,6 +5606,7 @@ var footlst =
                             new FullScreen(),
                             new Rectangle(context.rightab),
                         ]),
+                       0,
                    ])
                ]);
 
@@ -5836,6 +5834,8 @@ authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", en
 authClient.getAuthenticationInfoOrNull(false)
     .then(function(client)
     {
-        globalobj.user = client.user;
+        if (client)
+            globalobj.user = client.user;
     })
+
 
