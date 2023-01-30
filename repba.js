@@ -4086,13 +4086,13 @@ galleryobj.path = function()
     h = Math.floor(h);
     var q = this.quality;
     var s = 'https://reportbase.com/image/'+src+'/w='+w+',h='+h+',quality='+q;
-    if (src.indexOf("/"))
+    if (src.indexOf("/") >= 0)
         s = src; 
     return s;
 }
 
 var path = "https://reportbase.com/gallery/" + url.path;
-if (url.protocol == "http:")
+if (url.protocol == "1http:")
 {
     path = "res/RES"
     url.path = "RES"
@@ -4220,19 +4220,20 @@ fetch(path)
 
         var slices = _8cnvctx.sliceobj;
         slices.data = galleryobj.data;
-        for (var n = 0; n < galleryobj.data.length; ++n)
+        var datam = galleryobj.datam && galleryobj.datam[n];
+        if (!datam)
         {
-            var k = galleryobj.data[n];
-            k.src = k[0];
-            k.width = k[1];
-            k.height = k[2];
-            k.row = k[3];
-            k.index = n;
-            k.func = project;
-
-            var datam = galleryobj.datam[n];
-            if (!datam)
+            galleryobj.datam = []
+            for (var n = 0; n < galleryobj.data.length; ++n)
             {
+                var k = galleryobj.data[n];
+                k.src = k[0];
+                k.width = k[1];
+                k.height = k[2];
+                k.row = k[3];
+                k.index = n;
+                k.func = project;
+
                 var j = {}
                 j.src = k[0];
                 j.width = k[1];
@@ -4416,7 +4417,7 @@ var ContextObj = (function ()
                 photo.image.onerror =
                     photo.image.onabort = function(e)
                 {
-                    location.reload();//todo
+                //    location.reload();//todo
                 }
 
                 photo.image.onload = function()
