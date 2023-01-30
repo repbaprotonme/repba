@@ -47,7 +47,6 @@ let photo = {}
 photo.image = 0;
 photo.help = 0;
 
-let loaded = new Set()
 function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) + min); }
 
 let url = new URL(window.location.href);
@@ -1314,11 +1313,12 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
         return;
     if (!_4cnvctx.setcolumncomplete)
         return;
+    var e = galleryobj.current(); 
     galleryobj.rotate(j);
-    var path = galleryobj.getcurrent().src;
-    galleryobj.rotate(-j);
+    var k = galleryobj.getcurrent();
+    galleryobj.set(e);
 
-    if (_4cnvctx.movingpage || !loaded.has(path) || galleryobj.length() == 1)
+    if (_4cnvctx.movingpage || !k.loaded || galleryobj.length() == 1)
     {
         _4cnvctx.movingpage = 0;
         this.refresh();
@@ -2951,7 +2951,7 @@ var taplst =
         context.refresh();
         setTimeout(function ()
         {
-            slice.func(rect, x, y);
+            slice.go(k);
             slice.tap = 0;
             context.refresh();
         }, JULIETIME*5);
@@ -3717,14 +3717,15 @@ var bodylst =
         {
             context.save();
             context.font = "1rem Archivo Black";
-            var w = Math.min(ALIEXTENT*8,rect.width-ALIEXTENT);
-            var rowlst = [0,0,0,0,0];
+            var w = Math.min(ALIEXTENT*10,rect.width-40);
+            var rowlst = [0,0,0,0,0,0];
             var rowheight = 40;
             rowlst.length = Math.floor(Math.min(rowlst.length,(rect.height-headcnv.height-footcnv.height-ALIEXTENT)/rowheight))
             var h = rowheight*rowlst.length;
             var title = galleryobj.getcurrent().title;
             var a = new Message(w,h,title,new RowA(rowlst,
                     [
+                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
                         new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
                         new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
                         new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
@@ -3748,6 +3749,7 @@ var bodylst =
 
             a.draw(context, rect,
             [
+                "Name: "+galleryobj.getcurrent().name,
                 "Image Size: "+photo.image.extent,
                 "Aspect: "+photo.image.aspect.toFixed(2),
                 "Virtual Size: "+context.virtualwidth.toFixed(0)+"x"+context.virtualheight,
@@ -3766,7 +3768,7 @@ var bodylst =
             context.account = new rectangle()
             var w = Math.min(ALIEXTENT*8,rect.width-ALIEXTENT);
             var h = 40*3;
-            var a = new Message(w,h,"Account",new RowA([0,0,0],
+            var a = new Message(w,h,"Login",new RowA([0,0,0],
                 [
                     new Layer(
                     [
@@ -4128,14 +4130,7 @@ fetch(path)
         if (typeof galleryobj.galleryobj  === "undefined")
             galleryobj.maxmegapix = 9000000;
 
-        function project()
-        {
-            menuhide();
-            galleryobj.set(this.index);
-            var k = addressobj.full();
-            window.location.href = k;
-        }
-
+        //7
         var lst =
         [
             {
@@ -4143,28 +4138,28 @@ fetch(path)
                 line2: "https://repba.com",
                 line3: "images@repba.com",
                 line4: "Tom Brinkman",
-                func: function() {menuhide(); }
+                go: function() {menuhide(); }
             },
             {
                 line1: "High Resolution",
                 line2: "360° Panoramas",
                 line3: "Image Stretching",
                 line4: "Image Zooming",
-                func: function() {menuhide(); }
+                go: function() {menuhide(); }
             },
             {
                 line2: "Digital Art",
                 line3: "Graphic Novels",
                 line4: "Drone Photgraphy",
                 line4: "Landscapes",
-                func: function() {menuhide(); }
+                go: function() {menuhide(); }
             },
             {
                 line1: "Sidescrolling",
                 line2: "Wrap Around",
                 line4: "Full Screen",
                 line3: "Wide Images",
-                func: function() {menuhide(); }
+                go: function() {menuhide(); }
             },
         ];
 
@@ -4176,18 +4171,13 @@ fetch(path)
         _7cnvctx.rvalue = 1;
         _7cnvctx.slidereduce = 0.75;
 
+        //8
         if (!galleryobj.datam)
         {
             galleryobj.datam = []
             for (var n = 0; n < galleryobj.data.length; ++n)
             {
                 var k = galleryobj.data[n];
-                k.src = k[0];
-                k.width = k[1];
-                k.height = k[2];
-                k.row = k[3];
-                k.func = project;
-
                 var j = {}
                 j.src = k[0];
                 j.width = k[1];
@@ -4198,11 +4188,21 @@ fetch(path)
                 j.name = "";
                 j.title = "";
                 j.copyright = "";
-                j.func = project;
                 galleryobj.datam[n] = j;
             }
         }
-            
+
+        for (var n = 0; n < galleryobj.datam.length; ++n)
+        {
+             var k = galleryobj.datam[n];
+             k.go = function (index)
+                {
+                    menuhide();
+                    galleryobj.set(index);
+                    window.location.href = addressobj.full();
+                }
+        }
+
         galleryobj.data = galleryobj.datam;
         _8cnvctx.sliceobj.data = galleryobj.data;
         galleryobj.set(url.project);
@@ -4214,40 +4214,38 @@ fetch(path)
         _8cnvctx.rvalue = 2;
         _8cnvctx.slidereduce = 0.75;
 
+        //9 
         var slices = _9cnvctx.sliceobj;
         slices.data= [];
 
-        slices.data.push({title:"Open", path: "OPEN", func: function()
+        slices.data.push({title:"Open", path: "OPEN", go: function()
         {
             menuhide();
-            promptFile().then(function(files) 
-            { 
-                dropfiles(files); 
-            })
+            promptFile().then(function(files) { dropfiles(files); })
         }});
         
-        slices.data.push({title:"Speed", path: "SPEED", func: function(rect, x, y)
+        slices.data.push({title:"Speed", path: "SPEED", go: function(rect, x, y)
         {
             bodyobj.enabled = 10;
             menuhide();
             _4cnvctx.refresh();
         }})
 
-        slices.data.push({title:"Slices", path: "SLICES", func: function(rect, x, y)
+        slices.data.push({title:"Slices", path: "SLICES", go: function(rect, x, y)
         {
             bodyobj.enabled = 8;
             menuhide();
             _4cnvctx.refresh();
         }})
 
-        slices.data.push({title:"Zoom", path: "ZOOM", func: function(rect, x, y)
+        slices.data.push({title:"Zoom", path: "ZOOM", go: function(rect, x, y)
         {
             bodyobj.enabled = 9;
             menuhide();
             _4cnvctx.refresh();
         }})
 
-        slices.data.push({title:"Login", path: "LOGIN", func: function ()
+        slices.data.push({title:"Login", path: "LOGIN", go: function ()
         {
             headobj.enabled = 1;
             footobj.enabled = 1;
@@ -4256,7 +4254,7 @@ fetch(path)
             _4cnvctx.refresh();
         }})
 
-        slices.data.push({title:"Info", path: "INFO", func: function(rect, x, y)
+        slices.data.push({title:"Info", path: "INFO", go: function(rect, x, y)
         {
             headobj.enabled = 1;
             footobj.enabled = 1;
@@ -4265,22 +4263,22 @@ fetch(path)
             _4cnvctx.refresh();
         }})
 
-        slices.data.push({ title:"Download", path: "DOWNLOAD", func: function()
+        slices.data.push({ title:"Download", path: "DOWNLOAD", go: function()
         {
             context.refresh();
             var obj = galleryobj.getcurrent();
             window.open("https://reportbase.com/image/"+obj.title+"/w="+obj.width,"Reportbase");
         }});
 
-        slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
+        slices.data.push({title:"Help", path: "HELP", go: function(){menushow(_7cnvctx); }})
 
-        slices.data.push({title:"Fullscreen", path: "FULLSCREEN", func: function ()
+        slices.data.push({title:"Fullscreen", path: "FULLSCREEN", go: function ()
         {
             if (screenfull.isEnabled)
                 screenfull.toggle();
         }})
 
-        slices.data.push({ title: "Screenshot", path: "SCREENSHOT", func: function()
+        slices.data.push({ title: "Screenshot", path: "SCREENSHOT", go: function()
         {
             _4cnvctx.refresh()
             setTimeout(function()
@@ -4487,21 +4485,28 @@ function masterload()
 {
     var lst = [];
     var k = galleryobj.current();
-    var size = 4;
+    var size = Math.min(4,galleryobj.length());
     for (var n = 0; n < size; ++n)
     {
         galleryobj.rotate(1);
         lst[n] = new Image();
         lst[n].src = galleryobj.path();
-        lst[n].srcs = galleryobj.path();
-        lst[n].onload = function() { loaded.add(this.srcs); }
+        lst[n].index = galleryobj.current();
+        lst[n].onload = function() 
+        { 
+            galleryobj.data[this.index].loaded = 1;
+        }
     }
 
     galleryobj.rotate(-5);
     var img = new Image();
     img.src = galleryobj.path();
-    img.srcs = galleryobj.path();
-    img.onload = function() { loaded.add(this.srcs); }
+    img.index = galleryobj.current();
+    img.onload = function() 
+    { 
+        galleryobj.data[this.index].loaded = 1;
+    }
+
     galleryobj.set(k);
 }
 
