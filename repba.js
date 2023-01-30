@@ -1255,8 +1255,9 @@ addressobj.full = function ()
     var zoom = zoomobj.getcurrent();
     var out = url.origin;
     out += url.pathname;
+    var p = url.path +"."+galleryobj.current().pad(4);
     out +=
-        "?p="+galleryobj.getcurrent().title+
+        "?p="+p+
         "&h="+headobj.enabled+
         "&s="+url.slidetop+
         "&f="+url.slidefactor+
@@ -3431,11 +3432,11 @@ var templatelst =
     init: function (j)
     {
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
-        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
+        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 95;
         positxpobj.set(xp);
         positypobj.set(yp);
         var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 50;
-        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 100;
+        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 90;
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 24;
@@ -3444,8 +3445,8 @@ var templatelst =
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-50", loomobj.length());
         poomobj.split(b, "0-50", poomobj.length());
-        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 100;
-        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 100;
+        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 90;
+        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 90;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
     }
@@ -3455,11 +3456,11 @@ var templatelst =
     init: function (j)
     {
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
-        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
+        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 95;
         positxpobj.set(xp);
         positypobj.set(yp);
         var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 50;
-        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 100;
+        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 95;
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 24;
@@ -3468,8 +3469,8 @@ var templatelst =
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-50", loomobj.length());
         poomobj.split(b, "0-50", poomobj.length());
-        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 100;
-        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 100;
+        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 90;
+        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 90;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
     }
@@ -3479,11 +3480,11 @@ var templatelst =
     init: function ()
     {
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
-        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
+        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 95;
         positxpobj.set(xp);
         positypobj.set(yp);
         var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 50;
-        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 85;
+        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 95;
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 24;
@@ -3492,7 +3493,7 @@ var templatelst =
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-80", loomobj.length());
         poomobj.split(b, "0-80", poomobj.length());
-        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 100;
+        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 90;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 50;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
@@ -3504,7 +3505,7 @@ var templatelst =
     {
         globalobj.rotate = 1
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
-        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
+        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 85;
         positxpobj.set(xp);
         positypobj.set(yp);
         var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 50;
@@ -3517,7 +3518,7 @@ var templatelst =
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "50-85", loomobj.length());
         poomobj.split(b, "50-85", poomobj.length());
-        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 100;
+        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 90;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 50;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
@@ -4057,8 +4058,9 @@ var galleryobj = new makeoption("", 0);
 galleryobj.mode = 0;
 galleryobj.path = function()
 {
-    var k = galleryobj.getcurrent();
-    var name = k.title;
+    var n = galleryobj.current();
+    var k = galleryobj.datam[n];
+    var src = k.src;
     var w = k.width;
     var h = k.height;
     var a = w/h;
@@ -4083,11 +4085,19 @@ galleryobj.path = function()
     w = Math.floor(w);
     h = Math.floor(h);
     var q = this.quality;
-    var s = 'https://reportbase.com/image/'+name+'/w='+w+',h='+h+',quality='+q;
+    var s = 'https://reportbase.com/image/'+src+'/w='+w+',h='+h+',quality='+q;
+    if (src.indexOf("/"))
+        s = src; 
     return s;
 }
 
 var path = "https://reportbase.com/gallery/" + url.path;
+if (url.protocol == "http:")
+{
+    path = "res/RES"
+    url.path = "RES"
+}
+
 fetch(path)
   .then(function (response)
   {
@@ -4142,11 +4152,6 @@ fetch(path)
             context.timeobj = new makeoption("", TIMEOBJ);
             context.timeobj.set(TIMEOBJ/2);
         }
-
-        var k = url.path + "." + url.project.pad(4)
-        var j = galleryobj.data.findIndex(function(a){return a[0] == k;})
-        if (j >= 0)
-            galleryobj.set(j);
 
         var time = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : TIMEOBJ/2;
         _4cnvctx.timeobj.set(time);
@@ -4218,13 +4223,28 @@ fetch(path)
         for (var n = 0; n < galleryobj.data.length; ++n)
         {
             var k = galleryobj.data[n];
-            k.title = k[0];
+            k.src = k[0];
             k.width = k[1];
             k.height = k[2];
             k.row = k[3];
             k.index = n;
-            k.path = "PROJECT";
             k.func = project;
+
+            var datam = galleryobj.datam[n];
+            if (!datam)
+            {
+                var j = {}
+                j.src = k[0];
+                j.width = k[1];
+                j.height = k[2];
+                j.row = k[3];
+                j.describe = "";
+                j.quality = "";
+                j.name = "";
+                j.title = "";
+                j.copyright = "";
+                galleryobj.datam[n] = j;
+            }
         }
 
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
@@ -5830,12 +5850,15 @@ window.addEventListener("load", async () =>
 {
 });
 
-authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
-authClient.getAuthenticationInfoOrNull(false)
+if (url.protocol == "https:")
+{
+    authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+    authClient.getAuthenticationInfoOrNull(false)
     .then(function(client)
     {
         if (client)
             globalobj.user = client.user;
     })
+}
 
 

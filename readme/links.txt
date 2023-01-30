@@ -1,10 +1,6 @@
 https://vectr.com/design/editor/f8a8e900-89ee-415a-91be-d9072312dba1
 
 []
-pastebin
-https://www.klgrth.io/
-
-[]
 command line
 https://www.commandlinefu.com/commands/browse
 
