@@ -12,7 +12,7 @@ const IFRAME = window !== window.parent;
 const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*2;
 const SWIPETIME = 20;
-const THUMBORDER = 4;
+const THUMBORDER = 2;
 const JULIETIME = 100;
 const DELAY = 10000000;
 const HNUB = 10;
@@ -35,7 +35,7 @@ const HEADBACK = "rgba(0,0,0,0.2)";
 const MENUCOLOR = "rgba(0,0,0,0.50)";
 const BUTTONBACK = "rgba(0,0,0,0.25)";
 const OPTIONFILL = "rgb(255,255,255)";
-const THUMBFILL = "rgba(0,0,0,0.25)";
+const THUMBFILL = "rgba(0,0,0,0.35)";
 const THUMBFILL2 = "rgba(0,0,0,0.40)";
 const THUMBSTROKE = "rgba(255,255,255,0.75)";
 const THUMBDARK = "rgba(0,0,0,,0.75)";
@@ -76,8 +76,9 @@ let makeoption = function (title, data)
 
     this.getcurrent = function ()
     {
-        return (this.CURRENT < this.length() &&
-		    Array.isArray(this.data)) ? this.data[this.CURRENT] : this.current();
+        if (this.CURRENT < this.length() && Array.isArray(this.data)) 
+            return this.data[this.CURRENT];
+        return this.CURRENT;
     };
 
     this.get = function (index)
@@ -2979,12 +2980,11 @@ var thumblst =
     name: "BOSS",
     draw: function (context, rect, user, time)
     {
-        var th = heightobj.getcurrent().getcurrent();
-        rect.shrink(THUMBORDER,THUMBORDER);
-
-        var width = rect.width;
-        var height = rect.height;
-        var r = calculateAspectRatioFit(photo.image.width, photo.image.height, width*th, height*th);
+        var he = heightobj.getcurrent();
+        var b = Math.berp(0,he.length()-1,he.current());
+        var height = Math.lerp(0, rect.height, b);
+        var width = Math.lerp(0, rect.width, b);
+        var r = calculateAspectRatioFit(photo.image.width, photo.image.height, width, height);
         var h = Math.floor(r.height);
         var w = Math.floor(r.width);
 
@@ -2997,8 +2997,8 @@ var thumblst =
 
         var positx = positxobj.getcurrent();
         var posity = posityobj.getcurrent();
-        var x = Math.floor(Math.nub(positx.getcurrent(), positx.length(), w, width))+THUMBORDER;
-        var y = Math.floor(Math.nub(posity.getcurrent(), posity.length(), h, height))+THUMBORDER;
+        var x = Math.floor(Math.nub(positx.getcurrent(), positx.length(), w, rect.width));
+        var y = Math.floor(Math.nub(posity.getcurrent(), posity.length(), h, rect.height));
 
         context.thumbrect = new rectangle(x,y,w,h);
         context.save();
@@ -3487,7 +3487,7 @@ var templatelst =
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 24;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 24; 
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 48; 
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-80", loomobj.length());
