@@ -600,7 +600,7 @@ function drawslices()
             var j = context.buttonheight;
             if (y < -j || y >= window.innerHeight+j)
                 continue;
-            context.visibles.push({slice, x, y});
+            context.visibles.push({slice, x, y, m});
         }
 
         for (var m = 0; m < context.visibles.length; ++m)
@@ -611,7 +611,7 @@ function drawslices()
             j.slice.fitheight = 0;
             context.save();
             context.translate(j.x, j.y);
-            context.draw(context, context.rect(), j.slice, 0);
+            context.draw(context, context.rect(), j.slice, j.m);
             context.restore();
         }
 
@@ -3178,7 +3178,6 @@ var menulst =
         user.fitheight = rect.height;
         context.font = "0.9rem Archivo Black";
         var clr = SCROLLNAB;
-        var str = user.title;
 
         if (user.tap)
         {
@@ -3186,7 +3185,7 @@ var menulst =
         }
         else if (user.path == "PROJECT")
         {
-            if (user.index == galleryobj.current())
+            if (user.src == galleryobj.getcurrent().src)
                 clr = MENUSELECT;
         }
 
@@ -3206,8 +3205,8 @@ var menulst =
         a.draw(context, rect,
         [
             0,
-            user.name,
-            user.title,
+            time.toFixed(0),
+            user.src,
             user.width+"x"+user.height,
             0
         ], time);
@@ -3440,7 +3439,7 @@ var templatelst =
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 24;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 24;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-50", loomobj.length());
@@ -3464,7 +3463,7 @@ var templatelst =
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 24;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 24;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-50", loomobj.length());
@@ -3488,7 +3487,7 @@ var templatelst =
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 24;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 48; 
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36; 
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-80", loomobj.length());
@@ -3513,7 +3512,7 @@ var templatelst =
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 24;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "50-85", loomobj.length());
@@ -4093,7 +4092,7 @@ galleryobj.path = function()
 }
 
 var path = "https://reportbase.com/gallery/" + url.path;
-if (url.protocol == "http:")
+if (url.protocol == "1http:")
 {
     path = "res/RES"
     url.path = "RES"
@@ -4206,7 +4205,7 @@ fetch(path)
         galleryobj.data = galleryobj.datam;
         _8cnvctx.sliceobj.data = galleryobj.data;
         galleryobj.set(url.project);
-
+        var slices = _8cnvctx.sliceobj;
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
         _8cnvctx.buttonheight = ALIEXTENT;
         _8cnvctx.delayinterval = DELAYCENTER / slices.length();
