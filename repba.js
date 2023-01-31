@@ -372,8 +372,6 @@ var colobj = new Data("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new Data("CHANNELS", [0,10,20,30,40,50,60,70,80,90]);
 
 var virtualcolsobj = new Data("VIRTCOLSOBJ", 200);
-var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 24;
-virtualcolsobj.set(cols);
 
 var rotateobj = new Data("ROTATEOBJ", []);
 
@@ -493,9 +491,7 @@ function drawslices()
         }
 
         context.restore();
-        delete context.addimage;
         delete context.selectrect;
-        delete context.delimage;
         delete context.moveprev;
         delete context.movenext;
         delete context.ignores;
@@ -871,22 +867,7 @@ var Message = function (width, height, title, func)
                     new Layer(
                     [
                         new Fill(MENUCOLOR),
-                        new Col([ALIEXTENT,0,ALIEXTENT],
-                        [
-                            new Layer(
-                            [
-                                context.movingpage == -1 ? new Fill("rgb(255,155,0)") : 0,
-                                new Rectangle(context.moveprev),
-                                new Shrink(new Arrow(ARROWFILL,270),ARROWBORES,ARROWBORES),
-                            ]),
-                            new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                            new Layer(
-                            [
-                                context.movingpage == 1 ? new Fill("rgb(255,155,0)") : 0,
-                                new Rectangle(context.movenext),
-                                new Shrink(new Arrow(ARROWFILL,90),ARROWBORES,ARROWBORES),
-                            ]),
-                        ])
+                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
                     ]),
                     func,
                     new Fill("black"),
@@ -926,116 +907,96 @@ var FullPanel = function ()
         context.shadowOffsetY = 0;
 		context.strokeStyle = "white";
 
+        var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
+        r.shrink(20,26);
+        context.lineWidth = 3;
+        var e = 7;
         if (screenfull.isFullscreen)
         {
-            var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
-            r.shrink(20,25);
-            var x = r.x+8;
+            var x = r.x+e;
             var y = r.y;
             var path = new Path2D();
             path.moveTo(x,y);
-            y += 8;
+            y += e;
             path.lineTo(x,y);
-            x -= 8;
+            x -= e;
             path.lineTo(x,y);
-            context.lineWidth = 3;
             context.stroke(path);
 
-            var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
-            r.shrink(20,25);
-            var x = r.x+16;
+            var x = r.x+e*2;
             var y = r.y;
             var path = new Path2D();
             path.moveTo(x,y);
-            y += 8;
+            y += e;
             path.lineTo(x,y);
-            x += 8;
+            x += e;
             path.lineTo(x,y);
-            context.lineWidth = 3;
             context.stroke(path);
 
-            var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
-            r.shrink(20,25);
-            var x = r.x+24;
-            var y = r.y+16;
+            var x = r.x+e*3;
+            var y = r.y+e*2;
             var path = new Path2D();
             path.moveTo(x,y);
-            x -= 8;
+            x -= e;
             path.lineTo(x,y);
-            y += 8;
+            y += e;
             path.lineTo(x,y);
-            context.lineWidth = 3;
             context.stroke(path);
 
-            var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
-            r.shrink(20,25);
             var x = r.x;
-            var y = r.y+16;
+            var y = r.y+e*2;
             var path = new Path2D();
             path.moveTo(x,y);
-            x += 8;
+            x += e;
             path.lineTo(x,y);
-            y += 8;
+            y += e;
             path.lineTo(x,y);
-            context.lineWidth = 3;
             context.stroke(path);
         }
         else
         {
-            var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
-            r.shrink(20,25);
             var x = r.x;
             var y = r.y;
             var path = new Path2D();
-            y += 8 
+            y += e 
             path.moveTo(x,y);
-            y -= 8;
+            y -= e;
             path.lineTo(x,y);
-            x += 8;
+            x += e;
             path.lineTo(x,y);
-            context.lineWidth = 3;
             context.stroke(path);
 
-            var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
-            r.shrink(20,25);
-            var x = r.x+24;
+            var x = r.x+e*3;
             var y = r.y;
             var path = new Path2D();
-            y += 8;
+            y += e;
             path.moveTo(x,y);
-            y -= 8;
+            y -= e;
             path.lineTo(x,y);
-            x -= 8;
+            x -= e;
             path.lineTo(x,y);
-            context.lineWidth = 3;
             context.stroke(path);
 
-            var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
-            r.shrink(20,25);
-            var x = r.x+24;
+            var x = r.x+e*3;
             var y = r.y;
             var path = new Path2D();
-            y += 16;
+            y += e*2;
             path.moveTo(x,y);
-            y += 8;
+            y += e;
             path.lineTo(x,y);
-            x -= 8;
+            x -= e;
             path.lineTo(x,y);
-            context.lineWidth = 3;
             context.stroke(path);
 
-            var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
-            r.shrink(20,25);
             var x = r.x;
             var y = r.y;
             var path = new Path2D();
-            y += 16;
+            y += e*2;
             path.moveTo(x,y);
-            y += 8;
+            y += e;
             path.lineTo(x,y);
-            x += 8;
+            x += e;
             path.lineTo(x,y);
-            context.lineWidth = 3;
             context.stroke(path);
         }
 
@@ -1107,6 +1068,7 @@ var Plus = function (color)
         var y = rect.y;
         context.shadowOffsetX = 1;
         context.shadowOffsetY = 1;
+		context.fillStyle = color;
 	    var path = new Path2D();
         x += 6;
         y -= 3;
@@ -1119,7 +1081,6 @@ var Plus = function (color)
 		path.lineTo(x,y);
         y += 22;
 		path.lineTo(x,y);
-		context.fillStyle = color;
 		context.fill(path);
 
         var x = rect.x-3;
@@ -1133,7 +1094,6 @@ var Plus = function (color)
 		path.lineTo(x,y);
         y += 5;
 		path.lineTo(x,y);
-		context.fillStyle = color;
 		context.fill(path);
 
         context.restore();
@@ -1855,12 +1815,12 @@ var pinchlst =
         {
             var f = Math.floor(obj.length()*e);
             scale = parseFloat(scale).toFixed(2);
-            if (scale >= 1 && obj.current() < (obj.length()*0.15) && !pinchobj.current())
+            if (scale >= 1 && obj.current() < (obj.length()*0.15) && pinchobj.current()==1)
             {
                 obj.set(f+2);
                 context.savepinch = obj.getcurrent();
             }
-            else if (scale <= 1 && obj.current() < (obj.length()*0.15) && !pinchobj.current())
+            else if (scale <= 1 && obj.current() < (obj.length()*0.15) && pinchobj.current()==1)
             {
                 obj.set(f-2);
                 context.savepinch = obj.getcurrent();
@@ -2861,36 +2821,6 @@ var taplst =
                 context.refresh();
             }, 400)
         }
-        else if (context.addimage && context.addimage.hitest(x,y))
-        {
-            context.tapindex = 1;
-            context.refresh();
-            clearInterval(globalobj.tapthumb);
-            globalobj.tapthumb = setTimeout(function()
-            {
-                context.tapindex = 0;
-                context.refresh();
-                promptFile().then(function(files) { dropfiles(files); })
-            },400)
-        }
-        else if (context.fullpanel && context.fullpanel.hitest(x,y))
-        {
-            if (screenfull.isEnabled)
-                screenfull.toggle();
-            context.refresh();
-        }
-        else if (context.delimage && context.delimage.hitest(x,y))
-        {
-            context.tapindex = 2;
-            context.refresh();
-            clearInterval(globalobj.tapthumb);
-            globalobj.tapthumb = setTimeout(function()
-            {
-                context.tapindex = 0;
-                bodyobj.enabled = 6;
-                context.refresh();
-            }, 400)
-        }
         else if (context.menuhome && context.menuhome.hitest(x,y))
         {
             var obj = _8cnvctx.timeobj;
@@ -2907,6 +2837,9 @@ var taplst =
         }
         else if (!headobj.enabled && context.thumbrect && context.thumbrect.hitest(x,y))
         {
+            clearInterval(_4cnvctx.timemain);
+            _4cnvctx.timemain = 0;
+
             if (context.selectrect && context.selectrect.hitest(x,y)>=0)
             {
                 context.tapping = context.tapping?0:1;
@@ -2981,8 +2914,8 @@ var thumblst =
         rect = rect.shrink(THUMBORDER*2,THUMBORDER*2);
         var he = heightobj.getcurrent();
         var b = Math.berp(0,he.length()-1,he.current());
-        var height = Math.lerp(0, rect.height, b);
-        var width = Math.lerp(0, rect.width, b);
+        var height = Math.max(60,Math.lerp(0, rect.height, b));
+        var width = Math.max(60,Math.lerp(0, rect.width, b));
         var r = calculateAspectRatioFit(photo.image.width, photo.image.height, width, height);
         var h = Math.floor(r.height);
         var w = Math.floor(r.width);
@@ -3377,6 +3310,8 @@ var templatelst =
     name: "COMIC",
     init: function (j)
     {
+        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 16;
+        virtualcolsobj.set(cols);
         rowobj.initialize = 0;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
@@ -3403,6 +3338,8 @@ var templatelst =
     name: "PORTRAIT",
     init: function (j)
     {
+        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 16;
+        virtualcolsobj.set(cols);
         globalobj.rotate = 1
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
@@ -3428,6 +3365,8 @@ var templatelst =
     name: "SIDESCROLL",
     init: function (j)
     {
+        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 32;
+        virtualcolsobj.set(cols);
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3452,6 +3391,8 @@ var templatelst =
     name: "ULTRAWIDE",
     init: function (j)
     {
+        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 32;
+        virtualcolsobj.set(cols);
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3476,6 +3417,8 @@ var templatelst =
     name: "WIDE",
     init: function ()
     {
+        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 24;
+        virtualcolsobj.set(cols);
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 95;
         positxpobj.set(xp);
@@ -3500,6 +3443,8 @@ var templatelst =
     name: "LANDSCAPE",
     init: function (j)
     {
+        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 18;
+        virtualcolsobj.set(cols);
         globalobj.rotate = 1
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 85;
@@ -3525,6 +3470,8 @@ var templatelst =
     name: "EXTRATALL",
     init: function (j)
     {
+        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 16;
+        virtualcolsobj.set(cols);
         globalobj.rotate = 1
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
@@ -3550,6 +3497,8 @@ var templatelst =
     name: "TALL",
     init: function (j)
     {
+        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 16;
+        virtualcolsobj.set(cols);
         globalobj.rotate = 1
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
@@ -3575,6 +3524,8 @@ var templatelst =
     name: "LEGEND",
     init: function (j)
     {
+        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 16;
+        virtualcolsobj.set(cols);
         globalobj.rotate = 1
         channelobj = new Data("CHANNELS", [0,25,50,75,100]);
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 100;
@@ -3614,6 +3565,8 @@ var bodylst =
     {
         this.draw = function (context, rect, user, time)
         {
+            if (globalobj.promptedfile)
+                return;
             context.save();
             context.font = "1rem Archivo Black";
             context.moveprev = new rectangle()
@@ -4115,17 +4068,17 @@ fetch(path)
         speedxobj.split(1.25, "1-20", speedxobj.length());
         speedyobj.split(1.25, "1-20", speedyobj.length());
 
-        if (typeof galleryobj.row !== "undefined")
+        if (typeof galleryobj.row != "undefined")
             rowobj.initialize = galleryobj.row;
-        if (typeof rowobj.initialize !== "undefined")
+        if (typeof rowobj.initialize != "undefined")
             rowobj.set(window.innerHeight*(rowobj.initialize/100));
         else
             rowobj.set(window.innerHeight*(url.row/100));
 
         if (typeof galleryobj.quality  === "undefined")
-            galleryobj.quality = 75;
-        if (typeof galleryobj.galleryobj  === "undefined")
-            galleryobj.maxmegapix = 9000000;
+            galleryobj.quality = 85;
+        if (typeof galleryobj.megapix  === "undefined")
+            galleryobj.megapix = 9000000;
 
         //7
         var lst =
@@ -5098,7 +5051,6 @@ function escape()
     colorobj.enabled = 0;
     bodyobj.enabled = 0;
     _4cnvctx.tapping = 0;
-    _4cnvctx.timemain = 0;
     menuhide();
     var n = eventlst.findIndex(function(a){return a.name == "_4cnvctx";})
     setevents(_4cnvctx, eventlst[n])
@@ -5365,7 +5317,7 @@ var headlst =
             }
             else if (infobj.current() == 2)
             {
-                s = galleryobj.getcurrent().title;
+                s = photo.image.aspect.toFixed(2) 
             }
             else if (infobj.current() == 3)
             {
