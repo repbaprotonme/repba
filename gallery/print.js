@@ -1,4 +1,4 @@
-//node print.js JESUE > JESU 
+//node print.js JESU | jq > JESU 
 var id = process.argv[2];
 
 return fetch("https://reportbase.com/gallery/" + id)
