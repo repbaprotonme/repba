@@ -58,6 +58,7 @@ javascript
 
 []
 https://jsonhero.io/j/JZw4Wx9Mgj6r/editor  #json editor
+https://codebeautify.org/online-json-editor
 
 []
 auth
@@ -203,11 +204,10 @@ https://photos.google.com/
 https://www.google.com/maps
 https://play.google.com
 https://play.google.com/movies?hl=en_US
-google
 
 []
 https://www.desmos.com/    #calcualor
-Equation Visualizer.  Math
+https://codebeautify.org/calculators/
 
 []
 https://bigthink.com/

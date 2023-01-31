@@ -26,8 +26,8 @@ const MENUSELECT = "rgba(0,0,100,0.85)";
 const MENUTAP = "rgba(200,0,0,0.75)";
 const THUMBSELECT = "rgba(0,0,255,0.25)";
 const THUMBODY = "rgba(0,0,0,1)";
-const PROGRESSFILL = "rgba(255,255,255,0.75)";
-const PROGRESSFALL = "rgba(0,0,0,0.5)";
+const PROGRESSFILL = "white";
+const PROGRESSFALL = "black";
 const SCROLLNUB = "rgba(0,0,0,0.5)";
 const SCROLLNAB = "rgba(0,0,0,0.5)";
 const SCROLLBACK = "rgba(255,255,255,0.75)";
@@ -917,7 +917,7 @@ var Fill = function (color)
     };
 };
 
-var FullScreen = function ()
+var FullPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
@@ -1052,8 +1052,8 @@ var ProgressCircle = function ()
         let centerX = rect.x + rect.width / 2;
         let centerY = rect.y + rect.height / 2;
         let radius = rect.width / 2;
-        context.shadowOffsetX = 1;
-        context.shadowOffsetY = 1;
+        context.shadowOffsetX = 0;
+        context.shadowOffsetY = 0;
         context.shadowColor = "black"
         context.beginPath();
         context.moveTo(centerX, centerY);
@@ -2125,42 +2125,39 @@ var panlst =
             var k = guideobj.getcurrent();
             k.pan(context, rect, x, y, type);
         }
-        else
+        else if (context.pantype != 2 && (type == "panleft" || type == "panright"))
         {
-            if (context.pantype != 2 && (type == "panleft" || type == "panright"))
+            context.panning = 1;
+            context.pantype = 1 
+            context.autodirect = (type == "panleft")?-1:1;
+            var len = context.timeobj.length();
+            var diff = context.startx-x;
+            var jvalue = ((len/context.virtualwidth)*speedxobj.getcurrent())*diff;
+            var j = context.startt - jvalue;
+            if (j < 0)
+                j = len+j-1;
+            else if (j >= len)
+                j = j-len-1;
+            if (Number.isNaN(j))
+                return;
+            context.timeobj.set(j);
+            context.refresh()
+        }
+        else if (context.pantype != 1 && (type == "panup" || type == "pandown"))
+        {
+            context.pantype = 2 
+            var zoom = zoomobj.getcurrent()
+            if (Number(zoom.getcurrent()))
             {
-                context.panning = 1;
-                context.pantype = 1 
-                context.autodirect = (type == "panleft")?-1:1;
-                var len = context.timeobj.length();
-                var diff = context.startx-x;
-                var jvalue = ((len/context.virtualwidth)*speedxobj.getcurrent())*diff;
-                var j = context.startt - jvalue;
-                if (j < 0)
-                    j = len+j-1;
-                else if (j >= len)
-                    j = j-len-1;
-                if (Number.isNaN(j))
+                var h = (rect.height*(1-zoom.getcurrent()/100))*2;
+                y = ((y/rect.height)*speedyobj.getcurrent())*h;
+                var k = panvert(rowobj, h-y);
+                if (k == -1)
                     return;
-                context.timeobj.set(j);
-                context.refresh()
-            }
-            else if (context.pantype != 1 && (type == "panup" || type == "pandown"))
-            {
-                context.pantype = 2 
-                var zoom = zoomobj.getcurrent()
-                if (Number(zoom.getcurrent()))
-                {
-                    var h = (rect.height*(1-zoom.getcurrent()/100))*2;
-                    y = ((y/rect.height)*speedyobj.getcurrent())*h;
-                    var k = panvert(rowobj, h-y);
-                    if (k == -1)
-                        return;
-                    if (k == rowobj.anchor())
-                        return;
-                    rowobj.set(k);
-                    contextobj.reset();
-                }
+                if (k == rowobj.anchor())
+                    return;
+                rowobj.set(k);
+                contextobj.reset();
             }
         }
     },
@@ -2876,7 +2873,7 @@ var taplst =
                 promptFile().then(function(files) { dropfiles(files); })
             },400)
         }
-        else if (context.fullscreen && context.fullscreen.hitest(x,y))
+        else if (context.fullpanel && context.fullpanel.hitest(x,y))
         {
             if (screenfull.isEnabled)
                 screenfull.toggle();
@@ -2951,7 +2948,7 @@ var taplst =
         context.refresh();
         setTimeout(function ()
         {
-            slice.go(k);
+            slice.func(k);
             slice.tap = 0;
             context.refresh();
         }, JULIETIME*5);
@@ -2981,6 +2978,7 @@ var thumblst =
     name: "BOSS",
     draw: function (context, rect, user, time)
     {
+        rect = rect.shrink(THUMBORDER*2,THUMBORDER*2);
         var he = heightobj.getcurrent();
         var b = Math.berp(0,he.length()-1,he.current());
         var height = Math.lerp(0, rect.height, b);
@@ -3236,7 +3234,7 @@ var menulst =
             if (user.index == galleryobj.current())
                 clr = MENUSELECT;
         }
-        else if (user.path == "FULLSCREEN")
+        else if (user.path == "FULLPANEL")
         {
             if (screenfull.isFullscreen)
                 clr = MENUSELECT;
@@ -3395,7 +3393,7 @@ var templatelst =
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "70-90", loomobj.length());
         poomobj.split(b, "50-80", poomobj.length());
-        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 40;
+        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
@@ -3420,7 +3418,7 @@ var templatelst =
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "70-90", loomobj.length());
         poomobj.split(b, "50-80", poomobj.length());
-        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 40;
+        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
@@ -4092,7 +4090,7 @@ galleryobj.path = function()
 }
 
 var path = "https://reportbase.com/gallery/" + url.path;
-if (url.protocol == "1http:")
+if (url.protocol == "http:")
 {
     path = "res/RES"
     url.path = "RES"
@@ -4137,28 +4135,28 @@ fetch(path)
                 line2: "https://repba.com",
                 line3: "images@repba.com",
                 line4: "Tom Brinkman",
-                go: function() {menuhide(); }
+                func: function() {menuhide(); }
             },
             {
                 line1: "High Resolution",
                 line2: "360° Panoramas",
                 line3: "Image Stretching",
                 line4: "Image Zooming",
-                go: function() {menuhide(); }
+                func: function() {menuhide(); }
             },
             {
                 line2: "Digital Art",
                 line3: "Graphic Novels",
                 line4: "Drone Photgraphy",
                 line4: "Landscapes",
-                go: function() {menuhide(); }
+                func: function() {menuhide(); }
             },
             {
                 line1: "Sidescrolling",
                 line2: "Wrap Around",
                 line4: "Full Screen",
                 line3: "Wide Images",
-                go: function() {menuhide(); }
+                func: function() {menuhide(); }
             },
         ];
 
@@ -4194,7 +4192,7 @@ fetch(path)
         for (var n = 0; n < galleryobj.datam.length; ++n)
         {
              var k = galleryobj.datam[n];
-             k.go = function (index)
+             k.func = function (index)
                 {
                     menuhide();
                     galleryobj.set(index);
@@ -4217,34 +4215,34 @@ fetch(path)
         var slices = _9cnvctx.sliceobj;
         slices.data= [];
 
-        slices.data.push({title:"Open", path: "OPEN", go: function()
+        slices.data.push({title:"Open", path: "OPEN", func: function()
         {
             menuhide();
             promptFile().then(function(files) { dropfiles(files); })
         }});
         
-        slices.data.push({title:"Speed", path: "SPEED", go: function(rect, x, y)
+        slices.data.push({title:"Speed", path: "SPEED", func: function(rect, x, y)
         {
             bodyobj.enabled = 10;
             menuhide();
             _4cnvctx.refresh();
         }})
 
-        slices.data.push({title:"Slices", path: "SLICES", go: function(rect, x, y)
+        slices.data.push({title:"Slices", path: "SLICES", func: function(rect, x, y)
         {
             bodyobj.enabled = 8;
             menuhide();
             _4cnvctx.refresh();
         }})
 
-        slices.data.push({title:"Zoom", path: "ZOOM", go: function(rect, x, y)
+        slices.data.push({title:"Zoom", path: "ZOOM", func: function(rect, x, y)
         {
             bodyobj.enabled = 9;
             menuhide();
             _4cnvctx.refresh();
         }})
 
-        slices.data.push({title:"Login", path: "LOGIN", go: function ()
+        slices.data.push({title:"Login", path: "LOGIN", func: function ()
         {
             headobj.enabled = 1;
             footobj.enabled = 1;
@@ -4253,7 +4251,7 @@ fetch(path)
             _4cnvctx.refresh();
         }})
 
-        slices.data.push({title:"Info", path: "INFO", go: function(rect, x, y)
+        slices.data.push({title:"Info", path: "INFO", func: function(rect, x, y)
         {
             headobj.enabled = 1;
             footobj.enabled = 1;
@@ -4262,22 +4260,22 @@ fetch(path)
             _4cnvctx.refresh();
         }})
 
-        slices.data.push({ title:"Download", path: "DOWNLOAD", go: function()
+        slices.data.push({ title:"Download", path: "DOWNLOAD", func: function()
         {
             context.refresh();
             var obj = galleryobj.getcurrent();
             window.open("https://reportbase.com/image/"+obj.title+"/w="+obj.width,"Reportbase");
         }});
 
-        slices.data.push({title:"Help", path: "HELP", go: function(){menushow(_7cnvctx); }})
+        slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
 
-        slices.data.push({title:"Fullscreen", path: "FULLSCREEN", go: function ()
+        slices.data.push({title:"Fullscreen", path: "FULLPANEL", func: function ()
         {
             if (screenfull.isEnabled)
                 screenfull.toggle();
         }})
 
-        slices.data.push({ title: "Screenshot", path: "SCREENSHOT", go: function()
+        slices.data.push({ title: "Screenshot", path: "SCREENSHOT", func: function()
         {
             _4cnvctx.refresh()
             setTimeout(function()
@@ -4410,7 +4408,7 @@ var ContextObj = (function ()
                     this.size = ((this.width * this.height)/1000000).toFixed(1) + "MP";
                     this.extent = this.width + "x" + this.height;
                     var e = galleryobj.getcurrent();
-                    document.title = e.name;
+                    document.title = url.path +"."+galleryobj.current().pad(4);
 
                     if (globalobj.promptedfile)
                     {
@@ -5388,9 +5386,6 @@ var headlst =
                 menushow(_8cnvctx)
                 _4cnvctx.refresh();
             }
-            else if (context.picture.hitest(x,y))
-            {
-            }
             else if (context.option.hitest(x,y))
             {
                 _4cnvctx.refresh();
@@ -5569,7 +5564,7 @@ var footlst =
             var a = new Layer(
                [
                    new Fill(HEADBACK),
-                   new Col([60,0,80,20,ALIEXTENT-16,20,80,0,60,10],
+                   new Col([60,0,80,20,ALIEXTENT-16,20,80,0,60],
                    [
                         new Layer(
                         [
@@ -5612,10 +5607,9 @@ var footlst =
                         0,
                         new Layer(
                         [
-                            new FullScreen(),
+                            new FullPanel(),
                             new Rectangle(context.rightab),
                         ]),
-                       0,
                    ])
                ]);
 
