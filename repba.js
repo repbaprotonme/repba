@@ -5527,7 +5527,7 @@ var footlst =
 
             var a = new Layer(
                [
-                   new Fill(HEADBACK),
+                   //new Fill(HEADBACK),
                    new Row([10,60,0],
                    [
                        0,
