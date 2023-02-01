@@ -3323,12 +3323,12 @@ var templatelst =
         positxlobj.set(xl);
         positylobj.set(yl);
         galleryobj.maxmegapix = 4000000;
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 36;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 72;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
-        loomobj.split(z, "70-90", loomobj.length());
-        poomobj.split(b, "50-80", poomobj.length());
+        loomobj.split(z, "50-90", loomobj.length());
+        poomobj.split(b, "30-80", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
         traitobj.split(o, "0.1-1.0", traitobj.length());
@@ -3350,12 +3350,12 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 50;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 54;
+        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 72;
+        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 72;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
-        loomobj.split(z, "70-90", loomobj.length());
-        poomobj.split(b, "50-80", poomobj.length());
+        loomobj.split(z, "50-90", loomobj.length());
+        poomobj.split(b, "30-80", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
         traitobj.split(o, "0.1-1.0", traitobj.length());
@@ -3459,8 +3459,8 @@ var templatelst =
         url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 24;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 70;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
-        loomobj.split(z, "50-85", loomobj.length());
-        poomobj.split(b, "50-85", poomobj.length());
+        loomobj.split(z, "50-90", loomobj.length());
+        poomobj.split(b, "30-90", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 95;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 50;
         traitobj.split(o, "0.1-1.0", traitobj.length());
@@ -3542,8 +3542,8 @@ var templatelst =
         guideobj.set(1);
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
-        loomobj.split(z, "80-90", loomobj.length());
-        poomobj.split(b, "60-90", poomobj.length());
+        loomobj.split(z, "70-90", loomobj.length());
+        poomobj.split(b, "50-90", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 50;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 90;
         traitobj.split(o, "0.1-1.0", traitobj.length());
@@ -4217,7 +4217,10 @@ fetch(path)
         slices.data.push({title:"Download", path: "DOWNLOAD", func: function()
         {
             var obj = galleryobj.getcurrent();
-            window.open("https://reportbase.com/image/"+obj.src+"/w="+obj.width,"Reportbase");
+            var path = "https://reportbase.com/image/"+obj.src+"/w="+obj.width;           
+            if (obj.src.indexOf("/") >= 0)
+                path = obj.src;
+            window.open(path,"Reportbase");
         }});
 
         slices.data.push({title:"Edit", path: "EDIT", func: function()
@@ -5762,7 +5765,7 @@ function pageresize()
     headcnvctx.show(0,0,window.innerWidth,h);
     headobj.set(h?(globalobj.promptedfile?2:1):0);
     headham.panel = headobj.getcurrent();
-    var h = 90;
+    var h = footobj.enabled ? 90 : 0;
     footcnvctx.show(0,window.innerHeight-h, window.innerWidth, h);
     footobj.set(h?1:0);
     footham.panel = footobj.getcurrent();
