@@ -4216,7 +4216,6 @@ fetch(path)
 
         slices.data.push({title:"Download", path: "DOWNLOAD", func: function()
         {
-            context.refresh();
             var obj = galleryobj.getcurrent();
             window.open("https://reportbase.com/image/"+obj.src+"/w="+obj.width,"Reportbase");
         }});
