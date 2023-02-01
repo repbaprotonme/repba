@@ -2875,8 +2875,8 @@ var thumblst =
 
         var positx = positxobj.getcurrent();
         var posity = posityobj.getcurrent();
-        var x = Math.floor(Math.nub(positx.getcurrent(), positx.length(), w, rect.width))+THUMBORDER;
-        var y = Math.floor(Math.nub(posity.getcurrent(), posity.length(), h, rect.height))+THUMBORDER;
+        var x = Math.floor(Math.nub(positx.getcurrent(), positx.length(), w, rect.width))+THUMBORDER*2;
+        var y = Math.floor(Math.nub(posity.getcurrent(), posity.length(), h, rect.height))+THUMBORDER*2;
 
         context.thumbrect = new rectangle(x,y,w,h);
         context.save();
