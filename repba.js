@@ -43,6 +43,8 @@ const THUMBDARK = "rgba(0,0,0,,0.75)";
 const ARROWFILL = "white";
 const REDUCEFACTOR = 40000;
 const MAXMEGAPIX = 6000000;
+const SMALLFOOT = 70;
+const LARGEFOOT = 90;
 
 globalobj = {};
 let photo = {}
@@ -371,7 +373,8 @@ var guideobj = new Data("GUIDE", guidelst);
 var colobj = new Data("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new Data("CHANNELS", [0,10,20,30,40,50,60,70,80,90]);
 
-var virtualcolsobj = new Data("VIRTCOLSOBJ", 200);
+var virtualcolsobj = new Data("VIRTCOLSOBJ", 100);
+virtualcolsobj.set(3);
 
 var rotateobj = new Data("ROTATEOBJ", []);
 
@@ -909,8 +912,8 @@ var FullPanel = function ()
 		context.shadowColor = "black";
 
         var e = screenfull.isFullscreen?8:6;
-        var j = (rect.height-e*2)/2;
-        var k = (rect.width-e*2)/4;
+        var j = 25;
+        var k = 20;
         var r = new rectangle(rect.x+k,rect.y+j,rect.width,rect.height); 
         context.lineWidth = 3;
         var x = r.x;
@@ -968,7 +971,7 @@ var ProgressCircle = function ()
         var percent = (1-user.berp())*100;
         let centerX = rect.x + rect.width / 2;
         let centerY = rect.y + rect.height / 2;
-        let radius = rect.width/2-5;
+        let radius = rect.width/2-11;
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
         context.shadowColor = "black"
@@ -1178,7 +1181,6 @@ addressobj.full = function ()
         "&yp="+positypobj.current().toFixed(2)+
         "&xl="+positxlobj.current().toFixed(2)+
         "&yl="+positylobj.current().toFixed(2)+
-        "&v="+virtualcolsobj.current()+
         "&n="+timemain.current()+
         "&g="+speedobj.current()+
         "&o="+traitobj.current()+
@@ -3256,8 +3258,6 @@ var templatelst =
     name: "COMIC",
     init: function (j)
     {
-        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 16;
-        virtualcolsobj.set(cols);
         rowobj.initialize = 0;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
@@ -3269,9 +3269,9 @@ var templatelst =
         positylobj.set(yl);
         url.slidetop = 36;
         url.slidefactor = 18;
-        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
+        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 75;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
-        loomobj.split(z, "50-90", loomobj.length());
+        loomobj.split(z, "60-90", loomobj.length());
         poomobj.split(b, "30-80", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
@@ -3283,8 +3283,6 @@ var templatelst =
     name: "PORTRAIT",
     init: function (j)
     {
-        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 16;
-        virtualcolsobj.set(cols);
         globalobj.rotate = 1
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
@@ -3296,9 +3294,9 @@ var templatelst =
         positylobj.set(yl);
         url.slidetop = 36;
         url.slidefactor = 18;
-        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
+        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 75;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
-        loomobj.split(z, "50-90", loomobj.length());
+        loomobj.split(z, "60-90", loomobj.length());
         poomobj.split(b, "30-80", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
@@ -3310,8 +3308,6 @@ var templatelst =
     name: "SIDESCROLL",
     init: function (j)
     {
-        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 32;
-        virtualcolsobj.set(cols);
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3336,8 +3332,6 @@ var templatelst =
     name: "ULTRAWIDE",
     init: function (j)
     {
-        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 32;
-        virtualcolsobj.set(cols);
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
@@ -3362,8 +3356,6 @@ var templatelst =
     name: "WIDE",
     init: function ()
     {
-        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 24;
-        virtualcolsobj.set(cols);
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 95;
         positxpobj.set(xp);
@@ -3388,8 +3380,6 @@ var templatelst =
     name: "LANDSCAPE",
     init: function (j)
     {
-        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 18;
-        virtualcolsobj.set(cols);
         globalobj.rotate = 1
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 95;
@@ -3406,7 +3396,7 @@ var templatelst =
         loomobj.split(z, "50-90", loomobj.length());
         poomobj.split(b, "30-90", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 95;
-        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 50;
+        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
    }
@@ -3415,8 +3405,6 @@ var templatelst =
     name: "EXTRATALL",
     init: function (j)
     {
-        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 16;
-        virtualcolsobj.set(cols);
         globalobj.rotate = 1
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
@@ -3442,8 +3430,6 @@ var templatelst =
     name: "TALL",
     init: function (j)
     {
-        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 16;
-        virtualcolsobj.set(cols);
         globalobj.rotate = 1
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
@@ -3469,8 +3455,6 @@ var templatelst =
     name: "LEGEND",
     init: function (j)
     {
-        var cols = url.searchParams.has("v") ? Number(url.searchParams.get("v")) : 16;
-        virtualcolsobj.set(cols);
         globalobj.rotate = 1
         channelobj = new Data("CHANNELS", [0,25,50,75,100]);
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 95;
@@ -3808,18 +3792,7 @@ var bodylst =
                         ])
                     ]));
 
-                a.draw(context, rect, 
-                [
-                    [
-                        "Zoom",
-                        zoomobj.getcurrent(),
-                    ],
-                    0,
-                    [
-                        "Stretch",
-                        stretchobj.getcurrent()
-                    ]
-                ], 0);
+                a.draw(context, rect, [ [ "Zoom", zoomobj.getcurrent(), ], 0, [ "Stretch", stretchobj.getcurrent() ] ], 0);
             }
             else
             {
@@ -3893,18 +3866,7 @@ var bodylst =
                         ])
                     ]));
 
-                a.draw(context, rect, 
-                [
-                    [
-                        "Timer",
-                        timemain,
-                    ],
-                    0,
-                    [
-                        "Speed",
-                        speedobj
-                    ]
-                ], 0);
+                a.draw(context, rect, [ [ "Timer", timemain, ], 0, [ "Speed", speedobj ] ], 0);
             }
             else
             {
@@ -5468,13 +5430,12 @@ var footlst =
             context.keyzoomdown = new rectangle()
             context.leftab = new rectangle()
             context.rightab = new rectangle()
-
+            var e = rect.height == LARGEFOOT ? [70,0] : [70,-1];
             var a = new Layer(
                [
                    new Fill(HEADBACK),
-                   new Row([10,60,0],
+                   new Row(e,
                    [
-                       0,
                        new Col([ALIEXTENT,0,70,ALIEXTENT,70,0,ALIEXTENT],
                        [
                             new Layer(
@@ -5504,7 +5465,7 @@ var footlst =
                             ]),
                             new Layer(
                                [
-                                   _4cnvctx.timemain ? new Circle("rgb(255,155,0)") : 0,
+                                   _4cnvctx.timemain ? new Shrink(new Circle("rgb(255,155,0)"),12,12) : 0,
                                    new ProgressCircle(),
                                    new Rectangle(context.progresscircle),
                                ]),
@@ -5707,7 +5668,7 @@ function pageresize()
     headcnvctx.show(0,0,window.innerWidth,h);
     headobj.set(h?(globalobj.promptedfile?2:1):0);
     headham.panel = headobj.getcurrent();
-    var h = footobj.enabled ? 90 : 0;
+    var h = (footobj.enabled && SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
     footcnvctx.show(0,window.innerHeight-h, window.innerWidth, h);
     footobj.set(h?1:0);
     footham.panel = footobj.getcurrent();
