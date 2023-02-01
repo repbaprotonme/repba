@@ -8,6 +8,7 @@ http://www.reportbase.com
 
 const ISMOBILE = window.matchMedia("only screen and (max-width: 760px)").matches;
 const FIREFOX = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+const SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const IFRAME = window !== window.parent;
 const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*2;
@@ -40,7 +41,6 @@ const THUMBFILL2 = "rgba(0,0,0,0.40)";
 const THUMBSTROKE = "rgba(255,255,255,0.75)";
 const THUMBDARK = "rgba(0,0,0,,0.75)";
 const ARROWFILL = "white";
-const SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
 globalobj = {};
 let photo = {}
@@ -907,10 +907,11 @@ var FullPanel = function ()
         context.shadowOffsetY = 0;
 		context.strokeStyle = "white";
 
-        var r = new rectangle(rect.x,rect.y,rect.width,rect.height); 
-        r.shrink(20,26);
-        context.lineWidth = 3;
         var e = 7;
+        var j = (rect.height-e*2)/2;
+        var k = (rect.width-e*2)/4;
+        var r = new rectangle(rect.x+k,rect.y+j,rect.width,rect.height); 
+        context.lineWidth = 3;
         if (screenfull.isFullscreen)
         {
             var x = r.x+e;
@@ -1012,7 +1013,7 @@ var ProgressCircle = function ()
         var percent = (1-user.berp())*100;
         let centerX = rect.x + rect.width / 2;
         let centerY = rect.y + rect.height / 2;
-        let radius = rect.width / 2;
+        let radius = rect.width/2-5;
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
         context.shadowColor = "black"
@@ -1874,8 +1875,8 @@ var pretchobj = new Data("PORTSTRETCH", 100);
 var letchobj = new Data("LANDSTRETCH", 100);
 var stretchobj = new Data("STRETCH", [pretchobj,letchobj]);
 
-var poomobj = new Data("PORTZOOM", 100);
-var loomobj = new Data("LANDZOOM", 100);
+var poomobj = new Data("PORTZOOM", 1000);
+var loomobj = new Data("LANDZOOM", 1000);
 var zoomobj = new Data("ZOOM", [poomobj,loomobj]);
 
 var traitobj = new Data("TRAIT", 100);
@@ -2929,8 +2930,8 @@ var thumblst =
 
         var positx = positxobj.getcurrent();
         var posity = posityobj.getcurrent();
-        var x = Math.floor(Math.nub(positx.getcurrent(), positx.length(), w, rect.width));
-        var y = Math.floor(Math.nub(posity.getcurrent(), posity.length(), h, rect.height));
+        var x = Math.floor(Math.nub(positx.getcurrent(), positx.length(), w, rect.width))+THUMBORDER;
+        var y = Math.floor(Math.nub(posity.getcurrent(), posity.length(), h, rect.height))+THUMBORDER;
 
         context.thumbrect = new rectangle(x,y,w,h);
         context.save();
@@ -3528,11 +3529,11 @@ var templatelst =
         virtualcolsobj.set(cols);
         globalobj.rotate = 1
         channelobj = new Data("CHANNELS", [0,25,50,75,100]);
-        var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 100;
+        var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 95;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 50;
         positxpobj.set(xp);
         positypobj.set(yp);
-        var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 100;
+        var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 95;
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 50;
         positxlobj.set(xl);
         positylobj.set(yl);
@@ -3544,7 +3545,7 @@ var templatelst =
         loomobj.split(z, "80-90", loomobj.length());
         poomobj.split(b, "60-90", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 50;
-        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 100;
+        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 90;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
     }
@@ -4213,13 +4214,24 @@ fetch(path)
             _4cnvctx.refresh();
         }})
 
-        slices.data.push({ title:"Download", path: "DOWNLOAD", func: function()
+        slices.data.push({title:"Download", path: "DOWNLOAD", func: function()
         {
             context.refresh();
             var obj = galleryobj.getcurrent();
-            window.open("https://reportbase.com/image/"+obj.title+"/w="+obj.width,"Reportbase");
+            window.open("https://reportbase.com/image/"+obj.src+"/w="+obj.width,"Reportbase");
         }});
 
+        slices.data.push({title:"Edit", path: "EDIT", func: function()
+        {
+            window.open("https://codebeautify.org/online-json-editor?url=https://reportbase.com/gallery/"+
+                url.path,"Reportbase");
+        }})
+
+        slices.data.push({title:"Auto", path: "Auto", func: function()
+        {
+            //todo
+        }})
+     
         slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
 
         slices.data.push({title:"Fullscreen", path: "FULLPANEL", func: function ()
@@ -4393,8 +4405,6 @@ var ContextObj = (function ()
 
                     if (typeof galleryobj.getcurrent().row !== "undefined")
                         rowobj.set(window.innerHeight*(galleryobj.getcurrent().row/100));
-                    else if (typeof rowobj.initialize !== "undefined")
-                        rowobj.set(window.innerHeight*(rowobj.initialize/100));
                    
                     if (globalobj.rotate)
                         rotateobj.enabled = 1;
@@ -5516,52 +5526,56 @@ var footlst =
             var a = new Layer(
                [
                    new Fill(HEADBACK),
-                   new Col([60,0,80,20,ALIEXTENT-16,20,80,0,60],
+                   new Row([10,60,0],
                    [
-                        new Layer(
-                        [
-                            new Rectangle(context.leftab),
-                            new Col([0,8,0],
-                                [
-                                    0,
-                                    new Row([0,8,4,8,4,8,0],
+                       0,
+                       new Col([60,0,80,20,ALIEXTENT,20,80,0,60],
+                       [
+                            new Layer(
+                            [
+                                new Rectangle(context.leftab),
+                                new Col([0,8,0],
                                     [
                                         0,
-                                        new Circle("white"),
+                                        new Row([0,8,4,8,4,8,0],
+                                        [
+                                            0,
+                                            new Circle("white"),
+                                            0,
+                                            new Circle("white"),
+                                            0,
+                                            new Circle("white"),
+                                            0,
+                                        ]),
                                         0,
-                                        new Circle("white"),
-                                        0,
-                                        new Circle("white"),
-                                        0,
-                                    ]),
-                                    0,
-                                ])
-                        ]),
-                        0,
-                        new Layer(
-                        [
-                            new Rectangle(context.keyzoomdown),
-                            new Minus(ARROWFILL),
-                        ]),
-                        0,
-                        new Layer(
-                           [
-                               _4cnvctx.timemain ? new Shadow(new Shrink(new Circle("rgb(255,155,0)"),7,7)) : 0,
-                               new ProgressCircle(),
-                               new Rectangle(context.progresscircle),
-                           ]),
-                        0,
-                        new Layer(
-                        [
-                            new Rectangle(context.keyzoomup),
-                            new Plus(ARROWFILL),
-                        ]),
-                        0,
-                        new Layer(
-                        [
-                            new FullPanel(),
-                            new Rectangle(context.rightab),
-                        ]),
+                                    ])
+                            ]),
+                            0,
+                            new Layer(
+                            [
+                                new Rectangle(context.keyzoomdown),
+                                new Minus(ARROWFILL),
+                            ]),
+                            0,
+                            new Layer(
+                               [
+                                   _4cnvctx.timemain ? new Circle("rgb(255,155,0)") : 0,
+                                   new ProgressCircle(),
+                                   new Rectangle(context.progresscircle),
+                               ]),
+                            0,
+                            new Layer(
+                            [
+                                new Rectangle(context.keyzoomup),
+                                new Plus(ARROWFILL),
+                            ]),
+                            0,
+                            new Layer(
+                            [
+                                new FullPanel(),
+                                new Rectangle(context.rightab),
+                            ]),
+                       ]),
                    ])
                ]);
 
@@ -5749,7 +5763,7 @@ function pageresize()
     headcnvctx.show(0,0,window.innerWidth,h);
     headobj.set(h?(globalobj.promptedfile?2:1):0);
     headham.panel = headobj.getcurrent();
-    var h = footobj.enabled ? (SAFARI?90:70) : 0;
+    var h = 90;
     footcnvctx.show(0,window.innerHeight-h, window.innerWidth, h);
     footobj.set(h?1:0);
     footham.panel = footobj.getcurrent();

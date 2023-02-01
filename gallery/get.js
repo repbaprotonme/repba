@@ -1,4 +1,3 @@
-//https://reportbase.com/gallery/HOME
 //node get.js HOME
 var id = process.argv[2];
 
