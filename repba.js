@@ -5668,7 +5668,10 @@ function pageresize()
     headcnvctx.show(0,0,window.innerWidth,h);
     headobj.set(h?(globalobj.promptedfile?2:1):0);
     headham.panel = headobj.getcurrent();
-    var h = (footobj.enabled && SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
+    var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
+    if (!footobj.enabled)
+        h = 0;
+        
     footcnvctx.show(0,window.innerHeight-h, window.innerWidth, h);
     footobj.set(h?1:0);
     footham.panel = footobj.getcurrent();
