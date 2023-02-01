@@ -3295,7 +3295,7 @@ var templatelst =
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = 36;
-        url.slidefactor = 36;
+        url.slidefactor = 18;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "50-90", loomobj.length());
@@ -3392,7 +3392,7 @@ var templatelst =
         virtualcolsobj.set(cols);
         globalobj.rotate = 1
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
-        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 85;
+        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 95;
         positxpobj.set(xp);
         positypobj.set(yp);
         var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 50;
@@ -3427,7 +3427,7 @@ var templatelst =
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = 18;
-        url.slidefactor = 36;
+        url.slidefactor = 18;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "90-95", loomobj.length());
@@ -3454,7 +3454,7 @@ var templatelst =
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = 18;
-        url.slidefactor = 36;
+        url.slidefactor = 18;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "80-90", loomobj.length());
@@ -3482,7 +3482,7 @@ var templatelst =
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = 18;
-        url.slidefactor = 36;
+        url.slidefactor = 24;
         guideobj.set(1);
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
@@ -5419,7 +5419,7 @@ var footlst =
                 var obj = pinchobj.getcurrent().getcurrent()
                 if (obj.current() >= obj.length()-1)
                     return;
-                obj.add(4);
+                obj.add(10);
                 if (pinchobj.current() == 0)
                     contextobj.reset()
                 else
@@ -5432,7 +5432,7 @@ var footlst =
                 var obj = pinchobj.getcurrent().getcurrent()
                 if (!obj.current())
                     return;
-                obj.add(-4);
+                obj.add(-10);
                 if (pinchobj.current() == 0)
                     contextobj.reset()
                 else
