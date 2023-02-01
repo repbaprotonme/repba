@@ -3268,7 +3268,7 @@ var templatelst =
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = 36;
-        url.slidefactor = 72;
+        url.slidefactor = 18;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "50-90", loomobj.length());
@@ -3295,7 +3295,7 @@ var templatelst =
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = 36;
-        url.slidefactor = 72;
+        url.slidefactor = 36;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "50-90", loomobj.length());
@@ -3399,8 +3399,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 85;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = 18;
-        url.slidefactor = 24;
+        url.slidetop = 24;
+        url.slidefactor = 36;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 70;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "50-90", loomobj.length());
