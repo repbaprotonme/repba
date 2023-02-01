@@ -41,17 +41,17 @@ const THUMBFILL2 = "rgba(0,0,0,0.40)";
 const THUMBSTROKE = "rgba(255,255,255,0.75)";
 const THUMBDARK = "rgba(0,0,0,,0.75)";
 const ARROWFILL = "white";
+const REDUCEFACTOR = 40000;
+const MAXMEGAPIX = 6000000;
 
 globalobj = {};
 let photo = {}
 photo.image = 0;
-photo.help = 0;
 
 function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) + min); }
 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
-url.reducefactor = url.searchParams.has("c") ? Number(url.searchParams.get("c")) : 40000;
 
 Math.clamp = function (min, max, val)
 {
@@ -908,100 +908,54 @@ var FullPanel = function ()
 		context.strokeStyle = "white";
 		context.shadowColor = "black";
 
-        var e = 7;
+        var e = screenfull.isFullscreen?8:6;
         var j = (rect.height-e*2)/2;
         var k = (rect.width-e*2)/4;
         var r = new rectangle(rect.x+k,rect.y+j,rect.width,rect.height); 
         context.lineWidth = 3;
-        if (screenfull.isFullscreen)
-        {
-            var x = r.x+e;
-            var y = r.y;
-            var path = new Path2D();
-            path.moveTo(x,y);
-            y += e;
-            path.lineTo(x,y);
-            x -= e;
-            path.lineTo(x,y);
-            context.stroke(path);
+        var x = r.x;
+        var y = r.y;
+        var path = new Path2D();
+        y += e 
+        path.moveTo(x,y);
+        y -= e;
+        path.lineTo(x,y);
+        x += e;
+        path.lineTo(x,y);
+        context.stroke(path);
 
-            var x = r.x+e*2;
-            var y = r.y;
-            var path = new Path2D();
-            path.moveTo(x,y);
-            y += e;
-            path.lineTo(x,y);
-            x += e;
-            path.lineTo(x,y);
-            context.stroke(path);
+        var x = r.x+e*3;
+        var y = r.y;
+        var path = new Path2D();
+        y += e;
+        path.moveTo(x,y);
+        y -= e;
+        path.lineTo(x,y);
+        x -= e;
+        path.lineTo(x,y);
+        context.stroke(path);
 
-            var x = r.x+e*3;
-            var y = r.y+e*2;
-            var path = new Path2D();
-            path.moveTo(x,y);
-            x -= e;
-            path.lineTo(x,y);
-            y += e;
-            path.lineTo(x,y);
-            context.stroke(path);
+        var x = r.x+e*3;
+        var y = r.y;
+        var path = new Path2D();
+        y += e*2;
+        path.moveTo(x,y);
+        y += e;
+        path.lineTo(x,y);
+        x -= e;
+        path.lineTo(x,y);
+        context.stroke(path);
 
-            var x = r.x;
-            var y = r.y+e*2;
-            var path = new Path2D();
-            path.moveTo(x,y);
-            x += e;
-            path.lineTo(x,y);
-            y += e;
-            path.lineTo(x,y);
-            context.stroke(path);
-        }
-        else
-        {
-            var x = r.x;
-            var y = r.y;
-            var path = new Path2D();
-            y += e 
-            path.moveTo(x,y);
-            y -= e;
-            path.lineTo(x,y);
-            x += e;
-            path.lineTo(x,y);
-            context.stroke(path);
-
-            var x = r.x+e*3;
-            var y = r.y;
-            var path = new Path2D();
-            y += e;
-            path.moveTo(x,y);
-            y -= e;
-            path.lineTo(x,y);
-            x -= e;
-            path.lineTo(x,y);
-            context.stroke(path);
-
-            var x = r.x+e*3;
-            var y = r.y;
-            var path = new Path2D();
-            y += e*2;
-            path.moveTo(x,y);
-            y += e;
-            path.lineTo(x,y);
-            x -= e;
-            path.lineTo(x,y);
-            context.stroke(path);
-
-            var x = r.x;
-            var y = r.y;
-            var path = new Path2D();
-            y += e*2;
-            path.moveTo(x,y);
-            y += e;
-            path.lineTo(x,y);
-            x += e;
-            path.lineTo(x,y);
-            context.stroke(path);
-        }
-
+        var x = r.x;
+        var y = r.y;
+        var path = new Path2D();
+        y += e*2;
+        path.moveTo(x,y);
+        y += e;
+        path.lineTo(x,y);
+        x += e;
+        path.lineTo(x,y);
+        context.stroke(path);
         context.restore();
     }
 };
@@ -1220,9 +1174,6 @@ addressobj.full = function ()
     out +=
         "?p="+p+
         "&h="+headobj.enabled+
-        "&s="+url.slidetop+
-        "&f="+url.slidefactor+
-        "&c="+url.reducefactor+
         "&xp="+positxpobj.current().toFixed(2)+
         "&yp="+positypobj.current().toFixed(2)+
         "&xl="+positxlobj.current().toFixed(2)+
@@ -1319,7 +1270,7 @@ CanvasRenderingContext2D.prototype.tab = function ()
     context.slidestop = (context.timeobj.length()/context.virtualwidth)*url.slidetop;
     context.slidereduce = url.slidefactor?context.slidestop/url.slidefactor:0;
     if (rotateobj.enabled)
-        context.slidereduce = context.slidestop/url.reducefactor;
+        context.slidereduce = context.slidestop/REDUCEFACTOR;
 
     clearInterval(context.timemain);
     context.timemain = setInterval(function () { drawslices() }, timemain.getcurrent());
@@ -1844,16 +1795,9 @@ var pinchlst =
         context.isthumbrect = context.thumbrect && context.thumbrect.expand &&
             context.thumbrect.expand(40,40).hitest(x,y);
         if (context.isthumbrect)
-        {
             context.obj = heightobj.getcurrent(); 
-        }
         else
-        {
-            if (headobj.enabled && bodyobj.enabled != 8)
-                bodyobj.enabled = 9;
             context.obj = pinchobj.getcurrent().getcurrent();
-        }
-        
         context.savepinch = context.obj.getcurrent()
     },
     pinchend: function (context)
@@ -3323,9 +3267,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 50;
         positxlobj.set(xl);
         positylobj.set(yl);
-        galleryobj.maxmegapix = 4000000;
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 36;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 72;
+        url.slidetop = 36;
+        url.slidefactor = 72;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "50-90", loomobj.length());
@@ -3351,8 +3294,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 50;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 72;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 72;
+        url.slidetop = 36;
+        url.slidefactor = 72;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "50-90", loomobj.length());
@@ -3377,8 +3320,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 100;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 24;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36;
+        url.slidetop = 24;
+        url.slidefactor = 36;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-50", loomobj.length());
@@ -3403,8 +3346,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 100;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 24;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36;
+        url.slidetop = 24;
+        url.slidefactor = 36;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-50", loomobj.length());
@@ -3429,8 +3372,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 95;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 24;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36; 
+        url.slidetop = 24;
+        url.slidefactor = 36; 
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-80", loomobj.length());
@@ -3456,8 +3399,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 85;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 24;
+        url.slidetop = 18;
+        url.slidefactor = 24;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 70;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "50-90", loomobj.length());
@@ -3483,8 +3426,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 90;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36;
+        url.slidetop = 18;
+        url.slidefactor = 36;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "90-95", loomobj.length());
@@ -3510,8 +3453,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 90;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36;
+        url.slidetop = 18;
+        url.slidefactor = 36;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "80-90", loomobj.length());
@@ -3538,8 +3481,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 50;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = (j&&url.searchParams.has("s")) ? Number(url.searchParams.get("s")) : 18;
-        url.slidefactor = (j&&url.searchParams.has("f")) ? Number(url.searchParams.get("f")) : 36;
+        url.slidetop = 18;
+        url.slidefactor = 36;
         guideobj.set(1);
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
@@ -4020,7 +3963,7 @@ galleryobj.path = function()
 
     if (w > h)
     {
-        while (w*h > galleryobj.maxmegapix)
+        while (w*h > MAXMEGAPIX)
         {
             w *= 0.999;
             h = w/a;
@@ -4028,7 +3971,7 @@ galleryobj.path = function()
     }
     else
     {
-        while (w*h > galleryobj.maxmegapix)
+        while (w*h > MAXMEGAPIX)
         {
             h *= 0.999;
             w = a*h;
@@ -5532,7 +5475,7 @@ var footlst =
                    new Row([10,60,0],
                    [
                        0,
-                       new Col([60,0,80,ALIEXTENT,80,0,60],
+                       new Col([ALIEXTENT,0,70,ALIEXTENT,70,0,ALIEXTENT],
                        [
                             new Layer(
                             [
