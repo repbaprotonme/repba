@@ -32,14 +32,13 @@ const PROGRESSFALL = "black";
 const SCROLLNUB = "rgba(0,0,0,0.5)";
 const SCROLLNAB = "rgba(0,0,0,0.5)";
 const SCROLLBACK = "rgba(255,255,255,0.75)";
-const HEADBACK = "rgba(0,0,0,0.10)";
+const HEADBACK = "rgba(0,0,0,0.20)";
 const MENUCOLOR = "rgba(0,0,0,0.50)";
 const BUTTONBACK = "rgba(0,0,0,0.25)";
 const OPTIONFILL = "rgb(255,255,255)";
 const THUMBFILL = "rgba(0,0,0,0.35)";
 const THUMBFILL2 = "rgba(0,0,0,0.40)";
 const THUMBSTROKE = "rgba(255,255,255,0.75)";
-const THUMBDARK = "rgba(0,0,0,,0.75)";
 const ARROWFILL = "white";
 const REDUCEFACTOR = 40000;
 const MAXMEGAPIX = 6000000;
@@ -360,7 +359,7 @@ var colorlst =
 var colorobj = new Data("COLOR", colorlst);
 
 var speedobj = new Data("SPEED", 100);
-var k = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 12;
+var k = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 18;
 speedobj.set(k);
 
 var timemain = new Data("TIMEMAIN", 30);
@@ -836,7 +835,7 @@ var Centered = function (width, height, func)
         var a = new Col([0,width,0],
             [
                 0,
-                new Row([headcnv.height,0,height,0,footcnv.height],
+                new Row([headcnv.height?headcnv.height:-1,0,height,0,footcnv.height?footcnv.height:-1],
                 [
                     0,
                     0,
@@ -1655,7 +1654,6 @@ var wheelst =
         }
         else if (context.timemainctrl && context.timemainctrl.hitest(x,y))
         {
-            //todo
         }
         else if (context.speedctrl && context.speedctrl.hitest(x,y))
         {
@@ -1697,7 +1695,6 @@ var wheelst =
         }
         else if (context.timemainctrl && context.timemainctrl.hitest(x,y))
         {
-            //todo
         }
         else if (context.speedctrl && context.speedctrl.hitest(x,y))
         {
@@ -1821,8 +1818,8 @@ var pretchobj = new Data("PORTSTRETCH", 100);
 var letchobj = new Data("LANDSTRETCH", 100);
 var stretchobj = new Data("STRETCH", [pretchobj,letchobj]);
 
-var poomobj = new Data("PORTZOOM", 1000);
-var loomobj = new Data("LANDZOOM", 1000);
+var poomobj = new Data("PORTZOOM", 100);
+var loomobj = new Data("LANDZOOM", 100);
 var zoomobj = new Data("ZOOM", [poomobj,loomobj]);
 
 var traitobj = new Data("TRAIT", 100);
@@ -3268,10 +3265,10 @@ var templatelst =
         positylobj.set(yl);
         url.slidetop = 36;
         url.slidefactor = 18;
-        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 75;
-        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 75;
-        loomobj.split(z, "80-95", loomobj.length());
-        poomobj.split(b, "40-90", poomobj.length());
+        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 85;
+        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 85;
+        loomobj.split(z, "70-95", loomobj.length());
+        poomobj.split(b, "50-90", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
         traitobj.split(o, "0.1-1.0", traitobj.length());
@@ -3339,8 +3336,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 100;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = 12;
-        url.slidefactor = 24;
+        url.slidetop = 24;
+        url.slidefactor = 12;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-50", loomobj.length());
@@ -3363,8 +3360,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 95;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = 12;
-        url.slidefactor = 24; 
+        url.slidetop = 24;
+        url.slidefactor = 12; 
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-80", loomobj.length());
@@ -3389,7 +3386,7 @@ var templatelst =
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = 24;
-        url.slidefactor = 36;
+        url.slidefactor = 12;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 75;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 75;
         loomobj.split(z, "40-90", loomobj.length());
@@ -3796,7 +3793,7 @@ var bodylst =
             else
             {
                 var w = Math.min(rect.width/2,Math.max(640,rect.width-ALIEXTENT*4));
-                var h = ALIEXTENT*2+100;
+                var h = 200;
                 var a = new Centered(w,h, 
                     new RowA([0,ALIEXTENT,0,ALIEXTENT],
                     [
@@ -3870,7 +3867,7 @@ var bodylst =
             else
             {
                 var w = Math.min(rect.width/2,Math.max(640,rect.width-ALIEXTENT*4));
-                var h = ALIEXTENT*2+100;
+                var h = 200;
                 var a = new Centered(w,h, 
                     new RowA([0,ALIEXTENT,0,ALIEXTENT],
                     [
@@ -3949,7 +3946,7 @@ galleryobj.path = function()
 }
 
 var path = "https://reportbase.com/gallery/" + url.path;
-if (0)//todo url.protocol == "http:")
+if (url.protocol == "http:")
 {
     path = "res/RES"
     url.path = "RES"
@@ -4134,11 +4131,6 @@ fetch(path)
                 url.path,"Reportbase");
         }})
 
-        slices.data.push({title:"Auto", path: "Auto", func: function()
-        {
-            //todo
-        }})
-     
         slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
 
         slices.data.push({title:"Fullscreen", path: "FULLPANEL", func: function ()
@@ -5168,7 +5160,7 @@ var headlst =
                         new Layer(
                         [
                             s ? new Fill(BUTTONBACK) : 0,
-                            new PagePanel(s?0.115:0.1),
+                            new PagePanel(s?0.1:0.075),
                             new Rectangle(context.page),
                         ]),
                         0,
@@ -5215,7 +5207,7 @@ var headlst =
                         new Layer(
                         [
                             _9cnvctx.enabled ? new Fill(BUTTONBACK):0,
-                            new OptionPanel((!_9cnvctx.enabled)?0.1:0.115),
+                            new OptionPanel((!_9cnvctx.enabled)?0.075:0.1),
                             new Rectangle(context.option),
                         ])
                     ])
@@ -5234,7 +5226,7 @@ var headlst =
             }
             else if (infobj.current() == 2)
             {
-                s = photo.image.aspect.toFixed(2) 
+                s = photo.image.extent;
             }
             else if (infobj.current() == 3)
             {
@@ -5284,14 +5276,14 @@ var headlst =
                         new Layer(
                         [
                             s ? new Fill(BUTTONBACK) : 0,
-                            new PagePanel(s?0.115:0.1),
+                            new PagePanel(s?0.1:0.075),
                             new Rectangle(context.page),
                         ]),
                         0,
                         new Layer(
                         [
                             _9cnvctx.enabled ? new Fill(BUTTONBACK):0,
-                            new OptionPanel((!_9cnvctx.enabled)?0.1:0.115),
+                            new OptionPanel((!_9cnvctx.enabled)?0.075:0.1),
                             new Rectangle(context.option),
                         ])
                     ])
@@ -5337,7 +5329,7 @@ var footlst =
                         contextobj.reset()
                     else
                         _4cnvctx.refresh();
-                }, 4);
+                }, 16) 
             }
             else if (context.keyzoomdown && context.keyzoomdown.hitest(x,y))
             {
@@ -5350,7 +5342,7 @@ var footlst =
                         contextobj.reset()
                     else
                         _4cnvctx.refresh();
-                }, 4);
+                }, 16);
             }
         };
 
@@ -5678,7 +5670,7 @@ function pageresize()
 
 window.onerror = function(message, source, lineno, colno, error)
 {
-    window.alert( error+","+lineno+","+console.trace());
+    //window.alert( error+","+lineno+","+console.trace());
 };
 
 document.addEventListener("touchstart", function(evt) { }, {passive: false});
