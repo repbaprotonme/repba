@@ -32,7 +32,7 @@ const PROGRESSFALL = "black";
 const SCROLLNUB = "rgba(0,0,0,0.5)";
 const SCROLLNAB = "rgba(0,0,0,0.5)";
 const SCROLLBACK = "rgba(255,255,255,0.75)";
-const HEADBACK = "rgba(0,0,0,0.2)";
+const HEADBACK = "rgba(0,0,0,0.10)";
 const MENUCOLOR = "rgba(0,0,0,0.50)";
 const BUTTONBACK = "rgba(0,0,0,0.25)";
 const OPTIONFILL = "rgb(255,255,255)";
@@ -906,6 +906,7 @@ var FullPanel = function ()
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
 		context.strokeStyle = "white";
+		context.shadowColor = "black";
 
         var e = 7;
         var j = (rect.height-e*2)/2;
@@ -1067,8 +1068,8 @@ var Plus = function (color)
         var h = rect.height
         var x = rect.x;
         var y = rect.y;
-        context.shadowOffsetX = 1;
-        context.shadowOffsetY = 1;
+        context.shadowOffsetX = 0;
+        context.shadowOffsetY = 0;
 		context.fillStyle = color;
 	    var path = new Path2D();
         x += 6;
@@ -1111,8 +1112,8 @@ var Minus = function (color)
         var h = rect.height
         var x = rect.x;
         var y = rect.y;
-        context.shadowOffsetX = 1;
-        context.shadowOffsetY = 1;
+        context.shadowOffsetX = 0;
+        context.shadowOffsetY = 0;
 	    var path = new Path2D();
         var x = rect.x-3;
         var y = rect.y+5;
@@ -1142,8 +1143,8 @@ var Arrow = function (color, degrees)
         var x = rect.x
         var y = rect.y
         var k = degrees == 270 ? 0 : 0;
-        context.shadowOffsetX = 1;
-        context.shadowOffsetY = 1;
+        context.shadowOffsetX = 0;
+        context.shadowOffsetY = 0;
         context.translate(x+w/2-k, y+h/2);
         context.rotate(degrees*Math.PI/180.0);
         context.translate(-x-w/2, -y-h/2);
@@ -5243,8 +5244,8 @@ var headlst =
 		{
             context.clear()
             context.save()
-            context.shadowOffsetX = 1;
-            context.shadowOffsetY = 1;
+            context.shadowOffsetX = 0;
+            context.shadowOffsetY = 0;
             context.shadowColor = "black"
             context.page = new rectangle()
             context.option = new rectangle()
@@ -5288,7 +5289,7 @@ var headlst =
                             new Row([HNUB,0,HNUB],
                             [
                                 0,
-                                new Shrink(new Text("white", "center", "middle",0,1,1),20,20),
+                                new Shrink(new Text("white", "center", "middle",0,1,0),20,20),
                                 0,
                             ]),
                         ]),
@@ -5527,11 +5528,11 @@ var footlst =
 
             var a = new Layer(
                [
-                   //new Fill(HEADBACK),
+                   new Fill(HEADBACK),
                    new Row([10,60,0],
                    [
                        0,
-                       new Col([60,0,80,20,ALIEXTENT,20,80,0,60],
+                       new Col([60,0,80,ALIEXTENT,80,0,60],
                        [
                             new Layer(
                             [
@@ -5558,14 +5559,12 @@ var footlst =
                                 new Rectangle(context.keyzoomdown),
                                 new Minus(ARROWFILL),
                             ]),
-                            0,
                             new Layer(
                                [
                                    _4cnvctx.timemain ? new Circle("rgb(255,155,0)") : 0,
                                    new ProgressCircle(),
                                    new Rectangle(context.progresscircle),
                                ]),
-                            0,
                             new Layer(
                             [
                                 new Rectangle(context.keyzoomup),
