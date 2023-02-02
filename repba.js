@@ -46,6 +46,8 @@ const SMALLFOOT = 70;
 const LARGEFOOT = 90;
 
 globalobj = {};
+globalobj.hidedisplay = 0;
+
 let photo = {}
 photo.image = 0;
 
@@ -379,7 +381,8 @@ var rotateobj = new Data("ROTATEOBJ", []);
 
 function drawslices()
 {
-    if (!photo.image.complete ||
+    if (!photo.image ||
+        !photo.image.complete ||
         photo.image.naturalHeight == 0)
         return;
 
@@ -510,7 +513,7 @@ function drawslices()
         delete context.speedctrl;
         delete context.timemainctrl;
 
-        if (context.hidedisplay)
+        if (globalobj.hidedisplay)
         {
             headcnvctx.clear();
             footcnvctx.clear();
@@ -2279,7 +2282,7 @@ var presslst =
         if (isthumbrect)
             context.pressed = 1;
         else
-            context.hidedisplay = context.hidedisplay?0:1;
+            globalobj.hidedisplay = globalobj.hidedisplay?0:1;
         context.refresh();
     }
 },
@@ -2738,8 +2741,8 @@ var taplst =
                 context.tapping = 0;
                 context.isthumbrect = 0;
                 thumbobj.enabled = 1;
-                var h = context.hidedisplay;
-                context.hidedisplay = 0;
+                var h = globalobj.hidedisplay;
+                globalobj.hidedisplay = 0;
                 if (!h)
                 {
                     headobj.enabled = headobj.enabled?0:1;
@@ -3223,7 +3226,7 @@ var templatelst =
         url.slidetop = 36;
         url.slidefactor = 18;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
-        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 75;
+        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "80-95", loomobj.length());
         poomobj.split(b, "60-90", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
@@ -3261,7 +3264,7 @@ var templatelst =
     init: function (j)
     {
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
-        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
+        var yp = (j&&url.searchP0arams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
         positxpobj.set(xp);
         positypobj.set(yp);
         var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 50;
@@ -3284,6 +3287,7 @@ var templatelst =
     name: "WIDE",
     init: function ()
     {
+        globalobj.hidedisplay = 1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 95;
         positxpobj.set(xp);
@@ -3319,12 +3323,12 @@ var templatelst =
         positylobj.set(yl);
         url.slidetop = 24;
         url.slidefactor = 12;
-        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 75;
-        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 75;
+        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
+        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "40-90", loomobj.length());
         poomobj.split(b, "20-90", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 95;
-        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
+        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 50;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
    }
@@ -3333,7 +3337,6 @@ var templatelst =
     name: "EXTRATALL",
     init: function (j)
     {
-        globalobj.rotate = 1
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3358,7 +3361,6 @@ var templatelst =
     name: "TALL",
     init: function (j)
     {
-        globalobj.rotate = 1
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
         positxpobj.set(xp);
@@ -3422,7 +3424,7 @@ var bodylst =
     {
         this.draw = function (context, rect, user, time)
         {
-            if (globalobj.promptedfile)
+            if (globalobj.promptedfile || galleryobj.length() < 2)
                 return;
             context.save();
             context.font = "1rem Archivo Black";
@@ -3747,7 +3749,7 @@ if (url.searchParams.has("p"))
 {
     var e = url.searchParams.get("p");
     let k = e.split(".");
-    url.path = k[0].toUpperCase();
+    url.path = k[0];//.toUpperCase();
     if (k.length == 2)
         url.project = Number(k[1]);
 }
@@ -3788,12 +3790,9 @@ galleryobj.path = function()
     return s;
 }
 
-var path = "https://reportbase.com/gallery/" + url.path;
+var path = "gallery/" + url.path;
 if (url.protocol == "http:")
-{
-    path = "res/RES"
-    url.path = "RES"
-}
+    path = "res/" + url.path;
 
 fetch(path)
   .then(function (response)
@@ -4010,7 +4009,6 @@ var ContextObj = (function ()
             context.font = "400 1rem Archivo Black";
             context.fillText("  ", 0, 0);
             //context.lst = [];
-            context.hidedisplay = 1;
             context.slideshow = 0;
             context.lastime = 0;
             context.slidereduce = 0;
@@ -4985,10 +4983,10 @@ var headlst =
             var s = _5cnvctx.enabled || _8cnvctx.enabled;
             var a = new Layer(
                 [
-                    new Fill(HEADBACK),
+                    galleryobj.length()<2?0:new Fill(HEADBACK),
                     new Col([ALIEXTENT,0,ALIEXTENT,j,ALIEXTENT,0,ALIEXTENT],
                     [
-                        new Layer(
+                        galleryobj.length()<2?0:new Layer(
                         [
                             s ? new Fill(BUTTONBACK) : 0,
                             new PagePanel(s?0.1:0.075),
@@ -5114,10 +5112,10 @@ var headlst =
             var s = _5cnvctx.enabled || _8cnvctx.enabled;
             var a = new Layer(
                 [
-                    new Fill(HEADBACK),
+                    galleryobj.length()<2?0:new Fill(HEADBACK),
                     new Col([ALIEXTENT,0,ALIEXTENT],
                     [
-                        new Layer(
+                        galleryobj.length()<2?0:new Layer(
                         [
                             s ? new Fill(BUTTONBACK) : 0,
                             new PagePanel(s?0.1:0.075),
@@ -5476,7 +5474,7 @@ window.addEventListener("keydown", function (evt)
 
 function pageresize()
 {
-    if (_4cnvctx.hidedisplay)
+    if (globalobj.hidedisplay)
     {
         var h = 0;
         headcnvctx.show(0, 0, window.innerWidth,h);
@@ -5486,7 +5484,7 @@ function pageresize()
     {
         var h = headobj.enabled ? ALIEXTENT : 0;
         headcnvctx.show(0,0,window.innerWidth,h);
-        headobj.set(h?(globalobj.promptedfile?2:1):0);
+        headobj.set(h?(globalobj.promptedfile||galleryobj.length()<2?2:1):0);
         headham.panel = headobj.getcurrent();
         var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
         if (!footobj.enabled)
