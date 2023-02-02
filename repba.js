@@ -32,7 +32,7 @@ const PROGRESSFALL = "black";
 const SCROLLNUB = "rgba(0,0,0,0.5)";
 const SCROLLNAB = "rgba(0,0,0,0.5)";
 const SCROLLBACK = "rgba(255,255,255,0.75)";
-const HEADBACK = "rgba(0,0,0,0.40)";
+const HEADBACK = "rgba(0,0,0,0.20)";
 const MENUCOLOR = "rgba(0,0,0,0.40)";
 const BUTTONBACK = "rgba(0,0,0,0.25)";
 const OPTIONFILL = "rgb(255,255,255)";
@@ -609,7 +609,7 @@ function drawslices()
         }
 
         var a = new CurrentVPanel(new Fill("white"), 90, 1);
-        a.draw(context, new rectangle(5,0,10,rect.height), context.timeobj, 0); 
+        a.draw(context, new rectangle(5,0,8,rect.height), context.timeobj, 0); 
     }
 }
 
@@ -2010,6 +2010,7 @@ var panlst =
 	{
         setTimeout(function()
         {
+            context.pressed = 0;
             context.panning = 0;
             context.isthumbrect = 0;
             var zoom = zoomobj.getcurrent()
@@ -2926,7 +2927,7 @@ var menulst =
 
         var a = new Layer(
         [
-            new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 12),
+            new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 30),
             new RowA([0,20,20,20,20,0],
             [
                 0,
@@ -2974,7 +2975,7 @@ var menulst =
 
         var a = new Layer(
         [
-            new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 12),
+            new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 25),
             new RowA([0,20,20,20,0],
             [
                 0,
