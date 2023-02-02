@@ -372,7 +372,7 @@ var guideobj = new Data("GUIDE", guidelst);
 var colobj = new Data("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new Data("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
 
-var virtualcolsobj = new Data("VIRTCOLSOBJ", 24);
+var virtualcolsobj = new Data("VIRTCOLSOBJ", 48);
 virtualcolsobj.set(window.innerWidth < 720?3:6);
 
 var rotateobj = new Data("ROTATEOBJ", []);
@@ -503,7 +503,6 @@ function drawslices()
         delete context.login;
         delete context.logout;
         delete context.thumbrect;
-        delete context.deleteimage;
         delete context.account;
         delete context.stretchctrl;
         delete context.zoomctrl;
@@ -843,45 +842,6 @@ var Centered = function (width, height, func)
                 0,
             ]);
         a.draw(context, rect, user, time);
-    };
-};
-
-var Message = function (width, height, title, func)
-{
-    this.draw = function (context, rect, user, time)
-    {
-        context.movenext = new rectangle()
-        context.moveprev = new rectangle()
-        context.ignores = [];
-        context.font = "1rem Archivo Black";
-
-        var a = new Centered(width,ALIEXTENT+height+10,
-            new LayerA(
-            [
-                new Fill(MENUCOLOR),
-                new Rectangles(),
-                new RowA([ALIEXTENT,height,0],
-                [
-                    new Layer(
-                    [
-                        new Fill(MENUCOLOR),
-                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                    ]),
-                    func,
-                    new Fill("black"),
-                ])
-            ])
-        );
-
-        a.draw(context, rect,
-        [
-            0,
-            context.ignores,
-            [
-                title,
-                user,
-            ]
-        ], time);
     };
 };
 
@@ -3540,111 +3500,18 @@ var bodylst =
     {
         this.draw = function (context, rect, user, time)
         {
-            context.save();
-            context.font = "1rem Archivo Black";
-            var w = Math.min(ALIEXTENT*10,rect.width-40);
-            var rowlst = [0,0,0,0,0,0];
-            var rowheight = 40;
-            rowlst.length = Math.floor(Math.min(rowlst.length,(rect.height-headcnv.height-footcnv.height-ALIEXTENT)/rowheight))
-            var h = rowheight*rowlst.length;
-            var title = galleryobj.getcurrent().title;
-            var a = new Message(w,h,title,new RowA(rowlst,
-                    [
-                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                    ]));
-
-            var width = 0;
-            var visibles = 0;
-            var slicelst = context.sliceobj.data;
-            for (var m = 0; m < slicelst.length; ++m)
-            {
-                if (!slicelst[m].visible)
-                    continue;
-                visibles += 1;
-                var w = slicelst[m].stretchwidth;
-                width += w;
-            }
-
-            var eff = width/rect.width;
-
-            a.draw(context, rect,
-            [
-                "Name: "+galleryobj.getcurrent().name,
-                "Image Size: "+photo.image.extent,
-                "Aspect: "+photo.image.aspect.toFixed(2),
-                "Virtual Size: "+context.virtualwidth.toFixed(0)+"x"+context.virtualheight,
-                "Slices: "+visibles.toFixed(0)+" / "+context.sliceobj.length(),
-                "Slice Width: "+context.slicewidth.toFixed(0),
-            ],
-            0);
-         }
-    },
-    new function()
-    {
-        this.draw = function (context, rect, user, time)
-        {
-            context.login = new rectangle()
-            context.logout = new rectangle()
-            context.account = new rectangle()
-            var w = Math.min(ALIEXTENT*8,rect.width-ALIEXTENT);
-            var h = 40*3;
-            var a = new Message(w,h,"Login",new RowA([0,0,0],
-                [
-                    new Layer(
-                    [
-                        new Rectangle(context.login),
-                        context.tapindex == 1 ? new Fill(MENUSELECT) : 0,
-                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                    ]),
-                    new Layer(
-                    [
-                        new Rectangle(context.logout),
-                        context.tapindex == 2 ? new Fill(MENUSELECT) : 0,
-                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                    ]),
-                    new Layer(
-                    [
-                        new Rectangle(context.account),
-                        context.tapindex == 3 ? new Fill(MENUSELECT) : 0,
-                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                    ]),
-                ]));
-
-                a.draw(context, rect,
-                [
-                    globalobj.user ? globalobj.user.email: "Login",
-                    "Logout",
-                    "Setup"
-                ],
-                0);
         }
     },
     new function()
     {
         this.draw = function (context, rect, user, time)
         {
-            context.deleteimage = new rectangle()
-            var w = Math.min(ALIEXTENT*8,rect.width-ALIEXTENT);
-            var h = 40*1;
-            var a = new Message(w,h,"Delete",new RowA([0],
-                [
-                    new Layer(
-                    [
-                        new Rectangle(context.deleteimage),
-                        new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                    ]),
-                ]));
-
-                a.draw(context, rect,
-                [
-                    "Confirm",
-                ],
-                0);
+        }
+    },
+    new function()
+    {
+        this.draw = function (context, rect, user, time)
+        {
         }
     },
     new function()
@@ -3966,10 +3833,9 @@ fetch(path)
 
         var slices = _7cnvctx.sliceobj;
         slices.data = lst;
-        _7cnvctx.buttonheight = 180;
-        _7cnvctx.delayinterval = DELAYCENTER / slices.data.length;
-        _7cnvctx.virtualheight = slices.data.length*_7cnvctx.buttonheight;
-        _7cnvctx.rvalue = 1;
+        _7cnvctx.buttonheight = 120;
+        _7cnvctx.delayinterval = DELAYCENTER / lst.length;
+        _7cnvctx.virtualheight = lst.length*_7cnvctx.buttonheight;
         _7cnvctx.slidereduce = 0.75;
 
         //8
@@ -3984,11 +3850,6 @@ fetch(path)
                 j.width = k[1];
                 j.height = k[2];
                 j.row = k[3];
-                j.describe = "";
-                j.quality = "";
-                j.name = "";
-                j.title = "";
-                j.copyright = "";
                 galleryobj.datam[n] = j;
             }
         }
@@ -4009,10 +3870,9 @@ fetch(path)
         galleryobj.set(url.project);
         var slices = _8cnvctx.sliceobj;
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-        _8cnvctx.buttonheight = ALIEXTENT;
+        _8cnvctx.buttonheight = 120;
         _8cnvctx.delayinterval = DELAYCENTER / slices.length();
         _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
-        _8cnvctx.rvalue = 2;
         _8cnvctx.slidereduce = 0.75;
 
         //9 
@@ -4048,20 +3908,15 @@ fetch(path)
 
         slices.data.push({title:"Login", path: "LOGIN", func: function ()
         {
-            headobj.enabled = 1;
-            footobj.enabled = 1;
-            bodyobj.enabled = 6;
-            menuhide();
-            _4cnvctx.refresh();
-        }})
-
-        slices.data.push({title:"Info", path: "INFO", func: function(rect, x, y)
-        {
-            headobj.enabled = 1;
-            footobj.enabled = 1;
-            bodyobj.enabled = 5;
-            menuhide();
-            _4cnvctx.refresh();
+            context.tapindex = 1;
+            context.refresh();
+            clearInterval(globalobj.tapthumb);
+            globalobj.tapthumb = setTimeout(function()
+            {
+                context.tapindex = 0;
+                context.refresh();
+                authClient.redirectToLoginPage()                                                                                               
+            },400)
         }})
 
         slices.data.push({title:"Download", path: "DOWNLOAD", func: function()
@@ -5172,11 +5027,24 @@ var headlst =
             }
             else if (infobj.current() == 2)
             {
-                s = photo.image.extent;
+                s = photo.image.extent +" ("+
+                    photo.image.aspect.toFixed(2)+")";
             }
             else if (infobj.current() == 3)
             {
                 s = _4cnvctx.timeobj.getcurrent().toFixed(1);
+            }
+            else if (infobj.current() == 4)
+            {
+                var visibles = 0;
+                var slicelst = _4cnvctx.sliceobj.data;
+                for (var m = 0; m < slicelst.length; ++m)
+                {
+                    if (slicelst[m].visible)
+                        visibles += 1;
+                }
+                
+                s = visibles.toFixed(0)+" / "+_4cnvctx.sliceobj.length()
             }
 
             a.draw(context, rect, s, time);
@@ -5432,7 +5300,7 @@ var headobj = new Data("", headlst);
 var j = url.searchParams.has("h") ? Number(url.searchParams.get("h")) : 0;
 headobj.enabled = j;
 footobj.enabled = j;
-var infobj = new Data("", 4);
+var infobj = new Data("", 5);
 var positxpobj = new Data("POSITIONX", 100);
 var positypobj = new Data("POSITIONY", 100);
 var positxlobj = new Data("POSITIONX", 100);
