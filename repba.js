@@ -660,15 +660,15 @@ let contextlst = [_1cnvctx,_2cnvctx,_3cnvctx,_4cnvctx,_5cnvctx,_6cnvctx,_7cnvctx
 let canvaslst = [];
 var eventlst =
 [
-    {name: "_1cnvctx", mouse: "DEFAULT", guide: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", draw: "DEFAULT", wheel: "DEFAULT", contextmenu: "DEFAULT", drop: "DEFAULT", key: "DEFAULT", press: "DEFAULT", pinch: "DEFAULT"},
-    {name: "_2cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", contextmenu: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
-    {name: "_3cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", contextmenu: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
-    {name: "_4cnvctx", mouse: "BOSS", guide: "GUIDE", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", draw: "BOSS", wheel: "BOSS", contextmenu: "BOSS", drop: "BOSS", key: "BOSS", press: "BOSS", pinch: "BOSS"},
-    {name: "_5cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel:  "MENU", contextmenu: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
-    {name: "_6cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", contextmenu: "DEFAULT",  drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
-    {name: "_7cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", contextmenu: "DEFAULT",  drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
-    {name: "_8cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "GMENU", wheel: "MENU", contextmenu: "DEFAULT",  drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
-    {name: "_9cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", contextmenu: "DEFAULT",  drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
+    {name: "_1cnvctx", mouse: "DEFAULT", guide: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", draw: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "DEFAULT", press: "DEFAULT", pinch: "DEFAULT"},
+    {name: "_2cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
+    {name: "_3cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
+    {name: "_4cnvctx", mouse: "BOSS", guide: "GUIDE", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", draw: "BOSS", wheel: "BOSS", drop: "BOSS", key: "BOSS", press: "BOSS", pinch: "BOSS"},
+    {name: "_5cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
+    {name: "_6cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
+    {name: "_7cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
+    {name: "_8cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "GMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
+    {name: "_9cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
 ];
 
 function seteventspanel(panel)
@@ -700,10 +700,6 @@ function setevents(context, obj)
     k = keylst[k];
     context.keyup_ = k.keyup;
     context.keydown_ = k.keydown;
-
-    var k = contextmenulst.findIndex(function (a) { return a.name == obj.contextmenu });
-    k = contextmenulst[k];
-    context.contextmenu = k.click;
 
     var k = wheelst.findIndex(function (a) { return a.name == obj.wheel });
     k = wheelst[k];
@@ -1381,15 +1377,6 @@ var makehammer = function (context, v, t)
             ham.panel.auxclick(context, new rectangle(0, 0, ham.element.width, ham.element.height), x, y);
     }, false);
 
-    ham.element.addEventListener("contextmenu", function (evt)
-    {
-   	    evt.preventDefault();
-        var x = evt.offsetX;
-        var y = evt.offsetY;
-        if (typeof (ham.panel.contextmenu) == "function")
-            ham.panel.contextmenu(context, new rectangle(0, 0, ham.element.width, ham.element.height), x, y);
-    }, false);
-
     ham.element.addEventListener("dragleave", function (evt)
     {
    	    evt.preventDefault();
@@ -1598,23 +1585,6 @@ var _9ham = makehammer(_9cnvctx,0.5,15);
 var headham = makehammer(headcnvctx,0.5,15);
 var footham = makehammer(footcnvctx,0.5,15);
 _4ham.get('pinch').set({ enable: true });
-
-var contextmenulst =
-[
-{
-    name: "DEFAULT",
-    up: function (context, ctrl, shift) { },
-    click: function (context, rect, x, y)
-    {
-    },
-},
-{
-    name: "BOSS",
-    click: function (context, rect, x, y)
-    {
-    },
-},
-]
 
 var wheelst =
 [
@@ -2067,24 +2037,23 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
 	{
-        context.panning = 1;
         rotateobj.enabled  = 0;
         context.slidereduce = url.slidefactor?context.slidestop/url.slidefactor:0;
         clearInterval(footcnvctx.timefooter);
-        context.hidedisplay = 0;
         context.startx = x;
         context.starty = y;
         context.pantype = 0;
         context.startt = context.timeobj.current();
         var zoom = zoomobj.getcurrent()
         context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
+        if (context.isthumbrect)
+            context.panning = 1;
         context.clearpoints();
     },
     panend: function (context, rect, x, y)
 	{
         setTimeout(function()
         {
-            context.pressed = 0;
             context.panning = 0;
             context.isthumbrect = 0;
             var zoom = zoomobj.getcurrent()
@@ -2345,21 +2314,15 @@ var presslst =
     {
         context.isthumbrect = 0;
         context.pressed = 0;
-        context.hidedisplay = 0;
         context.refresh();
     },
     press: function (context, rect, x, y)
     {
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
-        {
             context.pressed = 1;
-        }
         else
-        {
-            context.hidedisplay = 1;
-        }
-
+            context.hidedisplay = context.hidedisplay?0:1;
         context.refresh();
     }
 },
@@ -3002,16 +2965,8 @@ var menulst =
         context.font = "0.9rem Archivo Black";
         var clr = SCROLLNAB;
         var str = user.title;
-
         if (user.tap)
-        {
             clr = MENUTAP;
-        }
-        else if (user.path == "PROJECT")
-        {
-            if (user.index == galleryobj.current())
-                clr = MENUSELECT;
-        }
 
         var a = new Layer(
         [
@@ -3056,10 +3011,9 @@ var menulst =
         {
             clr = MENUTAP;
         }
-        else if (user.path == "PROJECT")
+        else if (time == galleryobj.current())
         {
-            if (user.src == galleryobj.getcurrent().src)
-                clr = MENUSELECT;
+            clr = MENUSELECT;
         }
 
         var a = new Layer(
@@ -3106,7 +3060,7 @@ var menulst =
         }
         else if (user.path == "PROJECT")
         {
-            if (user.index == galleryobj.current())
+            if (time == galleryobj.current())
                 clr = MENUSELECT;
         }
         else if (user.path == "FULLPANEL")
@@ -3264,7 +3218,7 @@ var templatelst =
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
         loomobj.split(z, "70-95", loomobj.length());
-        poomobj.split(b, "50-90", poomobj.length());
+        poomobj.split(b, "60-90", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
         traitobj.split(o, "0.1-1.0", traitobj.length());
@@ -4257,7 +4211,7 @@ var ContextObj = (function ()
                 photo.image.onerror =
                     photo.image.onabort = function(e)
                 {
-                    location.reload();//todo
+                    //location.reload();//todo
                 }
 
                 photo.image.onload = function()
@@ -5085,12 +5039,6 @@ var YollPanel = function ()
 	{
 		if (context.press_)
         	context.press_(context, rect, x, y, shift, ctrl);
-	}
-
-	this.contextmenu = function(context, rect, x, y)
-	{
-        if (context.contextmenu)
-            context.contextmenu(context, rect, x, y);
 	}
 };
 
