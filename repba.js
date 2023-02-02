@@ -2391,8 +2391,8 @@ var keylst =
 	keyup: function (evt)
 	{
 		var context = _4cnvctx;
-        context.ctrlhit = 0;
-        context.shifthit = 0;
+        globalobj.ctrlhit = 0;
+        globalobj.shifthit = 0;
         context.refresh();
 	},
 	keydown: function (evt)
@@ -2400,9 +2400,9 @@ var keylst =
 		var context = _4cnvctx;
 		var rect = context.rect();
         if (evt.ctrlKey)
-            context.ctrlhit = 1;
+            globalobj.ctrlhit = 1;
         if (evt.shiftKey)
-            context.shifthit = 1;
+            globalobj.shifthit = 1;
 
         context.refresh();
 
@@ -2534,7 +2534,6 @@ var taplst =
 	tap: function (context, rect, x, y, shift, ctrl)
 	{
         clearInterval(footcnvctx.timefooter);
-        context.hidedisplay = 0;
         context.pressed = 0;
         if (context.moveprev && context.moveprev.hitest(x,y))
         {
@@ -2724,7 +2723,33 @@ var taplst =
         }
         else
         {
-            masterhide(x, y);
+            if (menuenabled())
+            {
+                menuhide();
+            }
+            else if (bodyobj.enabled)
+            {
+                colorobj.enabled = 0;
+                bodyobj.enabled = 0;
+            }
+            else
+            {
+                colorobj.enabled = 0;
+                context.tapping = 0;
+                context.isthumbrect = 0;
+                thumbobj.enabled = 1;
+                var h = context.hidedisplay;
+                context.hidedisplay = 0;
+                if (!h)
+                {
+                    headobj.enabled = headobj.enabled?0:1;
+                    footobj.enabled = headobj.enabled;
+                }
+
+                pageresize();
+            }
+                
+            context.refresh();
         }
 
         addressobj.update();
@@ -3201,7 +3226,7 @@ var templatelst =
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 75;
         loomobj.split(z, "80-95", loomobj.length());
         poomobj.split(b, "60-90", poomobj.length());
-        var o  = (j&&url.s5archParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
+        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
@@ -3267,7 +3292,7 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 95;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = 24;
+        url.slidetop = 36;
         url.slidefactor = 12; 
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
@@ -3764,8 +3789,7 @@ galleryobj.path = function()
 }
 
 var path = "https://reportbase.com/gallery/" + url.path;
-//if (url.protocol == "http:")
-if (url.protocol == "ahttp:")
+if (url.protocol == "http:")
 {
     path = "res/RES"
     url.path = "RES"
@@ -3929,8 +3953,10 @@ fetch(path)
 
         slices.data.push({title:"Edit", path: "EDIT", func: function()
         {
-            window.open("https://codebeautify.org/online-json-editor?url=https://reportbase.com/gallery/"+
-                url.path,"Reportbase");
+            if (globalobj.shifthit)
+                window.open("https://codebeautify.org/online-json-editor?url=https://reportbase.com/gallery/"+ url.path,"Reportbase");
+            else
+                window.open("https://https://reportbase.com/gallery/"+url.path,"Reportbase");
         }})
 
         slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
@@ -3983,7 +4009,8 @@ var ContextObj = (function ()
             context.autodirect = -1;
             context.font = "400 1rem Archivo Black";
             context.fillText("  ", 0, 0);
-            context.lst = [];
+            //context.lst = [];
+            context.hidedisplay = 1;
             context.slideshow = 0;
             context.lastime = 0;
             context.slidereduce = 0;
@@ -4110,10 +4137,11 @@ var ContextObj = (function ()
                         rowobj.set(window.innerHeight*(galleryobj.row/100));
                     else if (typeof rowobj.row !== "undefined")
                         rowobj.set(window.innerHeight*(rowobj.row/100));
-                   
+                  
                     if (globalobj.rotate)
                         rotateobj.enabled = 1;
-                    _4cnvctx.tab();
+                    clearInterval(context.timemain);
+                    context.timemain = setInterval(function () { drawslices() }, timemain.getcurrent());
 
                     contextobj.reset()
                     setTimeout(function() { masterload(); }, 2000);
@@ -4920,8 +4948,11 @@ var headlst =
             }
             else if (context.picture.hitest(x,y))
             {
-                infobj.rotate(1);
-                _4cnvctx.refresh();
+                if (globalobj.shifthit)
+                {
+                    infobj.rotate(1);
+                    _4cnvctx.refresh();
+                }
             }
             else if (context.nextpage.hitest(x,y))
             {
@@ -5296,6 +5327,9 @@ var footlst =
 
 var footobj = new Data("", footlst);
 var headobj = new Data("", headlst);
+footobj.enabled = 0;
+headobj.enabled = 0;
+
 var j = url.searchParams.has("h") ? Number(url.searchParams.get("h")) : 0;
 headobj.enabled = j;
 footobj.enabled = j;
@@ -5440,45 +5474,28 @@ window.addEventListener("keydown", function (evt)
         return context.keydown_(evt);
 }, false);
 
-function masterhide(x, y)
+function pageresize()
 {
-    var context = _4cnvctx;
-    if (menuenabled())
+    if (_4cnvctx.hidedisplay)
     {
-        menuhide();
-    }
-    else if (bodyobj.enabled)
-    {
-        colorobj.enabled = 0;
-        bodyobj.enabled = 0;
+        var h = 0;
+        headcnvctx.show(0, 0, window.innerWidth,h);
+        footcnvctx.show(0, window.innerHeight-h, window.innerWidth, h);
     }
     else
     {
-        colorobj.enabled = 0;
-        context.tapping = 0;
-        context.isthumbrect = 0;
-        thumbobj.enabled = 1;
-        headobj.enabled = headobj.enabled?0:1;
-        footobj.enabled = headobj.enabled;
-        pageresize();
+        var h = headobj.enabled ? ALIEXTENT : 0;
+        headcnvctx.show(0,0,window.innerWidth,h);
+        headobj.set(h?(globalobj.promptedfile?2:1):0);
+        headham.panel = headobj.getcurrent();
+        var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
+        if (!footobj.enabled)
+            h = 0;
+            
+        footcnvctx.show(0, window.innerHeight-h, window.innerWidth, h);
+        footobj.set(h?1:0);
+        footham.panel = footobj.getcurrent();
     }
-        
-    context.refresh();
-}
-
-function pageresize()
-{
-    var h = headobj.enabled ? ALIEXTENT : 0;
-    headcnvctx.show(0,0,window.innerWidth,h);
-    headobj.set(h?(globalobj.promptedfile?2:1):0);
-    headham.panel = headobj.getcurrent();
-    var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
-    if (!footobj.enabled)
-        h = 0;
-        
-    footcnvctx.show(0, window.innerHeight-h, window.innerWidth, h);
-    footobj.set(h?1:0);
-    footham.panel = footobj.getcurrent();
 }
 
 window.onerror = function(message, source, lineno, colno, error)

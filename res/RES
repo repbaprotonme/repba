@@ -1,29 +1,117 @@
 {  
-    "template": "PORTRAIT",  
+    "template": "WIDE",  
     "title": "High-resolution",  
     "datam": 
     [    
         { 
-            "name": "image1",
-            "title": "Image One",
+            "name": "",
+            "title": "",
             "describe": "",
             "copyright": "",
-            "src": "res/RES.0000.jpg",
-            "width": 1998, 
-            "height": 3002, 
-            "quality": 85, 
-            "row": 10 
+            "src": "https://i.imgur.com/Rx98Wcr.jpg",
+            "width": 0, 
+            "height": 0, 
+            "quality": 0, 
+            "row": 50 
         },
         { 
-            "name": "image2",
-            "title": "Image Two",
+            "name": "",
+            "title": "",
             "describe": "",
             "copyright": "",
-            "src": "res/RES.0001.jpg",
-            "width": 1998, 
-            "height": 3002, 
-            "quality": 85, 
-            "row": 10 
+            "src": "https://i.imgur.com/kjN0BO4.jpg",
+            "width": 0, 
+            "height": 0, 
+            "quality": 0, 
+            "row": 50 
+        },
+        { 
+            "name": "",
+            "title": "",
+            "describe": "",
+            "copyright": "",
+            "src": "https://i.imgur.com/BnBf9zm.jpg",
+            "width": 0, 
+            "height": 0, 
+            "quality": 0, 
+            "row": 50 
+        },
+        { 
+            "name": "",
+            "title": "",
+            "describe": "",
+            "copyright": "",
+            "src": "https://i.imgur.com/ESzN78j.jpg",
+            "width": 0, 
+            "height": 0, 
+            "quality": 0, 
+            "row": 50 
+        },
+        { 
+            "name": "",
+            "title": "",
+            "describe": "",
+            "copyright": "",
+            "src": "https://i.imgur.com/OTYIjDk.jpg",
+            "width": 0, 
+            "height": 0, 
+            "quality": 0, 
+            "row": 50 
+        },
+        { 
+            "name": "",
+            "title": "",
+            "describe": "",
+            "copyright": "",
+            "src": "https://i.imgur.com/b1yiFDb.jpg",
+            "width": 0, 
+            "height": 0, 
+            "quality": 0, 
+            "row": 50 
+        },
+        { 
+            "name": "",
+            "title": "",
+            "describe": "",
+            "copyright": "",
+            "src": "https://i.imgur.com/FxHG9D0.jpg",
+            "width": 0, 
+            "height": 0, 
+            "quality": 0, 
+            "row": 50 
+        },
+        { 
+            "name": "",
+            "title": "",
+            "describe": "",
+            "copyright": "",
+            "src": "https://i.imgur.com/IcM7Xhu.jpg",
+            "width": 0, 
+            "height": 0, 
+            "quality": 0, 
+            "row": 50 
+        },
+        { 
+            "name": "",
+            "title": "",
+            "describe": "",
+            "copyright": "",
+            "src": "https://i.imgur.com/hdK9p4a.jpg",
+            "width": 0, 
+            "height": 0, 
+            "quality": 0, 
+            "row": 50 
+        },
+        { 
+            "name": "",
+            "title": "",
+            "describe": "",
+            "copyright": "",
+            "src": "https://i.imgur.com/TWG5BEs.jpg",
+            "width": 0, 
+            "height": 0, 
+            "quality": 0, 
+            "row": 50 
         }
     ]
 }
