@@ -32,8 +32,8 @@ const PROGRESSFALL = "black";
 const SCROLLNUB = "rgba(0,0,0,0.5)";
 const SCROLLNAB = "rgba(0,0,0,0.5)";
 const SCROLLBACK = "rgba(255,255,255,0.75)";
-const HEADBACK = "rgba(0,0,0,0.20)";
-const MENUCOLOR = "rgba(0,0,0,0.50)";
+const HEADBACK = "rgba(0,0,0,0.40)";
+const MENUCOLOR = "rgba(0,0,0,0.40)";
 const BUTTONBACK = "rgba(0,0,0,0.25)";
 const OPTIONFILL = "rgb(255,255,255)";
 const THUMBFILL = "rgba(0,0,0,0.35)";
@@ -522,11 +522,7 @@ function drawslices()
             if (footobj.enabled)
                 footobj.getcurrent().draw(footcnvctx, footcnvctx.rect(), 0);
             bodyobj.set(0)
-            if (_8cnvctx.enabled)
-            {
-                bodyobj.set(2)
-            }
-            else if (bodyobj.enabled)
+            if (bodyobj.enabled)
             {
                 bodyobj.set(bodyobj.enabled)
             }
@@ -3177,7 +3173,7 @@ var templatelst =
         url.slidefactor = 18;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
-        loomobj.split(z, "70-95", loomobj.length());
+        loomobj.split(z, "80-95", loomobj.length());
         poomobj.split(b, "60-90", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
@@ -3202,9 +3198,9 @@ var templatelst =
         url.slidefactor = 18;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 75;
-        loomobj.split(z, "70-95", loomobj.length());
-        poomobj.split(b, "40-80", poomobj.length());
-        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
+        loomobj.split(z, "80-95", loomobj.length());
+        poomobj.split(b, "60-90", poomobj.length());
+        var o  = (j&&url.s5archParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
@@ -3836,6 +3832,7 @@ fetch(path)
         _7cnvctx.buttonheight = 120;
         _7cnvctx.delayinterval = DELAYCENTER / lst.length;
         _7cnvctx.virtualheight = lst.length*_7cnvctx.buttonheight;
+        _7cnvctx.rvalue = 2;
         _7cnvctx.slidereduce = 0.75;
 
         //8
@@ -3870,6 +3867,7 @@ fetch(path)
         galleryobj.set(url.project);
         var slices = _8cnvctx.sliceobj;
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+        _8cnvctx.rvalue = 2;
         _8cnvctx.buttonheight = 120;
         _8cnvctx.delayinterval = DELAYCENTER / slices.length();
         _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
@@ -4025,7 +4023,7 @@ var ContextObj = (function ()
 				return;
 			}
 
-            var w = Math.min(ALIEXTENT*7,window.innerWidth-ALIEXTENT*2);
+            var w = Math.min(ALIEXTENT*7,window.innerWidth);//-ALIEXTENT*2);
             var l = Math.floor((window.innerWidth-w)/2);
             context.show(l, 0, w, _4cnv.height);
         },
