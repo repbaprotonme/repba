@@ -49,8 +49,6 @@ const WIDTHMAX = 1200;
 const HEIGHTMAX = 1080;
 
 globalobj = {};
-globalobj.hidedisplay = 0;
-
 let photo = {}
 photo.image = 0;
 
@@ -516,7 +514,7 @@ function drawslices()
         delete context.speedctrl;
         delete context.timemainctrl;
 
-        if (globalobj.hidedisplay)
+        if (galleryobj.hidedisplay)
         {
             headcnvctx.clear();
             footcnvctx.clear();
@@ -615,7 +613,7 @@ function drawslices()
         }
 
         var a = new CurrentVPanel(new Fill("white"), 90, 1);
-        a.draw(context, new rectangle(MENUWIDTH-13,0,8,rect.height), context.timeobj, 0); 
+        a.draw(context, new rectangle(MENUWIDTH-14,0,7,rect.height), context.timeobj, 0); 
     }
 }
 
@@ -1876,13 +1874,17 @@ var panlst =
  	leftright: function (context, rect, x, y, type) { },
 	pan: function (context, rect, x, y, type)
     {
-        if (x < ALIEXTENT)
+        if (x > rect.width-40)
         {
             var obj = context.timeobj;
             var m = y/rect.height;
             m = Math.floor((1-m)*obj.length());
             obj.set(m);
             context.refresh()
+        }
+        else if (x < 40)
+        {
+            //todo
         }
         else
         {
@@ -2334,7 +2336,7 @@ var presslst =
         if (isthumbrect)
             context.pressed = 1;
         else
-            globalobj.hidedisplay = globalobj.hidedisplay?0:1;
+            galleryobj.hidedisplay = galleryobj.hidedisplay?0:1;
         context.refresh();
     }
 },
@@ -2793,8 +2795,8 @@ var taplst =
                 context.tapping = 0;
                 context.isthumbrect = 0;
                 thumbobj.enabled = 1;
-                var h = globalobj.hidedisplay;
-                globalobj.hidedisplay = 0;
+                var h = galleryobj.hidedisplay;
+                galleryobj.hidedisplay = 0;
                 if (!h)
                 {
                     headobj.enabled = headobj.enabled?0:1;
@@ -3040,8 +3042,6 @@ var menulst =
         ]);
       
         var lst = [];
-        lst.push((time+1).toFixed(0));
-
         let keys = Object.keys(user);
         for (var n = 0; n < keys.length; ++n)
         {
@@ -3393,7 +3393,6 @@ var templatelst =
     name: "WIDE",
     init: function ()
     {
-        globalobj.hidedisplay = 1;
         var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
         var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 95;
         positxpobj.set(xp);
@@ -4109,7 +4108,6 @@ var ContextObj = (function ()
                 photo.image.onerror =
                     photo.image.onabort = function(e)
                 {
-                    //location.reload();//todo
                 }
 
                 photo.image.onload = function()
@@ -5493,7 +5491,7 @@ window.addEventListener("keydown", function (evt)
 
 function pageresize()
 {
-    if (globalobj.hidedisplay)
+    if (galleryobj.hidedisplay)
     {
         var h = 0;
         headcnvctx.show(0, 0, window.innerWidth,h);

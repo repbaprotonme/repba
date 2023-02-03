@@ -1,3 +1,7 @@
+https://i.imgur.com/
+https://www.futuretools.io/
+https://front.comparium.app/
+https://news.ycombinator.com/
 https://vectr.com/design/editor/f8a8e900-89ee-415a-91be-d9072312dba1
 
 []
@@ -114,11 +118,11 @@ title = squeeze photo
 
 []
 title = lipsum
-path = https://www.lipsum.com/
+https://www.lipsum.com/
 
 []
 title = picsum
-path = https://picsum.photos/
+https://picsum.photos/
 
 []
 title = Obfuscator
