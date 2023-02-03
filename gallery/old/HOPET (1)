@@ -1,0 +1,53 @@
+{
+  "template": "LEGEND",
+  "title": "Landscapes - Hupe - Tall",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "HOPET.0000",
+      "width": 1440,
+      "height": 4050,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPET.0001",
+      "width": 1440,
+      "height": 4050,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPET.0002",
+      "width": 1440,
+      "height": 4050,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPET.0003",
+      "width": 1440,
+      "height": 4050,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPET.0004",
+      "width": 1440,
+      "height": 4050,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

@@ -1,0 +1,2348 @@
+{
+  "template": "COMIC",
+  "title": "Batman - Goth",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "GOTH.0000",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0001",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0002",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0003",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0004",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0005",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0006",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0007",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0008",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0009",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0010",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0011",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0012",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0013",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0014",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0015",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0016",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0017",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0018",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0019",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0020",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0021",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0022",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0023",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0024",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0025",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0026",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0027",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0028",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0029",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0030",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0031",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0032",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0033",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0034",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0035",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0036",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0037",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0038",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0039",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0040",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0041",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0042",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0043",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0044",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0045",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0046",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0047",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0048",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0049",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0050",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0051",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0052",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0053",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0054",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0055",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0056",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0057",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0058",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0059",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0060",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0061",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0062",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0063",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0064",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0065",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0066",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0067",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0068",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0069",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0070",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0071",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0072",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0073",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0074",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0075",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0076",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0077",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0078",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0079",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0080",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0081",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0082",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0083",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0084",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0085",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0086",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0087",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0088",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0089",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0090",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0091",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0092",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0093",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0094",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0095",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0096",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0097",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0098",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0099",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0100",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0101",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0102",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0103",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0104",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0105",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0106",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0107",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0108",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0109",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0110",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0111",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0112",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0113",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0114",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0115",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0116",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0117",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0118",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0119",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0120",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0121",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0122",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0123",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0124",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0125",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0126",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0127",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0128",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0129",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0130",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0131",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0132",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0133",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0134",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0135",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0136",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0137",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0138",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0139",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0140",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0141",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0142",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0143",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0144",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0145",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0146",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0147",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0148",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0149",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0150",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0151",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0152",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0153",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0154",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0155",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0156",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0157",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0158",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0159",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0160",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0161",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0162",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0163",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0164",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0165",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0166",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0167",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0168",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0169",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0170",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0171",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0172",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0173",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0174",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0175",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0176",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0177",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0178",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0179",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0180",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0181",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0182",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0183",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0184",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0185",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0186",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0187",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0188",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0189",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0190",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0191",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0192",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0193",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0194",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0195",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0196",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0197",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0198",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0199",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0200",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0201",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0202",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0203",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0204",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0205",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0206",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0207",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0208",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0209",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0210",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0211",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0212",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0213",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0214",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0215",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0216",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0217",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0218",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0219",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0220",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0221",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0222",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0223",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0224",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0225",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0226",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0227",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0228",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0229",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0230",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0231",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0232",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0233",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0234",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0235",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0236",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0237",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0238",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0239",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0240",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0241",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0242",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0243",
+      "width": 1987,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0244",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0245",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0246",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0247",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0248",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0249",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0250",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0251",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0252",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0253",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0254",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0255",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0256",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0257",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0258",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOTH.0259",
+      "width": 1988,
+      "height": 3056,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

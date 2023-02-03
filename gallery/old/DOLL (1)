@@ -1,0 +1,522 @@
+{
+  "images": 56,
+  "template": "PORTRAIT",
+  "title": "Portraits - Doll - High-resolution",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "DOLL.0000",
+      "width": 2551,
+      "height": 3134,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0001",
+      "width": 2562,
+      "height": 3122,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0002",
+      "width": 2323,
+      "height": 2920,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0003",
+      "width": 2007,
+      "height": 3985,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0004",
+      "width": 2317,
+      "height": 3452,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0005",
+      "width": 2555,
+      "height": 3129,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0006",
+      "width": 2584,
+      "height": 3095,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0007",
+      "width": 2492,
+      "height": 3209,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0008",
+      "width": 2288,
+      "height": 3495,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0009",
+      "width": 2351,
+      "height": 3401,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0010",
+      "width": 2351,
+      "height": 3402,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0011",
+      "width": 2600,
+      "height": 3076,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0012",
+      "width": 2262,
+      "height": 3535,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0013",
+      "width": 2519,
+      "height": 3175,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0014",
+      "width": 2493,
+      "height": 3207,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0015",
+      "width": 2225,
+      "height": 3001,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0016",
+      "width": 2055,
+      "height": 3892,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0017",
+      "width": 2480,
+      "height": 3225,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0018",
+      "width": 2033,
+      "height": 3933,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0019",
+      "width": 1840,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0020",
+      "width": 2713,
+      "height": 2948,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0021",
+      "width": 2345,
+      "height": 3410,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0022",
+      "width": 2131,
+      "height": 3753,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0023",
+      "width": 1444,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0024",
+      "width": 2400,
+      "height": 3332,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0025",
+      "width": 1608,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0026",
+      "width": 2453,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0027",
+      "width": 2345,
+      "height": 3411,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0028",
+      "width": 2325,
+      "height": 3439,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0029",
+      "width": 2333,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0030",
+      "width": 2346,
+      "height": 3409,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0031",
+      "width": 2562,
+      "height": 3121,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0032",
+      "width": 2209,
+      "height": 3621,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0033",
+      "width": 1462,
+      "height": 2848,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0034",
+      "width": 1985,
+      "height": 2920,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0035",
+      "width": 1823,
+      "height": 2926,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0036",
+      "width": 1898,
+      "height": 2928,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0037",
+      "width": 2489,
+      "height": 3214,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0038",
+      "width": 2369,
+      "height": 3376,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0039",
+      "width": 2363,
+      "height": 3384,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0040",
+      "width": 1936,
+      "height": 2974,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0041",
+      "width": 2298,
+      "height": 3480,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0042",
+      "width": 2305,
+      "height": 3470,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0043",
+      "width": 2441,
+      "height": 3276,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0044",
+      "width": 2307,
+      "height": 3467,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0045",
+      "width": 2335,
+      "height": 3425,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0046",
+      "width": 2360,
+      "height": 3388,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0047",
+      "width": 2104,
+      "height": 3254,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0048",
+      "width": 2470,
+      "height": 3238,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0049",
+      "width": 1391,
+      "height": 2180,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0050",
+      "width": 1873,
+      "height": 2444,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0051",
+      "width": 2528,
+      "height": 3163,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0052",
+      "width": 2504,
+      "height": 3040,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0053",
+      "width": 1769,
+      "height": 2268,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0054",
+      "width": 1583,
+      "height": 2420,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0055",
+      "width": 2470,
+      "height": 3238,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLL.0056",
+      "width": 2504,
+      "height": 3040,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

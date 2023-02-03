@@ -1,0 +1,62 @@
+{
+  "template": "LEGEND",
+  "title": "Military Images",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "ARMY.0000",
+      "width": 1440,
+      "height": 4050,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "ARMY.0001",
+      "width": 1440,
+      "height": 4050,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "ARMY.0002",
+      "width": 1440,
+      "height": 4050,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "ARMY.0003",
+      "width": 1440,
+      "height": 4050,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "ARMY.0004",
+      "width": 1440,
+      "height": 4050,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "ARMY.0005",
+      "width": 1440,
+      "height": 4050,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

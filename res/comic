@@ -1,0 +1,27 @@
+{  
+    "template": "COMIC",  
+    "title": "High-resolution",  
+    "datam": 
+    [    
+        { 
+            "name": "",
+            "title": "",
+            "describe": "",
+            "copyright": "",
+            "src": "res/comic.jpg",
+            "width": 0, 
+            "height": 0, 
+            "quality": 0
+        },
+        { 
+            "name": "",
+            "title": "",
+            "describe": "",
+            "copyright": "",
+            "src": "res/comic1.webp",
+            "width": 0, 
+            "height": 0, 
+            "quality": 0
+        }
+    ]
+}

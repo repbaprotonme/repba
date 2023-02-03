@@ -1,0 +1,584 @@
+{
+  "template": "COMIC",
+  "title": "Kill",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "KILL.0000",
+      "width": 1280,
+      "height": 1927,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0001",
+      "width": 1280,
+      "height": 2073,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0002",
+      "width": 2560,
+      "height": 1978,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0003",
+      "width": 2560,
+      "height": 1977,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0004",
+      "width": 1280,
+      "height": 1999,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0005",
+      "width": 1280,
+      "height": 1995,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0006",
+      "width": 1280,
+      "height": 2007,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0007",
+      "width": 1280,
+      "height": 2012,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0008",
+      "width": 1280,
+      "height": 2012,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0009",
+      "width": 1280,
+      "height": 1978,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0010",
+      "width": 1280,
+      "height": 2009,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0011",
+      "width": 1280,
+      "height": 2004,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0012",
+      "width": 1280,
+      "height": 2006,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0013",
+      "width": 1280,
+      "height": 2017,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0014",
+      "width": 1280,
+      "height": 2000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0015",
+      "width": 1280,
+      "height": 2003,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0016",
+      "width": 1280,
+      "height": 2009,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0017",
+      "width": 1280,
+      "height": 2004,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0018",
+      "width": 1280,
+      "height": 2001,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0019",
+      "width": 1280,
+      "height": 2002,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0020",
+      "width": 1280,
+      "height": 2004,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0021",
+      "width": 1280,
+      "height": 1998,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0022",
+      "width": 1280,
+      "height": 2003,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0023",
+      "width": 1280,
+      "height": 2003,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0024",
+      "width": 1280,
+      "height": 2012,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0025",
+      "width": 1280,
+      "height": 1999,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0026",
+      "width": 1280,
+      "height": 2006,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0027",
+      "width": 1280,
+      "height": 2004,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0028",
+      "width": 1280,
+      "height": 1959,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0029",
+      "width": 1280,
+      "height": 2009,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0030",
+      "width": 1280,
+      "height": 1976,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0031",
+      "width": 1280,
+      "height": 1954,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0032",
+      "width": 1280,
+      "height": 2005,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0033",
+      "width": 1280,
+      "height": 2012,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0034",
+      "width": 1280,
+      "height": 2006,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0035",
+      "width": 1280,
+      "height": 1935,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0036",
+      "width": 1280,
+      "height": 2012,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0037",
+      "width": 1280,
+      "height": 1996,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0038",
+      "width": 1280,
+      "height": 2018,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0039",
+      "width": 1280,
+      "height": 1988,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0040",
+      "width": 1280,
+      "height": 2010,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0041",
+      "width": 1280,
+      "height": 2000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0042",
+      "width": 1280,
+      "height": 2004,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0043",
+      "width": 1280,
+      "height": 1966,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0044",
+      "width": 1280,
+      "height": 1930,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0045",
+      "width": 1280,
+      "height": 1938,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0046",
+      "width": 1280,
+      "height": 2007,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0047",
+      "width": 1280,
+      "height": 2003,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0048",
+      "width": 1280,
+      "height": 2005,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0049",
+      "width": 1280,
+      "height": 2008,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0050",
+      "width": 2560,
+      "height": 1970,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0051",
+      "width": 1280,
+      "height": 2024,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0052",
+      "width": 1280,
+      "height": 2007,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0053",
+      "width": 1280,
+      "height": 1946,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0054",
+      "width": 1280,
+      "height": 2011,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0055",
+      "width": 1280,
+      "height": 1906,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0056",
+      "width": 1280,
+      "height": 1992,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0057",
+      "width": 1280,
+      "height": 1993,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0058",
+      "width": 1280,
+      "height": 2006,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0059",
+      "width": 2560,
+      "height": 2008,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0060",
+      "width": 1280,
+      "height": 2102,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0061",
+      "width": 4800,
+      "height": 2380,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0062",
+      "width": 3200,
+      "height": 2363,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "KILL.0063",
+      "width": 1280,
+      "height": 2058,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

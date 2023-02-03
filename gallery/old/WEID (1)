@@ -1,0 +1,611 @@
+{
+  "template": "COMIC",
+  "title": "Weid",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "WEID.0000",
+      "width": 1242,
+      "height": 1654,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0001",
+      "width": 1238,
+      "height": 1650,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0002",
+      "width": 1198,
+      "height": 1642,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0003",
+      "width": 1262,
+      "height": 1663,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0004",
+      "width": 1214,
+      "height": 1642,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0005",
+      "width": 1234,
+      "height": 1650,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0006",
+      "width": 2436,
+      "height": 1614,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0007",
+      "width": 1222,
+      "height": 1664,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0008",
+      "width": 1234,
+      "height": 1638,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0009",
+      "width": 1234,
+      "height": 1659,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0010",
+      "width": 1232,
+      "height": 1650,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0011",
+      "width": 1186,
+      "height": 1646,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0012",
+      "width": 1248,
+      "height": 1646,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0013",
+      "width": 1202,
+      "height": 1654,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0014",
+      "width": 1252,
+      "height": 1646,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0015",
+      "width": 1198,
+      "height": 1650,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0016",
+      "width": 1230,
+      "height": 1650,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0017",
+      "width": 1194,
+      "height": 1646,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0018",
+      "width": 1257,
+      "height": 1671,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0019",
+      "width": 1202,
+      "height": 1664,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0020",
+      "width": 1251,
+      "height": 1675,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0021",
+      "width": 1202,
+      "height": 1646,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0022",
+      "width": 1239,
+      "height": 1675,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0023",
+      "width": 1198,
+      "height": 1646,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0024",
+      "width": 1222,
+      "height": 1650,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0025",
+      "width": 2412,
+      "height": 1650,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0026",
+      "width": 1222,
+      "height": 1646,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0027",
+      "width": 1260,
+      "height": 1634,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0028",
+      "width": 1206,
+      "height": 1642,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0029",
+      "width": 1230,
+      "height": 1646,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0030",
+      "width": 1222,
+      "height": 1642,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0031",
+      "width": 1222,
+      "height": 1634,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0032",
+      "width": 1218,
+      "height": 1632,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0033",
+      "width": 1188,
+      "height": 1647,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0034",
+      "width": 1247,
+      "height": 1685,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0035",
+      "width": 1200,
+      "height": 1632,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0036",
+      "width": 1188,
+      "height": 1632,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0037",
+      "width": 1226,
+      "height": 1654,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0038",
+      "width": 1218,
+      "height": 1650,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0039",
+      "width": 1218,
+      "height": 1654,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0040",
+      "width": 1230,
+      "height": 1650,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0041",
+      "width": 1212,
+      "height": 1656,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0042",
+      "width": 1206,
+      "height": 1660,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0043",
+      "width": 1197,
+      "height": 1644,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0044",
+      "width": 1226,
+      "height": 1654,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0045",
+      "width": 1210,
+      "height": 1654,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0046",
+      "width": 1203,
+      "height": 1647,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0047",
+      "width": 1215,
+      "height": 1647,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0048",
+      "width": 1206,
+      "height": 1641,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0049",
+      "width": 1220,
+      "height": 1654,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0050",
+      "width": 1202,
+      "height": 1654,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0051",
+      "width": 1236,
+      "height": 1660,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0052",
+      "width": 1222,
+      "height": 1664,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0053",
+      "width": 1252,
+      "height": 1668,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0054",
+      "width": 1228,
+      "height": 1650,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0055",
+      "width": 1242,
+      "height": 1668,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0056",
+      "width": 1230,
+      "height": 1660,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0057",
+      "width": 1236,
+      "height": 1647,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0058",
+      "width": 1218,
+      "height": 1646,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0059",
+      "width": 1222,
+      "height": 1660,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0060",
+      "width": 1226,
+      "height": 1654,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0061",
+      "width": 1234,
+      "height": 1650,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0062",
+      "width": 2448,
+      "height": 1674,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0063",
+      "width": 1222,
+      "height": 1650,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0064",
+      "width": 1234,
+      "height": 1664,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0065",
+      "width": 1226,
+      "height": 1650,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "WEID.0066",
+      "width": 1230,
+      "height": 1642,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

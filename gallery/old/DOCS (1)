@@ -1,0 +1,125 @@
+{
+  "template": "PORTRAIT",
+  "title": "Documents - Docs - High-resolution",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "DOCS.0000",
+      "width": 2596,
+      "height": 3081,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOCS.0001",
+      "width": 2570,
+      "height": 3112,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOCS.0002",
+      "width": 1537,
+      "height": 2292,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOCS.0003",
+      "width": 1316,
+      "height": 2143,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOCS.0004",
+      "width": 1543,
+      "height": 2293,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOCS.0005",
+      "width": 1529,
+      "height": 2280,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOCS.0006",
+      "width": 2328,
+      "height": 1760,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOCS.0007",
+      "width": 1648,
+      "height": 2152,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOCS.0008",
+      "width": 1488,
+      "height": 2064,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOCS.0009",
+      "width": 3496,
+      "height": 2693,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOCS.0010",
+      "width": 1251,
+      "height": 1920,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOCS.0011",
+      "width": 1622,
+      "height": 2338,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOCS.0012",
+      "width": 2080,
+      "height": 2616,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

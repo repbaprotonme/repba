@@ -1,0 +1,341 @@
+{
+  "template": "PORTRAIT",
+  "title": "Graffiti - Hood - High-resolution",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "HOOD.0000",
+      "width": 2560,
+      "height": 3840,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0001",
+      "width": 3840,
+      "height": 2560,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0002",
+      "width": 3840,
+      "height": 2560,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0003",
+      "width": 2560,
+      "height": 3373,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0004",
+      "width": 3840,
+      "height": 2160,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0005",
+      "width": 2560,
+      "height": 3372,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0006",
+      "width": 2560,
+      "height": 3413,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0007",
+      "width": 2560,
+      "height": 3413,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0008",
+      "width": 3840,
+      "height": 2880,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0009",
+      "width": 2560,
+      "height": 3837,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0010",
+      "width": 2560,
+      "height": 3430,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0011",
+      "width": 2560,
+      "height": 3565,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0012",
+      "width": 3840,
+      "height": 2560,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0013",
+      "width": 3840,
+      "height": 2560,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0014",
+      "width": 2560,
+      "height": 4170,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0015",
+      "width": 2560,
+      "height": 4400,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0016",
+      "width": 2050,
+      "height": 3642,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0017",
+      "width": 2560,
+      "height": 3413,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0018",
+      "width": 3840,
+      "height": 3074,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0019",
+      "width": 2584,
+      "height": 4592,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0020",
+      "width": 2560,
+      "height": 2560,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0021",
+      "width": 3840,
+      "height": 2560,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0022",
+      "width": 3840,
+      "height": 2560,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0023",
+      "width": 2560,
+      "height": 3840,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0024",
+      "width": 2560,
+      "height": 3840,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0025",
+      "width": 3840,
+      "height": 2160,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0026",
+      "width": 3840,
+      "height": 2743,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0027",
+      "width": 2560,
+      "height": 3840,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0028",
+      "width": 2560,
+      "height": 3840,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0029",
+      "width": 2560,
+      "height": 3854,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0030",
+      "width": 3840,
+      "height": 2359,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0031",
+      "width": 2560,
+      "height": 2560,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0032",
+      "width": 2560,
+      "height": 3414,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0033",
+      "width": 3840,
+      "height": 2560,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0034",
+      "width": 3840,
+      "height": 2880,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0035",
+      "width": 2560,
+      "height": 4416,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOOD.0036",
+      "width": 3840,
+      "height": 2560,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

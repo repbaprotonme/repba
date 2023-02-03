@@ -1,0 +1,18 @@
+{  
+    "template": "LEGEND",  
+    "title": "High-resolution",  
+    "datam": 
+    [    
+        { 
+            "name": "",
+            "title": "",
+            "describe": "",
+            "copyright": "",
+            "src": "res/legend.jpg",
+            "width": 0, 
+            "height": 0, 
+            "quality": 0, 
+            "row": 50 
+        }
+    ]
+}

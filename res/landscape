@@ -1,0 +1,30 @@
+{  
+    "template": "LANDSCAPE",  
+    "title": "High-resolution",  
+    "hidedisplay": "1",  
+    "datam": 
+    [    
+        { 
+            "name": "Dog",
+            "title": "",
+            "describe": "",
+            "copyright": "",
+            "src": "https://i.imgur.com/lEWdncT.jpg",
+            "width": 0, 
+            "height": 0, 
+            "quality": 0, 
+            "row": 20 
+        },
+        { 
+            "name": "",
+            "title": "",
+            "describe": "",
+            "copyright": "",
+            "src": "https://picsum.photos/3000/2000",
+            "width": 0, 
+            "height": 0, 
+            "quality": 0, 
+            "row": 20 
+        }
+    ]
+}
