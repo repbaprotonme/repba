@@ -3123,7 +3123,7 @@ function resetcanvas()
     var context = _4cnvctx;
     var l = 0;
     var w = Math.min(WIDTHMAX.innerWidth);
-    var h = Math.min(HEIGTMAX,window.innerHeight);
+    var h = Math.min(HEIGHTMAX,window.innerHeight);
     var l = (window.innerWidth-w)/2; 
     var t = (window.innerHeight-h)/2; 
     context.show(l,t,w,h);
