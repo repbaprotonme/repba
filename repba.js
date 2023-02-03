@@ -1,5 +1,4 @@
 //todo: https://obfuscator.io
-//todo: safari max size
 
 /* ++ += ==
 Copyright 2017 Tom Brinkman
@@ -11,6 +10,8 @@ const FIREFOX = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 const SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const IFRAME = window !== window.parent;
 const VIRTCONST = 0.8;
+const WIDTHMAX = 1151;
+const HEIGHTMAX = 1080;
 const MAXVIRTUAL = 5760*2;
 const SWIPETIME = 20;
 const MENUWIDTH = 420;
@@ -362,7 +363,7 @@ var colorlst =
 var colorobj = new Data("COLOR", colorlst);
 
 var speedobj = new Data("SPEED", 100);
-var k = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 40;
+var k = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 30;
 speedobj.set(k);
 
 var timemain = new Data("TIMEMAIN", 30);
@@ -3121,8 +3122,11 @@ function resetcanvas()
     var canvas = _4cnv;
     var context = _4cnvctx;
     var l = 0;
-    var w = window.innerWidth;
-    context.show(0, 0, window.innerWidth, window.innerHeight);
+    var w = Math.min(WIDTHMAX.innerWidth);
+    var h = Math.min(HEIGTMAX,window.innerHeight);
+    var l = (window.innerWidth-w)/2; 
+    var t = (window.innerHeight-h)/2; 
+    context.show(l,t,w,h);
 
     var z = zoomobj.getcurrent().getcurrent();
     var zoom = (100-z)/100;
@@ -3226,11 +3230,11 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 50;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = 36;
+        url.slidetop = 18;//todo 
         url.slidefactor = 18;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 25;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
-        loomobj.split(z, "75-95", loomobj.length());
+        loomobj.split(z, "70-95", loomobj.length());
         poomobj.split(b, "60-90", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
@@ -3251,11 +3255,11 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 50;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = 36;
+        url.slidetop = 18;
         url.slidefactor = 18;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 25;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
-        loomobj.split(z, "75-95", loomobj.length());
+        loomobj.split(z, "70-95", loomobj.length());
         poomobj.split(b, "60-90", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
@@ -3324,8 +3328,8 @@ var templatelst =
         var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 95;
         positxlobj.set(xl);
         positylobj.set(yl);
-        url.slidetop = 36;
-        url.slidefactor = 12; 
+        url.slidetop = 12;
+        url.slidefactor = 18; 
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "0-80", loomobj.length());
@@ -4024,7 +4028,6 @@ var ContextObj = (function ()
             context.autodirect = -1;
             context.font = "400 1rem Archivo Black";
             context.fillText("  ", 0, 0);
-            //context.lst = [];
             context.slideshow = 0;
             context.lastime = 0;
             context.slidereduce = 0;
@@ -4056,8 +4059,6 @@ var ContextObj = (function ()
 
 		resize: function (context)
        	{
-			var top = 0;
-			var left = 0;
 			if (!context.enabled)
 			{
 				context.enabled = 0
@@ -4065,7 +4066,7 @@ var ContextObj = (function ()
 				return;
 			}
 
-            var w = Math.min(ALIEXTENT*7,window.innerWidth);//-ALIEXTENT*2);
+            var w = Math.min(ALIEXTENT*7,window.innerWidth);
             var l = Math.floor((window.innerWidth-w)/2);
             context.show(l, 0, w, _4cnv.height);
         },
