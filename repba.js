@@ -3429,9 +3429,9 @@ var templatelst =
         url.slidetop = 24;
         url.slidefactor = 12;
         var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
-        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
+        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
         loomobj.split(z, "40-90", loomobj.length());
-        poomobj.split(b, "20-90", poomobj.length());
+        poomobj.split(b, "0-90", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 95;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 50;
         traitobj.split(o, "0.1-1.0", traitobj.length());
