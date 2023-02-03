@@ -362,7 +362,7 @@ var colorlst =
 var colorobj = new Data("COLOR", colorlst);
 
 var speedobj = new Data("SPEED", 100);
-var k = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 12;
+var k = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 40;
 speedobj.set(k);
 
 var timemain = new Data("TIMEMAIN", 30);
@@ -1924,7 +1924,7 @@ var panlst =
             posity.set((y/rect.height)*100);
             context.refresh();
         }
-        else if (context.stretchctrl && context.stretchctrl.hitest(x,y))
+        else if (context.isstretch)
         {
             pinchobj.set(1)
             var stretch = stretchobj.getcurrent()
@@ -1939,7 +1939,7 @@ var panlst =
             stretch.set(m);
             context.refresh();
         }
-        else if (context.timemainctrl && context.timemainctrl.hitest(x,y))
+        else if (context.istime)
         {
             var obj = timemain;
             var m = (y - context.timemainctrl.y)/context.timemainctrl.height;
@@ -1953,7 +1953,7 @@ var panlst =
             obj.set(m);
             context.tab();
         }
-        else if (context.speedctrl && context.speedctrl.hitest(x,y))
+        else if (context.isspeed)
         {
             var obj = speedobj;
             var m = (y - context.speedctrl.y)/context.speedctrl.height;
@@ -1967,7 +1967,7 @@ var panlst =
             obj.set(m);
             contextobj.reset();
         }
-        else if (context.slicectrl && context.slicectrl.hitest(x,y))
+        else if (context.isslice)
         {
             var obj = virtualcolsobj;
             var m = (y - context.slicectrl.y)/context.slicectrl.height;
@@ -1981,7 +1981,7 @@ var panlst =
             obj.set(m);
             contextobj.reset();
         }
-        else if (context.zoomctrl && context.zoomctrl.hitest(x,y))
+        else if (context.iszoom)
         {
             pinchobj.set(0)
             var zoom = zoomobj.getcurrent()
@@ -2050,6 +2050,11 @@ var panlst =
         context.startt = context.timeobj.current();
         var zoom = zoomobj.getcurrent()
         context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
+        context.isstretch = context.stretchctrl && context.stretchctrl.hitest(x,y);
+        context.isspeed = context.speedctrl && context.speedctrl.hitest(x,y);
+        context.iszoom = context.zoomctrl && context.zoomctrl.hitest(x,y);
+        context.isslice = context.slicectrl && context.slicectrl.hitest(x,y);
+        context.istime = context.timemainctrl && context.timemainctrl.hitest(x,y)
         if (context.isthumbrect)
             context.panning = 1;
         context.clearpoints();
@@ -3223,9 +3228,9 @@ var templatelst =
         positylobj.set(yl);
         url.slidetop = 36;
         url.slidefactor = 18;
-        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
+        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 25;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
-        loomobj.split(z, "80-95", loomobj.length());
+        loomobj.split(z, "75-95", loomobj.length());
         poomobj.split(b, "60-90", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
@@ -3248,9 +3253,9 @@ var templatelst =
         positylobj.set(yl);
         url.slidetop = 36;
         url.slidefactor = 18;
-        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
+        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 25;
         var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
-        loomobj.split(z, "80-95", loomobj.length());
+        loomobj.split(z, "75-95", loomobj.length());
         poomobj.split(b, "60-90", poomobj.length());
         var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
         var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
