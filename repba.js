@@ -13,6 +13,7 @@ const IFRAME = window !== window.parent;
 const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*2;
 const SWIPETIME = 20;
+const MENUWIDTH = 420;
 const THUMBORDER = 2;
 const JULIETIME = 100;
 const DELAY = 10000000;
@@ -361,7 +362,7 @@ var colorlst =
 var colorobj = new Data("COLOR", colorlst);
 
 var speedobj = new Data("SPEED", 100);
-var k = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 18;
+var k = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 12;
 speedobj.set(k);
 
 var timemain = new Data("TIMEMAIN", 30);
@@ -612,7 +613,7 @@ function drawslices()
         }
 
         var a = new CurrentVPanel(new Fill("white"), 90, 1);
-        a.draw(context, new rectangle(5,0,8,rect.height), context.timeobj, 0); 
+        a.draw(context, new rectangle(MENUWIDTH-13,0,8,rect.height), context.timeobj, 0); 
     }
 }
 
@@ -822,6 +823,50 @@ var Empty = function()
     }
 };
 
+var MultiText = function (width, height, func)
+{
+    this.draw = function (context, rect, user, time)
+    {
+        var lst = user;
+
+        var a = new Shrink(new RowA(
+            [
+                0,
+                lst.length>0?20:-1,
+                lst.length>1?20:-1,
+                lst.length>2?20:-1,
+                lst.length>3?20:-1,
+                lst.length>4?20:-1,
+                lst.length>5?20:-1,
+                lst.length>6?20:-1,
+                0
+            ],
+            [
+                0,
+                new Text("white", "center", "middle", 0, 0, 1),
+                new Text("white", "center", "middle", 0, 0, 1),
+                new Text("white", "center", "middle", 0, 0, 1),
+                new Text("white", "center", "middle", 0, 0, 1),
+                new Text("white", "center", "middle", 0, 0, 1),
+                new Text("white", "center", "middle", 0, 0, 1),
+                new Text("white", "center", "middle", 0, 0, 1),
+                0,
+            ]),20,0);
+
+        a.draw(context, rect,
+        [
+            0,
+            lst[0],
+            lst[1],
+            lst[2], 
+            lst[3],
+            lst[4],
+            lst[5],
+            lst[6],
+            0
+        ], time);
+    };
+};
 
 var Centered = function (width, height, func)
 {
@@ -2956,26 +3001,10 @@ var menulst =
         var a = new Layer(
         [
             new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 30),
-            new RowA([0,20,20,20,20,0],
-            [
-                0,
-                new Text("white", "center", "middle", 0, 0, 1),
-                new Text("white", "center", "middle", 0, 0, 1),
-                new Text("white", "center", "middle", 0, 0, 1),
-                new Text("white", "center", "middle", 0, 0, 1),
-                0,
-            ]),
+            new MultiText()
         ]);
 
-        a.draw(context, rect,
-        [
-            0,
-            user.line1,
-            user.line2,
-            user.line3,
-            user.line4,
-            0
-        ], time);
+        a.draw(context, rect, user.line.split("/n"), time);
         context.restore();
     }
 },
@@ -2993,35 +3022,29 @@ var menulst =
         var clr = SCROLLNAB;
 
         if (user.tap)
-        {
             clr = MENUTAP;
-        }
         else if (time == galleryobj.current())
-        {
             clr = MENUSELECT;
-        }
 
         var a = new Layer(
         [
             new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 25),
-            new RowA([0,20,20,20,0],
-            [
-                0,
-                new Text("white", "center", "middle", 0, 0, 1),
-                new Text("white", "center", "middle", 0, 0, 1),
-                new Text("white", "center", "middle", 0, 0, 1),
-                0,
-            ]),
+            new MultiText(),
         ]);
+      
+        var lst = [];
+        lst.push((time+1).toFixed(0));
 
-        a.draw(context, rect,
-        [
-            0,
-            time.toFixed(0),
-            user.src,
-            user.width+"x"+user.height,
-            0
-        ], time);
+        let keys = Object.keys(user);
+        for (var n = 0; n < keys.length; ++n)
+        {
+            var key = keys[n];
+            var value = user[key];
+            if (value && value.length)
+                lst.push(value);
+        }
+
+        a.draw(context, rect, lst, 0);
         context.restore();
     }
 },
@@ -3822,31 +3845,19 @@ fetch(path)
         var lst =
         [
             {
-                line1: "Image Viewer",
-                line2: "https://repba.com",
-                line3: "images@repba.com",
-                line4: "Tom Brinkman",
+                line: `Image Viewer\nhttps://repba.com\nimages@repba.com\nTom Brinkman`,
                 func: function() {menuhide(); }
             },
             {
-                line1: "High Resolution",
-                line2: "360° Panoramas",
-                line3: "Image Stretching",
-                line4: "Image Zooming",
+                line: `High Resolution\n360° Panoramas\nImage Stretching\nImage Zooming`,
                 func: function() {menuhide(); }
             },
             {
-                line2: "Digital Art",
-                line3: "Graphic Novels",
-                line4: "Drone Photgraphy",
-                line4: "Landscapes",
+                line: `Digital Art\nGraphic Novels\nDrone Photgraphy\nLandscapes`,
                 func: function() {menuhide(); }
             },
             {
-                line1: "Sidescrolling",
-                line2: "Wrap Around",
-                line4: "Full Screen",
-                line3: "Wide Images",
+                line: `Side Scroller\nWrap Around\nFull Screen\nWide Image`,
                 func: function() {menuhide(); }
             },
         ];
@@ -4979,7 +4990,7 @@ var headlst =
             context.thumbnail = new rectangle()
             context.picture = new rectangle()
             context.font = "1rem Archivo Black";
-            var j = rect.width < 420 ? (rect.width-ALIEXTENT*4):180;
+            var j = rect.width < MENUWIDTH ? (rect.width-ALIEXTENT*4):180;
             var s = _5cnvctx.enabled || _8cnvctx.enabled;
             var a = new Layer(
                 [
@@ -5108,7 +5119,7 @@ var headlst =
             context.page = new rectangle()
             context.option = new rectangle()
             context.font = "1rem Archivo Black";
-            var j = rect.width < 420 ? (rect.width-ALIEXTENT*4):180;
+            var j = rect.width < MENUWIDTH ? (rect.width-ALIEXTENT*4):180;
             var s = _5cnvctx.enabled || _8cnvctx.enabled;
             var a = new Layer(
                 [
