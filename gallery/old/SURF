@@ -1,0 +1,710 @@
+{
+  "template": "COMIC",
+  "title": "Silver Surfer - The Enslavers",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "SURF.0000",
+      "width": 833,
+      "height": 1127,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0001",
+      "width": 759,
+      "height": 1097,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0002",
+      "width": 819,
+      "height": 1079,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0003",
+      "width": 801,
+      "height": 1079,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0004",
+      "width": 787,
+      "height": 1082,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0005",
+      "width": 784,
+      "height": 1082,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0006",
+      "width": 787,
+      "height": 1097,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0007",
+      "width": 836,
+      "height": 1156,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0008",
+      "width": 773,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0009",
+      "width": 777,
+      "height": 1089,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0010",
+      "width": 1547,
+      "height": 2158,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0011",
+      "width": 773,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0012",
+      "width": 784,
+      "height": 1096,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0013",
+      "width": 794,
+      "height": 1090,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0014",
+      "width": 770,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0015",
+      "width": 766,
+      "height": 1082,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0016",
+      "width": 770,
+      "height": 1082,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0017",
+      "width": 777,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0018",
+      "width": 773,
+      "height": 1083,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0019",
+      "width": 773,
+      "height": 1083,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0020",
+      "width": 773,
+      "height": 1082,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0021",
+      "width": 784,
+      "height": 1082,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0022",
+      "width": 780,
+      "height": 1104,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0023",
+      "width": 777,
+      "height": 1083,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0024",
+      "width": 770,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0025",
+      "width": 773,
+      "height": 1079,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0026",
+      "width": 780,
+      "height": 1083,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0027",
+      "width": 763,
+      "height": 1075,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0028",
+      "width": 777,
+      "height": 1093,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0029",
+      "width": 777,
+      "height": 1096,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0030",
+      "width": 780,
+      "height": 1093,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0031",
+      "width": 784,
+      "height": 1079,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0032",
+      "width": 759,
+      "height": 1090,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0033",
+      "width": 773,
+      "height": 1076,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0034",
+      "width": 780,
+      "height": 1093,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0035",
+      "width": 770,
+      "height": 1079,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0036",
+      "width": 773,
+      "height": 1093,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0037",
+      "width": 780,
+      "height": 1093,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0038",
+      "width": 780,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0039",
+      "width": 770,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0040",
+      "width": 773,
+      "height": 1093,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0041",
+      "width": 777,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0042",
+      "width": 763,
+      "height": 1089,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0043",
+      "width": 770,
+      "height": 1090,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0044",
+      "width": 763,
+      "height": 1082,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0045",
+      "width": 770,
+      "height": 1082,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0046",
+      "width": 766,
+      "height": 1079,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0047",
+      "width": 770,
+      "height": 1090,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0048",
+      "width": 770,
+      "height": 1082,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0049",
+      "width": 777,
+      "height": 1079,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0050",
+      "width": 766,
+      "height": 1083,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0051",
+      "width": 791,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0052",
+      "width": 784,
+      "height": 1093,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0053",
+      "width": 790,
+      "height": 1096,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0054",
+      "width": 777,
+      "height": 1083,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0055",
+      "width": 773,
+      "height": 1089,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0056",
+      "width": 763,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0057",
+      "width": 777,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0058",
+      "width": 770,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0059",
+      "width": 784,
+      "height": 1093,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0060",
+      "width": 790,
+      "height": 1122,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0061",
+      "width": 791,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0062",
+      "width": 790,
+      "height": 1113,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0063",
+      "width": 787,
+      "height": 1082,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0064",
+      "width": 756,
+      "height": 1089,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0065",
+      "width": 780,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0066",
+      "width": 777,
+      "height": 1090,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0067",
+      "width": 780,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0068",
+      "width": 773,
+      "height": 1089,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0069",
+      "width": 784,
+      "height": 1100,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0070",
+      "width": 777,
+      "height": 1089,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0071",
+      "width": 784,
+      "height": 1089,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0072",
+      "width": 777,
+      "height": 1089,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0073",
+      "width": 780,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0074",
+      "width": 773,
+      "height": 1090,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0075",
+      "width": 780,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0076",
+      "width": 777,
+      "height": 1086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SURF.0077",
+      "width": 843,
+      "height": 1114,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

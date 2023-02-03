@@ -1,0 +1,35 @@
+{
+  "template": "ULTRAWIDE",
+  "title": "Paintings - High-resolution",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "DOLLA.0000",
+      "width": 360,
+      "height": 360,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLLA.0001",
+      "width": 360,
+      "height": 360,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DOLLA.0002",
+      "width": 360,
+      "height": 360,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

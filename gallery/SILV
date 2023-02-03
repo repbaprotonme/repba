@@ -1,0 +1,557 @@
+{
+  "template": "COMIC",
+  "title": "Silver Surfer - Homecoming",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "SILV.0000",
+      "width": 1611,
+      "height": 2169,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0001",
+      "width": 1563,
+      "height": 2139,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0002",
+      "width": 1549,
+      "height": 2157,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0003",
+      "width": 3187,
+      "height": 2133,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0004",
+      "width": 1464,
+      "height": 2073,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0005",
+      "width": 1592,
+      "height": 2165,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0006",
+      "width": 1580,
+      "height": 2117,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0007",
+      "width": 1506,
+      "height": 2124,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0008",
+      "width": 1452,
+      "height": 2059,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0009",
+      "width": 1464,
+      "height": 2130,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0010",
+      "width": 1458,
+      "height": 2065,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0011",
+      "width": 1566,
+      "height": 2133,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0012",
+      "width": 3188,
+      "height": 2157,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0013",
+      "width": 1458,
+      "height": 2065,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0014",
+      "width": 1589,
+      "height": 2165,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0015",
+      "width": 1577,
+      "height": 2165,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0016",
+      "width": 1506,
+      "height": 2082,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0017",
+      "width": 1586,
+      "height": 2165,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0018",
+      "width": 1629,
+      "height": 2165,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0019",
+      "width": 1583,
+      "height": 2165,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0020",
+      "width": 1547,
+      "height": 2148,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0021",
+      "width": 1500,
+      "height": 2117,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0022",
+      "width": 1580,
+      "height": 2139,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0023",
+      "width": 1506,
+      "height": 2103,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0024",
+      "width": 1470,
+      "height": 2091,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0025",
+      "width": 1538,
+      "height": 2140,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0026",
+      "width": 1470,
+      "height": 2083,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0027",
+      "width": 1567,
+      "height": 2149,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0028",
+      "width": 1458,
+      "height": 2084,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0029",
+      "width": 1530,
+      "height": 2100,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0030",
+      "width": 1572,
+      "height": 2155,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0031",
+      "width": 1545,
+      "height": 2119,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0032",
+      "width": 1557,
+      "height": 2152,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0033",
+      "width": 1563,
+      "height": 2137,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0034",
+      "width": 1482,
+      "height": 2134,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0035",
+      "width": 1473,
+      "height": 2074,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0036",
+      "width": 1470,
+      "height": 2088,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0037",
+      "width": 1551,
+      "height": 2142,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0038",
+      "width": 1574,
+      "height": 2157,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0039",
+      "width": 3193,
+      "height": 2154,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0040",
+      "width": 1479,
+      "height": 2082,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0041",
+      "width": 1476,
+      "height": 2079,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0042",
+      "width": 1530,
+      "height": 2128,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0043",
+      "width": 1581,
+      "height": 2165,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0044",
+      "width": 1466,
+      "height": 2079,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0045",
+      "width": 1478,
+      "height": 2091,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0046",
+      "width": 1527,
+      "height": 2128,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0047",
+      "width": 1554,
+      "height": 2119,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0048",
+      "width": 1551,
+      "height": 2115,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0049",
+      "width": 1497,
+      "height": 2107,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0050",
+      "width": 1538,
+      "height": 2165,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0051",
+      "width": 1583,
+      "height": 2157,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0052",
+      "width": 1587,
+      "height": 2142,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0053",
+      "width": 1533,
+      "height": 2130,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0054",
+      "width": 1563,
+      "height": 2165,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0055",
+      "width": 1533,
+      "height": 2140,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0056",
+      "width": 1542,
+      "height": 2095,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0057",
+      "width": 1485,
+      "height": 2086,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0058",
+      "width": 1542,
+      "height": 2130,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0059",
+      "width": 1533,
+      "height": 2128,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SILV.0060",
+      "width": 1595,
+      "height": 2165,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

@@ -1,0 +1,314 @@
+{
+  "template": "PORTRAIT",
+  "title": "Cityscapes - City - High-resolution",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "CITY.0000",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0001",
+      "width": 2120,
+      "height": 2828,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0002",
+      "width": 2191,
+      "height": 2738,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0003",
+      "width": 2124,
+      "height": 2824,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0004",
+      "width": 2078,
+      "height": 2886,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0005",
+      "width": 2000,
+      "height": 2999,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0006",
+      "width": 1778,
+      "height": 3373,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0007",
+      "width": 2121,
+      "height": 2828,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0008",
+      "width": 1868,
+      "height": 3210,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0009",
+      "width": 2034,
+      "height": 2948,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0010",
+      "width": 2191,
+      "height": 2738,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0011",
+      "width": 1679,
+      "height": 3572,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0012",
+      "width": 2115,
+      "height": 2836,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0013",
+      "width": 2209,
+      "height": 2714,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0014",
+      "width": 2069,
+      "height": 2899,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0015",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0016",
+      "width": 1993,
+      "height": 3009,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0017",
+      "width": 2121,
+      "height": 2828,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0018",
+      "width": 2147,
+      "height": 2794,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0019",
+      "width": 2385,
+      "height": 2515,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0020",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0021",
+      "width": 2120,
+      "height": 2829,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0022",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0023",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0024",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0025",
+      "width": 1838,
+      "height": 3263,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0026",
+      "width": 1997,
+      "height": 3004,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0027",
+      "width": 2000,
+      "height": 2999,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0028",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0029",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0030",
+      "width": 1998,
+      "height": 3002,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0031",
+      "width": 2121,
+      "height": 2828,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0032",
+      "width": 2020,
+      "height": 2969,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "CITY.0034",
+      "width": 2544,
+      "height": 4306,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

@@ -1,0 +1,224 @@
+{
+  "template": "LANDSCAPE",
+  "title": "Maps",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "MAPS.0000",
+      "width": 8192,
+      "height": 6144,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0001",
+      "width": 4987,
+      "height": 4088,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0002",
+      "width": 5064,
+      "height": 3938,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0003",
+      "width": 5906,
+      "height": 4374,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0004",
+      "width": 6000,
+      "height": 3889,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0005",
+      "width": 5274,
+      "height": 4085,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0006",
+      "width": 6261,
+      "height": 4180,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0007",
+      "width": 10450,
+      "height": 7035,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0008",
+      "width": 7097,
+      "height": 5456,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0009",
+      "width": 6550,
+      "height": 5415,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0010",
+      "width": 7680,
+      "height": 4800,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0011",
+      "width": 6000,
+      "height": 4000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0012",
+      "width": 10500,
+      "height": 6451,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0013",
+      "width": 6000,
+      "height": 4190,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0014",
+      "width": 5959,
+      "height": 3973,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0015",
+      "width": 9333,
+      "height": 6533,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0016",
+      "width": 6554,
+      "height": 6554,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0017",
+      "width": 5787,
+      "height": 4134,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0018",
+      "width": 8117,
+      "height": 5649,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0019",
+      "width": 6000,
+      "height": 3887,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0020",
+      "width": 5000,
+      "height": 4285,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0021",
+      "width": 6000,
+      "height": 5054,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0022",
+      "width": 6500,
+      "height": 4333,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAPS.0023",
+      "width": 10496,
+      "height": 7168,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

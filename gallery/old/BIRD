@@ -1,0 +1,405 @@
+{
+  "images": 43,
+  "template": "PORTRAIT",
+  "title": "Bird's Eye View - Bird - High-resolution",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "BIRD.0000",
+      "width": 2177,
+      "height": 2755,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0001",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0002",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0003",
+      "width": 2140,
+      "height": 2803,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0004",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0005",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0006",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0007",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0008",
+      "width": 1988,
+      "height": 3016,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0009",
+      "width": 1883,
+      "height": 3185,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0010",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0011",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0012",
+      "width": 2085,
+      "height": 2877,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0013",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0014",
+      "width": 2019,
+      "height": 2971,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0015",
+      "width": 1997,
+      "height": 3003,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0016",
+      "width": 1891,
+      "height": 3172,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0017",
+      "width": 1978,
+      "height": 3033,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0018",
+      "width": 1986,
+      "height": 3021,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0019",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0020",
+      "width": 2120,
+      "height": 2829,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0021",
+      "width": 2190,
+      "height": 2738,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0022",
+      "width": 1812,
+      "height": 3310,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0023",
+      "width": 1753,
+      "height": 3116,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0024",
+      "width": 2093,
+      "height": 2866,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0025",
+      "width": 1892,
+      "height": 3171,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0026",
+      "width": 1779,
+      "height": 3200,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0027",
+      "width": 1914,
+      "height": 3133,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0028",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0029",
+      "width": 1837,
+      "height": 3265,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0030",
+      "width": 1837,
+      "height": 3265,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0031",
+      "width": 1837,
+      "height": 3265,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0032",
+      "width": 1837,
+      "height": 3265,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0033",
+      "width": 1837,
+      "height": 3265,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0034",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0035",
+      "width": 2223,
+      "height": 2697,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0036",
+      "width": 2382,
+      "height": 2517,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0037",
+      "width": 2200,
+      "height": 2726,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0038",
+      "width": 2164,
+      "height": 2772,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0039",
+      "width": 2252,
+      "height": 2663,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0040",
+      "width": 2247,
+      "height": 2669,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0041",
+      "width": 1632,
+      "height": 1837,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0042",
+      "width": 1632,
+      "height": 1837,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "BIRD.0043",
+      "width": 3950,
+      "height": 2631,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

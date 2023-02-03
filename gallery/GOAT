@@ -1,0 +1,458 @@
+{
+  "template": "LANDSCAPE",
+  "title": "Vintage Paintings - Goat - High-resolution",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "GOAT.0000",
+      "width": 3313,
+      "height": 2716,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0001",
+      "width": 3565,
+      "height": 2524,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0002",
+      "width": 3631,
+      "height": 2478,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0003",
+      "width": 3723,
+      "height": 2416,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0004",
+      "width": 3350,
+      "height": 2685,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0005",
+      "width": 3564,
+      "height": 2524,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0006",
+      "width": 3465,
+      "height": 2597,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0007",
+      "width": 3844,
+      "height": 2341,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0008",
+      "width": 3477,
+      "height": 2588,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0009",
+      "width": 3279,
+      "height": 2744,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0010",
+      "width": 3670,
+      "height": 2451,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0011",
+      "width": 3423,
+      "height": 2629,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0012",
+      "width": 4197,
+      "height": 2143,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0013",
+      "width": 4032,
+      "height": 2232,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0014",
+      "width": 3494,
+      "height": 2575,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0015",
+      "width": 3473,
+      "height": 2591,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0016",
+      "width": 3422,
+      "height": 2629,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0017",
+      "width": 3478,
+      "height": 2587,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0018",
+      "width": 3182,
+      "height": 2828,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0019",
+      "width": 3126,
+      "height": 2828,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0020",
+      "width": 3613,
+      "height": 2490,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0021",
+      "width": 3851,
+      "height": 2336,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0022",
+      "width": 3508,
+      "height": 2564,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0023",
+      "width": 3654,
+      "height": 2462,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0024",
+      "width": 3573,
+      "height": 2518,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0025",
+      "width": 3334,
+      "height": 2698,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0026",
+      "width": 3662,
+      "height": 2457,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0027",
+      "width": 3295,
+      "height": 2731,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0028",
+      "width": 3358,
+      "height": 2679,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0029",
+      "width": 3449,
+      "height": 2608,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0030",
+      "width": 3415,
+      "height": 2634,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0031",
+      "width": 3573,
+      "height": 2518,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0032",
+      "width": 3445,
+      "height": 2612,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0033",
+      "width": 3289,
+      "height": 2736,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0034",
+      "width": 3351,
+      "height": 2685,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0035",
+      "width": 3692,
+      "height": 2437,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0036",
+      "width": 3423,
+      "height": 2628,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0037",
+      "width": 3552,
+      "height": 2533,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0038",
+      "width": 3633,
+      "height": 2477,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0039",
+      "width": 3470,
+      "height": 2593,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0040",
+      "width": 3236,
+      "height": 2780,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0041",
+      "width": 3437,
+      "height": 2618,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0042",
+      "width": 3427,
+      "height": 2625,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0043",
+      "width": 3396,
+      "height": 2649,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0044",
+      "width": 3830,
+      "height": 2349,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0045",
+      "width": 3351,
+      "height": 2685,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0046",
+      "width": 4240,
+      "height": 2122,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0047",
+      "width": 3446,
+      "height": 2611,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0048",
+      "width": 3319,
+      "height": 2710,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GOAT.0049",
+      "width": 3476,
+      "height": 2589,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

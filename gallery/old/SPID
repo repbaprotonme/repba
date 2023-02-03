@@ -1,0 +1,584 @@
+{
+  "template": "COMIC",
+  "title": "Spiderman",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "SPID.0000",
+      "width": 963,
+      "height": 1266,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0001",
+      "width": 967,
+      "height": 1262,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0002",
+      "width": 971,
+      "height": 1262,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0003",
+      "width": 944,
+      "height": 1266,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0004",
+      "width": 978,
+      "height": 1262,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0005",
+      "width": 971,
+      "height": 1274,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0006",
+      "width": 978,
+      "height": 1262,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0007",
+      "width": 978,
+      "height": 1282,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0008",
+      "width": 967,
+      "height": 1262,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0009",
+      "width": 978,
+      "height": 1278,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0010",
+      "width": 975,
+      "height": 1262,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0011",
+      "width": 967,
+      "height": 1266,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0012",
+      "width": 978,
+      "height": 1266,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0013",
+      "width": 978,
+      "height": 1274,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0014",
+      "width": 978,
+      "height": 1262,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0015",
+      "width": 978,
+      "height": 1274,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0016",
+      "width": 975,
+      "height": 1262,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0017",
+      "width": 978,
+      "height": 1274,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0018",
+      "width": 978,
+      "height": 1266,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0019",
+      "width": 978,
+      "height": 1270,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0020",
+      "width": 978,
+      "height": 1266,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0021",
+      "width": 951,
+      "height": 1278,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0022",
+      "width": 978,
+      "height": 1262,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0023",
+      "width": 978,
+      "height": 1270,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0024",
+      "width": 978,
+      "height": 1266,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0025",
+      "width": 959,
+      "height": 1270,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0026",
+      "width": 979,
+      "height": 1262,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0027",
+      "width": 966,
+      "height": 1242,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0028",
+      "width": 966,
+      "height": 1242,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0029",
+      "width": 966,
+      "height": 1250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0030",
+      "width": 966,
+      "height": 1246,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0031",
+      "width": 962,
+      "height": 1246,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0032",
+      "width": 966,
+      "height": 1250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0033",
+      "width": 966,
+      "height": 1250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0034",
+      "width": 951,
+      "height": 1250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0035",
+      "width": 958,
+      "height": 1250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0036",
+      "width": 966,
+      "height": 1257,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0037",
+      "width": 962,
+      "height": 1254,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0038",
+      "width": 966,
+      "height": 1246,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0039",
+      "width": 966,
+      "height": 1257,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0040",
+      "width": 966,
+      "height": 1250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0041",
+      "width": 966,
+      "height": 1250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0042",
+      "width": 966,
+      "height": 1250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0043",
+      "width": 966,
+      "height": 1246,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0044",
+      "width": 966,
+      "height": 1246,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0045",
+      "width": 962,
+      "height": 1246,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0046",
+      "width": 966,
+      "height": 1250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0047",
+      "width": 966,
+      "height": 1246,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0048",
+      "width": 962,
+      "height": 1250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0049",
+      "width": 966,
+      "height": 1246,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0050",
+      "width": 966,
+      "height": 1250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0051",
+      "width": 966,
+      "height": 1246,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0052",
+      "width": 928,
+      "height": 1254,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0053",
+      "width": 966,
+      "height": 1250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0054",
+      "width": 966,
+      "height": 1246,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0055",
+      "width": 966,
+      "height": 1246,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0056",
+      "width": 966,
+      "height": 1246,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0057",
+      "width": 962,
+      "height": 1246,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0058",
+      "width": 966,
+      "height": 1250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0059",
+      "width": 966,
+      "height": 1246,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0060",
+      "width": 966,
+      "height": 1250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0061",
+      "width": 955,
+      "height": 1246,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0062",
+      "width": 966,
+      "height": 1246,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "SPID.0063",
+      "width": 978,
+      "height": 1266,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

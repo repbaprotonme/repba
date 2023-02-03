@@ -1,0 +1,701 @@
+{
+  "template": "LANDSCAPE",
+  "title": "Landscapes - Hope - High-resolution",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "HOPE.0000",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0001",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0002",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0003",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0004",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0005",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0006",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0007",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0008",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0009",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0010",
+      "width": 3674,
+      "height": 2449,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0011",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0012",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0013",
+      "width": 4046,
+      "height": 2224,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0014",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0015",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0016",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0017",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0018",
+      "width": 3673,
+      "height": 2450,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0019",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0020",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0021",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0022",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0023",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0024",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0025",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0026",
+      "width": 3864,
+      "height": 2328,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0027",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0028",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0029",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0030",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0031",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0032",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0033",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0034",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0035",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0036",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0037",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0038",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0039",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0040",
+      "width": 3957,
+      "height": 2274,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0041",
+      "width": 3629,
+      "height": 2479,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0042",
+      "width": 3674,
+      "height": 2449,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0043",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0044",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0045",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0046",
+      "width": 3864,
+      "height": 2328,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0047",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0048",
+      "width": 3673,
+      "height": 2450,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0049",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0050",
+      "width": 3674,
+      "height": 2449,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0051",
+      "width": 3957,
+      "height": 2274,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0052",
+      "width": 3464,
+      "height": 2598,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0053",
+      "width": 3674,
+      "height": 2449,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0054",
+      "width": 3673,
+      "height": 2450,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0055",
+      "width": 3674,
+      "height": 2449,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0056",
+      "width": 3940,
+      "height": 2284,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0057",
+      "width": 3674,
+      "height": 2449,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0058",
+      "width": 3674,
+      "height": 2449,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0059",
+      "width": 4533,
+      "height": 1985,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0060",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0061",
+      "width": 3674,
+      "height": 2449,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0062",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0063",
+      "width": 3673,
+      "height": 2449,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0064",
+      "width": 3673,
+      "height": 2450,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0065",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0066",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0067",
+      "width": 3999,
+      "height": 2250,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0068",
+      "width": 3672,
+      "height": 2450,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0069",
+      "width": 3674,
+      "height": 2449,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0070",
+      "width": 3674,
+      "height": 2449,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0071",
+      "width": 3674,
+      "height": 2449,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0072",
+      "width": 3674,
+      "height": 2449,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0073",
+      "width": 3674,
+      "height": 2449,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0074",
+      "width": 3674,
+      "height": 2449,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0075",
+      "width": 3666,
+      "height": 2454,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOPE.0076",
+      "width": 3674,
+      "height": 2449,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

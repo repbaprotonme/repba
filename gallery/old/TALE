@@ -1,0 +1,107 @@
+{
+  "title": "Book",
+  "template": "COMIC",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "TALE.0000",
+      "width": 2176,
+      "height": 2757,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "TALE.0001",
+      "width": 2181,
+      "height": 2751,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "TALE.0002",
+      "width": 2179,
+      "height": 2752,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "TALE.0003",
+      "width": 2175,
+      "height": 2758,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "TALE.0004",
+      "width": 2173,
+      "height": 2760,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "TALE.0005",
+      "width": 2178,
+      "height": 2753,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "TALE.0006",
+      "width": 2181,
+      "height": 2750,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "TALE.0007",
+      "width": 2178,
+      "height": 2753,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "TALE.0008",
+      "width": 2180,
+      "height": 2751,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "TALE.0009",
+      "width": 2174,
+      "height": 2758,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "TALE.0010",
+      "width": 2172,
+      "height": 2761,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

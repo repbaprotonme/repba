@@ -1,0 +1,53 @@
+{
+  "template": "WIDE",
+  "title": "Heros - HERO - Digital Images",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "HERO.0000",
+      "width": 10605,
+      "height": 2700,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HERO.0001",
+      "width": 10171,
+      "height": 2700,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HERO.0002",
+      "width": 10319,
+      "height": 2700,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HERO.0003",
+      "width": 15992,
+      "height": 4180,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HERO.0004",
+      "width": 10000,
+      "height": 2579,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

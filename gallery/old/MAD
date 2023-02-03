@@ -1,0 +1,764 @@
+{
+  "template": "COMIC",
+  "title": "Mad Magazine",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "MAD.0000",
+      "width": 1280,
+      "height": 1646,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0001",
+      "width": 1280,
+      "height": 1630,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0002",
+      "width": 1280,
+      "height": 1660,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0003",
+      "width": 1280,
+      "height": 1656,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0004",
+      "width": 1280,
+      "height": 1654,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0005",
+      "width": 1280,
+      "height": 1652,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0006",
+      "width": 1280,
+      "height": 1663,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0007",
+      "width": 2560,
+      "height": 1645,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0008",
+      "width": 1280,
+      "height": 1660,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0009",
+      "width": 1280,
+      "height": 1643,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0010",
+      "width": 2560,
+      "height": 1650,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0011",
+      "width": 1280,
+      "height": 1655,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0012",
+      "width": 1280,
+      "height": 1659,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0013",
+      "width": 1280,
+      "height": 1655,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0014",
+      "width": 1280,
+      "height": 1662,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0015",
+      "width": 1280,
+      "height": 1670,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0016",
+      "width": 1280,
+      "height": 1662,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0017",
+      "width": 2560,
+      "height": 1649,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0018",
+      "width": 2560,
+      "height": 1654,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0019",
+      "width": 2560,
+      "height": 1656,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0020",
+      "width": 1280,
+      "height": 1980,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0021",
+      "width": 1280,
+      "height": 1663,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0022",
+      "width": 1280,
+      "height": 1659,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0023",
+      "width": 2560,
+      "height": 1655,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0024",
+      "width": 1280,
+      "height": 1666,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0025",
+      "width": 1280,
+      "height": 1655,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0026",
+      "width": 2560,
+      "height": 1647,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0027",
+      "width": 1280,
+      "height": 1664,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0028",
+      "width": 1280,
+      "height": 1666,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0029",
+      "width": 2560,
+      "height": 1682,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0030",
+      "width": 2560,
+      "height": 1674,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0031",
+      "width": 2560,
+      "height": 1679,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0032",
+      "width": 2560,
+      "height": 1679,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0033",
+      "width": 1280,
+      "height": 1658,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0034",
+      "width": 1280,
+      "height": 1645,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0035",
+      "width": 1280,
+      "height": 1659,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0036",
+      "width": 1657,
+      "height": 1280,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0037",
+      "width": 1280,
+      "height": 1656,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0038",
+      "width": 1195,
+      "height": 3140,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0039",
+      "width": 1280,
+      "height": 1648,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0040",
+      "width": 1280,
+      "height": 1641,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0041",
+      "width": 1280,
+      "height": 1675,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0042",
+      "width": 1280,
+      "height": 1676,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0043",
+      "width": 1280,
+      "height": 1673,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0044",
+      "width": 1280,
+      "height": 1686,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0045",
+      "width": 1280,
+      "height": 1680,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0046",
+      "width": 1280,
+      "height": 1684,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0047",
+      "width": 1280,
+      "height": 1686,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0048",
+      "width": 2540,
+      "height": 1659,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0049",
+      "width": 1280,
+      "height": 1690,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0050",
+      "width": 1280,
+      "height": 1678,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0051",
+      "width": 2540,
+      "height": 1669,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0052",
+      "width": 2540,
+      "height": 1661,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0053",
+      "width": 1280,
+      "height": 1692,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0054",
+      "width": 1280,
+      "height": 1681,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0055",
+      "width": 2540,
+      "height": 1671,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0056",
+      "width": 1280,
+      "height": 1692,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0057",
+      "width": 1280,
+      "height": 1691,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0058",
+      "width": 1280,
+      "height": 1697,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0059",
+      "width": 1280,
+      "height": 1691,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0060",
+      "width": 1280,
+      "height": 1701,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0061",
+      "width": 1280,
+      "height": 1696,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0062",
+      "width": 2540,
+      "height": 1676,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0063",
+      "width": 1280,
+      "height": 1698,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0064",
+      "width": 1280,
+      "height": 1699,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0065",
+      "width": 2540,
+      "height": 1675,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0066",
+      "width": 2540,
+      "height": 1672,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0067",
+      "width": 1280,
+      "height": 1690,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0068",
+      "width": 1280,
+      "height": 1707,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0069",
+      "width": 2540,
+      "height": 1665,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0070",
+      "width": 1280,
+      "height": 1697,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0071",
+      "width": 1280,
+      "height": 1703,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0072",
+      "width": 1280,
+      "height": 1692,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0073",
+      "width": 1280,
+      "height": 1700,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0074",
+      "width": 1280,
+      "height": 1686,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0075",
+      "width": 1280,
+      "height": 1693,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0076",
+      "width": 2540,
+      "height": 1658,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0077",
+      "width": 1280,
+      "height": 1685,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0078",
+      "width": 1280,
+      "height": 1676,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0079",
+      "width": 2540,
+      "height": 1664,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0080",
+      "width": 1683,
+      "height": 1280,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0081",
+      "width": 1164,
+      "height": 3176,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0082",
+      "width": 1280,
+      "height": 1688,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "MAD.0083",
+      "width": 1280,
+      "height": 1666,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

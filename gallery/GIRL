@@ -1,0 +1,539 @@
+{
+  "template": "PORTRAIT",
+  "title": "Girl Super Heroes - Girl - High-resolution",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "GIRL.0000",
+      "width": 2377,
+      "height": 3365,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0001",
+      "width": 2275,
+      "height": 3516,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0002",
+      "width": 2378,
+      "height": 3363,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0003",
+      "width": 2377,
+      "height": 3365,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0004",
+      "width": 2377,
+      "height": 3365,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0005",
+      "width": 2190,
+      "height": 3651,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0006",
+      "width": 2353,
+      "height": 3399,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0007",
+      "width": 2367,
+      "height": 3379,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0008",
+      "width": 2190,
+      "height": 3651,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0009",
+      "width": 2190,
+      "height": 3651,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0010",
+      "width": 2377,
+      "height": 3365,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0011",
+      "width": 2309,
+      "height": 3464,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0012",
+      "width": 2377,
+      "height": 3365,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0013",
+      "width": 2377,
+      "height": 3365,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0014",
+      "width": 2377,
+      "height": 3365,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0015",
+      "width": 2215,
+      "height": 3610,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0016",
+      "width": 2121,
+      "height": 3770,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0017",
+      "width": 2039,
+      "height": 3922,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0018",
+      "width": 2309,
+      "height": 3464,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0019",
+      "width": 2377,
+      "height": 3365,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0020",
+      "width": 2309,
+      "height": 3464,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0021",
+      "width": 2295,
+      "height": 3485,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0022",
+      "width": 2390,
+      "height": 3346,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0023",
+      "width": 2309,
+      "height": 3464,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0024",
+      "width": 2449,
+      "height": 3265,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0025",
+      "width": 2390,
+      "height": 3347,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0026",
+      "width": 2400,
+      "height": 3332,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0027",
+      "width": 2326,
+      "height": 3438,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0028",
+      "width": 2309,
+      "height": 3464,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0029",
+      "width": 2275,
+      "height": 3516,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0030",
+      "width": 2309,
+      "height": 3464,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0031",
+      "width": 2449,
+      "height": 3265,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0032",
+      "width": 2121,
+      "height": 2828,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0033",
+      "width": 2012,
+      "height": 2981,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0034",
+      "width": 2153,
+      "height": 2786,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0035",
+      "width": 2089,
+      "height": 2871,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0036",
+      "width": 2059,
+      "height": 2913,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0037",
+      "width": 2114,
+      "height": 2837,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0038",
+      "width": 1897,
+      "height": 3162,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0039",
+      "width": 2000,
+      "height": 2998,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0040",
+      "width": 2051,
+      "height": 2924,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0041",
+      "width": 2059,
+      "height": 2913,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0042",
+      "width": 2000,
+      "height": 2998,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0043",
+      "width": 1717,
+      "height": 3493,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0044",
+      "width": 2121,
+      "height": 2828,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0045",
+      "width": 1991,
+      "height": 3012,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0046",
+      "width": 2059,
+      "height": 2912,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0047",
+      "width": 2020,
+      "height": 2968,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0048",
+      "width": 2121,
+      "height": 2828,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0049",
+      "width": 1970,
+      "height": 3045,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0050",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0051",
+      "width": 2000,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0052",
+      "width": 2000,
+      "height": 2999,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0053",
+      "width": 1897,
+      "height": 3162,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0054",
+      "width": 2121,
+      "height": 2828,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0055",
+      "width": 2059,
+      "height": 2912,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0056",
+      "width": 2000,
+      "height": 2998,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0057",
+      "width": 3000,
+      "height": 4500,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "GIRL.0058",
+      "width": 1349,
+      "height": 1687,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

@@ -1,0 +1,746 @@
+{
+  "template": "COMIC",
+  "title": "Dracula - A Symphony in Moonlight",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "DRAC.0000",
+      "width": 1225,
+      "height": 1620,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0001",
+      "width": 1224,
+      "height": 1619,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0002",
+      "width": 1231,
+      "height": 1616,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0003",
+      "width": 1225,
+      "height": 1616,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0004",
+      "width": 1224,
+      "height": 1611,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0005",
+      "width": 1222,
+      "height": 1615,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0006",
+      "width": 1217,
+      "height": 1618,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0007",
+      "width": 1219,
+      "height": 1617,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0008",
+      "width": 1270,
+      "height": 1657,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0009",
+      "width": 1240,
+      "height": 1649,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0010",
+      "width": 1225,
+      "height": 1619,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0011",
+      "width": 1254,
+      "height": 1644,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0012",
+      "width": 1221,
+      "height": 1614,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0013",
+      "width": 1224,
+      "height": 1621,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0014",
+      "width": 1269,
+      "height": 1657,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0015",
+      "width": 1228,
+      "height": 1623,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0016",
+      "width": 1220,
+      "height": 1613,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0017",
+      "width": 1213,
+      "height": 1619,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0018",
+      "width": 1225,
+      "height": 1619,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0019",
+      "width": 1228,
+      "height": 1622,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0020",
+      "width": 1230,
+      "height": 1618,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0021",
+      "width": 1229,
+      "height": 1626,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0022",
+      "width": 1227,
+      "height": 1621,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0023",
+      "width": 1219,
+      "height": 1616,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0024",
+      "width": 1232,
+      "height": 1622,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0025",
+      "width": 1205,
+      "height": 1623,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0026",
+      "width": 1224,
+      "height": 1622,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0027",
+      "width": 1225,
+      "height": 1621,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0028",
+      "width": 1231,
+      "height": 1621,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0029",
+      "width": 1224,
+      "height": 1621,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0030",
+      "width": 1273,
+      "height": 1663,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0031",
+      "width": 1228,
+      "height": 1626,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0032",
+      "width": 1232,
+      "height": 1623,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0033",
+      "width": 1216,
+      "height": 1619,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0034",
+      "width": 1207,
+      "height": 1621,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0035",
+      "width": 1231,
+      "height": 1621,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0036",
+      "width": 1219,
+      "height": 1619,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0037",
+      "width": 1221,
+      "height": 1616,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0038",
+      "width": 1233,
+      "height": 1622,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0039",
+      "width": 1220,
+      "height": 1615,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0040",
+      "width": 1237,
+      "height": 1627,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0041",
+      "width": 1224,
+      "height": 1623,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0042",
+      "width": 1230,
+      "height": 1624,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0043",
+      "width": 1215,
+      "height": 1618,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0044",
+      "width": 1230,
+      "height": 1624,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0045",
+      "width": 1222,
+      "height": 1621,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0046",
+      "width": 1230,
+      "height": 1622,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0047",
+      "width": 1219,
+      "height": 1621,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0048",
+      "width": 1234,
+      "height": 1623,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0049",
+      "width": 1231,
+      "height": 1624,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0050",
+      "width": 1224,
+      "height": 1628,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0051",
+      "width": 1232,
+      "height": 1621,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0052",
+      "width": 1230,
+      "height": 1622,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0053",
+      "width": 1222,
+      "height": 1624,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0054",
+      "width": 1228,
+      "height": 1626,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0055",
+      "width": 1223,
+      "height": 1626,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0056",
+      "width": 1229,
+      "height": 1627,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0057",
+      "width": 1230,
+      "height": 1625,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0058",
+      "width": 1222,
+      "height": 1623,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0059",
+      "width": 1225,
+      "height": 1621,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0060",
+      "width": 1226,
+      "height": 1624,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0061",
+      "width": 1213,
+      "height": 1610,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0062",
+      "width": 1228,
+      "height": 1628,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0063",
+      "width": 1226,
+      "height": 1623,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0064",
+      "width": 1228,
+      "height": 1623,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0065",
+      "width": 1223,
+      "height": 1624,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0066",
+      "width": 1230,
+      "height": 1625,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0067",
+      "width": 1227,
+      "height": 1622,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0068",
+      "width": 1228,
+      "height": 1623,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0069",
+      "width": 1229,
+      "height": 1623,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0070",
+      "width": 1228,
+      "height": 1629,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0071",
+      "width": 1230,
+      "height": 1621,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0072",
+      "width": 1228,
+      "height": 1623,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0073",
+      "width": 1226,
+      "height": 1621,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0074",
+      "width": 1227,
+      "height": 1621,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0075",
+      "width": 1211,
+      "height": 1619,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0076",
+      "width": 1231,
+      "height": 1621,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0077",
+      "width": 1223,
+      "height": 1626,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0078",
+      "width": 1224,
+      "height": 1622,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0079",
+      "width": 1224,
+      "height": 1624,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0080",
+      "width": 1229,
+      "height": 1622,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "DRAC.0081",
+      "width": 1229,
+      "height": 1623,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

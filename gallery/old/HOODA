@@ -1,0 +1,44 @@
+{
+  "template": "SIDESCROLL",
+  "title": "Graffiti - Hooda - Side-scroller",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "HOODA.0000",
+      "width": 13452,
+      "height": 1200,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOODA.0001",
+      "width": 10846,
+      "height": 1200,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOODA.0002",
+      "width": 13363,
+      "height": 1200,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "HOODA.0003",
+      "width": 7996,
+      "height": 1200,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}

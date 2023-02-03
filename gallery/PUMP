@@ -1,0 +1,278 @@
+{
+  "template": "PORTRAIT",
+  "title": "Political Art - Pump - High-resolution",
+  "quality": "85",
+  "row": 50,
+  "datam": [
+    {
+      "src": "PUMP.0000",
+      "width": 1954,
+      "height": 3070,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0001",
+      "width": 1948,
+      "height": 3079,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0002",
+      "width": 1939,
+      "height": 3093,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0003",
+      "width": 1948,
+      "height": 3079,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0004",
+      "width": 1975,
+      "height": 3037,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0005",
+      "width": 2009,
+      "height": 2986,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0006",
+      "width": 1998,
+      "height": 3002,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0007",
+      "width": 1982,
+      "height": 3025,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0008",
+      "width": 1975,
+      "height": 3037,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0009",
+      "width": 2033,
+      "height": 2950,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0010",
+      "width": 1966,
+      "height": 3051,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0011",
+      "width": 1933,
+      "height": 3103,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0012",
+      "width": 1958,
+      "height": 3063,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0013",
+      "width": 1984,
+      "height": 3023,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0014",
+      "width": 1973,
+      "height": 3040,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0015",
+      "width": 1958,
+      "height": 3063,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0016",
+      "width": 1968,
+      "height": 3048,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0017",
+      "width": 1974,
+      "height": 3038,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0018",
+      "width": 1999,
+      "height": 3000,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0019",
+      "width": 1975,
+      "height": 3036,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0020",
+      "width": 1970,
+      "height": 3044,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0021",
+      "width": 2038,
+      "height": 2943,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0022",
+      "width": 2269,
+      "height": 2643,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0023",
+      "width": 2348,
+      "height": 2554,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0024",
+      "width": 2331,
+      "height": 2573,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0025",
+      "width": 2309,
+      "height": 2598,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0026",
+      "width": 2298,
+      "height": 2609,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0027",
+      "width": 2292,
+      "height": 2617,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0028",
+      "width": 2311,
+      "height": 2596,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    },
+    {
+      "src": "PUMP.0029",
+      "width": 2306,
+      "height": 2601,
+      "describe": "",
+      "name": "",
+      "title": "",
+      "copyright": ""
+    }
+  ]
+}
