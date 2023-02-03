@@ -31,7 +31,7 @@ const THUMBODY = "rgba(0,0,0,1)";
 const PROGRESSFILL = "white";
 const PROGRESSFALL = "black";
 const SCROLLNUB = "rgba(0,0,0,0.5)";
-const SCROLLNAB = "rgba(0,0,0,0.5)";
+const SCROLLNAB = "rgba(0,0,0,0.35)";
 const SCROLLBACK = "rgba(255,255,255,0.75)";
 const HEADBACK = "rgba(0,0,0,0.20)";
 const MENUCOLOR = "rgba(0,0,0,0.40)";
@@ -2045,7 +2045,7 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
 	{
-        rotateobj.enabled  = 0;
+        rotateobj.enabled = 0;
         context.slidereduce = url.slidefactor?context.slidestop/url.slidefactor:0;
         clearInterval(footcnvctx.timefooter);
         context.startx = x;
@@ -2932,7 +2932,7 @@ var thumblst =
         context.selectrect = []
         context.selectrect.push(r);
         blackfill.draw(context, r, 0, 0);
-        var whitestroke = new Stroke(THUMBSTROKE,THUMBORDER/2);
+        var whitestroke = new Stroke(THUMBSTROKE,THUMBORDER);
         whitestroke.draw(context, r, 0, 0);
 
         if (xx > x)//leftside
