@@ -11,8 +11,7 @@
             "src": "res/goon.jpg",
             "width": 0, 
             "height": 0, 
-            "quality": 0, 
-            "row": 20 
+            "quality": 0
         }
     ]
 }

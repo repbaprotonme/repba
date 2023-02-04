@@ -13,7 +13,6 @@ const IFRAME = window !== window.parent;
 const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*2;
 const SWIPETIME = 20;
-const MENUWIDTH = 420;
 const THUMBORDER = 2;
 const JULIETIME = 100;
 const DELAY = 10000000;
@@ -360,12 +359,10 @@ var colorlst =
 var colorobj = new Data("COLOR", colorlst);
 
 var speedobj = new Data("SPEED", 100);
-var k = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 30;
-speedobj.set(k);
+speedobj.set(30);
 
 var timemain = new Data("TIMEMAIN", 30);
-var k = url.searchParams.has("n") ? Number(url.searchParams.get("n")) : 12;
-timemain.set(k);
+timemain.set(12);
 
 var speedxobj = new Data("SPEEDX", 100);
 var speedyobj = new Data("SPEEDY", 100);
@@ -610,7 +607,7 @@ function drawslices()
         }
 
         var a = new CurrentVPanel(new Fill("white"), 90, 1);
-        var w = Math.min(rect.width, MENUWIDTH);
+        var w = context.canvas.width;
         a.draw(context, new rectangle(w-12,0,7,rect.height), context.timeobj, 0); 
     }
 }
@@ -1174,16 +1171,6 @@ addressobj.full = function ()
     out +=
         "?p="+p+
         "&h="+headobj.enabled+
-        "&xp="+positxpobj.current().toFixed(2)+
-        "&yp="+positypobj.current().toFixed(2)+
-        "&xl="+positxlobj.current().toFixed(2)+
-        "&yl="+positylobj.current().toFixed(2)+
-        "&n="+timemain.current()+
-        "&g="+speedobj.current()+
-        "&o="+traitobj.current()+
-        "&u="+scapeobj.current()+
-        "&z="+loomobj.current()+
-        "&b="+poomobj.current()+
         "&r="+(100*rowobj.berp()).toFixed()+
         "&t="+_4cnvctx.timeobj.current().toFixed(4);
     return out;
@@ -1872,7 +1859,7 @@ var panlst =
  	leftright: function (context, rect, x, y, type) { },
 	pan: function (context, rect, x, y, type)
     {
-        if (x > rect.width-40)
+        if (context.rightside)
         {
             var obj = context.timeobj;
             var m = y/rect.height;
@@ -1896,6 +1883,7 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
     {
+        context.rightside = x > rect.width-40;
         context.starty = y;
         context.startt = context.timeobj.current();
     },
@@ -3027,18 +3015,23 @@ var menulst =
             new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 25),
             new MultiText(),
         ]);
-      
-        var lst = [];
-        let keys = Object.keys(user);
-        for (var n = 0; n < keys.length; ++n)
+     
+        if (!user.lst)
         {
-            var key = keys[n];
-            var value = user[key];
-            if (value && value.length && typeof value === 'string')
-                lst.push(value);
+            var lst = [];
+            let keys = Object.keys(user);
+            for (var n = 0; n < keys.length; ++n)
+            {
+                var key = keys[n];
+                var value = user[key];
+                if (value && value.length && typeof value === 'string')
+                    lst.push(value);
+            }
+
+            user.lst = lst;
         }
 
-        a.draw(context, rect, lst, 0);
+        a.draw(context, rect, user.lst, 0);
         context.restore();
     }
 },
@@ -3138,27 +3131,27 @@ function resetcanvas()
         rotatelst.push(n);
     for (var n = j; n > k; n-=context.virtualspeed)
         rotatelst.push(n);
-    rotateobj.data  = rotatelst;
+    rotateobj.data = rotatelst;
 
-    virtualcolsobj.set(window.innerWidth > window.innerHeight ? 3 : 9);
     let slicelst = [];
     for (let n = 499; n >= 1; n=n-1)
         slicelst.push({slices: n*3, delay: SLICERADIUS/n});
-    context.slicewidth = context.virtualwidth/virtualcolsobj.getcurrent();
+    var slicewidth = context.virtualwidth/galleryobj.sliceparm;
 
-    var slices = 0;
-    for (; slices < slicelst.length; ++slices)
+    var j = 0;
+    for (; j < slicelst.length; ++j)
     {
-        var k = slicelst[slices];
+        var k = slicelst[j];
         var fw = context.virtualwidth / k.slices;
-        if (fw >= context.slicewidth)
+        if (fw >= slicewidth)
             break;
     }
 
     var canvaslen = SAFARI?Math.ceil(context.virtualwidth/MAXVIRTUAL):1;
-    var e = slicelst[slices-1];
+    var e = slicelst[j-1];
     var delay = e.delay;
     var slices = Math.ceil(e.slices/canvaslen);
+    virtualcolsobj.set(slices);
     context.delayinterval = delay/100000;
     context.delay = e;
     var gwidth = photo.image.width/canvaslen;
@@ -3208,171 +3201,171 @@ var templatelst =
 [
 {
     name: "EXTRATALL",
-    init: function (j)
+    init: function ()
     {
-        var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
-        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
+        var xp = 50;
+        var yp = 90;
         positxpobj.set(xp);
         positypobj.set(yp);
-        var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 50;
-        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 90;
+        var xl = 50;
+        var yl = 90;
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = 18;
         url.slidefactor = 18;
-        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
-        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
+        var z = 50;
+        var b = 50;
         loomobj.split(z, "90-95", loomobj.length());
         poomobj.split(b, "75-90", poomobj.length());
-        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 40;
-        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
+        var o  = 40;
+        var u  = 70;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
     }
 },
 {
     name: "TALL",
-    init: function (j)
+    init: function ()
     {
-        var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
-        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
+        var xp = 50;
+        var yp = 90;
         positxpobj.set(xp);
         positypobj.set(yp);
-        var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 50;
-        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 90;
+        var xl = 50;
+        var yl = 90;
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = 18;
         url.slidefactor = 18;
-        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
-        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
+        var z = 50;
+        var b = 50;
         loomobj.split(z, "85-95", loomobj.length());
         poomobj.split(b, "70-90", poomobj.length());
-        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 40;
-        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
+        var o  = 40;
+        var u  = 70;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
     }
 },
 {
     name: "LEGEND",
-    init: function (j)
+    init: function ()
     {
         globalobj.rotate = 1
-        var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 100;
-        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 50;
+        var xp = 100;
+        var yp = 50;
         positxpobj.set(xp);
         positypobj.set(yp);
-        var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 100;
-        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 50;
+        var xl = 100;
+        var yl = 50;
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = 18;
         url.slidefactor = 18;
-        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
-        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
+        var z = 50;
+        var b = 50;
         loomobj.split(z, "90-95", loomobj.length());
         poomobj.split(b, "70-90", poomobj.length());
-        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 50;
-        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 90;
+        var o  = 50;
+        var u  = 90;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
     }
 },
 {
     name: "COMIC",
-    init: function (j)
+    init: function ()
     {
         rowobj.row = 0;
-        var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
-        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
+        var xp = 50;
+        var yp = 90;
         positxpobj.set(xp);
         positypobj.set(yp);
-        var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 50;
-        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 50;
+        var xl = 50;
+        var yl = 50;
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = 18;
         url.slidefactor = 18;
-        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 25;
-        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
+        var z = 25;
+        var b = 50;
         loomobj.split(z, "85-95", loomobj.length());
         poomobj.split(b, "50-90", poomobj.length());
-        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
-        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
+        var o  = 60;
+        var u  = 70;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
     }
 },
 {
     name: "PORTRAIT",
-    init: function (j)
+    init: function ()
     {
         globalobj.rotate = 1
-        var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
-        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 90;
+        var xp = 50;
+        var yp = 90;
         positxpobj.set(xp);
         positypobj.set(yp);
-        var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 50;
-        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 50;
+        var xl = 50;
+        var yl = 50;
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = 18;
         url.slidefactor = 18;
-        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 25;
-        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 50;
+        var z = 25;
+        var b =  50;
         loomobj.split(z, "85-95", loomobj.length());
         poomobj.split(b, "50-90", poomobj.length());
-        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 60;
-        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 70;
+        var o  = 60;
+        var u  = 70;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
     }
 },
 {
     name: "SIDESCROLL",
-    init: function (j)
+    init: function ()
     {
-        var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
-        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
+        var xp = 50;
+        var yp = 100;
         positxpobj.set(xp);
         positypobj.set(yp);
-        var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 50;
-        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 100;
+        var xl = 50;
+        var yl = 100;
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = 24;
         url.slidefactor = 12;
-        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
-        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
+        var z = 0;
+        var b = 0;
         loomobj.split(z, "0-50", loomobj.length());
         poomobj.split(b, "0-50", poomobj.length());
-        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 90;
-        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 90;
+        var o  = 90;
+        var u  = 90;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
     }
 },
 {
     name: "ULTRAWIDE",
-    init: function (j)
+    init: function ()
     {
-        var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
-        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 100;
+        var xp = 50;
+        var yp = 100;
         positxpobj.set(xp);
         positypobj.set(yp);
-        var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 50;
-        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 100;
+        var xl = 50;
+        var yl = 100;
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = 24;
         url.slidefactor = 12;
-        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
-        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
+        var z = 0;
+        var b = 0;
         loomobj.split(z, "0-50", loomobj.length());
         poomobj.split(b, "0-50", poomobj.length());
-        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 90;
-        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 90;
+        var o  = 90;
+        var u  = 90;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
     }
@@ -3381,47 +3374,47 @@ var templatelst =
     name: "WIDE",
     init: function ()
     {
-        var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
-        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 95;
+        var xp = 50;
+        var yp = 95;
         positxpobj.set(xp);
         positypobj.set(yp);
-        var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 50;
-        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 95;
+        var xl = 50;
+        var yl = 95;
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = 36;
         url.slidefactor = 12; 
-        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 0;
-        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
+        var z = 0;
+        var b = 0;
         loomobj.split(z, "50-95", loomobj.length());
         poomobj.split(b, "25-80", poomobj.length());
-        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 90;
-        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 50;
+        var o  = 90;
+        var u  = 50;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
     }
 },
 {
     name: "LANDSCAPE",
-    init: function (j)
+    init: function ()
     {
         globalobj.rotate = 1
-        var xp = (j&&url.searchParams.has("xp")) ? Number(url.searchParams.get("xp")) : 50;
-        var yp = (j&&url.searchParams.has("yp")) ? Number(url.searchParams.get("yp")) : 95;
+        var xp = 50;
+        var yp = 95;
         positxpobj.set(xp);
         positypobj.set(yp);
-        var xl = (j&&url.searchParams.has("xl")) ? Number(url.searchParams.get("xl")) : 50;
-        var yl = (j&&url.searchParams.has("yl")) ? Number(url.searchParams.get("yl")) : 85;
+        var xl = 50;
+        var yl = 85;
         positxlobj.set(xl);
         positylobj.set(yl);
         url.slidetop = 24;
         url.slidefactor = 12;
-        var z = (j&&url.searchParams.has("z")) ? Number(url.searchParams.get("z")) : 50;
-        var b = (j&&url.searchParams.has("b")) ? Number(url.searchParams.get("b")) : 0;
+        var z = 50;
+        var b = 0;
         loomobj.split(z, "70-95", loomobj.length());
         poomobj.split(b, "30-95", poomobj.length());
-        var o  = (j&&url.searchParams.has("o")) ? Number(url.searchParams.get("o")) : 95;
-        var u  = (j&&url.searchParams.has("u")) ? Number(url.searchParams.get("u")) : 50;
+        var o  = 95;
+        var u  = 50;
         traitobj.split(o, "0.1-1.0", traitobj.length());
         scapeobj.split(u, "0.1-1.0", scapeobj.length());
    }
@@ -3804,13 +3797,16 @@ galleryobj.path = function()
     var q = this.quality;
     var s = 'https://reportbase.com/image/'+src+'/w='+w+',h='+h+',quality='+q;
     if (src.indexOf("/") >= 0)
-        s = src; 
+        s = src;
     return s;
 }
 
 var path = "gallery/" + url.path;
 if (url.protocol == "http:")
     path = "res/" + url.path;
+
+//todo: pass in user id
+path = "https://unsplash.reportbase5836.workers.dev"
 
 fetch(path)
   .then(function (response)
@@ -3822,10 +3818,6 @@ fetch(path)
         galleryobj = Object.assign(galleryobj,obj);
         setfavicon();
 
-        var j = templatelst.findIndex(function(a){return a.name == obj.template;})
-        templateobj.set(j);
-        templateobj.getcurrent().init(1);
-
         pretchobj.split(60, "40-90", pretchobj.length());
         letchobj.split(60, "40-90", letchobj.length());
         speedxobj.split(1.25, "1-20", speedxobj.length());
@@ -3835,7 +3827,9 @@ fetch(path)
             galleryobj.quality = 85;
         if (typeof galleryobj.megapix  === "undefined")
             galleryobj.megapix = 9000000;
-
+        if (typeof galleryobj.sliceparm  === "undefined")
+            galleryobj.sliceparm = 3;
+        
         //7
         var lst =
         [
@@ -4012,7 +4006,6 @@ var ContextObj = (function ()
             context.autodirect = -1;
             context.font = "400 1rem Archivo Black";
             context.fillText("  ", 0, 0);
-            //context.lst = [];
             context.slideshow = 0;
             context.lastime = 0;
             context.slidereduce = 0;
@@ -4053,7 +4046,8 @@ var ContextObj = (function ()
 				return;
 			}
 
-            var w = Math.min(ALIEXTENT*7,window.innerWidth);//-ALIEXTENT*2);
+            var k = context.index == 7 ? 640 : 420;
+            var w = Math.min(k, window.innerWidth);
             var l = Math.floor((window.innerWidth-w)/2);
             context.show(l, 0, w, _4cnv.height);
         },
@@ -4103,29 +4097,22 @@ var ContextObj = (function ()
                     this.extent = this.width + "x" + this.height;
                     var e = galleryobj.getcurrent();
                     document.title = url.path +"."+galleryobj.current().pad(4);
-
-                    if (globalobj.promptedfile)
-                    {
-                        var k;
-                        if (this.aspect < 0.5)
-                            k = "TALL"
-                        else if (this.aspect < 1.0)
-                            k = "PORTRAIT"
-                        else if (this.aspect < 2.0)
-                            k = "LANDSCAPE"
-                        else if (this.aspect < 3.0)
-                            k = "WIDE"
-                        else
-                            k = "ULTRAWIDE"
-
-                        var j = templatelst.findIndex(function(a){return a.name == k;})
-                        templateobj.set(j);
-                        templateobj.getcurrent().init(0);
-                    }
+                    
+                    var k;
+                    if (this.aspect < 0.5)
+                        k = "TALL"
+                    else if (this.aspect < 1.0)
+                        k = "PORTRAIT"
+                    else if (this.aspect < 2.0)
+                        k = "LANDSCAPE"
+                    else if (this.aspect < 3.0)
+                        k = "WIDE"
                     else
-                    {
-                        _4cnvctx.slidestop = 0; 
-                    }
+                        k = "ULTRAWIDE"
+
+                    var j = templatelst.findIndex(function(a){return a.name == k;})
+                    templateobj.set(j);
+                    templateobj.getcurrent().init(0);
 
                     pageresize();
                     contextobj.resize(context);
@@ -4982,12 +4969,12 @@ var headlst =
             context.thumbnail = new rectangle()
             context.picture = new rectangle()
             context.font = "1rem Archivo Black";
-            var j = rect.width < MENUWIDTH ? (rect.width-ALIEXTENT*4):180;
             var s = _5cnvctx.enabled || _8cnvctx.enabled;
+            var f = Math.min(rect.width - ALIEXTENT*4, 180);
             var a = new Layer(
                 [
                     galleryobj.length()<2?0:new Fill(HEADBACK),
-                    new Col([ALIEXTENT,0,ALIEXTENT,j,ALIEXTENT,0,ALIEXTENT],
+                    new Col([ALIEXTENT,0,ALIEXTENT,f,ALIEXTENT,0,ALIEXTENT],
                     [
                         galleryobj.length()<2?0:new Layer(
                         [
@@ -5111,7 +5098,6 @@ var headlst =
             context.page = new rectangle()
             context.option = new rectangle()
             context.font = "1rem Archivo Black";
-            var j = rect.width < MENUWIDTH ? (rect.width-ALIEXTENT*4):180;
             var s = _5cnvctx.enabled || _8cnvctx.enabled;
             var a = new Layer(
                 [
@@ -5330,10 +5316,6 @@ var footobj = new Data("", footlst);
 var headobj = new Data("", headlst);
 footobj.enabled = 0;
 headobj.enabled = 0;
-
-var j = url.searchParams.has("h") ? Number(url.searchParams.get("h")) : 0;
-headobj.enabled = j;
-footobj.enabled = j;
 var infobj = new Data("", 5);
 var positxpobj = new Data("POSITIONX", 100);
 var positypobj = new Data("POSITIONY", 100);

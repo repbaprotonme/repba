@@ -9,6 +9,18 @@
             "describe": "",
             "copyright": "",
             "src": "res/newyork.jpg",
+            "width": "24254", 
+            "height": "5200", 
+            "aspect": 4.6", 
+            "quality": 0, 
+            "row": 50 
+        },
+        { 
+            "name": "",
+            "title": "",
+            "describe": "",
+            "copyright": "",
+            "src": "res/newyork.jpg",
             "width": 0, 
             "height": 0, 
             "quality": 0, 
