@@ -2756,6 +2756,9 @@ var taplst =
         else if (!headobj.enabled && context.thumbrect && context.thumbrect.hitest(x,y))
         {
             rotateobj.enabled = 0;
+            clearInterval(context.timemain);
+            context.timemain = setInterval(function () { drawslices() }, timemain.getcurrent());
+
             if (context.selectrect && context.selectrect.hitest(x,y)>=0)
             {
                 context.tapping = context.tapping?0:1;
