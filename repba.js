@@ -3386,8 +3386,8 @@ var templatelst =
         url.slidefactor = 12; 
         var z = 0;
         var b = 0;
-        loomobj.split(z, "50-95", loomobj.length());
-        poomobj.split(b, "25-80", poomobj.length());
+        loomobj.split(z, "0-95", loomobj.length());
+        poomobj.split(b, "0-80", poomobj.length());
         var o  = 90;
         var u  = 50;
         traitobj.split(o, "0.1-1.0", traitobj.length());
@@ -3411,8 +3411,8 @@ var templatelst =
         url.slidefactor = 12;
         var z = 50;
         var b = 0;
-        loomobj.split(z, "70-95", loomobj.length());
-        poomobj.split(b, "30-95", poomobj.length());
+        loomobj.split(z, "60-95", loomobj.length());
+        poomobj.split(b, "20-95", poomobj.length());
         var o  = 95;
         var u  = 50;
         traitobj.split(o, "0.1-1.0", traitobj.length());
