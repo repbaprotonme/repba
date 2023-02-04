@@ -1,7 +1,5 @@
-https://i.imgur.com/
 https://www.futuretools.io/
 https://front.comparium.app/
-https://news.ycombinator.com/
 https://vectr.com/design/editor/f8a8e900-89ee-415a-91be-d9072312dba1
 
 []
@@ -26,7 +24,6 @@ https://thenounproject.com/
 https://freemusicarchive.org
 https://spotify.com
 https://soundcloud.com/ 
-music player
 
 []
 rust
@@ -50,35 +47,23 @@ board, templates, graphics
 https://miro.com/app/board/uXjVOY6fQAM=/
 
 []
-https://my.vultr.com/network/
 webserver
+https://my.vultr.com/network/
 
 []
 https://stackblitz.com/edit/node-ekxhjb
 https://onecompiler.com/javascript/3xksew9sp
 https://playcode.io/771387/
 https://codepen.io/reportbase/pen/JjprZjy
-javascript 
 
 []
 https://jsonhero.io/j/JZw4Wx9Mgj6r/editor  #json editor
 https://codebeautify.org/online-json-editor
 
 []
-auth
-https://auth0.com/docs/libraries/auth0js
-authentification
-https://manage.auth0.com/dashboard/us/dev-yqx9io6k/
-
-[]
-title = smugmug
-path = https://www.smugmug.com/
-describe = photo sharing for photographers
-
-[]
-title = reddit
-path = https://www.reddit.com/
-artfarnaa
+https://www.reddit.com/
+https://www.quora.com/
+https://news.ycombinator.com/
 
 []
 3d/drawing
@@ -99,29 +84,18 @@ sirv.com
 
 []
 https://vimeo.com/user143177427
-video
 
 []
-title = proton
-path = https://protonmail.com
-describe = email client
-repba
+https://protonmail.com
 
 []
-title = tiktok
-path = https://www.tiktok.com/@tombrinkman8?lang=en
-describe = video
+https://www.tiktok.com/@tombrinkman8?lang=en
 
 []
-path = https://www.smashingmagazine.com/2021/10/object-fit-background-size-css/
-title = squeeze photo
+https://www.smashingmagazine.com
 
 []
-title = lipsum
 https://www.lipsum.com/
-
-[]
-title = picsum
 https://picsum.photos/
 
 []
@@ -131,24 +105,20 @@ path = https://obfuscator.io/
 []
 https://www.webpagetest.org
 https://3perf.com/talks/web-perf-101/
-web page html tests
 
 []
-describe javascript tutorial
 path https://javascript.info/
 https://www.30secondsofcode.org/js/p/1
 https://github.com/trekhleb/javascript-algorithms
 
 []
-upload photo sites
 https://postimages.org/
-https://files.fm/
 https://img.vision/
+https://i.imgur.com/
+https://www.smugmug.com/
 
 []
 https://www.artstation.com
-artstation
-artist sell stuff here
 
 []
 image editor
@@ -164,12 +134,6 @@ https://boxy-svg.com/app
 
 []
 https://dropbox.com
-dropbox 
-replace dl=0 with raw=1
-
-[]
-path = https://www.quora.com/
-title = quora
 
 []
 jobs sites
