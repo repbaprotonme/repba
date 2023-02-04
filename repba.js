@@ -25,7 +25,7 @@ const SLICERADIUS = 130900;
 const TIMEOBJ = 3926;
 const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(0,0,100,0.85)";
-const MENUTAP = "rgba(200,0,0,0.75)";
+const MENUTAP = "rgba(255,0,0,0.5)";
 const THUMBSELECT = "rgba(0,0,255,0.25)";
 const THUMBODY = "rgba(0,0,0,1)";
 const PROGRESSFILL = "white";
@@ -613,7 +613,8 @@ function drawslices()
         }
 
         var a = new CurrentVPanel(new Fill("white"), 90, 1);
-        a.draw(context, new rectangle(MENUWIDTH-14,0,7,rect.height), context.timeobj, 0); 
+        var w = Math.min(rect.width, MENUWIDTH);
+        a.draw(context, new rectangle(w-12,0,7,rect.height), context.timeobj, 0); 
     }
 }
 
@@ -1882,10 +1883,6 @@ var panlst =
             obj.set(m);
             context.refresh()
         }
-        else if (x < 40)
-        {
-            //todo
-        }
         else
         {
             var jvalue = ((context.timeobj.length()/context.virtualheight)*(context.starty-y));
@@ -2758,6 +2755,7 @@ var taplst =
         }
         else if (!headobj.enabled && context.thumbrect && context.thumbrect.hitest(x,y))
         {
+            rotateobj.enabled = 0;
             if (context.selectrect && context.selectrect.hitest(x,y)>=0)
             {
                 context.tapping = context.tapping?0:1;
@@ -3013,7 +3011,8 @@ var menulst =
             new MultiText()
         ]);
 
-        a.draw(context, rect, user.line.split("/n"), time);
+        var lst = user.line.split("\n");
+        a.draw(context, rect, lst, time);
         context.restore();
     }
 },
@@ -3047,7 +3046,7 @@ var menulst =
         {
             var key = keys[n];
             var value = user[key];
-            if (value && value.length)
+            if (value && value.length && typeof value === 'string')
                 lst.push(value);
         }
 
@@ -3469,7 +3468,7 @@ var bodylst =
                             new Shrink(new Layer(
                             [
                                 new Rectangle(context.moveprev),
-                                new Shrink(new Circle(_4cnvctx.movingpage == -1?"red":SCROLLNAB,"white",3),10,10),
+                                new Shrink(new Circle(_4cnvctx.movingpage == -1?MENUTAP:SCROLLNAB,"white",3),10,10),
                                 new Shrink(new Arrow(ARROWFILL,270),22,22),
                             ]),10,10),
                             0,
@@ -3480,7 +3479,7 @@ var bodylst =
                             new Shrink(new Layer(
                             [
                                 new Rectangle(context.movenext),
-                                new Shrink(new Circle(_4cnvctx.movingpage == 1?"red":SCROLLNAB,"white",3),10,10),
+                                new Shrink(new Circle(_4cnvctx.movingpage == 1?MENUTAP:SCROLLNAB,"white",3),10,10),
                                 new Shrink(new Arrow(ARROWFILL,90),22,22),
                             ]),10,10),
                             0,
@@ -3852,19 +3851,19 @@ fetch(path)
         var lst =
         [
             {
-                line: `Image Viewer\nhttps://repba.com\nimages@repba.com\nTom Brinkman`,
+                line: "Image Viewer\nhttps://repba.com\nimages@repba.com\nTom Brinkman",
                 func: function() {menuhide(); }
             },
             {
-                line: `High Resolution\n360° Panoramas\nImage Stretching\nImage Zooming`,
+                line: "High Resolution\n360° Panoramas\nImage Stretching\nImage Zooming",
                 func: function() {menuhide(); }
             },
             {
-                line: `Digital Art\nGraphic Novels\nDrone Photgraphy\nLandscapes`,
+                line: "Digital Art\nGraphic Novels\nDrone Photgraphy\nLandscapes",
                 func: function() {menuhide(); }
             },
             {
-                line: `Side Scroller\nWrap Around\nFull Screen\nWide Image`,
+                line: "Side Scroller\nWrap Around\nFull Screen\nWide Image",
                 func: function() {menuhide(); }
             },
         ];
