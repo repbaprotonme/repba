@@ -1,6 +1,7 @@
 {  
     "template": "WIDE",  
     "title": "High-resolution",  
+    "hidedisplay": "1",  
     "datam": 
     [    
         { 

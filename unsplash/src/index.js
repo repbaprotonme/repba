@@ -7,9 +7,9 @@ export default
 	async fetch(request, env, ctx) 
     {
         var lst = [];
-        for (var m = 0; m < 6; ++m)
+        for (var m = 0; m < 6; ++m)//todo
         {
-            var id = "anitaaustvika"
+            var id = "anitaaustvika"//todo
             var per_page = 10;
             var page = m+1;
             var response = await fetch(`https://api.unsplash.com/users/${id}/photos?client_id=Xfabm2o5F9iUQon5LTX3O249PCsBpviDafSrMVGkaS0&per_page=${per_page}&page=${page}`);

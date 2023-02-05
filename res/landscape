@@ -1,6 +1,7 @@
 {  
     "template": "LANDSCAPE",  
     "title": "High-resolution",  
+    "galleryheight": "120",  
     "hidedisplay": "1",  
     "datam": 
     [    
