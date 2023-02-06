@@ -1,29 +1,38 @@
 //https://unsplash.com/documentation#list-a-users-photos
 //https://www.pluralsight.com/guides/using-the-unsplash-api
-//todo api.unsplash.com/search/photos?page=5&per_page=30&query=${inputValue}&client_id=${API_KEY}`
+
+// curl https://unsplash.reportbase5836.workers.dev?id=anitaaustvika
+// curl https://unsplash.reportbase5836.workers.dev?query=soccer
 
 export default 
 {
 	async fetch(request, env, ctx) 
     {
+        var url = new URL(request.url);
+        var id = url.searchParams.get("id");
+        var query = url.searchParams.get("query");
+        var per_page = 10;
+        var page = 0;
         var lst = [];
-        for (var m = 0; m < 6; ++m)//todo
+        var morePagesAvailable = true;
+        while (morePagesAvailable)
         {
-            var id = "anitaaustvika"//todo
-            var per_page = 10;
-            var page = m+1;
             var response = await fetch(`https://api.unsplash.com/users/${id}/photos?client_id=Xfabm2o5F9iUQon5LTX3O249PCsBpviDafSrMVGkaS0&per_page=${per_page}&page=${page}`);
-            var json = await response.json();   
-            for (var n = 0; n < json.length; ++n)
+            //var response = await fetch(`https://api.unsplash.com/search/photos?query=${query}&client_id=Xfabm2o5F9iUQon5LTX3O249PCsBpviDafSrMVGkaS0&per_page=${per_page}&page=${page}`);
+            
+            const headers = response.headers;
+            var total = headers.get("x-total")
+            var data = await response.json();   
+            for (var n = 0; n < data.length; ++n)
             {
-                var k = json[n];
+                var k = data[n];
                 var j = {};
                 var width = k.width;
                 var height = k.height;
                 var aspect = (k.width/k.height).toFixed(2);
                 var user = k.user;
                 var urls = k.urls;
-                j.index = (n+1).toFixed(0); 
+                j.index = lst.length; 
                 j.username = user.username; 
                 j.name = user.name; 
                 if (k.description)
@@ -34,13 +43,15 @@ export default
                 j.extent = `${width}x${height} ${aspect}`;
                 lst.push(j);
             }
+            
+            morePagesAvailable = (++page < 3) || lst.length >= total;
         }
 
         var g = {}
         g.title = `Unsplash Gallery`;
         g.username = id;
         g.datam = lst;		
-
+        
         let headers = new Headers(
         {
 		    'content-type': 'application/json;charset=UTF-8',

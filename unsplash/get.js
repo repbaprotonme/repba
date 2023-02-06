@@ -11,24 +11,27 @@ async function user2()
 
 async function user() 
 {
+    var id = "anitaaustvika";//repba"
+    var per_page = 10;
     var lst = [];
-    for (var m = 0; m < 6; ++m)
+    var page = 0;
+    var morePagesAvailable = true;
+    while (morePagesAvailable)
     {
-        var id = "anitaaustvika"
-        var per_page = 10;
-        var page = m+1;
         var response = await fetch(`https://api.unsplash.com/users/${id}/photos?client_id=Xfabm2o5F9iUQon5LTX3O249PCsBpviDafSrMVGkaS0&per_page=${per_page}&page=${page}`);
-        var json = await response.json();   
-        for (var n = 0; n < json.length; ++n)
+        const headers = response.headers;
+        var total = headers.get("x-total")
+        var data = await response.json();   
+        for (var n = 0; n < data.length; ++n)
         {
-            var k = json[n];
+            var k = data[n];
             var j = {};
             var width = k.width;
             var height = k.height;
             var aspect = (k.width/k.height).toFixed(2);
             var user = k.user;
             var urls = k.urls;
-            j.index = (n+1).toFixed(0); 
+            j.index = lst.length; 
             j.username = user.username; 
             j.name = user.name; 
             if (k.description)
@@ -39,14 +42,15 @@ async function user()
             j.extent = `${width}x${height} ${aspect}`;
             lst.push(j);
         }
+        
+        morePagesAvailable = (++page < 3) || lst.length >= total;
     }
 
     var g = {}
     g.title = `Unsplash Gallery`;
     g.username = id;
     g.datam = lst;		
-
-    console.log(JSON.stringify(json));
+    console.log(JSON.stringify(g));
 }
 
 user();

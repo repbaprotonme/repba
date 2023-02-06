@@ -3695,8 +3695,7 @@ var path = "gallery/" + url.path;
 if (url.protocol == "http:")
     path = "res/" + url.path;
 
-//todo: pass in user id
-//path = "https://unsplash.reportbase5836.workers.dev"
+//path = "https://unsplash.reportbase5836.workers.dev?id=anitaaustvika"
 
 fetch(path)
   .then(function (response)
@@ -3721,7 +3720,7 @@ fetch(path)
         if (typeof galleryobj.megapix === "undefined")
             galleryobj.megapix = 9000000;
         if (typeof galleryobj.galleryheight === "undefined")
-            galleryobj.galleryheight = 60;
+            galleryobj.galleryheight = 30;
 
         //7
         var lst =
@@ -4831,7 +4830,16 @@ var headlst =
     },
 	new function ()
 	{
-    	this.tap = function (context, rect, x, y)
+    	this.press = function (context, rect, x, y)
+		{
+            if (context.picture.hitest(x,y))
+            {
+                infobj.rotate(1);
+                _4cnvctx.refresh();
+            }
+        }
+
+     	this.tap = function (context, rect, x, y)
 		{
             if (context.page.hitest(x,y))
             {
@@ -5170,12 +5178,13 @@ var footlst =
             context.leftab = new rectangle()
             context.rightab = new rectangle()
             var e = rect.height == LARGEFOOT ? [70,0] : [70,-1];
+            var j = rect.width < 340 ? 50 : ALIEXTENT;
             var a = new Layer(
                [
                    new Fill(HEADBACK),
                    new Row(e,
                    [
-                       new Col([ALIEXTENT,0,80,ALIEXTENT,80,0,ALIEXTENT],
+                       new Col([j,0,j+10,ALIEXTENT,j+10,0,j],
                        [
                             new Layer(
                             [
