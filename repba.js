@@ -3720,7 +3720,7 @@ fetch(path)
         if (typeof galleryobj.megapix === "undefined")
             galleryobj.megapix = 9000000;
         if (typeof galleryobj.galleryheight === "undefined")
-            galleryobj.galleryheight = 30;
+            galleryobj.galleryheight = 120;
 
         //7
         var lst =
@@ -3745,7 +3745,7 @@ fetch(path)
 
         var slices = _7cnvctx.sliceobj;
         slices.data = lst;
-        _7cnvctx.buttonheight = 120;
+        _7cnvctx.buttonheight = 80;
         _7cnvctx.delayinterval = DELAYCENTER / lst.length;
         _7cnvctx.virtualheight = lst.length*_7cnvctx.buttonheight;
         _7cnvctx.rvalue = 2;
@@ -5184,7 +5184,7 @@ var footlst =
                    new Fill(HEADBACK),
                    new Row(e,
                    [
-                       new Col([j,0,j+10,ALIEXTENT,j+10,0,j],
+                       new Col([j,0,j+10,ALIEXTENT,j+10,0,ALIEXTENT],
                        [
                             new Layer(
                             [

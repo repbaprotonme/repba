@@ -18,8 +18,6 @@ export default
         while (morePagesAvailable)
         {
             var response = await fetch(`https://api.unsplash.com/users/${id}/photos?client_id=Xfabm2o5F9iUQon5LTX3O249PCsBpviDafSrMVGkaS0&per_page=${per_page}&page=${page}`);
-            //var response = await fetch(`https://api.unsplash.com/search/photos?query=${query}&client_id=Xfabm2o5F9iUQon5LTX3O249PCsBpviDafSrMVGkaS0&per_page=${per_page}&page=${page}`);
-            
             const headers = response.headers;
             var total = headers.get("x-total")
             var data = await response.json();   
@@ -44,7 +42,7 @@ export default
                 lst.push(j);
             }
             
-            morePagesAvailable = (++page < 3) || lst.length >= total;
+            morePagesAvailable = (++page < 3) || lst.length < total;
         }
 
         var g = {}
