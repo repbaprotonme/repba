@@ -3668,7 +3668,7 @@ galleryobj.path = function()
     var src = k.src;
     var w = k.width;
     var h = k.height;
-    if (src && src.indexOf("/") >= 0 && w && h)
+    if (src && !src.indexOf("/") >= 0 && w && h)
     {
         var a = w/h;
         if (w > h)
