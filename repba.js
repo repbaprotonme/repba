@@ -3705,7 +3705,7 @@ galleryobj.path = function()
 }
 
 var path = "gallery/" + url.path;
-if (url.protocol == "http:")
+if (url.host == "100.115.92.200")
     path = "res/" + url.path;
 
 //path = "https://unsplash.reportbase5836.workers.dev?id=anitaaustvika"
