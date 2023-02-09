@@ -44,7 +44,7 @@ const REDUCEFACTOR = 40000;
 const MAXMEGAPIX = 6000000;
 const SMALLFOOT = 70;
 const LARGEFOOT = 90;
-const SLIDETOP = 18;
+const SLIDETOP = 32;
 const SLIDEFACTOR = 18;
 
 globalobj = {};
@@ -3084,7 +3084,7 @@ function resetcanvas()
     }
 
     var zoom = zoomobj.getcurrent()
-    zoom.split(zoom.current(), `${n}-90`, poomobj.length());
+    zoom.split(zoom.current(), `${n}-95`, poomobj.length());
     var z = zoom.getcurrent();
     var zoom = (100-z)/100;
     context.imageheight = photo.image.height*zoom;
@@ -3110,8 +3110,13 @@ function resetcanvas()
     rotateobj.data = rotatelst;
 
     var f = 3;
-    if (context.virtualfactor < 2)
+    if (context.virtualfactor < 1.5)
+        f = 12;
+    else if (context.virtualfactor < 1.75)
         f = 9;
+    else if (context.virtualfactor < 2.0)
+        f = 6;
+
     let slicelst = [];
     for (let n = 499; n >= 1; n=n-1)
         slicelst.push({slices: n*3, delay: SLICERADIUS/n});
@@ -3650,7 +3655,7 @@ if (url.searchParams.has("p"))
 {
     var e = url.searchParams.get("p");
     let k = e.split(".");
-    url.path = k[0];//.toUpperCase();
+    url.path = k[0];
     if (k.length == 2)
         url.project = Number(k[1]);
 }
@@ -3663,32 +3668,40 @@ galleryobj.path = function()
     var src = k.src;
     var w = k.width;
     var h = k.height;
-    var a = w/h;
-
-    if (w > h)
+    if (src && src.indexOf("/") >= 0 && w && h)
     {
-        while (w*h > MAXMEGAPIX)
+        var a = w/h;
+        if (w > h)
         {
-            w *= 0.999;
-            h = w/a;
+            while (w*h > MAXMEGAPIX)
+            {
+                w *= 0.999;
+                h = w/a;
+            }
         }
+        else
+        {
+            while (w*h > MAXMEGAPIX)
+            {
+                h *= 0.999;
+                w = a*h;
+            }
+        }
+
+        w = Math.floor(w);
+        h = Math.floor(h);
+        var q = this.quality;
+        return 'https://reportbase.com/image/'+src+'/w='+w+',h='+h+',quality='+q;
+    }
+    else if (src && src.indexOf("/") >= 0)
+    {
+        return src;
     }
     else
     {
-        while (w*h > MAXMEGAPIX)
-        {
-            h *= 0.999;
-            w = a*h;
-        }
+        return 'https://reportbase.com/image/'+src+'/quality='+q;
     }
 
-    w = Math.floor(w);
-    h = Math.floor(h);
-    var q = this.quality;
-    var s = 'https://reportbase.com/image/'+src+'/w='+w+',h='+h+',quality='+q;
-    if (src.indexOf("/") >= 0)
-        s = src;
-    return s;
 }
 
 var path = "gallery/" + url.path;
@@ -3719,8 +3732,6 @@ fetch(path)
             galleryobj.quality = 85;
         if (typeof galleryobj.megapix === "undefined")
             galleryobj.megapix = 9000000;
-        if (typeof galleryobj.galleryheight === "undefined")
-            galleryobj.galleryheight = 120;
 
         //7
         var lst =
@@ -3752,25 +3763,17 @@ fetch(path)
         _7cnvctx.slidereduce = 0.75;
 
         //8
-        if (!galleryobj.datam)
-        {
-            galleryobj.datam = []
-            for (var n = 0; n < galleryobj.data.length; ++n)
-            {
-                var k = galleryobj.data[n];
-                var j = {}
-                j.src = k[0];
-                j.width = k[1];
-                j.height = k[2];
-                j.row = k[3];
-                galleryobj.datam[n] = j;
-            }
-        }
-
         for (var n = 0; n < galleryobj.datam.length; ++n)
         {
-             var k = galleryobj.datam[n];
-             k.func = function (index)
+            var k = galleryobj.datam[n];
+            if (k.width && k.height)
+            {
+                var aspect = (k.width / k.height).toFixed(2);
+                k.extent = `${k.width}x${k.height} ${aspect}`;
+                k.size = ((this.width * this.height)/1000000).toFixed(1) + "MP";
+            }
+
+            k.func = function (index)
                 {
                     menuhide();
                     galleryobj.set(index);
@@ -3784,7 +3787,7 @@ fetch(path)
         var slices = _8cnvctx.sliceobj;
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
         _8cnvctx.rvalue = 2;
-        _8cnvctx.buttonheight = Number(galleryobj.galleryheight);
+        _8cnvctx.buttonheight = 120;
         _8cnvctx.delayinterval = DELAYCENTER / slices.length();
         _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
         _8cnvctx.slidereduce = 0.75;
@@ -4010,10 +4013,10 @@ var ContextObj = (function ()
                     else
                         k = "ULTRAWIDE"
 
-                    if (typeof galleryobj.getcurrent().type !== "undefined")
-                        k = galleryobj.getcurrent().type;
-                    else if (typeof galleryobj.type !== "undefined")
-                        k = galleryobj.type;
+                    if (typeof galleryobj.getcurrent().template !== "undefined")
+                        k = galleryobj.getcurrent().template;
+                    if (typeof galleryobj.template !== "undefined")
+                        k = galleryobj.template;
 
                     var j = templatelst.findIndex(function(a){return a.name == k;})
                     if (j != templateobj.current())
@@ -4958,7 +4961,7 @@ var headlst =
             {
                 s = (galleryobj.current()+1).toFixed(0);
                 if (rect.width >= 400)
-                    s += " of "+galleryobj.length()
+                    s += " / "+galleryobj.length()
             }
             else if (infobj.current() == 2)
             {
@@ -5026,10 +5029,10 @@ var headlst =
             var s = _5cnvctx.enabled || _8cnvctx.enabled;
             var a = new Layer(
                 [
-                    galleryobj.length()<2?0:new Fill(HEADBACK),
+                    globalobj.promptedfile?0:new Fill(HEADBACK),
                     new Col([ALIEXTENT,0,ALIEXTENT],
                     [
-                        galleryobj.length()<2?0:new Layer(
+                        new Layer(
                         [
                             s ? new Fill(BUTTONBACK) : 0,
                             new PagePanel(s?0.1:0.075),

@@ -5,30 +5,19 @@ return fetch("https://reportbase.com/gallery/" + id)
   .then(response => response.json())
   .then(function (json)
   {
-    if (!json.datam)
-    {
-        json.quality = "85";
-        json.row = 50;
-        json.datam = []
-        for (var n = 0; n < json.data.length; ++n)
+        for (var n = 0; n < json.datam.length; ++n)
         {
-            var k = json.data[n];
-            var j = {}
-            j.src = k[0];
-            j.width = k[1];
-            j.height = k[2];
-            if (k[3])
-                j.row = k[3];
-            j.describe = "";
-            j.name = "";
-            j.title = "";
-            j.copyright = "";
-            json.datam[n] = j;
+            var k = json.datam[n];
+            var aspect = k.width && k.height;
+            if (aspect)
+            {
+                aspect = (k.width/k.height).toFixed(2);
+                k.extent = `${k.width}x${k.height} ${aspect}`;
+                k.size = ((k.width * k.height)/1000000).toFixed(1) + "MP";
+            }
         }
-    }
-
-    delete json.data;
-    console.log(JSON.stringify(json));
+    
+        console.log(JSON.stringify(json));
   })
 
 

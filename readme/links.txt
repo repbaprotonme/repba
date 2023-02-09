@@ -73,6 +73,7 @@ gigapan,
 panoraven,
 https://www.prodibi.com
 https://photo-sphere-viewer.js.org/
+
 https://www.google.com/streetview/
 juicbox.net,
 https://micr.io/
@@ -114,8 +115,10 @@ https://github.com/trekhleb/javascript-algorithms
 []
 https://postimages.org/
 https://img.vision/
-https://i.imgur.com/
+https://reportbase.imgur.com/all
+https://unsplash.com/@repba
 https://www.smugmug.com/
+https://www.pixabay.com
 
 []
 https://www.artstation.com
@@ -157,7 +160,6 @@ https://www.pexels.com
 https://www.pixabay.com
 https://www.gettyimages.com
 https://picsart.com/
-https://unsplash.com/plus
 
 []
 https://play.google.com/books
