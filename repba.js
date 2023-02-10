@@ -3100,13 +3100,13 @@ function resetcanvas()
         rotatelst.push(n);
     rotateobj.data = rotatelst;
 
-    var f = 2;
+    var f = 3;
     if (context.virtualfactor < 1.25)
-        f = 11;
+        f = 12;
     else if (context.virtualfactor < 1.75)
-        f = 8;
+        f = 9;
     else if (context.virtualfactor < 2.25)
-        f = 5;
+        f = 6;
 
     let slicelst = [];
     for (let n = 499; n >= 1; n=n-1)
