@@ -1,4 +1,4 @@
-//todo: https://obfuscator.io    $$$
+//todo: https://obfuscator.io    $$$$$$$$$$
 //todo: safari max size
 
 /* ++ += ==
@@ -52,6 +52,7 @@ let photo = {}
 photo.image = 0;
 
 function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) + min); }
+function numberRange (start, end) {return new Array(end - start).fill().map((d, i) => i + start); }
 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
@@ -1900,7 +1901,7 @@ var panlst =
             posity.set((y/rect.height)*100);
             context.refresh();
         }
-        else if (context.isstretch)
+        else if (context.stretchctrl && context.stretchctrl.hitest(x,y))
         {
             pinchobj.set(1)
             var stretch = stretchobj.getcurrent()
@@ -1915,7 +1916,7 @@ var panlst =
             stretch.set(m);
             context.refresh();
         }
-        else if (context.istime)
+        else if (context.timemainctrl && context.timemainctrl.hitest(x,y))
         {
             var obj = timemain;
             var m = (y - context.timemainctrl.y)/context.timemainctrl.height;
@@ -1929,7 +1930,7 @@ var panlst =
             obj.set(m);
             context.tab();
         }
-        else if (context.isspeed)
+        else if (context.speedctrl && context.speedctrl.hitest(x,y))
         {
             var obj = speedobj;
             var m = (y - context.speedctrl.y)/context.speedctrl.height;
@@ -1943,7 +1944,7 @@ var panlst =
             obj.set(m);
             contextobj.reset();
         }
-        else if (context.iszoom)
+        else if (context.zoomctrl && context.zoomctrl.hitest(x,y))
         {
             pinchobj.set(0)
             var zoom = zoomobj.getcurrent()
@@ -1958,7 +1959,7 @@ var panlst =
             zoom.set(m);
             contextobj.reset();
         }
-        else if (context.isthumbrect)
+        else if (context.thumbrect && context.thumbrect.hitest(x,y))
         {
             var pt = context.getweightedpoint(x,y);
             x = pt?pt.x:x;
@@ -2010,12 +2011,6 @@ var panlst =
         context.pantype = 0;
         context.startt = context.timeobj.current();
         var zoom = zoomobj.getcurrent()
-        context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
-        context.isstretch = context.stretchctrl && context.stretchctrl.hitest(x,y);
-        context.isspeed = context.speedctrl && context.speedctrl.hitest(x,y);
-        context.iszoom = context.zoomctrl && context.zoomctrl.hitest(x,y);
-        context.isslice = context.slicectrl && context.slicectrl.hitest(x,y);
-        context.istime = context.timemainctrl && context.timemainctrl.hitest(x,y)
         if (context.isthumbrect)
             context.panning = 1;
         context.clearpoints();
@@ -2029,11 +2024,6 @@ var panlst =
             context.isthumbrect = 0;
             var zoom = zoomobj.getcurrent()
             delete context.isthumbrect;
-            delete context.isstretch;
-            delete context.isspeed;
-            delete context.iszoom;
-            delete context.isslice;
-            delete context.istime;
             delete context.startx;
             delete context.starty;
             delete context.startt;
@@ -3110,13 +3100,13 @@ function resetcanvas()
         rotatelst.push(n);
     rotateobj.data = rotatelst;
 
-    var f = 3;
+    var f = 2;
     if (context.virtualfactor < 1.25)
-        f = 12;
+        f = 11;
     else if (context.virtualfactor < 1.75)
-        f = 9;
+        f = 8;
     else if (context.virtualfactor < 2.25)
-        f = 6;
+        f = 5;
 
     let slicelst = [];
     for (let n = 499; n >= 1; n=n-1)
@@ -3337,26 +3327,26 @@ var bodylst =
             context.movenext = new rectangle()
             var zoom = zoomobj.getcurrent();
             var a =
-                    new Col([70,0,70],
+                    new Col([75,0,75],
                     [
-                        new Row([70,0],
+                        new Row([75,0],
                         [
                             new Shrink(new Layer(
                             [
                                 new Rectangle(context.moveprev),
                                 new Shrink(new Circle(_4cnvctx.movingpage == -1?MENUTAP:SCROLLNAB,"white",3),10,10),
-                                new Shrink(new Arrow(ARROWFILL,270),22,22),
+                                new Shrink(new Arrow(ARROWFILL,270),20,20),
                             ]),10,10),
                             0,
                         ]),
                         0,
-                        new Row([80,0],
+                        new Row([75,0],
                         [
                             new Shrink(new Layer(
                             [
                                 new Rectangle(context.movenext),
                                 new Shrink(new Circle(_4cnvctx.movingpage == 1?MENUTAP:SCROLLNAB,"white",3),10,10),
-                                new Shrink(new Arrow(ARROWFILL,90),22,22),
+                                new Shrink(new Arrow(ARROWFILL,90),20,20),
                             ]),10,10),
                             0,
                         ]),
@@ -4989,10 +4979,6 @@ var headlst =
             {
                 s =  _4cnvctx.virtualfactor.toFixed(2)
             }
-            else if (infobj.current() == 6)
-            {
-                s =  _4cnvctx.sliceobj.length().toFixed(0)
-            }
 
             a.draw(context, rect, s, time);
             context.restore()
@@ -5246,7 +5232,7 @@ var footobj = new Data("", footlst);
 var headobj = new Data("", headlst);
 footobj.enabled = 0;
 headobj.enabled = 0;
-var infobj = new Data("", 7);
+var infobj = new Data("", 6);
 var positxpobj = new Data("POSITIONX", 100);
 var positypobj = new Data("POSITIONY", 100);
 var positxlobj = new Data("POSITIONX", 100);
