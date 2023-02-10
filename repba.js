@@ -1,4 +1,4 @@
-//todo: https://obfuscator.io
+//todo: https://obfuscator.io    $$$
 //todo: safari max size
 
 /* ++ += ==
@@ -78,7 +78,7 @@ let Data = function (title, data)
 
     this.getcurrent = function ()
     {
-        if (this.CURRENT < this.length() && Array.isArray(this.data)) 
+        if (this.CURRENT < this.length() && Array.isArray(this.data))
             return this.data[this.CURRENT];
         return this.CURRENT;
     };
@@ -608,7 +608,7 @@ function drawslices()
 
         var a = new CurrentVPanel(new Fill("white"), 90, 1);
         var w = context.canvas.width;
-        a.draw(context, new rectangle(w-12,0,7,rect.height), context.timeobj, 0); 
+        a.draw(context, new rectangle(w-12,0,7,rect.height), context.timeobj, 0);
     }
 }
 
@@ -853,7 +853,7 @@ var MultiText = function (width, height, func)
             0,
             lst[0],
             lst[1],
-            lst[2], 
+            lst[2],
             lst[3],
             lst[4],
             lst[5],
@@ -908,12 +908,12 @@ var FullPanel = function ()
         var e = screenfull.isFullscreen?8:6;
         var j = 28;
         var k = 20;
-        var r = new rectangle(rect.x+k,rect.y+j,rect.width,rect.height); 
+        var r = new rectangle(rect.x+k,rect.y+j,rect.width,rect.height);
         context.lineWidth = 3;
         var x = r.x;
         var y = r.y;
         var path = new Path2D();
-        y += e 
+        y += e
         path.moveTo(x,y);
         y -= e;
         path.lineTo(x,y);
@@ -1212,7 +1212,7 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
         return;
     if (!_4cnvctx.setcolumncomplete)
         return;
-    var e = galleryobj.current(); 
+    var e = galleryobj.current();
     galleryobj.rotate(j);
     var k = galleryobj.getcurrent();
     galleryobj.set(e);
@@ -1630,7 +1630,7 @@ var wheelst =
         {
             var obj = heightobj.getcurrent();
             var h = obj.getcurrent()*window.innerHeight;
-            delete context.thumbcanvas; 
+            delete context.thumbcanvas;
             obj.add(5);
             context.refresh();
         }
@@ -1673,7 +1673,7 @@ var wheelst =
             var h = obj.getcurrent()*window.innerHeight;
             if (h-5 <= ALIEXTENT)
                 return;
-            delete context.thumbcanvas; 
+            delete context.thumbcanvas;
             obj.add(-5);
             context.refresh();
         }
@@ -1703,11 +1703,11 @@ var pinchlst =
         var k = Math.clamp(data[0], data[data.length-1], scale*context.savepinch);
         var j = Math.berp(data[0], data[data.length-1], k);
         var e = Math.lerp(0,obj.length(),j)/obj.length();
-        
+
         if (context.isthumbrect)
         {
             context.pinching = 1;
-            delete context.thumbcanvas; 
+            delete context.thumbcanvas;
             var f = Math.floor(obj.length()*e);
             obj.set(f);
             context.refresh();
@@ -1743,7 +1743,7 @@ var pinchlst =
         context.isthumbrect = context.thumbrect && context.thumbrect.expand &&
             context.thumbrect.expand(40,40).hitest(x,y);
         if (context.isthumbrect)
-            context.obj = heightobj.getcurrent(); 
+            context.obj = heightobj.getcurrent();
         else
             context.obj = pinchobj.getcurrent().getcurrent();
         context.savepinch = context.obj.getcurrent()
@@ -1968,7 +1968,7 @@ var panlst =
         }
         else if (context.pantype != 2 && (type == "panleft" || type == "panright"))
         {
-            context.pantype = 1 
+            context.pantype = 1
             context.autodirect = (type == "panleft")?-1:1;
             var len = context.timeobj.length();
             var diff = context.startx-x;
@@ -1985,7 +1985,7 @@ var panlst =
         }
         else if (context.pantype != 1 && (type == "panup" || type == "pandown"))
         {
-            context.pantype = 2 
+            context.pantype = 2
             var zoom = zoomobj.getcurrent()
             if (Number(zoom.getcurrent()))
             {
@@ -2560,7 +2560,7 @@ var taplst =
             {
                 context.tapindex = 0;
                 context.refresh();
-                authClient.redirectToLoginPage()                                                                                               
+                authClient.redirectToLoginPage()
             },400)
         }
         else if (context.stretchctrl && context.stretchctrl.hitest(x,y))
@@ -2747,7 +2747,7 @@ var taplst =
 
                 pageresize();
             }
-                
+
             context.refresh();
         }
 
@@ -2840,7 +2840,7 @@ var thumblst =
                 var thumbcontext = context.thumbcanvas.getContext('2d');
                 thumbcontext.drawImage(photo.image,0,0,w,h);
             }
-                
+
             context.globalAlpha = alphaobj.berp();
             context.drawImage(context.thumbcanvas, x, y, w, h);
             context.globalAlpha = 1.0;
@@ -2983,7 +2983,7 @@ var menulst =
             new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 25),
             new MultiText(),
         ]);
-     
+
         if (!user.lst)
         {
             var lst = [];
@@ -3072,19 +3072,20 @@ function resetcanvas()
     var context = _4cnvctx;
     context.show(0,0,window.innerWidth,window.innerHeight);
 
+    var zoomax = 95;
     var n = 0;
-    for (; n < 90; ++n)
+    for (; n < zoomax; ++n)
     {
         var zoom = (100-n)/100;
         var height = photo.image.height*zoom;
         var aspect = photo.image.width/height;
         var width = context.canvas.height * aspect;
-        if (width/window.innerWidth > 1.5)
+        if (width/window.innerWidth > 1.3)
             break;
     }
 
     var zoom = zoomobj.getcurrent()
-    zoom.split(zoom.current(), `${n}-95`, poomobj.length());
+    zoom.split(zoom.current(), `${n}-${zoomax}`, poomobj.length());
     var z = zoom.getcurrent();
     var zoom = (100-z)/100;
     context.imageheight = photo.image.height*zoom;
@@ -3110,11 +3111,11 @@ function resetcanvas()
     rotateobj.data = rotatelst;
 
     var f = 3;
-    if (context.virtualfactor < 1.5)
+    if (context.virtualfactor < 1.25)
         f = 12;
     else if (context.virtualfactor < 1.75)
         f = 9;
-    else if (context.virtualfactor < 2.0)
+    else if (context.virtualfactor < 2.25)
         f = 6;
 
     let slicelst = [];
@@ -3162,7 +3163,7 @@ function resetcanvas()
         ctx.drawImage(photo.image,
             n*gwidth, context.nuby, gwidth, context.imageheight,
             0, 0, context.bwidth, cnv.height);
-        
+
         for (var e = 0; e < slices; ++e)
         {
             var k = {};
@@ -3336,9 +3337,9 @@ var bodylst =
             context.movenext = new rectangle()
             var zoom = zoomobj.getcurrent();
             var a =
-                    new Col([80,0,80],
+                    new Col([70,0,70],
                     [
-                        new Row([80,0],
+                        new Row([70,0],
                         [
                             new Shrink(new Layer(
                             [
@@ -3454,7 +3455,7 @@ var bodylst =
             {
                 var w = ALIEXTENT;
                 var h = Math.min(rect.height/2,Math.max(320,rect.height-ALIEXTENT*4));
-                var a = new Centered(w,h, 
+                var a = new Centered(w,h,
                         new RowA([50,0],
                         [
                             new Text("white", "center", "middle",0,1,1),
@@ -3474,7 +3475,7 @@ var bodylst =
             {
                 var w = Math.min(rect.width/2,Math.max(640,rect.width-ALIEXTENT*4));
                 var h = 100;
-                var a = new Centered(w,h, 
+                var a = new Centered(w,h,
                         new RowA([50,0],
                         [
                             new Text("white", "center", "middle",0,0,1),
@@ -3506,7 +3507,7 @@ var bodylst =
             {
                 var w = ALIEXTENT;
                 var h = Math.min(rect.height/2,Math.max(320,rect.height-ALIEXTENT*4));
-                var a = new Centered(w,h, 
+                var a = new Centered(w,h,
                         new RowA([50,0],
                         [
                             new Text("white", "center", "middle",0,1,1),
@@ -3526,7 +3527,7 @@ var bodylst =
             {
                 var w = Math.min(rect.width/2,Math.max(640,rect.width-ALIEXTENT*4));
                 var h = 100;
-                var a = new Centered(w,h, 
+                var a = new Centered(w,h,
                         new RowA([50,0],
                         [
                             new Text("white", "center", "middle",0,0,1),
@@ -3558,7 +3559,7 @@ var bodylst =
             {
                 var w = ALIEXTENT;
                 var h = Math.min(rect.height/2,Math.max(320,rect.height-ALIEXTENT*4));
-                var a = new Centered(w,h, 
+                var a = new Centered(w,h,
                         new RowA([50,0],
                         [
                             new Text("white", "center", "middle",0,1,1),
@@ -3577,7 +3578,7 @@ var bodylst =
             {
                 var w = Math.min(rect.width/2,Math.max(640,rect.width-ALIEXTENT*4));
                 var h = 100;
-                var a = new Centered(w,h, 
+                var a = new Centered(w,h,
                     new RowA([0,ALIEXTENT],
                     [
                         new Text("white", "center", "middle",0,0,1),
@@ -3608,7 +3609,7 @@ var bodylst =
             {
                 var w = ALIEXTENT;
                 var h = Math.min(rect.height/2,Math.max(320,rect.height-ALIEXTENT*4));
-                var a = new Centered(w,h, 
+                var a = new Centered(w,h,
                         new RowA([50,0],
                         [
                             new Text("white", "center", "middle",0,1,1),
@@ -3627,7 +3628,7 @@ var bodylst =
             {
                 var w = Math.min(rect.width/2,Math.max(640,rect.width-ALIEXTENT*4));
                 var h = 100;
-                var a = new Centered(w,h, 
+                var a = new Centered(w,h,
                     new RowA([0,ALIEXTENT],
                     [
                         new Text("white", "center", "middle",0,0,1),
@@ -3792,7 +3793,7 @@ fetch(path)
         _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
         _8cnvctx.slidereduce = 0.75;
 
-        //9 
+        //9
         var slices = _9cnvctx.sliceobj;
         slices.data= [];
 
@@ -3801,7 +3802,7 @@ fetch(path)
             menuhide();
             promptFile().then(function(files) { dropfiles(files); })
         }});
-        
+
         slices.data.push({title:"Timer", path: "TIMER", func: function(rect, x, y)
         {
             bodyobj.enabled = 10;
@@ -3846,14 +3847,14 @@ fetch(path)
             {
                 context.tapindex = 0;
                 context.refresh();
-                authClient.redirectToLoginPage()                                                                                               
+                authClient.redirectToLoginPage()
             },400)
         }})
 
         slices.data.push({title:"Download", path: "DOWNLOAD", func: function()
         {
             var obj = galleryobj.getcurrent();
-            var path = "https://reportbase.com/image/"+obj.src+"/w="+obj.width;           
+            var path = "https://reportbase.com/image/"+obj.src+"/w="+obj.width;
             if (obj.src.indexOf("/") >= 0)
                 path = obj.src;
             window.open(path,"Reportbase");
@@ -4000,7 +4001,7 @@ var ContextObj = (function ()
                     this.extent = this.width + "x" + this.height;
                     var e = galleryobj.getcurrent();
                     document.title = url.path +"."+galleryobj.current().pad(4);
-                    
+
                     var k;
                     if (this.aspect < 0.5)
                         k = "TALL"
@@ -4036,7 +4037,7 @@ var ContextObj = (function ()
                         rowobj.set(window.innerHeight*(galleryobj.row/100));
                     else if (typeof rowobj.row !== "undefined")
                         rowobj.set(window.innerHeight*(rowobj.row/100));
-                  
+
                     if (globalobj.rotate)
                         rotateobj.enabled = 1;
                     clearInterval(context.timemain);
@@ -4081,8 +4082,8 @@ function masterload()
         lst[n] = new Image();
         lst[n].src = galleryobj.path();
         lst[n].index = galleryobj.current();
-        lst[n].onload = function() 
-        { 
+        lst[n].onload = function()
+        {
             galleryobj.data[this.index].loaded = 1;
         }
     }
@@ -4091,8 +4092,8 @@ function masterload()
     var img = new Image();
     img.src = galleryobj.path();
     img.index = galleryobj.current();
-    img.onload = function() 
-    { 
+    img.onload = function()
+    {
         galleryobj.data[this.index].loaded = 1;
     }
 
@@ -4981,7 +4982,7 @@ var headlst =
                     if (slicelst[m].visible)
                         visibles += 1;
                 }
-                
+
                 s = visibles.toFixed(0)+" / "+_4cnvctx.sliceobj.length()
             }
             else if (infobj.current() == 5)
@@ -5088,7 +5089,7 @@ var footlst =
                         contextobj.reset()
                     else
                         _4cnvctx.refresh();
-                }, 16) 
+                }, 16)
             }
             else if (context.keyzoomdown && context.keyzoomdown.hitest(x,y))
             {
@@ -5403,7 +5404,7 @@ function pageresize()
         var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
         if (!footobj.enabled)
             h = 0;
-            
+
         footcnvctx.show(0, window.innerHeight-h, window.innerWidth, h);
         footobj.set(h?1:0);
         footham.panel = footobj.getcurrent();
