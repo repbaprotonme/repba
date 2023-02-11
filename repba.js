@@ -3347,7 +3347,7 @@ var templatelst =
         scapeobj.split(50, "0.1-1.0", scapeobj.length());
     },
     zoom: function ()
-    
+    { 
         loomobj.split(0, "25-90", loomobj.length());
         poomobj.split(0, "0-90", poomobj.length());
     }
