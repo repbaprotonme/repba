@@ -501,6 +501,7 @@ function drawslices()
         delete context.zoomctrl;
         delete context.slicectrl;
         delete context.speedctrl;
+        delete context.progresscircle;
         delete context.timemainctrl;
 
         if (galleryobj.hidedisplay)
@@ -519,10 +520,31 @@ function drawslices()
             {
                 bodyobj.set(bodyobj.enabled)
             }
-            else if (!headobj.enabled && thumbobj.enabled)
+            else if (!headobj.enabled && thumbobj.enabled) 
             {
                 thumbobj.getcurrent().draw(context, rect, 0, 0);
                 bodyobj.set(1)
+            }
+            else
+            {
+                context.progresscircle = new rectangle();
+                var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
+                var a = new Row([0,h],
+                [
+                   0,
+                   new Row([70,0],
+                   [
+                       new Layer(
+                       [
+                           _4cnvctx.timemain ? new Shrink(new Circle("rgb(255,155,0)"),12,12) : 0,
+                           new ProgressCircle(),
+                           new Rectangle(context.progresscircle),
+                       ]),
+                       0,
+                   ]),
+                ]);
+        
+                a.draw(context, rect, context.timeobj, 0);
             }
 
             bodyobj.getcurrent().draw(context, rect, 0, 0);
@@ -957,7 +979,7 @@ var ProgressCircle = function ()
         var percent = (1-user.berp())*100;
         let centerX = rect.x + rect.width / 2;
         let centerY = rect.y + rect.height / 2;
-        let radius = rect.width/2-11;
+        let radius = rect.height/2-16;
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
         context.shadowColor = "black"
@@ -1055,8 +1077,8 @@ var Minus = function (color)
         var h = rect.height
         var x = rect.x;
         var y = rect.y;
-        context.shadowOffsetX = 0;
-        context.shadowOffsetY = 0;
+        context.shadowOffsetX = 1;
+        context.shadowOffsetY = 1;
 	    var path = new Path2D();
         var x = rect.x-3;
         var y = rect.y+5;
@@ -1712,12 +1734,12 @@ var pinchlst =
         {
             var f = Math.floor(obj.length()*e);
             scale = parseFloat(scale).toFixed(2);
-            if (scale >= 1 && obj.current() < (obj.length()*0.15) && pinchobj.current()==0)
+            if (scale >= 1 && obj.current() < (obj.length()*0.15))
             {
                 obj.set(f+2);
                 context.savepinch = obj.getcurrent();
             }
-            else if (scale <= 1 && obj.current() < (obj.length()*0.15) && pinchobj.current()==0)
+            else if (scale <= 1 && obj.current() < (obj.length()*0.15))
             {
                 obj.set(f-2);
                 context.savepinch = obj.getcurrent();
@@ -1741,7 +1763,7 @@ var pinchlst =
         if (context.isthumbrect)
             context.obj = heightobj.getcurrent();
         else
-            context.obj = pinchobj.getcurrent().getcurrent();
+            context.obj = zoomobj.getcurrent();
         context.savepinch = context.obj.getcurrent()
     },
     pinchend: function (context)
@@ -2540,6 +2562,22 @@ var taplst =
         else if (context.movenext && context.movenext.hitest(x,y))
         {
             _4cnvctx.movepage(1);
+        }
+        else if (context.progresscircle && context.progresscircle.hitest(x,y))
+        {
+            if (_4cnvctx.timemain)
+            {
+                clearInterval(_4cnvctx.timemain);
+                _4cnvctx.timemain = 0;
+                rotateobj.enabled = 0;
+            }
+            else
+            {
+                rotateobj.enabled = 1;
+                _4cnvctx.tab();
+            }
+
+            _4cnvctx.refresh();
         }
         else if (context.login && context.login.hitest(x,y))
         {
@@ -5097,7 +5135,7 @@ var footlst =
                 clearInterval(context.timefooter);
                 context.timefooter = setInterval(function ()
                 {
-                    var obj = pinchobj.getcurrent().getcurrent()
+                    var obj = zoomobj.getcurrent()
                     obj.add(1);
                     if (pinchobj.current() == 0)
                         contextobj.reset()
@@ -5110,7 +5148,7 @@ var footlst =
                 clearInterval(context.timefooter);
                 context.timefooter = setInterval(function ()
                 {
-                    var obj = pinchobj.getcurrent().getcurrent()
+                    var obj = zoomobj.getcurrent()
                     obj.add(-1);
                     if (pinchobj.current() == 0)
                         contextobj.reset()
@@ -5143,7 +5181,7 @@ var footlst =
             {
                 bodyobj.enabled = 9;
                 _4cnvctx.refresh();
-                var obj = pinchobj.getcurrent().getcurrent()
+                var obj = zoomobj.getcurrent()
                 if (obj.current() >= obj.length()-1)
                     return;
                 obj.add(1);
@@ -5156,7 +5194,7 @@ var footlst =
             {
                 bodyobj.enabled = 9;
                 _4cnvctx.refresh();
-                var obj = pinchobj.getcurrent().getcurrent()
+                var obj = zoomobj.getcurrent()
                 if (!obj.current())
                     return;
                 obj.add(-1);
@@ -5199,12 +5237,12 @@ var footlst =
             var j = rect.width < 340 ? 50 : ALIEXTENT;
             var a = new Layer(
                [
-                   new Fill(HEADBACK),
+                   1?0:new Fill(HEADBACK),
                    new Row(e,
                    [
                        new Col([j,0,j+10,ALIEXTENT,j+10,0,ALIEXTENT],
                        [
-                            new Layer(
+                            1?0:new Layer(
                             [
                                 new Rectangle(context.leftab),
                                 new Col([0,8,0],
@@ -5224,7 +5262,7 @@ var footlst =
                                     ])
                             ]),
                             0,
-                            new Layer(
+                            1?0:new Layer(
                             [
                                 new Rectangle(context.keyzoomdown),
                                 new Minus(ARROWFILL),
@@ -5235,13 +5273,13 @@ var footlst =
                                    new ProgressCircle(),
                                    new Rectangle(context.progresscircle),
                                ]),
-                            new Layer(
+                            1?0:new Layer(
                             [
                                 new Rectangle(context.keyzoomup),
                                 new Plus(ARROWFILL),
                             ]),
                             0,
-                            new Layer(
+                            1?0:new Layer(
                             [
                                 new FullPanel(),
                                 new Rectangle(context.rightab),
@@ -5407,7 +5445,7 @@ function pageresize()
     {
         var h = 0;
         headcnvctx.show(0, 0, window.innerWidth,h);
-        footcnvctx.show(0, window.innerHeight-h, window.innerWidth, h);
+//        footcnvctx.show(0, window.innerHeight-h, window.innerWidth, h);
     }
     else
     {
@@ -5415,13 +5453,13 @@ function pageresize()
         headcnvctx.show(0,0,window.innerWidth,h);
         headobj.set(h?(globalobj.promptedfile||galleryobj.length()<2?2:1):0);
         headham.panel = headobj.getcurrent();
-        var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
-        if (!footobj.enabled)
-            h = 0;
+  //      var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
+  //      if (!footobj.enabled)
+   //         h = 0;
 
-        footcnvctx.show(0, window.innerHeight-h, window.innerWidth, h);
-        footobj.set(h?1:0);
-        footham.panel = footobj.getcurrent();
+ //       footcnvctx.show(0, window.innerHeight-h, window.innerWidth, h);
+ //       footobj.set(h?1:0);
+ //       footham.panel = footobj.getcurrent();
     }
 }
 
