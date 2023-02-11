@@ -3314,8 +3314,8 @@ var templatelst =
     },
     zoom: function ()
     {
-        loomobj.split(50, "90-95", loomobj.length());
-        poomobj.split(50, "75-90", poomobj.length());
+        loomobj.split(0, "0-50", loomobj.length());
+        poomobj.split(0, "0-50", poomobj.length());
     }
 },
 {
@@ -3326,13 +3326,13 @@ var templatelst =
         positypobj.set(100);
         positxlobj.set(50);
         positylobj.set(100);
-        traitobj.split(90, "0.1-1.0", traitobj.length());
-        scapeobj.split(90, "0.1-1.0", scapeobj.length());
+        traitobj.split(95, "0.1-1.0", traitobj.length());
+        scapeobj.split(95, "0.1-1.0", scapeobj.length());
     },
     zoom: function ()
     {
-        loomobj.split(50, "90-95", loomobj.length());
-        poomobj.split(50, "75-90", poomobj.length());
+        loomobj.split(0, "0-50", loomobj.length());
+        poomobj.split(0, "0-50", poomobj.length());
     }
 },
 {
@@ -3347,9 +3347,9 @@ var templatelst =
         scapeobj.split(50, "0.1-1.0", scapeobj.length());
     },
     zoom: function ()
-    {
-        loomobj.split(50, "90-95", loomobj.length());
-        poomobj.split(50, "75-90", poomobj.length());
+    
+        loomobj.split(0, "25-90", loomobj.length());
+        poomobj.split(0, "0-90", poomobj.length());
     }
 },
 {
@@ -3366,8 +3366,8 @@ var templatelst =
     },
     zoom: function ()
     {
-        loomobj.split(50, "90-95", loomobj.length());
-        poomobj.split(50, "75-90", poomobj.length());
+        loomobj.split(50, "70-90", loomobj.length());
+        poomobj.split(0, "25-90", poomobj.length());
     }
 },
 ];
