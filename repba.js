@@ -1,4 +1,4 @@
-//todo: https://obfuscator.io    $$$$$$$$$$
+//todo: https://obfuscator.io
 //todo: safari max size
 
 /* ++ += ==
@@ -9,7 +9,6 @@ http://www.reportbase.com
 const ISMOBILE = window.matchMedia("only screen and (max-width: 760px)").matches;
 const FIREFOX = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 const SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-const IFRAME = window !== window.parent;
 const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*2;
 const SWIPETIME = 20;
@@ -25,19 +24,14 @@ const TIMEOBJ = 3926;
 const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(0,0,100,0.85)";
 const MENUTAP = "rgba(255,0,0,0.5)";
-const THUMBSELECT = "rgba(0,0,255,0.25)";
-const THUMBODY = "rgba(0,0,0,1)";
 const PROGRESSFILL = "white";
 const PROGRESSFALL = "black";
-const SCROLLNUB = "rgba(0,0,0,0.5)";
 const SCROLLNAB = "rgba(0,0,0,0.35)";
-const SCROLLBACK = "rgba(255,255,255,0.75)";
 const HEADBACK = "rgba(0,0,0,0.20)";
 const MENUCOLOR = "rgba(0,0,0,0.40)";
 const BUTTONBACK = "rgba(0,0,0,0.25)";
 const OPTIONFILL = "rgb(255,255,255)";
 const THUMBFILL = "rgba(0,0,0,0.35)";
-const THUMBFILL2 = "rgba(0,0,0,0.40)";
 const THUMBSTROKE = "rgba(255,255,255,0.75)";
 const ARROWFILL = "white";
 const REDUCEFACTOR = 40000;
@@ -834,12 +828,10 @@ var MultiText = function (width, height, func)
                 lst.length>3?20:-1,
                 lst.length>4?20:-1,
                 lst.length>5?20:-1,
-                lst.length>6?20:-1,
                 0
             ],
             [
                 0,
-                new Text("white", "center", "middle", 0, 0, 1),
                 new Text("white", "center", "middle", 0, 0, 1),
                 new Text("white", "center", "middle", 0, 0, 1),
                 new Text("white", "center", "middle", 0, 0, 1),
@@ -858,7 +850,6 @@ var MultiText = function (width, height, func)
             lst[3],
             lst[4],
             lst[5],
-            lst[6],
             0
         ], time);
     };
@@ -1169,8 +1160,12 @@ addressobj.full = function ()
     var out = url.origin;
     out += url.pathname;
     var p = url.path +"."+galleryobj.current().pad(4);
+    if (url.searchParams.has("unsplash"))
+        out += "?unsplash="+p;
+    else
+        out += "?p="+p;
+
     out +=
-        "?p="+p+
         "&h="+headobj.enabled+
         "&r="+(100*rowobj.berp()).toFixed()+
         "&t="+_4cnvctx.timeobj.current().toFixed(4);
@@ -2981,9 +2976,9 @@ var menulst =
             for (var n = 0; n < keys.length; ++n)
             {
                 var key = keys[n];
-                var value = user[key];
+                var value = user[key]
                 if (value && value.length && typeof value === 'string')
-                    lst.push(value);
+                    lst.push(value.substr(0,50));
             }
 
             user.lst = lst;
@@ -3062,7 +3057,7 @@ function resetcanvas()
     var context = _4cnvctx;
     context.show(0,0,window.innerWidth,window.innerHeight);
 
-    var zoomax = 95;
+    var zoomax = 90;
     var n = 0;
     for (; n < zoomax; ++n)
     {
@@ -3185,6 +3180,11 @@ var templatelst =
         poomobj.split(50, "75-90", poomobj.length());
         traitobj.split(40, "0.1-1.0", traitobj.length());
         scapeobj.split(70, "0.1-1.0", scapeobj.length());
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
     }
 },
 {
@@ -3195,10 +3195,13 @@ var templatelst =
         positypobj.set(90);
         positxlobj.set(50);
         positylobj.set(90);
-        loomobj.split(50, "85-95", loomobj.length());
-        poomobj.split(50, "70-90", poomobj.length());
         traitobj.split(40, "0.1-1.0", traitobj.length());
         scapeobj.split(70, "0.1-1.0", scapeobj.length());
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
     }
 },
 {
@@ -3210,10 +3213,13 @@ var templatelst =
         positypobj.set(50);
         positxlobj.set(100);
         positylobj.set(50);
-        loomobj.split(50, "90-95", loomobj.length());
-        poomobj.split(50, "70-90", poomobj.length());
         traitobj.split(50, "0.1-1.0", traitobj.length());
         scapeobj.split(90, "0.1-1.0", scapeobj.length());
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
     }
 },
 {
@@ -3225,10 +3231,13 @@ var templatelst =
         positypobj.set(90);
         positxlobj.set(50);
         positylobj.set(50);
-        loomobj.split(25, "85-95", loomobj.length());
-        poomobj.split(50, "50-90", poomobj.length());
         traitobj.split(60, "0.1-1.0", traitobj.length());
         scapeobj.split(70, "0.1-1.0", scapeobj.length());
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
     }
 },
 {
@@ -3240,10 +3249,13 @@ var templatelst =
         positypobj.set(90);
         positxlobj.set(50);
         positylobj.set(50);
-        loomobj.split(25, "85-95", loomobj.length());
-        poomobj.split(50, "50-90", poomobj.length());
         traitobj.split(60, "0.1-1.0", traitobj.length());
         scapeobj.split(70, "0.1-1.0", scapeobj.length());
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
     }
 },
 {
@@ -3256,8 +3268,11 @@ var templatelst =
         positylobj.set(100);
         traitobj.split(90, "0.1-1.0", traitobj.length());
         scapeobj.split(90, "0.1-1.0", scapeobj.length());
-        loomobj.split(0, "0-50", loomobj.length());
-        poomobj.split(0, "0-50", poomobj.length());
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
     }
 },
 {
@@ -3270,8 +3285,11 @@ var templatelst =
         positylobj.set(100);
         traitobj.split(90, "0.1-1.0", traitobj.length());
         scapeobj.split(90, "0.1-1.0", scapeobj.length());
-        loomobj.split(0, "0-50", loomobj.length());
-        poomobj.split(0, "0-50", poomobj.length());
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
     }
 },
 {
@@ -3284,8 +3302,11 @@ var templatelst =
         positylobj.set(95);
         traitobj.split(90, "0.1-1.0", traitobj.length());
         scapeobj.split(50, "0.1-1.0", scapeobj.length());
-        loomobj.split(0, "25-90", loomobj.length());
-        poomobj.split(0, "0-90", poomobj.length());
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
     }
 },
 {
@@ -3299,9 +3320,12 @@ var templatelst =
         positylobj.set(85);
         traitobj.split(95, "0.1-1.0", traitobj.length());
         scapeobj.split(50, "0.1-1.0", scapeobj.length());
-        loomobj.split(50, "70-90", loomobj.length());
-        poomobj.split(0, "25-90", poomobj.length());
-     }
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
+    }
 },
 ];
 
@@ -3640,16 +3664,6 @@ var bodylst =
   ];
 
 var bodyobj = new Data("", bodylst);
-url.path = "HOME";
-url.project = 0;
-if (url.searchParams.has("p"))
-{
-    var e = url.searchParams.get("p");
-    let k = e.split(".");
-    url.path = k[0];
-    if (k.length == 2)
-        url.project = Number(k[1]);
-}
 
 var galleryobj = new Data("", 0);
 galleryobj.mode = 0;
@@ -3695,11 +3709,31 @@ galleryobj.path = function()
 
 }
 
+url.path = "HOME";
+url.project = 0;
+if (url.searchParams.has("p"))
+{
+    var e = url.searchParams.get("p");
+    let k = e.split(".");
+    url.path = k[0];
+    if (k.length == 2)
+        url.project = Number(k[1]);
+}
+else if (url.searchParams.has("unsplash"))
+{
+    var e = url.searchParams.get("unsplash");
+    let k = e.split(".");
+    url.path = k[0];
+    if (k.length == 2)
+        url.project = Number(k[1]);
+}
+
+
 var path = "gallery/" + url.path;
 if (url.host == "100.115.92.200")
     path = "res/" + url.path;
-
-//path = "https://unsplash.reportbase5836.workers.dev?id=anitaaustvika"
+else if (url.searchParams.has("unsplash"))
+    path = "https://unsplash.reportbase5836.workers.dev/" + url.path;
 
 fetch(path)
   .then(function (response)
@@ -3713,6 +3747,7 @@ fetch(path)
 
         templateobj.set(0);
         templateobj.getcurrent().init();
+        templateobj.getcurrent().zoom();
 
         pretchobj.split(60, "40-90", pretchobj.length());
         letchobj.split(60, "40-90", letchobj.length());
@@ -3753,17 +3788,9 @@ fetch(path)
         _7cnvctx.rvalue = 2;
         _7cnvctx.slidereduce = 0.75;
 
-        //8
         for (var n = 0; n < galleryobj.datam.length; ++n)
         {
             var k = galleryobj.datam[n];
-            if (k.width && k.height)
-            {
-                var aspect = (k.width / k.height).toFixed(2);
-                k.extent = `${k.width}x${k.height} ${aspect}`;
-                k.size = ((this.width * this.height)/1000000).toFixed(1) + "MP";
-            }
-
             k.func = function (index)
                 {
                     menuhide();
@@ -4013,7 +4040,7 @@ var ContextObj = (function ()
                     if (j != templateobj.current())
                     {
                         templateobj.set(j);
-                        templateobj.getcurrent().init();
+                        templateobj.getcurrent().zoom();
                     }
 
                     pageresize();
@@ -4954,7 +4981,7 @@ var headlst =
                 if (rect.width >= 400)
                     s += " / "+galleryobj.length()
             }
-            else if (infobj.current() == 2)
+            else if (photo.image && infobj.current() == 2)
             {
                 s = photo.image.extent +" ("+
                     photo.image.aspect.toFixed(2)+")";
