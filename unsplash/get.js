@@ -1,10 +1,13 @@
-//node get.js 
+//node get.js
 
-async function user() 
+async function user()
 {
-    var id = "repba";//anitaaustvika";
-    var query = "bottle";
-    var per_page = 10;
+    var url = new URL("https://reportbase.com/unsplash/repba");
+    var k = url.pathname.split("/");
+    if (k.length < 3)
+        return;
+    var id = k[2];
+    var per_page = 5;
     var lst = [];
     var page = 0;
     var morePagesAvailable = true;
@@ -13,7 +16,7 @@ async function user()
         var response = await fetch(`https://api.unsplash.com/users/${id}/photos?client_id=Xfabm2o5F9iUQon5LTX3O249PCsBpviDafSrMVGkaS0&per_page=${per_page}&page=${page}`);
         const headers = response.headers;
         var total = headers.get("x-total")
-        var data = await response.json();   
+        var data = await response.json();
         for (var n = 0; n < data.length; ++n)
         {
             var k = data[n];
@@ -23,15 +26,16 @@ async function user()
             var aspect = (k.width/k.height).toFixed(2);
             var user = k.user;
             var urls = k.urls;
-            j.index = lst.length; 
-            j.username = user.username; 
-            j.name = user.name; 
+            j.index = lst.length;
+            j.username = user.username;
+            j.name = user.name;
             if (k.description)
-                j.description = k.description; 
+                j.description = k.description;
             if (k.alt_description)
-                j.alt_description = k.alt_description; 
-            j.src = urls.raw; 
+                j.alt_description = k.alt_description;
+            j.src = urls.raw;
             j.extent = `${width}x${height} ${aspect}`;
+            j.size = ((width * height)/1000000).toFixed(1) + "MP";
             lst.push(j);
         }
 
@@ -42,13 +46,13 @@ async function user()
     var g = {}
     g.title = `Unsplash Gallery`;
     g.username = id;
-    g.datam = lst;		
+    g.datam = lst;
     console.log(JSON.stringify(g));
 }
 
-//user();
+user();
 
-async function search() 
+async function search()
 {
     var id = "repba";//anitaaustvika";
     var query = "bottle";
@@ -60,7 +64,7 @@ async function search()
     {
         var response = await fetch(`https://api.unsplash.com/search/photos/?query=${query}&client_id=Xfabm2o5F9iUQon5LTX3O249PCsBpviDafSrMVGkaS0&per_page=${per_page}&page=${page}`);
         const headers = response.headers;
-        var data = await response.json();   
+        var data = await response.json();
         var total = data.total;
         for (var n = 0; n < data.results.length; ++n)
         {
@@ -71,14 +75,14 @@ async function search()
             var aspect = (k.width/k.height).toFixed(2);
             var user = k.user;
             var urls = k.urls;
-            j.index = lst.length; 
-            j.username = user.username; 
-            j.name = user.name; 
+            j.index = lst.length;
+            j.username = user.username;
+            j.name = user.name;
             if (k.description)
-                j.description = k.description; 
+                j.description = k.description;
             if (k.alt_description)
-                j.alt_description = k.alt_description; 
-            j.src = urls.raw; 
+                j.alt_description = k.alt_description;
+            j.src = urls.raw;
             j.extent = `${width}x${height} ${aspect}`;
             lst.push(j);
         }
@@ -90,8 +94,8 @@ async function search()
     var g = {}
     g.title = `Unsplash Gallery`;
     g.username = id;
-    g.datam = lst;		
+    g.datam = lst;
     console.log(JSON.stringify(g));
 }
 
-search();
+//search();

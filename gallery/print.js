@@ -1,4 +1,6 @@
-//node print.js JESU | jq > JESU 
+//node print.js JESU | jq > JESU
+//TODO remove datam
+//
 var id = process.argv[2];
 
 return fetch("https://reportbase.com/gallery/" + id)
@@ -16,7 +18,7 @@ return fetch("https://reportbase.com/gallery/" + id)
                 k.size = ((k.width * k.height)/1000000).toFixed(1) + "MP";
             }
         }
-    
+
         console.log(JSON.stringify(json));
   })
 

@@ -1,4 +1,4 @@
-//todo: https://obfuscator.io    $$$$$$$$$$
+//todo: https://obfuscator.io
 //todo: safari max size
 
 /* ++ += ==
@@ -9,7 +9,6 @@ http://www.reportbase.com
 const ISMOBILE = window.matchMedia("only screen and (max-width: 760px)").matches;
 const FIREFOX = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 const SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-const IFRAME = window !== window.parent;
 const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*2;
 const SWIPETIME = 20;
@@ -25,19 +24,14 @@ const TIMEOBJ = 3926;
 const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(0,0,100,0.85)";
 const MENUTAP = "rgba(255,0,0,0.5)";
-const THUMBSELECT = "rgba(0,0,255,0.25)";
-const THUMBODY = "rgba(0,0,0,1)";
 const PROGRESSFILL = "white";
 const PROGRESSFALL = "black";
-const SCROLLNUB = "rgba(0,0,0,0.5)";
 const SCROLLNAB = "rgba(0,0,0,0.35)";
-const SCROLLBACK = "rgba(255,255,255,0.75)";
 const HEADBACK = "rgba(0,0,0,0.20)";
 const MENUCOLOR = "rgba(0,0,0,0.40)";
 const BUTTONBACK = "rgba(0,0,0,0.25)";
 const OPTIONFILL = "rgb(255,255,255)";
 const THUMBFILL = "rgba(0,0,0,0.35)";
-const THUMBFILL2 = "rgba(0,0,0,0.40)";
 const THUMBSTROKE = "rgba(255,255,255,0.75)";
 const ARROWFILL = "white";
 const REDUCEFACTOR = 40000;
@@ -834,12 +828,10 @@ var MultiText = function (width, height, func)
                 lst.length>3?20:-1,
                 lst.length>4?20:-1,
                 lst.length>5?20:-1,
-                lst.length>6?20:-1,
                 0
             ],
             [
                 0,
-                new Text("white", "center", "middle", 0, 0, 1),
                 new Text("white", "center", "middle", 0, 0, 1),
                 new Text("white", "center", "middle", 0, 0, 1),
                 new Text("white", "center", "middle", 0, 0, 1),
@@ -858,7 +850,6 @@ var MultiText = function (width, height, func)
             lst[3],
             lst[4],
             lst[5],
-            lst[6],
             0
         ], time);
     };
@@ -1169,8 +1160,12 @@ addressobj.full = function ()
     var out = url.origin;
     out += url.pathname;
     var p = url.path +"."+galleryobj.current().pad(4);
+    if (url.searchParams.has("unsplash"))
+        out += "?unsplash="+p;
+    else
+        out += "?p="+p;
+
     out +=
-        "?p="+p+
         "&h="+headobj.enabled+
         "&r="+(100*rowobj.berp()).toFixed()+
         "&t="+_4cnvctx.timeobj.current().toFixed(4);
@@ -1901,7 +1896,7 @@ var panlst =
             posity.set((y/rect.height)*100);
             context.refresh();
         }
-        else if (context.stretchctrl && context.stretchctrl.hitest(x,y))
+        else if (context.isstretchctrl)
         {
             pinchobj.set(1)
             var stretch = stretchobj.getcurrent()
@@ -1916,7 +1911,7 @@ var panlst =
             stretch.set(m);
             context.refresh();
         }
-        else if (context.timemainctrl && context.timemainctrl.hitest(x,y))
+        else if (context.istimemainctrl)
         {
             var obj = timemain;
             var m = (y - context.timemainctrl.y)/context.timemainctrl.height;
@@ -1930,7 +1925,7 @@ var panlst =
             obj.set(m);
             context.tab();
         }
-        else if (context.speedctrl && context.speedctrl.hitest(x,y))
+        else if (context.isspeedctrl)
         {
             var obj = speedobj;
             var m = (y - context.speedctrl.y)/context.speedctrl.height;
@@ -1944,7 +1939,7 @@ var panlst =
             obj.set(m);
             contextobj.reset();
         }
-        else if (context.zoomctrl && context.zoomctrl.hitest(x,y))
+        else if (context.iszoomctrl)
         {
             pinchobj.set(0)
             var zoom = zoomobj.getcurrent()
@@ -1959,7 +1954,7 @@ var panlst =
             zoom.set(m);
             contextobj.reset();
         }
-        else if (context.thumbrect && context.thumbrect.hitest(x,y))
+        else if (context.isthumbrect)
         {
             var pt = context.getweightedpoint(x,y);
             x = pt?pt.x:x;
@@ -2010,6 +2005,11 @@ var panlst =
         context.starty = y;
         context.pantype = 0;
         context.startt = context.timeobj.current();
+        context.isstretchctrl = context.stretchctrl && context.stretchctrl.hitest(x,y);
+        context.istimemainctrl = context.timemainctrl && context.timemainctrl.hitest(x,y);
+        context.isspeedctrl = context.speedctrl && context.speedctrl.hitest(x,y);
+        context.iszoomctrl = context.zoomctrl && context.zoomctrl.hitest(x,y);
+        context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         var zoom = zoomobj.getcurrent()
         if (context.isthumbrect)
             context.panning = 1;
@@ -2981,9 +2981,9 @@ var menulst =
             for (var n = 0; n < keys.length; ++n)
             {
                 var key = keys[n];
-                var value = user[key];
+                var value = user[key]
                 if (value && value.length && typeof value === 'string')
-                    lst.push(value);
+                    lst.push(value.substr(0,50));
             }
 
             user.lst = lst;
@@ -3062,7 +3062,7 @@ function resetcanvas()
     var context = _4cnvctx;
     context.show(0,0,window.innerWidth,window.innerHeight);
 
-    var zoomax = 95;
+    var zoomax = 92.5;
     var n = 0;
     for (; n < zoomax; ++n)
     {
@@ -3070,7 +3070,7 @@ function resetcanvas()
         var height = photo.image.height*zoom;
         var aspect = photo.image.width/height;
         var width = context.canvas.height * aspect;
-        if (width/window.innerWidth > 1.3)
+        if (width/window.innerWidth > 1.4)
             break;
     }
 
@@ -3185,6 +3185,11 @@ var templatelst =
         poomobj.split(50, "75-90", poomobj.length());
         traitobj.split(40, "0.1-1.0", traitobj.length());
         scapeobj.split(70, "0.1-1.0", scapeobj.length());
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
     }
 },
 {
@@ -3195,10 +3200,13 @@ var templatelst =
         positypobj.set(90);
         positxlobj.set(50);
         positylobj.set(90);
-        loomobj.split(50, "85-95", loomobj.length());
-        poomobj.split(50, "70-90", poomobj.length());
         traitobj.split(40, "0.1-1.0", traitobj.length());
         scapeobj.split(70, "0.1-1.0", scapeobj.length());
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
     }
 },
 {
@@ -3210,10 +3218,13 @@ var templatelst =
         positypobj.set(50);
         positxlobj.set(100);
         positylobj.set(50);
-        loomobj.split(50, "90-95", loomobj.length());
-        poomobj.split(50, "70-90", poomobj.length());
         traitobj.split(50, "0.1-1.0", traitobj.length());
         scapeobj.split(90, "0.1-1.0", scapeobj.length());
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
     }
 },
 {
@@ -3225,10 +3236,13 @@ var templatelst =
         positypobj.set(90);
         positxlobj.set(50);
         positylobj.set(50);
-        loomobj.split(25, "85-95", loomobj.length());
-        poomobj.split(50, "50-90", poomobj.length());
         traitobj.split(60, "0.1-1.0", traitobj.length());
         scapeobj.split(70, "0.1-1.0", scapeobj.length());
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
     }
 },
 {
@@ -3240,10 +3254,13 @@ var templatelst =
         positypobj.set(90);
         positxlobj.set(50);
         positylobj.set(50);
-        loomobj.split(25, "85-95", loomobj.length());
-        poomobj.split(50, "50-90", poomobj.length());
         traitobj.split(60, "0.1-1.0", traitobj.length());
         scapeobj.split(70, "0.1-1.0", scapeobj.length());
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
     }
 },
 {
@@ -3256,8 +3273,11 @@ var templatelst =
         positylobj.set(100);
         traitobj.split(90, "0.1-1.0", traitobj.length());
         scapeobj.split(90, "0.1-1.0", scapeobj.length());
-        loomobj.split(0, "0-50", loomobj.length());
-        poomobj.split(0, "0-50", poomobj.length());
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
     }
 },
 {
@@ -3270,8 +3290,11 @@ var templatelst =
         positylobj.set(100);
         traitobj.split(90, "0.1-1.0", traitobj.length());
         scapeobj.split(90, "0.1-1.0", scapeobj.length());
-        loomobj.split(0, "0-50", loomobj.length());
-        poomobj.split(0, "0-50", poomobj.length());
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
     }
 },
 {
@@ -3284,8 +3307,11 @@ var templatelst =
         positylobj.set(95);
         traitobj.split(90, "0.1-1.0", traitobj.length());
         scapeobj.split(50, "0.1-1.0", scapeobj.length());
-        loomobj.split(0, "25-90", loomobj.length());
-        poomobj.split(0, "0-90", poomobj.length());
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
     }
 },
 {
@@ -3299,9 +3325,12 @@ var templatelst =
         positylobj.set(85);
         traitobj.split(95, "0.1-1.0", traitobj.length());
         scapeobj.split(50, "0.1-1.0", scapeobj.length());
-        loomobj.split(50, "70-90", loomobj.length());
-        poomobj.split(0, "25-90", poomobj.length());
-     }
+    },
+    zoom: function ()
+    {
+        loomobj.split(50, "90-95", loomobj.length());
+        poomobj.split(50, "75-90", poomobj.length());
+    }
 },
 ];
 
@@ -3489,6 +3518,7 @@ var bodylst =
     {
         this.draw = function (context, rect, user, time)
         {
+            return 1;
             context.zoomctrl = new rectangle()
             context.save();
             context.font = "1rem Archivo Black";
@@ -3541,6 +3571,7 @@ var bodylst =
     {
         this.draw = function (context, rect, user, time)
         {
+            return 1;
             context.timemainctrl = new rectangle()
             context.save();
             context.font = "1rem Archivo Black";
@@ -3640,16 +3671,6 @@ var bodylst =
   ];
 
 var bodyobj = new Data("", bodylst);
-url.path = "HOME";
-url.project = 0;
-if (url.searchParams.has("p"))
-{
-    var e = url.searchParams.get("p");
-    let k = e.split(".");
-    url.path = k[0];
-    if (k.length == 2)
-        url.project = Number(k[1]);
-}
 
 var galleryobj = new Data("", 0);
 galleryobj.mode = 0;
@@ -3695,11 +3716,31 @@ galleryobj.path = function()
 
 }
 
+url.path = "HOME";
+url.project = 0;
+if (url.searchParams.has("p"))
+{
+    var e = url.searchParams.get("p");
+    let k = e.split(".");
+    url.path = k[0];
+    if (k.length == 2)
+        url.project = Number(k[1]);
+}
+else if (url.searchParams.has("unsplash"))
+{
+    var e = url.searchParams.get("unsplash");
+    let k = e.split(".");
+    url.path = k[0];
+    if (k.length == 2)
+        url.project = Number(k[1]);
+}
+
+
 var path = "gallery/" + url.path;
 if (url.host == "100.115.92.200")
     path = "res/" + url.path;
-
-//path = "https://unsplash.reportbase5836.workers.dev?id=anitaaustvika"
+else if (url.searchParams.has("unsplash"))
+    path = "https://unsplash.reportbase5836.workers.dev/" + url.path;
 
 fetch(path)
   .then(function (response)
@@ -3710,9 +3751,6 @@ fetch(path)
   {
         galleryobj = Object.assign(galleryobj,obj);
         setfavicon();
-
-        templateobj.set(0);
-        templateobj.getcurrent().init();
 
         pretchobj.split(60, "40-90", pretchobj.length());
         letchobj.split(60, "40-90", letchobj.length());
@@ -3753,17 +3791,9 @@ fetch(path)
         _7cnvctx.rvalue = 2;
         _7cnvctx.slidereduce = 0.75;
 
-        //8
         for (var n = 0; n < galleryobj.datam.length; ++n)
         {
             var k = galleryobj.datam[n];
-            if (k.width && k.height)
-            {
-                var aspect = (k.width / k.height).toFixed(2);
-                k.extent = `${k.width}x${k.height} ${aspect}`;
-                k.size = ((this.width * this.height)/1000000).toFixed(1) + "MP";
-            }
-
             k.func = function (index)
                 {
                     menuhide();
@@ -3793,52 +3823,47 @@ fetch(path)
             promptFile().then(function(files) { dropfiles(files); })
         }});
 
-        slices.data.push({title:"Timer", path: "TIMER", func: function(rect, x, y)
-        {
-            bodyobj.enabled = 10;
-            menuhide();
-            _4cnvctx.refresh();
-        }})
-
-        slices.data.push({title:"Speed", path: "SPEED", func: function(rect, x, y)
-        {
-            bodyobj.enabled = 11;
-            menuhide();
-            _4cnvctx.refresh();
-        }})
-
         slices.data.push({title:"Slices", path: "SLICES", func: function(rect, x, y)
         {
             colorobj.enabled = colorobj.enabled?0:1;
             menuhide();
             _4cnvctx.refresh();
         }})
-
+ /*       
+        slices.data.push({title:"Timer", path: "TIMER", func: function(rect, x, y)
+        {
+            bodyobj.enabled = 10;
+            menuhide();
+            _4cnvctx.refresh();
+        }})
+ */
+ /*
+        slices.data.push({title:"Speed", path: "SPEED", func: function(rect, x, y)
+        {
+            bodyobj.enabled = 11;
+            menuhide();
+            _4cnvctx.refresh();
+        }})
+*/
         slices.data.push({title:"Stretch", path: "STRETCH", func: function(rect, x, y)
         {
             bodyobj.enabled = 8;
             menuhide();
             _4cnvctx.refresh();
         }})
-
+/*
         slices.data.push({title:"Zoom", path: "ZOOM", func: function(rect, x, y)
         {
             bodyobj.enabled = 9;
             menuhide();
             _4cnvctx.refresh();
         }})
-
+*/        
         slices.data.push({title:"Login", path: "LOGIN", func: function ()
         {
-            context.tapindex = 1;
-            context.refresh();
-            clearInterval(globalobj.tapthumb);
-            globalobj.tapthumb = setTimeout(function()
-            {
-                context.tapindex = 0;
-                context.refresh();
-                authClient.redirectToLoginPage()
-            },400)
+            menuhide();
+            _4cnvctx.refresh();
+            authClient.redirectToLoginPage()
         }})
 
         slices.data.push({title:"Download", path: "DOWNLOAD", func: function()
@@ -4013,7 +4038,10 @@ var ContextObj = (function ()
                     if (j != templateobj.current())
                     {
                         templateobj.set(j);
-                        templateobj.getcurrent().init();
+                        if (!templateobj.done)
+                           templateobj.getcurrent().init();
+                        templateobj.done = 1;
+                        templateobj.getcurrent().zoom();
                     }
 
                     pageresize();
@@ -4954,7 +4982,7 @@ var headlst =
                 if (rect.width >= 400)
                     s += " / "+galleryobj.length()
             }
-            else if (infobj.current() == 2)
+            else if (photo.image && infobj.current() == 2)
             {
                 s = photo.image.extent +" ("+
                     photo.image.aspect.toFixed(2)+")";
