@@ -1,35 +1,4 @@
 sudo certbot renew
 
-mkdir -p /srv/http/reportbase.us/.well-known/acme-challenge
-chgrp http /srv/http/reportbase.us/
-chmod g+s /srv/http/reportbase.us/
-sudo certbot certonly --dry-run --email reportbase@gmail.com --webroot --webroot-path /srv/http/reportbase.us  -d www.reportbase.us
 
 
-Automated certificate renewal
-Create the file /etc/systemd/system/certbot.service:
-
-[Unit]
-Description=Let's Encrypt renewal
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/certbot renew --quiet --agree-tos
-Create the file /etc/systemd/system/certbot.timer:
-
-[Unit]
-Description=Twice daily renewal of Let's Encrypt's certificates
-
-[Timer]
-OnCalendar=0/12:00:00
-RandomizedDelaySec=1h
-Persistent=true
-
-[Install]
-WantedBy=timers.target
-Now run:
-
-sudo systemctl enable certbot.timer
-sudo systemctl start certbot.timer
-sudo systemctl list-timers
-Everyday between 23:00-01:00 and between 11:00-13:00 all Let’s Encrypt certificates will be updated if necessary, as well as on reboot if a timer event was missed while the system was offline.

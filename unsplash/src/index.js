@@ -9,7 +9,7 @@ export default
 	async fetch(request, env, ctx) 
     {
         var url = new URL(request.url);
-        var id = url.searchParams.get("id");
+        var id = "repba";//url.searchParams.get("id");
         var query = url.searchParams.get("query");
         var per_page = 10;
         var page = 0;
