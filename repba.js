@@ -520,7 +520,7 @@ function drawslices()
             {
                 bodyobj.set(bodyobj.enabled)
             }
-            else if (!headobj.enabled && thumbobj.enabled) 
+            else if (!headobj.enabled && thumbobj.enabled)
             {
                 thumbobj.getcurrent().draw(context, rect, 0, 0);
                 bodyobj.set(1)
@@ -543,7 +543,7 @@ function drawslices()
                        0,
                    ]),
                 ]);
-        
+
                 a.draw(context, rect, context.timeobj, 0);
             }
 
@@ -1182,8 +1182,10 @@ addressobj.full = function ()
     var out = url.origin;
     out += url.pathname;
     var p = url.path +"."+galleryobj.current().pad(4);
-    if (url.searchParams.has("unsplash"))
-        out += "?unsplash="+p;
+    if (url.searchParams.has("unsplash.user"))
+        out += "?unsplash.user="+p;
+    else if (url.searchParams.has("unsplash.collection"))
+        out += "?unsplash.collection="+p;
     else
         out += "?p="+p;
 
@@ -3351,7 +3353,7 @@ var templatelst =
         scapeobj.split(50, "0.1-1.0", scapeobj.length());
     },
     zoom: function ()
-    { 
+    {
         loomobj.split(0, "25-90", loomobj.length());
         poomobj.split(0, "0-90", poomobj.length());
     }
@@ -3768,21 +3770,30 @@ if (url.searchParams.has("p"))
     if (k.length == 2)
         url.project = Number(k[1]);
 }
-else if (url.searchParams.has("unsplash"))
+else if (url.searchParams.has("unsplash.user"))
 {
-    var e = url.searchParams.get("unsplash");
+    var e = url.searchParams.get("unsplash.user");
+    let k = e.split(".");
+    url.path = k[0];
+    if (k.length == 2)
+        url.project = Number(k[1]);
+}
+else if (url.searchParams.has("unsplash.collection"))
+{
+    var e = url.searchParams.get("unsplash.collection");
     let k = e.split(".");
     url.path = k[0];
     if (k.length == 2)
         url.project = Number(k[1]);
 }
 
-
 var path = "gallery/" + url.path;
 if (url.host == "100.115.92.200")
     path = "res/" + url.path;
-else if (url.searchParams.has("unsplash"))
-    path = "https://unsplash.reportbase5836.workers.dev/" + url.path;
+else if (url.searchParams.has("unsplash.user"))
+    path = "https://unsplash.reportbase5836.workers.dev/users/" + url.path;
+else if (url.searchParams.has("unsplash.collection"))
+    path = "https://unsplash.reportbase5836.workers.dev/collections/" + url.path;
 
 fetch(path)
   .then(function (response)
@@ -3871,7 +3882,7 @@ fetch(path)
             menuhide();
             _4cnvctx.refresh();
         }})
- /*       
+ /*
         slices.data.push({title:"Timer", path: "TIMER", func: function(rect, x, y)
         {
             bodyobj.enabled = 10;
@@ -3900,7 +3911,7 @@ fetch(path)
             menuhide();
             _4cnvctx.refresh();
         }})
-*/        
+*/
         slices.data.push({title:"Login", path: "LOGIN", func: function ()
         {
             menuhide();
