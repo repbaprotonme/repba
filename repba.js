@@ -3021,7 +3021,11 @@ var menulst =
                 var key = keys[n];
                 var value = user[key]
                 if (value && value.length && typeof value === 'string')
-                    lst.push(value.substr(0,50));
+                {
+                    value = value.substr(0,50);
+                    if (value.substr(0,4).toLowerCase() != "http")
+                        lst.push(value);
+                }
             }
 
             user.lst = lst;
