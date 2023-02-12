@@ -3751,7 +3751,7 @@ galleryobj.path = function()
     }
     else if (src && src.indexOf("/") >= 0)
     {
-        return src;
+        return k.full?k.full:src;
     }
     else
     {
