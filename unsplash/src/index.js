@@ -36,7 +36,7 @@ export default
                 if (k.alt_description)
                     j.alt_description = k.alt_description;
                 j.src = urls.regular;
-                j.full = urls.full;
+                j.full = urls.raw+"&w=2160&q=80&fit=max";
                 j.thumb = urls.thumb;
                 lst.push(j);
             }
