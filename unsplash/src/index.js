@@ -4,16 +4,17 @@ export default
     {
         var url = new URL(request.url);
         var k = url.pathname.split("/");
-        if (k.length < 2)
+        if (k.length < 3)
             return;
-        var id = k[1];
+        var collection = k[1];
+        var id = k[2];
         var per_page = 30;
         var lst = [];
         var page = 1;
         var morePagesAvailable = true;
         while (morePagesAvailable)
         {
-            var response = await fetch(`https://api.unsplash.com/users/${id}/photos?client_id=Xfabm2o5F9iUQon5LTX3O249PCsBpviDafSrMVGkaS0&per_page=${per_page}&page=${page}`);
+            var response = await fetch(`https://api.unsplash.com/${collection}/${id}/photos?client_id=Xfabm2o5F9iUQon5LTX3O249PCsBpviDafSrMVGkaS0&per_page=${per_page}&page=${page}`);
             const headers = response.headers;
             var total = headers.get("x-total")
             var data = await response.json();
