@@ -529,8 +529,10 @@ function drawslices()
             {
                 context.progresscircle = new rectangle();
                 var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
-                var a = new Row([0,h],
+                var a = new RowA([ALIEXTENT,40,0,h],
                 [
+                   0,
+                   new Text("white", "center", "middle", 0, 0, 1),
                    0,
                    new Row([70,0],
                    [
@@ -544,7 +546,7 @@ function drawslices()
                    ]),
                 ]);
 
-                a.draw(context, rect, context.timeobj, 0);
+                a.draw(context, rect, [0,"Tom Brinkman",0,context.timeobj], 0);
             }
 
             bodyobj.getcurrent().draw(context, rect, 0, 0);
