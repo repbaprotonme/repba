@@ -3586,6 +3586,11 @@ var bodylst =
 
 var bodyobj = new Data("", bodylst);
 
+url.path = "HOME";
+url.project = 0;
+var path = "gallery/" + url.path;
+if (url.host == "100.115.92.200")
+    path = "res/" + url.path;
 var galleryobj = new Data("", 0);
 galleryobj.mode = 0;
 galleryobj.path = function()
@@ -3630,9 +3635,6 @@ galleryobj.path = function()
 
 }
 
-url.path = "HOME";
-url.project = 0;
-var path = "";
 if (url.searchParams.has("p"))
 {
     var e = url.searchParams.get("p");
@@ -3640,9 +3642,6 @@ if (url.searchParams.has("p"))
     url.path = k[0];
     if (k.length == 2)
         url.project = Number(k[1]);
-    path = "gallery/" + url.path;
-    if (url.host == "100.115.92.200")
-        path = "res/" + url.path;
 }
 else if (url.searchParams.has("unsplash.user"))
 {
