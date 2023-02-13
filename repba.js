@@ -49,6 +49,7 @@ function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) 
 function numberRange (start, end) {return new Array(end - start).fill().map((d, i) => i + start); }
 
 let url = new URL(window.location.href);
+url.errors = url.searchParams.has("errors") ? Number(url.searchParams.get("errors")) : 0;
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 
 Math.clamp = function (min, max, val)
@@ -527,13 +528,12 @@ function drawslices()
             }
             else
             {
+                context.font = "1rem Archivo Black";
                 context.progresscircle = new rectangle();
                 var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
-                var a = new RowA([ALIEXTENT,40,0,h],
+                var a = new RowA([0,h],
                 [
-                   0,
-                   new Text("white", "center", "middle", 0, 0, 1),
-                   0,
+                   new MultiText(),
                    new Row([70,0],
                    [
                        new Layer(
@@ -546,7 +546,21 @@ function drawslices()
                    ]),
                 ]);
 
-                a.draw(context, rect, [0,"Tom Brinkman",0,context.timeobj], 0);
+                var lst = [];
+                let keys = Object.keys(galleryobj.getcurrent());
+                for (var n = 0; n < keys.length; ++n)
+                {
+                    var key = keys[n];
+                    var value = galleryobj.getcurrent()[key]
+                    if (value && value.length && typeof value === 'string')
+                    {
+                        value = value.substr(0,50);
+                        if (value.substr(0,4).toLowerCase() != "http")
+                            lst.push(value);
+                    }
+                }
+
+                a.draw(context, rect, [lst,context.timeobj], 0);
             }
 
             bodyobj.getcurrent().draw(context, rect, 0, 0);
@@ -842,40 +856,15 @@ var MultiText = function (width, height, func)
     this.draw = function (context, rect, user, time)
     {
         var lst = user;
-
-        var a = new Shrink(new RowA(
-            [
-                0,
-                lst.length>0?20:-1,
-                lst.length>1?20:-1,
-                lst.length>2?20:-1,
-                lst.length>3?20:-1,
-                lst.length>4?20:-1,
-                lst.length>5?20:-1,
-                0
-            ],
-            [
-                0,
-                new Text("white", "center", "middle", 0, 0, 1),
-                new Text("white", "center", "middle", 0, 0, 1),
-                new Text("white", "center", "middle", 0, 0, 1),
-                new Text("white", "center", "middle", 0, 0, 1),
-                new Text("white", "center", "middle", 0, 0, 1),
-                new Text("white", "center", "middle", 0, 0, 1),
-                0,
-            ]),20,0);
-
-        a.draw(context, rect,
-        [
-            0,
-            lst[0],
-            lst[1],
-            lst[2],
-            lst[3],
-            lst[4],
-            lst[5],
-            0
-        ], time);
+        var a = new Text("white", "center", "middle", 0, 0, 1);
+        var y = (rect.height-lst.length*20)/2
+        rect.y -= rect.height/2;
+        rect.y += y+10;
+        for (var n = 0; n < lst.length; n++)
+        {
+            a.draw(context, rect, lst[n], 0);
+            rect.y += 20;
+        }
     };
 };
 
@@ -1195,6 +1184,10 @@ addressobj.full = function ()
         "&h="+headobj.enabled+
         "&r="+(100*rowobj.berp()).toFixed()+
         "&t="+_4cnvctx.timeobj.current().toFixed(4);
+
+    if (url.errors)
+        out += "$errors=" + url.errors;
+
     return out;
 };
 
@@ -3884,36 +3877,14 @@ fetch(path)
             menuhide();
             _4cnvctx.refresh();
         }})
- /*
-        slices.data.push({title:"Timer", path: "TIMER", func: function(rect, x, y)
-        {
-            bodyobj.enabled = 10;
-            menuhide();
-            _4cnvctx.refresh();
-        }})
- */
- /*
-        slices.data.push({title:"Speed", path: "SPEED", func: function(rect, x, y)
-        {
-            bodyobj.enabled = 11;
-            menuhide();
-            _4cnvctx.refresh();
-        }})
-*/
+        
         slices.data.push({title:"Stretch", path: "STRETCH", func: function(rect, x, y)
         {
             bodyobj.enabled = 8;
             menuhide();
             _4cnvctx.refresh();
         }})
-/*
-        slices.data.push({title:"Zoom", path: "ZOOM", func: function(rect, x, y)
-        {
-            bodyobj.enabled = 9;
-            menuhide();
-            _4cnvctx.refresh();
-        }})
-*/
+        
         slices.data.push({title:"Login", path: "LOGIN", func: function ()
         {
             menuhide();
@@ -4062,6 +4033,8 @@ var ContextObj = (function ()
                 photo.image.onerror =
                     photo.image.onabort = function(e)
                 {
+                    url.errors++;
+                    location.reload();
                 }
 
                 photo.image.onload = function()
