@@ -50,7 +50,6 @@ function numberRange (start, end) {return new Array(end - start).fill().map((d, 
 
 let url = new URL(window.location.href);
 url.errors = url.searchParams.has("errors") ? Number(url.searchParams.get("errors")) : 0;
-url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 
 Math.clamp = function (min, max, val)
 {
@@ -494,10 +493,7 @@ function drawslices()
         delete context.menuup;
         delete context.menuhome;
         delete context.menudown;
-        delete context.login;
-        delete context.logout;
         delete context.thumbrect;
-        delete context.account;
         delete context.stretchctrl;
         delete context.zoomctrl;
         delete context.slicectrl;
@@ -528,43 +524,7 @@ function drawslices()
             }
             else
             {
-                context.save();
-                context.font = "1rem Archivo Black";
-                context.progresscircle = new rectangle();
-                var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
-                var a = new Row([0,h],
-                [
-                    0,
-                   new Row([70,0],
-                   [
-                       new Layer(
-                       [
-                           _4cnvctx.timemain ? new Shrink(new Circle("rgb(255,155,0)"),12,12) : 0,
-                           new ProgressCircle(),
-                           new Rectangle(context.progresscircle),
-                       ]),
-                       0,
-                   ]),
-                ]);
-
-                a.draw(context, rect, context.timeobj, 0);
-
-                var lst = [];
-                let keys = Object.keys(galleryobj.getcurrent());
-                for (var n = 0; n < keys.length; ++n)
-                {
-                    var key = keys[n];
-                    var value = galleryobj.getcurrent()[key]
-                    if (value && value.length && typeof value === 'string')
-                    {
-                        if (value.substr(0,4).toLowerCase() != "http")
-                            lst.push(value);
-                    }
-                }
-
-                var a = new MultiText();
-                a.draw(context, rect, lst, 0);
-                context.restore();
+                bodyobj.set(3)
             }
 
             bodyobj.getcurrent().draw(context, rect, 0, 0);
@@ -1201,7 +1161,7 @@ addressobj.full = function ()
     else if (url.searchParams.has("unsplash.collection"))
         out += "?unsplash.collection="+p;
     else if (url.searchParams.has("pexels.curated"))
-        out += "?pexels.curated="+1;
+        out += "?pexels.curated="+galleryobj.current().pad(4);
     else
         out += "?p="+p;
 
@@ -1647,20 +1607,6 @@ var wheelst =
             stretch.add(stretch.length()*0.02);
             contextobj.reset();
         }
-        else if (context.timemainctrl && context.timemainctrl.hitest(x,y))
-        {
-        }
-        else if (context.speedctrl && context.speedctrl.hitest(x,y))
-        {
-            speedobj.add(2);
-            contextobj.reset();
-        }
-        else if ((context.zoomctrl && context.zoomctrl.hitest(x,y)) || ctrl)
-        {
-            var zoom = zoomobj.getcurrent()
-            zoom.add(-zoom.length()*0.02);
-            contextobj.reset();
-        }
         else if (shift)
         {
             rowobj.add(-rowobj.length()*0.05);
@@ -1682,21 +1628,7 @@ var wheelst =
 	},
  	down: function (context, x, y, ctrl, shift, alt)
     {
-        if ((context.zoomctrl && context.zoomctrl.hitest(x,y)) || ctrl)
-        {
-            var zoom = zoomobj.getcurrent()
-            zoom.add(zoom.length()*0.02);
-            contextobj.reset();
-        }
-        else if (context.timemainctrl && context.timemainctrl.hitest(x,y))
-        {
-        }
-        else if (context.speedctrl && context.speedctrl.hitest(x,y))
-        {
-            speedobj.add(-2);
-            contextobj.reset();
-        }
-        else if ((context.stretchctrl && context.stretchctrl.hitest(x,y)) || alt)
+        if ((context.stretchctrl && context.stretchctrl.hitest(x,y)) || alt)
         {
             var stretch = stretchobj.getcurrent()
             stretch.add(-stretch.length()*0.02);
@@ -1803,6 +1735,7 @@ var pinchlst =
 ];
 
 var rowobj = new Data("ROW", window.innerHeight);
+rowobj.set(Math.floor(0.5*window.innerHeight));
 
 var pretchobj = new Data("PORTSTRETCH", 100);
 var letchobj = new Data("LANDSTRETCH", 100);
@@ -1954,49 +1887,6 @@ var panlst =
 
             stretch.set(m);
             context.refresh();
-        }
-        else if (context.istimemainctrl)
-        {
-            var obj = timemain;
-            var m = (y - context.timemainctrl.y)/context.timemainctrl.height;
-            m = Math.floor((1-m)*obj.length());
-            if (window.landscape())
-            {
-                m = (x - context.timemainctrl.x)/context.timemainctrl.width;
-                m = Math.floor(m*obj.length());
-            }
-
-            obj.set(m);
-            context.tab();
-        }
-        else if (context.isspeedctrl)
-        {
-            var obj = speedobj;
-            var m = (y - context.speedctrl.y)/context.speedctrl.height;
-            m = Math.floor((1-m)*obj.length());
-            if (window.landscape())
-            {
-                m = (x - context.speedctrl.x)/context.speedctrl.width;
-                m = Math.floor(m*obj.length());
-            }
-
-            obj.set(m);
-            contextobj.reset();
-        }
-        else if (context.iszoomctrl)
-        {
-            pinchobj.set(0)
-            var zoom = zoomobj.getcurrent()
-            var m = (y - context.zoomctrl.y)/context.zoomctrl.height;
-            m = Math.floor((1-m)*zoom.length());
-            if (window.landscape())
-            {
-                m = (x - context.zoomctrl.x)/context.zoomctrl.width;
-                m = Math.floor(m*zoom.length());
-            }
-
-            zoom.set(m);
-            contextobj.reset();
         }
         else if (context.isthumbrect)
         {
@@ -2601,18 +2491,6 @@ var taplst =
 
             _4cnvctx.refresh();
         }
-        else if (context.login && context.login.hitest(x,y))
-        {
-            context.tapindex = 1;
-            context.refresh();
-            clearInterval(globalobj.tapthumb);
-            globalobj.tapthumb = setTimeout(function()
-            {
-                context.tapindex = 0;
-                context.refresh();
-                authClient.redirectToLoginPage()
-            },400)
-        }
         else if (context.stretchctrl && context.stretchctrl.hitest(x,y))
         {
             pinchobj.set(1);
@@ -2627,70 +2505,6 @@ var taplst =
 
             stretch.set(b);
             context.refresh();
-        }
-        else if (context.timemainctrl && context.timemainctrl.hitest(x,y))
-        {
-            var obj = timemain;
-            var a = (y-context.timemainctrl.y)/context.timemainctrl.height;
-            var b = Math.floor(obj.length()*(1-a));
-            if (window.landscape())
-            {
-                var a = (x-context.timemainctrl.x)/context.timemainctrl.width;
-                var b = Math.floor(obj.length()*a);
-            }
-            obj.set(b);
-            context.tab();
-        }
-        else if (context.speedctrl && context.speedctrl.hitest(x,y))
-        {
-            var obj = speedobj;
-            var a = (y-context.speedctrl.y)/context.speedctrl.height;
-            var b = Math.floor(obj.length()*(1-a));
-            if (window.landscape())
-            {
-                var a = (x-context.speedctrl.x)/context.speedctrl.width;
-                var b = Math.floor(obj.length()*a);
-            }
-            obj.set(b);
-            contextobj.reset();
-        }
-        else if (context.zoomctrl && context.zoomctrl.hitest(x,y))
-        {
-            pinchobj.set(0);
-            var zoom = zoomobj.getcurrent();
-            var a = (y-context.zoomctrl.y)/context.zoomctrl.height;
-            var b = Math.floor(zoom.length()*(1-a));
-            if (window.landscape())
-            {
-                var a = (x-context.zoomctrl.x)/context.zoomctrl.width;
-                var b = Math.floor(zoom.length()*a);
-            }
-            zoom.set(b);
-            contextobj.reset();
-        }
-        else if (context.logout && context.logout.hitest(x,y))
-        {
-            context.tapindex = 2;
-            context.refresh();
-            clearInterval(globalobj.tapthumb);
-            globalobj.tapthumb = setTimeout(function()
-            {
-                context.tapindex = 0;
-                context.refresh();
-                authClient.logout(true)
-            },400)
-        }
-        else if (context.account && context.account.hitest(x,y))
-        {
-            context.tapindex = 3;
-            context.refresh();
-            clearInterval(globalobj.tapthumb);
-            globalobj.tapthumb = setTimeout(function()
-            {
-                context.tapindex = 0;
-                context.refresh();
-                authClient.redirectToAccountPage()
-            },400)
         }
         else if (context.menudown && context.menudown.hitest(x,y))
         {
@@ -3499,6 +3313,43 @@ var bodylst =
     {
         this.draw = function (context, rect, user, time)
         {
+            context.save();
+            context.font = "1rem Archivo Black";
+            context.progresscircle = new rectangle();
+            var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
+            var a = new Row([0,h],
+            [
+                0,
+               new Row([70,0],
+               [
+                   new Layer(
+                   [
+                       _4cnvctx.timemain ? new Shrink(new Circle("rgb(255,155,0)"),12,12) : 0,
+                       new ProgressCircle(),
+                       new Rectangle(context.progresscircle),
+                   ]),
+                   0,
+               ]),
+            ]);
+
+            a.draw(context, rect, context.timeobj, 0);
+
+            var lst = [];
+            let keys = Object.keys(galleryobj.getcurrent());
+            for (var n = 0; n < keys.length; ++n)
+            {
+                var key = keys[n];
+                var value = galleryobj.getcurrent()[key]
+                if (value && value.length && typeof value === 'string')
+                {
+                    if (value.substr(0,4).toLowerCase() != "http")
+                        lst.push(value);
+                }
+            }
+
+            var a = new MultiText();
+            a.draw(context, rect, lst, 0);
+            context.restore();
         }
     },
     new function()
@@ -3781,6 +3632,7 @@ galleryobj.path = function()
 
 url.path = "HOME";
 url.project = 0;
+var path = "";
 if (url.searchParams.has("p"))
 {
     var e = url.searchParams.get("p");
@@ -3788,6 +3640,9 @@ if (url.searchParams.has("p"))
     url.path = k[0];
     if (k.length == 2)
         url.project = Number(k[1]);
+    path = "gallery/" + url.path;
+    if (url.host == "100.115.92.200")
+        path = "res/" + url.path;
 }
 else if (url.searchParams.has("unsplash.user"))
 {
@@ -3796,6 +3651,7 @@ else if (url.searchParams.has("unsplash.user"))
     url.path = k[0];
     if (k.length == 2)
         url.project = Number(k[1]);
+    path = "https://unsplash.reportbase5836.workers.dev/users/" + url.path;
 }
 else if (url.searchParams.has("unsplash.collection"))
 {
@@ -3804,17 +3660,15 @@ else if (url.searchParams.has("unsplash.collection"))
     url.path = k[0];
     if (k.length == 2)
         url.project = Number(k[1]);
-}
-
-var path = "gallery/" + url.path;
-if (url.host == "100.115.92.200")
-    path = "res/" + url.path;
-if (url.searchParams.has("unsplash.user"))
-    path = "https://unsplash.reportbase5836.workers.dev/users/" + url.path;
-if (url.searchParams.has("unsplash.collection"))
     path = "https://unsplash.reportbase5836.workers.dev/collections/" + url.path;
-//todo if (url.searchParams.has("pexels.curated"))
+}
+else if (url.searchParams.has("pexels.curated"))
+{
+    var e = url.searchParams.get("pexels.curated");
+    url.path = "";
+    url.project = Number(e);
     path = "https://pexels.reportbase5836.workers.dev";
+}
 
 fetch(path)
   .then(function (response)
@@ -4060,7 +3914,7 @@ var ContextObj = (function ()
                 contextobj.resize(context);
                 resetcanvas(context);
             }
-            else if (url.path)
+            else// if (url.path)
             {
                 var path =  galleryobj.path();
                 if (globalobj.promptedfile)
