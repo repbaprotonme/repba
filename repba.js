@@ -2848,25 +2848,26 @@ var menulst =
             new MultiText(),
         ]);
 
-        if (!user.lst)
+        if (user.thumb && !user.thumbimage)
         {
-            var lst = [];
-            let keys = Object.keys(user);
-            for (var n = 0; n < keys.length; ++n)
-            {
-                var key = keys[n];
-                var value = user[key]
-                if (value && value.length && typeof value === 'string')
-                {
-                    if (value.substr(0,4).toLowerCase() != "http")
-                        lst.push(value);
-                }
-            }
-
-            user.lst = lst;
+            user.thumbimage = new Image();
+            user.thumbimage.src = user.thumb;
         }
 
-        a.draw(context, rect, user.lst, 0);
+        var lst = [];
+        let keys = Object.keys(user);
+        for (var n = 0; n < keys.length; ++n)
+        {
+            var key = keys[n];
+            var value = user[key]
+            if (value && value.length && typeof value === 'string')
+            {
+                if (value.substr(0,4).toLowerCase() != "http")
+                    lst.push(value);
+            }
+        }
+
+        a.draw(context, rect, lst, 0);
         context.restore();
     }
 },
@@ -3335,11 +3336,11 @@ var bodylst =
             a.draw(context, rect, context.timeobj, 0);
 
             var lst = [];
-            let keys = Object.keys(galleryobj.getcurrent());
+            let keys = Object.keys(user);
             for (var n = 0; n < keys.length; ++n)
             {
                 var key = keys[n];
-                var value = galleryobj.getcurrent()[key]
+                var value = user[key]
                 if (value && value.length && typeof value === 'string')
                 {
                     if (value.substr(0,4).toLowerCase() != "http")
@@ -3589,8 +3590,6 @@ var bodyobj = new Data("", bodylst);
 url.path = "HOME";
 url.project = 0;
 var path = "gallery/" + url.path;
-if (url.host == "100.115.92.200")
-    path = "res/" + url.path;
 var galleryobj = new Data("", 0);
 galleryobj.mode = 0;
 galleryobj.path = function()
@@ -3643,6 +3642,8 @@ if (url.searchParams.has("p"))
     if (k.length == 2)
         url.project = Number(k[1]);
     path = "gallery/" + url.path;
+    if (url.host == "100.115.92.200")
+        path = "res/" + url.path;
 }
 else if (url.searchParams.has("unsplash.user"))
 {
@@ -3665,7 +3666,7 @@ else if (url.searchParams.has("unsplash.collection"))
 else if (url.searchParams.has("pexels.curated"))
 {
     var e = url.searchParams.get("pexels.curated");
-    url.path = "";
+    url.path = "pexels";
     url.project = Number(e);
     path = "https://pexels.reportbase5836.workers.dev";
 }
