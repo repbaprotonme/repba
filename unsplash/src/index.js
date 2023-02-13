@@ -39,7 +39,6 @@ export default
                 j.full = urls.raw+"&w=2160&q=80&fit=max";
                 j.thumb = urls.thumb;
                 j.created = k.created_at.substr(0,10);
-                j.repo = "unsplash";
                 j.id = k.id;
                 lst.push(j);
             }
