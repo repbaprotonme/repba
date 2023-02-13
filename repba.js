@@ -531,8 +531,9 @@ function drawslices()
                 context.font = "1rem Archivo Black";
                 context.progresscircle = new rectangle();
                 var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
-                var a = new RowA([0,h],
+                var a = new RowA([40,0,h],
                 [
+                    0,
                    new MultiText(),
                    new Row([70,0],
                    [
@@ -560,7 +561,7 @@ function drawslices()
                     }
                 }
 
-                a.draw(context, rect, [lst,context.timeobj], 0);
+                a.draw(context, rect, [0,lst,context.timeobj], 0);
             }
 
             bodyobj.getcurrent().draw(context, rect, 0, 0);
@@ -3877,14 +3878,14 @@ fetch(path)
             menuhide();
             _4cnvctx.refresh();
         }})
-        
+
         slices.data.push({title:"Stretch", path: "STRETCH", func: function(rect, x, y)
         {
             bodyobj.enabled = 8;
             menuhide();
             _4cnvctx.refresh();
         }})
-        
+
         slices.data.push({title:"Login", path: "LOGIN", func: function ()
         {
             menuhide();
