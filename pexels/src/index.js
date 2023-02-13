@@ -2,30 +2,8 @@ export default
 {
 	async fetch(request, env, ctx) 
     {
-        /*
-        const url = 'https://api.pexels.com/v1/curated?per_page=80&page=1'
-        async function gatherResponse(response) {
-          const { headers } = response;
-          const contentType = headers.get('content-type') || '';
-          if (contentType.includes('application/json')) {
-            return JSON.stringify(await response.json());
-          }
-          return response.text();
-        }
-
-        const init = {
-          headers: {
-            'Authorization': "F8k2ebLZ7fIjWegfAZpNerv98JnIK7oYMkCdnXE3eqpscBKZuTFUZLoO"
-          },
-        };
-        
-        const response = await fetch(url, init);
-        const results = await gatherResponse(response);
-        return new Response(results, init);
-        */
-
         var per_page = 80;
-        var lst = [];
+        var data = [];
         var page = 1;
         var morePagesAvailable = true;
         while (morePagesAvailable)
@@ -38,7 +16,7 @@ export default
             
             var response = await fetch(`https://api.pexels.com/v1/curated?per_page=${per_page}&page=${page}`, init);
             var json = await response.json();
-            lst = lst.concat(json);
+            data = data.concat(json.photos);
             /*
             for (var n = 0; n < json.photos.length; ++n)
             {
@@ -68,7 +46,7 @@ export default
 
         var g = {}
         g.title = `Pexels  Gallery`;
-        g.datam = lst;
+        g.data = data;
 
         let headers = new Headers(
         {
@@ -82,3 +60,28 @@ export default
 
 	},
 };
+
+
+        /*
+        const url = 'https://api.pexels.com/v1/curated?per_page=80&page=1'
+        async function gatherResponse(response) {
+          const { headers } = response;
+          const contentType = headers.get('content-type') || '';
+          if (contentType.includes('application/json')) {
+            return JSON.stringify(await response.json());
+          }
+          return response.text();
+        }
+
+        const init = {
+          headers: {
+            'Authorization': "F8k2ebLZ7fIjWegfAZpNerv98JnIK7oYMkCdnXE3eqpscBKZuTFUZLoO"
+          },
+        };
+        
+        const response = await fetch(url, init);
+        const results = await gatherResponse(response);
+        return new Response(results, init);
+        */
+
+

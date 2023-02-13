@@ -1200,6 +1200,8 @@ addressobj.full = function ()
         out += "?unsplash.user="+p;
     else if (url.searchParams.has("unsplash.collection"))
         out += "?unsplash.collection="+p;
+    else if (url.searchParams.has("pexels.curated"))
+        out += "?pexels.curated="+1;
     else
         out += "?p="+p;
 
@@ -3807,10 +3809,12 @@ else if (url.searchParams.has("unsplash.collection"))
 var path = "gallery/" + url.path;
 if (url.host == "100.115.92.200")
     path = "res/" + url.path;
-else if (url.searchParams.has("unsplash.user"))
+if (url.searchParams.has("unsplash.user"))
     path = "https://unsplash.reportbase5836.workers.dev/users/" + url.path;
-else if (url.searchParams.has("unsplash.collection"))
+if (url.searchParams.has("unsplash.collection"))
     path = "https://unsplash.reportbase5836.workers.dev/collections/" + url.path;
+//todo if (url.searchParams.has("pexels.curated"))
+    path = "https://pexels.reportbase5836.workers.dev";
 
 fetch(path)
   .then(function (response)
@@ -3861,9 +3865,10 @@ fetch(path)
         _7cnvctx.rvalue = 2;
         _7cnvctx.slidereduce = 0.75;
 
-        for (var n = 0; n < galleryobj.datam.length; ++n)
+        galleryobj.data = galleryobj.datam?galleryobj.datam:galleryobj.data;
+        for (var n = 0; n < galleryobj.data.length; ++n)
         {
-            var k = galleryobj.datam[n];
+            var k = galleryobj.data[n];
             k.func = function (index)
                 {
                     menuhide();
@@ -3872,7 +3877,6 @@ fetch(path)
                 }
         }
 
-        galleryobj.data = galleryobj.datam;
         _8cnvctx.sliceobj.data = galleryobj.data;
         galleryobj.set(url.project);
         var slices = _8cnvctx.sliceobj;
