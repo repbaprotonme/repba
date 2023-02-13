@@ -528,12 +528,13 @@ function drawslices()
             }
             else
             {
+                context.save();
                 context.font = "1rem Archivo Black";
                 context.progresscircle = new rectangle();
                 var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
-                var a = new RowA([0,h],
+                var a = new Row([0,h],
                 [
-                   new MultiText(),
+                    0,
                    new Row([70,0],
                    [
                        new Layer(
@@ -546,6 +547,8 @@ function drawslices()
                    ]),
                 ]);
 
+                a.draw(context, rect, context.timeobj, 0);
+
                 var lst = [];
                 let keys = Object.keys(galleryobj.getcurrent());
                 for (var n = 0; n < keys.length; ++n)
@@ -554,13 +557,14 @@ function drawslices()
                     var value = galleryobj.getcurrent()[key]
                     if (value && value.length && typeof value === 'string')
                     {
-                        value = value.substr(0,50);
                         if (value.substr(0,4).toLowerCase() != "http")
                             lst.push(value);
                     }
                 }
 
-                a.draw(context, rect, [lst,context.timeobj], 0);
+                var a = new MultiText();
+                a.draw(context, rect, lst, 0);
+                context.restore();
             }
 
             bodyobj.getcurrent().draw(context, rect, 0, 0);
@@ -855,15 +859,34 @@ var MultiText = function (width, height, func)
 {
     this.draw = function (context, rect, user, time)
     {
-        var lst = user;
-        var a = new Text("white", "center", "middle", 0, 0, 1);
-        var y = (rect.height-lst.length*20)/2
-        rect.y -= rect.height/2;
-        rect.y += y+10;
+        rect.x = 20;
+        rect.width -= 40;
+        var lst = [];
+        for (var n = 0; n < user.length; n++)
+        {
+            var str = user[n].clean();
+            if (!str.length)
+                continue;
+            lst = lst.concat(wraptext(context, str, Math.min(640,rect.width)));
+        }
+
+        var len = Math.min(lst.length,Math.floor(rect.height/20));
+        lst.length = len;
+        rect.y = (rect.height-lst.length*20)/2
+        rect.y -= rect.height/2
+        rect.y += 10;
         for (var n = 0; n < lst.length; n++)
         {
-            a.draw(context, rect, lst[n], 0);
-            rect.y += 20;
+            var lines = wraptext(context, lst[n], Math.min(640,rect.width));
+            for (var m = 0; m < lines.length; m++)
+            {
+                var str = lines[m].clean();
+                if (!str.length)
+                    continue;
+                var a = new Text("white", "center", "middle", 0, 0, 1);
+                a.draw(context, rect, str, 0);
+                rect.y += 20;
+            }
         }
     };
 };
@@ -3019,7 +3042,6 @@ var menulst =
                 var value = user[key]
                 if (value && value.length && typeof value === 'string')
                 {
-                    value = value.substr(0,50);
                     if (value.substr(0,4).toLowerCase() != "http")
                         lst.push(value);
                 }
@@ -3341,9 +3363,9 @@ var templatelst =
     init: function ()
     {
         positxpobj.set(50);
-        positypobj.set(95);
+        positypobj.set(97.5);
         positxlobj.set(50);
-        positylobj.set(95);
+        positylobj.set(97.5);
         traitobj.split(90, "0.1-1.0", traitobj.length());
         scapeobj.split(50, "0.1-1.0", scapeobj.length());
     },
@@ -3359,7 +3381,7 @@ var templatelst =
     {
         globalobj.rotate = 1
         positxpobj.set(50);
-        positypobj.set(95);
+        positypobj.set(97.5);
         positxlobj.set(50);
         positylobj.set(85);
         traitobj.split(95, "0.1-1.0", traitobj.length());
@@ -3368,7 +3390,7 @@ var templatelst =
     zoom: function ()
     {
         loomobj.split(50, "70-90", loomobj.length());
-        poomobj.split(0, "25-90", poomobj.length());
+        poomobj.split(25, "25-90", poomobj.length());
     }
 },
 ];
@@ -3395,9 +3417,9 @@ var bodylst =
             context.movenext = new rectangle()
             var zoom = zoomobj.getcurrent();
             var a =
-                    new Col([75,0,75],
+                    new Col([80,0,80],
                     [
-                        new Row([75,0],
+                        new Row([80,0],
                         [
                             new Shrink(new Layer(
                             [
@@ -3408,7 +3430,7 @@ var bodylst =
                             0,
                         ]),
                         0,
-                        new Row([75,0],
+                        new Row([80,0],
                         [
                             new Shrink(new Layer(
                             [
@@ -3877,14 +3899,14 @@ fetch(path)
             menuhide();
             _4cnvctx.refresh();
         }})
-        
+
         slices.data.push({title:"Stretch", path: "STRETCH", func: function(rect, x, y)
         {
             bodyobj.enabled = 8;
             menuhide();
             _4cnvctx.refresh();
         }})
-        
+
         slices.data.push({title:"Login", path: "LOGIN", func: function ()
         {
             menuhide();
@@ -3900,6 +3922,21 @@ fetch(path)
                 path = obj.src;
             window.open(path,"Reportbase");
         }});
+
+        if (url.searchParams.has("unsplash.user") ||
+            url.searchParams.has("unsplash.collection"))
+        {
+            slices.data.push({title:"Unsplash User", path: "UNSPLASHUSER", func: function()
+            {
+                var path = "https://unsplash.com/@"+galleryobj.username;
+                window.open(path,"UNSPLASH");
+            }})
+            slices.data.push({title:"Unsplash Image", path: "UNSPLASHIMAGE", func: function()
+            {
+                var path = "https://unsplash.com/photos/"+galleryobj.getcurrent().id;
+                window.open(path,"UNSPLASH");
+            }})
+        }
 
         slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
 
@@ -5494,4 +5531,37 @@ if (url.protocol == "https:")
     })
 }
 
+function wraptext(ctx, text, maxWidth)
+{
+    // First, start by splitting all of our text into words, but splitting it into an array split by spaces
+    let words = text.split(' ');
+    let line = ''; // This will store the text of the current line
+    let testLine = ''; // This will store the text when we add a word, to test if it's too long
+    let lineArray = []; // This is an array of lines, which the function will return
 
+    // Lets iterate over each word
+    for(var n = 0; n < words.length; n++) {
+        // Create a test line, and measure it..
+        testLine += `${words[n]} `;
+        let metrics = ctx.measureText(testLine);
+        let testWidth = metrics.width;
+        // If the width of this test line is more than the max width
+        if (testWidth > maxWidth && n > 0) {
+            // Then the line is finished, push the current line into "lineArray"
+            lineArray.push(line);
+            // Update line and test line to use this word as the first word on the next line
+            line = `${words[n]} `;
+            testLine = `${words[n]} `;
+        }
+        else {
+            // If the test line is still less than the max width, then add the word to the current line
+            line += `${words[n]} `;
+        }
+        // If we never reach the full max width, then there is only one line.. so push it into the lineArray so we return something
+        if(n === words.length - 1) {
+            lineArray.push(line);
+        }
+    }
+    // Return the line array
+    return lineArray;
+}

@@ -38,8 +38,8 @@ export default
                 j.src = urls.regular;
                 j.full = urls.raw+"&w=2160&q=80&fit=max";
                 j.thumb = urls.thumb;
+                j.created = k.created_at.substr(0,10);
                 j.id = k.id;
-                j.username = k.username;
                 lst.push(j);
             }
 
