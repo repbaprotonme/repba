@@ -5,19 +5,20 @@ export default
         var per_page = 80;
         var data = [];
         var page = 1;
+        var total = 1000;
         var morePagesAvailable = true;
         while (morePagesAvailable)
         {
-            const init = {
-              headers: {
+            const init = 
+            {
+              headers: 
+              {
                 'Authorization': "F8k2ebLZ7fIjWegfAZpNerv98JnIK7oYMkCdnXE3eqpscBKZuTFUZLoO"
               },
             };
             
             var response = await fetch(`https://api.pexels.com/v1/curated?per_page=${per_page}&page=${page}`, init);
             var json = await response.json();
-            data = data.concat(json.photos);
-            /*
             for (var n = 0; n < json.photos.length; ++n)
             {
                 var k = json.photos[n];
@@ -27,21 +28,18 @@ export default
                 var aspect = (k.width/k.height).toFixed(2);
                 var user = k.photographer;
                 var urls = k.urls;
-                j.index = (lst.length+1)+" of "+total;
+                j.index = (data.length+1)+" of "+json.total_results;
                 j.name = user.name;
                 j.extent = `${width}x${height} ${aspect}`;
                 j.size = ((width * height)/1000000).toFixed(1) + "MP";
                 if (k.alt)
                     j.description = k.alt;
-                if (k.alt_description)
-                    j.alt_description = k.alt_description;
-                j.src = k.url.original;
-                j.full = k.url.original+"?auto=compress&cs=tinysrgb&w=2160";
-                lst.push(j);
+                j.src = k.src.original;
+                j.full = k.src.original+"?auto=compress&cs=tinysrgb&w=2160";
+                data.push(j);
             }
-                */
 
-            morePagesAvailable = (page++ <= 2);// || lst.length < total;
+            morePagesAvailable = (page++ <= 6);// || data.length < total;
         }
 
         var g = {}
@@ -62,26 +60,5 @@ export default
 };
 
 
-        /*
-        const url = 'https://api.pexels.com/v1/curated?per_page=80&page=1'
-        async function gatherResponse(response) {
-          const { headers } = response;
-          const contentType = headers.get('content-type') || '';
-          if (contentType.includes('application/json')) {
-            return JSON.stringify(await response.json());
-          }
-          return response.text();
-        }
-
-        const init = {
-          headers: {
-            'Authorization': "F8k2ebLZ7fIjWegfAZpNerv98JnIK7oYMkCdnXE3eqpscBKZuTFUZLoO"
-          },
-        };
-        
-        const response = await fetch(url, init);
-        const results = await gatherResponse(response);
-        return new Response(results, init);
-        */
 
 

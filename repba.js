@@ -3642,6 +3642,7 @@ if (url.searchParams.has("p"))
     url.path = k[0];
     if (k.length == 2)
         url.project = Number(k[1]);
+    path = "gallery/" + url.path;
 }
 else if (url.searchParams.has("unsplash.user"))
 {
