@@ -1,4 +1,4 @@
-name = "gallery"
+name = "bucket"
 main = "src/index.js"
 account_id = "41f6f507a22c7eec431dbc5e9670c73d"
 compatibility_date = "2022-04-05"
@@ -13,7 +13,7 @@ binding = 'MY_BUCKET'
 bucket_name = 'bucket1'
 
 routes = [
-    { pattern = "reportbase.com/gallery/*", zone_id = "41f6f507a22c7eec431dbc5e9670c73d" }
+    { pattern = "reportbase.com/bucket/*", zone_id = "41f6f507a22c7eec431dbc5e9670c73d" }
 ]
 
 

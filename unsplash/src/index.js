@@ -50,7 +50,7 @@ export default
         g.title = `Unsplash Gallery`;
         g.username = id;
         g.row = 50;
-        g.datam = lst;
+        g.data = lst;
 
         let headers = new Headers(
         {
