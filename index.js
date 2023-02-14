@@ -1175,7 +1175,7 @@ addressobj.full = function ()
         "&t="+_4cnvctx.timeobj.current().toFixed(4);
 
     if (url.errors)
-        out += "$errors=" + url.errors;
+        out += "&errors=" + url.errors;
 
     return out;
 };
@@ -3472,6 +3472,7 @@ if (url.host == "100.115.92.200")
     if (url.searchParams.has("p"))
     {
         var e = url.searchParams.get("p");
+        let k = e.split(".");
         url.path = k[0].toLowerCase();
         path = `res/${url.path}`;
     }
@@ -3771,13 +3772,15 @@ var ContextObj = (function ()
                 photo.image.onerror =
                     photo.image.onabort = function(e)
                 {
-                    if (url.errors++>5)
+                    if (url.errors++ > 5)
                         return;
-                    location.reload();
+                   // window.location.href = addressobj.full();
+                    //location.reload();
                 }
 
                 photo.image.onload = function()
                 {
+                    url.errors = 0;
                     this.aspect = this.width/this.height;
                     this.size = ((this.width * this.height)/1000000).toFixed(1) + "MP";
                     this.extent = this.width + "x" + this.height;

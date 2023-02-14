@@ -1,14 +1,14 @@
 {  
     "template": "PORTRAIT",  
     "title": "High-resolution",  
-    "datam": 
+    "data": 
     [    
         { 
             "name": "",
             "title": "",
             "describe": "",
             "copyright": "",
-            "src": "res/goon.jpg",
+            "full": "res/goon.jpg",
             "width": 0, 
             "height": 0, 
             "quality": 0

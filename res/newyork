@@ -1,14 +1,14 @@
 {  
     "template": "WIDE",  
     "title": "High-resolution",  
-    "datam": 
+    "data": 
     [    
         { 
             "name": "",
             "title": "",
             "describe": "",
             "copyright": "",
-            "src": "res/newyork.jpg",
+            "full": "res/newyork.jpg",
             "width": "24254", 
             "height": "5200", 
             "aspect": 4.6", 
@@ -20,7 +20,7 @@
             "title": "",
             "describe": "",
             "copyright": "",
-            "src": "res/newyork.jpg",
+            "full": "res/newyork.jpg",
             "width": 0, 
             "height": 0, 
             "quality": 0, 

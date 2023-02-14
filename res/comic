@@ -1,14 +1,14 @@
 {  
     "template": "COMIC",  
     "title": "High-resolution",  
-    "datam": 
+    "data": 
     [    
         { 
             "name": "",
             "title": "",
             "describe": "",
             "copyright": "",
-            "src": "res/comic.jpg",
+            "full": "res/comic.jpg",
             "width": 0, 
             "height": 0, 
             "quality": 0
@@ -18,7 +18,7 @@
             "title": "",
             "describe": "",
             "copyright": "",
-            "src": "res/comic1.webp",
+            "full": "res/comic1.webp",
             "width": 0, 
             "height": 0, 
             "quality": 0
@@ -28,7 +28,7 @@
             "title": "",
             "describe": "",
             "copyright": "",
-            "src": "https://i.postimg.cc/FRZ9YcrF/comic.jpg",
+            "full": "https://i.postimg.cc/FRZ9YcrF/comic.jpg",
             "width": 0, 
             "height": 0, 
             "quality": 0

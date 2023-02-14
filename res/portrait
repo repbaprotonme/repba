@@ -1,14 +1,14 @@
 {  
     "template": "PORTRAIT",  
     "title": "High-resolution",  
-    "datam": 
+    "data": 
     [    
         { 
             "name": "",
             "title": "",
             "describe": "",
             "copyright": "",
-            "src": "https://i.imgur.com/LEf2Nh3.jpg",
+            "full": "https://i.imgur.com/LEf2Nh3.jpg",
             "width": 0, 
             "height": 0, 
             "quality": 0, 
@@ -19,7 +19,7 @@
             "title": "",
             "describe": "",
             "copyright": "",
-            "src": "https://i.imgur.com/GCAnMaF.jpg",
+            "full": "https://i.imgur.com/GCAnMaF.jpg",
             "width": 0, 
             "height": 0, 
             "quality": 0, 
