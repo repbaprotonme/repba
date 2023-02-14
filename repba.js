@@ -527,7 +527,7 @@ function drawslices()
                 bodyobj.set(3)
             }
 
-            bodyobj.getcurrent().draw(context, rect, 0, 0);
+            bodyobj.getcurrent().draw(context, rect, galleryobj.getcurrent(), 0);
         }
 
         context.setcolumncomplete = 1;
@@ -658,7 +658,7 @@ var eventlst =
     {name: "_5cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
     {name: "_6cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
     {name: "_7cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
-    {name: "_8cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "GMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
+    {name: "_8cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "GMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "GPRESS", pinch: "DEFAULT"},
     {name: "_9cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
 ];
 
@@ -2210,6 +2210,17 @@ var presslst =
     press: function (context, rect, x, y) { }
 },
 {
+    name: "GPRESS",
+    pressup: function (context, rect, x, y)
+    {
+    },
+    press: function (context, rect, x, y)
+    {
+        context.pressindex.rotate(1);
+        context.refresh();
+    }
+},
+{
     name: "BOSS",
     pressup: function (context, rect, x, y)
     {
@@ -2842,32 +2853,51 @@ var menulst =
         else if (time == galleryobj.current())
             clr = MENUSELECT;
 
-        var a = new Layer(
-        [
-            new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 25),
-            new MultiText(),
-        ]);
+        var a = new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 40);
+        a.draw(context, rect, 0, 0);
 
-        if (user.thumb && !user.thumbimage)
+        if (!user.lst)
         {
-            user.thumbimage = new Image();
-            user.thumbimage.src = user.thumb;
-        }
-
-        var lst = [];
-        let keys = Object.keys(user);
-        for (var n = 0; n < keys.length; ++n)
-        {
-            var key = keys[n];
-            var value = user[key]
-            if (value && value.length && typeof value === 'string')
+            var lst = [];
+            let keys = Object.keys(user);
+            for (var n = 0; n < keys.length; ++n)
             {
-                if (value.substr(0,4).toLowerCase() != "http")
-                    lst.push(value);
+                var key = keys[n];
+                var value = user[key]
+                if (value && value.length && typeof value === 'string')
+                {
+                    if (value.substr(0,4).toLowerCase() != "http")
+                        lst.push(value);
+                }
             }
+
+            user.lst = lst;
         }
 
-        a.draw(context, rect, lst, 0);
+        if (user.thumb && !user.thumbimg)
+        {
+            user.thumbimg = new Image();
+            user.thumbimg.src = user.thumb;
+            user.thumbimg.onload = function() { context.refresh(); }
+        }
+
+        if ((context.pressindex.current() == 0 || context.pressindex.current() == 1) &&
+            user.thumbimg && user.thumbimg.width)
+        {
+            var r = calculateAspectRatioFit(user.thumbimg.width, user.thumbimg.height, rect.width-40, rect.height+40);
+            var h = Math.floor(r.height);
+            var w = Math.floor(r.width);
+            var x = Math.floor((rect.width-w)/2);
+            var y = Math.floor((rect.height-h)/2);
+            context.drawImage(user.thumbimg, 0, 0, user.thumbimg.width, user.thumbimg.height, x, y, w, h);
+        }
+
+        if (context.pressindex.current() == 0 || context.pressindex.current() == 2)
+        {
+            var a = new MultiText();
+            a.draw(context, rect, user.lst, 0);
+        }
+
         context.restore();
     }
 },
@@ -3335,21 +3365,26 @@ var bodylst =
 
             a.draw(context, rect, context.timeobj, 0);
 
-            var lst = [];
-            let keys = Object.keys(user);
-            for (var n = 0; n < keys.length; ++n)
+            if (!user.lst)
             {
-                var key = keys[n];
-                var value = user[key]
-                if (value && value.length && typeof value === 'string')
+                var lst = [];
+                let keys = Object.keys(user);
+                for (var n = 0; n < keys.length; ++n)
                 {
-                    if (value.substr(0,4).toLowerCase() != "http")
-                        lst.push(value);
+                    var key = keys[n];
+                    var value = user[key]
+                    if (value && value.length && typeof value === 'string')
+                    {
+                        if (value.substr(0,4).toLowerCase() != "http")
+                            lst.push(value);
+                    }
                 }
+
+                user.lst = lst;
             }
 
             var a = new MultiText();
-            a.draw(context, rect, lst, 0);
+            a.draw(context, rect, user.lst, 0);
             context.restore();
         }
     },
@@ -3737,7 +3772,7 @@ fetch(path)
         var slices = _8cnvctx.sliceobj;
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
         _8cnvctx.rvalue = 2;
-        _8cnvctx.buttonheight = 120;
+        _8cnvctx.buttonheight = 160;
         _8cnvctx.delayinterval = DELAYCENTER / slices.length();
         _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
         _8cnvctx.slidereduce = 0.75;
@@ -3850,6 +3885,7 @@ var ContextObj = (function ()
             context.slideshow = 0;
             context.lastime = 0;
             context.slidereduce = 0;
+            context.pressindex = new Data("", 3);
             context.slidestop = 0;
             context.buttonheight = ALIEXTENT/2;
             setevents(context, eventlst[n]);
