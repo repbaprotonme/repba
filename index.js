@@ -497,7 +497,7 @@ function drawslices()
         delete context.stretchin;
         delete context.stretchout;
         delete context.fullpanel;
-        delete context.fullscreen;
+        delete context.footpanel;
         delete context.external;
         delete context.speedctrl;
         delete context.progresscircle;
@@ -893,7 +893,7 @@ var FullPanel = function (color, shadow)
 		context.strokeStyle = color;
 		context.shadowColor = shadow;
 
-        var e = screenfull.isFullscreen?8:6;
+        var e = screenfull.isFullscreen?6:5;
         var j = 28;
         var k = 20;
         var r = new rectangle(rect.x+k,rect.y+j,rect.width,rect.height);
@@ -2203,7 +2203,9 @@ var presslst =
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
             context.pressed = 1;
-        else if (context.fullscreen && context.fullscreen.hitest(x,y))
+        else if (context.footpanel && context.footpanel.hitest(x,y))
+            return;
+        else
             galleryobj.hidedisplay = galleryobj.hidedisplay?0:1;
         context.refresh();
     }
@@ -3350,25 +3352,26 @@ var bodylst =
             context.stretchin = new rectangle()
             context.stretchout = new rectangle()
             context.fullpanel = new rectangle()
-            context.fullscreen = new rectangle()
+            context.footpanel = new rectangle()
             context.external = new rectangle()
             var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
             var a = new Row([0,h],
             [
-               new Rectangle(context.fullscreen),
+                0,
                 new Layer(
                 [
+                    new Rectangle(context.footpanel),
                     new Fill(HEADBACK),
                    new Row([70,0],
                    [
-                       new Col([ALIEXTENT,0,ALIEXTENT,ALIEXTENT,ALIEXTENT,0,ALIEXTENT],
+                       new Col([0,ALIEXTENT,ALIEXTENT,ALIEXTENT,ALIEXTENT,ALIEXTENT,0],
                        [
-                           1?0:new Layer(
+                           0,
+                           new Layer(
                            [
                                 new FullPanel("white","black"),
                                new Rectangle(context.fullpanel),
                            ]),
-                           0,
                            new Layer(
                            [
                                 new Minus("white","black"),
@@ -3385,12 +3388,12 @@ var bodylst =
                                 new Plus("white","plus"),
                                new Rectangle(context.stretchout),
                            ]),
-                           0,
-                           1?0:new Layer(
+                           new Layer(
                            [
                                 new FullPanel("white","plus"),
                                new Rectangle(context.external),
                            ]),
+                           0
                         ]),
                        0,
                    ]),
@@ -3725,7 +3728,6 @@ var ContextObj = (function ()
                 photo.image.onerror =
                     photo.image.onabort = function(e)
                 {
-                    photo.image.src = path;
                 }
 
                 photo.image.onload = function()
