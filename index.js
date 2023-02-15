@@ -2480,8 +2480,10 @@ var taplst =
         }
         else if (context.external && context.external.hitest(x,y))
         {
-            var path = "https://unsplash.com/photos/"+galleryobj.getcurrent().id;
-            window.open(path,"UNSPLASH");
+            menuhide();
+            promptFile().then(function(files) { dropfiles(files); })
+            //var path = "https://unsplash.com/photos/"+galleryobj.getcurrent().id;
+            //window.open(path,"UNSPLASH");
         }
         else if (context.fullpanel && context.fullpanel.hitest(x,y))
         {
@@ -2844,7 +2846,7 @@ var menulst =
         else if (time == galleryobj.current())
             clr = MENUSELECT;
 
-        var a = new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 60);
+        var a = new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 50);
         a.draw(context, rect, 0, 0);
 
         if (!user.lst)
@@ -2875,12 +2877,27 @@ var menulst =
         if (context.pressindex.current() == 0 &&
             user.thumbimg && user.thumbimg.width)
         {
-            var r = calculateAspectRatioFit(user.thumbimg.width, user.thumbimg.height, rect.width-30, rect.height+80);
-            var h = Math.floor(r.height);
-            var w = Math.floor(r.width);
-            var x = Math.floor((rect.width-w)/2);
-            var y = Math.floor((rect.height-h)/2);
-            context.drawImage(user.thumbimg, 0, 0, user.thumbimg.width, user.thumbimg.height, x, y, w, h);
+            var h2 = rect.height+80;
+            var w2 = rect.width-20;
+            var a2 = w2/h2;
+            if (user.thumbimg.width > user.thumbimg.height)
+            {
+                var h1 = user.thumbimg.height
+                var w1 = a2*h1
+                var x1 = (user.thumbimg.width-w1)/2;
+                var y1 = 0;
+                context.drawImage(user.thumbimg, x1, y1, w1, h1,
+                    10, -40, w2, h2);
+            }
+            else
+            {
+                var w1 = user.thumbimg.width;
+                var h1 = w1/a2;
+                var x1 = 0;
+                var y1 = (user.thumbimg.height-h1)/2;
+                context.drawImage(user.thumbimg, x1, y1, w1, h1,
+                    10, -40, w2, h2);
+            }
         }
         else
         {
@@ -3352,7 +3369,7 @@ var bodylst =
                    [
                        new Col([ALIEXTENT,0,ALIEXTENT,ALIEXTENT,ALIEXTENT,0,ALIEXTENT],
                        [
-                           new Layer(
+                           1?0:new Layer(
                            [
                                 new FullPanel("white","black"),
                                new Rectangle(context.fullpanel),
@@ -3375,7 +3392,7 @@ var bodylst =
                                new Rectangle(context.stretchout),
                            ]),
                            0,
-                           new Layer(
+                           1?0:new Layer(
                            [
                                 new FullPanel("white","plus"),
                                new Rectangle(context.external),
@@ -3585,6 +3602,8 @@ fetch(path)
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
         _8cnvctx.rvalue = 2;
         _8cnvctx.buttonheight = 240;
+        if (_8cnvctx.buttonheight>window.innerHeight-100)
+            _8cnvctx.buttonheight = window.innerHeight-100
         _8cnvctx.delayinterval = DELAYCENTER / slices.length();
         _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
         _8cnvctx.slidereduce = 0.75;
@@ -3598,21 +3617,7 @@ fetch(path)
             menuhide();
             promptFile().then(function(files) { dropfiles(files); })
         }});
-/*
-        slices.data.push({title:"Slices", path: "SLICES", func: function(rect, x, y)
-        {
-            colorobj.enabled = colorobj.enabled?0:1;
-            menuhide();
-            _4cnvctx.refresh();
-        }})
 
-        slices.data.push({title:"Stretch", path: "STRETCH", func: function(rect, x, y)
-        {
-            bodyobj.enabled = 8;
-            menuhide();
-            _4cnvctx.refresh();
-        }})
-*/
         slices.data.push({title:"Login", path: "LOGIN", func: function ()
         {
             menuhide();
