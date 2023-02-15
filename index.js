@@ -3623,10 +3623,8 @@ fetch(path)
         slices.data.push({title:"Download", path: "DOWNLOAD", func: function()
         {
             var obj = galleryobj.getcurrent();
-            var path = "https://reportbase.com/image/"+obj.src+"/w="+obj.width;
-            if (obj.src.indexOf("/") >= 0)
-                path = obj.src;
-            window.open(path,"Reportbase");
+            var path = obj.original ? obj.original : obj.full;
+            window.open(path, "Reportbase");
         }});
 
         if (url.searchParams.has("unsplash.user") ||
