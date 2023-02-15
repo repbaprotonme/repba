@@ -48,7 +48,6 @@ function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) 
 function numberRange (start, end) {return new Array(end - start).fill().map((d, i) => i + start); }
 
 let url = new URL(window.location.href);
-url.errors = url.searchParams.has("errors") ? Number(url.searchParams.get("errors")) : 0;
 
 Math.clamp = function (min, max, val)
 {
@@ -1173,9 +1172,6 @@ addressobj.full = function ()
         "&h="+headobj.enabled+
         "&r="+(100*rowobj.berp()).toFixed()+
         "&t="+_4cnvctx.timeobj.current().toFixed(4);
-
-    if (url.errors)
-        out += "&errors=" + url.errors;
 
     return out;
 };
@@ -3004,7 +3000,7 @@ function resetcanvas()
     var y = Math.clamp(0,context.canvas.height-1,context.canvas.height*rowobj.berp());
     context.nuby = Math.nub(y, context.canvas.height, context.imageheight, photo.image.height);
 
-    var speed = Math.max(0.1,speedobj.getcurrent()/10);
+    var speed = Math.max(0.5,speedobj.getcurrent()/10);
     context.virtualspeed = FIREFOX?0:TIMEOBJ/context.virtualwidth/speed;
     var rotatelst = [];
     var k = Math.floor(TIMEMID*0.8)
@@ -3535,6 +3531,7 @@ else if (url.searchParams.has("pexels.curated"))
 
 var galleryobj = new Data("", 0);
 
+//ERR_CERT_AUTHORITY_INVALID
 fetch(path)
   .then(function (response)
   {
@@ -3584,19 +3581,22 @@ fetch(path)
         _7cnvctx.rvalue = 2;
         _7cnvctx.slidereduce = 0.75;
 
+        var func = function (index)
+        {
+            menuhide();
+            galleryobj.set(index);
+            window.location.href = addressobj.full();
+        }
+
         galleryobj.data = galleryobj.datam?galleryobj.datam:galleryobj.data;
         for (var n = 0; n < galleryobj.data.length; ++n)
         {
             var k = galleryobj.data[n];
-            k.func = function (index)
-                {
-                    menuhide();
-                    galleryobj.set(index);
-                    window.location.href = addressobj.full();
-                }
+            k.func = func;
         }
 
         _8cnvctx.sliceobj.data = galleryobj.data;
+
         galleryobj.set(url.project);
         var slices = _8cnvctx.sliceobj;
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
@@ -3761,7 +3761,7 @@ var ContextObj = (function ()
                 contextobj.resize(context);
                 resetcanvas(context);
             }
-            else// if (url.path)
+            else
             {
                 var path =  galleryobj.getcurrent().full;
                 if (globalobj.promptedfile)
@@ -3775,14 +3775,11 @@ var ContextObj = (function ()
                 photo.image.onerror =
                     photo.image.onabort = function(e)
                 {
-                    if (url.errors++ > 4)
-                        return;
-                    window.location.href = addressobj.full();
+                    photo.image.src = path;
                 }
 
                 photo.image.onload = function()
                 {
-                    url.errors = 0;
                     this.aspect = this.width/this.height;
                     this.size = ((this.width * this.height)/1000000).toFixed(1) + "MP";
                     this.extent = this.width + "x" + this.height;
@@ -5227,7 +5224,7 @@ window.addEventListener("load", async () =>
 {
 });
 
-if (url.protocol == "https:")
+if (url.hostname == "reportbase.com")
 {
     authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
     authClient.getAuthenticationInfoOrNull(false)
