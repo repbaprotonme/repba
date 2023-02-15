@@ -3463,7 +3463,7 @@ var bodylst =
 
 var bodyobj = new Data("", bodylst);
 
-url.path = "HOME";
+url.path = "BOAT";
 url.project = 0;
 var path = `https://bucket.reportbase5836.workers.dev/gallery/${url.path}`;
 
@@ -3772,10 +3772,9 @@ var ContextObj = (function ()
                 photo.image.onerror =
                     photo.image.onabort = function(e)
                 {
-                    if (url.errors++ > 5)
+                    if (url.errors++ > 4)
                         return;
-                   // window.location.href = addressobj.full();
-                    //location.reload();
+                    window.location.href = addressobj.full();
                 }
 
                 photo.image.onload = function()
