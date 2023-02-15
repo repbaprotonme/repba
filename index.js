@@ -497,6 +497,7 @@ function drawslices()
         delete context.stretchin;
         delete context.stretchout;
         delete context.fullpanel;
+        delete context.fullscreen;
         delete context.external;
         delete context.speedctrl;
         delete context.progresscircle;
@@ -511,8 +512,6 @@ function drawslices()
         {
             if (headobj.enabled)
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            if (footobj.enabled)
-                footobj.getcurrent().draw(footcnvctx, footcnvctx.rect(), 0);
             bodyobj.set(0)
             if (bodyobj.enabled)
             {
@@ -1774,7 +1773,6 @@ function dropfiles(files)
     _4cnvctx.isthumbrect = 0;
     thumbobj.enabled = 1;
     headobj.enabled = 0;
-    footobj.enabled = 0;
     pageresize();
     _4cnvctx.setcolumncomplete = 0;
     globalobj.promptedfile = URL.createObjectURL(files[0]);
@@ -2205,7 +2203,7 @@ var presslst =
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
             context.pressed = 1;
-        else
+        else if (context.fullscreen && context.fullscreen.hitest(x,y))
             galleryobj.hidedisplay = galleryobj.hidedisplay?0:1;
         context.refresh();
     }
@@ -2603,7 +2601,6 @@ var taplst =
                 if (!h)
                 {
                     headobj.enabled = headobj.enabled?0:1;
-                    footobj.enabled = headobj.enabled;
                 }
 
                 pageresize();
@@ -3353,11 +3350,12 @@ var bodylst =
             context.stretchin = new rectangle()
             context.stretchout = new rectangle()
             context.fullpanel = new rectangle()
+            context.fullscreen = new rectangle()
             context.external = new rectangle()
             var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
             var a = new Row([0,h],
             [
-                0,
+               new Rectangle(context.fullscreen),
                 new Layer(
                 [
                     new Fill(HEADBACK),
@@ -3423,54 +3421,6 @@ var bodylst =
             a.draw(context, rect, user.lst, 0);
             context.restore();
         }
-    },
-    new function()
-    {
-        this.draw = function (context, rect, user, time)
-        {
-        }
-    },
-    new function()
-    {
-        this.draw = function (context, rect, user, time)
-        {
-        }
-    },
-    new function()
-    {
-        this.draw = function (context, rect, user, time)
-        {
-        }
-    },
-    new function()
-    {
-        this.draw = function (context, rect, user, time)
-        {
-        }
-    },
-    new function()
-    {
-        this.draw = function (context, rect, user, time)
-        {
-        }
-    },
-    new function()
-    {
-        this.draw = function (context, rect, user, time)
-        {
-        }
-    },
-    new function()
-    {
-        this.draw = function (context, rect, user, time)
-        {
-        }
-    },
-    new function()
-    {
-        this.draw = function (context, rect, user, time)
-        {
-       }
     },
   ];
 
@@ -4838,196 +4788,7 @@ var headlst =
 	},
 ];
 
-var footlst =
-[
-    new function()
-    {
-        this.draw = function (context, rect, user, time)
-        {
-        }
-    },
-    new function()
-    {
-
-	    this.pan = function (context, rect, x, y, type)
-        {
-            clearInterval(context.timefooter);
-        };
-
-        this.pressup = function (context, rect, x, y)
-        {
-            clearInterval(context.timefooter);
-        };
-
-        this.press = function (context, rect, x, y)
-        {
-            if (context.keyzoomup && context.keyzoomup.hitest(x,y))
-            {
-                clearInterval(context.timefooter);
-                context.timefooter = setInterval(function ()
-                {
-                    var obj = zoomobj.getcurrent()
-                    obj.add(1);
-                    if (pinchobj.current() == 0)
-                        contextobj.reset()
-                    else
-                        _4cnvctx.refresh();
-                }, 16)
-            }
-            else if (context.keyzoomdown && context.keyzoomdown.hitest(x,y))
-            {
-                clearInterval(context.timefooter);
-                context.timefooter = setInterval(function ()
-                {
-                    var obj = zoomobj.getcurrent()
-                    obj.add(-1);
-                    if (pinchobj.current() == 0)
-                        contextobj.reset()
-                    else
-                        _4cnvctx.refresh();
-                }, 16);
-            }
-        };
-
-        this.tap = function (context, rect, x, y)
-        {
-            clearInterval(context.timefooter);
-            if (context.progresscircle.hitest(x,y))
-            {
-                if (_4cnvctx.timemain)
-                {
-                    clearInterval(_4cnvctx.timemain);
-                    _4cnvctx.timemain = 0;
-                    rotateobj.enabled = 0;
-                }
-                else
-                {
-                    rotateobj.enabled = 1;
-                    _4cnvctx.tab();
-                }
-
-                _4cnvctx.refresh();
-            }
-            else if (context.keyzoomup && context.keyzoomup.hitest(x,y))
-            {
-                bodyobj.enabled = 9;
-                _4cnvctx.refresh();
-                var obj = zoomobj.getcurrent()
-                if (obj.current() >= obj.length()-1)
-                    return;
-                obj.add(1);
-                if (pinchobj.current() == 0)
-                    contextobj.reset()
-                else
-                    _4cnvctx.refresh();
-            }
-            else if (context.keyzoomdown && context.keyzoomdown.hitest(x,y))
-            {
-                bodyobj.enabled = 9;
-                _4cnvctx.refresh();
-                var obj = zoomobj.getcurrent()
-                if (!obj.current())
-                    return;
-                obj.add(-1);
-                if (pinchobj.current() == 0)
-                    contextobj.reset()
-                else
-                    _4cnvctx.refresh();
-            }
-            else if (context.leftab.hitest(x,y))
-            {
-                promptFile().then(function(files) { dropfiles(files); })
-            }
-            else if (context.rightab.hitest(x,y))
-            {
-                if (screenfull.isEnabled)
-                {
-                    if (screenfull.isFullscreen)
-                        screenfull.exit();
-                    else
-                        screenfull.request();
-                }
-            }
-
-            addressobj.update();
-        };
-
-        this.draw = function (context, rect, user, time)
-        {
-            context.clear();
-            context.save();
-            context.shadowOffsetX = 1;
-            context.shadowOffsetY = 1;
-            context.shadowColor = "black"
-            context.progresscircle = new rectangle();
-            context.keyzoomup = new rectangle()
-            context.keyzoomdown = new rectangle()
-            context.leftab = new rectangle()
-            context.rightab = new rectangle()
-            var e = rect.height == LARGEFOOT ? [70,0] : [70,-1];
-            var j = rect.width < 340 ? 50 : ALIEXTENT;
-            var a = new Layer(
-               [
-                   1?0:new Fill(HEADBACK),
-                   new Row(e,
-                   [
-                       new Col([j,0,j+10,ALIEXTENT,j+10,0,ALIEXTENT],
-                       [
-                            1?0:new Layer(
-                            [
-                                new Rectangle(context.leftab),
-                                new Col([0,8,0],
-                                    [
-                                        0,
-                                        new Row([0,8,4,8,4,8,0],
-                                        [
-                                            0,
-                                            new Circle("white"),
-                                            0,
-                                            new Circle("white"),
-                                            0,
-                                            new Circle("white"),
-                                            0,
-                                        ]),
-                                        0,
-                                    ])
-                            ]),
-                            0,
-                            1?0:new Layer(
-                            [
-                                new Rectangle(context.keyzoomdown),
-                                new Minus(ARROWFILL),
-                            ]),
-                            new Layer(
-                               [
-                                   _4cnvctx.timemain ? new Shrink(new Circle("rgb(255,155,0)"),12,12) : 0,
-                                   new ProgressCircle(),
-                                   new Rectangle(context.progresscircle),
-                               ]),
-                            1?0:new Layer(
-                            [
-                                new Rectangle(context.keyzoomup),
-                                new Plus(ARROWFILL),
-                            ]),
-                            0,
-                            1?0:new Layer(
-                            [
-                                new FullPanel(),
-                                new Rectangle(context.rightab),
-                            ]),
-                       ]),
-                   ])
-               ]);
-
-            a.draw(context, rect, _4cnvctx.timeobj, 0);
-            context.restore()
-        };
-    },
-];
-
-var footobj = new Data("", footlst);
 var headobj = new Data("", headlst);
-footobj.enabled = 0;
 headobj.enabled = 0;
 var infobj = new Data("", 6);
 var positxpobj = new Data("POSITIONX", 100);
@@ -5184,13 +4945,6 @@ function pageresize()
         headcnvctx.show(0,0,window.innerWidth,h);
         headobj.set(h?(globalobj.promptedfile||galleryobj.length()<2?2:1):0);
         headham.panel = headobj.getcurrent();
-  //      var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
-  //      if (!footobj.enabled)
-   //         h = 0;
-
- //       footcnvctx.show(0, window.innerHeight-h, window.innerWidth, h);
- //       footobj.set(h?1:0);
- //       footham.panel = footobj.getcurrent();
     }
 }
 
