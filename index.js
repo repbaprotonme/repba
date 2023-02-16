@@ -2499,8 +2499,14 @@ var taplst =
         }
         else if (context.external && context.external.hitest(x,y))
         {
-            var path = "https://unsplash.com/photos/"+galleryobj.getcurrent().id;
-            window.open(path,"UNSPLASH");
+            var obj = galleryobj.getcurrent();
+            var path = obj.original?obj.original:obj.full;
+            if (url.searchParams.has("unsplash.user") ||
+                url.searchParams.has("unsplash.collection"))
+                path = "https://unsplash.com/photos/"+obj.id;
+            else if (url.searchParams.has("pexels.curated"))
+                path = "https://unsplash.com/photos/"+obj.id;
+            window.open(path,"reportbase.com");
         }
         else if (context.explore && context.explore.hitest(x,y))
         {
@@ -3339,7 +3345,14 @@ var bodylst =
                         ]),
                     ]);
 
-            a.draw(context, rect, [0,"unsplash.com",galleryobj.getcurrent().id,0], 0);
+            var lst = [0,"reportbase.com",url.path +"."+galleryobj.current().pad(4),0];
+            if (url.searchParams.has("unsplash.user") ||
+                url.searchParams.has("unsplash.collection"))
+                lst = [0,"unsplash.com",galleryobj.getcurrent().id,0];
+            else if (url.searchParams.has("pexels.curated"))
+                lst = [0,"pexels.com",galleryobj.getcurrent().id,0];
+
+            a.draw(context, rect, lst, 0);
             context.restore();
         }
     },
@@ -3401,7 +3414,7 @@ var bodylst =
             context.stretchout = new rectangle()
             context.fullpanel = new rectangle()
             context.footpanel = new rectangle()
-            context.external = new rectangle()
+            context.explore = new rectangle()
             var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
             var a = new Row([0,h],
             [
@@ -3439,7 +3452,7 @@ var bodylst =
                            new Layer(
                            [
                                new OpenPanel("white","black"),
-                               new Rectangle(context.external),
+                               new Rectangle(context.explore),
                            ]),
                            0
                         ]),
@@ -3624,16 +3637,6 @@ fetch(path)
             window.open(path, "Reportbase");
         }});
 
-        if (url.searchParams.has("unsplash.user") ||
-            url.searchParams.has("unsplash.collection"))
-        {
-            slices.data.push({title:"Unsplash", path: "UNSPLASH", func: function()
-            {
-                var path = "https://unsplash.com/photos/"+galleryobj.getcurrent().id;
-                window.open(path,"UNSPLASH");
-            }})
-        }
-
         slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
 
         slices.data.push({title:"Fullscreen", path: "FULLPANEL", func: function ()
@@ -3784,7 +3787,7 @@ var ContextObj = (function ()
                     this.size = ((this.width * this.height)/1000000).toFixed(1) + "MP";
                     this.extent = this.width + "x" + this.height;
                     var e = galleryobj.getcurrent();
-                    document.title = `${url.path}.${galleryobj.current().pad(4)} ${photo.image.width}x${photo.image.height}`;
+                    document.title = `${url.path}.${galleryobj.current().pad(4)} (${photo.image.width}x${photo.image.height})`;
 
                     var k;
                     if (this.aspect < 0.5)
