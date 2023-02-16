@@ -3721,13 +3721,14 @@ var ContextObj = (function ()
                     path = globalobj.promptedfile;
                 seteventspanel(new Empty());
                 photo.image = new Image();
-                photo.image.crossOrigin = 1;
+                //photo.image.crossOrigin = 1;
                 photo.image.original = path;
                 photo.image.src = path;
 
                 photo.image.onerror =
                     photo.image.onabort = function(e)
                 {
+                    photo.image.src = path;
                 }
 
                 photo.image.onload = function()
