@@ -3487,7 +3487,7 @@ else if (url.searchParams.has("pexels.curated"))
 var galleryobj = new Data("", 0);
 
 //TODO: ERR_CERT_AUTHORITY_INVALID
-fetch(path)
+fetch("res/HOME")
   .then(function (response)
   {
      return response.json()
