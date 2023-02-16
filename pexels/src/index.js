@@ -1,6 +1,6 @@
-export default 
+export default
 {
-	async fetch(request, env, ctx) 
+	async fetch(request, env, ctx)
     {
         var per_page = 80;
         var data = [];
@@ -9,14 +9,14 @@ export default
         var morePagesAvailable = true;
         while (morePagesAvailable)
         {
-            const init = 
+            const init =
             {
-              headers: 
+              headers:
               {
                 'Authorization': "F8k2ebLZ7fIjWegfAZpNerv98JnIK7oYMkCdnXE3eqpscBKZuTFUZLoO"
               },
             };
-            
+
             var response = await fetch(`https://api.pexels.com/v1/curated?per_page=${per_page}&page=${page}`, init);
             var json = await response.json();
             for (var n = 0; n < json.photos.length; ++n)
@@ -34,9 +34,8 @@ export default
                 j.size = ((width * height)/1000000).toFixed(1) + "MP";
                 if (k.alt)
                     j.description = k.alt;
-                j.src = k.src.original;
-                j.thumb = k.src.medium;
-                j.full = k.src.original+"?auto=compress&cs=tinysrgb&w=2160";
+                j.thumb = k.src.original+"?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop";
+                j.full = k.src.original+"?auto=compress&cs=tinysrgb&w=3240";
                 data.push(j);
             }
 

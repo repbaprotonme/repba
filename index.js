@@ -3446,19 +3446,19 @@ var leftmenu = 1;
 
 if (url.searchParams.has("p"))
 {
-    leftmenu = 0;
     var e = url.searchParams.get("p");
     let k = e.split(".");
     url.path = k[0];
+    leftmenu = k.length == 1;
     if (k.length == 2)
         url.project = Number(k[1]);
     path = `res/${url.path}`;
 }
 else if (url.searchParams.has("unsplash.user"))
 {
-    leftmenu = 0;
     var e = url.searchParams.get("unsplash.user");
     let k = e.split(".");
+    leftmenu = k.length == 1;
     url.path = k[0];
     if (k.length == 2)
         url.project = Number(k[1]);
@@ -3466,20 +3466,20 @@ else if (url.searchParams.has("unsplash.user"))
 }
 else if (url.searchParams.has("unsplash.collection"))
 {
-    leftmenu = 0;
     var e = url.searchParams.get("unsplash.collection");
     let k = e.split(".");
     url.path = k[0];
+    leftmenu = k.length == 1;
     if (k.length == 2)
         url.project = Number(k[1]);
     path = `https://unsplash.reportbase5836.workers.dev/collections/${url.path}`;
 }
 else if (url.searchParams.has("pexels.curated"))
 {
-    leftmenu = 0;
     var e = url.searchParams.get("pexels.curated");
     url.path = "pexels";
     url.project = Number(e);
+    leftmenu = 1;
     path = "https://pexels.reportbase5836.workers.dev";
 }
 
@@ -5005,33 +5005,29 @@ if (url.hostname == "reportbase.com")
 function wraptext(ctx, text, maxWidth)
 {
     let words = text.split(' ');
-    let line = ''; // This will store the text of the current line
-    let testLine = ''; // This will store the text when we add a word, to test if it's too long
-    let lineArray = []; // This is an array of lines, which the function will return
+    let line = '';
+    let testLine = '';
+    let lineArray = [];
 
-    // Lets iterate over each word
-    for(var n = 0; n < words.length; n++) {
-        // Create a test line, and measure it..
+    for(var n = 0; n < words.length; n++)
+    {
         testLine += `${words[n]} `;
         let metrics = ctx.measureText(testLine);
         let testWidth = metrics.width;
-        // If the width of this test line is more than the max width
-        if (testWidth > maxWidth && n > 0) {
-            // Then the line is finished, push the current line into "lineArray"
+        if (testWidth > maxWidth && n > 0)
+        {
             lineArray.push(line);
-            // Update line and test line to use this word as the first word on the next line
             line = `${words[n]} `;
             testLine = `${words[n]} `;
         }
-        else {
-            // If the test line is still less than the max width, then add the word to the current line
+        else
+        {
             line += `${words[n]} `;
         }
-        // If we never reach the full max width, then there is only one line.. so push it into the lineArray so we return something
-        if(n === words.length - 1) {
+
+        if (n === words.length - 1)
             lineArray.push(line);
-        }
     }
-    // Return the line array
+
     return lineArray;
 }

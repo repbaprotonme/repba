@@ -35,9 +35,8 @@ export default
                     j.description = k.description;
                 if (k.alt_description)
                     j.alt_description = k.alt_description;
-                j.src = urls.regular;
-                j.full = urls.raw+"&w=2160&q=80&fit=max";
-                j.thumb = urls.thumb;
+                j.full = urls.raw+"&w=3240&q=85";
+                j.thumb = urls.raw+"&w=600&h=600&q=85&fit=crop";
                 j.created = k.created_at.substr(0,10);
                 j.id = k.id;
                 lst.push(j);
