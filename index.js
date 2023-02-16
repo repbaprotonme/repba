@@ -41,6 +41,7 @@ const SLIDETOP = 32;
 const SLIDEFACTOR = 18;
 
 globalobj = {};
+globalobj.errors = 0;
 let photo = {}
 photo.image = 0;
 
@@ -354,7 +355,7 @@ var colorlst =
 var colorobj = new Data("COLOR", colorlst);
 
 var speedobj = new Data("SPEED", 100);
-speedobj.set(30);
+speedobj.set(40);
 
 var timemain = new Data("TIMEMAIN", 30);
 timemain.set(12);
@@ -371,7 +372,7 @@ function drawslices()
 {
     if (!photo.image ||
         !photo.image.complete ||
-        photo.image.naturalHeight == 0)
+        !photo.image.naturalHeight)
         return;
 
     for (var n = 0; n < 1; n++)
@@ -2663,6 +2664,11 @@ var thumblst =
     name: "BOSS",
     draw: function (context, rect, user, time)
     {
+        if (!photo.image ||
+            !photo.image.complete ||
+            !photo.image.naturalHeight)
+            return;
+
         rect = rect.shrink(THUMBORDER*2,THUMBORDER*2);
         var he = heightobj.getcurrent();
         var b = Math.berp(0,he.length()-1,he.current());
@@ -2955,7 +2961,9 @@ var menulst =
 
 function resetcanvas()
 {
-    if (!photo.image.height)
+    if (!photo.image ||
+        !photo.image.complete ||
+        !photo.image.naturalHeight)
         return;
 
     window.footrect = new rectangle(0,window.innerHeight-ALIEXTENT,window.innerWidth,ALIEXTENT);
@@ -3431,35 +3439,24 @@ var bodylst =
   ];
 
 var bodyobj = new Data("", bodylst);
-url.path = "PINO";
+url.path = "BOAT";
 url.project = 0;
-path = `https://bucket.reportbase5836.workers.dev/gallery/${url.path}`;
+path = `res/BOAT`;
+var leftmenu = 1;
 
-if (url.host == "100.115.92.200")
+if (url.searchParams.has("p"))
 {
-    if (url.searchParams.has("p"))
-    {
-        var e = url.searchParams.get("p");
-        let k = e.split(".");
-        url.path = k[0].toLowerCase();
-        path = `res/${url.path}`;
-    }
-    else
-    {
-        path = `res/landscape`;
-    }
-}
-else if (url.searchParams.has("p"))
-{
+    leftmenu = 0;
     var e = url.searchParams.get("p");
     let k = e.split(".");
     url.path = k[0];
     if (k.length == 2)
         url.project = Number(k[1]);
-    path = `https://bucket.reportbase5836.workers.dev/gallery/${url.path}`;
+    path = `res/${url.path}`;
 }
 else if (url.searchParams.has("unsplash.user"))
 {
+    leftmenu = 0;
     var e = url.searchParams.get("unsplash.user");
     let k = e.split(".");
     url.path = k[0];
@@ -3469,6 +3466,7 @@ else if (url.searchParams.has("unsplash.user"))
 }
 else if (url.searchParams.has("unsplash.collection"))
 {
+    leftmenu = 0;
     var e = url.searchParams.get("unsplash.collection");
     let k = e.split(".");
     url.path = k[0];
@@ -3478,6 +3476,7 @@ else if (url.searchParams.has("unsplash.collection"))
 }
 else if (url.searchParams.has("pexels.curated"))
 {
+    leftmenu = 0;
     var e = url.searchParams.get("pexels.curated");
     url.path = "pexels";
     url.project = Number(e);
@@ -3486,8 +3485,8 @@ else if (url.searchParams.has("pexels.curated"))
 
 var galleryobj = new Data("", 0);
 
-//TODO: ERR_CERT_AUTHORITY_INVALID
-fetch("res/HOME")
+//ERR_CERT_AUTHORITY_INVALID
+fetch(path)
   .then(function (response)
   {
      return response.json()
@@ -3556,7 +3555,7 @@ fetch("res/HOME")
         var slices = _8cnvctx.sliceobj;
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
         _8cnvctx.rvalue = 2;
-        _8cnvctx.buttonheight = 240;
+        _8cnvctx.buttonheight = 200;
         if (_8cnvctx.buttonheight>window.innerHeight-100)
             _8cnvctx.buttonheight = window.innerHeight-100
         _8cnvctx.delayinterval = DELAYCENTER / slices.length();
@@ -3626,6 +3625,12 @@ fetch("res/HOME")
 
         pageresize();
         contextobj.reset();
+
+        if (leftmenu)
+        {
+            _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+            menushow(_8cnvctx)
+        }
   })
 
 var ContextObj = (function ()
@@ -3711,7 +3716,9 @@ var ContextObj = (function ()
 
         resetcontext4: function (context)
        	{
-            if (photo.image)
+            if (photo.image &&
+                photo.image.complete &&
+                photo.image.naturalHeight)
             {
                 contextobj.resize(context);
                 resetcanvas(context);
@@ -3730,11 +3737,11 @@ var ContextObj = (function ()
                 photo.image.onerror =
                     photo.image.onabort = function(e)
                 {
-                    photo.image.src = path;
                 }
 
                 photo.image.onload = function()
                 {
+                    globalobj.errors = 0;
                     this.aspect = this.width/this.height;
                     this.size = ((this.width * this.height)/1000000).toFixed(1) + "MP";
                     this.extent = this.width + "x" + this.height;
@@ -4706,7 +4713,8 @@ var headlst =
                 if (rect.width >= 400)
                     s += " / "+galleryobj.length()
             }
-            else if (photo.image && infobj.current() == 2)
+            else if (photo.image && photo.image.complete &&
+               photo.image.naturalHeight && infobj.current() == 2)
             {
                 s = photo.image.extent +" ("+
                     photo.image.aspect.toFixed(2)+")";
@@ -4996,7 +5004,6 @@ if (url.hostname == "reportbase.com")
 
 function wraptext(ctx, text, maxWidth)
 {
-    // First, start by splitting all of our text into words, but splitting it into an array split by spaces
     let words = text.split(' ');
     let line = ''; // This will store the text of the current line
     let testLine = ''; // This will store the text when we add a word, to test if it's too long

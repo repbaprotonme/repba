@@ -166,7 +166,7 @@ return fetch("https://bucket.reportbase5836.workers.dev/gallery/" + id)
             var width = k.width;
             var height = k.height;
             var aspect = (k.width/k.height).toFixed(2);
-            j.id = k.id;
+            j.id = k.src?k.src:k.id;
             j.index = (data.length+1)+" of "+json.data.length;
             if (width)
                 j.width = width;
@@ -180,9 +180,9 @@ return fetch("https://bucket.reportbase5836.workers.dev/gallery/" + id)
 
             if (k.describe)
                 j.describe = k.describe;
-            j.original = `https://reportbase.com/image/${j.id}/quality=85`;
-            j.full = `https://reportbase.com/image/${j.id}/quality=85,w=2160`;
-            j.thumb = `https://reportbase.com/image/${j.id}/quality=85,w=540`;
+            j.original = `https://reportbase.com/image/${j.id}/quality=85,fit=crop,width=${width},height=${height}`;
+            j.full = `https://reportbase.com/image/${j.id}/quality=85,fit=crop,width=${width},height=${height}`;
+            j.thumb = `https://reportbase.com/image/${j.id}/quality=85,fit=crop,width=600,height=600`;
             j.quote = quotes[m++];
             if (m == quotes.length)
                 m = 0;
