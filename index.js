@@ -1157,15 +1157,18 @@ addressobj.full = function ()
     var zoom = zoomobj.getcurrent();
     var out = url.origin;
     out += url.pathname;
-    var p = url.path +"."+galleryobj.current().pad(4);
-    if (url.searchParams.has("unsplash.user"))
-        out += "?unsplash.user="+p;
-    else if (url.searchParams.has("unsplash.collection"))
-        out += "?unsplash.collection="+p;
-    else if (url.searchParams.has("pexels.curated"))
-        out += "?pexels.curated="+galleryobj.current().pad(4);
-    else
-        out += "?p="+p;
+    if (url.path)
+    {
+        var p = url.path +"."+galleryobj.current().pad(4);
+        if (url.searchParams.has("unsplash.user"))
+            out += "?unsplash.user="+p;
+        else if (url.searchParams.has("unsplash.collection"))
+            out += "?unsplash.collection="+p;
+        else if (url.searchParams.has("pexels.curated"))
+            out += "?pexels.curated="+galleryobj.current().pad(4);
+        else
+            out += "?p="+p;
+    }
 
     out +=
         "&h="+headobj.enabled+
@@ -3428,10 +3431,9 @@ var bodylst =
   ];
 
 var bodyobj = new Data("", bodylst);
-
-url.path = "BOAT";
+url.path = "PINO";
 url.project = 0;
-var path = `https://bucket.reportbase5836.workers.dev/gallery/${url.path}`;
+path = `https://bucket.reportbase5836.workers.dev/gallery/${url.path}`;
 
 if (url.host == "100.115.92.200")
 {
@@ -3484,7 +3486,7 @@ else if (url.searchParams.has("pexels.curated"))
 
 var galleryobj = new Data("", 0);
 
-//ERR_CERT_AUTHORITY_INVALID
+//TODO: ERR_CERT_AUTHORITY_INVALID
 fetch(path)
   .then(function (response)
   {
@@ -3721,7 +3723,7 @@ var ContextObj = (function ()
                     path = globalobj.promptedfile;
                 seteventspanel(new Empty());
                 photo.image = new Image();
-                //photo.image.crossOrigin = 1;
+                photo.image.crossOrigin = 1;
                 photo.image.original = path;
                 photo.image.src = path;
 
