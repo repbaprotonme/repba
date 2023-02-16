@@ -1,5 +1,7 @@
 //todo: https://obfuscator.io
 //todo: safari max size
+//todo: menu bar
+//todo: fast pan goes hot
 
 /* ++ += ==
 Copyright 2017 Tom Brinkman
@@ -500,6 +502,7 @@ function drawslices()
         delete context.fullpanel;
         delete context.footpanel;
         delete context.external;
+        delete context.explore;
         delete context.speedctrl;
         delete context.progresscircle;
         delete context.timemainctrl;
@@ -884,6 +887,22 @@ var Fill = function (color)
     };
 };
 
+var OpenPanel = function (color, shadow)
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.save();
+		context.fillStyle = "white";
+		context.strokeStyle = "white";
+        var x = rect.x+20;
+        var y = rect.y+30;
+        context.lineWidth = 1.5;
+        context.strokeRect(x, y, 20, 14);
+        context.fillRect(x, y-5, 10, 5);
+        context.restore();
+    }
+};
+
 var FullPanel = function (color, shadow)
 {
     this.draw = function (context, rect, user, time)
@@ -896,9 +915,9 @@ var FullPanel = function (color, shadow)
 
         var e = screenfull.isFullscreen?6:5;
         var j = 28;
-        var k = 20;
+        var k = 22;
         var r = new rectangle(rect.x+k,rect.y+j,rect.width,rect.height);
-        context.lineWidth = 3;
+        context.lineWidth = screenfull.isFullscreen?3:2;
         var x = r.x;
         var y = r.y;
         var path = new Path2D();
@@ -2480,10 +2499,13 @@ var taplst =
         }
         else if (context.external && context.external.hitest(x,y))
         {
+            var path = "https://unsplash.com/photos/"+galleryobj.getcurrent().id;
+            window.open(path,"UNSPLASH");
+        }
+        else if (context.explore && context.explore.hitest(x,y))
+        {
             menuhide();
             promptFile().then(function(files) { dropfiles(files); })
-            //var path = "https://unsplash.com/photos/"+galleryobj.getcurrent().id;
-            //window.open(path,"UNSPLASH");
         }
         else if (context.fullpanel && context.fullpanel.hitest(x,y))
         {
@@ -3273,6 +3295,7 @@ var bodylst =
                 return;
             context.save();
             context.font = "1rem Archivo Black";
+            context.external = new rectangle()
             context.moveprev = new rectangle()
             context.movenext = new rectangle()
             var zoom = zoomobj.getcurrent();
@@ -3289,7 +3312,21 @@ var bodylst =
                             ]),10,10),
                             0,
                         ]),
-                        0,
+                        new Row([80,0],
+                        [
+                            new Layer(
+                            [
+                                new Rectangle(context.external),
+                                new RowA([0,20,20,0],
+                                [
+                                    0,
+                                    new Text("white", "center", "middle", 0, 0, 1),
+                                    new Text("white", "center", "middle", 0, 0, 1),
+                                    0,
+                                ]),
+                            ]),
+                            0,
+                        ]),
                         new Row([80,0],
                         [
                             new Shrink(new Layer(
@@ -3302,7 +3339,7 @@ var bodylst =
                         ]),
                     ]);
 
-            a.draw(context, rect, 0, 0);
+            a.draw(context, rect, [0,"unsplash.com",galleryobj.getcurrent().id,0], 0);
             context.restore();
         }
     },
@@ -3371,8 +3408,8 @@ var bodylst =
                 0,
                 new Layer(
                 [
-                    new Rectangle(context.footpanel),
-                    new Fill(HEADBACK),
+                   new Rectangle(context.footpanel),
+                   new Fill(HEADBACK),
                    new Row([70,0],
                    [
                        new Col([0,ALIEXTENT,ALIEXTENT,ALIEXTENT,ALIEXTENT,ALIEXTENT,0],
@@ -3380,12 +3417,12 @@ var bodylst =
                            0,
                            new Layer(
                            [
-                                new FullPanel("white","black"),
+                               new FullPanel("white","black"),
                                new Rectangle(context.fullpanel),
                            ]),
                            new Layer(
                            [
-                                new Minus("white","black"),
+                               new Minus("white","black"),
                                new Rectangle(context.stretchin),
                            ]),
                            new Layer(
@@ -3396,12 +3433,12 @@ var bodylst =
                            ]),
                            new Layer(
                            [
-                                new Plus("white","plus"),
+                               new Plus("white","black"),
                                new Rectangle(context.stretchout),
                            ]),
                            new Layer(
                            [
-                                new FullPanel("white","plus"),
+                               new OpenPanel("white","black"),
                                new Rectangle(context.external),
                            ]),
                            0
@@ -3433,6 +3470,7 @@ var bodylst =
 
             var a = new MultiText();
             a.draw(context, rect, user.lst, 0);
+
             context.restore();
         }
     },
@@ -3746,7 +3784,7 @@ var ContextObj = (function ()
                     this.size = ((this.width * this.height)/1000000).toFixed(1) + "MP";
                     this.extent = this.width + "x" + this.height;
                     var e = galleryobj.getcurrent();
-                    document.title = url.path +"."+galleryobj.current().pad(4);
+                    document.title = `${url.path}.${galleryobj.current().pad(4)} ${photo.image.width}x${photo.image.height}`;
 
                     var k;
                     if (this.aspect < 0.5)

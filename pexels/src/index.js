@@ -35,7 +35,7 @@ export default
                 if (k.alt)
                     j.description = k.alt;
                 j.thumb = k.src.original+"?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop";
-                j.full = k.src.original+"?auto=compress&cs=tinysrgb&w=3240";
+                j.full = k.src.original+"?auto=compress&cs=tinysrgb&h=2160";
                 data.push(j);
             }
 
