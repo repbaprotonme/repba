@@ -4841,6 +4841,9 @@ function menushow(context)
 
     context.refresh();
     _4cnvctx.refresh();
+    setTimeout(function() { context.refresh(); }, 100);
+    setTimeout(function() { context.refresh(); }, 500);
+    setTimeout(function() { context.refresh(); }, 1000);
 }
 
 var ClosePanel = function (size)
