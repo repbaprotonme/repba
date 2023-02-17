@@ -2,6 +2,35 @@ export default
 {
 	async fetch(request, env, ctx)
     {
+        function getwh(w, h, maxsize)
+        {
+            var a = w/h;
+            if (w > h)
+            {
+                while (w*h >= maxsize)
+                {
+                    w *= 0.999;
+                    h = w/a;
+                }
+
+                w = Math.ceil(w/100)*100;
+                h = Math.ceil(w/a);
+            }
+            else
+            {
+                while (w*h >= maxsize)
+                {
+                    h *= 0.999;
+                    w = a*h;
+                }
+
+                h = Math.ceil(h/100)*100;
+                w = Math.ceil(a*h);
+            }
+
+            return {width:w, height:h}
+        }
+
         var per_page = 80;
         var data = [];
         var page = 1;
@@ -23,11 +52,13 @@ export default
             {
                 var k = json.photos[n];
                 var j = {};
-                var width = k.width;
-                var height = k.height;
-                var aspect = (k.width/k.height).toFixed(2);
+                var e = getwh(k.width, k.height, 6000000)
+                var width = e.width;
+                var height = e.height;
+                var aspect = (width/height).toFixed(2);
                 var user = k.photographer;
                 var urls = k.urls;
+                j.id = k.id+"";
                 j.index = (data.length+1)+" of "+json.total_results;
                 j.name = user.name;
                 j.extent = `${width}x${height} ${aspect}`;
@@ -35,7 +66,8 @@ export default
                 if (k.alt)
                     j.description = k.alt;
                 j.thumb = k.src.original+"?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop";
-                j.full = k.src.original+"?auto=compress&cs=tinysrgb&h=2160";
+                j.full = k.src.original+`?auto=compress&cs=tinysrgb&h=${height}`;
+                j.original = k.src.original;
                 data.push(j);
             }
 

@@ -501,7 +501,7 @@ function drawslices()
         delete context.stretchout;
         delete context.fullpanel;
         delete context.footpanel;
-        delete context.external;
+        delete context.original;
         delete context.explore;
         delete context.speedctrl;
         delete context.progresscircle;
@@ -895,10 +895,10 @@ var OpenPanel = function (color, shadow)
 		context.fillStyle = "white";
 		context.strokeStyle = "white";
         var x = rect.x+20;
-        var y = rect.y+30;
-        context.lineWidth = 1.5;
-        context.strokeRect(x, y, 20, 14);
-        context.fillRect(x, y-5, 10, 5);
+        var y = rect.y+32;
+        context.lineWidth = 2;
+        context.strokeRect(x, y, 18, 12);
+        context.fillRect(x, y-4, 10, 4);
         context.restore();
     }
 };
@@ -2226,7 +2226,8 @@ var presslst =
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
             context.pressed = 1;
-        else if (context.footpanel && context.footpanel.hitest(x,y))
+        else if (context.stretchin && context.stretchin.hitest(x,y) ||
+                context.stretchout && context.stretchout.hitest(x,y))
             return;
         else
             galleryobj.hidedisplay = galleryobj.hidedisplay?0:1;
@@ -2497,7 +2498,7 @@ var taplst =
 
             _4cnvctx.refresh();
         }
-        else if (context.external && context.external.hitest(x,y))
+        else if (context.original && context.original.hitest(x,y))
         {
             var obj = galleryobj.getcurrent();
             var path = obj.original?obj.original:obj.full;
@@ -2505,7 +2506,7 @@ var taplst =
                 url.searchParams.has("unsplash.collection"))
                 path = "https://unsplash.com/photos/"+obj.id;
             else if (url.searchParams.has("pexels.curated"))
-                path = "https://unsplash.com/photos/"+obj.id;
+                path = path;
             window.open(path,"reportbase.com");
         }
         else if (context.explore && context.explore.hitest(x,y))
@@ -3301,7 +3302,7 @@ var bodylst =
                 return;
             context.save();
             context.font = "1rem Archivo Black";
-            context.external = new rectangle()
+            context.original = new rectangle()
             context.moveprev = new rectangle()
             context.movenext = new rectangle()
             var zoom = zoomobj.getcurrent();
@@ -3318,21 +3319,7 @@ var bodylst =
                             ]),10,10),
                             0,
                         ]),
-                        new Row([80,0],
-                        [
-                            new Layer(
-                            [
-                                new Rectangle(context.external),
-                                new RowA([0,20,20,0],
-                                [
-                                    0,
-                                    new Text("white", "center", "middle", 0, 0, 1),
-                                    new Text("white", "center", "middle", 0, 0, 1),
-                                    0,
-                                ]),
-                            ]),
-                            0,
-                        ]),
+                        0,
                         new Row([80,0],
                         [
                             new Shrink(new Layer(
@@ -3345,14 +3332,7 @@ var bodylst =
                         ]),
                     ]);
 
-            var lst = [0,"reportbase.com",url.path +"."+galleryobj.current().pad(4),0];
-            if (url.searchParams.has("unsplash.user") ||
-                url.searchParams.has("unsplash.collection"))
-                lst = [0,"unsplash.com",galleryobj.getcurrent().id,0];
-            else if (url.searchParams.has("pexels.curated"))
-                lst = [0,"pexels.com",galleryobj.getcurrent().id,0];
-
-            a.draw(context, rect, lst, 0);
+            a.draw(context, rect, 0, 0);
             context.restore();
         }
     },
@@ -4670,8 +4650,8 @@ var headlst =
 		{
             context.clear()
             context.save()
-            context.shadowOffsetX = 0;
-            context.shadowOffsetY = 0;
+            context.shadowOffsetX = 1;
+            context.shadowOffsetY = 1;
             context.shadowColor = "black"
             context.page = new rectangle()
             context.option = new rectangle()
@@ -4684,7 +4664,7 @@ var headlst =
             var f = Math.min(rect.width - ALIEXTENT*4, 180);
             var a = new Layer(
                 [
-                    new Fill(HEADBACK),
+                    0,//new Fill(HEADBACK),
                     new Col([ALIEXTENT,0,ALIEXTENT,f,ALIEXTENT,0,ALIEXTENT],
                     [
                         galleryobj.length()<2?0:new Layer(
@@ -4694,7 +4674,7 @@ var headlst =
                             new Rectangle(context.page),
                         ]),
                         0,
-                        new Layer(
+                        1?0:new Layer(
                         [
                             new Rectangle(context.prevpage),
                             new Row([HNUB,0,HNUB],
@@ -4715,11 +4695,11 @@ var headlst =
                             new Row([HNUB,0,HNUB],
                             [
                                 0,
-                                new Shrink(new Text("white", "center", "middle",0,1,0),20,20),
+                                new Shrink(new Text("white", "center", "middle",0,1,1),20,20),
                                 0,
                             ]),
                         ]),
-                        new Layer(
+                        1?0:new Layer(
                         [
                             new Rectangle(context.nextpage),
                             new Row([HNUB,0,HNUB],
@@ -4746,7 +4726,7 @@ var headlst =
             var s;
             if (infobj.current() == 0)
             {
-                s = (galleryobj.current()+1).toFixed(0);
+                s = "";
             }
             else if (infobj.current() == 1)
             {

@@ -2,6 +2,36 @@ export default
 {
 	async fetch(request, env, ctx)
     {
+        //todo move to global folder
+        function getwh(w, h, maxsize)
+        {
+            var a = w/h;
+            if (w > h)
+            {
+                while (w*h >= maxsize)
+                {
+                    w *= 0.999;
+                    h = w/a;
+                }
+
+                w = Math.ceil(w/100)*100;
+                h = Math.ceil(w/a);
+            }
+            else
+            {
+                while (w*h >= maxsize)
+                {
+                    h *= 0.999;
+                    w = a*h;
+                }
+
+                h = Math.ceil(h/100)*100;
+                w = Math.ceil(a*h);
+            }
+
+            return {width:w, height:h}
+        }
+
         var url = new URL(request.url);
         var k = url.pathname.split("/");
         if (k.length < 3)
@@ -22,9 +52,10 @@ export default
             {
                 var k = data[n];
                 var j = {};
-                var width = k.width;
-                var height = k.height;
-                var aspect = (k.width/k.height).toFixed(2);
+                var e = getwh(k.width, k.height, 6000000)
+                var width = e.width;
+                var height = e.height;
+                var aspect = (width/height).toFixed(2);
                 var user = k.user;
                 var urls = k.urls;
                 j.index = (lst.length+1)+" of "+total;
@@ -35,7 +66,8 @@ export default
                     j.description = k.description;
                 if (k.alt_description)
                     j.alt_description = k.alt_description;
-                j.full = urls.raw+"&h=2160&q=85";
+                j.original = urls.raw;
+                j.full = urls.raw+`&h=${height}&q=85`;
                 j.thumb = urls.raw+"&w=600&h=600&q=85&fit=crop";
                 j.created = k.created_at.substr(0,10);
                 j.id = k.id;
