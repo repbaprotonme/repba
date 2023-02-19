@@ -1,7 +1,6 @@
 //todo: https://obfuscator.io
 //todo: safari max size
 //todo: menu bar
-//todo: fast pan goes hot
 
 /* ++ += ==
 Copyright 2017 Tom Brinkman
@@ -13,7 +12,7 @@ const FIREFOX = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 const SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*2;
-const SWIPETIME = 20;
+const SWIPETIME = 100;
 const THUMBORDER = 2;
 const JULIETIME = 100;
 const DELAY = 10000000;
@@ -1274,7 +1273,6 @@ CanvasRenderingContext2D.prototype.hide = function ()
 CanvasRenderingContext2D.prototype.tab = function ()
 {
     var context = this;
-    context.slidestart = context.timeobj.current();
     context.slidestop = (context.timeobj.length()/context.virtualwidth)*SLIDETOP;
     context.slidereduce = context.slidestop/SLIDEFACTOR;
     if (rotateobj.enabled)
@@ -1927,17 +1925,12 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
 	{
-        rotateobj.enabled = 0;
         clearInterval(footcnvctx.timefooter);
         context.startx = x;
         context.starty = y;
         context.pantype = 0;
         context.startt = context.timeobj.current();
-        context.istimemainctrl = context.timemainctrl && context.timemainctrl.hitest(x,y);
-        context.isspeedctrl = context.speedctrl && context.speedctrl.hitest(x,y);
-        context.iszoomctrl = context.zoomctrl && context.zoomctrl.hitest(x,y);
         context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
-        var zoom = zoomobj.getcurrent()
         if (context.isthumbrect)
             context.panning = 1;
         context.clearpoints();
@@ -1949,12 +1942,10 @@ var panlst =
             context.pressed = 0;
             context.panning = 0;
             context.isthumbrect = 0;
-            var zoom = zoomobj.getcurrent()
             delete context.isthumbrect;
             delete context.startx;
             delete context.starty;
             delete context.startt;
-            delete zoom.offset;
             delete rowobj.offset;
             context.refresh();
             addressobj.update();
