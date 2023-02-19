@@ -1925,6 +1925,8 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
 	{
+        rotateobj.enabled = 0;
+        clearInterval(context.timemain);
         clearInterval(footcnvctx.timefooter);
         context.startx = x;
         context.starty = y;
