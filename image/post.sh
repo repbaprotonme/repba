@@ -1,0 +1,22 @@
+curl -X POST -F file=@./test.webp -H "Authorization: Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb" https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
