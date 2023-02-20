@@ -1683,10 +1683,10 @@ var pinchlst =
         var k = Math.clamp(data[0], data[data.length-1], scale*context.savepinch);
         var j = Math.berp(data[0], data[data.length-1], k);
         var e = Math.lerp(0,obj.length(),j)/obj.length();
+        context.pinching = 1;
 
         if (context.isthumbrect)
         {
-            context.pinching = 1;
             delete context.thumbcanvas;
             var f = Math.floor(obj.length()*e);
             obj.set(f);
@@ -1869,9 +1869,6 @@ var panlst =
  	leftright: function (context, rect, x, y, type) { },
 	pan: function (context, rect, x, y, type)
 	{
-        if ( context.pinching )
-             return;
-
         if (context.pressed)
         {
             var positx = positxobj.getcurrent();
@@ -2567,20 +2564,6 @@ var taplst =
                 context.refresh();
             }, 400)
         }
-        else if (context.menuhome && context.menuhome.hitest(x,y))
-        {
-            var obj = _8cnvctx.timeobj;
-            var j = obj.berp() == 0 ? (1-galleryobj.berp())*TIMEOBJ : 0;
-            obj.set(j);
-            context.tapindex = 2;
-            context.refresh();
-            clearInterval(globalobj.tapthumb);
-            globalobj.tapthumb = setTimeout(function()
-            {
-                _4cnvctx.tapindex = 0;
-                _4cnvctx.refresh();
-            }, 400)
-        }
         else if (!headobj.enabled && context.thumbrect && context.thumbrect.hitest(x,y))
         {
             rotateobj.enabled = 0;
@@ -2606,6 +2589,7 @@ var taplst =
         }
         else if (context.ignores && context.ignores.hitest(x,y)>=0)
         {
+
         }
         else
         {
@@ -2719,7 +2703,7 @@ var thumblst =
 
         var blackfill = new Fill(THUMBFILL);
 
-        if ((context.isthumbrect && jp) || context.tapping || context.pressed || context.pinching)
+        if ((context.isthumbrect && jp) || context.tapping || context.pressed)// || context.pinching)
         {
             blackfill.draw(context, context.thumbrect, 0, 0);
             guideobj.getcurrent().draw(context, context.thumbrect, 0, 0);
@@ -3013,7 +2997,7 @@ function resetcanvas()
         var height = photo.image.height*zoom;
         var aspect = photo.image.width/height;
         var width = context.canvas.height * aspect;
-        if (width/window.innerWidth > 1.4)
+        if (width/window.innerWidth > 1.5)
             break;
     }
 
@@ -3044,7 +3028,9 @@ function resetcanvas()
     rotateobj.data = rotatelst;
 
     var f = 3;
-    if (context.virtualfactor < 1.25)
+    if (context.pinching)
+        f = 12;
+    else if(context.virtualfactor < 1.25)
         f = 12;
     else if (context.virtualfactor < 1.75)
         f = 9;
@@ -4614,26 +4600,37 @@ var headlst =
                 menushow(_8cnvctx)
                 _4cnvctx.refresh();
             }
-            else if (context.prevpage.hitest(x,y))
-            {
-                _4cnvctx.movepage(-1);
-            }
-            else if (context.picture.hitest(x,y))
-            {
-                if (globalobj.shifthit)
-                {
-                    infobj.rotate(1);
-                    _4cnvctx.refresh();
-                }
-            }
-            else if (context.nextpage.hitest(x,y))
-            {
-                _4cnvctx.movepage(1);
-            }
             else if (context.option.hitest(x,y))
             {
                 _4cnvctx.refresh();
                 menushow(_9cnvctx);
+            }
+            else
+            {
+                if (menuenabled())
+                {
+                    menuhide();
+                }
+                else if (bodyobj.enabled)
+                {
+                    colorobj.enabled = 0;
+                    bodyobj.enabled = 0;
+                }
+                else
+                {
+                    colorobj.enabled = 0;
+                    _4cnvctx.tapping = 0;
+                    _4cnvctx.isthumbrect = 0;
+                    thumbobj.enabled = 1;
+                    var h = galleryobj.hidedisplay;
+                    galleryobj.hidedisplay = 0;
+                    if (!h)
+                    {
+                        headobj.enabled = headobj.enabled?0:1;
+                    }
+
+                    pageresize();
+                }
             }
 
             _4cnvctx.refresh();
