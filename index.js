@@ -371,7 +371,7 @@ function drawslices()
         else
             context.lastime = context.timeobj.current();
 
-        if (!context.panning && context.timemain)
+        if (context.timemain)
         {
             context.slidestop -= context.slidereduce;
             context.slidestop = Math.max(context.virtualspeed, context.slidestop);
@@ -495,14 +495,14 @@ function drawslices()
         {
             if (headobj.enabled)
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            bodyobj.set(0)
             if (bodyobj.enabled)
             {
                 bodyobj.set(bodyobj.enabled)
             }
-            else if (!headobj.enabled && thumbobj.enabled)
+            else if (!headobj.enabled)
             {
-                thumbobj.getcurrent().draw(context, rect, 0, 0);
+                if (globalobj.showinfo)
+                    thumbobj.getcurrent().draw(context, rect, 0, 0);
                 bodyobj.set(1)
             }
             else
@@ -1812,7 +1812,6 @@ function dropfiles(files)
     delete photo.image;
     _4cnvctx.tapping = 0;
     _4cnvctx.isthumbrect = 0;
-    thumbobj.enabled = 1;
     headobj.enabled = 0;
     pageresize();
     _4cnvctx.setcolumncomplete = 0;
@@ -1944,13 +1943,13 @@ var panlst =
 	{
         rotateobj.enabled = 0;
         clearInterval(context.timemain);
+        context.timemain = 0;
         clearInterval(footcnvctx.timefooter);
         context.startx = x;
         context.starty = y;
         context.pantype = 0;
         context.startt = context.timeobj.current();
         context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
-        context.panning = 1;
         context.clearpoints();
     },
     panend: function (context, rect, x, y)
@@ -1958,7 +1957,6 @@ var panlst =
         setTimeout(function()
         {
             context.pressed = 0;
-            context.panning = 0;
             context.isthumbrect = 0;
             delete context.isthumbrect;
             delete context.startx;
@@ -2654,7 +2652,6 @@ var taplst =
             {
                 context.tapping = 0;
                 context.isthumbrect = 0;
-                thumbobj.enabled = 1;
                 headobj.enabled = headobj.enabled?0:1;
                 pageresize();
             }
@@ -2709,14 +2706,16 @@ var thumblst =
 [
 {
     name: "BOSS",
-    draw: function (context, rect, user, time)
+    draw: function (context, r, user, time)
     {
         if (!photo.image ||
             !photo.image.complete ||
             !photo.image.naturalHeight)
             return;
 
-        rect = rect.shrink(THUMBORDER*2,THUMBORDER*2);
+        var rect = new rectangle(r.x, r.y, r.width, r.height);
+        rect.shrink(THUMBORDER*2, THUMBORDER*2);
+
         var he = heightobj.getcurrent();
         var b = Math.berp(0,he.length()-1,he.current());
         var height = Math.max(60,Math.lerp(0, rect.height, b));
@@ -2817,7 +2816,6 @@ var thumblst =
 ];
 
 var thumbobj = new Data("THUMB", thumblst);
-thumbobj.enabled = 1;
 
 var alphaobj = new Data("ALPHA", 100);
 alphaobj.set(100)
@@ -3706,7 +3704,7 @@ fetch(path)
             contextobj.reset()
         }});
 
-        slices.data.push({title:"Description", path:"DESCRIBE", func: function()
+        slices.data.push({title:"Thumbnail", path:"DESCRIBE", func: function()
         {
             globalobj.showinfo = globalobj.showinfo?0:1;
             _4cnvctx.refresh();
@@ -4750,7 +4748,6 @@ var headlst =
                 {
                     _4cnvctx.tapping = 0;
                     _4cnvctx.isthumbrect = 0;
-                    thumbobj.enabled = 1;
                     headobj.enabled = headobj.enabled?0:1;
                     pageresize();
                 }
