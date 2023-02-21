@@ -1,6 +1,5 @@
 //todo: https://obfuscator.io
 //todo: safari max size
-//todo: menu bar
 
 /* ++ += ==
 Copyright 2017 Tom Brinkman
@@ -1951,8 +1950,7 @@ var panlst =
         context.pantype = 0;
         context.startt = context.timeobj.current();
         context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
-        if (context.isthumbrect)
-            context.panning = 1;
+        context.panning = 1;
         context.clearpoints();
     },
     panend: function (context, rect, x, y)

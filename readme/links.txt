@@ -183,7 +183,7 @@ https://codebeautify.org/calculators/
 
 []
 https://bigthink.com/
-ttps://nautil.us
+https://nautil.us
 https://serialpodcast.org/
 https://www.npr.org/podcasts/510282/pop-culture-happy-hour
 https://www.slashdot.org
@@ -195,10 +195,12 @@ https://www.pbs.org/show/newshour/
 https://podbay.fm/show/81210923
 https://www.youtube.com/channel/UCu5jfQcpRLm9xhmlSd5S8xw
 https://www.youtube.com/watch?v=1sl5KJ69qiA 
-https://www.youtube.com/channel/UCdJa8L2rQJ6vPzgSDc_xQqA
 https://dailygalaxy.com/
 https://www.bbcearth.com
 https://www.smashingmagazine.com/
+
+[]
+https://www.youtube.com/channel/UCdJa8L2rQJ6vPzgSDc_xQqA
 
 []
 https://news.ycombinator.com/
