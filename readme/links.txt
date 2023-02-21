@@ -2,6 +2,7 @@ https://www.postman.com/
 https://www.futuretools.io/
 https://front.comparium.app/
 https://vectr.com/design/editor/f8a8e900-89ee-415a-91be-d9072312dba1
+https://photoscapes.com/  #slideshows
 
 []
 command line
