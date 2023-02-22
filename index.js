@@ -9,9 +9,12 @@ http://www.reportbase.com
 const ISMOBILE = window.matchMedia("only screen and (max-width: 760px)").matches;
 const FIREFOX = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 const SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+const SAFIROX = 0;//SAFARI || FIREFOX;
 const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*2;
 const SWIPETIME = 100;
+const MENUBARWIDTH = 12;
+const MENUBARHEIGHT = 40;
 const THUMBORDER = 2;
 const JULIETIME = 100;
 const DELAY = 10000000;
@@ -171,6 +174,18 @@ let Data = function (title, data)
     this.add = function (index)
     {
         this.set(Number(this.current())+Math.floor(index));
+    };
+
+    this.addperc = function (perc)
+    {
+        var k = this.current() + ((perc/100)*this.length());
+        this.set(k);
+    };
+
+    this.setperc = function (perc)
+    {
+        var k = Math.floor(perc*this.length());
+        this.set(k);
     };
 
     this.find = function (k)
@@ -349,8 +364,8 @@ var colobj = new Data("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new Data("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
 var rotateobj = new Data("ROTATEOBJ", []);
 
-speedobj.set(40);
-timemain.set(12);
+speedobj.set(20);
+timemain.set(8);
 
 function drawslices()
 {
@@ -374,7 +389,7 @@ function drawslices()
         if (context.timemain)
         {
             context.slidestop -= context.slidereduce;
-            context.slidestop = Math.max(context.virtualspeed, context.slidestop);
+            context.slidestop = SAFIROX ? context.slidestop : Math.max(context.virtualspeed, context.slidestop);
             if (context.slidestop > 0)
             {
                 if (rotateobj.enabled)
@@ -397,8 +412,9 @@ function drawslices()
 
         var stretch = stretchobj.getcurrent();
         context.virtualpinch = context.virtualwidth*stretch.getcurrent()/100;
-        context.virtualeft = (context.virtualpinch-rect.width)/2-context.colwidth;
-        var j = (context.colwidth/(context.colwidth+context.virtualwidth))*TIMEOBJ;
+        var colwidth = context.colwidthlst[0].width;
+        context.virtualeft = (context.virtualpinch-rect.width)/2-colwidth;
+        var j = (colwidth/(colwidth+context.virtualwidth))*TIMEOBJ;
         var time = (context.timeobj.getcurrent()+j)/1000;
         var slicelst = context.sliceobj.data;
         var slice = slicelst[0];
@@ -407,13 +423,13 @@ function drawslices()
         context.save();
         if (factorobj.enabled)
             context.clear();
-        context.translate(-context.colwidth, 0);
+        context.translate(-colwidth, 0);
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
         var j = time+slice.time;
         var b = Math.tan(j*VIRTCONST);
         var bx = Math.berp(-1, 1, b) * context.virtualpinch - context.virtualeft;
-        var extra = context.colwidth;
+        var extra = colwidth;
         var width = rect.width+extra;
         var x1,xn,s1,sn;
         for (var m = 0; m < slicelst.length; ++m)
@@ -442,7 +458,7 @@ function drawslices()
                 sn = stretchwidth;
             }
 
-            if (bx >= rect.width+context.colwidth || bx2 < context.colwidth)
+            if (bx >= rect.width+colwidth || bx2 < colwidth)
             {
                 bx = bx2;
                 continue;
@@ -450,21 +466,21 @@ function drawslices()
 
             slice.visible = 1;
             slice.strechwidth = stretchwidth;
-            var wid = factorobj.enabled ? context.colwidth : stretchwidth;
-            context.drawImage(slice.canvas, slice.x, 0, context.colwidth, rect.height,
+            var wid = factorobj.enabled ? context.colwidthlst[m].width : stretchwidth;
+            context.drawImage(slice.canvas, slice.x, 0, context.colwidthlst[m].width, rect.height,
               slice.bx, 0, wid, rect.height);
             bx = bx2;
         }
 
         var x = xn+sn;
         var w = x1-x;
-        if (x+w > context.colwidth && x < rect.width+context.colwidth)
+        if (x+w > colwidth && x < rect.width+colwidth)
         {
             var slice = slicelst[0];
             slice.visible = 1;
             slice.strechwidth = w;
-            var wid = factorobj.enabled ? context.colwidth : w;
-            context.drawImage(slice.canvas, 0, 0, context.colwidth, rect.height,
+            var wid = factorobj.enabled ? context.colwidthlst[0].width : w;
+            context.drawImage(slice.canvas, 0, 0, context.colwidthlst[0].width, rect.height,
                   x, 0, wid, rect.height);
         }
 
@@ -586,9 +602,32 @@ function drawslices()
             context.restore();
         }
 
+        var rect = context.rect();
         var a = new CurrentVPanel(new Fill("white"), 90, 1);
-        var w = context.canvas.width;
-        a.draw(context, new rectangle(w-12,0,7,rect.height), context.timeobj, 0);
+        a.draw(context, new rectangle(rect.width-MENUBARWIDTH,0,7,rect.height), context.timeobj, 0);
+
+        context.save();
+        context.font = "0.9rem Archivo Black";
+        var a = new RowA([MENUBARHEIGHT,0,MENUBARHEIGHT],
+        [
+            new Layer(
+            [
+                new Fill("rgba(0,0,0,0.5)"),
+                new Text("white", "center", "middle", 0, 0, 1),
+            ]),
+            0,
+            new Layer(
+            [
+                new Fill("rgba(0,0,0,0.5)"),
+                new Text("white", "center", "middle", 0, 0, 1),
+            ])
+        ]);
+
+        var k = Math.lerp(1,context.sliceobj.length(),(1-context.timeobj.berp()));
+        k = Math.round(k);
+        var j = `${k} of ${context.sliceobj.length()}`
+        a.draw(context, rect, [context.title,"",j], 0);
+        context.restore();
     }
 }
 
@@ -817,7 +856,11 @@ var MultiText = function (width, height, func)
         lst.length = len;
         rect.y = (rect.height-lst.length*20)/2
         rect.y -= rect.height/2
-        rect.y += 10;
+        if (context.index == 3)
+            rect.y -= 20;
+        else
+            rect.y += 10;
+
         for (var n = 0; n < lst.length; n++)
         {
             var lines = wraptext(context, lst[n], Math.min(640,rect.width));
@@ -1856,7 +1899,7 @@ var panlst =
             obj.set(m);
             context.refresh()
         }
-        else
+        else if (type == "panup" || type == "pandown")
         {
             var jvalue = ((context.timeobj.length()/context.virtualheight)*(context.starty-y));
             var j = context.startt - jvalue;
@@ -2232,19 +2275,7 @@ var presslst =
     {
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
-        {
             context.pressed = 1;
-        }
-        else if (context.minuspanel && context.minuspanel.hitest(x,y) ||
-                context.pluspanel && context.pluspanel.hitest(x,y))
-        {
-            return;
-        }
-        else
-        {
-            globalobj.showinfo = globalobj.showinfo ? 0 : 1;
-        }
-
         context.refresh();
     }
 },
@@ -2371,13 +2402,7 @@ var keylst =
 
         context.refresh();
 
-        if (evt.key != " " && isFinite(evt.key))
-        {
-            context.refresh();
-            evt.preventDefault();
-            return false;
-        }
-        else if (evt.key == " ")
+        if (evt.key == " ")
         {
             var k = _4cnvctx.timemain = _4cnvctx.timemain ? 0: 1;
             clearInterval(_4cnvctx.timemain);
@@ -2442,17 +2467,37 @@ var keylst =
             contextobj.reset();
             evt.preventDefault();
         }
-        else if (evt.key == "[" || evt.key == "-")
+        else if (evt.key == "-")
         {
             context.pinched = 1;
             zoomobj.getcurrent().add(-1);
             contextobj.reset()
         }
-        else if (evt.key == "]" || evt.key == "+")
+        else if (evt.key == "+")
         {
             context.pinched = 1;
             zoomobj.getcurrent().add(1);
             contextobj.reset()
+        }
+        else if (evt.key == "9")
+        {
+            factorobj.add(-1);
+            contextobj.reset()
+        }
+        else if (evt.key == "0")
+        {
+            factorobj.add(1);
+            contextobj.reset()
+        }
+        else if (evt.key == "[")
+        {
+            stretchobj.getcurrent().add(-1);
+            context.refresh();
+        }
+        else if (evt.key == "]")
+        {
+            stretchobj.getcurrent().add(1);
+            context.refresh();
         }
         else if (evt.key == "Enter")
         {
@@ -2542,11 +2587,6 @@ var taplst =
             globalobj.showinfo = globalobj.showinfo?0:1;
             _4cnvctx.refresh();
         }
-        else if (context.downpanel && context.downpanel.hitest(x,y))
-        {
-            menuhide();
-            promptFile().then(function(files) { dropfiles(files); })
-        }
         else if (context.openpanel && context.openpanel.hitest(x,y))
         {
             menuhide();
@@ -2564,13 +2604,12 @@ var taplst =
         }
         else if (context.minuspanel && context.minuspanel.hitest(x,y))
         {
-            stretchobj.getcurrent().add(-3);
+            stretchobj.getcurrent().add(-1);
             _4cnvctx.refresh();
         }
          else if (context.pluspanel && context.pluspanel.hitest(x,y))
         {
-            var obj =
-            stretchobj.getcurrent().add(3);
+            stretchobj.getcurrent().add(1);
             _4cnvctx.refresh();
         }
         else if (context.menudown && context.menudown.hitest(x,y))
@@ -2666,22 +2705,29 @@ var taplst =
     name: "MENU",
     tap: function (context, rect, x, y)
     {
-		var k = getbuttonfrompoint(context, x, y);
-		if (k == -1)
+        if (x > rect.width - (MENUBARWIDTH+3) )
         {
-            menuhide();
-            return;
-        }
-
-		var slice = context.sliceobj.data[k];
-		slice.tap = 1;
-        context.refresh();
-        setTimeout(function ()
-        {
-            slice.func(context, rect, x, y);
-            slice.tap = 0;
+            var j = y/rect.height;
+            var k = TIMEOBJ*(1-j);
+            context.timeobj.set(k);
             context.refresh();
-        }, JULIETIME*5);
+        }
+        else
+        {
+            var k = getbuttonfrompoint(context, x, y);
+            if (k == -1)
+                return;
+
+            var slice = context.sliceobj.data[k];
+            slice.tap = 1;
+            context.refresh();
+            setTimeout(function ()
+            {
+                slice.func(context, rect, x, y);
+                slice.tap = 0;
+                context.refresh();
+            }, JULIETIME*5);
+        }
     },
 },
 ];
@@ -2970,11 +3016,7 @@ var menulst =
         var clr = SCROLLNAB;
         var str = user.title;
 
-        if (user.tap)
-        {
-            clr = MENUTAP;
-        }
-        else if (user.path == "PROJECT")
+        if (user.path == "PROJECT")
         {
             if (time == galleryobj.current())
                 clr = MENUSELECT;
@@ -3000,13 +3042,14 @@ var menulst =
                 clr = MENUSELECT;
         }
 
-        var a = new Layer(
+        var a = new LayerA(
         [
-            new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 6),
+            new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 3),
+            user.obj?new Shrink(new CurrentHPanel(new Fill(MENUSELECT), 90),15,0):0,
             new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
         ]);
 
-        a.draw(context, rect, user.title, time);
+        a.draw(context, rect, [0,user.obj,user.title], time);
         context.restore();
     }
 },
@@ -3113,8 +3156,8 @@ function resetcanvas()
     context.delayinterval = delay/100000;
     context.delay = e;
     var gwidth = photo.image.width/canvaslen;
-    context.bwidth = context.virtualwidth/canvaslen;
-    context.colwidth = context.bwidth/slices;
+    var bwidth = context.virtualwidth/canvaslen;
+    context.colwidthlst = gridToRect(slices, 1, 0, bwidth, rect.height);
     var slice = 0;
     context.sliceobj.data = []
 
@@ -3130,18 +3173,18 @@ function resetcanvas()
         var cnv = canvaslst[n];
         if (cnv.height != context.canvas.height)
             cnv.height = context.canvas.height;
-        if (cnv.width != context.bwidth)
-            cnv.width = context.bwidth;
+        if (cnv.width != bwidth)
+            cnv.width = bwidth;
 
         var ctx = cnv.getContext('2d');
         ctx.drawImage(photo.image,
             n*gwidth, context.nuby, gwidth, context.imageheight,
-            0, 0, context.bwidth, cnv.height);
+            0, 0, bwidth, cnv.height);
 
         for (var e = 0; e < slices; ++e)
         {
             var k = {};
-            k.x = e*context.colwidth;
+            k.x = e*context.colwidthlst[e].width;
             k.p = k.x/context.virtualwidth;
             k.slice = slice;
             k.time = j;
@@ -3618,6 +3661,7 @@ fetch(path)
         _7cnvctx.virtualheight = lst.length*_7cnvctx.buttonheight;
         _7cnvctx.rvalue = 2;
         _7cnvctx.slidereduce = 0.75;
+        _7cnvctx.title = "Help";
 
         var func = function (index)
         {
@@ -3634,6 +3678,7 @@ fetch(path)
             k.func = func;
         }
 
+        _8cnvctx.title = galleryobj.title;
         _8cnvctx.sliceobj.data = galleryobj.data;
 
         galleryobj.set(url.project);
@@ -3676,40 +3721,6 @@ fetch(path)
             window.open(path,"reportbase.com");
         }});
 
-        slices.data.push({title:"- Slices +", path: "SLICES", func: function(context, rect, x, y)
-        {
-            factorobj.enabled = 1;
-            factorobj.add(x<rect.width/2?-6:6);
-            contextobj.reset()
-        }});
-
-        slices.data.push({title:"- Speed +", path: "SPEED", func: function(context, rect, x, y)
-        {
-            speedobj.add(x<rect.width/2?10:-10);
-            contextobj.reset()
-            clearInterval(_4cnvctx.timemain);
-            _4cnvctx.timemain = setInterval(function () { drawslices() }, timemain.getcurrent());
-        }});
-
-        slices.data.push({title:"- Stretch +", path: "STRETCH", func: function(context, rect, x, y)
-        {
-            stretchobj.getcurrent().add(x<rect.width/2?-3:3);
-            contextobj.reset()
-        }});
-
-        slices.data.push({title:"- Zoom +", path: "ZOOM", func: function(context, rect, x, y)
-        {
-            context.pinched = 1;
-            zoomobj.getcurrent().add(x<rect.width/2?-3:3);
-            contextobj.reset()
-        }});
-
-        slices.data.push({title:"Thumbnail", path:"DESCRIBE", func: function()
-        {
-            globalobj.showinfo = globalobj.showinfo?0:1;
-            _4cnvctx.refresh();
-        }})
-
         slices.data.push({title:"Detach", path: "DETACH", func: function()
         {
             factorobj.enabled = factorobj.enabled ? 0 : 1;
@@ -3751,6 +3762,7 @@ fetch(path)
         _9cnvctx.virtualheight = slices.data.length*_9cnvctx.buttonheight;
         _9cnvctx.rvalue = 2;
         _9cnvctx.slidereduce = 0.75;
+        _9cnvctx.title = "Options";
 
         pageresize();
         contextobj.reset();
