@@ -14,7 +14,7 @@ const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*2;
 const SWIPETIME = 100;
 const MENUBARWIDTH = 12;
-const MENUBARHEIGHT = 40;
+const MENUBARHEIGHT = 45;
 const THUMBORDER = 2;
 const JULIETIME = 100;
 const DELAY = 10000000;
@@ -364,8 +364,8 @@ var colobj = new Data("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new Data("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
 var rotateobj = new Data("ROTATEOBJ", []);
 
-speedobj.set(20);
-timemain.set(8);
+speedobj.set(30);
+timemain.set(12);
 
 function drawslices()
 {
@@ -412,7 +412,7 @@ function drawslices()
 
         var stretch = stretchobj.getcurrent();
         context.virtualpinch = context.virtualwidth*stretch.getcurrent()/100;
-        var colwidth = context.colwidthlst[0].width;
+        var colwidth = context.colwidthlst[0];
         context.virtualeft = (context.virtualpinch-rect.width)/2-colwidth;
         var j = (colwidth/(colwidth+context.virtualwidth))*TIMEOBJ;
         var time = (context.timeobj.getcurrent()+j)/1000;
@@ -466,8 +466,8 @@ function drawslices()
 
             slice.visible = 1;
             slice.strechwidth = stretchwidth;
-            var wid = factorobj.enabled ? context.colwidthlst[m].width : stretchwidth;
-            context.drawImage(slice.canvas, slice.x, 0, context.colwidthlst[m].width, rect.height,
+            var wid = factorobj.enabled ? context.colwidthlst[m] : stretchwidth;
+            context.drawImage(slice.canvas, slice.x, 0, context.colwidthlst[m], rect.height,
               slice.bx, 0, wid, rect.height);
             bx = bx2;
         }
@@ -479,8 +479,8 @@ function drawslices()
             var slice = slicelst[0];
             slice.visible = 1;
             slice.strechwidth = w;
-            var wid = factorobj.enabled ? context.colwidthlst[0].width : w;
-            context.drawImage(slice.canvas, 0, 0, context.colwidthlst[0].width, rect.height,
+            var wid = factorobj.enabled ? context.colwidthlst[0] : w;
+            context.drawImage(slice.canvas, 0, 0, context.colwidthlst[0], rect.height,
                   x, 0, wid, rect.height);
         }
 
@@ -612,13 +612,13 @@ function drawslices()
         [
             new Layer(
             [
-                new Fill("rgba(0,0,0,0.5)"),
+                new Fill(context.menutaphead?"rgba(255,0,0,0.60)":"rgba(0,0,0,0.35)"),
                 new Text("white", "center", "middle", 0, 0, 1),
             ]),
             0,
             new Layer(
             [
-                new Fill("rgba(0,0,0,0.5)"),
+                new Fill(context.menubottom?"rgba(255,0,0,0.60)":"rgba(0,0,0,0.35)"),
                 new Text("white", "center", "middle", 0, 0, 1),
             ])
         ]);
@@ -920,8 +920,8 @@ var InfoPanel = function (color, shadow)
 
         var a = new Layer(
         [
-            globalobj.showinfo ? new Shrink(new CirclePanel("rgba(0,0,0,0)","rgb(255,155,0)",3),21,21) : 0,
-            new Shrink(new CirclePanel("rgba(0,0,0,0)","white",3),18,18),
+            globalobj.showinfo ? new Shrink(new CirclePanel("rgba(0,0,0,0)","rgb(255,155,0)",3),18,18) : 0,
+            new Shrink(new CirclePanel("rgba(0,0,0,0)","white",3),15,15),
             new Text("white", "center", "middle",0, 0, 0),
         ]);
 
@@ -937,7 +937,7 @@ var DownPanel = function (color, shadow)
         context.save();
         var a = new Layer(
         [
-            new Shrink(new CirclePanel("rgba(0,0,0,0)","white",3),18,18),
+            new Shrink(new CirclePanel("rgba(0,0,0,0)","white",3),16,16),
             new Shrink(new ArrowPanel(ARROWFILL,180),21,26),
         ]);
 
@@ -1747,7 +1747,7 @@ var pinchlst =
         var k = Math.clamp(data[0], data[data.length-1], scale*context.savepinch);
         var j = Math.berp(data[0], data[data.length-1], k);
         var e = Math.lerp(0,obj.length(),j)/obj.length();
-        context.pinched = 1;
+        _4cnvctx.pinched = 1;
 
         if (context.isthumbrect)
         {
@@ -1797,9 +1797,11 @@ var pinchlst =
         clearTimeout(context.pinchtime);
         context.pinchtime = setTimeout(function()
         {
+            context.pinched = 0;
             context.isthumbrect = 0;
             context.refresh();
             addressobj.update();
+            contextobj.reset();
         }, 40);
     },
 },
@@ -2469,13 +2471,11 @@ var keylst =
         }
         else if (evt.key == "-")
         {
-            context.pinched = 1;
             zoomobj.getcurrent().add(-1);
             contextobj.reset()
         }
         else if (evt.key == "+")
         {
-            context.pinched = 1;
             zoomobj.getcurrent().add(1);
             contextobj.reset()
         }
@@ -2711,6 +2711,28 @@ var taplst =
             var k = TIMEOBJ*(1-j);
             context.timeobj.set(k);
             context.refresh();
+        }
+        else if (y < MENUBARHEIGHT)
+        {
+            context.menutaphead = 1;
+            context.refresh();
+            setTimeout(function ()
+            {
+                context.menutaphead = 0;
+                context.refresh();
+                menuhide();
+            }, JULIETIME*5);
+         }
+        if (y > rect.height-MENUBARHEIGHT)
+        {
+            context.menubottom = 1;
+            context.refresh();
+            setTimeout(function ()
+            {
+                context.menubottom = 0;
+                context.refresh();
+                menuhide();
+            }, JULIETIME*5);
         }
         else
         {
@@ -3016,7 +3038,11 @@ var menulst =
         var clr = SCROLLNAB;
         var str = user.title;
 
-        if (user.path == "PROJECT")
+        if (user.tap)
+        {
+            clr = MENUTAP;
+        }
+        else if (user.path == "PROJECT")
         {
             if (time == galleryobj.current())
                 clr = MENUSELECT;
@@ -3157,7 +3183,21 @@ function resetcanvas()
     context.delay = e;
     var gwidth = photo.image.width/canvaslen;
     var bwidth = context.virtualwidth/canvaslen;
-    context.colwidthlst = gridToRect(slices, 1, 0, bwidth, rect.height);
+    if (context.pinched)
+    {
+        var colwidth = bwidth/slices;
+        context.colwidthlst = [];
+        for (var n = 0; n < slices; ++n)
+            context.colwidthlst[n] = colwidth;
+    }
+    else
+    {
+        var k = gridToRect(slices, 1, 0, bwidth, rect.height);
+        context.colwidthlst = [];
+        for (var n = 0; n < slices; ++n)
+            context.colwidthlst[n] = k[n].width;
+    }
+
     var slice = 0;
     context.sliceobj.data = []
 
@@ -3184,7 +3224,7 @@ function resetcanvas()
         for (var e = 0; e < slices; ++e)
         {
             var k = {};
-            k.x = e*context.colwidthlst[e].width;
+            k.x = e*context.colwidthlst[e];
             k.p = k.x/context.virtualwidth;
             k.slice = slice;
             k.time = j;
@@ -3736,6 +3776,7 @@ fetch(path)
                 _4cnvctx.timemain = setInterval(function () { drawslices() }, timemain.getcurrent());
         }})
 
+        slices.data.push({title:"Reload", path: "RELOAD", func: function(){location.reload(); }})
         slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
 
         slices.data.push({title:"Fullscreen", path: "FULLPANEL", func: function ()
@@ -3916,6 +3957,7 @@ var ContextObj = (function ()
                         templateobj.getcurrent().zoom();
                     }
 
+                    _4cnvctx.pinched = 0;
                     pageresize();
                     contextobj.resize(context);
                     resetcanvas(context);
