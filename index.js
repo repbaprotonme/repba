@@ -14,6 +14,7 @@ const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*2;
 const SWIPETIME = 100;
 const MENUBARWIDTH = 12;
+const MENUPANWIDTH = 60;
 const MENUBARHEIGHT = 25;
 const THUMBORDER = 2;
 const JULIETIME = 100;
@@ -389,7 +390,7 @@ function drawslices()
         if (context.timemain)
         {
             context.slidestop -= context.slidereduce;
-            context.slidestop = SAFIROX ? context.slidestop : Math.max(context.virtualspeed, context.slidestop);
+            context.slidestop = Math.max(context.virtualspeed, context.slidestop);//todo
             if (context.slidestop > 0)
             {
                 if (rotateobj.enabled)
@@ -466,7 +467,6 @@ function drawslices()
 
             slice.visible = 1;
             slice.strechwidth = stretchwidth;
-//            var wid = Math.ceil(factorobj.enabled ? context.colwidthlst[m] : stretchwidth);
             var wid = factorobj.enabled ? context.colwidthlst[m] : stretchwidth;
             context.drawImage(slice.canvas, slice.x, 0, context.colwidthlst[m], rect.height,
               slice.bx, 0, wid, rect.height);
@@ -480,7 +480,6 @@ function drawslices()
             var slice = slicelst[0];
             slice.visible = 1;
             slice.strechwidth = w;
-//            var wid = Math.ceil(factorobj.enabled ? context.colwidthlst[0] : w);
             var wid = factorobj.enabled ? context.colwidthlst[0] : w;
             context.drawImage(slice.canvas, 0, 0, context.colwidthlst[0], rect.height,
                   x, 0, wid, rect.height);
@@ -960,9 +959,9 @@ var OpenPanel = function (color, shadow)
 		context.fillStyle = "white";
 		context.strokeStyle = "white";
         var x = rect.x+20;
-        var y = rect.y+32;
+        var y = rect.y+30;
         context.lineWidth = 2;
-        context.strokeRect(x, y, 18, 12);
+        context.strokeRect(x, y, 20, 14);
         context.fillRect(x, y-4, 10, 4);
         context.restore();
     }
@@ -979,7 +978,7 @@ var FullPanel = function (color, shadow)
 		context.shadowColor = shadow;
         context.lineWidth = 8;
 
-        var e = screenfull.isFullscreen?6:5;
+        var e = screenfull.isFullscreen?7:6;
         var j = 28;
         var k = 22;
         var r = new rectangle(rect.x+k,rect.y+j,rect.width,rect.height);
@@ -1691,22 +1690,37 @@ var wheelst =
     name: "BOSS",
     up: function (context, x, y, ctrl, shift, alt)
     {
-        if (shift)
-        {
-            rowobj.add(-rowobj.length()*0.05);
-            contextobj.reset();
-        }
-        else if (ctrl)
-        {
-            //todo
-        }
-        else if (context.thumbrect && context.thumbrect.hitest(x,y))
+        if (context.thumbrect && context.thumbrect.hitest(x,y))
         {
             var obj = heightobj.getcurrent();
             var h = obj.getcurrent()*window.innerHeight;
             delete context.thumbcanvas;
             obj.add(5);
             context.refresh();
+        }
+        else if (alt && ctrl)
+        {
+            context.pinched = 1;
+            zoomobj.getcurrent().add(-3);
+            _4cnvctx.timeobj.rotate(TIMEOBJ*0.03);
+            contextobj.reset()
+        }
+        else if (shift)
+        {
+            rowobj.add(-rowobj.length()*0.05);
+            contextobj.reset();
+        }
+        else if (alt)
+        {
+            context.pinched = 1;
+            stretchobj.getcurrent().add(-5);
+            context.refresh()
+        }
+        else if (ctrl)
+        {
+            context.pinched = 1;
+            zoomobj.getcurrent().add(-5);
+            contextobj.reset()
         }
         else
         {
@@ -1716,24 +1730,39 @@ var wheelst =
 	},
  	down: function (context, x, y, ctrl, shift, alt)
     {
-        if (shift)
-        {
-            rowobj.add(rowobj.length()*0.05);
-            contextobj.reset();
-        }
-        else if (ctrl)
-        {
-            //todo
-        }
-        else if (context.thumbrect && context.thumbrect.hitest(x,y))
+        if (context.thumbrect && context.thumbrect.hitest(x,y))
         {
             var obj = heightobj.getcurrent();
-            var h = obj.getcurrent()*window.innerHeight;
-            if (h-5 <= ALIEXTENT)
+            var h = obj.getcurrent()*window.innerheight;
+            if (h-5 <= aliextent)
                 return;
             delete context.thumbcanvas;
             obj.add(-5);
             context.refresh();
+        }
+        else if (alt && ctrl)
+        {
+            context.pinched = 1;
+            zoomobj.getcurrent().add(3);
+            _4cnvctx.timeobj.rotate(-TIMEOBJ*0.03);
+            contextobj.reset()
+        }
+        else if (shift)
+        {
+            rowobj.add(rowobj.length()*0.05);
+            contextobj.reset();
+        }
+        else if (alt)
+        {
+            context.pinched = 1;
+            stretchobj.getcurrent().add(5);
+            context.refresh()
+        }
+         else if (ctrl)
+        {
+            context.pinched = 1;
+            zoomobj.getcurrent().add(5);
+            contextobj.reset()
         }
         else
         {
@@ -1929,7 +1958,7 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
     {
-        context.rightside = x > rect.width-40;
+        context.rightside = x > rect.width-MENUPANWIDTH;
         context.starty = y;
         context.startt = context.timeobj.current();
     },
@@ -2485,11 +2514,13 @@ var keylst =
         }
         else if (evt.key == "-")
         {
+            context.pinched = 1;
             zoomobj.getcurrent().add(-1);
             contextobj.reset()
         }
         else if (evt.key == "+")
         {
+            context.pinched = 1;
             zoomobj.getcurrent().add(1);
             contextobj.reset()
         }

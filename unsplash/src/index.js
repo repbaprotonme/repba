@@ -59,10 +59,13 @@ export default
                 var user = k.user;
                 var urls = k.urls;
                 j.index = (lst.length+1)+" of "+total;
-                j.name = user.name;
                 j.extent = `${width}x${height} ${aspect}`;
                 j.size = ((width * height)/1000000).toFixed(1) + "MP";
-                if (k.description)
+                j.photographer = user.name;
+                j.required  = "Photos provided by Pexels";
+                j.photographer_url = user.portfolio_url;
+                j.photographer_id = user.id;
+                 if (k.description)
                     j.description = k.description;
                 if (k.alt_description)
                     j.alt_description = k.alt_description;
@@ -79,6 +82,7 @@ export default
 
         var g = {}
         g.title = `Unsplash Gallery`;
+        g.title1 = `Photos Provided by Unsplash`;
         g.username = id;
         g.row = 50;
         g.data = lst;
