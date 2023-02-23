@@ -9,12 +9,12 @@ http://www.reportbase.com
 const ISMOBILE = window.matchMedia("only screen and (max-width: 760px)").matches;
 const FIREFOX = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 const SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-const SAFIROX = 0;//SAFARI || FIREFOX;
+const SAFIROX = SAFARI || FIREFOX;
 const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*2;
 const SWIPETIME = 100;
 const MENUBARWIDTH = 12;
-const MENUBARHEIGHT = 45;
+const MENUBARHEIGHT = 25;
 const THUMBORDER = 2;
 const JULIETIME = 100;
 const DELAY = 10000000;
@@ -466,6 +466,7 @@ function drawslices()
 
             slice.visible = 1;
             slice.strechwidth = stretchwidth;
+//            var wid = Math.ceil(factorobj.enabled ? context.colwidthlst[m] : stretchwidth);
             var wid = factorobj.enabled ? context.colwidthlst[m] : stretchwidth;
             context.drawImage(slice.canvas, slice.x, 0, context.colwidthlst[m], rect.height,
               slice.bx, 0, wid, rect.height);
@@ -479,6 +480,7 @@ function drawslices()
             var slice = slicelst[0];
             slice.visible = 1;
             slice.strechwidth = w;
+//            var wid = Math.ceil(factorobj.enabled ? context.colwidthlst[0] : w);
             var wid = factorobj.enabled ? context.colwidthlst[0] : w;
             context.drawImage(slice.canvas, 0, 0, context.colwidthlst[0], rect.height,
                   x, 0, wid, rect.height);
@@ -606,28 +608,32 @@ function drawslices()
         var a = new CurrentVPanel(new Fill("white"), 90, 1);
         a.draw(context, new rectangle(rect.width-MENUBARWIDTH,0,7,rect.height), context.timeobj, 0);
 
-        context.save();
-        context.font = "0.9rem Archivo Black";
-        var a = new RowA([MENUBARHEIGHT,0,MENUBARHEIGHT],
-        [
-            new Layer(
+        if (!context.pressindex.current())
+        {
+            context.save();
+            context.font = "0.9rem Archivo Black";
+            var a = new RowA([10,MENUBARHEIGHT,MENUBARHEIGHT,0,MENUBARHEIGHT],
             [
-                new Fill(context.menutaphead?"rgba(255,0,0,0.60)":"rgba(0,0,0,0.35)"),
+                0,
                 new Text("white", "center", "middle", 0, 0, 1),
-            ]),
-            0,
-            new Layer(
-            [
-                new Fill(context.menubottom?"rgba(255,0,0,0.60)":"rgba(0,0,0,0.35)"),
                 new Text("white", "center", "middle", 0, 0, 1),
-            ])
-        ]);
+                0,
+                new Text("white", "center", "middle", 0, 0, 1),
+            ]);
 
-        var k = Math.lerp(1,context.sliceobj.length(),(1-context.timeobj.berp()));
-        k = Math.round(k);
-        var j = `${k} of ${context.sliceobj.length()}`
-        a.draw(context, rect, [context.title,"",j], 0);
-        context.restore();
+            var k = Math.lerp(1,context.sliceobj.length(),(1-context.timeobj.berp()));
+            k = Math.round(k);
+            var j = `${k} of ${context.sliceobj.length()}`
+            a.draw(context, rect,
+            [
+                0,
+                galleryobj.title,
+                galleryobj.title1,
+                0,
+                j
+            ], 0);
+            context.restore();
+        }
     }
 }
 
@@ -1690,6 +1696,10 @@ var wheelst =
             rowobj.add(-rowobj.length()*0.05);
             contextobj.reset();
         }
+        else if (ctrl)
+        {
+            //todo
+        }
         else if (context.thumbrect && context.thumbrect.hitest(x,y))
         {
             var obj = heightobj.getcurrent();
@@ -1710,6 +1720,10 @@ var wheelst =
         {
             rowobj.add(rowobj.length()*0.05);
             contextobj.reset();
+        }
+        else if (ctrl)
+        {
+            //todo
         }
         else if (context.thumbrect && context.thumbrect.hitest(x,y))
         {
@@ -1797,11 +1811,9 @@ var pinchlst =
         clearTimeout(context.pinchtime);
         context.pinchtime = setTimeout(function()
         {
-            context.pinched = 0;
             context.isthumbrect = 0;
             context.refresh();
             addressobj.update();
-            contextobj.reset();
         }, 40);
     },
 },
@@ -2278,6 +2290,8 @@ var presslst =
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
             context.pressed = 1;
+        else
+            globalobj.showinfo = globalobj.showinfo?0:1;
         context.refresh();
     }
 },
@@ -2714,25 +2728,7 @@ var taplst =
         }
         else if (y < MENUBARHEIGHT)
         {
-            context.menutaphead = 1;
-            context.refresh();
-            setTimeout(function ()
-            {
-                context.menutaphead = 0;
-                context.refresh();
-                menuhide();
-            }, JULIETIME*5);
-         }
-        if (y > rect.height-MENUBARHEIGHT)
-        {
-            context.menubottom = 1;
-            context.refresh();
-            setTimeout(function ()
-            {
-                context.menubottom = 0;
-                context.refresh();
-                menuhide();
-            }, JULIETIME*5);
+            menuhide();
         }
         else
         {
@@ -3014,6 +3010,13 @@ var menulst =
                 context.drawImage(user.thumbimg, x1, y1, w1, h1,
                     10, -40, w2, h2);
             }
+
+            var a = new Layer(
+            [
+                new Text("white", "center", "middle",0, 0, 1)
+            ]);
+
+            a.draw(context, rect, user.photographer, 0);
         }
         else
         {
@@ -3111,7 +3114,7 @@ function resetcanvas()
     var context = _4cnvctx;
     context.show(0,0,window.innerWidth,window.innerHeight);
 
-    var zoomax = 92.5;
+    var zoomax = 90.0;
     var n = 0;
     for (; n < zoomax; ++n)
     {
@@ -3175,7 +3178,7 @@ function resetcanvas()
             break;
     }
 
-    var canvaslen = SAFARI?Math.ceil(context.virtualwidth/MAXVIRTUAL):1;
+    var canvaslen = SAFIROX?Math.ceil(context.virtualwidth/MAXVIRTUAL):1;
     var e = slicelst[j-1];
     var delay = e.delay;
     var slices = Math.ceil(e.slices/canvaslen);
@@ -3183,19 +3186,19 @@ function resetcanvas()
     context.delay = e;
     var gwidth = photo.image.width/canvaslen;
     var bwidth = context.virtualwidth/canvaslen;
-    if (context.pinched)
-    {
-        var colwidth = bwidth/slices;
-        context.colwidthlst = [];
-        for (var n = 0; n < slices; ++n)
-            context.colwidthlst[n] = colwidth;
-    }
-    else
+    if (SAFIROX)
     {
         var k = gridToRect(slices, 1, 0, bwidth, rect.height);
         context.colwidthlst = [];
         for (var n = 0; n < slices; ++n)
             context.colwidthlst[n] = k[n].width;
+    }
+    else
+    {
+        var colwidth = bwidth/slices;
+        context.colwidthlst = [];
+        for (var n = 0; n < slices; ++n)
+            context.colwidthlst[n] = colwidth;
     }
 
     var slice = 0;
