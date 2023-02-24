@@ -56,13 +56,15 @@ export default
                 var width = e.width;
                 var height = e.height;
                 var aspect = (width/height).toFixed(2);
-                var user = k.photographer;
                 var urls = k.urls;
                 j.id = k.id+"";
                 j.index = (data.length+1)+" of "+json.total_results;
-                j.name = user.name;
                 j.extent = `${width}x${height} ${aspect}`;
                 j.size = ((width * height)/1000000).toFixed(1) + "MP";
+                j.photographer = k.photographer;
+                j.required  = "Photos provided by Pexels";
+                j.photographer_url = k.photographer_url;
+                j.photographer_id = k.photographer_id;
                 if (k.alt)
                     j.description = k.alt;
                 j.thumb = k.src.original+"?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop";
@@ -75,7 +77,8 @@ export default
         }
 
         var g = {}
-        g.title = `Pexels  Gallery`;
+        g.title = `Pexels Curated`;
+        g.title1 = `Photos Provided by Pexels`;
         g.data = data;
 
         let headers = new Headers(
