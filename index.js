@@ -1245,20 +1245,19 @@ addressobj.full = function ()
     var zoom = zoomobj.getcurrent();
     var out = url.origin;
     out += url.pathname;
-    if (url.path)
-    {
-        var p = url.path +"."+galleryobj.current().pad(4);
-        if (url.searchParams.has("unsplash.user"))
-            out += "?unsplash.user="+p;
-        else if (url.searchParams.has("unsplash.collection"))
-            out += "?unsplash.collection="+p;
-        else if (url.searchParams.has("pexels.curated"))
-            out += "?pexels.curated="+p;
-        else if (url.searchParams.has("sidney"))
-            out += "?sidney="+p;
-        else
-            out += "?p="+p;
-    }
+    if (!url.path)
+        url.path = "0000";
+    var p = url.path +"."+galleryobj.current().pad(4);
+    if (url.searchParams.has("unsplash.user"))
+        out += "?unsplash.user="+p;
+    else if (url.searchParams.has("unsplash.collection"))
+        out += "?unsplash.collection="+p;
+    else if (url.searchParams.has("pexels.curated"))
+        out += "?pexels.curated="+p;
+    else if (url.searchParams.has("sidney"))
+        out += "?sidney="+p;
+    else
+        out += "?p="+p;
 
     out +=
         "&h="+headobj.enabled+
@@ -3698,7 +3697,6 @@ else if (url.searchParams.has("sidney"))
 
 var galleryobj = new Data("", 0);
 
-//ERR_CERT_AUTHORITY_INVALID
 fetch(path)
   .then(function (response)
   {
