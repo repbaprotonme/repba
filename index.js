@@ -1253,7 +1253,7 @@ addressobj.full = function ()
         else if (url.searchParams.has("unsplash.collection"))
             out += "?unsplash.collection="+p;
         else if (url.searchParams.has("pexels.curated"))
-            out += "?pexels.curated="+galleryobj.current().pad(4);
+            out += "?pexels.curated="+p;//galleryobj.current().pad(4);
         else
             out += "?p="+p;
     }
@@ -2623,8 +2623,6 @@ var taplst =
             if (url.searchParams.has("unsplash.user") ||
                 url.searchParams.has("unsplash.collection"))
                 path = "https://unsplash.com/photos/"+obj.id;
-            else if (url.searchParams.has("pexels.curated"))
-                path = path;
             window.open(path,"reportbase.com");
         }
         else if (context.infopanel && context.infopanel.hitest(x,y))
@@ -3678,9 +3676,11 @@ else if (url.searchParams.has("unsplash.collection"))
 else if (url.searchParams.has("pexels.curated"))
 {
     var e = url.searchParams.get("pexels.curated");
-    url.path = "pexels";
-    url.project = Number(e);
-    leftmenu = 1;
+    let k = e.split(".");
+    url.path = k[0];
+    leftmenu = k.length == 1;
+    if (k.length == 2)
+        url.project = Number(k[1]);
     path = "https://pexels.reportbase5836.workers.dev";
 }
 
