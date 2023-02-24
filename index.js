@@ -1253,7 +1253,9 @@ addressobj.full = function ()
         else if (url.searchParams.has("unsplash.collection"))
             out += "?unsplash.collection="+p;
         else if (url.searchParams.has("pexels.curated"))
-            out += "?pexels.curated="+p;//galleryobj.current().pad(4);
+            out += "?pexels.curated="+p;
+        else if (url.searchParams.has("sidney"))
+            out += "?sidney="+p;
         else
             out += "?p="+p;
     }
@@ -3682,6 +3684,16 @@ else if (url.searchParams.has("pexels.curated"))
     if (k.length == 2)
         url.project = Number(k[1]);
     path = "https://pexels.reportbase5836.workers.dev";
+}
+else if (url.searchParams.has("sidney"))
+{
+    var e = url.searchParams.get("sidney");
+    let k = e.split(".");
+    url.path = k[0];
+    leftmenu = k.length == 1;
+    if (k.length == 2)
+        url.project = Number(k[1]);
+    path = "https://sidney.reportbase5836.workers.dev";
 }
 
 var galleryobj = new Data("", 0);
