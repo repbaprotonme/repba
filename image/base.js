@@ -1,4 +1,5 @@
-const options = {
+const options =
+{
   method: 'GET',
   headers:
   {

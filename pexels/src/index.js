@@ -67,9 +67,8 @@ export default
                 j.photographer_id = k.photographer_id;
                 if (k.alt)
                     j.description = k.alt;
-                j.thumb = k.src.original+"?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop";
-                j.full = k.src.original+`?auto=compress&cs=tinysrgb&h=${height}`;
-                j.original = k.src.original;
+                j.raw = k.src.original
+                j.thumb = k.src.large;
                 data.push(j);
             }
 
@@ -79,6 +78,7 @@ export default
         var g = {}
         g.title = `Pexels Curated`;
         g.title1 = `Photos Provided by Pexels`;
+        g.repos = `pexels`;
         g.data = data;
 
         let headers = new Headers(

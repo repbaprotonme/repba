@@ -35,27 +35,7 @@ export default
                 var form1 = document.getElementById("form1")
                 form1.action="${action}"
            }
-
-            document.getElementById("myFile").onchange = function()
-            {
-                if (!this.files)
-                    return;
-                var reader = new FileReader();
-                reader.onload = function (e)
-                {
-                    var img = new Image();
-                    img.src = e.target.result;
-                    img.onload = function ()
-                    {
-                        var w = this.width;//max 12000
-                        var h = this.height;//max 12000
-                    }
-                }
-
-                let input = this.files[0];
-                reader.readAsDataURL(input);
-            };
-            </script>
+           </script>
          </body>
         </html>`;
 

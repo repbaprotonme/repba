@@ -1,5 +1,6 @@
 {
   "title": "Repba Gallery",
+  "template": "wide",
   "data": [
     {
       "id": "PANO.0000",
@@ -8,9 +9,6 @@
       "height": 1722,
       "extent": "5223x1722 3.03",
       "size": "9.0MP",
-      "original": "https://reportbase.com/image/PANO.0000/quality=85,fit=crop,width=5223,height=1722",
-      "full": "https://reportbase.com/image/PANO.0000/quality=85,fit=crop,width=5223,height=1722",
-      "thumb": "https://reportbase.com/image/PANO.0000/quality=85,fit=crop,width=600,height=600",
       "quote": "Those who dance are considered mad by those who can't hear the music."
     },
     {
@@ -20,9 +18,6 @@
       "height": 1736,
       "extent": "5182x1736 2.99",
       "size": "9.0MP",
-      "original": "https://reportbase.com/image/PANO.0001/quality=85,fit=crop,width=5182,height=1736",
-      "full": "https://reportbase.com/image/PANO.0001/quality=85,fit=crop,width=5182,height=1736",
-      "thumb": "https://reportbase.com/image/PANO.0001/quality=85,fit=crop,width=600,height=600",
       "quote": "May God have mercy on my enemies, cause I will not."
     },
     {
@@ -32,9 +27,6 @@
       "height": 1848,
       "extent": "4869x1848 2.63",
       "size": "9.0MP",
-      "original": "https://reportbase.com/image/PANO.0002/quality=85,fit=crop,width=4869,height=1848",
-      "full": "https://reportbase.com/image/PANO.0002/quality=85,fit=crop,width=4869,height=1848",
-      "thumb": "https://reportbase.com/image/PANO.0002/quality=85,fit=crop,width=600,height=600",
       "quote": "The difference between genius and stupidity is that genius has its limits."
     },
     {
@@ -44,9 +36,6 @@
       "height": 1901,
       "extent": "4733x1901 2.49",
       "size": "9.0MP",
-      "original": "https://reportbase.com/image/PANO.0003/quality=85,fit=crop,width=4733,height=1901",
-      "full": "https://reportbase.com/image/PANO.0003/quality=85,fit=crop,width=4733,height=1901",
-      "thumb": "https://reportbase.com/image/PANO.0003/quality=85,fit=crop,width=600,height=600",
       "quote": "The Harder You Work, The Luckier You Get"
     },
     {
@@ -56,9 +45,6 @@
       "height": 1954,
       "extent": "4603x1954 2.36",
       "size": "9.0MP",
-      "original": "https://reportbase.com/image/PANO.0004/quality=85,fit=crop,width=4603,height=1954",
-      "full": "https://reportbase.com/image/PANO.0004/quality=85,fit=crop,width=4603,height=1954",
-      "thumb": "https://reportbase.com/image/PANO.0004/quality=85,fit=crop,width=600,height=600",
       "quote": "Teamwork Makes the Dream Work"
     },
     {
@@ -68,9 +54,6 @@
       "height": 1947,
       "extent": "4622x1947 2.37",
       "size": "9.0MP",
-      "original": "https://reportbase.com/image/PANO.0005/quality=85,fit=crop,width=4622,height=1947",
-      "full": "https://reportbase.com/image/PANO.0005/quality=85,fit=crop,width=4622,height=1947",
-      "thumb": "https://reportbase.com/image/PANO.0005/quality=85,fit=crop,width=600,height=600",
       "quote": "OK Monday, Lets Do This"
     },
     {
@@ -80,9 +63,6 @@
       "height": 1970,
       "extent": "4567x1970 2.32",
       "size": "9.0MP",
-      "original": "https://reportbase.com/image/PANO.0006/quality=85,fit=crop,width=4567,height=1970",
-      "full": "https://reportbase.com/image/PANO.0006/quality=85,fit=crop,width=4567,height=1970",
-      "thumb": "https://reportbase.com/image/PANO.0006/quality=85,fit=crop,width=600,height=600",
       "quote": "Do Not Decrease the Goal, Increase the Effort"
     },
     {
@@ -92,9 +72,6 @@
       "height": 1953,
       "extent": "4607x1953 2.36",
       "size": "9.0MP",
-      "original": "https://reportbase.com/image/PANO.0007/quality=85,fit=crop,width=4607,height=1953",
-      "full": "https://reportbase.com/image/PANO.0007/quality=85,fit=crop,width=4607,height=1953",
-      "thumb": "https://reportbase.com/image/PANO.0007/quality=85,fit=crop,width=600,height=600",
       "quote": "We Didn't Lose the Game, We Just Ran Out of Time"
     },
     {
@@ -104,9 +81,6 @@
       "height": 1890,
       "extent": "4759x1890 2.52",
       "size": "9.0MP",
-      "original": "https://reportbase.com/image/PANO.0008/quality=85,fit=crop,width=4759,height=1890",
-      "full": "https://reportbase.com/image/PANO.0008/quality=85,fit=crop,width=4759,height=1890",
-      "thumb": "https://reportbase.com/image/PANO.0008/quality=85,fit=crop,width=600,height=600",
       "quote": "The Seeds of Doubt Grow Bitter Fruit"
     },
     {
@@ -116,9 +90,6 @@
       "height": 1870,
       "extent": "4810x1870 2.57",
       "size": "9.0MP",
-      "original": "https://reportbase.com/image/PANO.0009/quality=85,fit=crop,width=4810,height=1870",
-      "full": "https://reportbase.com/image/PANO.0009/quality=85,fit=crop,width=4810,height=1870",
-      "thumb": "https://reportbase.com/image/PANO.0009/quality=85,fit=crop,width=600,height=600",
       "quote": "Success Consists of Getting Up Just One More Time Than You Fail"
     },
     {
@@ -128,9 +99,6 @@
       "height": 1955,
       "extent": "4601x1955 2.35",
       "size": "9.0MP",
-      "original": "https://reportbase.com/image/PANO.0010/quality=85,fit=crop,width=4601,height=1955",
-      "full": "https://reportbase.com/image/PANO.0010/quality=85,fit=crop,width=4601,height=1955",
-      "thumb": "https://reportbase.com/image/PANO.0010/quality=85,fit=crop,width=600,height=600",
       "quote": "Enjoy Life Today, Yesterday Is Gone Tomorrow"
     },
     {
@@ -140,9 +108,6 @@
       "height": 1812,
       "extent": "4964x1812 2.74",
       "size": "9.0MP",
-      "original": "https://reportbase.com/image/PANO.0011/quality=85,fit=crop,width=4964,height=1812",
-      "full": "https://reportbase.com/image/PANO.0011/quality=85,fit=crop,width=4964,height=1812",
-      "thumb": "https://reportbase.com/image/PANO.0011/quality=85,fit=crop,width=600,height=600",
       "quote": "If Not Us Who? If Not Now When?"
     },
     {
@@ -152,9 +117,6 @@
       "height": 1771,
       "extent": "5080x1771 2.87",
       "size": "9.0MP",
-      "original": "https://reportbase.com/image/PANO.0012/quality=85,fit=crop,width=5080,height=1771",
-      "full": "https://reportbase.com/image/PANO.0012/quality=85,fit=crop,width=5080,height=1771",
-      "thumb": "https://reportbase.com/image/PANO.0012/quality=85,fit=crop,width=600,height=600",
       "quote": "If Opportunity Does Not Knock, Build a Door"
     },
     {
@@ -164,9 +126,6 @@
       "height": 2021,
       "extent": "4451x2021 2.20",
       "size": "9.0MP",
-      "original": "https://reportbase.com/image/PANO.0013/quality=85,fit=crop,width=4451,height=2021",
-      "full": "https://reportbase.com/image/PANO.0013/quality=85,fit=crop,width=4451,height=2021",
-      "thumb": "https://reportbase.com/image/PANO.0013/quality=85,fit=crop,width=600,height=600",
       "quote": "It Was Not Raining When Noah Built the Ark"
     },
     {
@@ -176,9 +135,6 @@
       "height": 1626,
       "extent": "4919x1626 3.03",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0014/quality=85,fit=crop,width=4919,height=1626",
-      "full": "https://reportbase.com/image/PANO.0014/quality=85,fit=crop,width=4919,height=1626",
-      "thumb": "https://reportbase.com/image/PANO.0014/quality=85,fit=crop,width=600,height=600",
       "quote": "What We Are is God's Gift, What We Become is Our Gift to God"
     },
     {
@@ -188,9 +144,6 @@
       "height": 1782,
       "extent": "4488x1782 2.52",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0015/quality=85,fit=crop,width=4488,height=1782",
-      "full": "https://reportbase.com/image/PANO.0015/quality=85,fit=crop,width=4488,height=1782",
-      "thumb": "https://reportbase.com/image/PANO.0015/quality=85,fit=crop,width=600,height=600",
       "quote": "The Best Way to Predict the Future is To Invent It"
     },
     {
@@ -200,9 +153,6 @@
       "height": 1692,
       "extent": "4725x1692 2.79",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0016/quality=85,fit=crop,width=4725,height=1692",
-      "full": "https://reportbase.com/image/PANO.0016/quality=85,fit=crop,width=4725,height=1692",
-      "thumb": "https://reportbase.com/image/PANO.0016/quality=85,fit=crop,width=600,height=600",
       "quote": "Failure is the Condiment Which Gives Success Its Flavor"
     },
     {
@@ -212,9 +162,6 @@
       "height": 1827,
       "extent": "4377x1827 2.40",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0017/quality=85,fit=crop,width=4377,height=1827",
-      "full": "https://reportbase.com/image/PANO.0017/quality=85,fit=crop,width=4377,height=1827",
-      "thumb": "https://reportbase.com/image/PANO.0017/quality=85,fit=crop,width=600,height=600",
       "quote": "I can Resist Everything Except Temptation"
     },
     {
@@ -224,9 +171,6 @@
       "height": 1715,
       "extent": "4663x1715 2.72",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0018/quality=85,fit=crop,width=4663,height=1715",
-      "full": "https://reportbase.com/image/PANO.0018/quality=85,fit=crop,width=4663,height=1715",
-      "thumb": "https://reportbase.com/image/PANO.0018/quality=85,fit=crop,width=600,height=600",
       "quote": "What's Another Word For Thesaurus"
     },
     {
@@ -236,9 +180,6 @@
       "height": 1646,
       "extent": "4858x1646 2.95",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0019/quality=85,fit=crop,width=4858,height=1646",
-      "full": "https://reportbase.com/image/PANO.0019/quality=85,fit=crop,width=4858,height=1646",
-      "thumb": "https://reportbase.com/image/PANO.0019/quality=85,fit=crop,width=600,height=600",
       "quote": "It Is During the Darkest Moments That We Must Focus To See the Light"
     },
     {
@@ -248,9 +189,6 @@
       "height": 1880,
       "extent": "4254x1880 2.26",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0020/quality=85,fit=crop,width=4254,height=1880",
-      "full": "https://reportbase.com/image/PANO.0020/quality=85,fit=crop,width=4254,height=1880",
-      "thumb": "https://reportbase.com/image/PANO.0020/quality=85,fit=crop,width=600,height=600",
       "quote": "Winners Never Quit, Quitters Never Win"
     },
     {
@@ -260,9 +198,6 @@
       "height": 1884,
       "extent": "4246x1884 2.25",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0021/quality=85,fit=crop,width=4246,height=1884",
-      "full": "https://reportbase.com/image/PANO.0021/quality=85,fit=crop,width=4246,height=1884",
-      "thumb": "https://reportbase.com/image/PANO.0021/quality=85,fit=crop,width=600,height=600",
       "quote": "If Two Wrongs Don't Make a Right, Try Three"
     },
     {
@@ -272,9 +207,6 @@
       "height": 1739,
       "extent": "4599x1739 2.64",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0022/quality=85,fit=crop,width=4599,height=1739",
-      "full": "https://reportbase.com/image/PANO.0022/quality=85,fit=crop,width=4599,height=1739",
-      "thumb": "https://reportbase.com/image/PANO.0022/quality=85,fit=crop,width=600,height=600",
       "quote": "Try Being Informed Instead of Being Opinionated"
     },
     {
@@ -284,9 +216,6 @@
       "height": 1825,
       "extent": "4381x1825 2.40",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0023/quality=85,fit=crop,width=4381,height=1825",
-      "full": "https://reportbase.com/image/PANO.0023/quality=85,fit=crop,width=4381,height=1825",
-      "thumb": "https://reportbase.com/image/PANO.0023/quality=85,fit=crop,width=600,height=600",
       "quote": "I Refuse to Join Any Club That Would Have Me As a Member"
     },
     {
@@ -296,9 +225,6 @@
       "height": 1742,
       "extent": "4590x1742 2.63",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0024/quality=85,fit=crop,width=4590,height=1742",
-      "full": "https://reportbase.com/image/PANO.0024/quality=85,fit=crop,width=4590,height=1742",
-      "thumb": "https://reportbase.com/image/PANO.0024/quality=85,fit=crop,width=600,height=600",
       "quote": "Life is A Series of Commas, Not Periods"
     },
     {
@@ -308,9 +234,6 @@
       "height": 1648,
       "extent": "4851x1648 2.94",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0025/quality=85,fit=crop,width=4851,height=1648",
-      "full": "https://reportbase.com/image/PANO.0025/quality=85,fit=crop,width=4851,height=1648",
-      "thumb": "https://reportbase.com/image/PANO.0025/quality=85,fit=crop,width=600,height=600",
       "quote": "My Fake Plants Died Because I Did Not Pretend to Water Them"
     },
     {
@@ -320,9 +243,6 @@
       "height": 1623,
       "extent": "4927x1623 3.04",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0026/quality=85,fit=crop,width=4927,height=1623",
-      "full": "https://reportbase.com/image/PANO.0026/quality=85,fit=crop,width=4927,height=1623",
-      "thumb": "https://reportbase.com/image/PANO.0026/quality=85,fit=crop,width=600,height=600",
       "quote": "Life is What Happens When You Are Busy Making Other Plans"
     },
     {
@@ -332,9 +252,6 @@
       "height": 1639,
       "extent": "4880x1639 2.98",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0027/quality=85,fit=crop,width=4880,height=1639",
-      "full": "https://reportbase.com/image/PANO.0027/quality=85,fit=crop,width=4880,height=1639",
-      "thumb": "https://reportbase.com/image/PANO.0027/quality=85,fit=crop,width=600,height=600",
       "quote": "We are a Conclave of Geniuses, Knows as the Intelligencia"
     },
     {
@@ -344,9 +261,6 @@
       "height": 1696,
       "extent": "4716x1696 2.78",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0028/quality=85,fit=crop,width=4716,height=1696",
-      "full": "https://reportbase.com/image/PANO.0028/quality=85,fit=crop,width=4716,height=1696",
-      "thumb": "https://reportbase.com/image/PANO.0028/quality=85,fit=crop,width=600,height=600",
       "quote": "Believe You Can and You are Half Way There"
     },
     {
@@ -356,9 +270,6 @@
       "height": 1788,
       "extent": "4473x1788 2.50",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0029/quality=85,fit=crop,width=4473,height=1788",
-      "full": "https://reportbase.com/image/PANO.0029/quality=85,fit=crop,width=4473,height=1788",
-      "thumb": "https://reportbase.com/image/PANO.0029/quality=85,fit=crop,width=600,height=600",
       "quote": "If you Think You Can Or Think You Can't, Either Way Your Right"
     },
     {
@@ -368,9 +279,6 @@
       "height": 1721,
       "extent": "4647x1721 2.70",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0030/quality=85,fit=crop,width=4647,height=1721",
-      "full": "https://reportbase.com/image/PANO.0030/quality=85,fit=crop,width=4647,height=1721",
-      "thumb": "https://reportbase.com/image/PANO.0030/quality=85,fit=crop,width=600,height=600",
       "quote": "The Road to Success and The Road To Failure Are Exactly the Same"
     },
     {
@@ -380,9 +288,6 @@
       "height": 1757,
       "extent": "4552x1757 2.59",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0031/quality=85,fit=crop,width=4552,height=1757",
-      "full": "https://reportbase.com/image/PANO.0031/quality=85,fit=crop,width=4552,height=1757",
-      "thumb": "https://reportbase.com/image/PANO.0031/quality=85,fit=crop,width=600,height=600",
       "quote": "The Secret of Getting Ahead Is Getting Started"
     },
     {
@@ -392,9 +297,6 @@
       "height": 1674,
       "extent": "4776x1674 2.85",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0032/quality=85,fit=crop,width=4776,height=1674",
-      "full": "https://reportbase.com/image/PANO.0032/quality=85,fit=crop,width=4776,height=1674",
-      "thumb": "https://reportbase.com/image/PANO.0032/quality=85,fit=crop,width=600,height=600",
       "quote": "What Does Not Kill You Makes You Stronger"
     },
     {
@@ -404,9 +306,6 @@
       "height": 2059,
       "extent": "5826x2059 2.83",
       "size": "12.0MP",
-      "original": "https://reportbase.com/image/PANO.0033/quality=85,fit=crop,width=5826,height=2059",
-      "full": "https://reportbase.com/image/PANO.0033/quality=85,fit=crop,width=5826,height=2059",
-      "thumb": "https://reportbase.com/image/PANO.0033/quality=85,fit=crop,width=600,height=600",
       "quote": "The Harder the Conflict the More Glorious the Triumph"
     },
     {
@@ -416,9 +315,6 @@
       "height": 2152,
       "extent": "5575x2152 2.59",
       "size": "12.0MP",
-      "original": "https://reportbase.com/image/PANO.0034/quality=85,fit=crop,width=5575,height=2152",
-      "full": "https://reportbase.com/image/PANO.0034/quality=85,fit=crop,width=5575,height=2152",
-      "thumb": "https://reportbase.com/image/PANO.0034/quality=85,fit=crop,width=600,height=600",
       "quote": "Don't Spend Time Beating On a Wall Hoping To Tranform It Into A Door"
     },
     {
@@ -428,9 +324,6 @@
       "height": 2265,
       "extent": "5296x2265 2.34",
       "size": "12.0MP",
-      "original": "https://reportbase.com/image/PANO.0035/quality=85,fit=crop,width=5296,height=2265",
-      "full": "https://reportbase.com/image/PANO.0035/quality=85,fit=crop,width=5296,height=2265",
-      "thumb": "https://reportbase.com/image/PANO.0035/quality=85,fit=crop,width=600,height=600",
       "quote": "I May Not Be There Yet but I'm Closer Than I Was Yesterday"
     },
     {
@@ -440,9 +333,6 @@
       "height": 2184,
       "extent": "5492x2184 2.51",
       "size": "12.0MP",
-      "original": "https://reportbase.com/image/PANO.0036/quality=85,fit=crop,width=5492,height=2184",
-      "full": "https://reportbase.com/image/PANO.0036/quality=85,fit=crop,width=5492,height=2184",
-      "thumb": "https://reportbase.com/image/PANO.0036/quality=85,fit=crop,width=600,height=600",
       "quote": "Do What You Love, Love What You Do"
     },
     {
@@ -452,9 +342,6 @@
       "height": 2162,
       "extent": "5547x2162 2.57",
       "size": "12.0MP",
-      "original": "https://reportbase.com/image/PANO.0037/quality=85,fit=crop,width=5547,height=2162",
-      "full": "https://reportbase.com/image/PANO.0037/quality=85,fit=crop,width=5547,height=2162",
-      "thumb": "https://reportbase.com/image/PANO.0037/quality=85,fit=crop,width=600,height=600",
       "quote": "The Pessimist Sees Difficulty In Every Opportunity The Optimist Sees Opportunity In Every Difficulty"
     },
     {
@@ -464,9 +351,6 @@
       "height": 2235,
       "extent": "5368x2235 2.40",
       "size": "12.0MP",
-      "original": "https://reportbase.com/image/PANO.0038/quality=85,fit=crop,width=5368,height=2235",
-      "full": "https://reportbase.com/image/PANO.0038/quality=85,fit=crop,width=5368,height=2235",
-      "thumb": "https://reportbase.com/image/PANO.0038/quality=85,fit=crop,width=600,height=600",
       "quote": "If Your Going Through Hell Keep Going"
     },
     {
@@ -476,9 +360,6 @@
       "height": 2233,
       "extent": "5373x2233 2.41",
       "size": "12.0MP",
-      "original": "https://reportbase.com/image/PANO.0039/quality=85,fit=crop,width=5373,height=2233",
-      "full": "https://reportbase.com/image/PANO.0039/quality=85,fit=crop,width=5373,height=2233",
-      "thumb": "https://reportbase.com/image/PANO.0039/quality=85,fit=crop,width=600,height=600",
       "quote": "Open Your Mind Before Your Mouth"
     },
     {
@@ -488,9 +369,6 @@
       "height": 2084,
       "extent": "5757x2084 2.76",
       "size": "12.0MP",
-      "original": "https://reportbase.com/image/PANO.0040/quality=85,fit=crop,width=5757,height=2084",
-      "full": "https://reportbase.com/image/PANO.0040/quality=85,fit=crop,width=5757,height=2084",
-      "thumb": "https://reportbase.com/image/PANO.0040/quality=85,fit=crop,width=600,height=600",
       "quote": "If You Can Dream It You Can Do It"
     },
     {
@@ -500,9 +378,6 @@
       "height": 2124,
       "extent": "5647x2124 2.66",
       "size": "12.0MP",
-      "original": "https://reportbase.com/image/PANO.0041/quality=85,fit=crop,width=5647,height=2124",
-      "full": "https://reportbase.com/image/PANO.0041/quality=85,fit=crop,width=5647,height=2124",
-      "thumb": "https://reportbase.com/image/PANO.0041/quality=85,fit=crop,width=600,height=600",
       "quote": "Creativity Is Intelligence Having Fun"
     },
     {
@@ -512,9 +387,6 @@
       "height": 1666,
       "extent": "4799x1666 2.88",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0042/quality=85,fit=crop,width=4799,height=1666",
-      "full": "https://reportbase.com/image/PANO.0042/quality=85,fit=crop,width=4799,height=1666",
-      "thumb": "https://reportbase.com/image/PANO.0042/quality=85,fit=crop,width=600,height=600",
       "quote": "Fake It Until You Make It"
     },
     {
@@ -524,9 +396,6 @@
       "height": 1616,
       "extent": "4949x1616 3.06",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0043/quality=85,fit=crop,width=4949,height=1616",
-      "full": "https://reportbase.com/image/PANO.0043/quality=85,fit=crop,width=4949,height=1616",
-      "thumb": "https://reportbase.com/image/PANO.0043/quality=85,fit=crop,width=600,height=600",
       "quote": "The Secret of Getting Ahead is Getting Started"
     },
     {
@@ -536,9 +405,6 @@
       "height": 1713,
       "extent": "4667x1713 2.72",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0045/quality=85,fit=crop,width=4667,height=1713",
-      "full": "https://reportbase.com/image/PANO.0045/quality=85,fit=crop,width=4667,height=1713",
-      "thumb": "https://reportbase.com/image/PANO.0045/quality=85,fit=crop,width=600,height=600",
       "quote": "The Best Way to Keep One's Word is Not to Give It"
     },
     {
@@ -548,9 +414,6 @@
       "height": 1740,
       "extent": "4596x1740 2.64",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0046/quality=85,fit=crop,width=4596,height=1740",
-      "full": "https://reportbase.com/image/PANO.0046/quality=85,fit=crop,width=4596,height=1740",
-      "thumb": "https://reportbase.com/image/PANO.0046/quality=85,fit=crop,width=600,height=600",
       "quote": "Learn to Say 'No' to the Good so You can Say 'Yes' to the Best"
     },
     {
@@ -560,9 +423,6 @@
       "height": 1870,
       "extent": "4276x1870 2.29",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0047/quality=85,fit=crop,width=4276,height=1870",
-      "full": "https://reportbase.com/image/PANO.0047/quality=85,fit=crop,width=4276,height=1870",
-      "thumb": "https://reportbase.com/image/PANO.0047/quality=85,fit=crop,width=600,height=600",
       "quote": "The Best Way to Hold a Man is in Your Arms"
     },
     {
@@ -572,9 +432,6 @@
       "height": 1732,
       "extent": "4616x1732 2.67",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0048/quality=85,fit=crop,width=4616,height=1732",
-      "full": "https://reportbase.com/image/PANO.0048/quality=85,fit=crop,width=4616,height=1732",
-      "thumb": "https://reportbase.com/image/PANO.0048/quality=85,fit=crop,width=600,height=600",
       "quote": "The Best Question is Not What is Best, but Who Shall Decide What is Best"
     },
     {
@@ -584,9 +441,6 @@
       "height": 1773,
       "extent": "4510x1773 2.54",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0049/quality=85,fit=crop,width=4510,height=1773",
-      "full": "https://reportbase.com/image/PANO.0049/quality=85,fit=crop,width=4510,height=1773",
-      "thumb": "https://reportbase.com/image/PANO.0049/quality=85,fit=crop,width=600,height=600",
       "quote": "Only a Mediocre Person is Always at His Best"
     },
     {
@@ -596,9 +450,6 @@
       "height": 1693,
       "extent": "4723x1693 2.79",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0050/quality=85,fit=crop,width=4723,height=1693",
-      "full": "https://reportbase.com/image/PANO.0050/quality=85,fit=crop,width=4723,height=1693",
-      "thumb": "https://reportbase.com/image/PANO.0050/quality=85,fit=crop,width=600,height=600",
       "quote": "We've Been Gone Five Years and the Best they Could Come up With was Boy Bands?"
     },
     {
@@ -608,9 +459,6 @@
       "height": 1765,
       "extent": "4531x1765 2.57",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0051/quality=85,fit=crop,width=4531,height=1765",
-      "full": "https://reportbase.com/image/PANO.0051/quality=85,fit=crop,width=4531,height=1765",
-      "thumb": "https://reportbase.com/image/PANO.0051/quality=85,fit=crop,width=600,height=600",
       "quote": "No Man has a Good Enough Memory to be a Successful Liar"
     },
     {
@@ -620,9 +468,6 @@
       "height": 1656,
       "extent": "4830x1656 2.92",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0052/quality=85,fit=crop,width=4830,height=1656",
-      "full": "https://reportbase.com/image/PANO.0052/quality=85,fit=crop,width=4830,height=1656",
-      "thumb": "https://reportbase.com/image/PANO.0052/quality=85,fit=crop,width=600,height=600",
       "quote": "Get Your Facts First, then you can Distort Them as You Please"
     },
     {
@@ -632,9 +477,6 @@
       "height": 1695,
       "extent": "4719x1695 2.78",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0053/quality=85,fit=crop,width=4719,height=1695",
-      "full": "https://reportbase.com/image/PANO.0053/quality=85,fit=crop,width=4719,height=1695",
-      "thumb": "https://reportbase.com/image/PANO.0053/quality=85,fit=crop,width=600,height=600",
       "quote": "All Generalizations are False, Including This One"
     },
     {
@@ -644,9 +486,6 @@
       "height": 1880,
       "extent": "4253x1880 2.26",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0054/quality=85,fit=crop,width=4253,height=1880",
-      "full": "https://reportbase.com/image/PANO.0054/quality=85,fit=crop,width=4253,height=1880",
-      "thumb": "https://reportbase.com/image/PANO.0054/quality=85,fit=crop,width=600,height=600",
       "quote": "Between Two Evils, I Always Pick the One I Never Tried Before"
     },
     {
@@ -656,9 +495,6 @@
       "height": 1718,
       "extent": "4653x1718 2.71",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0055/quality=85,fit=crop,width=4653,height=1718",
-      "full": "https://reportbase.com/image/PANO.0055/quality=85,fit=crop,width=4653,height=1718",
-      "thumb": "https://reportbase.com/image/PANO.0055/quality=85,fit=crop,width=600,height=600",
       "quote": "I No Doubt Deserved my Enemies, but I don't Believe I Deserved My Friends"
     },
     {
@@ -668,9 +504,6 @@
       "height": 1718,
       "extent": "4653x1718 2.71",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0056/quality=85,fit=crop,width=4653,height=1718",
-      "full": "https://reportbase.com/image/PANO.0056/quality=85,fit=crop,width=4653,height=1718",
-      "thumb": "https://reportbase.com/image/PANO.0056/quality=85,fit=crop,width=600,height=600",
       "quote": "Food Is an Important Part of a Balanced Diet"
     },
     {
@@ -680,9 +513,6 @@
       "height": 1223,
       "extent": "3496x1223 2.86",
       "size": "4.3MP",
-      "original": "https://reportbase.com/image/PANO.0057/quality=85,fit=crop,width=3496,height=1223",
-      "full": "https://reportbase.com/image/PANO.0057/quality=85,fit=crop,width=3496,height=1223",
-      "thumb": "https://reportbase.com/image/PANO.0057/quality=85,fit=crop,width=600,height=600",
       "quote": "Housework Can't Kill You, but Why Take a Chance?"
     },
     {
@@ -692,9 +522,6 @@
       "height": 1715,
       "extent": "4663x1715 2.72",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0058/quality=85,fit=crop,width=4663,height=1715",
-      "full": "https://reportbase.com/image/PANO.0058/quality=85,fit=crop,width=4663,height=1715",
-      "thumb": "https://reportbase.com/image/PANO.0058/quality=85,fit=crop,width=600,height=600",
       "quote": "There Are Lots of People who Mistake their Imagination for Their Memory"
     },
     {
@@ -704,9 +531,6 @@
       "height": 1721,
       "extent": "4646x1721 2.70",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0059/quality=85,fit=crop,width=4646,height=1721",
-      "full": "https://reportbase.com/image/PANO.0059/quality=85,fit=crop,width=4646,height=1721",
-      "thumb": "https://reportbase.com/image/PANO.0059/quality=85,fit=crop,width=600,height=600",
       "quote": "The Reports of My Death Have Been Greatly Exaggerated"
     },
     {
@@ -716,9 +540,6 @@
       "height": 1693,
       "extent": "4723x1693 2.79",
       "size": "8.0MP",
-      "original": "https://reportbase.com/image/PANO.0060/quality=85,fit=crop,width=4723,height=1693",
-      "full": "https://reportbase.com/image/PANO.0060/quality=85,fit=crop,width=4723,height=1693",
-      "thumb": "https://reportbase.com/image/PANO.0060/quality=85,fit=crop,width=600,height=600",
       "quote": "Before I Refuse to Take Your Questions, I Have an Opening Statement"
     },
     {
@@ -728,9 +549,6 @@
       "height": 1599,
       "extent": "3752x1599 2.35",
       "size": "6.0MP",
-      "original": "https://reportbase.com/image/PANO.0061/quality=85,fit=crop,width=3752,height=1599",
-      "full": "https://reportbase.com/image/PANO.0061/quality=85,fit=crop,width=3752,height=1599",
-      "thumb": "https://reportbase.com/image/PANO.0061/quality=85,fit=crop,width=600,height=600",
       "quote": "A Government That Robs Peter to Pay Paul Can Always Depend on the Support of Paul"
     },
     {
@@ -740,9 +558,6 @@
       "height": 1270,
       "extent": "3792x1270 2.99",
       "size": "4.8MP",
-      "original": "https://reportbase.com/image/PANO.0062/quality=85,fit=crop,width=3792,height=1270",
-      "full": "https://reportbase.com/image/PANO.0062/quality=85,fit=crop,width=3792,height=1270",
-      "thumb": "https://reportbase.com/image/PANO.0062/quality=85,fit=crop,width=600,height=600",
       "quote": "I Have had a Perfectly Wonderful Evening, but this Wasn't It"
     },
     {
@@ -752,9 +567,6 @@
       "height": 1648,
       "extent": "3639x1648 2.21",
       "size": "6.0MP",
-      "original": "https://reportbase.com/image/PANO.0063/quality=85,fit=crop,width=3639,height=1648",
-      "full": "https://reportbase.com/image/PANO.0063/quality=85,fit=crop,width=3639,height=1648",
-      "thumb": "https://reportbase.com/image/PANO.0063/quality=85,fit=crop,width=600,height=600",
       "quote": "As For Our Majority... One is Enough"
     },
     {
@@ -764,9 +576,6 @@
       "height": 1197,
       "extent": "3508x1197 2.93",
       "size": "4.2MP",
-      "original": "https://reportbase.com/image/PANO.0064/quality=85,fit=crop,width=3508,height=1197",
-      "full": "https://reportbase.com/image/PANO.0064/quality=85,fit=crop,width=3508,height=1197",
-      "thumb": "https://reportbase.com/image/PANO.0064/quality=85,fit=crop,width=600,height=600",
       "quote": "I Failed to Make the Chess Team Because of My Height"
     },
     {
@@ -776,9 +585,6 @@
       "height": 1692,
       "extent": "5317x1692 3.14",
       "size": "9.0MP",
-      "original": "https://reportbase.com/image/PANO.0065/quality=85,fit=crop,width=5317,height=1692",
-      "full": "https://reportbase.com/image/PANO.0065/quality=85,fit=crop,width=5317,height=1692",
-      "thumb": "https://reportbase.com/image/PANO.0065/quality=85,fit=crop,width=600,height=600",
       "quote": "You Can Always Tell When a Man's Well Informed - His Views are Pretty Much Like Your Own"
     },
     {
@@ -788,9 +594,6 @@
       "height": 1185,
       "extent": "3508x1185 2.96",
       "size": "4.2MP",
-      "original": "https://reportbase.com/image/PANO.0066/quality=85,fit=crop,width=3508,height=1185",
-      "full": "https://reportbase.com/image/PANO.0066/quality=85,fit=crop,width=3508,height=1185",
-      "thumb": "https://reportbase.com/image/PANO.0066/quality=85,fit=crop,width=600,height=600",
       "quote": "It's Simple, If It Jiggles, It's Fat"
     },
     {
@@ -800,9 +603,6 @@
       "height": 1831,
       "extent": "4914x1831 2.68",
       "size": "9.0MP",
-      "original": "https://reportbase.com/image/PANO.0067/quality=85,fit=crop,width=4914,height=1831",
-      "full": "https://reportbase.com/image/PANO.0067/quality=85,fit=crop,width=4914,height=1831",
-      "thumb": "https://reportbase.com/image/PANO.0067/quality=85,fit=crop,width=600,height=600",
       "quote": "Yield to Temptation - It May Not Pass Your Way Again"
     }
   ]

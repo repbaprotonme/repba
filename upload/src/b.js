@@ -11,12 +11,13 @@ export default
               'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb',
               'X-Auth-Email': 'reportbase@gmail.com',
               'X-Auth-Key': 'd27e8f43b04336d419f9b85927dc1e25bb915',
-          }
+          },
         };
 
         var response = await fetch('https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1/direct_upload', options);
         var body = await response.json();
         var action = body.result.uploadURL;
+
         var html =
         `<!DOCTYPE html>
          <html>
@@ -26,17 +27,18 @@ export default
              method="post"
              action="javascript:submit()"
              enctype="multipart/form-data">
-             <input type="file" id="myFile" name="file" />
+             <input type="file" id="file1" name="file1" />
              <input type="submit" />
            </form>
            <script>
-           function submit()
-           {
+            function submit()
+            {
                 var form1 = document.getElementById("form1")
                 form1.action="${action}"
-           }
+            }
 
-            document.getElementById("myFile").onchange = function()
+            var file1 = document.getElementById("file1");
+            file1.onchange = function()
             {
                 if (!this.files)
                     return;
@@ -55,7 +57,7 @@ export default
                 let input = this.files[0];
                 reader.readAsDataURL(input);
             };
-            </script>
+           </script>
          </body>
         </html>`;
 

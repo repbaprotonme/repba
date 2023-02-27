@@ -27,9 +27,29 @@ export default {
       }
       case 'GET':
       {
-          //https://reportbase.com/image/BAKE.0000/quality=85,fit=crop,width=2112,height=2840
-            var suffix = request.url.split("/").slice(-2).join("/")
-            return fetch(`https://imagedelivery.net/w9Lvwo1EAmYzHfbI5TkJ7g/${suffix}`)
+            //https://reportbase.com/image/BAKE.0000/base
+            var suffix = request.url.split("/").slice(-1).join("/")
+            if (suffix == "blob")
+            {
+                const options =
+                {
+                    method: 'GET',
+                    headers:
+                    {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb'
+                    }
+                };
+
+                var suffix = request.url.split("/").slice(-2).join("/")
+                return fetch(`https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1/${suffix}`, options)
+            }
+            else
+            {
+                //https://reportbase.com/image/BAKE.0000/quality=85,fit=crop,width=2112,height=2840
+                var suffix = request.url.split("/").slice(-2).join("/")
+                return fetch(`https://imagedelivery.net/w9Lvwo1EAmYzHfbI5TkJ7g/${suffix}`)
+            }
       }
       case 'DELETE':
       {

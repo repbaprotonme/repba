@@ -62,16 +62,15 @@ export default
                 j.extent = `${width}x${height} ${aspect}`;
                 j.size = ((width * height)/1000000).toFixed(1) + "MP";
                 j.photographer = user.name;
-                j.required  = "Photos provided by Pexels";
+                j.required = "Photos provided by Pexels";
                 j.photographer_url = user.portfolio_url;
                 j.photographer_id = user.id;
                  if (k.description)
                     j.description = k.description;
                 if (k.alt_description)
                     j.alt_description = k.alt_description;
-                j.original = urls.raw;
-                j.full = urls.raw+`&h=${height}&q=85`;
-                j.thumb = urls.raw+"&w=600&h=600&q=85&fit=crop";
+                j.raw = urls.raw;
+                j.thumb = urls.thumb;
                 j.created = k.created_at.substr(0,10);
                 j.id = k.id;
                 lst.push(j);
@@ -84,6 +83,7 @@ export default
         g.title = `Unsplash Gallery`;
         g.title1 = `Photos Provided by Unsplash`;
         g.username = id;
+        g.repos = "unsplash";
         g.row = 50;
         g.data = lst;
 
