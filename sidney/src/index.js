@@ -2,7 +2,7 @@ export default
 {
 	async fetch(request, env, ctx)
     {
-        const per_page = 100;
+        var per_page = 100;
         var data = [];
         var page = 1;
         while (true)
@@ -37,7 +37,10 @@ export default
         }
 
         var g = {}
-        g.title = `Reportbase.com`;
+        g.title = `reportbase.com`;
+        g.title1 = `Sidney`;
+        g.total = 4000;//todo
+        g.per_page = per_page;
         g.data = data;
 
         let headers = new Headers(

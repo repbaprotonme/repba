@@ -26,7 +26,7 @@ const DELAYCENTER = 3.926;
 const SLICERADIUS = 130900;
 const TIMEOBJ = 3926;
 const TIMEMID = TIMEOBJ/2;
-const MENUSELECT = "rgba(0,0,100,0.85)";
+const MENUSELECT = "rgb(255,175,0)";
 const MENUTAP = "rgba(255,0,0,0.5)";
 const PROGRESSFILL = "white";
 const PROGRESSFALL = "black";
@@ -356,6 +356,7 @@ var guidelst =
     },
 ]
 
+var pageobj = new Data("PAGE", 100);
 var speedobj = new Data("SPEED", 100);
 var timemain = new Data("TIMEMAIN", 30);
 var speedxobj = new Data("SPEEDX", 100);
@@ -609,14 +610,90 @@ function drawslices()
         if (!context.pressindex.current())
         {
             context.save();
-            context.font = "0.9rem Archivo Black";
-            var a = new RowA([10,MENUBARHEIGHT,MENUBARHEIGHT,0,MENUBARHEIGHT],
+            context.font = "1.0rem Archivo Black";
+            context.a = new rectangle()
+            context.b = new rectangle()
+            context.c = new rectangle()
+            context.d = new rectangle()
+            context.e = new rectangle()
+            context.f = new rectangle()
+            context.g = new rectangle()
+            context.h = new rectangle()
+            context.i = new rectangle()
+            var w = rect.width/11;
+            if (w > 40)
+                x = 40;
+            var a = new RowA([10,MENUBARHEIGHT,MENUBARHEIGHT,0,70],
             [
                 0,
                 new Text("white", "center", "middle", 0, 0, 1),
                 new Text("white", "center", "middle", 0, 0, 1),
                 0,
-                new Text("white", "center", "middle", 0, 0, 1),
+                context.index == 7 ? new Layer(
+                [
+                    new Fill("rgba(0,0,0,0.5)"),
+                    new ColA([0,w,w,w,w,w,w,w,w,w,w,w,0],
+                    [
+                        0,
+                        0,
+                        new Layer(
+                        [
+                            new Rectangle(context.a),
+                            pageobj.current() == 0 ? new Shrink(new CirclePanel(SCROLLNAB,"white",3),10,10) : 0,
+                            new Text("white", "center", "middle", 0, 0, 1),
+                        ]),
+                        new Layer(
+                        [
+                            new Rectangle(context.b),
+                            pageobj.current() == 1 ? new Shrink(new CirclePanel(SCROLLNAB,"white",3),10,10) : 0,
+                            new Text("white", "center", "middle", 0, 0, 1),
+                        ]),
+                        new Layer(
+                        [
+                            new Rectangle(context.c),
+                            pageobj.current() == 2 ? new Shrink(new CirclePanel(SCROLLNAB,"white",3),10,10) : 0,
+                            new Text("white", "center", "middle", 0, 0, 1),
+                        ]),
+                        new Layer(
+                        [
+                            new Rectangle(context.d),
+                            pageobj.current() == 3 ? new Shrink(new CirclePanel(SCROLLNAB,"white",3),10,10) : 0,
+                            new Text("white", "center", "middle", 0, 0, 1),
+                        ]),
+                        new Layer(
+                        [
+                            new Rectangle(context.e),
+                            pageobj.current() == 4 ? new Shrink(new CirclePanel(SCROLLNAB,"white",3),10,10) : 0,
+                            new Text("white", "center", "middle", 0, 0, 1),
+                        ]),
+                        new Layer(
+                        [
+                            new Rectangle(context.f),
+                            pageobj.current() == 5 ? new Shrink(new CirclePanel(SCROLLNAB,"white",3),10,10) : 0,
+                            new Text("white", "center", "middle", 0, 0, 1),
+                        ]),
+                        new Layer(
+                        [
+                            new Rectangle(context.g),
+                            pageobj.current() == 6 ? new Shrink(new CirclePanel(SCROLLNAB,"white",3),10,10) : 0,
+                            new Text("white", "center", "middle", 0, 0, 1),
+                        ]),
+                        new Layer(
+                        [
+                            new Rectangle(context.h),
+                            pageobj.current() == 7 ? new Shrink(new CirclePanel(SCROLLNAB,"white",3),10,10) : 0,
+                            new Text("white", "center", "middle", 0, 0, 1),
+                        ]),
+                        new Layer(
+                        [
+                            new Rectangle(context.i),
+                            pageobj.current() == 8 ? new Shrink(new CirclePanel(SCROLLNAB,"white",3),10,10) : 0,
+                            new Text("white", "center", "middle", 0, 0, 1),
+                        ]),
+                        0,
+                        0,
+                    ])
+                ]) : 0,
             ]);
 
             var k = Math.lerp(1,context.sliceobj.length(),(1-context.timeobj.berp()));
@@ -625,10 +702,24 @@ function drawslices()
             a.draw(context, rect,
             [
                 0,
-                galleryobj.title,
+                galleryobj.title?galleryobj.title:"reportbase.com",
                 galleryobj.title1,
                 0,
-                j
+                [
+                    0,
+                    0,
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    0,
+                    0,
+                ]
             ], 0);
             context.restore();
         }
@@ -2675,7 +2766,7 @@ var taplst =
             stretchobj.getcurrent().add(-1);
             _4cnvctx.refresh();
         }
-         else if (context.pluspanel && context.pluspanel.hitest(x,y))
+        else if (context.pluspanel && context.pluspanel.hitest(x,y))
         {
             stretchobj.getcurrent().add(1);
             _4cnvctx.refresh();
@@ -2774,7 +2865,52 @@ var taplst =
     name: "MENU",
     tap: function (context, rect, x, y)
     {
-        if (x > rect.width - (MENUBARWIDTH+3) )
+        if (context.a && context.a.hitest(x,y))
+        {
+            pageobj.set(0);
+            context.refresh();
+        }
+        else if (context.b && context.b.hitest(x,y))
+        {
+            pageobj.set(1);
+            context.refresh();
+        }
+        else if (context.c && context.c.hitest(x,y))
+        {
+            pageobj.set(2);
+            context.refresh();
+        }
+        else if (context.d && context.d.hitest(x,y))
+        {
+            pageobj.set(3);
+            context.refresh();
+        }
+        else if (context.e && context.e.hitest(x,y))
+        {
+            pageobj.set(4);
+            context.refresh();
+        }
+        else if (context.f && context.f.hitest(x,y))
+        {
+            pageobj.set(5);
+            context.refresh();
+        }
+        else if (context.g && context.g.hitest(x,y))
+        {
+            pageobj.set(6);
+            context.refresh();
+        }
+        else if (context.h && context.h.hitest(x,y))
+        {
+            pageobj.set(7);
+            context.refresh();
+        }
+        else if (context.i && context.i.hitest(x,y))
+        {
+            pageobj.set(8);
+            context.refresh();
+        }
+        else if (x > rect.width - (MENUBARWIDTH+3) )
         {
             var j = y/rect.height;
             var k = TIMEOBJ*(1-j);
@@ -3049,31 +3185,30 @@ var menulst =
             var h2 = rect.height+80;
             var w2 = rect.width-20;
             var a2 = w2/h2;
-            if (0)//user.thumbimg.width > user.thumbimg.height)
-            {
-                var h1 = user.thumbimg.height
-                var w1 = a2*h1
-                var x1 = (user.thumbimg.width-w1)/2;
-                var y1 = 0;
-                context.drawImage(user.thumbimg, x1, y1, w1, h1,
-                    10, -40, w2, h2);
-            }
-            else
-            {
-                var w1 = user.thumbimg.width;
-                var h1 = w1/a2;
-                var x1 = 0;
-                var y1 = (user.thumbimg.height-h1)/2;
-                context.drawImage(user.thumbimg, x1, y1, w1, h1,
-                    10, -40, w2, h2);
-            }
+            var w1 = user.thumbimg.width;
+            var h1 = w1/a2;
+            var x1 = 0;
+            var y1 = (user.thumbimg.height-h1)/2;
+            context.drawImage(user.thumbimg, x1, y1, w1, h1,
+                10, -40, w2, h2);
 
-            var a = new Layer(
+            var a = new RowA([0,40,0],
+                [
+                    0,
+                    new Layer(
+                    [
+                        new CirclePanel(SCROLLNAB,"white",3),
+                        new Text("white", "center", "middle",0, 0, 1)
+                    ]),
+                    0,
+                ]);
+
+            a.draw(context, rect,
             [
-                new Text("white", "center", "middle",0, 0, 1)
-            ]);
-
-            a.draw(context, rect, user.photographer, 0);
+                0,
+                (user.pos+1).toFixed(0),
+                0,
+            ], 0);
         }
         else
         {
@@ -3789,7 +3924,7 @@ fetch(path)
 
         //9
         var slices = _9cnvctx.sliceobj;
-        slices.data= [];
+        slices.data = [];
 
         slices.data.push({title:"Open", path: "OPEN", func: function()
         {
@@ -3855,6 +3990,7 @@ fetch(path)
         _9cnvctx.slidereduce = 0.75;
         _9cnvctx.title = "Options";
 
+        pageobj.data = Math.ceil(galleryobj.total / galleryobj.per_page);
         pageresize();
         contextobj.reset();
 

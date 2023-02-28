@@ -2,7 +2,6 @@ export default
 {
 	async fetch(request, env, ctx)
     {
-        //todo move to global folder
         function getwh(w, h, maxsize)
         {
             var a = w/h;
@@ -41,42 +40,37 @@ export default
         var per_page = 30;
         var lst = [];
         var page = 1;
-        var morePagesAvailable = true;
-        while (morePagesAvailable)
-        {
-            var response = await fetch(`https://api.unsplash.com/${collection}/${id}/photos?client_id=Xfabm2o5F9iUQon5LTX3O249PCsBpviDafSrMVGkaS0&per_page=${per_page}&page=${page}`);
-            const headers = response.headers;
-            var total = headers.get("x-total")
-            var data = await response.json();
-            for (var n = 0; n < data.length; ++n)
-            {
-                var k = data[n];
-                var j = {};
-                var e = getwh(k.width, k.height, 6000000)
-                var width = e.width;
-                var height = e.height;
-                var aspect = (width/height).toFixed(2);
-                var user = k.user;
-                var urls = k.urls;
-                j.index = (lst.length+1)+" of "+total;
-                j.extent = `${width}x${height} ${aspect}`;
-                j.size = ((width * height)/1000000).toFixed(1) + "MP";
-                j.photographer = user.name;
-                j.required = "Photos provided by Pexels";
-                j.photographer_url = user.portfolio_url;
-                j.photographer_id = user.id;
-                 if (k.description)
-                    j.description = k.description;
-                if (k.alt_description)
-                    j.alt_description = k.alt_description;
-                j.raw = urls.raw;
-                j.thumb = urls.thumb;
-                j.created = k.created_at.substr(0,10);
-                j.id = k.id;
-                lst.push(j);
-            }
 
-            morePagesAvailable = (page++ <= 2);// || lst.length < total;
+        var response = await fetch(`https://api.unsplash.com/${collection}/${id}/photos?client_id=Xfabm2o5F9iUQon5LTX3O249PCsBpviDafSrMVGkaS0&per_page=${per_page}&page=${page}`);
+        var headers = response.headers;
+        var total = headers.get("x-total")
+        var data = await response.json();
+        for (var n = 0; n < data.length; ++n)
+        {
+            var k = data[n];
+            var j = {};
+            var e = getwh(k.width, k.height, 6000000)
+            var width = e.width;
+            var height = e.height;
+            var aspect = (width/height).toFixed(2);
+            var user = k.user;
+            var urls = k.urls;
+            j.index = (lst.length+1)+" of "+total;
+            j.extent = `${width}x${height} ${aspect}`;
+            j.size = ((width * height)/1000000).toFixed(1) + "MP";
+            j.photographer = user.name;
+            j.required = "Photos provided by Pexels";
+            j.photographer_url = user.portfolio_url;
+            j.photographer_id = user.id;
+             if (k.description)
+                j.description = k.description;
+            if (k.alt_description)
+                j.alt_description = k.alt_description;
+            j.raw = urls.raw;
+            j.thumb = urls.thumb;
+            j.created = k.created_at.substr(0,10);
+            j.id = k.id;
+            lst.push(j);
         }
 
         var g = {}
@@ -85,9 +79,11 @@ export default
         g.username = id;
         g.repos = "unsplash";
         g.row = 50;
+        g.per_page = per_page;
+        g.total = total;
         g.data = lst;
 
-        let headers = new Headers(
+        var headers = new Headers(
         {
 		    'content-type': 'application/json;charset=UTF-8',
             'Access-Control-Allow-Origin': '*',
