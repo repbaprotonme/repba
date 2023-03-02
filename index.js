@@ -611,7 +611,7 @@ function drawslices()
             var a = new Row([0,60,20],
             [
                 0,
-                new Col([30,120,0],
+                new Col([20,0,90,0,20],
                 [
                     0,
                     new Layer(
@@ -620,6 +620,8 @@ function drawslices()
                         new CirclePanel(SCROLLNAB,"white",3),
                         new Text("white", "center", "middle", 0, 0, 1),
                     ]),
+                    0,
+                    0,
                     0,
                 ]),
                 0,
@@ -1821,7 +1823,7 @@ var pinchlst =
         if (context.isthumbrect)
             context.obj = heightobj.getcurrent();
         else
-            context.obj = zoomobj.getcurrent();
+            context.obj = globalobj.stretch ? stretchobj.getcurrent() : zoomobj.getcurrent();
         context.savepinch = context.obj.getcurrent()
     },
     pinchend: function (context)
@@ -2341,25 +2343,9 @@ var presslst =
         clearInterval(context.timemain);
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
-        {
             context.pressed = 1;
-        }
-        else if (x < rect.width/2)
-        {
-            context.presstime = setInterval(function()
-            {
-                stretchobj.getcurrent().add(-1);
-                _4cnvctx.refresh();
-            }, 40);
-        }
-        else if (x > rect.width/2)
-        {
-            context.presstime = setInterval(function()
-            {
-                stretchobj.getcurrent().add(1);
-                _4cnvctx.refresh();
-            }, 40);
-        }
+        else
+            globalobj.stretch = globalobj.stretch ? 0 : 1;
 
         context.refresh();
     }
@@ -3774,7 +3760,7 @@ fetch(path)
 
         var slices = _6cnvctx.sliceobj;
         slices.data = [];
-        for (var n = 0; n < per_page; ++n)
+        for (var n = 0; n < pages; ++n)
         {
             var k = `${n*per_page+1} - ${(n+1)*per_page}`;
             slices.data.push({page: n, title:`Page ${n+1}`, title1: k, path: "OPEN", func: function()
@@ -3886,6 +3872,7 @@ fetch(path)
         slices.data.push({title:"Info", path: "INFO", func: function()
             {
                 globalobj.showinfo = globalobj.showinfo?0:1;
+                menuhide();
                 _4cnvctx.refresh();
             }});
 
@@ -5132,6 +5119,9 @@ function menushow(context)
     setTimeout(function() { context.refresh(); }, 100);
     setTimeout(function() { context.refresh(); }, 500);
     setTimeout(function() { context.refresh(); }, 1000);
+    setTimeout(function() { context.refresh(); }, 1500);
+    setTimeout(function() { context.refresh(); }, 2000);
+    setTimeout(function() { context.refresh(); }, 2500);
 }
 
 var ClosePanel = function (size)
