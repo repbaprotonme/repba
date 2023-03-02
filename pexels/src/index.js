@@ -32,7 +32,8 @@ export default
         }
 
         var data = [];
-        var page = 1;
+        const url = new URL(request.url);
+        var page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) :1;
         var per_page = 80;
 
         var init =

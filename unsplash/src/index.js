@@ -39,7 +39,7 @@ export default
         var id = k[2];
         var per_page = 30;
         var lst = [];
-        var page = 1;
+        var page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) :1;
 
         var response = await fetch(`https://api.unsplash.com/${collection}/${id}/photos?client_id=Xfabm2o5F9iUQon5LTX3O249PCsBpviDafSrMVGkaS0&per_page=${per_page}&page=${page}`);
         var headers = response.headers;
