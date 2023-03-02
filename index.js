@@ -3398,7 +3398,7 @@ var extentlst =
     zoom: function ()
     {
         loomobj.split(50, "90-95", loomobj.length());
-        poomobj.split(50, "75-90", poomobj.length());
+        poomobj.split(0, "75-90", poomobj.length());
     }
 },
 {
@@ -3415,8 +3415,8 @@ var extentlst =
     },
     zoom: function ()
     {
-        loomobj.split(50, "90-95", loomobj.length());
-        poomobj.split(50, "75-90", poomobj.length());
+        loomobj.split(20, "90-95", loomobj.length());
+        poomobj.split(20, "75-90", poomobj.length());
     }
 },
 {
