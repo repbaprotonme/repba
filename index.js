@@ -1291,6 +1291,7 @@ CanvasRenderingContext2D.prototype.movedown = function()
 
 CanvasRenderingContext2D.prototype.movepage = function(j)
 {
+    var context = this;
     if (!_4cnvctx.setcolumncomplete)
         return;
     var e = galleryobj.current();
@@ -1318,7 +1319,6 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         contextobj.reset();
         addressobj.update();
-        _4cnvctx.tab();
         setTimeout(function(){ _4cnvctx.movingpage = 0; _4cnvctx.refresh(); }, 200);
     }, 500);
 }
@@ -2713,7 +2713,7 @@ var taplst =
         {
             rotateobj.enabled = 0;
             clearInterval(context.timemain);
-            context.timemain = setInterval(function () { drawslices() }, timemain.getcurrent());
+ //           context.timemain = setInterval(function () { drawslices() }, timemain.getcurrent());
 
             if (context.selectrect && context.selectrect.hitest(x,y)>=0)
             {
@@ -4079,15 +4079,10 @@ var ContextObj = (function ()
 
                     contextobj.reset()
                     setTimeout(function() { masterload(); }, 2000);
-                    if (rotateobj.enabled)
-                    {
-                        if (!_4cnvctx.movingpage)
-                            context.autodirect = -1;
-                        else
-                            context.autodirect = _4cnvctx.movingpage==1?-1:1
-                        if (!_4cnvctx.timemain)
-                            _4cnvctx.tab();
-                    }
+    context.slidestop = (context.timeobj.length()/context.virtualwidth)*SLIDETOP;
+    context.slidereduce = context.slidestop/SLIDEFACTOR;
+    if (rotateobj.enabled)
+        context.slidereduce = context.slidestop/REDUCEFACTOR;
                 }
 			}
 
