@@ -1318,6 +1318,7 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         contextobj.reset();
         addressobj.update();
+        _4cnvctx.tab();
         setTimeout(function(){ _4cnvctx.movingpage = 0; _4cnvctx.refresh(); }, 200);
     }, 500);
 }
