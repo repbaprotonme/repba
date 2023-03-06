@@ -2363,6 +2363,7 @@ var presslst =
     press: function (context, rect, x, y)
     {
         clearInterval(context.timemain);
+        context.timemain = 0;
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
             context.pressed = 1;
@@ -2495,15 +2496,7 @@ var keylst =
 
         context.refresh();
 
-        if (evt.key == " ")
-        {
-            var k = _4cnvctx.timemain = _4cnvctx.timemain ? 0: 1;
-            clearInterval(_4cnvctx.timemain);
-            _4cnvctx.timemain = 0;
-            if (k)
-                _4cnvctx.timemain = setInterval(function () { drawslices() }, timemain.getcurrent());
-        }
-        else if (evt.key == "f")
+        if (evt.key == "f")
         {
             if (screenfull.isEnabled)
             {
@@ -2638,7 +2631,8 @@ var taplst =
 	name: "BOSS",
 	tap: function (context, rect, x, y, shift, ctrl)
 	{
-        clearInterval(context.presstime);
+        clearInterval(context.timemain);
+        context.timemain = 0;
         context.pressed = 0;
         if (context.moveprev && context.moveprev.hitest(x,y))
         {
@@ -2650,21 +2644,6 @@ var taplst =
         }
         else if (context.progresspanel && context.progresspanel.hitest(x,y))
         {
-            if (SAFIROX)
-                return;
-            if (_4cnvctx.timemain)
-            {
-                clearInterval(_4cnvctx.timemain);
-                _4cnvctx.timemain = 0;
-                rotateobj.enabled = 0;
-            }
-            else
-            {
-                rotateobj.enabled = 1;
-                _4cnvctx.tab();
-            }
-
-            _4cnvctx.refresh();
         }
         else if (context.downpanel && context.downpanel.hitest(x,y))
         {
@@ -2734,7 +2713,7 @@ var taplst =
         {
             rotateobj.enabled = 0;
             clearInterval(context.timemain);
- //           context.timemain = setInterval(function () { drawslices() }, timemain.getcurrent());
+            context.timemain = 0;
 
             if (context.selectrect && context.selectrect.hitest(x,y)>=0)
             {
@@ -3857,9 +3836,10 @@ fetch(path)
       var id = galleryobj.getcurrent().id;
       fetch(`https://reportbase.com/image/${id}`, {method: 'REPORT'})
       .then(response => response.json())
-      .then(function(obj)
+      .then(function(object)
           {
-            galleryobj = [...galleryobj,...obj];
+                for (const property in object)
+                  galleryobj[property] = object[property];
         })
 
         var slices = _8cnvctx.sliceobj;
@@ -5130,6 +5110,8 @@ var posityobj = new Data("POSITIONY", [positypobj,positylobj]);
 
 function menushow(context)
 {
+    clearInterval(_4cnvctx.timemain);
+    _4cnvctx.timemain = 0;
     bodyobj.enabled = 0;
     _4cnvctx.slideshow = 0;
     var enabled = context.enabled;
