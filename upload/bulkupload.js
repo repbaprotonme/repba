@@ -28,6 +28,8 @@ async function upload(imageName, CF_IMAGES_ACCOUNT_ID, CF_IMAGES_API_KEY) {
     // tell CF Images that we want our image to have this ID (ie, its current name)
     body.append("id", imageName);
 
+    //key value TODO
+
     const res = await fetch(
         `https://api.cloudflare.com/client/v4/accounts/${CF_IMAGES_ACCOUNT_ID}/images/v1`,
         {

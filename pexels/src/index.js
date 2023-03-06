@@ -65,7 +65,11 @@ export default
             j.photographer_id = k.photographer_id;
             if (k.alt)
                 j.description = k.alt;
-            j.raw = k.src.original
+            j.raw = k.src.original;
+            if (width > height)
+                j.full = k.src.landscape;
+            else
+                j.full = k.src.portrait;
             j.thumb = k.src.large;
             data.push(j);
         }

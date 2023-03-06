@@ -1301,6 +1301,8 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
 
     if (!k.object && (_4cnvctx.movingpage || !k.loaded || galleryobj.length() == 1))
     {
+        clearTimeout(context.movepagetime);
+        context.movepagetime = setTimeout(function() { masterload(); }, 2000);
         _4cnvctx.movingpage = 0;
         this.refresh();
         return;
@@ -3214,7 +3216,7 @@ function resetcanvas()
     var context = _4cnvctx;
     context.show(0,0,window.innerWidth,window.innerHeight);
 
-    var zoomax = 90.0;
+    var zoomax = 92.50;
     var n = 0;
     for (; n < zoomax; ++n)
     {
@@ -3222,7 +3224,7 @@ function resetcanvas()
         var height = photo.image.height*zoom;
         var aspect = photo.image.width/height;
         var width = context.canvas.height * aspect;
-        if (width/window.innerWidth > 1.5)
+        if (width/window.innerWidth > 2)
             break;
     }
 
@@ -3856,7 +3858,6 @@ fetch(path)
         {
             menuhide();
             _4cnvctx.refresh();
-            authClient.redirectToLoginPage()
         }})
 
         slices.data.push({title:"Download", path: "DOWNLOAD", func: function()
@@ -3875,6 +3876,28 @@ fetch(path)
                 globalobj.showinfo = globalobj.showinfo?0:1;
                 menuhide();
                 _4cnvctx.refresh();
+            }});
+
+      slices.data.push({title:"Delete", path: "DELETE", func: function()
+            {
+                const options =
+                {
+                    method: 'DELETE',
+                    headers:
+                    {
+                        'Content-Type': 'application/json',
+                    }
+                };
+
+                var id = galleryobj.getcurrent().id;
+                fetch(`https://reportbase.com/image/${id}`, options)
+                  .then(function (response)
+                  {
+                      location.reload();
+                  })
+                  .then(function (obj)
+                  {
+                  })
             }});
 
         slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
@@ -4015,7 +4038,7 @@ var ContextObj = (function ()
                 var template = galleryobj.template ? galleryobj.template : "medium";
                 var path = `https://reportbase.com/image/${id}/${template}`;
                 if (galleryobj.repos)
-                    path = galleryobj.getcurrent().raw;
+                    path = galleryobj.getcurrent().full;
                 else if (galleryobj.getcurrent().object)
                     path = galleryobj.getcurrent().object;
                 seteventspanel(new Empty());
@@ -4079,10 +4102,14 @@ var ContextObj = (function ()
 
                     contextobj.reset()
                     setTimeout(function() { masterload(); }, 2000);
-    context.slidestop = (context.timeobj.length()/context.virtualwidth)*SLIDETOP;
-    context.slidereduce = context.slidestop/SLIDEFACTOR;
-    if (rotateobj.enabled)
-        context.slidereduce = context.slidestop/REDUCEFACTOR;
+
+                    if (!SAFIROX)
+                    {
+                        context.slidestop = (context.timeobj.length()/context.virtualwidth)*SLIDETOP;
+                        context.slidereduce = context.slidestop/SLIDEFACTOR;
+                        if (rotateobj.enabled)
+                            context.slidereduce = context.slidestop/REDUCEFACTOR;
+                    }
                 }
 			}
 
@@ -5264,17 +5291,6 @@ window.addEventListener("visibilitychange", (evt) =>
 window.addEventListener("load", async () =>
 {
 });
-
-if (url.hostname == "reportbase.com")
-{
-    authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
-    authClient.getAuthenticationInfoOrNull(false)
-    .then(function(client)
-    {
-        if (client)
-            globalobj.user = client.user;
-    })
-}
 
 function wraptext(ctx, text, maxWidth)
 {

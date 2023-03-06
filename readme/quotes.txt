@@ -1,5 +1,6 @@
 var quotes = 
 [
+    "Yesterday is history,  tomorrow is the future, but today is gift, that is why it called the present",
     "Those who dance are considered mad by those who can't hear the music.",
     "May God have mercy on my enemies, cause I will not.",
     "The difference between genius and stupidity is that genius has its limits.",

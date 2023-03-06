@@ -67,7 +67,8 @@ export default
             if (k.alt_description)
                 j.alt_description = k.alt_description;
             j.raw = urls.raw;
-            j.thumb = urls.thumb;
+            j.full = urls.regular;
+            j.thumb = urls.small;
             j.created = k.created_at.substr(0,10);
             j.id = k.id;
             lst.push(j);
