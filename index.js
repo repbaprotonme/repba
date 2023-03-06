@@ -1,6 +1,5 @@
 //todo: https://obfuscator.io
 //todo: safari max size
-//
 /* ++ += ==
 Copyright 2017 Tom Brinkman
 http://www.reportbase.com
@@ -618,7 +617,7 @@ function drawslices()
                     [
                         new Rectangle(context.selectpage),
                         new CirclePanel(SCROLLNAB,"white",3),
-                        new Text("white", "center", "middle", 0, 0, 1),
+                        new PagesPanel(),
                     ]),
                     0,
                     0,
@@ -924,6 +923,26 @@ var DownPanel = function (color, shadow)
             new Shrink(new ArrowPanel(ARROWFILL,180),21,26),
         ]);
 
+        a.draw(context, rect, user, time);
+        context.restore();
+    }
+};
+
+var PagesPanel = function ()
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.save();
+        var a = new Row([0,10,3,10,3,10,0],
+        [
+            0,
+            new CirclePanel("white","white",0),
+            0,
+            new CirclePanel("white","white",0),
+            0,
+            new CirclePanel("white","white",0),
+            0,
+        ])
         a.draw(context, rect, user, time);
         context.restore();
     }
@@ -3880,24 +3899,11 @@ fetch(path)
 
       slices.data.push({title:"Delete", path: "DELETE", func: function()
             {
-                const options =
-                {
-                    method: 'DELETE',
-                    headers:
-                    {
-                        'Content-Type': 'application/json',
-                    }
-                };
-
                 var id = galleryobj.getcurrent().id;
-                fetch(`https://reportbase.com/image/${id}`, options)
-                  .then(function (response)
-                  {
-                      location.reload();
-                  })
-                  .then(function (obj)
-                  {
-                  })
+                fetch(`https://reportbase.com/image/${id}`, { method: 'DELETE' })
+                .then(res => { location.reload();
+                    return res.json() })
+                .then(data => console.log(data))
             }});
 
         slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
@@ -3937,8 +3943,10 @@ fetch(path)
 
         if (leftmenu)
         {
+            headobj.enabled = 1;
             _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
             menushow(_8cnvctx)
+            _4cnvctx.refresh();
         }
   })
 
@@ -4049,6 +4057,7 @@ var ContextObj = (function ()
                 photo.image.onerror =
                     photo.image.onabort = function(e)
                 {
+                    console.log(e);
                 }
 
                 photo.image.onload = function()

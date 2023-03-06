@@ -2,18 +2,6 @@
   "title": "Repba Gallery",
   "data": [
     {
-      "id": "BOAT.0000",
-      "index": "1 of 114",
-      "width": 3265,
-      "height": 1837,
-      "extent": "3265x1837 1.78",
-      "size": "6.0MP",
-      "original": "https://reportbase.com/image/BOAT.0000/quality=85,fit=crop,width=3265,height=1837",
-      "full": "https://reportbase.com/image/BOAT.0000/quality=85,fit=crop,width=3265,height=1837",
-      "thumb": "https://reportbase.com/image/BOAT.0000/quality=85,fit=crop,width=600,height=600",
-      "quote": "Those who dance are considered mad by those who can't hear the music."
-    },
-    {
       "id": "BOAT.0001",
       "index": "2 of 114",
       "width": 3096,
@@ -1296,78 +1284,6 @@
       "full": "https://reportbase.com/image/BOAT.0113/quality=85,fit=crop,width=4898,height=2449",
       "thumb": "https://reportbase.com/image/BOAT.0113/quality=85,fit=crop,width=600,height=600",
       "quote": "Nothing is So Good As It Seems Beforehand."
-    },
-    {
-      "id": "BOAT.0114",
-      "index": "109 of 114",
-      "width": 4898,
-      "height": 2449,
-      "extent": "4898x2449 2.00",
-      "size": "12.0MP",
-      "original": "https://reportbase.com/image/BOAT.0114/quality=85,fit=crop,width=4898,height=2449",
-      "full": "https://reportbase.com/image/BOAT.0114/quality=85,fit=crop,width=4898,height=2449",
-      "thumb": "https://reportbase.com/image/BOAT.0114/quality=85,fit=crop,width=600,height=600",
-      "quote": "United We Stand, Divided We Fall."
-    },
-    {
-      "id": "BOAT.0115",
-      "index": "110 of 114",
-      "width": 4898,
-      "height": 2449,
-      "extent": "4898x2449 2.00",
-      "size": "12.0MP",
-      "original": "https://reportbase.com/image/BOAT.0115/quality=85,fit=crop,width=4898,height=2449",
-      "full": "https://reportbase.com/image/BOAT.0115/quality=85,fit=crop,width=4898,height=2449",
-      "thumb": "https://reportbase.com/image/BOAT.0115/quality=85,fit=crop,width=600,height=600",
-      "quote": "Lend Yourself to Others, but Give Yourself to Yourself."
-    },
-    {
-      "id": "BOAT.0116",
-      "index": "111 of 114",
-      "width": 4073,
-      "height": 1963,
-      "extent": "4073x1963 2.07",
-      "size": "8.0MP",
-      "original": "https://reportbase.com/image/BOAT.0116/quality=85,fit=crop,width=4073,height=1963",
-      "full": "https://reportbase.com/image/BOAT.0116/quality=85,fit=crop,width=4073,height=1963",
-      "thumb": "https://reportbase.com/image/BOAT.0116/quality=85,fit=crop,width=600,height=600",
-      "quote": "The Very Essence of Instinct Is That It's Followed Independently of Reason."
-    },
-    {
-      "id": "BOAT.0117",
-      "index": "112 of 114",
-      "width": 4168,
-      "height": 1908,
-      "extent": "4168x1908 2.18",
-      "size": "8.0MP",
-      "original": "https://reportbase.com/image/BOAT.0117/quality=85,fit=crop,width=4168,height=1908",
-      "full": "https://reportbase.com/image/BOAT.0117/quality=85,fit=crop,width=4168,height=1908",
-      "thumb": "https://reportbase.com/image/BOAT.0117/quality=85,fit=crop,width=600,height=600",
-      "quote": "Fortune Favors the Bold."
-    },
-    {
-      "id": "BOAT.0118",
-      "index": "113 of 114",
-      "width": 3901,
-      "height": 2050,
-      "extent": "3901x2050 1.90",
-      "size": "8.0MP",
-      "original": "https://reportbase.com/image/BOAT.0118/quality=85,fit=crop,width=3901,height=2050",
-      "full": "https://reportbase.com/image/BOAT.0118/quality=85,fit=crop,width=3901,height=2050",
-      "thumb": "https://reportbase.com/image/BOAT.0118/quality=85,fit=crop,width=600,height=600",
-      "quote": "In the Kingdom of the Blind, the One-Eyed Man is King."
-    },
-    {
-      "id": "BOAT.0119",
-      "index": "114 of 114",
-      "width": 4063,
-      "height": 1968,
-      "extent": "4063x1968 2.06",
-      "size": "8.0MP",
-      "original": "https://reportbase.com/image/BOAT.0119/quality=85,fit=crop,width=4063,height=1968",
-      "full": "https://reportbase.com/image/BOAT.0119/quality=85,fit=crop,width=4063,height=1968",
-      "thumb": "https://reportbase.com/image/BOAT.0119/quality=85,fit=crop,width=600,height=600",
-      "quote": "You will never know your limits until you push yourself to them."
     }
   ]
 }

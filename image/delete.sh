@@ -5,7 +5,7 @@
 #--header 'Authorization: Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb'
 
 
-curl -X DELETE https://reportbase.com/image/$1 \
+curl -X DELETE https://reportbase.com/image/$1 
 
 
 

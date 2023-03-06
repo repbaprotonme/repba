@@ -1,25 +1,9 @@
 //node delete.js TEMP
 
-const options =
-{
-    method: 'DELETE',
-//    headers:
- //   {
-  //      'Content-Type': 'application/json',
-   //     'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb'
-    //}
-};
-
 var id = "$1";
-fetch(`https://reportbase.com/image/${id}`, options)
-.then(function(response)
-{
-   return response.json();
-})
-.then(function(obj)
-{
-   return obj;
-})
+fetch(`https://reportbase.com/image/XASDFASFAF`, { method: 'DELETE' })
+.then(res => { return res.json() })
+.then(data => console.log(data))
 
 
 
