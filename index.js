@@ -3859,7 +3859,7 @@ fetch(path)
       .then(response => response.json())
       .then(function(obj)
           {
-              console.log(obj);
+            galleryobj = [...galleryobj,...obj];
         })
 
         var slices = _8cnvctx.sliceobj;
