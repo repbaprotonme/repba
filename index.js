@@ -3853,6 +3853,15 @@ fetch(path)
         _8cnvctx.sliceobj.data = galleryobj.data;
 
         galleryobj.set(url.project);
+
+      var id = galleryobj.getcurrent().id;
+      fetch(`https://reportbase.com/image/${id}`, {method: 'REPORT'})
+      .then(response => response.json())
+      .then(function(obj)
+          {
+              console.log(obj);
+        })
+
         var slices = _8cnvctx.sliceobj;
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
         _8cnvctx.rvalue = 2;

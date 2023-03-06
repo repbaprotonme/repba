@@ -10,7 +10,10 @@ export default {
                 headers:
                 {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb'
+                    'Access-Control-Allow-Methods': 'GET, DELETE, POST, REPORT',
+                    'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': '*'
                 }
             };
 
@@ -37,7 +40,10 @@ export default {
                     headers:
                     {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb'
+                        'Access-Control-Allow-Methods': 'GET, DELETE, POST, REPORT',
+                        'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Headers': '*'
                     }
                 };
 
@@ -60,7 +66,10 @@ export default {
                 headers:
                 {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb'
+                    'Access-Control-Allow-Methods': 'GET, DELETE, POST, REPORT',
+                    'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': '*'
                 }
             };
 
