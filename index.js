@@ -901,7 +901,7 @@ var InfoPanel = function (color, shadow)
 
         var a = new Layer(
         [
-            new Shrink(new CirclePanel("rgba(0,0,0,0)","rgb(255,155,0)",4),18,18),
+            new Shrink(new CirclePanel("white","white",4),15,15),
             new Text("white", "center", "middle",0, 0, 0),
         ]);
 
