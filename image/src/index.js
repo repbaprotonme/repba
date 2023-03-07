@@ -12,8 +12,10 @@ export default {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Methods': 'GET, DELETE, POST, REPORT, PATCH',
                     'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Headers': '*',
+                    'X-Auth-Key': 'd27e8f43b04336d419f9b85927dc1e25bb915',
+                    'X-Auth-Email': 'reportbase@gmail.com',
+                    'Access-Control-Allow-Origin': '*',//todo
+                    'Access-Control-Allow-Headers': '*'
                 }
             };
 
@@ -22,15 +24,17 @@ export default {
       }
       case 'PATCH':
       {
-            //https://developers.cloudflare.com/api/operations/cloudflare-images-update-image
           const options =
             {
                 method: 'PATCH',
                 headers:
                 {
+                    'Content-Type': 'application/json',
                     'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb',
                     'X-Auth-Key': 'd27e8f43b04336d419f9b85927dc1e25bb915',
-                    'X-Auth-Email': 'reportbase@gmail.com'
+                    'X-Auth-Email': 'reportbase@gmail.com',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': '*'
                 },
                 body: '{"metadata":{},"requireSignedURLs":false}'
             };
@@ -55,6 +59,8 @@ export default {
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Methods': 'GET, DELETE, POST, REPORT, PATCH',
                         'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb',
+                        'X-Auth-Key': 'd27e8f43b04336d419f9b85927dc1e25bb915',
+                        'X-Auth-Email': 'reportbase@gmail.com',
                         'Access-Control-Allow-Origin': '*',
                         'Access-Control-Allow-Headers': '*'
                     }
