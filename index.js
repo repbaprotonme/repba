@@ -901,7 +901,7 @@ var InfoPanel = function (color, shadow)
 
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,"white",4),15,15),
+            new Shrink(new CirclePanel(SCROLLNAB,"white",3),15,15),
             new Text("white", "center", "middle",0, 0, 0),
         ]);
 
@@ -3760,7 +3760,7 @@ fetch(path)
                     }
                 }
 
-            _5cnvctx.sliceobj = slices;
+            _5cnvctx.sliceobj.data = slices;
             _5cnvctx.delayinterval = DELAYCENTER / slices.data.length;
             _5cnvctx.buttonheight = 25;
             _5cnvctx.virtualheight = slices.data.length*_6cnvctx.buttonheight;
