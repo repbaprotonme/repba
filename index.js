@@ -3795,7 +3795,7 @@ fetch(path)
       .then(function(object)
           {
                 for (const property in object)
-                  galleryobj[property] = object[property];
+                  galleryobj.getcurrent()[property] = object[property];
 
                 var slices = [];
                 let keys = Object.keys(galleryobj.getcurrent());

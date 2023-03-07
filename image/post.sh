@@ -1,4 +1,10 @@
-curl -X POST -F file=@./test.webp -H "Authorization: Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb" https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1 --form 'metadata={"key":"value","email":"reportbase@gmail.com"}' --form 'id=XASDFASFAF1'
+#./put.sh HOME.0000 jpg
+
+#IMAGE=$(printf "file=@./test.webp" "")
+#curl --request POST $POST  --header "$HEADER" --form $IMAGE --form 'metadata={"key":"value","width":"100","email":"reportbase@gmail.com"}'
+#./post.sh a334af https://i.imgur.com/lEWdncT.jpg a
+curl --request POST "https://reportbase.com/image/asrawerawerwerwa2?email=reportbase@gmail.com"
+
 
 
 
