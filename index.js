@@ -3761,9 +3761,9 @@ fetch(path)
                 }
 
             _5cnvctx.sliceobj.data = slices;
-            _5cnvctx.delayinterval = DELAYCENTER / slices.data.length;
+            _5cnvctx.delayinterval = DELAYCENTER / slices.length;
             _5cnvctx.buttonheight = 25;
-            _5cnvctx.virtualheight = slices.data.length*_6cnvctx.buttonheight;
+            _5cnvctx.virtualheight = slices.length*_6cnvctx.buttonheight;
             _5cnvctx.rvalue = 2;
             _5cnvctx.slidereduce = 0.75;
             _5cnvctx.title = "Page";
