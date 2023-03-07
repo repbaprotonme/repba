@@ -3756,9 +3756,14 @@ fetch(path)
                     if (value && value.length && typeof value === 'string')
                     {
                         if (value.substr(0,4).toLowerCase() != "http")
+                        {
+                            slices.push({page: n, title:key, path: "", func: function()
+                                {
+                                }})
                             slices.push({page: n, title:value, path: "", func: function()
                                 {
                                 }})
+                        }
                     }
                 }
 
