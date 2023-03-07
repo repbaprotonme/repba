@@ -3750,7 +3750,7 @@ else if (url.searchParams.has("sidney"))
 else if (url.searchParams.has("pixibay"))
 {
     setpathparoject("pixibay");
-    path = `https://pixibay.reportbase5836.workers.dev`;
+    path = `https://reportbase.com/pixibay`;
 }
 
 var galleryobj = new Data("", 0);
