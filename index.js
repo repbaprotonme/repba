@@ -1261,6 +1261,8 @@ addressobj.full = function (k)
         out += "?unsplash.collection="+p;
     else if (url.searchParams.has("pexels.curated"))
         out += "?pexels.curated="+p;
+    else if (url.searchParams.has("pixibay"))
+        out += "?pixibay="+p;
     else if (url.searchParams.has("sidney"))
         out += "?sidney="+p;
     else
@@ -3694,18 +3696,6 @@ var bodylst =
             ]);
 
             a.draw(context, rect, context.timeobj, 0);
-/*
-            if (!user.lst)
-            {
-                user.lst = lst;
-            }
-
-            if (globalobj.showinfo)
-            {
-                var a = new MultiText();
-                a.draw(context, rect, user.lst, 0);
-            }
-*/
             context.restore();
         }
     },
@@ -3716,6 +3706,16 @@ url.path = "BOAT";
 url.project = 0;
 path = `res/BOAT`;
 var leftmenu = 1;
+
+function setpathparoject(str)
+{
+    var e = url.searchParams.get(str);
+    let k = e ? e.split(".") : [0000];
+    leftmenu = k.length == 1;
+    url.path = k[0];
+    if (k.length == 2)
+        url.project = Number(k[1]);
+}
 
 if (url.searchParams.has("p"))
 {
@@ -3729,43 +3729,28 @@ if (url.searchParams.has("p"))
 }
 else if (url.searchParams.has("unsplash.user"))
 {
-    var e = url.searchParams.get("unsplash.user");
-    let k = e.split(".");
-    leftmenu = k.length == 1;
-    url.path = k[0];
-    if (k.length == 2)
-        url.project = Number(k[1]);
+    setpathparoject("unsplash.user");
     path = `https://unsplash.reportbase5836.workers.dev/users/${url.path}?page=${url.page}`;
 }
 else if (url.searchParams.has("unsplash.collection"))
 {
-    var e = url.searchParams.get("unsplash.collection");
-    let k = e.split(".");
-    url.path = k[0];
-    leftmenu = k.length == 1;
-    if (k.length == 2)
-        url.project = Number(k[1]);
+    setpathparoject("unsplash.collection");
     path = `https://unsplash.reportbase5836.workers.dev/collections/${url.path}?page=${url.page}`;
 }
 else if (url.searchParams.has("pexels.curated"))
 {
-    var e = url.searchParams.get("pexels.curated");
-    let k = e.split(".");
-    url.path = k[0];
-    leftmenu = k.length == 1;
-    if (k.length == 2)
-        url.project = Number(k[1]);
+    setpathparoject("pexels.curated");
     path = `https://pexels.reportbase5836.workers.dev?page=${url.page}`;
 }
 else if (url.searchParams.has("sidney"))
 {
-    var e = url.searchParams.get("sidney");
-    let k = e.split(".");
-    url.path = k[0];
-    leftmenu = k.length == 1;
-    if (k.length == 2)
-        url.project = Number(k[1]);
+    setpathparoject("sidney");
     path = `https://sidney.reportbase5836.workers.dev?page=${url.page}`;
+}
+else if (url.searchParams.has("pixibay"))
+{
+    setpathparoject("pixibay");
+    path = `https://pixibay.reportbase5836.workers.dev`;
 }
 
 var galleryobj = new Data("", 0);
@@ -3789,44 +3774,53 @@ fetch(path)
         var per_page = galleryobj.per_page ? galleryobj.per_page : galleryobj.data.length;
 
         galleryobj.set(url.project);
-      var id = galleryobj.getcurrent().id;
-      fetch(`https://reportbase.com/image/${id}`, {method: 'REPORT'})
-      .then(response => response.json())
-      .then(function(object)
-          {
-                for (const property in object)
-                  galleryobj.getcurrent()[property] = object[property];
 
-                var slices = [];
-                let keys = Object.keys(galleryobj.getcurrent());
-                for (var n = 0; n < keys.length; ++n)
+      function getslices()
+      {
+            var slices = [];
+            let keys = Object.keys(galleryobj.getcurrent());
+            for (var n = 0; n < keys.length; ++n)
+            {
+                var key = keys[n];
+                var value = galleryobj.getcurrent()[key]
+                if (value && value.length && typeof value === 'string')
                 {
-                    var key = keys[n];
-                    var value = galleryobj.getcurrent()[key]
-                    if (value && value.length && typeof value === 'string')
+                    if (value.substr(0,4).toLowerCase() != "http")
                     {
-                        if (value.substr(0,4).toLowerCase() != "http")
-                        {
-                            key = key.toLowerCase()
-                            key  = key.charAt(0).toUpperCase() + key.slice(1)
-                            slices.push({head: 1, page: n, title:key, path: "", func: function()
-                                {
-                                }})
-                            slices.push({head: 0, ppage: n, title:value, path: "", func: function()
-                                {
-                                }})
-                        }
+                        key = key.toLowerCase()
+                        key  = key.charAt(0).toUpperCase() + key.slice(1)
+                        slices.push({head: 1, page: n, title:key, path: "", func: function() { }})
+                        slices.push({head: 0, ppage: n, title:value, path: "", func: function() { }})
                     }
                 }
+            }
 
-            _5cnvctx.sliceobj.data = slices;
-            _5cnvctx.delayinterval = DELAYCENTER / slices.length;
-            _5cnvctx.buttonheight = 30;
-            _5cnvctx.virtualheight = slices.length*_5cnvctx.buttonheight;
-            _5cnvctx.rvalue = 2;
-            _5cnvctx.slidereduce = 0.75;
-            _5cnvctx.title = "Page";
-        })
+            return slices;
+      }
+
+        _5cnvctx.buttonheight = 25;
+        _5cnvctx.rvalue = 2;
+        _5cnvctx.slidereduce = 0.75;
+       if (galleryobj.repos)
+      {
+                _5cnvctx.sliceobj.data = getslices();
+                _5cnvctx.delayinterval = DELAYCENTER / _5cnvctx.sliceobj.data.length;
+                _5cnvctx.virtualheight = _5cnvctx.sliceobj.data.length*_5cnvctx.buttonheight;
+      }
+      else
+      {
+          var id = galleryobj.getcurrent().id;
+          fetch(`https://reportbase.com/image/${id}`, {method: 'REPORT'})
+          .then(response => response.json())
+          .then(function(object)
+              {
+                    for (const property in object)
+                      galleryobj.getcurrent()[property] = object[property];
+                _5cnvctx.sliceobj.data = getslices();
+                _5cnvctx.delayinterval = DELAYCENTER / _5cnvctx.sliceobj.data.length;
+                _5cnvctx.virtualheight = _5cnvctx.sliceobj.data.length*_5cnvctx.buttonheight;
+            })
+        }
 
         var slices = _6cnvctx.sliceobj;
         slices.data = [];
@@ -3925,8 +3919,7 @@ fetch(path)
         {
             if (galleryobj.getcurrent().object)
                 return;
-            //todo upsplah
-            //todo pexels
+            //todo repos
             var id = galleryobj.getcurrent().id;
             var path = `https://reportbase.com/image/${id}/blob`;
             window.open(path,"reportbase.com");
