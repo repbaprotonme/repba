@@ -3756,7 +3756,9 @@ fetch(path)
                     if (value && value.length && typeof value === 'string')
                     {
                         if (value.substr(0,4).toLowerCase() != "http")
-                            slices.push(value);
+                            slices.push({page: n, title:value, path: "", func: function()
+                                {
+                                })
                     }
                 }
 
