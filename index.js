@@ -13,7 +13,7 @@ const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*2;
 const SWIPETIME = 100;
 const MENUBARWIDTH = 12;
-const MENUPANWIDTH = 60;
+const MENUPANWIDTH = 40;
 const MENUBARHEIGHT = 60;
 const THUMBORDER = 2;
 const JULIETIME = 100;
@@ -45,7 +45,6 @@ const SLIDEFACTOR = 18;
 
 globalobj = {};
 globalobj.errors = 0;
-globalobj.showinfo = 1;
 let photo = {}
 photo.image = 0;
 
@@ -902,8 +901,7 @@ var InfoPanel = function (color, shadow)
 
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,"white",3),15,15),
-            globalobj.showinfo? new Shrink(new CirclePanel("rgba(0,0,0,0)","rgb(255,155,0)",4),18,18) : 0,
+            new Shrink(new CirclePanel("rgba(0,0,0,0)","rgb(255,155,0)",4),18,18),
             new Text("white", "center", "middle",0, 0, 0),
         ]);
 
@@ -2653,8 +2651,7 @@ var taplst =
         }
         else if (context.infopanel && context.infopanel.hitest(x,y))
         {
-            globalobj.showinfo = globalobj.showinfo?0:1;
-            _4cnvctx.refresh();
+            showmenu(_5cnvctx);
         }
         else if (context.openpanel && context.openpanel.hitest(x,y))
         {
@@ -2751,7 +2748,6 @@ var taplst =
                 context.tapping = 0;
                 context.isthumbrect = 0;
                 headobj.enabled = headobj.enabled?0:1;
-                globalobj.showinfo = !headobj.enabled;
                 pageresize();
             }
 
@@ -3153,11 +3149,6 @@ var menulst =
         else if (user.path == "PROJECT")
         {
             if (time == galleryobj.current())
-                clr = MENUSELECT;
-        }
-        else if (user.path == "INFO")
-        {
-            if (globalobj.showinfo)
                 clr = MENUSELECT;
         }
          else if (user.path == "FULLPANEL")
@@ -3652,22 +3643,9 @@ var bodylst =
             ]);
 
             a.draw(context, rect, context.timeobj, 0);
-
+/*
             if (!user.lst)
             {
-                var lst = [];
-                let keys = Object.keys(user);
-                for (var n = 0; n < keys.length; ++n)
-                {
-                    var key = keys[n];
-                    var value = user[key]
-                    if (value && value.length && typeof value === 'string')
-                    {
-                        if (value.substr(0,4).toLowerCase() != "http")
-                            lst.push(value);
-                    }
-                }
-
                 user.lst = lst;
             }
 
@@ -3676,7 +3654,7 @@ var bodylst =
                 var a = new MultiText();
                 a.draw(context, rect, user.lst, 0);
             }
-
+*/
             context.restore();
         }
     },
@@ -3759,6 +3737,37 @@ fetch(path)
         var pages = (galleryobj.per_page && galleryobj.total) ? Math.ceil(galleryobj.total / galleryobj.per_page) : 1;
         var per_page = galleryobj.per_page ? galleryobj.per_page : galleryobj.data.length;
 
+        galleryobj.set(url.project);
+
+      var id = galleryobj.getcurrent().id;
+      fetch(`https://reportbase.com/image/${id}`, {method: 'REPORT'})
+      .then(response => response.json())
+      .then(function(object)
+          {
+                for (const property in object)
+                  galleryobj[property] = object[property];
+
+                var slices = _5cnvctx.sliceobj;
+                let keys = Object.keys(galleryobj.getcurrent());
+                for (var n = 0; n < keys.length; ++n)
+                {
+                    var key = keys[n];
+                    var value = galleryobj.getcurrent()[key]
+                    if (value && value.length && typeof value === 'string')
+                    {
+                        if (value.substr(0,4).toLowerCase() != "http")
+                            slices.push(value);
+                    }
+                }
+
+            _5cnvctx.delayinterval = DELAYCENTER / slices.data.length;
+            _5cnvctx.buttonheight = 25;
+            _5cnvctx.virtualheight = slices.data.length*_6cnvctx.buttonheight;
+            _5cnvctx.rvalue = 2;
+            _5cnvctx.slidereduce = 0.75;
+            _5cnvctx.title = "Page";
+        })
+
         var slices = _6cnvctx.sliceobj;
         slices.data = [];
         for (var n = 0; n < pages; ++n)
@@ -3783,6 +3792,7 @@ fetch(path)
         _6cnvctx.title = "Page";
         _6cnvctx.sliceobj.set(url.page-1);
         _6cnvctx.timeobj.set((1-_6cnvctx.sliceobj.berp())*TIMEOBJ);
+
         //7
         var lst =
         [
@@ -3831,17 +3841,6 @@ fetch(path)
         _8cnvctx.title = galleryobj.title;
         _8cnvctx.sliceobj.data = galleryobj.data;
 
-        galleryobj.set(url.project);
-
-      var id = galleryobj.getcurrent().id;
-      fetch(`https://reportbase.com/image/${id}`, {method: 'REPORT'})
-      .then(response => response.json())
-      .then(function(object)
-          {
-                for (const property in object)
-                  galleryobj[property] = object[property];
-        })
-
         var slices = _8cnvctx.sliceobj;
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
         _8cnvctx.rvalue = 2;
@@ -3881,9 +3880,7 @@ fetch(path)
 
         slices.data.push({title:"Info", path: "INFO", func: function()
             {
-                globalobj.showinfo = globalobj.showinfo?0:1;
-                menuhide();
-                _4cnvctx.refresh();
+                showmenu(_5cnvctx);
             }});
 
       slices.data.push({title:"Delete", path: "DELETE", func: function()
