@@ -2651,7 +2651,7 @@ var taplst =
         }
         else if (context.infopanel && context.infopanel.hitest(x,y))
         {
-            showmenu(_5cnvctx);
+            menushow(_5cnvctx);
         }
         else if (context.openpanel && context.openpanel.hitest(x,y))
         {
@@ -3881,7 +3881,7 @@ fetch(path)
 
         slices.data.push({title:"Info", path: "INFO", func: function()
             {
-                showmenu(_5cnvctx);
+                menushow(_5cnvctx);
             }});
 
       slices.data.push({title:"Delete", path: "DELETE", func: function()
