@@ -52,6 +52,7 @@ function numberRange (start, end) {return new Array(end - start).fill().map((d, 
 
 let url = new URL(window.location.href);
 url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 1;
+const SEARCH = url.searchParams.has("search") ? url.searchParams.get("search") : "";
 
 Math.clamp = function (min, max, val)
 {
@@ -364,7 +365,7 @@ var channelobj = new Data("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,7
 //var rotateobj = new Data("ROTATEOBJ", []);
 
 speedobj.set(30);
-timemain.set(12);
+timemain.set(18);
 
 function drawslices()
 {
@@ -388,7 +389,7 @@ function drawslices()
         if (context.timemain)
         {
             context.slidestop -= context.slidereduce;
-            context.slidestop = SAFIROX ? context.slidestop : Math.max(context.virtualspeed, context.slidestop);
+            context.slidestop = Math.max(context.virtualspeed, context.slidestop);
             if (context.slidestop > 0)
             {
                 context.timeobj.rotate(context.autodirect*context.slidestop);
@@ -1262,7 +1263,8 @@ addressobj.full = function (k)
         "&h="+headobj.enabled+
         "&r="+(100*rowobj.berp()).toFixed()+
         "&t="+_4cnvctx.timeobj.current().toFixed(4)+
-        "&page="+(_6cnvctx.sliceobj.current()+1).toFixed(0);
+        "&page="+(_6cnvctx.sliceobj.current()+1).toFixed(0)+
+        "&search="+SEARCH;
 
     return out;
 };
@@ -3041,12 +3043,24 @@ var menulst =
             var h2 = rect.height+80;
             var w2 = rect.width-20;
             var a2 = w2/h2;
-            var w1 = user.thumbimg.width;
-            var h1 = w1/a2;
-            var x1 = 0;
-            var y1 = (user.thumbimg.height-h1)/2;
-            context.drawImage(user.thumbimg, x1, y1, w1, h1,
-                10, -40, w2, h2);
+            if (user.thumbimg.width/user.thumbimg.height > a2)
+            {
+                var h1 = user.thumbimg.height;
+                var w1 = h1*a2;
+                var y1 = 0;
+                var x1 = (user.thumbimg.width-w1)/2;
+                context.drawImage(user.thumbimg, x1, y1, w1, h1,
+                    10, -40, w2, h2);
+            }
+            else
+            {
+                var w1 = user.thumbimg.width;
+                var h1 = w1/a2;
+                var x1 = 0;
+                var y1 = (user.thumbimg.height-h1)/2;
+                context.drawImage(user.thumbimg, x1, y1, w1, h1,
+                    10, -40, w2, h2);
+            }
 
             var a = new RowA([0,60,0],
                 [
@@ -3059,10 +3073,13 @@ var menulst =
                     0,
                 ]);
 
+            var j = (url.page-1)*_8cnvctx.sliceobj.length();
+            j += user.pos + 1;
+
             a.draw(context, rect,
             [
                 0,
-                ((url.page-1)*_6cnvctx.sliceobj.length() + user.pos + 1).toFixed(0),
+                j.toFixed(0),
                 0,
             ], 0);
         }
@@ -3444,13 +3461,13 @@ var extentlst =
         positypobj.set(90);
         positxlobj.set(50);
         positylobj.set(50);
-        traitobj.split(60, "0.1-1.0", traitobj.length());
-        scapeobj.split(70, "0.1-1.0", scapeobj.length());
+        traitobj.split(75, "0.1-1.0", traitobj.length());
+        scapeobj.split(75, "0.1-1.0", scapeobj.length());
     },
     zoom: function ()
     {
-        loomobj.split(20, "90-95", loomobj.length());
-        poomobj.split(20, "75-90", poomobj.length());
+        loomobj.split(0, "90-95", loomobj.length());
+        poomobj.split(40, "75-90", poomobj.length());
     }
 },
 {
@@ -3741,7 +3758,7 @@ else if (url.searchParams.has("sidney"))
 else if (url.searchParams.has("pixibay"))
 {
     setpathparoject("pixibay");
-    path = `https://reportbase.com/pixibay`;
+    path = `https://reportbase.com/pixibay?page=${url.page}&search=${SEARCH}`;
 }
 
 var galleryobj = new Data("", 0);
@@ -3875,7 +3892,7 @@ fetch(path)
             window.location.href = addressobj.full();
         }
 
-        galleryobj.data = galleryobj.datam?galleryobj.datam:galleryobj.data;
+//        galleryobj.data = galleryobj.datam?galleryobj.datam:galleryobj.data;
         for (var n = 0; n < galleryobj.data.length; ++n)
         {
             var k = galleryobj.data[n];
@@ -5023,9 +5040,9 @@ var headlst =
                ]);
 
             var s;
-            if (infobj.current() == 0)
+            if (galleryobj.repos || infobj.current() == 0)
             {
-                s = "";
+                s = galleryobj.repos;
             }
             else if (infobj.current() == 1)
             {

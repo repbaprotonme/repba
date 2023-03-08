@@ -59,7 +59,7 @@ export default
             j.extent = `${width}x${height} ${aspect}`;
             j.size = ((width * height)/1000000).toFixed(1) + "MP";
             j.photographer = user.name;
-            j.required = "Photos provided by Pexels";
+            j.required = "Photos provided by Unsplash";
             j.photographer_url = user.portfolio_url;
             j.photographer_id = user.id;
              if (k.description)
