@@ -22,7 +22,6 @@ const HNUB = 10;
 const ALIEXTENT = 60;
 const ARROWBORES = 22;
 const DELAYCENTER = 3.926;
-const SLICERADIUS = 130900;
 const TIMEOBJ = 3926;
 const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(255,175,0,0.6)";
@@ -392,21 +391,12 @@ function drawslices()
             context.slidestop = SAFIROX ? context.slidestop : Math.max(context.virtualspeed, context.slidestop);
             if (context.slidestop > 0)
             {
-                if (0)//rotateobj.enabled)
-                {
-//                    rotateobj.rotate(1);
- //                   context.timeobj.set(rotateobj.getcurrent());
-                }
-                else
-                {
-                    context.timeobj.rotate(context.autodirect*context.slidestop);
-                }
+                context.timeobj.rotate(context.autodirect*context.slidestop);
             }
             else
             {
                 clearInterval(context.timemain);
                 context.timemain = 0;
-//                rotateobj.enabled = 0;
             }
         }
 
@@ -444,7 +434,7 @@ function drawslices()
             var j = time + slice.time;
             var b = Math.tan(j*VIRTCONST);
             var bx2 = Math.berp(-1, 1, b) * context.virtualpinch - context.virtualeft;
-            var stretchwidth = bx2-bx+1;
+            var stretchwidth = bx2-bx;//+1;
             slice.stretchwidth = stretchwidth;
             slice.bx = bx;
             if (m == 1)
@@ -3307,6 +3297,7 @@ function resetcanvas()
         f = 6;
 
     let slicelst = [];
+    const SLICERADIUS = 135000;
     for (let n = 499; n >= 1; n=n-1)
         slicelst.push({slices: n*3, delay: SLICERADIUS/n});
     var slicewidth = context.virtualwidth/f;
@@ -4137,21 +4128,9 @@ var ContextObj = (function ()
                     else if (typeof rowobj.row !== "undefined")
                         rowobj.set(window.innerHeight*(rowobj.row/100));
 
-//                    if (globalobj.rotate)
- //                       rotateobj.enabled = 1;
-//                    clearInterval(context.timemain);
- //                   context.timemain = setInterval(function () { drawslices() }, timemain.getcurrent());
-
                     contextobj.reset()
                     context.tab();
                     masterload();
-  //                  if (!SAFIROX)
-                    {
-                    //    context.slidestop = (context.timeobj.length()/context.virtualwidth)*SLIDETOP;
-                     //   context.slidereduce = context.slidestop/SLIDEFACTOR;
-  //                      if (rotateobj.enabled)
-   //                         context.slidereduce = context.slidestop/REDUCEFACTOR;
-                    }
                 }
 			}
 
