@@ -592,7 +592,7 @@ function drawslices()
         a.draw(context, new rectangle(rect.width-MENUBARWIDTH,0,7,rect.height), context.timeobj, 0);
 
         context.save();
-        if (context.index == 7)
+        if (galleryobj.pages > 1 && context.index == 7)
         {
             context.selectpage = new rectangle()
             var a = new Row([0,60,20],
@@ -3067,7 +3067,7 @@ var menulst =
                     0,
                     new Layer(
                     [
-                        new CirclePanel(SCROLLNAB,"white",3),
+                         new CirclePanel(SCROLLNAB,"white",3),
                         new Text("white", "center", "middle",0, 0, 1)
                     ]),
                     0,
@@ -3778,7 +3778,7 @@ fetch(path)
         speedxobj.split(1.25, "1-20", speedxobj.length());
         speedyobj.split(1.25, "1-20", speedyobj.length());
 
-        var pages = (galleryobj.per_page && galleryobj.total) ? Math.ceil(galleryobj.total / galleryobj.per_page) : 1;
+        galleryobj.pages = (galleryobj.per_page && galleryobj.total) ? Math.ceil(galleryobj.total / galleryobj.per_page) : 1;
         var per_page = galleryobj.per_page ? galleryobj.per_page : galleryobj.data.length;
 
         galleryobj.set(url.project);
@@ -3830,9 +3830,15 @@ fetch(path)
             })
         }
 
+        for (var n = 0; n < _5cnvctx.sliceobj.length(); ++n)
+        {
+            var k = _5cnvctx.sliceobj.data[n];
+            k.func = function() {menuhide(); }
+        }
+
         var slices = _6cnvctx.sliceobj;
         slices.data = [];
-        for (var n = 0; n < pages; ++n)
+        for (var n = 0; n < galleryobj.pages; ++n)
         {
             var k = `${n*per_page+1} - ${(n+1)*per_page}`;
             slices.data.push({page: n, title:`Page ${n+1}`, title1: k, path: "OPEN", func: function()
@@ -4976,21 +4982,7 @@ var headlst =
             }
             else
             {
-                if (menuenabled())
-                {
-                    menuhide();
-                }
-                else if (bodyobj.enabled)
-                {
-                    bodyobj.enabled = 0;
-                }
-                else
-                {
-                    _4cnvctx.tapping = 0;
-                    _4cnvctx.isthumbrect = 0;
-                    headobj.enabled = headobj.enabled?0:1;
-                    pageresize();
-                }
+                window.location.href = galleryobj.getcurrent().photographer_url;
             }
 
             _4cnvctx.refresh();
@@ -5024,9 +5016,10 @@ var headlst =
                         new Layer(
                         [
                             new Rectangle(context.picture),
-                            new Row([HNUB,0,HNUB],
+                            new RowA([0,30,30,0],
                             [
                                 0,
+                                new Shrink(new Text("white", "center", "middle",0,1,1),20,20),
                                 new Shrink(new Text("white", "center", "middle",0,1,1),20,20),
                                 0,
                             ]),
@@ -5042,7 +5035,9 @@ var headlst =
             var s;
             if (galleryobj.repos || infobj.current() == 0)
             {
-                s = galleryobj.repos;
+                st= galleryobj.repos;
+                s = galleryobj.getcurrent().photographer;
+                sb = galleryobj.getcurrent().index;
             }
             else if (infobj.current() == 1)
             {
@@ -5077,7 +5072,7 @@ var headlst =
                 s =  _4cnvctx.virtualfactor.toFixed(2)
             }
 
-            a.draw(context, rect, s, time);
+            a.draw(context, rect, [0,st,s,0], time);
             context.restore()
 		};
 	},
