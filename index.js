@@ -5017,7 +5017,7 @@ var headlst =
                         new Layer(
                         [
                             new Rectangle(context.picture),
-                            new Col[15,0,15],
+                            new Col([15,0,15],
                             [
                                 0,
                                 new RowA([0,30,30,0],
