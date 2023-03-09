@@ -4152,7 +4152,8 @@ var ContextObj = (function ()
                         rowobj.set(window.innerHeight*(rowobj.row/100));
 
                     contextobj.reset()
-                    context.tab();
+                    if(_4cnvctx.movingpage)
+                        context.tab();
                     masterload();
                 }
 			}
@@ -5016,13 +5017,18 @@ var headlst =
                         new Layer(
                         [
                             new Rectangle(context.picture),
-                            new RowA([0,30,30,0],
+                            new Col[15,0,15],
                             [
                                 0,
-                                new Shrink(new Text("white", "center", "middle",0,1,1),20,20),
-                                new Shrink(new Text("white", "center", "middle",0,1,1),20,20),
+                                new RowA([0,30,30,0],
+                                [
+                                    0,
+                                    new Text("white", "center", "middle",0,1,1),
+                                    new Text("white", "center", "middle",0,1,1),
+                                    0,
+                                ]),
                                 0,
-                            ]),
+                            ])
                         ]),
                         new Layer(
                         [
