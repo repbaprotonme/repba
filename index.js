@@ -3560,33 +3560,29 @@ var bodylst =
             context.moveprev = new rectangle()
             context.movenext = new rectangle()
             var zoom = zoomobj.getcurrent();
-            var a =
-                    new Col([80,0,80],
+            var a = new Row([80,0],
                     [
-                        new Row([80,0],
+                        new ColA([80,0,80],
                         [
-                            new Shrink(new Layer(
+                           new Shrink(new Layer(
                             [
                                 new Rectangle(context.moveprev),
                                 new Shrink(new CirclePanel(_4cnvctx.movingpage == -1?MENUTAP:SCROLLNAB,"white",3),5,5),
                                 new Shrink(new ArrowPanel(ARROWFILL,270),20,20),
                             ]),10,10),
-                            0,
-                        ]),
-                        0,
-                        new Row([80,0],
-                        [
+                            new Text("white", "center", "middle",0,1,1),
                             new Shrink(new Layer(
                             [
                                 new Rectangle(context.movenext),
                                 new Shrink(new CirclePanel(_4cnvctx.movingpage == 1?MENUTAP:SCROLLNAB,"white",3),5,5),
                                 new Shrink(new ArrowPanel(ARROWFILL,90),20,20),
                             ]),10,10),
-                            0,
-                        ]),
+                        ])
                     ]);
 
-            a.draw(context, rect, 0, 0);
+            var j = (url.page-1)*_8cnvctx.sliceobj.length() + galleryobj.current() + 1;
+            j += " of " + galleryobj.pages*galleryobj.per_page;
+            a.draw(context, rect, [0,j,0], 0);
             context.restore();
         }
     },
@@ -3779,7 +3775,7 @@ fetch(path)
         speedyobj.split(1.25, "1-20", speedyobj.length());
 
         galleryobj.pages = (galleryobj.per_page && galleryobj.total) ? Math.ceil(galleryobj.total / galleryobj.per_page) : 1;
-        var per_page = galleryobj.per_page ? galleryobj.per_page : galleryobj.data.length;
+        galleryobj.per_page = galleryobj.per_page ? galleryobj.per_page : galleryobj.data.length;
 
         galleryobj.set(url.project);
 
@@ -3840,7 +3836,7 @@ fetch(path)
         slices.data = [];
         for (var n = 0; n < galleryobj.pages; ++n)
         {
-            var k = `${n*per_page+1} - ${(n+1)*per_page}`;
+            var k = `${n*galleryobj.per_page+1} - ${(n+1)*galleryobj.per_page}`;
             slices.data.push({page: n, title:`Page ${n+1}`, title1: k, path: "OPEN", func: function()
             {
                 _6cnvctx.sliceobj.set(this.page);
@@ -4981,7 +4977,7 @@ var headlst =
                 _4cnvctx.refresh();
                 menushow(_9cnvctx);
             }
-            else
+            else if (context.picture.hitest(x,y))
             {
                 window.location.href = galleryobj.getcurrent().photographer_url;
             }
@@ -5004,32 +5000,29 @@ var headlst =
             context.picture = new rectangle()
             context.font = "1rem Archivo Black";
             var s = _5cnvctx.enabled || _8cnvctx.enabled;
-            var f = Math.min(rect.width - ALIEXTENT*4, 180);
+            var e = Math.min(320,rect.width-160-30);
             var a = new Layer(
                 [
-                    new Col([80,0,80],
+                    new Col([80,0,e,0,80],
                     [
                         galleryobj.length()<2?0:new Layer(
                         [
                             new PagePanel(0.1),
                             new Rectangle(context.page),
                         ]),
+                        0,
                         new Layer(
                         [
                             new Rectangle(context.picture),
-                            new Col([15,0,15],
+                            new RowA([0,30,30,0],
                             [
                                 0,
-                                new RowA([0,30,30,0],
-                                [
-                                    0,
-                                    new Text("white", "center", "middle",0,1,1),
-                                    new Text("white", "center", "middle",0,1,1),
-                                    0,
-                                ]),
+                                new Text("white", "center", "middle",0,1,1),
+                                new Text("white", "center", "middle",0,1,1),
                                 0,
-                            ])
+                            ]),
                         ]),
+                        0,
                         new Layer(
                         [
                             new OptionPanel(0.1),
