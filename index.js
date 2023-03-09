@@ -1263,7 +1263,7 @@ addressobj.full = function (k)
         "&h="+headobj.enabled+
         "&r="+(100*rowobj.berp()).toFixed()+
         "&t="+_4cnvctx.timeobj.current().toFixed(4)+
-        "&page="+(_6cnvctx.sliceobj.current()+1).toFixed(0)+
+        "&page="+url.page+
         "&search="+SEARCH;
 
     return out;
@@ -1304,6 +1304,29 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     var context = this;
     if (!_4cnvctx.setcolumncomplete)
         return;
+
+    if (galleryobj.pages > 1)
+    {
+        if (j == 1 && galleryobj.current() == galleryobj.length()-1)
+        {
+            ++url.page;
+            if (url.page >= galleryobj.pages)
+                url.page = 1;
+            galleryobj.set(0);
+            window.location.href = addressobj.full();
+        }
+        else if (j == -1 && galleryobj.current() == 0)
+        {
+            --url.page;
+            if (url.page <= 0)
+                url.page = galleryobj.pages-1;
+            var e = galleryobj.total % galleryobj.per_page;
+            galleryobj.set(galleryobj.per_page-1);
+            headobj.enabled = 0;
+            window.location.href = addressobj.full();
+        }
+    }
+
     var e = galleryobj.current();
     galleryobj.rotate(j);
     var k = galleryobj.getcurrent();
@@ -3776,7 +3799,6 @@ fetch(path)
 
         galleryobj.pages = (galleryobj.per_page && galleryobj.total) ? Math.ceil(galleryobj.total / galleryobj.per_page) : 1;
         galleryobj.per_page = galleryobj.per_page ? galleryobj.per_page : galleryobj.data.length;
-
         galleryobj.set(url.project);
 
       function getslices()
@@ -4148,8 +4170,7 @@ var ContextObj = (function ()
                         rowobj.set(window.innerHeight*(rowobj.row/100));
 
                     contextobj.reset()
-                    if(_4cnvctx.movingpage)
-                        context.tab();
+                    context.tab();
                     masterload();
                 }
 			}
