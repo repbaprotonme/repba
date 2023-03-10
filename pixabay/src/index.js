@@ -5,7 +5,7 @@ export default
         var url = new URL(request.url);
         var search = url.searchParams.has("search") ? url.searchParams.get("search") :"";
         var page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) :1;
-        var per_page = 100;
+        var per_page = 200;
         var data = [];
         var response = await fetch(`https://pixabay.com/api/?key=9775416-0c833e92d88d7c0fe7e79dbb0&q=${search}&image_type=photo&per_page=${per_page}&page=${page}`);
         var json = await response.json();
