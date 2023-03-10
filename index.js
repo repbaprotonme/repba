@@ -1252,8 +1252,8 @@ addressobj.full = function (k)
         out += "?unsplash.collection="+p;
     else if (url.searchParams.has("pexels.curated"))
         out += "?pexels.curated="+p;
-    else if (url.searchParams.has("pixibay"))
-        out += "?pixibay="+p;
+    else if (url.searchParams.has("pixabay"))
+        out += "?pixabay="+p;
     else if (url.searchParams.has("sidney"))
         out += "?sidney="+p;
     else
@@ -3770,10 +3770,10 @@ else if (url.searchParams.has("sidney"))
     setpathparoject("sidney");
     path = `https://sidney.reportbase5836.workers.dev?page=${url.page}`;
 }
-else if (url.searchParams.has("pixibay"))
+else if (url.searchParams.has("pixabay"))
 {
-    setpathparoject("pixibay");
-    path = `https://reportbase.com/pixibay?page=${url.page}&search=${SEARCH}`;
+    setpathparoject("pixabay");
+    path = `https://reportbase.com/pixabay?page=${url.page}&search=${SEARCH}`;
 }
 
 var galleryobj = new Data("", 0);
