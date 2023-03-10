@@ -1720,7 +1720,6 @@ var wheelst =
         if (context.thumbrect && context.thumbrect.hitest(x,y))
         {
             var obj = heightobj.getcurrent();
-            var h = obj.getcurrent()*window.innerHeight;
             delete context.thumbcanvas;
             obj.add(5);
             context.refresh();
@@ -1760,9 +1759,6 @@ var wheelst =
         if (context.thumbrect && context.thumbrect.hitest(x,y))
         {
             var obj = heightobj.getcurrent();
-            var h = obj.getcurrent()*window.innerheight;
-            if (h-5 <= aliextent)
-                return;
             delete context.thumbcanvas;
             obj.add(-5);
             context.refresh();
