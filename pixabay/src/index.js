@@ -5,7 +5,7 @@ export default
         var url = new URL(request.url);
         var search = url.searchParams.has("search") ? url.searchParams.get("search") :"";
         var page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) :1;
-        var per_page = 100;
+        var per_page = 200;
         var data = [];
         var response = await fetch(`https://pixabay.com/api/?key=9775416-0c833e92d88d7c0fe7e79dbb0&q=${search}&image_type=photo&per_page=${per_page}&page=${page}`);
         var json = await response.json();
@@ -15,8 +15,8 @@ export default
             var j = (page-1)*per_page+data.length+1;
             k.index = j+" of "+json.totalHits;
             k.thumb = k.webformatURL;
-            k.full = k.fullHDURL;
-            k.raw = k.fullHDURL;
+            k.full = k.largeImageURL;
+            k.raw = k.largeImageURL;
             k.website = `Photos Provided by Pixabay`;
             k.photographer = k.user;
             k.photographer_url = k.pageURL;

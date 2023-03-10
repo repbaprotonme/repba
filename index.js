@@ -1918,6 +1918,15 @@ function dropfiles(files)
     if (!files || !files.length)
         return;
     galleryobj.data = [];
+    var func = function (index)
+    {
+        delete galleryobj.repos;
+        delete photo.image;
+        menuhide();
+        galleryobj.set(this.pos);
+        contextobj.reset()
+    }
+
     for (var i = 0; i < files.length; i++)
     {
         if (files[i].size > 100000000)//100mp
@@ -1942,10 +1951,22 @@ function dropfiles(files)
             reader.readAsDataURL(files[i]);
             var k = {}
             k.object = URL.createObjectURL(files[i]);
+            k.pos = i;
+            k.func = func;
             galleryobj.data.push(k);
         }
     }
 
+    _8cnvctx.sliceobj.data = galleryobj.data;
+    var slices = _8cnvctx.sliceobj;
+    _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+    _8cnvctx.rvalue = 2;
+    _8cnvctx.buttonheight = 200;
+    if (_8cnvctx.buttonheight>window.innerHeight-100)
+        _8cnvctx.buttonheight = window.innerHeight-100
+    _8cnvctx.delayinterval = DELAYCENTER / slices.length();
+    _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
+    _8cnvctx.slidereduce = 0.75;
     galleryobj.set(0);
     delete _4cnvctx.thumbcanvas;
     delete photo.image;
@@ -3047,7 +3068,13 @@ var menulst =
             user.lst = lst;
         }
 
-        if (!user.thumbimg)
+        if (user.object)
+        {
+            user.thumbimg = new Image();
+            user.thumbimg.crossOrigin = 1;
+            user.thumbimg.src = user.object;
+        }
+        else if (!user.thumbimg)
         {
             user.thumbimg = new Image();
             user.thumbimg.src = `https://reportbase.com/image/${user.id}/largethumb`;
@@ -3092,8 +3119,8 @@ var menulst =
                     0,
                 ]);
 
-            var j = (url.page-1)*_8cnvctx.sliceobj.length();
-            j += user.pos + 1;
+            var j = user.pos + 1;
+            j += (url.page-1)*_8cnvctx.sliceobj.length();
 
             a.draw(context, rect,
             [
@@ -3554,7 +3581,7 @@ var extentlst =
     },
     zoom: function ()
     {
-        loomobj.split(50, "70-90", loomobj.length());
+        loomobj.split(25, "70-90", loomobj.length());
         poomobj.split(25, "25-90", poomobj.length());
     }
 },
@@ -3600,7 +3627,7 @@ var bodylst =
                     ]);
 
             var j = (url.page-1)*_8cnvctx.sliceobj.length() + galleryobj.current() + 1;
-            j += " of " + galleryobj.pages*galleryobj.per_page;
+            j += " of " + (galleryobj.total?galleryobj.total:galleryobj.length());
             a.draw(context, rect, [0,j,0], 0);
             context.restore();
         }
@@ -3912,7 +3939,6 @@ fetch(path)
             window.location.href = addressobj.full();
         }
 
-//        galleryobj.data = galleryobj.datam?galleryobj.datam:galleryobj.data;
         for (var n = 0; n < galleryobj.data.length; ++n)
         {
             var k = galleryobj.data[n];
@@ -3922,7 +3948,6 @@ fetch(path)
 
         _8cnvctx.title = galleryobj.title;
         _8cnvctx.sliceobj.data = galleryobj.data;
-
         var slices = _8cnvctx.sliceobj;
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
         _8cnvctx.rvalue = 2;
@@ -5022,7 +5047,7 @@ var headlst =
                 [
                     new Col([80,0,e,0,80],
                     [
-                        galleryobj.length()<2?0:new Layer(
+                        new Layer(
                         [
                             new PagePanel(0.1),
                             new Rectangle(context.page),
