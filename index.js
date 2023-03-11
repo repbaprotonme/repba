@@ -39,8 +39,8 @@ const ARROWFILL = "white";
 const REDUCEFACTOR = 40000;
 const SMALLFOOT = 70;
 const LARGEFOOT = 90;
-const SLIDETOP = 24;
-const SLIDEFACTOR = 18;
+const SLIDETOP = 48;
+const SLIDEFACTOR = 48;
 
 globalobj = {};
 globalobj.errors = 0;
@@ -412,7 +412,7 @@ function drawslices()
         if (!slice)
             break;
         context.save();
-        //todo iif (factorobj.enabled)
+        if (factorobj.enabled)
             context.clear();
         context.translate(-colwidth, 0);
         context.shadowOffsetX = 0;
@@ -595,20 +595,39 @@ function drawslices()
         if (galleryobj.pages > 1 && context.index == 7)
         {
             context.selectpage = new rectangle()
+            context.prevpage = new rectangle()
+            context.nextpage = new rectangle()
             var a = new Row([0,60,20],
             [
                 0,
-                new Col([20,0,90,0,20],
+                new Col([50,60,0,60,0,60,50],
                 [
                     0,
                     new Layer(
                     [
-                        new Rectangle(context.selectpage),
-                        new CirclePanel(SCROLLNAB,"white",3),
-                        new PagesPanel(),
+                        new Rectangle(context.prevpage),
+                        new Shrink(new CirclePanel(SCROLLNAB,"white",3),5,5),
+                        new Shrink(new ArrowPanel(ARROWFILL,270),20,20),
                     ]),
                     0,
+                    new Layer(
+                    [
+                        new Rectangle(context.selectpage),
+                        new Row([0,10,0],
+                        [
+                            0,
+                            new PagesPanel(),
+                            0,
+                        ]),
+                        0,
+                    ]),
                     0,
+                    new Layer(
+                    [
+                        new Rectangle(context.nextpage),
+                        new Shrink(new CirclePanel(SCROLLNAB,"white",3),5,5),
+                        new Shrink(new ArrowPanel(ARROWFILL,90),20,20),
+                    ]),
                     0,
                 ]),
                 0,
@@ -921,7 +940,7 @@ var PagesPanel = function ()
     this.draw = function (context, rect, user, time)
     {
         context.save();
-        var a = new Row([0,9,4,9,4,9,0],
+        var a = new Col([0,9,4,9,4,9,0],
         [
             0,
             new CirclePanel("white","white",0),
@@ -1914,6 +1933,7 @@ function dropfiles(files)
 {
     if (!files || !files.length)
         return;
+    delete galleryobj.repos;
     galleryobj.data = [];
     var func = function (index)
     {
@@ -2758,6 +2778,20 @@ var taplst =
             _6cnvctx.timeobj.set((1-_6cnvctx.sliceobj.berp())*TIMEOBJ);
             menushow(_6cnvctx)
         }
+        else if (context.prevpage && context.prevpage.hitest(x,y))
+        {
+            if (url.page == 1)
+                return;
+            url.page = Math.clamp(1,galleryobj.pages,url.page-1);
+            window.location.href = addressobj.full(true);
+        }
+        else if (context.nextpage && context.nextpage.hitest(x,y))
+        {
+            if (url.page == galleryobj.pages)
+                return;
+            url.page = Math.clamp(1,galleryobj.pages,url.page+1);
+            window.location.href = addressobj.full(true);
+        }
         else if (x > rect.width - (MENUBARWIDTH+3) )
         {
             var j = y/rect.height;
@@ -2770,8 +2804,7 @@ var taplst =
             var k = getbuttonfrompoint(context, x, y);
             if (k == -1)
             {
-                if (y < MENUBARHEIGHT || (y >= rect.height - MENUBARHEIGHT) )
-                    menuhide();
+                menuhide();
                 return;
             }
 
@@ -2788,8 +2821,6 @@ var taplst =
     },
 },
 ];
-
-ico = {};
 
 Number.prototype.inrange = function(a, b)
 {
@@ -2947,6 +2978,33 @@ var getbuttonfrompoint = function (context, x, y)
 	return k<lst.length?k:-1;
 }
 
+function resizeimage(imgToResize, resizingFactor)
+{
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+
+  const originalWidth = imgToResize.width;
+  const originalHeight = imgToResize.height;
+
+  const canvasWidth = originalWidth * resizingFactor;
+  const canvasHeight = originalHeight * resizingFactor;
+
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
+
+  context.drawImage(
+    imgToResize,
+    0,
+    0,
+    originalWidth * resizingFactor,
+    originalHeight * resizingFactor
+  );
+
+    let image = new Image();
+  image.src = canvas.toDataURL();
+  return image;
+}
+
 var menulst =
 [
 {
@@ -3025,6 +3083,8 @@ var menulst =
                 user.thumbimg = new Image();
                 user.thumbimg.crossOrigin = 1;
                 user.thumbimg.src = user.object;
+                user.thumbimg.onload = function() {
+                    user.thumbimg = resizeimage(user.thumbimg,0.5); context.refersh();}
             }
             else if (!user.thumbimg)
             {
@@ -3579,8 +3639,16 @@ var bodylst =
                         ])
                     ]);
 
-            var j = (url.page-1)*_8cnvctx.sliceobj.length() + galleryobj.current() + 1;
-            j += " of " + (galleryobj.total?galleryobj.total:galleryobj.length());
+            if (galleryobj.getcurrent().object)
+            {
+                var j = `${galleryobj.current() + 1} of ${galleryobj.length()}`;
+            }
+            else
+            {
+                var j = (url.page-1)*_8cnvctx.sliceobj.length() + galleryobj.current() + 1;
+                j += " of " + (galleryobj.total?galleryobj.total:galleryobj.length());
+            }
+
             a.draw(context, rect, [0,j,0], 0);
             context.restore();
         }
@@ -3589,49 +3657,6 @@ var bodylst =
     {
         this.draw = function (context, rect, user, time)
         {
-            /*
-            context.save();
-            context.ignores = [];
-            context.menuup = new rectangle()
-            context.menuhome = new rectangle()
-            context.menudown = new rectangle()
-            context.font = "1rem Archivo Black";
-            var a = new Col([0,ALIEXTENT,_8cnv.width,ALIEXTENT,0],
-                    [
-                        0,
-                        0,
-                        0,
-                        new Row([0,30,80,80,80,30,0],
-                            [
-                                0,
-                                new Rectangles(),
-                                new Layer(
-                                [
-                                    new Fill(context.tapindex == 1 ? "rgb(255,155,0)" : MENUCOLOR),
-                                    new Rectangle(context.menudown),
-                                    new Col([0,17,0],[0,new Row([0,17,0],[0,new ArrowPanel(ARROWFILL,0),0]),0]),
-                                ]),
-                                new Layer(
-                                [
-                                    new Fill(context.tapindex == 2 ? "rgb(255,155,0)" : MENUCOLOR),
-                                    new Rectangle(context.menuhome),
-                                    new Col([0,17,0],[0,new Row([0,17,0],[0,new CirclePanel("white"),0]),0]),
-                                ]),
-                                new Layer(
-                                [
-                                    new Fill(context.tapindex == 3 ? "rgb(255,155,0)"  : MENUCOLOR),
-                                    new Rectangle(context.menuup),
-                                    new Col([0,17,0],[0,new Row([0,17,0],[0,new ArrowPanel(ARROWFILL,180),0]),0]),
-                                ]),
-                                new Rectangles(),
-                                0,
-                            ]),
-                        0,
-                    ]);
-
-            a.draw(context, rect, context.ignores, 0);
-            context.restore();
-            */
         }
     },
     new function()
@@ -3803,26 +3828,9 @@ fetch(path)
         _5cnvctx.buttonheight = 25;
         _5cnvctx.rvalue = 2;
         _5cnvctx.slidereduce = 0.75;
-       if (galleryobj.repos)
-      {
-                _5cnvctx.sliceobj.data = getslices();
-                _5cnvctx.delayinterval = DELAYCENTER / _5cnvctx.sliceobj.data.length;
-                _5cnvctx.virtualheight = _5cnvctx.sliceobj.data.length*_5cnvctx.buttonheight;
-      }
-      else
-      {
-          var id = galleryobj.getcurrent().id;
-          fetch(`https://reportbase.com/image/${id}`, {method: 'REPORT'})
-          .then(response => response.json())
-          .then(function(object)
-              {
-                    for (const property in object)
-                      galleryobj.getcurrent()[property] = object[property];
-                _5cnvctx.sliceobj.data = getslices();
-                _5cnvctx.delayinterval = DELAYCENTER / _5cnvctx.sliceobj.data.length;
-                _5cnvctx.virtualheight = _5cnvctx.sliceobj.data.length*_5cnvctx.buttonheight;
-            })
-        }
+        _5cnvctx.sliceobj.data = getslices();
+        _5cnvctx.delayinterval = DELAYCENTER / _5cnvctx.sliceobj.data.length;
+        _5cnvctx.virtualheight = _5cnvctx.sliceobj.data.length*_5cnvctx.buttonheight;
 
         for (var n = 0; n < _5cnvctx.sliceobj.length(); ++n)
         {
@@ -3838,11 +3846,7 @@ fetch(path)
             slices.data.push({page: n, title:`Page ${n+1}`, title1: k, path: "OPEN", func: function()
             {
                 url.page = this.page+1;
-                _6cnvctx.refresh();
-                setTimeout(function()
-                {
-                    window.location.href = addressobj.full(true);
-                }, 100);
+                window.location.href = addressobj.full(true);
             }});
         }
 
@@ -4989,13 +4993,11 @@ var headlst =
             context.shadowColor = "black"
             context.page = new rectangle()
             context.option = new rectangle()
-            context.prevpage = new rectangle()
-            context.nextpage = new rectangle()
             context.thumbnail = new rectangle()
             context.picture = new rectangle()
             context.font = "1rem Archivo Black";
             var s = _5cnvctx.enabled || _8cnvctx.enabled;
-            var e = Math.min(320,rect.width-160-30);
+            var e = Math.min(520,rect.width-190);
             var a = new Layer(
                 [
                     new Col([80,0,e,0,80],
@@ -5009,7 +5011,7 @@ var headlst =
                         new Layer(
                         [
                             new Rectangle(context.picture),
-                            new RowA([0,30,30,0],
+                            new RowA([0,25,25,0],
                             [
                                 0,
                                 new Text("white", "center", "middle",0,1,1),
