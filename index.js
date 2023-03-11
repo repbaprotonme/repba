@@ -39,8 +39,8 @@ const ARROWFILL = "white";
 const REDUCEFACTOR = 40000;
 const SMALLFOOT = 70;
 const LARGEFOOT = 90;
-const SLIDETOP = 48;
-const SLIDEFACTOR = 48;
+const SLIDETOP = 24;
+const SLIDEFACTOR = 24;
 
 globalobj = {};
 globalobj.errors = 0;
