@@ -39,7 +39,7 @@ const ARROWFILL = "white";
 const REDUCEFACTOR = 40000;
 const SMALLFOOT = 70;
 const LARGEFOOT = 90;
-const SLIDETOP = 32;
+const SLIDETOP = 24;
 const SLIDEFACTOR = 18;
 
 globalobj = {};
@@ -364,8 +364,8 @@ var colobj = new Data("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new Data("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
 //var rotateobj = new Data("ROTATEOBJ", []);
 
-speedobj.set(30);
-timemain.set(18);
+speedobj.set(50);
+timemain.set(12);
 
 function drawslices()
 {
@@ -908,7 +908,7 @@ var DownPanel = function (color, shadow)
         var a = new Layer(
         [
             new Shrink(new CirclePanel(SCROLLNAB,"white",3),16,16),
-            new Shrink(new ArrowPanel(ARROWFILL,180),21,26),
+            new Shrink(new ArrowPanel(ARROWFILL,180),22,27),
         ]);
 
         a.draw(context, rect, user, time);
@@ -921,7 +921,7 @@ var PagesPanel = function ()
     this.draw = function (context, rect, user, time)
     {
         context.save();
-        var a = new Row([0,10,3,10,3,10,0],
+        var a = new Row([0,9,4,9,4,9,0],
         [
             0,
             new CirclePanel("white","white",0),
@@ -978,7 +978,7 @@ var FullPanel = function (color, shadow)
         var j = 28;
         var k = 23;
         var r = new rectangle(rect.x+k,rect.y+j,rect.width,rect.height);
-        context.lineWidth = 2;
+        context.lineWidth = 2.5;
         var x = r.x;
         var y = r.y;
         var path = new Path2D();
@@ -1371,9 +1371,6 @@ CanvasRenderingContext2D.prototype.tab = function ()
     var context = this;
     context.slidestop = (context.timeobj.length()/context.virtualwidth)*SLIDETOP;
     context.slidereduce = context.slidestop/SLIDEFACTOR;
-//    if (rotateobj.enabled)
- //       context.slidereduce = context.slidestop/REDUCEFACTOR;
-
     clearInterval(context.timemain);
     context.timemain = setInterval(function () { drawslices() }, timemain.getcurrent());
 }
@@ -1966,7 +1963,7 @@ function dropfiles(files)
         _8cnvctx.buttonheight = window.innerHeight-100
     _8cnvctx.delayinterval = DELAYCENTER / slices.length();
     _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
-    _8cnvctx.slidereduce = 0.75;
+    _8cnvctx.slidereduce = 0.0225;
     galleryobj.set(0);
     delete _4cnvctx.thumbcanvas;
     delete photo.image;
@@ -2418,9 +2415,9 @@ var swipelst =
     swipeleftright: function (context, rect, x, y, evt) {},
     swipeupdown: function (context, rect, x, y, evt)
     {
-        context.slideshow = (context.timeobj.length()/context.virtualheight)*context.rvalue*6;
+        context.slideshow = (context.timeobj.length()/context.virtualheight)*18;
         context.swipetype = evt.type;
-        context.slidereduce = context.slideshow/15;
+        context.slidereduce = context.slideshow/30;
         clearInterval(context.timemain);
         context.timemain = setInterval(function () { context.refresh(); }, globalobj.timemain);
     },
@@ -2705,55 +2702,8 @@ var taplst =
                     screenfull.request();
             }
         }
-        else if (context.menudown && context.menudown.hitest(x,y))
-        {
-            /*
-            var context = _8cnvctx;
-            context.slideshow = (context.timeobj.length()/context.virtualheight)*context.rvalue*18;
-            context.swipetype = "swipedown";
-            context.slidereduce = context.slideshow/15;
-            clearInterval(context.timemain);
-            context.timemain = setInterval(function () { context.refresh(); }, globalobj.timemain);
-            context.refresh();
-            var context = _4cnvctx;
-            context.tapindex = 1;
-            context.refresh();
-            clearInterval(globalobj.tapthumb);
-            globalobj.tapthumb = setTimeout(function()
-            {
-                context.tapindex = 0;
-                context.refresh();
-            }, 400)
-            */
-        }
-        else if (context.menuup && context.menuup.hitest(x,y))
-        {
-            /*
-            var context = _8cnvctx;
-            context.slideshow = (context.timeobj.length()/context.virtualheight)*context.rvalue*18;
-            context.swipetype = "swipeup";
-            context.slidereduce = context.slideshow/15;
-            clearInterval(context.timemain);
-            context.timemain = setInterval(function () { context.refresh(); }, globalobj.timemain);
-            context.refresh();
-            var context = _4cnvctx;
-            context.tapindex = 3;
-            context.refresh();
-            clearInterval(globalobj.tapthumb);
-            globalobj.tapthumb = setTimeout(function()
-            {
-                context.tapindex = 0;
-                context.refresh();
-            }, 400)
-            */
-        }
         else if (!headobj.enabled && context.thumbrect && context.thumbrect.hitest(x,y))
         {
-//            rotateobj.enabled = 0;
-//            context.tab();
-//            clearInterval(context.timemain);
-//            context.timemain = 0;
-
             if (context.selectrect && context.selectrect.hitest(x,y)>=0)
             {
                 context.tapping = context.tapping?0:1;
@@ -3068,19 +3018,22 @@ var menulst =
             user.lst = lst;
         }
 
-        if (user.object)
+        if (!user.thumbimg)
         {
-            user.thumbimg = new Image();
-            user.thumbimg.crossOrigin = 1;
-            user.thumbimg.src = user.object;
-        }
-        else if (!user.thumbimg)
-        {
-            user.thumbimg = new Image();
-            user.thumbimg.src = `https://reportbase.com/image/${user.id}/largethumb`;
-            if (galleryobj.repos)
-                user.thumbimg.src = user.thumb;
-            user.thumbimg.onload = function() { context.refresh(); }
+            if (user.object)
+            {
+                user.thumbimg = new Image();
+                user.thumbimg.crossOrigin = 1;
+                user.thumbimg.src = user.object;
+            }
+            else if (!user.thumbimg)
+            {
+                user.thumbimg = new Image();
+                user.thumbimg.src = `https://reportbase.com/image/${user.id}/largethumb`;
+                if (galleryobj.repos)
+                    user.thumbimg.src = user.thumb;
+                user.thumbimg.onload = function() { context.refresh(); }
+            }
         }
 
         if (context.pressindex.current() == 0 &&
@@ -3884,7 +3837,7 @@ fetch(path)
             var k = `${n*galleryobj.per_page+1} - ${(n+1)*galleryobj.per_page}`;
             slices.data.push({page: n, title:`Page ${n+1}`, title1: k, path: "OPEN", func: function()
             {
-                _6cnvctx.sliceobj.set(this.page);
+                url.page = this.page+1;
                 _6cnvctx.refresh();
                 setTimeout(function()
                 {
@@ -3950,13 +3903,13 @@ fetch(path)
         _8cnvctx.sliceobj.data = galleryobj.data;
         var slices = _8cnvctx.sliceobj;
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-        _8cnvctx.rvalue = 2;
+        _8cnvctx.rvalue = 3;
         _8cnvctx.buttonheight = 200;
         if (_8cnvctx.buttonheight>window.innerHeight-100)
             _8cnvctx.buttonheight = window.innerHeight-100
         _8cnvctx.delayinterval = DELAYCENTER / slices.length();
         _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
-        _8cnvctx.slidereduce = 0.75;
+        _8cnvctx.slidereduce = 0.0225;
 
         //9
         var slices = _9cnvctx.sliceobj;
@@ -5251,7 +5204,7 @@ var PagePanel = function (size)
     this.draw = function (context, rect, user, time)
     {
         context.save()
-        var j = rect.width*0.075;
+        var j = rect.width*0.06;
         var k = j/2;
         var e = new Fill(OPTIONFILL);
         var s = _5cnvctx.enabled || _8cnvctx.enabled;
@@ -5277,7 +5230,7 @@ var OptionPanel = function (size)
     this.draw = function (context, rect, user, time)
     {
         context.save()
-        var j = rect.width*0.075;
+        var j = rect.width*0.06;
         var k = j/2;
         var e = new Fill(OPTIONFILL);
         var s = _9cnvctx.enabled;
