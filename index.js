@@ -412,7 +412,7 @@ function drawslices()
         if (!slice)
             break;
         context.save();
-        if (factorobj.enabled)
+        //todo iif (factorobj.enabled)
             context.clear();
         context.translate(-colwidth, 0);
         context.shadowOffsetX = 0;
