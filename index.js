@@ -357,8 +357,8 @@ var guidelst =
 
 var speedobj = new Data("SPEED", 100);
 var timemain = new Data("TIMEMAIN", 30);
-var speedxobj = new Data("SPEEDX", 100);
-var speedyobj = new Data("SPEEDY", 100);
+//var speedxobj = new Data("SPEEDX", 100);
+//var speedyobj = new Data("SPEEDY", 100);
 var guideobj = new Data("GUIDE", guidelst);
 var colobj = new Data("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new Data("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
@@ -2091,7 +2091,8 @@ var panlst =
             context.autodirect = (type == "panleft")?-1:1;
             var len = context.timeobj.length();
             var diff = context.startx-x;
-            var jvalue = ((len/context.virtualwidth)*speedxobj.getcurrent())*diff;
+//            var jvalue = ((len/context.virtualwidth)*speedxobj.getcurrent())*diff;
+            var jvalue = ((len/context.virtualwidth))*diff;
             var j = context.startt - jvalue;
             if (j < 0)
                 j = len+j-1;
@@ -2109,7 +2110,7 @@ var panlst =
             if (Number(zoom.getcurrent()))
             {
                 var h = (rect.height*(1-zoom.getcurrent()/100))*2;
-                y = ((y/rect.height)*speedyobj.getcurrent())*h;
+                //y = ((y/rect.height)*speedyobj.getcurrent())*h;
                 var k = panvert(rowobj, h-y);
                 if (k == -1)
                     return;
@@ -3138,19 +3139,19 @@ var menulst =
                     10, -40, w2, h2);
             }
 
+            var j = user.pos + 1;
+            j += (url.page-1)*_8cnvctx.sliceobj.length();
+
             var a = new RowA([0,60,0],
                 [
                     0,
                     new Layer(
                     [
-                            new CirclePanel(SCROLLNAB,"white",3),
+                            new CirclePanel(user.tap?MENUTAP:SCROLLNAB,"white",3),
                             new Text("white", "center", "middle",0, 0, 1)
                     ]),
                     0,
                 ]);
-
-            var j = user.pos + 1;
-            j += (url.page-1)*_8cnvctx.sliceobj.length();
 
             a.draw(context, rect,
             [
@@ -3811,8 +3812,8 @@ fetch(path)
 
         pretchobj.split(60, "40-90", pretchobj.length());
         letchobj.split(60, "40-90", letchobj.length());
-        speedxobj.split(1.25, "1-20", speedxobj.length());
-        speedyobj.split(1.25, "1-20", speedyobj.length());
+        //speedxobj.split(1.25, "1-20", speedxobj.length());
+        //speedyobj.split(1.25, "1-20", speedyobj.length());
 
         galleryobj.pages = (galleryobj.per_page && galleryobj.total) ? Math.ceil(galleryobj.total / galleryobj.per_page) : 1;
         galleryobj.per_page = galleryobj.per_page ? galleryobj.per_page : galleryobj.data.length;
