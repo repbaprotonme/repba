@@ -24,8 +24,8 @@ const ARROWBORES = 22;
 const DELAYCENTER = 3.926;
 const TIMEOBJ = 3926;
 const TIMEMID = TIMEOBJ/2;
-const MENUSELECT = "rgba(255,175,0,0.6)";
-const MENUTAP = "rgba(255,0,0,0.5)";
+const MENUSELECT = "rgba(255,175,0,0.75)";
+const MENUTAP = "rgba(255,0,0,0.75)";
 const PROGRESSFILL = "white";
 const PROGRESSFALL = "black";
 const SCROLLNAB = "rgba(0,0,0,0.35)";
@@ -606,12 +606,13 @@ function drawslices()
                     new Layer(
                     [
                         new Rectangle(context.prevpage),
-                        new Shrink(new CirclePanel(SCROLLNAB,"white",3),5,5),
+                        new Shrink(new CirclePanel(_8cnvctx.movingpage == -1?MENUTAP:SCROLLNAB,"white",3),5,5),
                         new Shrink(new ArrowPanel(ARROWFILL,270),20,20),
                     ]),
                     0,
                     new Layer(
                     [
+                        new Shrink(new CirclePanel(_6cnvctx.movingpage == 1?MENUTAP:SCROLLNAB,"white",3),0,0),
                         new Rectangle(context.selectpage),
                         new Row([0,10,0],
                         [
@@ -625,7 +626,7 @@ function drawslices()
                     new Layer(
                     [
                         new Rectangle(context.nextpage),
-                        new Shrink(new CirclePanel(SCROLLNAB,"white",3),5,5),
+                        new Shrink(new CirclePanel(_8cnvctx.movingpage == 1?MENUTAP:SCROLLNAB,"white",3),5,5),
                         new Shrink(new ArrowPanel(ARROWFILL,90),20,20),
                     ]),
                     0,
@@ -1718,13 +1719,13 @@ var wheelst =
     name: "MENU",
     up: function (context, ctrl, shift, alt)
     {
-        var k = (8/context.virtualheight)*context.timeobj.length();
+        var k = (16/context.virtualheight)*context.timeobj.length();
         context.timeobj.rotate(-k);
         context.refresh()
     },
  	down: function (context, ctrl, shift, alt)
     {
-        var k = (8/context.virtualheight)*context.timeobj.length();
+        var k = (16/context.virtualheight)*context.timeobj.length();
         context.timeobj.rotate(k);
         context.refresh()
     },
@@ -2775,22 +2776,38 @@ var taplst =
     {
         if (context.selectpage && context.selectpage.hitest(x,y))
         {
-            _6cnvctx.timeobj.set((1-_6cnvctx.sliceobj.berp())*TIMEOBJ);
-            menushow(_6cnvctx)
+            _6cnvctx.movingpage = 1;
+            context.refresh();
+            setTimeout(function()
+            {
+                _6cnvctx.movingpage = 0;
+                _6cnvctx.timeobj.set((1-_6cnvctx.sliceobj.berp())*TIMEOBJ);
+                menushow(_6cnvctx)
+            }, 500);
         }
         else if (context.prevpage && context.prevpage.hitest(x,y))
         {
             if (url.page == 1)
-                return;
-            url.page = Math.clamp(1,galleryobj.pages,url.page-1);
-            window.location.href = addressobj.full(true);
+                url.page = galleryobj.pages+1;
+            _8cnvctx.movingpage = -1;
+            context.refresh();
+            setTimeout(function()
+            {
+                url.page = Math.clamp(1,galleryobj.pages,url.page-1);
+                window.location.href = addressobj.full(true);
+            }, 500);
         }
         else if (context.nextpage && context.nextpage.hitest(x,y))
         {
             if (url.page == galleryobj.pages)
-                return;
-            url.page = Math.clamp(1,galleryobj.pages,url.page+1);
-            window.location.href = addressobj.full(true);
+                url.page = 0;
+            _8cnvctx.movingpage = 1;
+            context.refresh();
+            setTimeout(function()
+            {
+                url.page = Math.clamp(1,galleryobj.pages,url.page+1);
+                window.location.href = addressobj.full(true);
+            }, 500);
         }
         else if (x > rect.width - (MENUBARWIDTH+3) )
         {
@@ -3126,8 +3143,8 @@ var menulst =
                     0,
                     new Layer(
                     [
-                         new CirclePanel(SCROLLNAB,"white",3),
-                        new Text("white", "center", "middle",0, 0, 1)
+                            new CirclePanel(SCROLLNAB,"white",3),
+                            new Text("white", "center", "middle",0, 0, 1)
                     ]),
                     0,
                 ]);
@@ -3330,7 +3347,7 @@ function resetcanvas()
         var height = photo.image.height*zoom;
         var aspect = photo.image.width/height;
         var width = context.canvas.height * aspect;
-        if (width/window.innerWidth > 2)
+        if (width/window.innerWidth > 1.7)
             break;
     }
 
@@ -3678,7 +3695,6 @@ var bodylst =
                 new Layer(
                 [
                    new Rectangle(context.footpanel),
-                   //new Fill(HEADBACK),
                    new Row([70,0],
                    [
                        new Col([0,
@@ -5014,8 +5030,8 @@ var headlst =
                             new RowA([0,25,25,0],
                             [
                                 0,
-                                new Text("white", "center", "middle",0,1,1),
-                                new Text("white", "center", "middle",0,1,1),
+                                new Text("white", "center", "middle",0,0,1),
+                                new Text("white", "center", "middle",0,0,1),
                                 0,
                             ]),
                         ]),

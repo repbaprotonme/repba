@@ -66,7 +66,7 @@ export default
             if (k.alt)
                 j.description = k.alt;
             j.raw = k.src.original;
-            j.full = k.src.original;
+            j.full = width > height ? k.src.landscape : k.src.portrait;
             j.thumb = k.src.large;
             data.push(j);
         }
