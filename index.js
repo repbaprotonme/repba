@@ -37,8 +37,8 @@ const ARROWFILL = "white";
 const REDUCEFACTOR = 40000;
 const SMALLFOOT = 70;
 const LARGEFOOT = 90;
-const SLIDETOP = 24;
-const SLIDEFACTOR = 24;
+const SLIDETOP = 36;
+const SLIDEFACTOR = 36;
 
 globalobj = {};
 globalobj.errors = 0;
@@ -1316,11 +1316,8 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     if (!_4cnvctx.setcolumncomplete)
         return;
 
-    var e = galleryobj.current();
     galleryobj.rotate(j);
     var k = galleryobj.getcurrent();
-    galleryobj.set(e);
-
     if (!k.object && (_4cnvctx.movingpage || !k.loaded || galleryobj.length() == 1))
     {
         clearTimeout(context.movepagetime);
@@ -1331,17 +1328,24 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     }
 
     _4cnvctx.movingpage = j;
-    this.refresh();
     clearTimeout(globalobj.move);
+    _4cnvctx.refresh();
     globalobj.move = setTimeout(function()
     {
         delete _4cnvctx.thumbcanvas;
         delete photo.image;
         _4cnvctx.setcolumncomplete = 0;
 
-        galleryobj.rotate(j);
         imageslst.rotate(j);
-        url.page = imageslst.getcurrent().page
+        if (url.page != imageslst.getcurrent().page)
+        {
+            url.page = imageslst.getcurrent().page;
+            headobj.enabled = 0;
+            galleryobj.set(imageslst.getcurrent().image);
+            window.location.href = addressobj.full();
+            return;
+        }
+
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         contextobj.reset();
         addressobj.update();
@@ -2656,9 +2660,18 @@ var taplst =
 
         if (context.downpanel && context.downpanel.hitest(x,y))
         {
-            var id = galleryobj.getcurrent().id;
-            var path = `https://reportbase.com/image/${id}/blob`;
-            window.open(path,"reportbase.com");
+            if (galleryobj.getcurrent().object)
+                return;
+            if (galleryobj.getcurrent().photographer_url)
+            {
+                window.location.href = galleryobj.getcurrent().photographer_url;
+            }
+            else
+            {
+                var id = galleryobj.getcurrent().id;
+                var path = `https://reportbase.com/image/${id}/blob`;
+                window.open(path,"reportbase.com");
+            }
         }
         else if (context.infopanel && context.infopanel.hitest(x,y))
         {
@@ -2730,6 +2743,7 @@ var taplst =
     name: "MENU",
     tap: function (context, rect, x, y)
     {
+        delete _4cnvctx.thumbcanvas;
         if (context.selectpage && context.selectpage.hitest(x,y))
         {
             _6cnvctx.movingpage = 1;
@@ -3056,8 +3070,10 @@ var menulst =
                 user.thumbimg = new Image();
                 user.thumbimg.crossOrigin = 1;
                 user.thumbimg.src = user.object;
-                user.thumbimg.onload = function() {
-                    user.thumbimg = resizeimage(user.thumbimg,0.5); context.refersh();}
+                user.thumbimg.onload = function()
+                {
+                    user.thumbimg = resizeimage(user.thumbimg,0.5); _4cnvctx.refersh();
+                }
             }
             else if (!user.thumbimg)
             {
@@ -3065,7 +3081,10 @@ var menulst =
                 user.thumbimg.src = `https://reportbase.com/image/${user.id}/largethumb`;
                 if (galleryobj.repos)
                     user.thumbimg.src = user.thumb;
-                user.thumbimg.onload = function() { context.refresh(); }
+                user.thumbimg.onload = function()
+                {
+                    _4cnvctx.refresh();
+                }
             }
         }
 
@@ -3760,7 +3779,7 @@ fetch(path)
         for (var n = 0; n < galleryobj.total; ++n)
         {
             var k = {};
-            k.page = Math.floor(n / galleryobj.per_page);
+            k.page = Math.floor(n / galleryobj.per_page)+1;
             k.image = n % galleryobj.per_page;
             lst.push(k);
         }
@@ -3896,10 +3915,16 @@ fetch(path)
         {
             if (galleryobj.getcurrent().object)
                 return;
-            //todo repos
-            var id = galleryobj.getcurrent().id;
-            var path = `https://reportbase.com/image/${id}/blob`;
-            window.open(path,"reportbase.com");
+            if (galleryobj.getcurrent().photographer_url)
+            {
+                window.location.href = galleryobj.getcurrent().photographer_url;
+            }
+            else
+            {
+                var id = galleryobj.getcurrent().id;
+                var path = `https://reportbase.com/image/${id}/blob`;
+                window.open(path,"reportbase.com");
+            }
         }});
 
         slices.data.push({title:"Info", path: "INFO", func: function()
@@ -4960,6 +4985,14 @@ var headlst =
             else if (context.picture.hitest(x,y))
             {
                 window.location.href = galleryobj.getcurrent().photographer_url;
+            }
+            else
+            {
+                _4cnvctx.tapping = 0;
+                _4cnvctx.isthumbrect = 0;
+                headobj.enabled = headobj.enabled?0:1;
+                pageresize();
+                _4cnvctx.refresh();
             }
 
             _4cnvctx.refresh();
