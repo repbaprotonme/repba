@@ -382,7 +382,6 @@ function drawslices()
         if (context.timemain)
         {
             context.slidestop -= context.slidereduce;
-            //context.slidestop = Math.max(context.virtualspeed, context.slidestop);
             if (context.slidestop > 0)
             {
                 context.timeobj.rotate(context.autodirect*context.slidestop);
@@ -405,8 +404,7 @@ function drawslices()
         if (!slice)
             break;
         context.save();
-        if (factorobj.enabled)
-            context.clear();
+        context.clear();
         context.translate(-colwidth, 0);
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
@@ -1318,28 +1316,6 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     if (!_4cnvctx.setcolumncomplete)
         return;
 
-    if (galleryobj.pages > 1)
-    {
-        if (j == 1 && galleryobj.current() == galleryobj.length()-1)
-        {
-            ++url.page;
-            if (url.page >= galleryobj.pages)
-                url.page = 1;
-            galleryobj.set(0);
-            window.location.href = addressobj.full();
-        }
-        else if (j == -1 && galleryobj.current() == 0)
-        {
-            --url.page;
-            if (url.page <= 0)
-                url.page = galleryobj.pages-1;
-            var e = galleryobj.total % galleryobj.per_page;
-            galleryobj.set(galleryobj.per_page-1);
-            headobj.enabled = 0;
-            window.location.href = addressobj.full();
-        }
-    }
-
     var e = galleryobj.current();
     galleryobj.rotate(j);
     var k = galleryobj.getcurrent();
@@ -1364,6 +1340,8 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
         _4cnvctx.setcolumncomplete = 0;
 
         galleryobj.rotate(j);
+        imageslst.rotate(j);
+        url.page = imageslst.getcurrent().page
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         contextobj.reset();
         addressobj.update();
@@ -3629,7 +3607,7 @@ var bodylst =
             }
             else
             {
-                var j = (url.page-1)*_8cnvctx.sliceobj.length() + galleryobj.current() + 1;
+                var j = imageslst.current()+1;
                 j += " of " + (galleryobj.total?galleryobj.total:galleryobj.length());
             }
 
@@ -3757,6 +3735,7 @@ else if (url.searchParams.has("pixabay"))
 }
 
 var galleryobj = new Data("", 0);
+var imageslst = new Data("", 0);
 
 fetch(path)
   .then(function (response)
@@ -3770,12 +3749,25 @@ fetch(path)
 
         pretchobj.split(60, "40-90", pretchobj.length());
         letchobj.split(60, "40-90", letchobj.length());
-        //speedxobj.split(1.25, "1-20", speedxobj.length());
         speedyobj.split(1.25, "1-20", speedyobj.length());
 
+        galleryobj.total = galleryobj.total?galleryobj.total:galleryobj.length();
         galleryobj.pages = (galleryobj.per_page && galleryobj.total) ? Math.ceil(galleryobj.total / galleryobj.per_page) : 1;
         galleryobj.per_page = galleryobj.per_page ? galleryobj.per_page : galleryobj.data.length;
         galleryobj.set(url.project);
+
+        var lst = [];
+        for (var n = 0; n < galleryobj.total; ++n)
+        {
+            var k = {};
+            k.page = Math.floor(n / galleryobj.per_page);
+            k.image = n % galleryobj.per_page;
+            lst.push(k);
+        }
+
+       imageslst.data = lst;
+       var e = (url.page-1)*_8cnvctx.sliceobj.length() + galleryobj.current() + (url.page-1)*galleryobj.per_page;
+        imageslst.set(e);
 
       function getslices()
       {
