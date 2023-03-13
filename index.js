@@ -3083,7 +3083,7 @@ var menulst =
                     user.thumbimg.src = user.thumb;
                 user.thumbimg.onload = function()
                 {
-                    _4cnvctx.refresh();
+                    context.refresh();
                 }
             }
         }
