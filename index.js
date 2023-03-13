@@ -26,8 +26,6 @@ const TIMEOBJ = 3926;
 const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(255,175,0,0.75)";
 const MENUTAP = "rgba(255,0,0,0.75)";
-const PROGRESSFILL = "white";
-const PROGRESSFALL = "black";
 const SCROLLNAB = "rgba(0,0,0,0.35)";
 const HEADBACK = "rgba(0,0,0,0.20)";
 const MENUCOLOR = "rgba(0,0,0,0.40)";
@@ -358,14 +356,14 @@ var guidelst =
 var speedobj = new Data("SPEED", 100);
 var timemain = new Data("TIMEMAIN", 30);
 //var speedxobj = new Data("SPEEDX", 100);
-//var speedyobj = new Data("SPEEDY", 100);
+var speedyobj = new Data("SPEEDY", 100);
 var guideobj = new Data("GUIDE", guidelst);
 var colobj = new Data("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new Data("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
 //var rotateobj = new Data("ROTATEOBJ", []);
 
 speedobj.set(50);
-timemain.set(12);
+timemain.set(18);
 
 function drawslices()
 {
@@ -490,7 +488,6 @@ function drawslices()
         delete context.openpanel;
         delete context.infopanel;
         delete context.speedctrl;
-        delete context.progresspanel;
         delete context.timemainctrl;
 
         if (context.setcolumncomplete)
@@ -1050,6 +1047,9 @@ var ProgressPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
+        const PROGRESSFILL = "white";
+        const PROGRESSFALL = "black";
+        user = context.timeobj;
         context.save();
         var percent = (1-user.berp())*100;
         let centerX = rect.x + rect.width / 2;
@@ -2110,7 +2110,7 @@ var panlst =
             if (Number(zoom.getcurrent()))
             {
                 var h = (rect.height*(1-zoom.getcurrent()/100))*2;
-                //y = ((y/rect.height)*speedyobj.getcurrent())*h;
+                y = ((y/rect.height)*speedyobj.getcurrent())*h;
                 var k = panvert(rowobj, h-y);
                 if (k == -1)
                     return;
@@ -2696,10 +2696,7 @@ var taplst =
         clearInterval(context.timemain);
         context.timemain = 0;
 
-        if (context.progresspanel && context.progresspanel.hitest(x,y))
-        {
-        }
-        else if (context.downpanel && context.downpanel.hitest(x,y))
+        if (context.downpanel && context.downpanel.hitest(x,y))
         {
             var id = galleryobj.getcurrent().id;
             var path = `https://reportbase.com/image/${id}/blob`;
@@ -3683,7 +3680,6 @@ var bodylst =
         {
             context.save();
             context.font = "1rem Archivo Black";
-            context.progresspanel = new rectangle();
             context.fullpanel = new rectangle()
             context.footpanel = new rectangle()
             context.infopanel = new rectangle()
@@ -3703,7 +3699,6 @@ var bodylst =
                            ALIEXTENT,
                            ALIEXTENT,
                            ALIEXTENT,
-                           ALIEXTENT,
                            0],
                        [
                            0,
@@ -3716,12 +3711,6 @@ var bodylst =
                            [
                                new FullPanel("white","black"),
                                new Rectangle(context.fullpanel),
-                           ]),
-                           new Layer(
-                           [
-                               (_4cnvctx.timemain && !SAFIROX) ? new Shrink(new CirclePanel("rgb(255,155,0)"),11,11) : 0,
-                               new ProgressPanel(),
-                               new Rectangle(context.progresspanel),
                            ]),
                            new Layer(
                            [
@@ -3740,7 +3729,7 @@ var bodylst =
                ]),
             ]);
 
-            a.draw(context, rect, context.timeobj, 0);
+            a.draw(context, rect, 0, 0);
             context.restore();
         }
     },
@@ -3813,7 +3802,7 @@ fetch(path)
         pretchobj.split(60, "40-90", pretchobj.length());
         letchobj.split(60, "40-90", letchobj.length());
         //speedxobj.split(1.25, "1-20", speedxobj.length());
-        //speedyobj.split(1.25, "1-20", speedyobj.length());
+        speedyobj.split(1.25, "1-20", speedyobj.length());
 
         galleryobj.pages = (galleryobj.per_page && galleryobj.total) ? Math.ceil(galleryobj.total / galleryobj.per_page) : 1;
         galleryobj.per_page = galleryobj.per_page ? galleryobj.per_page : galleryobj.data.length;
@@ -3965,6 +3954,19 @@ fetch(path)
                     return res.json() })
                 .then(data => console.log(data))
             }});
+
+      slices.data.push({title:"Search", path: "SEARCH", func: function()
+          {
+            var path = `https://reportbase.com/search`;
+            window.open(path,"reportbase.com");
+          }})
+
+
+      slices.data.push({title:"Upload", path: "UPLOAD", func: function()
+          {
+            var path = `https://reportbase.com/upload`;
+            window.open(path,"reportbase.com");
+          }})
 
         slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
         slices.data.push({title:"Page", path: "PAGE", func: function()
