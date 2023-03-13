@@ -353,17 +353,12 @@ var guidelst =
     },
 ]
 
-var speedobj = new Data("SPEED", 100);
 var timemain = new Data("TIMEMAIN", 30);
-//var speedxobj = new Data("SPEEDX", 100);
 var speedyobj = new Data("SPEEDY", 100);
 var guideobj = new Data("GUIDE", guidelst);
 var colobj = new Data("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new Data("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
-//var rotateobj = new Data("ROTATEOBJ", []);
-
-speedobj.set(50);
-timemain.set(18);
+timemain.set(12);
 
 function drawslices()
 {
@@ -387,7 +382,7 @@ function drawslices()
         if (context.timemain)
         {
             context.slidestop -= context.slidereduce;
-            context.slidestop = Math.max(context.virtualspeed, context.slidestop);
+            //context.slidestop = Math.max(context.virtualspeed, context.slidestop);
             if (context.slidestop > 0)
             {
                 context.timeobj.rotate(context.autodirect*context.slidestop);
@@ -487,8 +482,6 @@ function drawslices()
         delete context.footpanel;
         delete context.openpanel;
         delete context.infopanel;
-        delete context.speedctrl;
-        delete context.timemainctrl;
 
         if (context.setcolumncomplete)
         {
@@ -1863,9 +1856,6 @@ var pinchlst =
     },
     pinchstart: function (context, rect, x, y)
     {
-//        clearInterval(context.timemain);
-//        context.timemain = 0;
-//        rotateobj.enabled = 0;
         context.clearpoints();
         context.isthumbrect = context.thumbrect && context.thumbrect.expand &&
             context.thumbrect.expand(40,40).hitest(x,y);
@@ -2091,7 +2081,6 @@ var panlst =
             context.autodirect = (type == "panleft")?-1:1;
             var len = context.timeobj.length();
             var diff = context.startx-x;
-//            var jvalue = ((len/context.virtualwidth)*speedxobj.getcurrent())*diff;
             var jvalue = ((len/context.virtualwidth))*diff;
             var j = context.startt - jvalue;
             if (j < 0)
@@ -2123,7 +2112,6 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
 	{
-//        rotateobj.enabled = 0;
         clearInterval(context.timemain);
         context.timemain = 0;
         context.startx = x;
@@ -2412,8 +2400,6 @@ var presslst =
     },
     press: function (context, rect, x, y)
     {
-//        clearInterval(context.timemain);
-//        context.timemain = 0;
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
             context.pressed = 1;
@@ -2454,9 +2440,6 @@ var swipelst =
         setTimeout(function()
         {
             context.autodirect = evt.type == "swipeleft"?-1:1;
-//            clearInterval(context.timemain);
-//            context.timemain = 0;
-//            rotateobj.enabled = 0;
             context.tab();
         }, SWIPETIME);
     },
@@ -2569,21 +2552,18 @@ var keylst =
         else if (evt.key == "Tab")
         {
             evt.preventDefault();
-//            rotateobj.enabled = 0;
             context.autodirect = evt.shiftKey ? 1 : -1;
             context.tab();
         }
         else if (evt.key == "ArrowLeft" || evt.key == "h")
         {
             evt.preventDefault();
- //           rotateobj.enabled = 0;
             context.autodirect = 1;
             context.tab();
         }
         else if (evt.key == "ArrowRight" || evt.key == "l")
         {
             context.autodirect = -1;
-  //          rotateobj.enabled = 0;
             evt.preventDefault();
             context.tab();
         }
@@ -3363,17 +3343,6 @@ function resetcanvas()
     context.virtualsize = ((context.virtualwidth * context.canvas.height)/1000000).toFixed(1) + "MP";
     var y = Math.clamp(0,context.canvas.height-1,context.canvas.height*rowobj.berp());
     context.nuby = Math.nub(y, context.canvas.height, context.imageheight, photo.image.height);
-
-    var speed = Math.max(0.5,speedobj.getcurrent()/10);
-    context.virtualspeed = FIREFOX?0:TIMEOBJ/context.virtualwidth/speed;
-    var rotatelst = [];
-    var k = Math.floor(TIMEMID*0.8)
-    var j = Math.floor(TIMEMID*1.2)
-    for (var n = k; n < j; n+=context.virtualspeed)
-        rotatelst.push(n);
-    for (var n = j; n > k; n-=context.virtualspeed)
-        rotatelst.push(n);
-//    rotateobj.data = rotatelst;
 
     var f = 3;
     if (factorobj.enabled)
@@ -4829,6 +4798,7 @@ function resize()
 
 function escape()
 {
+    _4cnvctx.panhide  = 0
     _4cnvctx.pinched = 0;
     delete _4cnvctx.thumbcanvas;
     bodyobj.enabled = 0;
@@ -5160,8 +5130,6 @@ var posityobj = new Data("POSITIONY", [positypobj,positylobj]);
 
 function menushow(context)
 {
-//    clearInterval(_4cnvctx.timemain);
-//    _4cnvctx.timemain = 0;
     bodyobj.enabled = 0;
     _4cnvctx.slideshow = 0;
     var enabled = context.enabled;
