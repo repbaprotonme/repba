@@ -37,8 +37,8 @@ const ARROWFILL = "white";
 const REDUCEFACTOR = 40000;
 const SMALLFOOT = 70;
 const LARGEFOOT = 90;
-const SLIDETOP = 36;
-const SLIDEFACTOR = 36;
+const SLIDETOP = 24;
+const SLIDEFACTOR = 24;
 
 globalobj = {};
 globalobj.errors = 0;
@@ -1273,7 +1273,6 @@ addressobj.full = function (k)
     out +=
         "&h="+headobj.enabled+
         "&r="+(100*rowobj.berp()).toFixed()+
-        "&t="+_4cnvctx.timeobj.current().toFixed(4)+
         "&page="+url.page+
         "&search="+SEARCH;
 
@@ -3335,6 +3334,7 @@ function resetcanvas()
     var imageaspect = photo.image.width/context.imageheight;
     context.virtualwidth = context.canvas.height * imageaspect;
     context.virtualfactor = context.virtualwidth/window.innerWidth;
+    context.virtualwindow = window.innerWidth/context.virtualwidth;
     context.virtualaspect = context.virtualwidth / context.canvas.height;
     context.virtualextent = context.virtualwidth.toFixed(0) + "x" + context.canvas.height;
     context.virtualsize = ((context.virtualwidth * context.canvas.height)/1000000).toFixed(1) + "MP";
@@ -4029,7 +4029,7 @@ var ContextObj = (function ()
             context.timeobj.set(TIMEOBJ/2);
         }
 
-        var time = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : TIMEOBJ/2;
+         var time = Math.floor(TIMEMID*1.15)
         _4cnvctx.timeobj.set(time);
 
     }
@@ -4151,6 +4151,10 @@ var ContextObj = (function ()
                         rowobj.set(window.innerHeight*(galleryobj.row/100));
                     else if (typeof rowobj.row !== "undefined")
                         rowobj.set(window.innerHeight*(rowobj.row/100));
+
+                    _4cnvctx.autodirect = -1;
+                    var time = TIMEOBJ/2+TIMEOBJ*(_4cnvctx.virtualwindow/8);
+                    _4cnvctx.timeobj.set(time);
 
                     contextobj.reset()
                     context.tab();

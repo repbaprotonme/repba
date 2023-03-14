@@ -19,17 +19,24 @@ export default
         var action = body.result.uploadURL;
         var html =
         `<!DOCTYPE html>
-         <html>
-         <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+         <html lang="en">
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+         <link rel="stylesheet" href="custom.css">
          <body>
-           <form id="form1" name="form1"
+<main class="container">
+<section id="preview">
+            <form id="form1" name="form1"
              method="post"
              action="javascript:submit()"
              enctype="multipart/form-data">
              <input type="file" id="myFile" name="file" />
              <input type="submit" />
            </form>
-           <script>
+</section>
+</main>
+            <script>
            function submit()
            {
                 var form1 = document.getElementById("form1")
