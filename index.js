@@ -50,7 +50,7 @@ function numberRange (start, end) {return new Array(end - start).fill().map((d, 
 
 let url = new URL(window.location.href);
 url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 1;
-const SEARCH = url.searchParams.has("search") ? url.searchParams.get("search") : "";
+url.pixabay = url.searchParams.has("pixabay") ? url.searchParams.get("pixabay") : "";
 
 Math.clamp = function (min, max, val)
 {
@@ -580,7 +580,7 @@ function drawslices()
         a.draw(context, new rectangle(rect.width-MENUBARWIDTH,0,7,rect.height), context.timeobj, 0);
 
         context.save();
-        if (galleryobj.pages > 1 && context.index == 7)
+        if (0)//galleryobj.pages > 1 && context.index == 7)
         {
             context.selectpage = new rectangle()
             context.prevpage = new rectangle()
@@ -1272,9 +1272,7 @@ addressobj.full = function (k)
 
     out +=
         "&h="+headobj.enabled+
-        "&r="+(100*rowobj.berp()).toFixed()+
-        "&page="+url.page+
-        "&search="+SEARCH;
+        "&r="+(100*rowobj.berp()).toFixed();
 
     return out;
 };
@@ -3745,13 +3743,16 @@ else if (url.searchParams.has("pexels.curated"))
 else if (url.searchParams.has("sidney"))
 {
     setpathparoject("sidney");
-    path = `https://sidney.reportbase5836.workers.dev?page=${url.page}`;
+    path = `https://sidney.reportbase5836.workers.dev`;
 }
 else if (url.searchParams.has("pixabay"))
 {
     var k = url.searchParams.get("pixabay")
+    k = k.split(".");
+    if (k.length > 1)
+        k = k[0];
     setpathparoject("pixabay");
-    path = `https://reportbase.com/pixabay?page=${url.page}&search=${k}`;
+    path = `https://reportbase.com/pixabay?search=${k}`;
 }
 
 var galleryobj = new Data("", 0);
@@ -3956,11 +3957,14 @@ fetch(path)
           }})
 
         slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
+
+      /*
         slices.data.push({title:"Page", path: "PAGE", func: function()
             {
                 _6cnvctx.timeobj.set((1-_6cnvctx.sliceobj.berp())*TIMEOBJ);
                 menushow(_6cnvctx);
             }})
+        */
 
         slices.data.push({title:"Fullscreen", path: "FULLPANEL", func: function ()
         {
