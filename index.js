@@ -37,8 +37,8 @@ const ARROWFILL = "white";
 const REDUCEFACTOR = 40000;
 const SMALLFOOT = 70;
 const LARGEFOOT = 90;
-const SLIDETOP = 24;
-const SLIDEFACTOR = 24;
+const SLIDETOP = 12;
+const SLIDEFACTOR = 48;
 
 globalobj = {};
 globalobj.errors = 0;
@@ -358,7 +358,7 @@ var speedyobj = new Data("SPEEDY", 100);
 var guideobj = new Data("GUIDE", guidelst);
 var colobj = new Data("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new Data("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
-timemain.set(12);
+timemain.set(0);
 
 function drawslices()
 {
@@ -1040,7 +1040,7 @@ var ProgressPanel = function ()
     {
         const PROGRESSFILL = "white";
         const PROGRESSFALL = "black";
-        user = context.timeobj;
+        user = _4cnvctx.timeobj;
         context.save();
         var percent = (1-user.berp())*100;
         let centerX = rect.x + rect.width / 2;
@@ -4158,7 +4158,7 @@ var ContextObj = (function ()
                         rowobj.set(window.innerHeight*(rowobj.row/100));
 
                     _4cnvctx.autodirect = -1;
-                    var time = TIMEOBJ/2+TIMEOBJ*(_4cnvctx.virtualwindow/8);
+                    var time = TIMEOBJ/2+TIMEOBJ*(_4cnvctx.virtualwindow/16);
                     _4cnvctx.timeobj.set(time);
 
                     contextobj.reset()
@@ -5243,7 +5243,13 @@ var PagePanel = function (size)
                 0,
             ]),
         ])
-
+/*
+        var a = new Layer(
+        [
+            new Shrink(new CirclePanel(SCROLLNAB,"white",3),10,10),
+            new Shrink(new ProgressPanel(),5,5),
+        ])
+*/
         a.draw(context, rect, user, time);
         context.restore()
     }
