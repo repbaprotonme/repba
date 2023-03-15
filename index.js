@@ -437,7 +437,7 @@ function drawslices()
             else if (m == slicelst.length-1)
             {
                 xn = slice.bx;
-                sn = stretchwidth;
+                sn = stretchwidth-1;
             }
 
             if (bx >= rect.width+colwidth || bx2 < colwidth)
@@ -578,55 +578,6 @@ function drawslices()
         var rect = context.rect();
         var a = new CurrentVPanel(new Fill("white"), 90, 1);
         a.draw(context, new rectangle(rect.width-MENUBARWIDTH,0,7,rect.height), context.timeobj, 0);
-
-        context.save();
-        if (0)//galleryobj.pages > 1 && context.index == 7)
-        {
-            context.selectpage = new rectangle()
-            context.prevpage = new rectangle()
-            context.nextpage = new rectangle()
-            var a = new Row([0,60,20],
-            [
-                0,
-                new Col([50,60,0,60,0,60,50],
-                [
-                    0,
-                    new Layer(
-                    [
-                        new Rectangle(context.prevpage),
-                        new Shrink(new CirclePanel(_8cnvctx.movingpage == -1?MENUTAP:SCROLLNAB,"white",3),5,5),
-                        new Shrink(new ArrowPanel(ARROWFILL,270),20,20),
-                    ]),
-                    0,
-                    new Layer(
-                    [
-                        new Shrink(new CirclePanel(_6cnvctx.movingpage == 1?MENUTAP:SCROLLNAB,"white",3),0,0),
-                        new Rectangle(context.selectpage),
-                        new Row([0,10,0],
-                        [
-                            0,
-                            new PagesPanel(),
-                            0,
-                        ]),
-                        0,
-                    ]),
-                    0,
-                    new Layer(
-                    [
-                        new Rectangle(context.nextpage),
-                        new Shrink(new CirclePanel(_8cnvctx.movingpage == 1?MENUTAP:SCROLLNAB,"white",3),5,5),
-                        new Shrink(new ArrowPanel(ARROWFILL,90),20,20),
-                    ]),
-                    0,
-                ]),
-                0,
-            ]);
-
-            context.font = "1rem Archivo Black";
-            a.draw(context, rect, `${_6cnvctx.sliceobj.current()+1}`, 0);
-        }
-
-        context.restore();
     }
 }
 
