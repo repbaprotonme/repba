@@ -2669,7 +2669,7 @@ var taplst =
             {
                 var id = galleryobj.getcurrent().id;
                 var path = `https://reportbase.com/image/${id}/blob`;
-                window.open(path,"reportbase.com");
+                window.open(path,url.hostname);
             }
         }
         else if (context.infopanel && context.infopanel.hitest(x,y))
@@ -3749,8 +3749,9 @@ else if (url.searchParams.has("sidney"))
 }
 else if (url.searchParams.has("pixabay"))
 {
+    var k = url.searchParams.get("pixabay")
     setpathparoject("pixabay");
-    path = `https://reportbase.com/pixabay?page=${url.page}&search=${SEARCH}`;
+    path = `https://reportbase.com/pixabay?page=${url.page}&search=${k}`;
 }
 
 var galleryobj = new Data("", 0);
@@ -3923,7 +3924,7 @@ fetch(path)
             {
                 var id = galleryobj.getcurrent().id;
                 var path = `https://reportbase.com/image/${id}/blob`;
-                window.open(path,"reportbase.com");
+                window.open(path,url.hostname);
             }
         }});
 
@@ -3943,15 +3944,15 @@ fetch(path)
 
       slices.data.push({title:"Search", path: "SEARCH", func: function()
           {
-            var path = `https://reportbase.com/search`;
-            window.open(path,"reportbase.com");
+            var path = `https://reportbase.com/search.html`;
+            window.open(path,url.hostname);
           }})
 
 
       slices.data.push({title:"Upload", path: "UPLOAD", func: function()
           {
             var path = `https://reportbase.com/upload`;
-            window.open(path,"reportbase.com");
+            window.open(path,url.hostname);
           }})
 
         slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
@@ -4988,7 +4989,8 @@ var headlst =
             }
             else if (context.picture.hitest(x,y))
             {
-                window.location.href = galleryobj.getcurrent().photographer_url;
+                if (galleryobj.getcurrent().photographer_url)
+                    window.location.href = galleryobj.getcurrent().photographer_url;
             }
             else
             {
