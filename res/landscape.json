@@ -1,0 +1,31 @@
+{  
+    "template": "LANDSCAPE",  
+    "title": "High-resolution",  
+    "data": 
+    [    
+        { 
+            "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+            "title": "minim veniam, quis nostrud exercitation ullamco laboris nisi",
+            "describe": "To say its wrong to say the lightning is pink is nothing other than to say its not the case the lightning is pink, its to say the lightning isnt pink, and this isnt something one could say of the proposition the lightning is pink, but a somewhat complicated sentence about the lightning.  By the same token, to say X thinks that the lightning is pink means nothing other than X thinks the lightning is pink, or the lightning is pink, thinks X, which is not the same as, and, moreover, doesnt even begin to resemble the proposition the lightning is pink, but is, or is like, a somewhat more complicated phrase about the lightning, and about X.  And yet it was summer, it was evening, and the lightning was blue.",
+            "copyright": "consectetur, adipisci velit, sed quia non numquam eius",
+            "url": "https://i.imgur.com/lEWdncT.jpg",
+            "tags"; "Tag1",
+            "width": 300, 
+            "height": 400, 
+            "quality": 75, 
+            "row": 20 
+        },
+        { 
+            "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+            "title": "minim veniam, quis nostrud exercitation ullamco laboris nisi",
+            "describe": "To say its wrong to say the lightning is pink is nothing other than to say its not the case the lightning is pink, its to say the lightning isnt pink, and this isnt something one could say of the proposition the lightning is pink, but a somewhat complicated sentence about the lightning.  By the same token, to say X thinks that the lightning is pink means nothing other than X thinks the lightning is pink, or the lightning is pink, thinks X, which is not the same as, and, moreover, doesnt even begin to resemble the proposition the lightning is pink, but is, or is like, a somewhat more complicated phrase about the lightning, and about X.  And yet it was summer, it was evening, and the lightning was blue.",
+            "copyright": "consectetur, adipisci velit, sed quia non numquam eius",
+            "url": "https://i.imgur.com/lEWdncT.jpg",
+            "tags"; "Tag1",
+            "width": 300, 
+            "height": 400, 
+            "quality": 75, 
+            "row": 20 
+        },
+    ]
+}
