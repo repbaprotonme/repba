@@ -1,5 +1,6 @@
 //todo: https://obfuscator.io
 //todo: safari max size
+
 /* ++ += ==
 Copyright 2017 Tom Brinkman
 http://www.reportbase.com
@@ -437,7 +438,7 @@ function drawslices()
             else if (m == slicelst.length-1)
             {
                 xn = slice.bx;
-                sn = stretchwidth-1;
+                sn = stretchwidth-2;
             }
 
             if (bx >= rect.width+colwidth || bx2 < colwidth)
@@ -3653,8 +3654,8 @@ var bodylst =
 var bodyobj = new Data("", bodylst);
 url.path = "BOAT";
 url.project = 0;
-path = `res/BOAT`;
 var leftmenu = 1;
+var path = `res/boat.json`;
 
 function setpathparoject(str)
 {
@@ -3674,7 +3675,8 @@ if (url.searchParams.has("p"))
     leftmenu = k.length == 1;
     if (k.length == 2)
         url.project = Number(k[1]);
-    path = `res/${url.path}`;
+    path = url.path.toLowerCase();
+    path = `res/${path}.json`;
 }
 else if (url.searchParams.has("unsplash.user"))
 {
@@ -3909,13 +3911,12 @@ fetch(path)
 
         slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
 
-      /*
-        slices.data.push({title:"Page", path: "PAGE", func: function()
+        slices.data.push({title:"Config", path: "CONFIG", func: function()
             {
-                _6cnvctx.timeobj.set((1-_6cnvctx.sliceobj.berp())*TIMEOBJ);
-                menushow(_6cnvctx);
+                var path = url.path.toLowerCase();
+                path = `${url.origin}/res/${path}.json`;
+                window.open(path,url.hostname);
             }})
-        */
 
         slices.data.push({title:"Fullscreen", path: "FULLPANEL", func: function ()
         {

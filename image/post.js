@@ -1,24 +1,51 @@
-const form = new FormData();
-form.append("metadata", "");
-form.append("requireSignedURLs", "");
-form.append("url", "[\"test.webp\"]");
+const fs = require('fs');
 
-const options = {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
-    'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb',
-    'X-Auth-Email': 'reportbase@gmail.com',
-    'X-Auth-Key': 'd27e8f43b04336d419f9b85927dc1e25bb915',
-  }
-};
+async function upload()
+{
+    const body = new FormData();
+    body.append("url", "https://i.imgur.com/lEWdncT.jpg");
+    body.append("requireSignedURLs", "");
 
-options.body = form;
+    var metadata = {};
+    metadata.email = "a@b.com";
+    metadata.party = "123";
+    body.append("metadata", JSON.stringify(metadata));
 
-fetch('https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1', options)
-  .then(response => response.json())
-  .then(response => console.log(response))
-  .catch(err => console.error(err));
+    try
+    {
+        const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1`,
+            {
+                method: "POST",
+                headers:
+                {
+                    "Authorization": `Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb`,
+                },
+                body,
+            }
+        );
 
+        if (res.status !== 200 && res.status !== 409)
+            throw new Error("HTTP " + res.status + " : " + await res.text());
+        if (res.status === 409)
+            console.log("Already exist: " + imageName);
+    }
+    catch (e)
+    {
+        console.log("ERROR:" + e);
+    }
+}
 
+async function load()
+{
+    for (var n = 0; n < 5; n++)
+    {
+        await upload()
+    }
+}
+
+fs.readFile('./post.json', 'utf8', (error, data) =>
+
+{
+     console.log(JSON.parse(data));
+})
 

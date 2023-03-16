@@ -1,5 +1,5 @@
 du -h *  #human readable disk usage
-scp 0* scott@reportbase.com:/srv/http/data/boss #transfer files
+scp test scott@207.246.108.73:/home/scott
 grep -r --include "*.ini" "#auto" . #recursive find
 sed -r 's/\s+//g' filename  #clear whitespace
 find . -type f -name $1  #find file

@@ -46,19 +46,17 @@ export default {
       case 'POST':
       {
             const url = new URL(request.url);
-            var path = url.searchParams.get("url");
-            var email = url.searchParams.get("email");
-            var id = request.url.split("/").slice(-1).join("/");//todo remove after ? quesion mark
             const body = new FormData();
-            body.append("url", "https://i.imgur.com/lEWdncT.jpg");//todo: add forward slashes
-          //todo: local file
-            body.append("id", id);
-            body.append("metadata",
-                `{
-                    "email": "${email}",
-                    "party": "453442"
-                }`
-            );
+            body.append("url", "https://i.imgur.com/lEWdncT.jpg");
+
+            var id = request.url.split("/").slice(-1).join("/");
+            id = id.split("?")[0];
+            //body.append("id", id);
+
+            var metadata = {};
+            metadata.email = url.searchParams.get("email");
+            metadata.party = url.searchParams.get("party");
+            body.append("metadata", JSON.stringify(metadata));
             body.append("requireSignedURLs", "");
 
             return fetch(`https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1`,
