@@ -2750,7 +2750,6 @@ var taplst =
             var k = getbuttonfrompoint(context, x, y);
             if (k == -1)
             {
-                menuhide();
                 return;
             }
 
@@ -3057,7 +3056,7 @@ var menulst =
             {
                 var h1 = user.thumbimg.height;
                 var w1 = h1*a2;
-                var y1 = Math.nub(scrollobj.getcurrent(), scrollobj.length(), h1, user.thumbimg.height);
+                var y1 = 0;
                 var x1 = (user.thumbimg.width-w1)/2;
                 context.drawImage(user.thumbimg, x1, y1, w1, h1,
                     10, -40, w2, h2);
