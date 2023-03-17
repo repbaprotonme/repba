@@ -1958,13 +1958,11 @@ var panlst =
         }
         else if (context.rightside)
         {
-            var k = panvert(context.timeobj, y);
-            if (k == -1)
-                return;
-            if (k == context.timeobj.anchor())
-                return;
-            context.timeobj.set(k);
-            context.refresh()
+             var obj = context.timeobj;
+             var m = y/rect.height;
+             m = Math.floor((1-m)*obj.length());
+             obj.set(m);
+             context.refresh()
         }
         else if (type == "panup" || type == "pandown")
         {
