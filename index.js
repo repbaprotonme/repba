@@ -354,14 +354,16 @@ var guidelst =
     },
 ]
 
-var scrollobj = new Data("SCROLL", 100);
+var scrollxobj = new Data("XSCROLL", 100);
+var scrollyobj = new Data("YSCROLL", 100);
 var timemain = new Data("TIMEMAIN", 30);
 var speedyobj = new Data("SPEEDY", 100);
 var guideobj = new Data("GUIDE", guidelst);
 var colobj = new Data("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new Data("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
 timemain.set(0);
-scrollobj.set(50);
+scrollxobj.set(50);
+scrollyobj.set(50);
 
 function drawslices()
 {
@@ -588,7 +590,7 @@ function drawslices()
 
         a.draw(context, rect,
         [
-            scrollobj,
+            scrollyobj,
             0,
             context.timeobj
         ],
@@ -1950,7 +1952,7 @@ var panlst =
     {
         if (context.leftside)
         {
-            var obj = scrollobj;
+            var obj = scrollyobj;
             var m = y/rect.height;
             m = Math.floor((1-m)*obj.length());
             obj.set(m);
@@ -1966,6 +1968,11 @@ var panlst =
         }
         else if (type == "panleft" || type == "panright")
         {
+            var obj = scrollxobj;
+            var m = x/rect.width;
+            m = Math.floor((1-m)*obj.length());
+            obj.set(m);
+            context.refresh()
         }
         else if (type == "panup" || type == "pandown")
         {
@@ -2484,17 +2491,19 @@ var keylst =
             context.refresh();
             evt.preventDefault();
         }
+        else if (evt.key == " ")
+        {
+            _4cnvctx.tapping = 0;
+            _4cnvctx.isthumbrect = 0;
+            headobj.enabled = headobj.enabled?0:1;
+            pageresize();
+            _4cnvctx.refresh();
+        }
         else if (evt.key == "\\")
         {
             evt.preventDefault();
             factorobj.enabled = factorobj.enabled ? 0 : 1;
             context.refresh();
-        }
-        else if (evt.key == "Tab")
-        {
-            evt.preventDefault();
-            context.autodirect = evt.shiftKey ? 1 : -1;
-            context.tab();
         }
         else if (evt.key == "ArrowLeft" || evt.key == "h")
         {
@@ -2556,7 +2565,7 @@ var keylst =
             stretchobj.getcurrent().add(1);
             context.refresh();
         }
-        else if (evt.key == "Enter")
+        else if (evt.key == "Tab" || evt.key == "Enter")
         {
             context.movepage(evt.shiftKey?-1:1);
             evt.preventDefault();
@@ -3057,7 +3066,7 @@ var menulst =
                 var h1 = user.thumbimg.height;
                 var w1 = h1*a2;
                 var y1 = 0;
-                var x1 = (user.thumbimg.width-w1)/2;
+                var x1 = Math.nub(scrollxobj.getcurrent(), scrollxobj.length(), w1, user.thumbimg.width);
                 context.drawImage(user.thumbimg, x1, y1, w1, h1,
                     10, -40, w2, h2);
             }
@@ -3066,7 +3075,7 @@ var menulst =
                 var w1 = user.thumbimg.width;
                 var h1 = w1/a2;
                 var x1 = 0;
-                var y1 = Math.nub(scrollobj.getcurrent(), scrollobj.length(), h1, user.thumbimg.height);
+                var y1 = Math.nub(scrollyobj.getcurrent(), scrollyobj.length(), h1, user.thumbimg.height);
                 context.drawImage(user.thumbimg, x1, y1, w1, h1,
                     10, -40, w2, h2);
             }
@@ -4771,6 +4780,7 @@ function resize()
 
 function escape()
 {
+    headobj.enabled = headobj.enabled?0:1;
     _4cnvctx.panhide  = 0
     _4cnvctx.pinched = 0;
     delete _4cnvctx.thumbcanvas;
