@@ -354,16 +354,12 @@ var guidelst =
     },
 ]
 
-var scrollxobj = new Data("XSCROLL", 100);
-var scrollyobj = new Data("YSCROLL", 100);
 var timemain = new Data("TIMEMAIN", 30);
 var speedyobj = new Data("SPEEDY", 100);
 var guideobj = new Data("GUIDE", guidelst);
 var colobj = new Data("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new Data("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
 timemain.set(0);
-scrollxobj.set(50);
-scrollyobj.set(50);
 
 function drawslices()
 {
@@ -581,7 +577,7 @@ function drawslices()
         }
 
         var rect = context.rect();
-        var a = new ColA([9,0,9],
+        var a = new ColA([11,0,11],
         [
             new CurrentVPanel(new Fill("white"), 90, 1),
             0,
@@ -590,7 +586,7 @@ function drawslices()
 
         a.draw(context, rect,
         [
-            scrollyobj,
+            context.scrollobj,
             0,
             context.timeobj
         ],
@@ -1952,26 +1948,22 @@ var panlst =
     {
         if (context.leftside)
         {
-            var obj = scrollyobj;
-            var m = y/rect.height;
-            m = Math.floor((1-m)*obj.length());
-            obj.set(m);
+            var k = panvert(context.scrollobj, y);
+            if (k == -1)
+                return;
+            if (k == context.scrollobj.anchor())
+                return;
+            context.scrollobj.set(k);
             context.refresh()
         }
         else if (context.rightside)
         {
-            var obj = context.timeobj;
-            var m = y/rect.height;
-            m = Math.floor((1-m)*obj.length());
-            obj.set(m);
-            context.refresh()
-        }
-        else if (type == "panleft" || type == "panright")
-        {
-            var obj = scrollxobj;
-            var m = x/rect.width;
-            m = Math.floor((1-m)*obj.length());
-            obj.set(m);
+            var k = panvert(context.timeobj, y);
+            if (k == -1)
+                return;
+            if (k == context.timeobj.anchor())
+                return;
+            context.timeobj.set(k);
             context.refresh()
         }
         else if (type == "panup" || type == "pandown")
@@ -1999,6 +1991,9 @@ var panlst =
     {
         delete context.starty;
         delete context.startt;
+        delete context.timeobj.offset;
+        delete context.scrollxobj.offset;
+        delete context.scrollyobj.offset;
     }
 },
 {
@@ -2443,18 +2438,6 @@ var keylst =
             context.timeobj.rotate(-k);
             context.refresh()
         }
-        else if (evt.key == "Enter" || evt.key == "Pageup" || evt.key == "o")
-        {
-            var k = (60/context.virtualheight)*context.timeobj.length();
-            context.timeobj.rotate(-k);
-            context.refresh()
-        }
-        else if (evt.key == "Pagedown" || evt.key == "p")
-        {
-            var k = (60/context.virtualheight)*context.timeobj.length();
-            context.timeobj.rotate(k);
-            context.refresh()
-        }
  	}
 },
 {
@@ -2747,6 +2730,13 @@ var taplst =
                 window.location.href = addressobj.full(true);
             }, 500);
         }
+        else if (x < MENUBARWIDTH+3)
+        {
+            var j = y/rect.height;
+            var k = context.scrollobj.length()*(1-j);
+            context.scrollobj.set(k);
+            context.refresh();
+        }
         else if (x > rect.width - (MENUBARWIDTH+3) )
         {
             var j = y/rect.height;
@@ -2998,7 +2988,7 @@ var menulst =
     {
         context.save();
         rect.height = context.buttonheight;
-        rect.width -= 40;
+        rect.width -= 50;
         context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
         user.fitheight = rect.height;
@@ -3045,7 +3035,7 @@ var menulst =
             else if (!user.thumbimg)
             {
                 user.thumbimg = new Image();
-                user.thumbimg.src = `https://reportbase.com/image/${user.id}/largethumb`;
+                user.thumbimg.src = `https://reportbase.com/image/${user.id}/${galleryobj.thumb}`;
                 if (galleryobj.repos)
                     user.thumbimg.src = user.thumb;
                 user.thumbimg.onload = function()
@@ -3063,19 +3053,21 @@ var menulst =
             var a2 = w2/h2;
             if (user.thumbimg.width/user.thumbimg.height > a2)
             {
+                context.scrollobj = context.scrollxobj;
                 var h1 = user.thumbimg.height;
                 var w1 = h1*a2;
                 var y1 = 0;
-                var x1 = Math.nub(scrollxobj.getcurrent(), scrollxobj.length(), w1, user.thumbimg.width);
+                var x1 = Math.nub(context.scrollxobj.getcurrent(), context.scrollxobj.length(), w1, user.thumbimg.width);
                 context.drawImage(user.thumbimg, x1, y1, w1, h1,
                     10, -40, w2, h2);
             }
             else
             {
+                context.scrollobj = context.scrollyobj;
                 var w1 = user.thumbimg.width;
                 var h1 = w1/a2;
                 var x1 = 0;
-                var y1 = Math.nub(scrollyobj.getcurrent(), scrollyobj.length(), h1, user.thumbimg.height);
+                var y1 = Math.nub(context.scrollyobj.getcurrent(), context.scrollyobj.length(), h1, user.thumbimg.height);
                 context.drawImage(user.thumbimg, x1, y1, w1, h1,
                     10, -40, w2, h2);
             }
@@ -3736,6 +3728,9 @@ fetch(path)
         letchobj.split(60, "40-90", letchobj.length());
         speedyobj.split(1.25, "1-20", speedyobj.length());
 
+        if (typeof galleryobj.thumb == "undefined")
+            galleryobj.thumb = "largethumb";
+
         galleryobj.set(url.project);
 
         for (var n = 0; n < galleryobj.length(); ++n)
@@ -3855,6 +3850,11 @@ fetch(path)
         _8cnvctx.delayinterval = DELAYCENTER / slices.length();
         _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
         _8cnvctx.slidereduce = 0.0225;
+        _8cnvctx.scrollxobj = new Data("XSCROLL", window.innerHeight);
+        _8cnvctx.scrollyobj = new Data("YSCROLL", window.innerHeight);
+        _8cnvctx.scrollxobj.set(window.innerHeight/2);
+        _8cnvctx.scrollyobj.set(window.innerHeight/2);
+        _8cnvctx.scrollobj = _8cnvctx.scrollxobj;
 
         //9
         var slices = _9cnvctx.sliceobj;
