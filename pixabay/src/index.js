@@ -18,19 +18,13 @@ export default
                 var k = json.hits[n];
                 k.thumb = k.webformatURL;
                 k.full = k.largeImageURL;
-                k.raw = k.largeImageURL;
+                k.url = k.largeImageURL;
                 k.website = `Photos Provided by Pixabay`;
                 k.photographer = k.user;
                 k.photographer_url = k.pageURL;
                 k.photographer_id = k.user_id;
                 data.push(k);
             }
-        }
-
-        for (var n = 0; n < data.length; ++n)
-        {
-            var k = data[n];
-            k.index = `${n+1} of ${data.length}`;
         }
 
         var g = {}

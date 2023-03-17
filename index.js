@@ -354,12 +354,14 @@ var guidelst =
     },
 ]
 
+var scrollobj = new Data("SCROLL", 100);
 var timemain = new Data("TIMEMAIN", 30);
 var speedyobj = new Data("SPEEDY", 100);
 var guideobj = new Data("GUIDE", guidelst);
 var colobj = new Data("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new Data("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
 timemain.set(0);
+scrollobj.set(50);
 
 function drawslices()
 {
@@ -577,8 +579,20 @@ function drawslices()
         }
 
         var rect = context.rect();
-        var a = new CurrentVPanel(new Fill("white"), 90, 1);
-        a.draw(context, new rectangle(rect.width-MENUBARWIDTH,0,7,rect.height), context.timeobj, 0);
+        var a = new ColA([9,0,9],
+        [
+            new CurrentVPanel(new Fill("white"), 90, 1),
+            0,
+            new CurrentVPanel(new Fill("white"), 90, 1),
+        ]);
+
+        a.draw(context, rect,
+        [
+            scrollobj,
+            0,
+            context.timeobj
+        ],
+        0);
     }
 }
 
@@ -1209,12 +1223,10 @@ addressobj.full = function (k)
     var p = url.path;
     if (!k)
         p+="."+galleryobj.current().pad(4);
-    if (url.searchParams.has("unsplash.user"))
-        out += "?unsplash.user="+p;
-    else if (url.searchParams.has("unsplash.collection"))
-        out += "?unsplash.collection="+p;
-    else if (url.searchParams.has("pexels.curated"))
-        out += "?pexels.curated="+p;
+    if (url.searchParams.has("unsplash"))
+        out += "?unsplash="+p;
+    else if (url.searchParams.has("pexels"))
+        out += "?pexels="+p;
     else if (url.searchParams.has("pixabay"))
         out += "?pixabay="+p;
     else if (url.searchParams.has("sidney"))
@@ -1936,7 +1948,15 @@ var panlst =
 
 	pan: function (context, rect, x, y, type)
     {
-        if (context.rightside)
+        if (context.leftside)
+        {
+            var obj = scrollobj;
+            var m = y/rect.height;
+            m = Math.floor((1-m)*obj.length());
+            obj.set(m);
+            context.refresh()
+        }
+        else if (context.rightside)
         {
             var obj = context.timeobj;
             var m = y/rect.height;
@@ -1963,6 +1983,7 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
     {
+        context.leftside = x < MENUPANWIDTH;
         context.rightside = x > rect.width-MENUPANWIDTH;
         context.starty = y;
         context.startt = context.timeobj.current();
@@ -3046,7 +3067,7 @@ var menulst =
                 var w1 = user.thumbimg.width;
                 var h1 = w1/a2;
                 var x1 = 0;
-                var y1 = (user.thumbimg.height-h1)/2;
+                var y1 = Math.nub(scrollobj.getcurrent(), scrollobj.length(), h1, user.thumbimg.height);
                 context.drawImage(user.thumbimg, x1, y1, w1, h1,
                     10, -40, w2, h2);
             }
@@ -3559,15 +3580,7 @@ var bodylst =
                         ])
                     ]);
 
-            if (galleryobj.getcurrent().object)
-            {
-                var j = `${galleryobj.current() + 1} of ${galleryobj.length()}`;
-            }
-            else
-            {
-                var j = galleryobj.getcurrent().index;
-            }
-
+            var j = `${galleryobj.current() + 1} of ${galleryobj.length()}`;
             a.draw(context, rect, [0,j,0], 0);
             context.restore();
         }
@@ -3666,20 +3679,23 @@ if (url.searchParams.has("p"))
     path = url.path.toLowerCase();
     path = `res/${path}.json`;
 }
-else if (url.searchParams.has("unsplash.user"))
+else if (url.searchParams.has("unsplash"))
 {
-    setpathparoject("unsplash.user");
-    path = `https://unsplash.reportbase5836.workers.dev/users/${url.path}?page=${url.page}`;
+    var k = url.searchParams.get("unsplash")
+    k = k.split(".");
+    if (k.length > 1)
+        k = k[0];
+    setpathparoject("unsplash");
+    path = `https://unsplash.reportbase5836.workers.dev/?search=${k}`;
 }
-else if (url.searchParams.has("unsplash.collection"))
+else if (url.searchParams.has("pexels"))
 {
-    setpathparoject("unsplash.collection");
-    path = `https://unsplash.reportbase5836.workers.dev/collections/${url.path}?page=${url.page}`;
-}
-else if (url.searchParams.has("pexels.curated"))
-{
-    setpathparoject("pexels.curated");
-    path = `https://pexels.reportbase5836.workers.dev?page=${url.page}`;
+    var k = url.searchParams.get("pexels")
+    k = k.split(".");
+    if (k.length > 1)
+        k = k[0];
+    setpathparoject("pexels");
+    path = `https://pexels.reportbase5836.workers.dev?search=${k}`;
 }
 else if (url.searchParams.has("sidney"))
 {
@@ -3713,6 +3729,12 @@ fetch(path)
         speedyobj.split(1.25, "1-20", speedyobj.length());
 
         galleryobj.set(url.project);
+
+        for (var n = 0; n < galleryobj.length(); ++n)
+        {
+            var k = galleryobj.data[n];
+            k.index = `${n+1} of ${galleryobj.length()}`;
+        }
 
       function getslices()
       {
@@ -3843,6 +3865,10 @@ fetch(path)
             if (galleryobj.getcurrent().photographer_url)
             {
                 window.location.href = galleryobj.getcurrent().photographer_url;
+            }
+            else if (galleryobj.repos)
+            {
+
             }
             else
             {
@@ -4116,7 +4142,7 @@ function masterload()
         var template = galleryobj.template ? galleryobj.template : "medium";
         var path = `https://reportbase.com/image/${id}/${template}`;
         if (galleryobj.repos)
-            path = galleryobj.getcurrent().raw;
+            path = galleryobj.getcurrent().url;
         lst[n].src = path;
         lst[n].index = galleryobj.current();
         lst[n].onload = function()
@@ -4131,7 +4157,7 @@ function masterload()
     var template = galleryobj.template ? galleryobj.template : "medium";
     var path = `https://reportbase.com/image/${id}/${template}`;
     if (galleryobj.repos)
-        path = galleryobj.getcurrent().raw;
+        path = galleryobj.getcurrent().url;
     img.src = path;
     img.index = galleryobj.current();
     img.onload = function()

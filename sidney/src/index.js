@@ -32,12 +32,6 @@ export default
             }
         }
 
-        for (var n = 0; n < data.length; ++n)
-        {
-            var k = data[n];
-            k.index = `${n+1} of ${data.length}`;
-        }
-
         var g = {}
         g.title = `reportbase.com`;
         g.title1 = `Sidney`;
