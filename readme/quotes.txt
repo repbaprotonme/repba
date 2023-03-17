@@ -1,5 +1,6 @@
 var quotes = 
 [
+    "We are the ones we've waiting for.",
     "Yesterday is history,  tomorrow is the future, but today is gift, that is why it called the present",
     "Those who dance are considered mad by those who can't hear the music.",
     "May God have mercy on my enemies, cause I will not.",
@@ -17,7 +18,7 @@ var quotes =
     "It Was Not Raining When Noah Built the Ark",
     "What We Are is God's Gift, What We Become is Our Gift to God",
     "The Best Way to Predict the Future is To Invent It",
-    "Failure is the Condiment Which Gives Success Its Flavor",
+    "Failure is the Condiment that Gives Success Its Flavor",
     "I can Resist Everything Except Temptation",
     "What's Another Word For Thesaurus",
     "It Is During the Darkest Moments That We Must Focus To See the Light",
