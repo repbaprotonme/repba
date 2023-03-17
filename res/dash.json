@@ -1,0 +1,405 @@
+{
+  "title": "Repba Gallery",
+  "data": [
+    {
+      "id": "DASH.0000",
+      "width": 3507,
+      "height": 2565,
+      "extent": "3507x2565 1.37",
+      "size": "9.0MP",
+      "quote": "Those who dance are considered mad by those who can't hear the music."
+    },
+    {
+      "id": "DASH.0001",
+      "width": 3323,
+      "height": 2707,
+      "extent": "3323x2707 1.23",
+      "size": "9.0MP",
+      "quote": "May God have mercy on my enemies, cause I will not."
+    },
+    {
+      "id": "DASH.0002",
+      "width": 3795,
+      "height": 2371,
+      "extent": "3795x2371 1.60",
+      "size": "9.0MP",
+      "quote": "The difference between genius and stupidity is that genius has its limits."
+    },
+    {
+      "id": "DASH.0003",
+      "width": 3444,
+      "height": 2612,
+      "extent": "3444x2612 1.32",
+      "size": "9.0MP",
+      "quote": "The Harder You Work, The Luckier You Get"
+    },
+    {
+      "id": "DASH.0004",
+      "width": 3354,
+      "height": 2683,
+      "extent": "3354x2683 1.25",
+      "size": "9.0MP",
+      "quote": "Teamwork Makes the Dream Work"
+    },
+    {
+      "id": "DASH.0005",
+      "width": 3598,
+      "height": 2500,
+      "extent": "3598x2500 1.44",
+      "size": "9.0MP",
+      "quote": "OK Monday, Lets Do This"
+    },
+    {
+      "id": "DASH.0006",
+      "width": 3630,
+      "height": 2479,
+      "extent": "3630x2479 1.46",
+      "size": "9.0MP",
+      "quote": "Do Not Decrease the Goal, Increase the Effort"
+    },
+    {
+      "id": "DASH.0007",
+      "width": 4000,
+      "height": 2105,
+      "extent": "4000x2105 1.90",
+      "size": "8.4MP",
+      "quote": "We Didn't Lose the Game, We Just Ran Out of Time"
+    },
+    {
+      "id": "DASH.0008",
+      "width": 3635,
+      "height": 2475,
+      "extent": "3635x2475 1.47",
+      "size": "9.0MP",
+      "quote": "The Seeds of Doubt Grow Bitter Fruit"
+    },
+    {
+      "id": "DASH.0009",
+      "width": 3702,
+      "height": 2430,
+      "extent": "3702x2430 1.52",
+      "size": "9.0MP",
+      "quote": "Success Consists of Getting Up Just One More Time Than You Fail"
+    },
+    {
+      "id": "DASH.0010",
+      "width": 3634,
+      "height": 2476,
+      "extent": "3634x2476 1.47",
+      "size": "9.0MP",
+      "quote": "Enjoy Life Today, Yesterday Is Gone Tomorrow"
+    },
+    {
+      "id": "DASH.0011",
+      "width": 3622,
+      "height": 2484,
+      "extent": "3622x2484 1.46",
+      "size": "9.0MP",
+      "quote": "If Not Us Who? If Not Now When?"
+    },
+    {
+      "id": "DASH.0012",
+      "width": 3663,
+      "height": 2456,
+      "extent": "3663x2456 1.49",
+      "size": "9.0MP",
+      "quote": "If Opportunity Does Not Knock, Build a Door"
+    },
+    {
+      "id": "DASH.0013",
+      "width": 3660,
+      "height": 2458,
+      "extent": "3660x2458 1.49",
+      "size": "9.0MP",
+      "quote": "It Was Not Raining When Noah Built the Ark"
+    },
+    {
+      "id": "DASH.0014",
+      "width": 3927,
+      "height": 2291,
+      "extent": "3927x2291 1.71",
+      "size": "9.0MP",
+      "quote": "What We Are is God's Gift, What We Become is Our Gift to God"
+    },
+    {
+      "id": "DASH.0015",
+      "width": 3629,
+      "height": 2479,
+      "extent": "3629x2479 1.46",
+      "size": "9.0MP",
+      "quote": "The Best Way to Predict the Future is To Invent It"
+    },
+    {
+      "id": "DASH.0016",
+      "width": 3814,
+      "height": 2359,
+      "extent": "3814x2359 1.62",
+      "size": "9.0MP",
+      "quote": "Failure is the Condiment Which Gives Success Its Flavor"
+    },
+    {
+      "id": "DASH.0017",
+      "width": 3632,
+      "height": 2477,
+      "extent": "3632x2477 1.47",
+      "size": "9.0MP",
+      "quote": "I can Resist Everything Except Temptation"
+    },
+    {
+      "id": "DASH.0018",
+      "width": 3600,
+      "height": 2499,
+      "extent": "3600x2499 1.44",
+      "size": "9.0MP",
+      "quote": "What's Another Word For Thesaurus"
+    },
+    {
+      "id": "DASH.0019",
+      "width": 3176,
+      "height": 2480,
+      "extent": "3176x2480 1.28",
+      "size": "7.9MP",
+      "quote": "It Is During the Darkest Moments That We Must Focus To See the Light"
+    },
+    {
+      "id": "DASH.0020",
+      "width": 4000,
+      "height": 2030,
+      "extent": "4000x2030 1.97",
+      "size": "8.1MP",
+      "quote": "Winners Never Quit, Quitters Never Win"
+    },
+    {
+      "id": "DASH.0021",
+      "width": 3883,
+      "height": 2317,
+      "extent": "3883x2317 1.68",
+      "size": "9.0MP",
+      "quote": "If Two Wrongs Don't Make a Right, Try Three"
+    },
+    {
+      "id": "DASH.0022",
+      "width": 3000,
+      "height": 2217,
+      "extent": "3000x2217 1.35",
+      "size": "6.7MP",
+      "quote": "Try Being Informed Instead of Being Opinionated"
+    },
+    {
+      "id": "DASH.0023",
+      "width": 3200,
+      "height": 2346,
+      "extent": "3200x2346 1.36",
+      "size": "7.5MP",
+      "quote": "I Refuse to Join Any Club That Would Have Me As a Member"
+    },
+    {
+      "id": "DASH.0024",
+      "width": 3366,
+      "height": 2673,
+      "extent": "3366x2673 1.26",
+      "size": "9.0MP",
+      "quote": "Life is A Series of Commas, Not Periods"
+    },
+    {
+      "id": "DASH.0025",
+      "width": 2649,
+      "height": 2272,
+      "extent": "2649x2272 1.17",
+      "size": "6.0MP",
+      "quote": "My Fake Plants Died Because I Did Not Pretend to Water Them"
+    },
+    {
+      "id": "DASH.0026",
+      "width": 3000,
+      "height": 2478,
+      "extent": "3000x2478 1.21",
+      "size": "7.4MP",
+      "quote": "Life is What Happens When You Are Busy Making Other Plans"
+    },
+    {
+      "id": "DASH.0027",
+      "width": 3000,
+      "height": 2229,
+      "extent": "3000x2229 1.35",
+      "size": "6.7MP",
+      "quote": "We are a Conclave of Geniuses, Knows as the Intelligencia"
+    },
+    {
+      "id": "DASH.0028",
+      "width": 3200,
+      "height": 2442,
+      "extent": "3200x2442 1.31",
+      "size": "7.8MP",
+      "quote": "Believe You Can and You are Half Way There"
+    },
+    {
+      "id": "DASH.0029",
+      "width": 3000,
+      "height": 2184,
+      "extent": "3000x2184 1.37",
+      "size": "6.6MP",
+      "quote": "If you Think You Can Or Think You Can't, Either Way Your Right"
+    },
+    {
+      "id": "DASH.0030",
+      "width": 3105,
+      "height": 2898,
+      "extent": "3105x2898 1.07",
+      "size": "9.0MP",
+      "quote": "The Road to Success and The Road To Failure Are Exactly the Same"
+    },
+    {
+      "id": "DASH.0031",
+      "width": 3000,
+      "height": 2045,
+      "extent": "3000x2045 1.47",
+      "size": "6.1MP",
+      "quote": "The Secret of Getting Ahead Is Getting Started"
+    },
+    {
+      "id": "DASH.0032",
+      "width": 3176,
+      "height": 2576,
+      "extent": "3176x2576 1.23",
+      "size": "8.2MP",
+      "quote": "What Does Not Kill You Makes You Stronger"
+    },
+    {
+      "id": "DASH.0033",
+      "width": 3526,
+      "height": 2350,
+      "extent": "3526x2350 1.50",
+      "size": "8.3MP",
+      "quote": "The Harder the Conflict the More Glorious the Triumph"
+    },
+    {
+      "id": "DASH.0034",
+      "width": 3549,
+      "height": 2535,
+      "extent": "3549x2535 1.40",
+      "size": "9.0MP",
+      "quote": "Don't Spend Time Beating On a Wall Hoping To Tranform It Into A Door"
+    },
+    {
+      "id": "DASH.0035",
+      "width": 3800,
+      "height": 2368,
+      "extent": "3800x2368 1.60",
+      "size": "9.0MP",
+      "quote": "I May Not Be There Yet but I'm Closer Than I Was Yesterday"
+    },
+    {
+      "id": "DASH.0036",
+      "width": 3444,
+      "height": 2612,
+      "extent": "3444x2612 1.32",
+      "size": "9.0MP",
+      "quote": "Do What You Love, Love What You Do"
+    },
+    {
+      "id": "DASH.0037",
+      "width": 3765,
+      "height": 2390,
+      "extent": "3765x2390 1.58",
+      "size": "9.0MP",
+      "quote": "The Pessimist Sees Difficulty In Every Opportunity The Optimist Sees Opportunity In Every Difficulty"
+    },
+    {
+      "id": "DASH.0038",
+      "width": 3831,
+      "height": 2348,
+      "extent": "3831x2348 1.63",
+      "size": "9.0MP",
+      "quote": "If Your Going Through Hell Keep Going"
+    },
+    {
+      "id": "DASH.0039",
+      "width": 3000,
+      "height": 2079,
+      "extent": "3000x2079 1.44",
+      "size": "6.2MP",
+      "quote": "Open Your Mind Before Your Mouth"
+    },
+    {
+      "id": "DASH.0040",
+      "width": 3000,
+      "height": 1998,
+      "extent": "3000x1998 1.50",
+      "size": "6.0MP",
+      "quote": "If You Can Dream It You Can Do It"
+    },
+    {
+      "id": "DASH.0041",
+      "width": 3321,
+      "height": 2359,
+      "extent": "3321x2359 1.41",
+      "size": "7.8MP",
+      "quote": "Creativity Is Intelligence Having Fun"
+    },
+    {
+      "id": "DASH.0042",
+      "width": 3603,
+      "height": 2497,
+      "extent": "3603x2497 1.44",
+      "size": "9.0MP",
+      "quote": "Fake It Until You Make It"
+    },
+    {
+      "id": "DASH.0043",
+      "width": 3440,
+      "height": 2615,
+      "extent": "3440x2615 1.32",
+      "size": "9.0MP",
+      "quote": "The Secret of Getting Ahead is Getting Started"
+    },
+    {
+      "id": "DASH.0044",
+      "width": 3000,
+      "height": 2267,
+      "extent": "3000x2267 1.32",
+      "size": "6.8MP",
+      "quote": "The Best Way to Keep One's Word is Not to Give It"
+    },
+    {
+      "id": "DASH.0045",
+      "width": 3797,
+      "height": 2369,
+      "extent": "3797x2369 1.60",
+      "size": "9.0MP",
+      "quote": "Learn to Say 'No' to the Good so You can Say 'Yes' to the Best"
+    },
+    {
+      "id": "DASH.0046",
+      "width": 3389,
+      "height": 2654,
+      "extent": "3389x2654 1.28",
+      "size": "9.0MP",
+      "quote": "The Best Way to Hold a Man is in Your Arms"
+    },
+    {
+      "id": "DASH.0047",
+      "width": 3908,
+      "height": 2302,
+      "extent": "3908x2302 1.70",
+      "size": "9.0MP",
+      "quote": "The Best Question is Not What is Best, but Who Shall Decide What is Best"
+    },
+    {
+      "id": "DASH.0048",
+      "width": 3557,
+      "height": 2529,
+      "extent": "3557x2529 1.41",
+      "size": "9.0MP",
+      "quote": "Only a Mediocre Person is Always at His Best"
+    },
+    {
+      "id": "DASH.0049",
+      "width": 3000,
+      "height": 1966,
+      "extent": "3000x1966 1.53",
+      "size": "5.9MP",
+      "quote": "We've Been Gone Five Years and the Best they Could Come up With was Boy Bands?"
+    }
+  ]
+}

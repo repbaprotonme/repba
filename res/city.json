@@ -1,0 +1,277 @@
+{
+  "title": "Repba Gallery",
+  "data": [
+    {
+      "id": "CITY.0000",
+      "width": 2000,
+      "height": 3000,
+      "extent": "2000x3000 0.67",
+      "size": "6.0MP",
+      "quote": "Those who dance are considered mad by those who can't hear the music."
+    },
+    {
+      "id": "CITY.0001",
+      "width": 2120,
+      "height": 2828,
+      "extent": "2120x2828 0.75",
+      "size": "6.0MP",
+      "quote": "May God have mercy on my enemies, cause I will not."
+    },
+    {
+      "id": "CITY.0002",
+      "width": 2191,
+      "height": 2738,
+      "extent": "2191x2738 0.80",
+      "size": "6.0MP",
+      "quote": "The difference between genius and stupidity is that genius has its limits."
+    },
+    {
+      "id": "CITY.0003",
+      "width": 2124,
+      "height": 2824,
+      "extent": "2124x2824 0.75",
+      "size": "6.0MP",
+      "quote": "The Harder You Work, The Luckier You Get"
+    },
+    {
+      "id": "CITY.0004",
+      "width": 2078,
+      "height": 2886,
+      "extent": "2078x2886 0.72",
+      "size": "6.0MP",
+      "quote": "Teamwork Makes the Dream Work"
+    },
+    {
+      "id": "CITY.0005",
+      "width": 2000,
+      "height": 2999,
+      "extent": "2000x2999 0.67",
+      "size": "6.0MP",
+      "quote": "OK Monday, Lets Do This"
+    },
+    {
+      "id": "CITY.0006",
+      "width": 1778,
+      "height": 3373,
+      "extent": "1778x3373 0.53",
+      "size": "6.0MP",
+      "quote": "Do Not Decrease the Goal, Increase the Effort"
+    },
+    {
+      "id": "CITY.0007",
+      "width": 2121,
+      "height": 2828,
+      "extent": "2121x2828 0.75",
+      "size": "6.0MP",
+      "quote": "We Didn't Lose the Game, We Just Ran Out of Time"
+    },
+    {
+      "id": "CITY.0008",
+      "width": 1868,
+      "height": 3210,
+      "extent": "1868x3210 0.58",
+      "size": "6.0MP",
+      "quote": "The Seeds of Doubt Grow Bitter Fruit"
+    },
+    {
+      "id": "CITY.0009",
+      "width": 2034,
+      "height": 2948,
+      "extent": "2034x2948 0.69",
+      "size": "6.0MP",
+      "quote": "Success Consists of Getting Up Just One More Time Than You Fail"
+    },
+    {
+      "id": "CITY.0010",
+      "width": 2191,
+      "height": 2738,
+      "extent": "2191x2738 0.80",
+      "size": "6.0MP",
+      "quote": "Enjoy Life Today, Yesterday Is Gone Tomorrow"
+    },
+    {
+      "id": "CITY.0011",
+      "width": 1679,
+      "height": 3572,
+      "extent": "1679x3572 0.47",
+      "size": "6.0MP",
+      "quote": "If Not Us Who? If Not Now When?"
+    },
+    {
+      "id": "CITY.0012",
+      "width": 2115,
+      "height": 2836,
+      "extent": "2115x2836 0.75",
+      "size": "6.0MP",
+      "quote": "If Opportunity Does Not Knock, Build a Door"
+    },
+    {
+      "id": "CITY.0013",
+      "width": 2209,
+      "height": 2714,
+      "extent": "2209x2714 0.81",
+      "size": "6.0MP",
+      "quote": "It Was Not Raining When Noah Built the Ark"
+    },
+    {
+      "id": "CITY.0014",
+      "width": 2069,
+      "height": 2899,
+      "extent": "2069x2899 0.71",
+      "size": "6.0MP",
+      "quote": "What We Are is God's Gift, What We Become is Our Gift to God"
+    },
+    {
+      "id": "CITY.0015",
+      "width": 2000,
+      "height": 3000,
+      "extent": "2000x3000 0.67",
+      "size": "6.0MP",
+      "quote": "The Best Way to Predict the Future is To Invent It"
+    },
+    {
+      "id": "CITY.0016",
+      "width": 1993,
+      "height": 3009,
+      "extent": "1993x3009 0.66",
+      "size": "6.0MP",
+      "quote": "Failure is the Condiment Which Gives Success Its Flavor"
+    },
+    {
+      "id": "CITY.0017",
+      "width": 2121,
+      "height": 2828,
+      "extent": "2121x2828 0.75",
+      "size": "6.0MP",
+      "quote": "I can Resist Everything Except Temptation"
+    },
+    {
+      "id": "CITY.0018",
+      "width": 2147,
+      "height": 2794,
+      "extent": "2147x2794 0.77",
+      "size": "6.0MP",
+      "quote": "What's Another Word For Thesaurus"
+    },
+    {
+      "id": "CITY.0019",
+      "width": 2385,
+      "height": 2515,
+      "extent": "2385x2515 0.95",
+      "size": "6.0MP",
+      "quote": "It Is During the Darkest Moments That We Must Focus To See the Light"
+    },
+    {
+      "id": "CITY.0020",
+      "width": 2000,
+      "height": 3000,
+      "extent": "2000x3000 0.67",
+      "size": "6.0MP",
+      "quote": "Winners Never Quit, Quitters Never Win"
+    },
+    {
+      "id": "CITY.0021",
+      "width": 2120,
+      "height": 2829,
+      "extent": "2120x2829 0.75",
+      "size": "6.0MP",
+      "quote": "If Two Wrongs Don't Make a Right, Try Three"
+    },
+    {
+      "id": "CITY.0022",
+      "width": 2000,
+      "height": 3000,
+      "extent": "2000x3000 0.67",
+      "size": "6.0MP",
+      "quote": "Try Being Informed Instead of Being Opinionated"
+    },
+    {
+      "id": "CITY.0023",
+      "width": 2000,
+      "height": 3000,
+      "extent": "2000x3000 0.67",
+      "size": "6.0MP",
+      "quote": "I Refuse to Join Any Club That Would Have Me As a Member"
+    },
+    {
+      "id": "CITY.0024",
+      "width": 2000,
+      "height": 3000,
+      "extent": "2000x3000 0.67",
+      "size": "6.0MP",
+      "quote": "Life is A Series of Commas, Not Periods"
+    },
+    {
+      "id": "CITY.0025",
+      "width": 1838,
+      "height": 3263,
+      "extent": "1838x3263 0.56",
+      "size": "6.0MP",
+      "quote": "My Fake Plants Died Because I Did Not Pretend to Water Them"
+    },
+    {
+      "id": "CITY.0026",
+      "width": 1997,
+      "height": 3004,
+      "extent": "1997x3004 0.66",
+      "size": "6.0MP",
+      "quote": "Life is What Happens When You Are Busy Making Other Plans"
+    },
+    {
+      "id": "CITY.0027",
+      "width": 2000,
+      "height": 2999,
+      "extent": "2000x2999 0.67",
+      "size": "6.0MP",
+      "quote": "We are a Conclave of Geniuses, Knows as the Intelligencia"
+    },
+    {
+      "id": "CITY.0028",
+      "width": 2000,
+      "height": 3000,
+      "extent": "2000x3000 0.67",
+      "size": "6.0MP",
+      "quote": "Believe You Can and You are Half Way There"
+    },
+    {
+      "id": "CITY.0029",
+      "width": 2000,
+      "height": 3000,
+      "extent": "2000x3000 0.67",
+      "size": "6.0MP",
+      "quote": "If you Think You Can Or Think You Can't, Either Way Your Right"
+    },
+    {
+      "id": "CITY.0030",
+      "width": 1998,
+      "height": 3002,
+      "extent": "1998x3002 0.67",
+      "size": "6.0MP",
+      "quote": "The Road to Success and The Road To Failure Are Exactly the Same"
+    },
+    {
+      "id": "CITY.0031",
+      "width": 2121,
+      "height": 2828,
+      "extent": "2121x2828 0.75",
+      "size": "6.0MP",
+      "quote": "The Secret of Getting Ahead Is Getting Started"
+    },
+    {
+      "id": "CITY.0032",
+      "width": 2020,
+      "height": 2969,
+      "extent": "2020x2969 0.68",
+      "size": "6.0MP",
+      "quote": "What Does Not Kill You Makes You Stronger"
+    },
+    {
+      "id": "CITY.0034",
+      "width": 2544,
+      "height": 4306,
+      "extent": "2544x4306 0.59",
+      "size": "11.0MP",
+      "quote": "The Harder the Conflict the More Glorious the Triumph"
+    }
+  ]
+}

@@ -1,0 +1,461 @@
+{
+  "title": "Repba Gallery",
+  "data": [
+    {
+      "id": "DOLL.0000",
+      "width": 2551,
+      "height": 3134,
+      "extent": "2551x3134 0.81",
+      "size": "8.0MP",
+      "quote": "Those who dance are considered mad by those who can't hear the music."
+    },
+    {
+      "id": "DOLL.0001",
+      "width": 2562,
+      "height": 3122,
+      "extent": "2562x3122 0.82",
+      "size": "8.0MP",
+      "quote": "May God have mercy on my enemies, cause I will not."
+    },
+    {
+      "id": "DOLL.0002",
+      "width": 2323,
+      "height": 2920,
+      "extent": "2323x2920 0.80",
+      "size": "6.8MP",
+      "quote": "The difference between genius and stupidity is that genius has its limits."
+    },
+    {
+      "id": "DOLL.0003",
+      "width": 2007,
+      "height": 3985,
+      "extent": "2007x3985 0.50",
+      "size": "8.0MP",
+      "quote": "The Harder You Work, The Luckier You Get"
+    },
+    {
+      "id": "DOLL.0004",
+      "width": 2317,
+      "height": 3452,
+      "extent": "2317x3452 0.67",
+      "size": "8.0MP",
+      "quote": "Teamwork Makes the Dream Work"
+    },
+    {
+      "id": "DOLL.0005",
+      "width": 2555,
+      "height": 3129,
+      "extent": "2555x3129 0.82",
+      "size": "8.0MP",
+      "quote": "OK Monday, Lets Do This"
+    },
+    {
+      "id": "DOLL.0006",
+      "width": 2584,
+      "height": 3095,
+      "extent": "2584x3095 0.83",
+      "size": "8.0MP",
+      "quote": "Do Not Decrease the Goal, Increase the Effort"
+    },
+    {
+      "id": "DOLL.0007",
+      "width": 2492,
+      "height": 3209,
+      "extent": "2492x3209 0.78",
+      "size": "8.0MP",
+      "quote": "We Didn't Lose the Game, We Just Ran Out of Time"
+    },
+    {
+      "id": "DOLL.0008",
+      "width": 2288,
+      "height": 3495,
+      "extent": "2288x3495 0.65",
+      "size": "8.0MP",
+      "quote": "The Seeds of Doubt Grow Bitter Fruit"
+    },
+    {
+      "id": "DOLL.0009",
+      "width": 2351,
+      "height": 3401,
+      "extent": "2351x3401 0.69",
+      "size": "8.0MP",
+      "quote": "Success Consists of Getting Up Just One More Time Than You Fail"
+    },
+    {
+      "id": "DOLL.0010",
+      "width": 2351,
+      "height": 3402,
+      "extent": "2351x3402 0.69",
+      "size": "8.0MP",
+      "quote": "Enjoy Life Today, Yesterday Is Gone Tomorrow"
+    },
+    {
+      "id": "DOLL.0011",
+      "width": 2600,
+      "height": 3076,
+      "extent": "2600x3076 0.85",
+      "size": "8.0MP",
+      "quote": "If Not Us Who? If Not Now When?"
+    },
+    {
+      "id": "DOLL.0012",
+      "width": 2262,
+      "height": 3535,
+      "extent": "2262x3535 0.64",
+      "size": "8.0MP",
+      "quote": "If Opportunity Does Not Knock, Build a Door"
+    },
+    {
+      "id": "DOLL.0013",
+      "width": 2519,
+      "height": 3175,
+      "extent": "2519x3175 0.79",
+      "size": "8.0MP",
+      "quote": "It Was Not Raining When Noah Built the Ark"
+    },
+    {
+      "id": "DOLL.0014",
+      "width": 2493,
+      "height": 3207,
+      "extent": "2493x3207 0.78",
+      "size": "8.0MP",
+      "quote": "What We Are is God's Gift, What We Become is Our Gift to God"
+    },
+    {
+      "id": "DOLL.0015",
+      "width": 2225,
+      "height": 3001,
+      "extent": "2225x3001 0.74",
+      "size": "6.7MP",
+      "quote": "The Best Way to Predict the Future is To Invent It"
+    },
+    {
+      "id": "DOLL.0016",
+      "width": 2055,
+      "height": 3892,
+      "extent": "2055x3892 0.53",
+      "size": "8.0MP",
+      "quote": "Failure is the Condiment Which Gives Success Its Flavor"
+    },
+    {
+      "id": "DOLL.0017",
+      "width": 2480,
+      "height": 3225,
+      "extent": "2480x3225 0.77",
+      "size": "8.0MP",
+      "quote": "I can Resist Everything Except Temptation"
+    },
+    {
+      "id": "DOLL.0018",
+      "width": 2033,
+      "height": 3933,
+      "extent": "2033x3933 0.52",
+      "size": "8.0MP",
+      "quote": "What's Another Word For Thesaurus"
+    },
+    {
+      "id": "DOLL.0019",
+      "width": 1840,
+      "height": 3000,
+      "extent": "1840x3000 0.61",
+      "size": "5.5MP",
+      "quote": "It Is During the Darkest Moments That We Must Focus To See the Light"
+    },
+    {
+      "id": "DOLL.0020",
+      "width": 2713,
+      "height": 2948,
+      "extent": "2713x2948 0.92",
+      "size": "8.0MP",
+      "quote": "Winners Never Quit, Quitters Never Win"
+    },
+    {
+      "id": "DOLL.0021",
+      "width": 2345,
+      "height": 3410,
+      "extent": "2345x3410 0.69",
+      "size": "8.0MP",
+      "quote": "If Two Wrongs Don't Make a Right, Try Three"
+    },
+    {
+      "id": "DOLL.0022",
+      "width": 2131,
+      "height": 3753,
+      "extent": "2131x3753 0.57",
+      "size": "8.0MP",
+      "quote": "Try Being Informed Instead of Being Opinionated"
+    },
+    {
+      "id": "DOLL.0023",
+      "width": 1444,
+      "height": 3000,
+      "extent": "1444x3000 0.48",
+      "size": "4.3MP",
+      "quote": "I Refuse to Join Any Club That Would Have Me As a Member"
+    },
+    {
+      "id": "DOLL.0024",
+      "width": 2400,
+      "height": 3332,
+      "extent": "2400x3332 0.72",
+      "size": "8.0MP",
+      "quote": "Life is A Series of Commas, Not Periods"
+    },
+    {
+      "id": "DOLL.0025",
+      "width": 1608,
+      "height": 3000,
+      "extent": "1608x3000 0.54",
+      "size": "4.8MP",
+      "quote": "My Fake Plants Died Because I Did Not Pretend to Water Them"
+    },
+    {
+      "id": "DOLL.0026",
+      "width": 2453,
+      "height": 3000,
+      "extent": "2453x3000 0.82",
+      "size": "7.4MP",
+      "quote": "Life is What Happens When You Are Busy Making Other Plans"
+    },
+    {
+      "id": "DOLL.0027",
+      "width": 2345,
+      "height": 3411,
+      "extent": "2345x3411 0.69",
+      "size": "8.0MP",
+      "quote": "We are a Conclave of Geniuses, Knows as the Intelligencia"
+    },
+    {
+      "id": "DOLL.0028",
+      "width": 2325,
+      "height": 3439,
+      "extent": "2325x3439 0.68",
+      "size": "8.0MP",
+      "quote": "Believe You Can and You are Half Way There"
+    },
+    {
+      "id": "DOLL.0029",
+      "width": 2333,
+      "height": 3000,
+      "extent": "2333x3000 0.78",
+      "size": "7.0MP",
+      "quote": "If you Think You Can Or Think You Can't, Either Way Your Right"
+    },
+    {
+      "id": "DOLL.0030",
+      "width": 2346,
+      "height": 3409,
+      "extent": "2346x3409 0.69",
+      "size": "8.0MP",
+      "quote": "The Road to Success and The Road To Failure Are Exactly the Same"
+    },
+    {
+      "id": "DOLL.0031",
+      "width": 2562,
+      "height": 3121,
+      "extent": "2562x3121 0.82",
+      "size": "8.0MP",
+      "quote": "The Secret of Getting Ahead Is Getting Started"
+    },
+    {
+      "id": "DOLL.0032",
+      "width": 2209,
+      "height": 3621,
+      "extent": "2209x3621 0.61",
+      "size": "8.0MP",
+      "quote": "What Does Not Kill You Makes You Stronger"
+    },
+    {
+      "id": "DOLL.0033",
+      "width": 1462,
+      "height": 2848,
+      "extent": "1462x2848 0.51",
+      "size": "4.2MP",
+      "quote": "The Harder the Conflict the More Glorious the Triumph"
+    },
+    {
+      "id": "DOLL.0034",
+      "width": 1985,
+      "height": 2920,
+      "extent": "1985x2920 0.68",
+      "size": "5.8MP",
+      "quote": "Don't Spend Time Beating On a Wall Hoping To Tranform It Into A Door"
+    },
+    {
+      "id": "DOLL.0035",
+      "width": 1823,
+      "height": 2926,
+      "extent": "1823x2926 0.62",
+      "size": "5.3MP",
+      "quote": "I May Not Be There Yet but I'm Closer Than I Was Yesterday"
+    },
+    {
+      "id": "DOLL.0036",
+      "width": 1898,
+      "height": 2928,
+      "extent": "1898x2928 0.65",
+      "size": "5.6MP",
+      "quote": "Do What You Love, Love What You Do"
+    },
+    {
+      "id": "DOLL.0037",
+      "width": 2489,
+      "height": 3214,
+      "extent": "2489x3214 0.77",
+      "size": "8.0MP",
+      "quote": "The Pessimist Sees Difficulty In Every Opportunity The Optimist Sees Opportunity In Every Difficulty"
+    },
+    {
+      "id": "DOLL.0038",
+      "width": 2369,
+      "height": 3376,
+      "extent": "2369x3376 0.70",
+      "size": "8.0MP",
+      "quote": "If Your Going Through Hell Keep Going"
+    },
+    {
+      "id": "DOLL.0039",
+      "width": 2363,
+      "height": 3384,
+      "extent": "2363x3384 0.70",
+      "size": "8.0MP",
+      "quote": "Open Your Mind Before Your Mouth"
+    },
+    {
+      "id": "DOLL.0040",
+      "width": 1936,
+      "height": 2974,
+      "extent": "1936x2974 0.65",
+      "size": "5.8MP",
+      "quote": "If You Can Dream It You Can Do It"
+    },
+    {
+      "id": "DOLL.0041",
+      "width": 2298,
+      "height": 3480,
+      "extent": "2298x3480 0.66",
+      "size": "8.0MP",
+      "quote": "Creativity Is Intelligence Having Fun"
+    },
+    {
+      "id": "DOLL.0042",
+      "width": 2305,
+      "height": 3470,
+      "extent": "2305x3470 0.66",
+      "size": "8.0MP",
+      "quote": "Fake It Until You Make It"
+    },
+    {
+      "id": "DOLL.0043",
+      "width": 2441,
+      "height": 3276,
+      "extent": "2441x3276 0.75",
+      "size": "8.0MP",
+      "quote": "The Secret of Getting Ahead is Getting Started"
+    },
+    {
+      "id": "DOLL.0044",
+      "width": 2307,
+      "height": 3467,
+      "extent": "2307x3467 0.67",
+      "size": "8.0MP",
+      "quote": "The Best Way to Keep One's Word is Not to Give It"
+    },
+    {
+      "id": "DOLL.0045",
+      "width": 2335,
+      "height": 3425,
+      "extent": "2335x3425 0.68",
+      "size": "8.0MP",
+      "quote": "Learn to Say 'No' to the Good so You can Say 'Yes' to the Best"
+    },
+    {
+      "id": "DOLL.0046",
+      "width": 2360,
+      "height": 3388,
+      "extent": "2360x3388 0.70",
+      "size": "8.0MP",
+      "quote": "The Best Way to Hold a Man is in Your Arms"
+    },
+    {
+      "id": "DOLL.0047",
+      "width": 2104,
+      "height": 3254,
+      "extent": "2104x3254 0.65",
+      "size": "6.8MP",
+      "quote": "The Best Question is Not What is Best, but Who Shall Decide What is Best"
+    },
+    {
+      "id": "DOLL.0048",
+      "width": 2470,
+      "height": 3238,
+      "extent": "2470x3238 0.76",
+      "size": "8.0MP",
+      "quote": "Only a Mediocre Person is Always at His Best"
+    },
+    {
+      "id": "DOLL.0049",
+      "width": 1391,
+      "height": 2180,
+      "extent": "1391x2180 0.64",
+      "size": "3.0MP",
+      "quote": "We've Been Gone Five Years and the Best they Could Come up With was Boy Bands?"
+    },
+    {
+      "id": "DOLL.0050",
+      "width": 1873,
+      "height": 2444,
+      "extent": "1873x2444 0.77",
+      "size": "4.6MP",
+      "quote": "No Man has a Good Enough Memory to be a Successful Liar"
+    },
+    {
+      "id": "DOLL.0051",
+      "width": 2528,
+      "height": 3163,
+      "extent": "2528x3163 0.80",
+      "size": "8.0MP",
+      "quote": "Get Your Facts First, then you can Distort Them as You Please"
+    },
+    {
+      "id": "DOLL.0052",
+      "width": 2504,
+      "height": 3040,
+      "extent": "2504x3040 0.82",
+      "size": "7.6MP",
+      "quote": "All Generalizations are False, Including This One"
+    },
+    {
+      "id": "DOLL.0053",
+      "width": 1769,
+      "height": 2268,
+      "extent": "1769x2268 0.78",
+      "size": "4.0MP",
+      "quote": "Between Two Evils, I Always Pick the One I Never Tried Before"
+    },
+    {
+      "id": "DOLL.0054",
+      "width": 1583,
+      "height": 2420,
+      "extent": "1583x2420 0.65",
+      "size": "3.8MP",
+      "quote": "I No Doubt Deserved my Enemies, but I don't Believe I Deserved My Friends"
+    },
+    {
+      "id": "DOLL.0055",
+      "width": 2470,
+      "height": 3238,
+      "extent": "2470x3238 0.76",
+      "size": "8.0MP",
+      "quote": "Food Is an Important Part of a Balanced Diet"
+    },
+    {
+      "id": "DOLL.0056",
+      "width": 2504,
+      "height": 3040,
+      "extent": "2504x3040 0.82",
+      "size": "7.6MP",
+      "quote": "Housework Can't Kill You, but Why Take a Chance?"
+    }
+  ]
+}

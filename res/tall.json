@@ -1,0 +1,18 @@
+{  
+    "template": "TALL",  
+    "title": "High-resolution",  
+    "data": 
+    [    
+        { 
+            "name": "",
+            "title": "",
+            "describe": "",
+            "copyright": "",
+            "full": "res/tall.jpg",
+            "width": 0, 
+            "height": 0, 
+            "quality": 0, 
+            "row": 50 
+        }
+    ]
+}

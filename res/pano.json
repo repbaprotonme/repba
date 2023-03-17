@@ -1,0 +1,609 @@
+{
+  "title": "Repba Gallery",
+  "template": "wide",
+  "data": [
+    {
+      "id": "PANO.0000",
+      "index": "1 of 67",
+      "width": 5223,
+      "height": 1722,
+      "extent": "5223x1722 3.03",
+      "size": "9.0MP",
+      "quote": "Those who dance are considered mad by those who can't hear the music."
+    },
+    {
+      "id": "PANO.0001",
+      "index": "2 of 67",
+      "width": 5182,
+      "height": 1736,
+      "extent": "5182x1736 2.99",
+      "size": "9.0MP",
+      "quote": "May God have mercy on my enemies, cause I will not."
+    },
+    {
+      "id": "PANO.0002",
+      "index": "3 of 67",
+      "width": 4869,
+      "height": 1848,
+      "extent": "4869x1848 2.63",
+      "size": "9.0MP",
+      "quote": "The difference between genius and stupidity is that genius has its limits."
+    },
+    {
+      "id": "PANO.0003",
+      "index": "4 of 67",
+      "width": 4733,
+      "height": 1901,
+      "extent": "4733x1901 2.49",
+      "size": "9.0MP",
+      "quote": "The Harder You Work, The Luckier You Get"
+    },
+    {
+      "id": "PANO.0004",
+      "index": "5 of 67",
+      "width": 4603,
+      "height": 1954,
+      "extent": "4603x1954 2.36",
+      "size": "9.0MP",
+      "quote": "Teamwork Makes the Dream Work"
+    },
+    {
+      "id": "PANO.0005",
+      "index": "6 of 67",
+      "width": 4622,
+      "height": 1947,
+      "extent": "4622x1947 2.37",
+      "size": "9.0MP",
+      "quote": "OK Monday, Lets Do This"
+    },
+    {
+      "id": "PANO.0006",
+      "index": "7 of 67",
+      "width": 4567,
+      "height": 1970,
+      "extent": "4567x1970 2.32",
+      "size": "9.0MP",
+      "quote": "Do Not Decrease the Goal, Increase the Effort"
+    },
+    {
+      "id": "PANO.0007",
+      "index": "8 of 67",
+      "width": 4607,
+      "height": 1953,
+      "extent": "4607x1953 2.36",
+      "size": "9.0MP",
+      "quote": "We Didn't Lose the Game, We Just Ran Out of Time"
+    },
+    {
+      "id": "PANO.0008",
+      "index": "9 of 67",
+      "width": 4759,
+      "height": 1890,
+      "extent": "4759x1890 2.52",
+      "size": "9.0MP",
+      "quote": "The Seeds of Doubt Grow Bitter Fruit"
+    },
+    {
+      "id": "PANO.0009",
+      "index": "10 of 67",
+      "width": 4810,
+      "height": 1870,
+      "extent": "4810x1870 2.57",
+      "size": "9.0MP",
+      "quote": "Success Consists of Getting Up Just One More Time Than You Fail"
+    },
+    {
+      "id": "PANO.0010",
+      "index": "11 of 67",
+      "width": 4601,
+      "height": 1955,
+      "extent": "4601x1955 2.35",
+      "size": "9.0MP",
+      "quote": "Enjoy Life Today, Yesterday Is Gone Tomorrow"
+    },
+    {
+      "id": "PANO.0011",
+      "index": "12 of 67",
+      "width": 4964,
+      "height": 1812,
+      "extent": "4964x1812 2.74",
+      "size": "9.0MP",
+      "quote": "If Not Us Who? If Not Now When?"
+    },
+    {
+      "id": "PANO.0012",
+      "index": "13 of 67",
+      "width": 5080,
+      "height": 1771,
+      "extent": "5080x1771 2.87",
+      "size": "9.0MP",
+      "quote": "If Opportunity Does Not Knock, Build a Door"
+    },
+    {
+      "id": "PANO.0013",
+      "index": "14 of 67",
+      "width": 4451,
+      "height": 2021,
+      "extent": "4451x2021 2.20",
+      "size": "9.0MP",
+      "quote": "It Was Not Raining When Noah Built the Ark"
+    },
+    {
+      "id": "PANO.0014",
+      "index": "15 of 67",
+      "width": 4919,
+      "height": 1626,
+      "extent": "4919x1626 3.03",
+      "size": "8.0MP",
+      "quote": "What We Are is God's Gift, What We Become is Our Gift to God"
+    },
+    {
+      "id": "PANO.0015",
+      "index": "16 of 67",
+      "width": 4488,
+      "height": 1782,
+      "extent": "4488x1782 2.52",
+      "size": "8.0MP",
+      "quote": "The Best Way to Predict the Future is To Invent It"
+    },
+    {
+      "id": "PANO.0016",
+      "index": "17 of 67",
+      "width": 4725,
+      "height": 1692,
+      "extent": "4725x1692 2.79",
+      "size": "8.0MP",
+      "quote": "Failure is the Condiment Which Gives Success Its Flavor"
+    },
+    {
+      "id": "PANO.0017",
+      "index": "18 of 67",
+      "width": 4377,
+      "height": 1827,
+      "extent": "4377x1827 2.40",
+      "size": "8.0MP",
+      "quote": "I can Resist Everything Except Temptation"
+    },
+    {
+      "id": "PANO.0018",
+      "index": "19 of 67",
+      "width": 4663,
+      "height": 1715,
+      "extent": "4663x1715 2.72",
+      "size": "8.0MP",
+      "quote": "What's Another Word For Thesaurus"
+    },
+    {
+      "id": "PANO.0019",
+      "index": "20 of 67",
+      "width": 4858,
+      "height": 1646,
+      "extent": "4858x1646 2.95",
+      "size": "8.0MP",
+      "quote": "It Is During the Darkest Moments That We Must Focus To See the Light"
+    },
+    {
+      "id": "PANO.0020",
+      "index": "21 of 67",
+      "width": 4254,
+      "height": 1880,
+      "extent": "4254x1880 2.26",
+      "size": "8.0MP",
+      "quote": "Winners Never Quit, Quitters Never Win"
+    },
+    {
+      "id": "PANO.0021",
+      "index": "22 of 67",
+      "width": 4246,
+      "height": 1884,
+      "extent": "4246x1884 2.25",
+      "size": "8.0MP",
+      "quote": "If Two Wrongs Don't Make a Right, Try Three"
+    },
+    {
+      "id": "PANO.0022",
+      "index": "23 of 67",
+      "width": 4599,
+      "height": 1739,
+      "extent": "4599x1739 2.64",
+      "size": "8.0MP",
+      "quote": "Try Being Informed Instead of Being Opinionated"
+    },
+    {
+      "id": "PANO.0023",
+      "index": "24 of 67",
+      "width": 4381,
+      "height": 1825,
+      "extent": "4381x1825 2.40",
+      "size": "8.0MP",
+      "quote": "I Refuse to Join Any Club That Would Have Me As a Member"
+    },
+    {
+      "id": "PANO.0024",
+      "index": "25 of 67",
+      "width": 4590,
+      "height": 1742,
+      "extent": "4590x1742 2.63",
+      "size": "8.0MP",
+      "quote": "Life is A Series of Commas, Not Periods"
+    },
+    {
+      "id": "PANO.0025",
+      "index": "26 of 67",
+      "width": 4851,
+      "height": 1648,
+      "extent": "4851x1648 2.94",
+      "size": "8.0MP",
+      "quote": "My Fake Plants Died Because I Did Not Pretend to Water Them"
+    },
+    {
+      "id": "PANO.0026",
+      "index": "27 of 67",
+      "width": 4927,
+      "height": 1623,
+      "extent": "4927x1623 3.04",
+      "size": "8.0MP",
+      "quote": "Life is What Happens When You Are Busy Making Other Plans"
+    },
+    {
+      "id": "PANO.0027",
+      "index": "28 of 67",
+      "width": 4880,
+      "height": 1639,
+      "extent": "4880x1639 2.98",
+      "size": "8.0MP",
+      "quote": "We are a Conclave of Geniuses, Knows as the Intelligencia"
+    },
+    {
+      "id": "PANO.0028",
+      "index": "29 of 67",
+      "width": 4716,
+      "height": 1696,
+      "extent": "4716x1696 2.78",
+      "size": "8.0MP",
+      "quote": "Believe You Can and You are Half Way There"
+    },
+    {
+      "id": "PANO.0029",
+      "index": "30 of 67",
+      "width": 4473,
+      "height": 1788,
+      "extent": "4473x1788 2.50",
+      "size": "8.0MP",
+      "quote": "If you Think You Can Or Think You Can't, Either Way Your Right"
+    },
+    {
+      "id": "PANO.0030",
+      "index": "31 of 67",
+      "width": 4647,
+      "height": 1721,
+      "extent": "4647x1721 2.70",
+      "size": "8.0MP",
+      "quote": "The Road to Success and The Road To Failure Are Exactly the Same"
+    },
+    {
+      "id": "PANO.0031",
+      "index": "32 of 67",
+      "width": 4552,
+      "height": 1757,
+      "extent": "4552x1757 2.59",
+      "size": "8.0MP",
+      "quote": "The Secret of Getting Ahead Is Getting Started"
+    },
+    {
+      "id": "PANO.0032",
+      "index": "33 of 67",
+      "width": 4776,
+      "height": 1674,
+      "extent": "4776x1674 2.85",
+      "size": "8.0MP",
+      "quote": "What Does Not Kill You Makes You Stronger"
+    },
+    {
+      "id": "PANO.0033",
+      "index": "34 of 67",
+      "width": 5826,
+      "height": 2059,
+      "extent": "5826x2059 2.83",
+      "size": "12.0MP",
+      "quote": "The Harder the Conflict the More Glorious the Triumph"
+    },
+    {
+      "id": "PANO.0034",
+      "index": "35 of 67",
+      "width": 5575,
+      "height": 2152,
+      "extent": "5575x2152 2.59",
+      "size": "12.0MP",
+      "quote": "Don't Spend Time Beating On a Wall Hoping To Tranform It Into A Door"
+    },
+    {
+      "id": "PANO.0035",
+      "index": "36 of 67",
+      "width": 5296,
+      "height": 2265,
+      "extent": "5296x2265 2.34",
+      "size": "12.0MP",
+      "quote": "I May Not Be There Yet but I'm Closer Than I Was Yesterday"
+    },
+    {
+      "id": "PANO.0036",
+      "index": "37 of 67",
+      "width": 5492,
+      "height": 2184,
+      "extent": "5492x2184 2.51",
+      "size": "12.0MP",
+      "quote": "Do What You Love, Love What You Do"
+    },
+    {
+      "id": "PANO.0037",
+      "index": "38 of 67",
+      "width": 5547,
+      "height": 2162,
+      "extent": "5547x2162 2.57",
+      "size": "12.0MP",
+      "quote": "The Pessimist Sees Difficulty In Every Opportunity The Optimist Sees Opportunity In Every Difficulty"
+    },
+    {
+      "id": "PANO.0038",
+      "index": "39 of 67",
+      "width": 5368,
+      "height": 2235,
+      "extent": "5368x2235 2.40",
+      "size": "12.0MP",
+      "quote": "If Your Going Through Hell Keep Going"
+    },
+    {
+      "id": "PANO.0039",
+      "index": "40 of 67",
+      "width": 5373,
+      "height": 2233,
+      "extent": "5373x2233 2.41",
+      "size": "12.0MP",
+      "quote": "Open Your Mind Before Your Mouth"
+    },
+    {
+      "id": "PANO.0040",
+      "index": "41 of 67",
+      "width": 5757,
+      "height": 2084,
+      "extent": "5757x2084 2.76",
+      "size": "12.0MP",
+      "quote": "If You Can Dream It You Can Do It"
+    },
+    {
+      "id": "PANO.0041",
+      "index": "42 of 67",
+      "width": 5647,
+      "height": 2124,
+      "extent": "5647x2124 2.66",
+      "size": "12.0MP",
+      "quote": "Creativity Is Intelligence Having Fun"
+    },
+    {
+      "id": "PANO.0042",
+      "index": "43 of 67",
+      "width": 4799,
+      "height": 1666,
+      "extent": "4799x1666 2.88",
+      "size": "8.0MP",
+      "quote": "Fake It Until You Make It"
+    },
+    {
+      "id": "PANO.0043",
+      "index": "44 of 67",
+      "width": 4949,
+      "height": 1616,
+      "extent": "4949x1616 3.06",
+      "size": "8.0MP",
+      "quote": "The Secret of Getting Ahead is Getting Started"
+    },
+    {
+      "id": "PANO.0045",
+      "index": "45 of 67",
+      "width": 4667,
+      "height": 1713,
+      "extent": "4667x1713 2.72",
+      "size": "8.0MP",
+      "quote": "The Best Way to Keep One's Word is Not to Give It"
+    },
+    {
+      "id": "PANO.0046",
+      "index": "46 of 67",
+      "width": 4596,
+      "height": 1740,
+      "extent": "4596x1740 2.64",
+      "size": "8.0MP",
+      "quote": "Learn to Say 'No' to the Good so You can Say 'Yes' to the Best"
+    },
+    {
+      "id": "PANO.0047",
+      "index": "47 of 67",
+      "width": 4276,
+      "height": 1870,
+      "extent": "4276x1870 2.29",
+      "size": "8.0MP",
+      "quote": "The Best Way to Hold a Man is in Your Arms"
+    },
+    {
+      "id": "PANO.0048",
+      "index": "48 of 67",
+      "width": 4616,
+      "height": 1732,
+      "extent": "4616x1732 2.67",
+      "size": "8.0MP",
+      "quote": "The Best Question is Not What is Best, but Who Shall Decide What is Best"
+    },
+    {
+      "id": "PANO.0049",
+      "index": "49 of 67",
+      "width": 4510,
+      "height": 1773,
+      "extent": "4510x1773 2.54",
+      "size": "8.0MP",
+      "quote": "Only a Mediocre Person is Always at His Best"
+    },
+    {
+      "id": "PANO.0050",
+      "index": "50 of 67",
+      "width": 4723,
+      "height": 1693,
+      "extent": "4723x1693 2.79",
+      "size": "8.0MP",
+      "quote": "We've Been Gone Five Years and the Best they Could Come up With was Boy Bands?"
+    },
+    {
+      "id": "PANO.0051",
+      "index": "51 of 67",
+      "width": 4531,
+      "height": 1765,
+      "extent": "4531x1765 2.57",
+      "size": "8.0MP",
+      "quote": "No Man has a Good Enough Memory to be a Successful Liar"
+    },
+    {
+      "id": "PANO.0052",
+      "index": "52 of 67",
+      "width": 4830,
+      "height": 1656,
+      "extent": "4830x1656 2.92",
+      "size": "8.0MP",
+      "quote": "Get Your Facts First, then you can Distort Them as You Please"
+    },
+    {
+      "id": "PANO.0053",
+      "index": "53 of 67",
+      "width": 4719,
+      "height": 1695,
+      "extent": "4719x1695 2.78",
+      "size": "8.0MP",
+      "quote": "All Generalizations are False, Including This One"
+    },
+    {
+      "id": "PANO.0054",
+      "index": "54 of 67",
+      "width": 4253,
+      "height": 1880,
+      "extent": "4253x1880 2.26",
+      "size": "8.0MP",
+      "quote": "Between Two Evils, I Always Pick the One I Never Tried Before"
+    },
+    {
+      "id": "PANO.0055",
+      "index": "55 of 67",
+      "width": 4653,
+      "height": 1718,
+      "extent": "4653x1718 2.71",
+      "size": "8.0MP",
+      "quote": "I No Doubt Deserved my Enemies, but I don't Believe I Deserved My Friends"
+    },
+    {
+      "id": "PANO.0056",
+      "index": "56 of 67",
+      "width": 4653,
+      "height": 1718,
+      "extent": "4653x1718 2.71",
+      "size": "8.0MP",
+      "quote": "Food Is an Important Part of a Balanced Diet"
+    },
+    {
+      "id": "PANO.0057",
+      "index": "57 of 67",
+      "width": 3496,
+      "height": 1223,
+      "extent": "3496x1223 2.86",
+      "size": "4.3MP",
+      "quote": "Housework Can't Kill You, but Why Take a Chance?"
+    },
+    {
+      "id": "PANO.0058",
+      "index": "58 of 67",
+      "width": 4663,
+      "height": 1715,
+      "extent": "4663x1715 2.72",
+      "size": "8.0MP",
+      "quote": "There Are Lots of People who Mistake their Imagination for Their Memory"
+    },
+    {
+      "id": "PANO.0059",
+      "index": "59 of 67",
+      "width": 4646,
+      "height": 1721,
+      "extent": "4646x1721 2.70",
+      "size": "8.0MP",
+      "quote": "The Reports of My Death Have Been Greatly Exaggerated"
+    },
+    {
+      "id": "PANO.0060",
+      "index": "60 of 67",
+      "width": 4723,
+      "height": 1693,
+      "extent": "4723x1693 2.79",
+      "size": "8.0MP",
+      "quote": "Before I Refuse to Take Your Questions, I Have an Opening Statement"
+    },
+    {
+      "id": "PANO.0061",
+      "index": "61 of 67",
+      "width": 3752,
+      "height": 1599,
+      "extent": "3752x1599 2.35",
+      "size": "6.0MP",
+      "quote": "A Government That Robs Peter to Pay Paul Can Always Depend on the Support of Paul"
+    },
+    {
+      "id": "PANO.0062",
+      "index": "62 of 67",
+      "width": 3792,
+      "height": 1270,
+      "extent": "3792x1270 2.99",
+      "size": "4.8MP",
+      "quote": "I Have had a Perfectly Wonderful Evening, but this Wasn't It"
+    },
+    {
+      "id": "PANO.0063",
+      "index": "63 of 67",
+      "width": 3639,
+      "height": 1648,
+      "extent": "3639x1648 2.21",
+      "size": "6.0MP",
+      "quote": "As For Our Majority... One is Enough"
+    },
+    {
+      "id": "PANO.0064",
+      "index": "64 of 67",
+      "width": 3508,
+      "height": 1197,
+      "extent": "3508x1197 2.93",
+      "size": "4.2MP",
+      "quote": "I Failed to Make the Chess Team Because of My Height"
+    },
+    {
+      "id": "PANO.0065",
+      "index": "65 of 67",
+      "width": 5317,
+      "height": 1692,
+      "extent": "5317x1692 3.14",
+      "size": "9.0MP",
+      "quote": "You Can Always Tell When a Man's Well Informed - His Views are Pretty Much Like Your Own"
+    },
+    {
+      "id": "PANO.0066",
+      "index": "66 of 67",
+      "width": 3508,
+      "height": 1185,
+      "extent": "3508x1185 2.96",
+      "size": "4.2MP",
+      "quote": "It's Simple, If It Jiggles, It's Fat"
+    },
+    {
+      "id": "PANO.0067",
+      "index": "67 of 67",
+      "width": 4914,
+      "height": 1831,
+      "extent": "4914x1831 2.68",
+      "size": "9.0MP",
+      "quote": "Yield to Temptation - It May Not Pass Your Way Again"
+    }
+  ]
+}
