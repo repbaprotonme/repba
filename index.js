@@ -1284,17 +1284,6 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
         delete _4cnvctx.thumbcanvas;
         delete photo.image;
         _4cnvctx.setcolumncomplete = 0;
-
-        imageslst.rotate(j);
-        if (url.page != imageslst.getcurrent().page)
-        {
-            url.page = imageslst.getcurrent().page;
-            headobj.enabled = 0;
-            galleryobj.set(imageslst.getcurrent().image);
-            window.location.href = addressobj.full();
-            return;
-        }
-
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         contextobj.reset();
         addressobj.update();
@@ -2426,7 +2415,7 @@ var keylst =
             context.timeobj.rotate(-k);
             context.refresh()
         }
-        else if (evt.key == "Pageup" || evt.key == "o")
+        else if (evt.key == "Enter" || evt.key == "Pageup" || evt.key == "o")
         {
             var k = (60/context.virtualheight)*context.timeobj.length();
             context.timeobj.rotate(-k);
@@ -3576,8 +3565,7 @@ var bodylst =
             }
             else
             {
-                var j = imageslst.current()+1;
-                j += " of " + (galleryobj.total?galleryobj.total:galleryobj.length());
+                var j = galleryobj.getcurrent().index;
             }
 
             a.draw(context, rect, [0,j,0], 0);
@@ -3709,7 +3697,6 @@ else if (url.searchParams.has("pixabay"))
 }
 
 var galleryobj = new Data("", 0);
-var imageslst = new Data("", 0);
 
 fetch(path)
   .then(function (response)
@@ -3725,23 +3712,7 @@ fetch(path)
         letchobj.split(60, "40-90", letchobj.length());
         speedyobj.split(1.25, "1-20", speedyobj.length());
 
-        galleryobj.total = galleryobj.total?galleryobj.total:galleryobj.length();
-        galleryobj.pages = (galleryobj.per_page && galleryobj.total) ? Math.ceil(galleryobj.total / galleryobj.per_page) : 1;
-        galleryobj.per_page = galleryobj.per_page ? galleryobj.per_page : galleryobj.data.length;
         galleryobj.set(url.project);
-
-        var lst = [];
-        for (var n = 0; n < galleryobj.total; ++n)
-        {
-            var k = {};
-            k.page = Math.floor(n / galleryobj.per_page)+1;
-            k.image = n % galleryobj.per_page;
-            lst.push(k);
-        }
-
-       imageslst.data = lst;
-       var e = (url.page-1)*_8cnvctx.sliceobj.length() + galleryobj.current() + (url.page-1)*galleryobj.per_page;
-        imageslst.set(e);
 
       function getslices()
       {
@@ -3783,8 +3754,7 @@ fetch(path)
         slices.data = [];
         for (var n = 0; n < galleryobj.pages; ++n)
         {
-            var k = `${n*galleryobj.per_page+1} - ${(n+1)*galleryobj.per_page}`;
-            slices.data.push({page: n, title:`Page ${n+1}`, title1: k, path: "OPEN", func: function()
+            slices.data.push({page: n, title:`Page ${n+1}`, title1: "", path: "OPEN", func: function()
             {
                 url.page = this.page+1;
                 window.location.href = addressobj.full(true);

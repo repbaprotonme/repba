@@ -5,7 +5,6 @@ export default
         var per_page = 100;
         var data = [];
         const url = new URL(request.url);
-        var page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) :1;
 
         const init =
         {
@@ -17,25 +16,32 @@ export default
           },
         };
 
-        var response = await fetch(`https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1?per_page=${per_page}&page=${page}`, init);
-        var json = await response.json();
-        var images = json.result.images;
-         for (var n = 0; n < images.length; ++n)
+        for (var page = 1; page <= 10; ++page)
         {
-            var k = images[n];
-            var j = {};
-            j.id = k.id;
-            j.photographer = "";
-            j.photographer_url = "";
-            j.photographer_id = "";
-            data.push(j);
+            var response = await fetch(`https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1?per_page=${per_page}&page=${page}`, init);
+            var json = await response.json();
+            if (!json || !json.result || !json.result.images || !json.result.images.length)
+                break;
+            var images = json.result.images;
+            for (var n = 0; n < images.length; ++n)
+            {
+                var k = images[n];
+                var j = {};
+                j.id = k.id;
+                data.push(j);
+            }
         }
 
+        for (var n = 0; n < data.length; ++n)
+        {
+            var k = data[n];
+            k.index = `${n+1} of ${data.length}`;
+        }
 
         var g = {}
         g.title = `reportbase.com`;
         g.title1 = `Sidney`;
-        g.total = 4000;
+        g.total = data.length;
         g.per_page = per_page;
         g.data = data;
 
