@@ -576,21 +576,30 @@ function drawslices()
             context.restore();
         }
 
-        var rect = context.rect();
-        var a = new ColA([11,0,11],
-        [
-            new CurrentVPanel(new Fill("white"), 90, 1),
-            0,
-            new CurrentVPanel(new Fill("white"), 90, 1),
-        ]);
+        if (context.index == 7)
+        {
+            var rect = context.rect();
+            var a = new ColA([11,0,11],
+            [
+                new CurrentVPanel(new Fill("white"), 90, 0),
+                0,
+                new CurrentVPanel(new Fill("white"), 90, 1),
+            ]);
 
-        a.draw(context, rect,
-        [
-            context.scrollobj,
-            0,
-            context.timeobj
-        ],
-        0);
+            a.draw(context, rect,
+            [
+                context.scrollobj,
+                0,
+                context.timeobj
+            ],
+            0);
+        }
+        else
+        {
+            var rect = context.rect();
+            var a = new CurrentVPanel(new Fill("white"), 90, 1);
+            a.draw(context, new rectangle(rect.width-MENUBARWIDTH,0,11,rect.height), context.timeobj, 0);
+        }
     }
 }
 
@@ -1792,7 +1801,7 @@ var pinchlst =
         if (context.isthumbrect)
             context.obj = heightobj.getcurrent();
         else
-            context.obj = globalobj.stretch ? stretchobj.getcurrent() : zoomobj.getcurrent();
+            context.obj = headobj.enabled ? stretchobj.getcurrent() : zoomobj.getcurrent();
         context.savepinch = context.obj.getcurrent()
     },
     pinchend: function (context)
@@ -1980,7 +1989,8 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
     {
-        context.leftside = x < MENUPANWIDTH;
+        if (context.scrollobj)
+            context.leftside = x < MENUPANWIDTH;
         context.rightside = x > rect.width-MENUPANWIDTH;
         context.starty = y;
         context.startt = context.timeobj.current();
@@ -1990,8 +2000,11 @@ var panlst =
         delete context.starty;
         delete context.startt;
         delete context.timeobj.offset;
-        delete context.scrollxobj.offset;
-        delete context.scrollyobj.offset;
+        if (context.scrollobj)
+        {
+            delete context.scrollxobj.offset;
+            delete context.scrollyobj.offset;
+        }
     }
 },
 {
@@ -2343,9 +2356,16 @@ var presslst =
     {
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
+        {
             context.pressed = 1;
+        }
         else
-            globalobj.stretch = globalobj.stretch ? 0 : 1;
+        {
+            _4cnvctx.tapping = 0;
+            _4cnvctx.isthumbrect = 0;
+            headobj.enabled = headobj.enabled?0:1;
+            pageresize();
+        }
 
         context.refresh();
     }
