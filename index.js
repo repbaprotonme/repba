@@ -27,7 +27,7 @@ const TIMEOBJ = 3926;
 const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(255,175,0,0.75)";
 const MENUTAP = "rgba(255,0,0,0.75)";
-const SCROLLNAB = "rgba(0,0,0,0.35)";
+const SCROLLNAB = "rgba(0,0,0,0.4)";
 const HEADBACK = "rgba(0,0,0,0.20)";
 const MENUCOLOR = "rgba(0,0,0,0.40)";
 const BUTTONBACK = "rgba(0,0,0,0.25)";
@@ -51,7 +51,7 @@ function numberRange (start, end) {return new Array(end - start).fill().map((d, 
 
 let url = new URL(window.location.href);
 url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 1;
-url.pixabay = url.searchParams.has("pixabay") ? url.searchParams.get("pixabay") : "";
+url.time = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : TIMEOBJ/2;
 
 Math.clamp = function (min, max, val)
 {
@@ -469,38 +469,13 @@ function drawslices()
 
         context.restore();
         delete context.selectrect;
-        delete context.moveprev;
-        delete context.movenext;
         delete context.ignores;
-        delete context.menudown;
         delete context.thumbrect;
-        delete context.zoomctrl;
         delete context.slicectrl;
-        delete context.fullpanel;
-        delete context.downpanel;
-        delete context.footpanel;
-        delete context.openpanel;
-        delete context.infopanel;
 
         if (context.setcolumncomplete)
         {
-            if (headobj.enabled)
-                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            if (bodyobj.enabled)
-            {
-                bodyobj.set(bodyobj.enabled)
-            }
-            else if (!headobj.enabled)
-            {
-                thumbobj.getcurrent().draw(context, rect, 0, 0);
-                bodyobj.set(1)
-            }
-            else
-            {
-                bodyobj.set(3)
-            }
-
-            bodyobj.getcurrent().draw(context, rect, galleryobj.getcurrent(), 0);
+            thumbobj.getcurrent().draw(context, rect, 0, 0);
         }
 
         context.setcolumncomplete = 1;
@@ -579,7 +554,7 @@ function drawslices()
         if (context.index == 7)
         {
             var rect = context.rect();
-            var a = new ColA([11,0,11],
+            var a = new ColA([9,0,9],
             [
                 new CurrentVPanel(new Fill("white"), 90, 0),
                 0,
@@ -1242,7 +1217,8 @@ addressobj.full = function (k)
         out += "?p="+p;
 
     out +=
-        "&h="+headobj.enabled+
+        "&t="+_4cnvctx.timeobj.current().toFixed(4)+
+        "&h="+headobj.current()+
         "&r="+(100*rowobj.berp()).toFixed();
 
     return out;
@@ -1284,17 +1260,20 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     if (!_4cnvctx.setcolumncomplete)
         return;
 
+    var e = galleryobj.current();
     galleryobj.rotate(j);
     var k = galleryobj.getcurrent();
+    galleryobj.set(e);
     if (!k.object && (_4cnvctx.movingpage || !k.loaded || galleryobj.length() == 1))
     {
         clearTimeout(context.movepagetime);
-        context.movepagetime = setTimeout(function() { masterload(); }, 2000);
+        context.movepagetime = setTimeout(function() { masterload(); }, 500);
         _4cnvctx.movingpage = 0;
         this.refresh();
         return;
     }
 
+    galleryobj.rotate(j);
     _4cnvctx.movingpage = j;
     clearTimeout(globalobj.move);
     _4cnvctx.refresh();
@@ -1306,8 +1285,13 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         contextobj.reset();
         addressobj.update();
-        setTimeout(function(){ _4cnvctx.movingpage = 0; _4cnvctx.refresh(); }, 200);
-    }, 500);
+        setTimeout(function()
+        {
+            _4cnvctx.movingpage = 0;
+            _4cnvctx.refresh();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        }, 500);
+    }, 50);
 }
 
 CanvasRenderingContext2D.prototype.hide = function ()
@@ -1801,7 +1785,8 @@ var pinchlst =
         if (context.isthumbrect)
             context.obj = heightobj.getcurrent();
         else
-            context.obj = headobj.enabled ? stretchobj.getcurrent() : zoomobj.getcurrent();
+            //context.obj = headobj.enabled ? stretchobj.getcurrent() : zoomobj.getcurrent();
+            context.obj = zoomobj.getcurrent();
         context.savepinch = context.obj.getcurrent()
     },
     pinchend: function (context)
@@ -1919,8 +1904,10 @@ function dropfiles(files)
     delete photo.image;
     _4cnvctx.tapping = 0;
     _4cnvctx.isthumbrect = 0;
-    headobj.enabled = 0;
-    pageresize();
+    headobj.set(0);
+    headham.panel = headobj.getcurrent();
+    headcnvctx.clear();
+    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     _4cnvctx.setcolumncomplete = 0;
     contextobj.reset();
 }
@@ -2001,10 +1988,7 @@ var panlst =
         delete context.startt;
         delete context.timeobj.offset;
         if (context.scrollobj)
-        {
-            delete context.scrollxobj.offset;
-            delete context.scrollyobj.offset;
-        }
+            delete context.scrollobj.offset;
     }
 },
 {
@@ -2361,10 +2345,11 @@ var presslst =
         }
         else
         {
-            _4cnvctx.tapping = 0;
-            _4cnvctx.isthumbrect = 0;
+                headobj.rotate(1);
+                headham.panel = headobj.getcurrent();
+                headcnvctx.clear();
+                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             headobj.enabled = headobj.enabled?0:1;
-            pageresize();
         }
 
         context.refresh();
@@ -2488,7 +2473,6 @@ var keylst =
                     screenfull.request();
             }
 
-            pageresize();
             context.refresh();
             evt.preventDefault();
         }
@@ -2497,7 +2481,6 @@ var keylst =
             _4cnvctx.tapping = 0;
             _4cnvctx.isthumbrect = 0;
             headobj.enabled = headobj.enabled?0:1;
-            pageresize();
             _4cnvctx.refresh();
         }
         else if (evt.key == "\\")
@@ -2613,55 +2596,10 @@ var taplst =
 	tap: function (context, rect, x, y, shift, ctrl)
 	{
         context.pressed = 0;
-        if (context.moveprev && context.moveprev.hitest(x,y))
-        {
-            _4cnvctx.movepage(-1);
-            return;
-        }
-        else if (context.movenext && context.movenext.hitest(x,y))
-        {
-            _4cnvctx.movepage(1);
-            return;
-        }
-
         clearInterval(context.timemain);
         context.timemain = 0;
 
-        if (context.downpanel && context.downpanel.hitest(x,y))
-        {
-            if (galleryobj.getcurrent().object)
-                return;
-            if (galleryobj.getcurrent().photographer_url)
-            {
-                window.location.href = galleryobj.getcurrent().photographer_url;
-            }
-            else
-            {
-                var id = galleryobj.getcurrent().id;
-                var path = `https://reportbase.com/image/${id}/blob`;
-                window.open(path,url.hostname);
-            }
-        }
-        else if (context.infopanel && context.infopanel.hitest(x,y))
-        {
-            menushow(_5cnvctx);
-        }
-        else if (context.openpanel && context.openpanel.hitest(x,y))
-        {
-            menuhide();
-            promptFile().then(function(files) { dropfiles(files); })
-        }
-        else if (context.fullpanel && context.fullpanel.hitest(x,y))
-        {
-            if (screenfull.isEnabled)
-            {
-                if (screenfull.isFullscreen)
-                    screenfull.exit();
-                else
-                    screenfull.request();
-            }
-        }
-        else if (!headobj.enabled && context.thumbrect && context.thumbrect.hitest(x,y))
+        if (context.thumbrect && context.thumbrect.hitest(x,y))
         {
             if (context.selectrect && context.selectrect.hitest(x,y)>=0)
             {
@@ -2690,16 +2628,12 @@ var taplst =
             {
                 menuhide();
             }
-            else if (bodyobj.enabled)
-            {
-                bodyobj.enabled = 0;
-            }
             else
             {
-                context.tapping = 0;
-                context.isthumbrect = 0;
-                headobj.enabled = headobj.enabled?0:1;
-                pageresize();
+                headobj.rotate(1);
+                headham.panel = headobj.getcurrent();
+                headcnvctx.clear();
+                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             }
 
             context.refresh();
@@ -3071,21 +3005,19 @@ var menulst =
             var a2 = w2/h2;
             if (user.thumbimg.width/user.thumbimg.height > a2)
             {
-                context.scrollobj = context.scrollxobj;
                 var h1 = user.thumbimg.height;
                 var w1 = h1*a2;
                 var y1 = 0;
-                var x1 = Math.nub(context.scrollxobj.getcurrent(), context.scrollxobj.length(), w1, user.thumbimg.width);
+                var x1 = Math.nub(context.scrollobj.getcurrent(), context.scrollobj.length(), w1, user.thumbimg.width);
                 context.drawImage(user.thumbimg, x1, y1, w1, h1,
                     10, -40, w2, h2);
             }
             else
             {
-                context.scrollobj = context.scrollyobj;
                 var w1 = user.thumbimg.width;
                 var h1 = w1/a2;
                 var x1 = 0;
-                var y1 = Math.nub(context.scrollyobj.getcurrent(), context.scrollyobj.length(), h1, user.thumbimg.height);
+                var y1 = Math.nub(context.scrollobj.getcurrent(), context.scrollobj.length(), h1, user.thumbimg.height);
                 context.drawImage(user.thumbimg, x1, y1, w1, h1,
                     10, -40, w2, h2);
             }
@@ -3226,6 +3158,7 @@ var menulst =
         user.fitheight = rect.height;
         context.font = "0.9rem Archivo Black";
         var clr = SCROLLNAB;
+        var fontclr = "white";
         var str = user.title;
 
         if (user.tap)
@@ -3237,7 +3170,11 @@ var menulst =
             if (time == galleryobj.current())
                 clr = MENUSELECT;
         }
-         else if (user.path == "FULLPANEL")
+        else if (user.path == "CLOSE")
+        {
+            clr = "black";
+        }
+        else if (user.path == "FULLPANEL")
         {
             if (screenfull.isFullscreen)
                 clr = MENUSELECT;
@@ -3252,7 +3189,7 @@ var menulst =
         [
             new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 3),
             user.obj?new Shrink(new CurrentHPanel(new Fill(MENUSELECT), 90),15,0):0,
-            new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
+            new Shrink(new Text(fontclr, "center", "middle",0, 0, 1),20,0),
         ]);
 
         a.draw(context, rect, [0,user.obj,user.title], time);
@@ -3286,6 +3223,10 @@ function resetcanvas()
     zoomobj.set(window.landscape());
     positxobj.set(window.landscape());
     posityobj.set(window.landscape());
+
+    headcnvctx.show(0,0,window.innerWidth,80);
+    headham.panel = headobj.getcurrent();
+    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
     var canvas = _4cnv;
     var context = _4cnvctx;
@@ -3561,116 +3502,6 @@ var extentlst =
 
 var extentobj = new Data("EXTENT", extentlst);
 
-var bodylst =
-[
-    new function()
-    {
-        this.draw = function (context, rect, user, time)
-        {
-        }
-    },
-    new function()
-    {
-        this.draw = function (context, rect, user, time)
-        {
-            context.save();
-            context.font = "1rem Archivo Black";
-            context.moveprev = new rectangle()
-            context.movenext = new rectangle()
-            var zoom = zoomobj.getcurrent();
-            var a = new Row([80,0],
-                    [
-                        new ColA([80,0,80],
-                        [
-                           new Shrink(new Layer(
-                            [
-                                new Rectangle(context.moveprev),
-                                new Shrink(new CirclePanel(_4cnvctx.movingpage == -1?MENUTAP:SCROLLNAB,"white",3),5,5),
-                                new Shrink(new ArrowPanel(ARROWFILL,270),20,20),
-                            ]),10,10),
-                            new Text("white", "center", "middle",0,1,1),
-                            new Shrink(new Layer(
-                            [
-                                new Rectangle(context.movenext),
-                                new Shrink(new CirclePanel(_4cnvctx.movingpage == 1?MENUTAP:SCROLLNAB,"white",3),5,5),
-                                new Shrink(new ArrowPanel(ARROWFILL,90),20,20),
-                            ]),10,10),
-                        ])
-                    ]);
-
-            var j = `${galleryobj.current() + 1} of ${galleryobj.length()}`;
-            a.draw(context, rect, [0,j,0], 0);
-            context.restore();
-        }
-    },
-    new function()
-    {
-        this.draw = function (context, rect, user, time)
-        {
-        }
-    },
-    new function()
-    {
-        this.draw = function (context, rect, user, time)
-        {
-            context.save();
-            context.font = "1rem Archivo Black";
-            context.fullpanel = new rectangle()
-            context.footpanel = new rectangle()
-            context.infopanel = new rectangle()
-            context.openpanel = new rectangle()
-            context.downpanel = new rectangle()
-            var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
-            var a = new Row([0,h],
-            [
-                0,
-                new Layer(
-                [
-                   new Rectangle(context.footpanel),
-                   new Row([70,0],
-                   [
-                       new Col([0,
-                           ALIEXTENT,
-                           ALIEXTENT,
-                           ALIEXTENT,
-                           ALIEXTENT,
-                           0],
-                       [
-                           0,
-                           new Layer(
-                           [
-                               new DownPanel("white","black"),
-                               new Rectangle(context.downpanel),
-                           ]),
-                           new Layer(
-                           [
-                               new FullPanel("white","black"),
-                               new Rectangle(context.fullpanel),
-                           ]),
-                           new Layer(
-                           [
-                               new OpenPanel("white","black"),
-                               new Rectangle(context.openpanel),
-                           ]),
-                           new Layer(
-                           [
-                               new InfoPanel("white","black"),
-                               new Rectangle(context.infopanel),
-                           ]),
-                           0
-                        ]),
-                       0,
-                   ]),
-               ]),
-            ]);
-
-            a.draw(context, rect, 0, 0);
-            context.restore();
-        }
-    },
-  ];
-
-var bodyobj = new Data("", bodylst);
 url.path = "BOAT";
 url.project = 0;
 var leftmenu = 1;
@@ -3697,285 +3528,34 @@ if (url.searchParams.has("p"))
     path = url.path.toLowerCase();
     path = `res/${path}.json`;
 }
-else if (url.searchParams.has("unsplash"))
-{
-    var k = url.searchParams.get("unsplash")
-    k = k.split(".");
-    if (k.length > 1)
-        k = k[0];
-    setpathparoject("unsplash");
-    path = `https://unsplash.reportbase5836.workers.dev/?search=${k}`;
-}
-else if (url.searchParams.has("pexels"))
-{
-    var k = url.searchParams.get("pexels")
-    k = k.split(".");
-    if (k.length > 1)
-        k = k[0];
-    setpathparoject("pexels");
-    path = `https://pexels.reportbase5836.workers.dev?search=${k}`;
-}
 else if (url.searchParams.has("sidney"))
 {
     setpathparoject("sidney");
     path = `https://sidney.reportbase5836.workers.dev`;
 }
-else if (url.searchParams.has("pixabay"))
+else
 {
-    var k = url.searchParams.get("pixabay")
-    k = k.split(".");
-    if (k.length > 1)
-        k = k[0];
-    setpathparoject("pixabay");
-    path = `https://reportbase.com/pixabay?search=${k}`;
+    var lst =
+    [
+        "unsplash",
+        "pexels",
+        "pixabay",
+    ];
+
+    for (var n = 0; n < lst.length; ++n)
+    {
+        var j = lst[n];
+        var e = url.searchParams.get(j)
+        if (!e)
+            continue;
+        var k = e.split(".");
+        if (k.length > 1)
+            k = k[0];
+        setpathparoject(j);
+        path = `https://${j}.reportbase5836.workers.dev/?search=${k}`;
+        break;
+    }
 }
-
-var galleryobj = new Data("", 0);
-
-fetch(path)
-  .then(function (response)
-  {
-     return response.json()
-  })
-  .then(function (obj)
-  {
-        galleryobj = Object.assign(galleryobj,obj);
-        setfavicon();
-
-        pretchobj.split(60, "40-90", pretchobj.length());
-        letchobj.split(60, "40-90", letchobj.length());
-        speedyobj.split(1.25, "1-20", speedyobj.length());
-
-        if (typeof galleryobj.thumb == "undefined")
-            galleryobj.thumb = "largethumb";
-
-        galleryobj.set(url.project);
-
-        for (var n = 0; n < galleryobj.length(); ++n)
-        {
-            var k = galleryobj.data[n];
-            k.index = `${n+1} of ${galleryobj.length()}`;
-        }
-
-      function getslices()
-      {
-            var slices = [];
-            let keys = Object.keys(galleryobj.getcurrent());
-            for (var n = 0; n < keys.length; ++n)
-            {
-                var key = keys[n];
-                var value = galleryobj.getcurrent()[key]
-                if (value && value.length && typeof value === 'string')
-                {
-                    if (value.substr(0,4).toLowerCase() != "http")
-                    {
-                        key = key.toLowerCase()
-                        key  = key.charAt(0).toUpperCase() + key.slice(1)
-                        slices.push({head: 1, page: n, title:key, path: "", func: function() { }})
-                        slices.push({head: 0, ppage: n, title:value, path: "", func: function() { }})
-                    }
-                }
-            }
-
-            return slices;
-      }
-
-        _5cnvctx.buttonheight = 25;
-        _5cnvctx.rvalue = 2;
-        _5cnvctx.slidereduce = 0.75;
-        _5cnvctx.sliceobj.data = getslices();
-        _5cnvctx.delayinterval = DELAYCENTER / _5cnvctx.sliceobj.data.length;
-        _5cnvctx.virtualheight = _5cnvctx.sliceobj.data.length*_5cnvctx.buttonheight;
-
-        for (var n = 0; n < _5cnvctx.sliceobj.length(); ++n)
-        {
-            var k = _5cnvctx.sliceobj.data[n];
-            k.func = function() {menuhide(); }
-        }
-
-        var slices = _6cnvctx.sliceobj;
-        slices.data = [];
-        for (var n = 0; n < galleryobj.pages; ++n)
-        {
-            slices.data.push({page: n, title:`Page ${n+1}`, title1: "", path: "OPEN", func: function()
-            {
-                url.page = this.page+1;
-                window.location.href = addressobj.full(true);
-            }});
-        }
-
-        _6cnvctx.delayinterval = DELAYCENTER / slices.data.length;
-        _6cnvctx.buttonheight = 60;
-        _6cnvctx.virtualheight = slices.data.length*_6cnvctx.buttonheight;
-        _6cnvctx.rvalue = 2;
-        _6cnvctx.slidereduce = 0.75;
-        _6cnvctx.title = "Page";
-        _6cnvctx.sliceobj.set(url.page-1);
-        _6cnvctx.timeobj.set((1-_6cnvctx.sliceobj.berp())*TIMEOBJ);
-
-        //7
-        var lst =
-        [
-            {
-                line: "Image Viewer\nhttps://reportbase.com\nimages@reportbase.com\nTom Brinkman",
-                func: function() {menuhide(); }
-            },
-            {
-                line: "High Resolution\n360° Panoramas\nImage Stetch\nImage Zooming",
-                func: function() {menuhide(); }
-            },
-            {
-                line: "Digital Art\nGraphic Novels\nDrone Photgraphy\nLandscapes",
-                func: function() {menuhide(); }
-            },
-            {
-                line: "Side Scroller\nWrap Around\nFull Screen\nWide Image",
-                func: function() {menuhide(); }
-            },
-        ];
-
-        var slices = _7cnvctx.sliceobj;
-        slices.data = lst;
-        _7cnvctx.buttonheight = 80;
-        _7cnvctx.delayinterval = DELAYCENTER / lst.length;
-        _7cnvctx.virtualheight = lst.length*_7cnvctx.buttonheight;
-        _7cnvctx.rvalue = 2;
-        _7cnvctx.slidereduce = 0.75;
-        _7cnvctx.title = "Help";
-
-        var func = function (index)
-        {
-            menuhide();
-            galleryobj.set(this.pos);
-            window.location.href = addressobj.full();
-        }
-
-        for (var n = 0; n < galleryobj.data.length; ++n)
-        {
-            var k = galleryobj.data[n];
-            k.pos = n;
-            k.func = func;
-        }
-
-        _8cnvctx.title = galleryobj.title;
-        _8cnvctx.sliceobj.data = galleryobj.data;
-        var slices = _8cnvctx.sliceobj;
-        _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-        _8cnvctx.rvalue = 3;
-        _8cnvctx.buttonheight = 200;
-        if (_8cnvctx.buttonheight>window.innerHeight-100)
-            _8cnvctx.buttonheight = window.innerHeight-100
-        _8cnvctx.delayinterval = DELAYCENTER / slices.length();
-        _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
-        _8cnvctx.slidereduce = 0.0225;
-        _8cnvctx.scrollxobj = new Data("XSCROLL", window.innerHeight);
-        _8cnvctx.scrollyobj = new Data("YSCROLL", window.innerHeight);
-        _8cnvctx.scrollxobj.set(window.innerHeight/2);
-        _8cnvctx.scrollyobj.set(window.innerHeight/2);
-        _8cnvctx.scrollobj = _8cnvctx.scrollxobj;
-
-        //9
-        var slices = _9cnvctx.sliceobj;
-        slices.data = [];
-
-        slices.data.push({title:"Open", path: "OPEN", func: function()
-        {
-            menuhide();
-            promptFile().then(function(files) { dropfiles(files); })
-        }});
-
-        slices.data.push({title:"Download", path: "DOWNLOAD", func: function()
-        {
-            if (galleryobj.getcurrent().object)
-                return;
-            if (galleryobj.getcurrent().photographer_url)
-            {
-                window.location.href = galleryobj.getcurrent().photographer_url;
-            }
-            else if (galleryobj.repos)
-            {
-
-            }
-            else
-            {
-                var id = galleryobj.getcurrent().id;
-                var path = `https://reportbase.com/image/${id}/blob`;
-                window.open(path,url.hostname);
-            }
-        }});
-
-        slices.data.push({title:"Info", path: "INFO", func: function()
-            {
-                menushow(_5cnvctx);
-            }});
-
-      slices.data.push({title:"Delete", path: "DELETE", func: function()
-            {
-                var id = galleryobj.getcurrent().id;
-                fetch(`https://reportbase.com/image/${id}`, { method: 'DELETE' })
-                .then(res => { location.reload();
-                    return res.json() })
-                .then(data => console.log(data))
-            }});
-
-      slices.data.push({title:"Search", path: "SEARCH", func: function()
-          {
-            var path = `https://reportbase.com/search.html`;
-            window.open(path,url.hostname);
-          }})
-
-
-      slices.data.push({title:"Upload", path: "UPLOAD", func: function()
-          {
-            var path = `https://reportbase.com/upload`;
-            window.open(path,url.hostname);
-          }})
-
-        slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
-
-        slices.data.push({title:"Config", path: "CONFIG", func: function()
-            {
-                var path = url.path.toLowerCase();
-                path = `${url.origin}/res/${path}.json`;
-                window.open(path,url.hostname);
-            }})
-
-        slices.data.push({title:"Fullscreen", path: "FULLPANEL", func: function ()
-        {
-            if (screenfull.isEnabled)
-                screenfull.toggle();
-        }})
-
-        slices.data.push({ title: "Screenshot", path: "SCREENSHOT", func: function()
-        {
-            _4cnvctx.refresh()
-            setTimeout(function()
-            {
-                var k = document.createElement('canvas');
-                var link = document.createElement("a");
-                link.href = _4cnvctx.canvas.toDataURL('image/jpg');
-                link.download = galleryobj.getcurrent()[0] + ".jpg";
-                link.click();
-                _4cnvctx.refresh()
-            }, 1000);
-        }});
-
-        _9cnvctx.delayinterval = DELAYCENTER / slices.data.length;
-        _9cnvctx.virtualheight = slices.data.length*_9cnvctx.buttonheight;
-        _9cnvctx.rvalue = 2;
-        _9cnvctx.slidereduce = 0.75;
-
-        pageresize();
-        contextobj.reset();
-
-        if (leftmenu)
-        {
-            headobj.enabled = 1;
-            _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-            menushow(_8cnvctx)
-            _4cnvctx.refresh();
-        }
-  })
 
 var ContextObj = (function ()
 {
@@ -4008,9 +3588,7 @@ var ContextObj = (function ()
             context.timeobj.set(TIMEOBJ/2);
         }
 
-         var time = Math.floor(TIMEMID*1.15)
-        _4cnvctx.timeobj.set(time);
-
+        _4cnvctx.timeobj.set(url.time);
     }
 
     init.prototype =
@@ -4119,7 +3697,6 @@ var ContextObj = (function ()
                     }
 
                     _4cnvctx.pinched = 0;
-                    pageresize();
                     contextobj.resize(context);
                     resetcanvas(context);
                     seteventspanel(new YollPanel());
@@ -4131,13 +3708,8 @@ var ContextObj = (function ()
                     else if (typeof rowobj.row !== "undefined")
                         rowobj.set(window.innerHeight*(rowobj.row/100));
 
-                    _4cnvctx.autodirect = -1;
-                    var time = TIMEOBJ/2+TIMEOBJ*(_4cnvctx.virtualwindow/16);
-                    _4cnvctx.timeobj.set(time);
-
                     contextobj.reset()
-                    context.tab();
-                    masterload();
+                    _4cnvctx.movepagetime = setTimeout(function() { masterload(); }, 500);
                 }
 			}
 
@@ -4159,7 +3731,7 @@ function masterload()
 {
     var lst = [];
     var k = galleryobj.current();
-    var size = Math.min(4,galleryobj.length());
+    var size = Math.min(5,galleryobj.length());
     for (var n = 0; n < size; ++n)
     {
         galleryobj.rotate(1);
@@ -4177,7 +3749,7 @@ function masterload()
         }
     }
 
-    galleryobj.rotate(-5);
+    galleryobj.rotate(-6);
     var img = new Image();
     var id = galleryobj.getcurrent().id;
     var template = galleryobj.template ? galleryobj.template : "medium";
@@ -4785,31 +4357,26 @@ function reset()
 function resize()
 {
     _4cnvctx.pinched = 0;
-    bodyobj.enabled = 0;
     delete _4cnvctx.thumbcanvas;
     reset();
     menuhide();
     var n = eventlst.findIndex(function(a){return a.name == "_4cnvctx";})
     setevents(_4cnvctx, eventlst[n])
-    pageresize();
     _4cnvctx.tapping = 0;
     _4cnvctx.refresh();
 }
 
 function escape()
 {
-    headobj.enabled = headobj.enabled?0:1;
     _4cnvctx.panhide  = 0
     _4cnvctx.pinched = 0;
     delete _4cnvctx.thumbcanvas;
-    bodyobj.enabled = 0;
     _4cnvctx.tapping = 0;
     menuhide();
     var n = eventlst.findIndex(function(a){return a.name == "_4cnvctx";})
     setevents(_4cnvctx, eventlst[n])
     _4cnvctx.setcolumncomplete = 0;
     reset();
-    pageresize();
     _4cnvctx.refresh();
 }
 
@@ -4936,12 +4503,6 @@ var YollPanel = function ()
 
 var headlst =
 [
-    new function ()
-    {
-		this.draw = function (context, rect, user, time)
-        {
-        }
-    },
 	new function ()
 	{
     	this.press = function (context, rect, x, y)
@@ -4949,7 +4510,14 @@ var headlst =
             if (context.picture.hitest(x,y))
             {
                 infobj.rotate(1);
-                _4cnvctx.refresh();
+                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+            }
+            else
+            {
+                headobj.rotate(1);
+                headham.panel = headobj.getcurrent();
+                headcnvctx.clear();
+                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             }
         }
 
@@ -4973,11 +4541,10 @@ var headlst =
             }
             else
             {
-                _4cnvctx.tapping = 0;
-                _4cnvctx.isthumbrect = 0;
-                headobj.enabled = headobj.enabled?0:1;
-                pageresize();
-                _4cnvctx.refresh();
+                headobj.rotate(1);
+                headham.panel = headobj.getcurrent();
+                headcnvctx.clear();
+                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             }
 
             _4cnvctx.refresh();
@@ -5028,7 +4595,7 @@ var headlst =
                ]);
 
             var s;
-            if (galleryobj.repos || infobj.current() == 0)
+            if (infobj.current() == 0)
             {
                 st= galleryobj.repos;
                 s = galleryobj.getcurrent().photographer;
@@ -5073,63 +4640,182 @@ var headlst =
 	},
 	new function ()
 	{
+    	this.press = function (context, rect, x, y)
+		{
+            headobj.rotate(1);
+            headham.panel = headobj.getcurrent();
+            headcnvctx.clear();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        }
+
     	this.tap = function (context, rect, x, y)
 		{
-            if (context.page.hitest(x,y))
+            if (context.moveprev && context.moveprev.hitest(x,y))
             {
-                _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-                menushow(_8cnvctx)
-                _4cnvctx.refresh();
+                _4cnvctx.movepage(-1);
             }
-            else if (context.option.hitest(x,y))
+            else if (context.movenext && context.movenext.hitest(x,y))
             {
-                _4cnvctx.refresh();
-                menushow(_9cnvctx);
+                _4cnvctx.movepage(1);
             }
-
-            _4cnvctx.refresh();
+            else
+            {
+                headobj.rotate(1);
+                headham.panel = headobj.getcurrent();
+                headcnvctx.clear();
+                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+            }
 		};
 
 		this.draw = function (context, rect, user, time)
 		{
-            context.clear()
-            context.save()
-            context.shadowOffsetX = 0;
-            context.shadowOffsetY = 0;
-            context.shadowColor = "black"
-            context.page = new rectangle()
-            context.option = new rectangle()
+            context.save();
+            context.clear();
             context.font = "1rem Archivo Black";
-            var s = _5cnvctx.enabled || _8cnvctx.enabled;
-            var a = new Layer(
-                [
-                    new Fill(HEADBACK),
-                    new Col([ALIEXTENT,0,ALIEXTENT],
+            context.moveprev = new rectangle()
+            context.movenext = new rectangle()
+            var zoom = zoomobj.getcurrent();
+            var a = new Row([80,0],
                     [
-                        new Layer(
+                        new ColA([80,0,80],
                         [
-                            s ? new Fill(BUTTONBACK) : 0,
-                            new PagePanel(s?0.1:0.075),
-                            new Rectangle(context.page),
-                        ]),
-                        0,
-                        new Layer(
-                        [
-                            _9cnvctx.enabled ? new Fill(BUTTONBACK):0,
-                            new OptionPanel((!_9cnvctx.enabled)?0.075:0.1),
-                            new Rectangle(context.option),
+                           new Shrink(new Layer(
+                            [
+                                new Rectangle(context.moveprev),
+                                new Shrink(new CirclePanel(_4cnvctx.movingpage == -1?MENUTAP:SCROLLNAB,"white",3),5,5),
+                                new Shrink(new ArrowPanel(ARROWFILL,270),20,20),
+                            ]),10,10),
+                            new Text("white", "center", "middle",0,1,1),
+                            new Shrink(new Layer(
+                            [
+                                new Rectangle(context.movenext),
+                                new Shrink(new CirclePanel(_4cnvctx.movingpage == 1?MENUTAP:SCROLLNAB,"white",3),5,5),
+                                new Shrink(new ArrowPanel(ARROWFILL,90),20,20),
+                            ]),10,10),
                         ])
-                    ])
-               ]);
+                    ]);
 
-            a.draw(context, rect, 0, time);
-            context.restore()
+            var j = `${galleryobj.current() + 1} of ${galleryobj.length()}`;
+            a.draw(context, rect, [0,j,0], 0);
+            context.restore();
 		};
 	},
+	new function ()
+	{
+    	this.press = function (context, rect, x, y)
+		{
+            headobj.rotate(1);
+            headham.panel = headobj.getcurrent();
+            headcnvctx.clear();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        }
+
+     	this.tap = function (context, rect, x, y)
+		{
+            if (context.downpanel && context.downpanel.hitest(x,y))
+            {
+                if (galleryobj.getcurrent().object)
+                    return;
+                if (galleryobj.getcurrent().photographer_url)
+                {
+                    window.location.href = galleryobj.getcurrent().photographer_url;
+                }
+                else
+                {
+                    var id = galleryobj.getcurrent().id;
+                    var path = `https://reportbase.com/image/${id}/blob`;
+                    window.open(path,url.hostname);
+                }
+            }
+            else if (context.infopanel && context.infopanel.hitest(x,y))
+            {
+                menushow(_5cnvctx);
+            }
+            else if (context.openpanel && context.openpanel.hitest(x,y))
+            {
+                menuhide();
+                promptFile().then(function(files) { dropfiles(files); })
+            }
+            else if (context.fullpanel && context.fullpanel.hitest(x,y))
+            {
+                if (screenfull.isEnabled)
+                {
+                    if (screenfull.isFullscreen)
+                        screenfull.exit();
+                    else
+                        screenfull.request();
+                }
+            }
+            else
+            {
+                headobj.rotate(1);
+                headham.panel = headobj.getcurrent();
+                headcnvctx.clear();
+                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+            }
+		};
+
+		this.draw = function (context, rect, user, time)
+        {
+            context.save();
+            context.clear();
+            context.font = "1rem Archivo Black";
+            context.fullpanel = new rectangle()
+            context.footpanel = new rectangle()
+            context.infopanel = new rectangle()
+            context.openpanel = new rectangle()
+            context.downpanel = new rectangle()
+            var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
+            var a = new Row([0,h],
+            [
+                0,
+                new Layer(
+                [
+                   new Rectangle(context.footpanel),
+                   new Row([70,0],
+                   [
+                       new Col([0,
+                           ALIEXTENT,
+                           ALIEXTENT,
+                           ALIEXTENT,
+                           ALIEXTENT,
+                           0],
+                       [
+                           0,
+                           new Layer(
+                           [
+                               new DownPanel("white","black"),
+                               new Rectangle(context.downpanel),
+                           ]),
+                           new Layer(
+                           [
+                               new FullPanel("white","black"),
+                               new Rectangle(context.fullpanel),
+                           ]),
+                           new Layer(
+                           [
+                               new OpenPanel("white","black"),
+                               new Rectangle(context.openpanel),
+                           ]),
+                           new Layer(
+                           [
+                               new InfoPanel("white","black"),
+                               new Rectangle(context.infopanel),
+                           ]),
+                           0
+                        ]),
+                       0,
+                   ]),
+               ]),
+            ]);
+
+            a.draw(context, rect, 0, 0);
+            context.restore();
+        }
+    }
 ];
 
-var headobj = new Data("", headlst);
-headobj.enabled = 0;
+var headobj = new Data("HEAD", headlst);
 var infobj = new Data("", 6);
 var positxpobj = new Data("POSITIONX", 100);
 var positypobj = new Data("POSITIONY", 100);
@@ -5140,7 +4826,6 @@ var posityobj = new Data("POSITIONY", [positypobj,positylobj]);
 
 function menushow(context)
 {
-    bodyobj.enabled = 0;
     _4cnvctx.slideshow = 0;
     var enabled = context.enabled;
     _2cnvctx.hide();
@@ -5288,14 +4973,6 @@ window.addEventListener("keydown", function (evt)
         return context.keydown_(evt);
 }, false);
 
-function pageresize()
-{
-    var h = headobj.enabled ? 80 : 0;
-    headcnvctx.show(0,0,window.innerWidth,h);
-    headobj.set(h?1:0);
-    headham.panel = headobj.getcurrent();
-}
-
 window.onerror = function(message, source, lineno, colno, error)
 {
     //window.alert( error+","+lineno+","+console.trace());
@@ -5355,3 +5032,275 @@ function wraptext(ctx, text, maxWidth)
 
     return lineArray;
 }
+
+var galleryobj = new Data("", 0);
+galleryobj.init = function(obj)
+{
+    galleryobj = Object.assign(galleryobj,obj);
+    setfavicon();
+
+    pretchobj.split(60, "40-90", pretchobj.length());
+    letchobj.split(60, "40-90", letchobj.length());
+    speedyobj.split(1.25, "1-20", speedyobj.length());
+
+    if (typeof galleryobj.thumb == "undefined")
+        galleryobj.thumb = "largethumb";
+
+    galleryobj.set(url.project);
+
+    for (var n = 0; n < galleryobj.length(); ++n)
+    {
+        var k = galleryobj.data[n];
+        k.index = `${n+1} of ${galleryobj.length()}`;
+    }
+
+  function getslices()
+  {
+        var slices = [];
+        let keys = Object.keys(galleryobj.getcurrent());
+        for (var n = 0; n < keys.length; ++n)
+        {
+            var key = keys[n];
+            var value = galleryobj.getcurrent()[key]
+            if (value && value.length && typeof value === 'string')
+            {
+                if (value.substr(0,4).toLowerCase() != "http")
+                {
+                    key = key.toLowerCase()
+                    key  = key.charAt(0).toUpperCase() + key.slice(1)
+                    slices.push({head: 1, page: n, title:key, path: "", func: function() { }})
+                    slices.push({head: 0, ppage: n, title:value, path: "", func: function() { }})
+                }
+            }
+        }
+
+        return slices;
+  }
+
+    _5cnvctx.buttonheight = 25;
+    _5cnvctx.rvalue = 2;
+    _5cnvctx.slidereduce = 0.75;
+    _5cnvctx.sliceobj.data = getslices();
+    _5cnvctx.delayinterval = DELAYCENTER / _5cnvctx.sliceobj.data.length;
+    _5cnvctx.virtualheight = _5cnvctx.sliceobj.data.length*_5cnvctx.buttonheight;
+
+    for (var n = 0; n < _5cnvctx.sliceobj.length(); ++n)
+    {
+        var k = _5cnvctx.sliceobj.data[n];
+        k.func = function() {menuhide(); }
+    }
+
+    var slices = _6cnvctx.sliceobj;
+    slices.data = [];
+    for (var n = 0; n < galleryobj.pages; ++n)
+    {
+        slices.data.push({page: n, title:`Page ${n+1}`, title1: "", path: "OPEN", func: function()
+        {
+            url.page = this.page+1;
+            window.location.href = addressobj.full(true);
+        }});
+    }
+
+    _6cnvctx.delayinterval = DELAYCENTER / slices.data.length;
+    _6cnvctx.buttonheight = 60;
+    _6cnvctx.virtualheight = slices.data.length*_6cnvctx.buttonheight;
+    _6cnvctx.rvalue = 2;
+    _6cnvctx.slidereduce = 0.75;
+    _6cnvctx.title = "Page";
+    _6cnvctx.sliceobj.set(url.page-1);
+    _6cnvctx.timeobj.set((1-_6cnvctx.sliceobj.berp())*TIMEOBJ);
+
+    //7
+    var lst =
+    [
+        {
+            line: "Image Viewer\nhttps://reportbase.com\nimages@reportbase.com\nTom Brinkman",
+            func: function() {menuhide(); }
+        },
+        {
+            line: "High Resolution\n360° Panoramas\nImage Stetch\nImage Zooming",
+            func: function() {menuhide(); }
+        },
+        {
+            line: "Digital Art\nGraphic Novels\nDrone Photgraphy\nLandscapes",
+            func: function() {menuhide(); }
+        },
+        {
+            line: "Side Scroller\nWrap Around\nFull Screen\nWide Image",
+            func: function() {menuhide(); }
+        },
+    ];
+
+    var slices = _7cnvctx.sliceobj;
+    slices.data = lst;
+    _7cnvctx.buttonheight = 80;
+    _7cnvctx.delayinterval = DELAYCENTER / lst.length;
+    _7cnvctx.virtualheight = lst.length*_7cnvctx.buttonheight;
+    _7cnvctx.rvalue = 2;
+    _7cnvctx.slidereduce = 0.75;
+    _7cnvctx.title = "Help";
+
+    var func = function (index)
+    {
+        galleryobj.set(this.pos);
+        window.location.href = addressobj.full();
+    }
+
+    for (var n = 0; n < galleryobj.data.length; ++n)
+    {
+        var k = galleryobj.data[n];
+        k.pos = n;
+        k.func = func;
+    }
+
+    _8cnvctx.title = galleryobj.title;
+    _8cnvctx.sliceobj.data = galleryobj.data;
+    var slices = _8cnvctx.sliceobj;
+    _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+    _8cnvctx.rvalue = 3;
+    _8cnvctx.buttonheight = 200;
+    if (_8cnvctx.buttonheight>window.innerHeight-100)
+        _8cnvctx.buttonheight = window.innerHeight-100
+    _8cnvctx.delayinterval = DELAYCENTER / slices.length();
+    _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
+    _8cnvctx.slidereduce = 0.0225;
+    _8cnvctx.scrollobj = new Data("SCROLL", window.innerHeight);
+    _8cnvctx.scrollobj.set(window.innerHeight/2);
+
+    //9
+    var slices = _9cnvctx.sliceobj;
+    slices.data = [];
+
+    slices.data.push({title:"Open", path: "OPEN", func: function()
+    {
+        menuhide();
+        promptFile().then(function(files) { dropfiles(files); })
+    }});
+
+    slices.data.push({title:"Download", path: "DOWNLOAD", func: function()
+    {
+        if (galleryobj.getcurrent().object)
+            return;
+        if (galleryobj.getcurrent().photographer_url)
+        {
+            window.location.href = galleryobj.getcurrent().photographer_url;
+        }
+        else if (galleryobj.repos)
+        {
+
+        }
+        else
+        {
+            var id = galleryobj.getcurrent().id;
+            var path = `https://reportbase.com/image/${id}/blob`;
+            window.open(path,url.hostname);
+        }
+    }});
+
+    slices.data.push({title:"Info", path: "INFO", func: function()
+        {
+            menushow(_5cnvctx);
+        }});
+
+  slices.data.push({title:"Delete", path: "DELETE", func: function()
+        {
+            var id = galleryobj.getcurrent().id;
+            fetch(`https://reportbase.com/image/${id}`, { method: 'DELETE' })
+            .then(res =>
+                {
+                    location.reload();
+                    return res.json()
+                })
+            .then(data => console.log(data))
+        }});
+
+  slices.data.push({title:"Search", path: "SEARCH", func: function()
+      {
+        var path = `https://reportbase.com/search.html`;
+        window.open(path,url.hostname);
+      }})
+
+
+  slices.data.push({title:"Upload", path: "UPLOAD", func: function()
+      {
+        var path = `https://reportbase.com/upload`;
+        window.open(path,url.hostname);
+      }})
+
+    slices.data.push({title:"Reload", path: "RELOAD", func: function()
+        {
+            localStorage.removeItem("LAST");
+           location.reload();
+            menuhide();
+        }})
+
+    slices.data.push({title:"Close", path: "CLOSE", func: function(){menuhide(); }})
+    slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
+
+    slices.data.push({title:"Config", path: "CONFIG", func: function()
+        {
+            var path = url.path.toLowerCase();
+            path = `${url.origin}/res/${path}.json`;
+            window.open(path,url.hostname);
+        }})
+
+    slices.data.push({title:"Fullscreen", path: "FULLPANEL", func: function ()
+    {
+        if (screenfull.isEnabled)
+            screenfull.toggle();
+    }})
+
+    slices.data.push({ title: "Screenshot", path: "SCREENSHOT", func: function()
+    {
+        _4cnvctx.refresh()
+        setTimeout(function()
+        {
+            var k = document.createElement('canvas');
+            var link = document.createElement("a");
+            link.href = _4cnvctx.canvas.toDataURL('image/jpg');
+            link.download = galleryobj.getcurrent()[0] + ".jpg";
+            link.click();
+            _4cnvctx.refresh()
+        }, 1000);
+    }});
+
+    _9cnvctx.delayinterval = DELAYCENTER / slices.data.length;
+    _9cnvctx.virtualheight = slices.data.length*_9cnvctx.buttonheight;
+    _9cnvctx.rvalue = 2;
+    _9cnvctx.slidereduce = 0.75;
+
+    contextobj.reset();
+
+    if (leftmenu)
+    {
+        _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+        menushow(_8cnvctx)
+        _4cnvctx.refresh();
+    }
+};
+
+var last = localStorage.getItem("LAST");
+var lastpath = localStorage.getItem("LASTPATH");
+var lastrepos = localStorage.getItem("LASTREPOS");
+var repos = url.searchParams.has(lastrepos);
+if (last && lastpath == url.path && repos)
+{
+    galleryobj.init(JSON.parse(last));
+}
+else
+{
+    fetch(path)
+      .then(function (response)
+          {
+              return response.json()
+          })
+      .then(function (obj)
+          {
+              galleryobj.init(obj);
+              localStorage.setItem("LAST",JSON.stringify(obj));
+              localStorage.setItem("LASTPATH",url.path);
+              localStorage.setItem("LASTREPOS",galleryobj.repos);
+          });
+}
+
+

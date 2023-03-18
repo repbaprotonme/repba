@@ -1,7 +1,7 @@
 {
   "title": "Repba Gallery",
-  "thumb": "extrawide",
   "template": "extrawide",
+  "thumb": "ultrathumb",
   "data": [
     {
       "id": "PINO.0000",
