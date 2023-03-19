@@ -4,6 +4,25 @@
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
          <link rel="stylesheet" href="css/custom.css">
+<style>
+.container {
+  position: relative;
+  overflow: hidden;
+  width: 75%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+}
+
+/* Then style the iframe to fit in the container div with full height and width */
+.responsive-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 75%;
+  height: 75%;
+}
+</style>
          <body>
 <main class="container">
 <section id="form">
@@ -33,7 +52,19 @@
     </form>
 
 </section>
+
+<section id="links">
+  <h2><center>
+  <a href=http://reportbase.me/?p=dash>Paintings</a>
+  <a href=http://reportbase.me/?p=skye>Cyberpunk</a>
+  <a href=http://reportbase.me/?p=pino>Ultrawide</a>
+  <a href=http://reportbase.me/?p=home>Digital Art</a>
+  <a href=http://reportbase.me/?p=hope>Landscapes</a>
+    </center></h2>
+</section>
+
 </main>
+
             <script>
            function submit()
            {

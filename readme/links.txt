@@ -3,6 +3,8 @@ https://www.futuretools.io/
 https://front.comparium.app/
 https://vectr.com/design/editor/f8a8e900-89ee-415a-91be-d9072312dba1
 https://photoscapes.com/  #slideshows
+https://developers.artsy.net/v2/docs/images
+https://api.artic.edu/docs/#conventions
 
 []
 command line
@@ -148,6 +150,7 @@ https://millo.co/
 
 []
 old pictures
+https://artsy.com/
 https://artvee.com/
 https://militarymaps.rct.uk/
 https://picryl.com/

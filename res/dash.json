@@ -1,6 +1,7 @@
 {
-  "title": "Repba Gallery",
-  "thumb": "landthumb",
+  "title": "Dash Gallery",
+  "template": "boatwide",
+  "thumb": "boathumb",
   "data": [
     {
       "id": "DASH.0000",
