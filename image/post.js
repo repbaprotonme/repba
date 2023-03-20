@@ -1,18 +1,18 @@
+//node post.js post.json
 const fs = require('fs');
+const args = process.argv;
 
-async function upload()
+async function upload(obj)
 {
-    const body = new FormData();
-    body.append("url", "https://i.imgur.com/lEWdncT.jpg");
-    body.append("requireSignedURLs", "");
-
-    var metadata = {};
-    metadata.email = "a@b.com";
-    metadata.party = "123";
-    body.append("metadata", JSON.stringify(metadata));
-
     try
     {
+        const body = new FormData();
+        if (obj.id)
+            body.append("id", obj.id);
+        body.append("url", obj.url);
+        body.append("requireSignedURLs", "false");
+        body.append("metadata", JSON.stringify(obj));
+
         const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1`,
             {
                 method: "POST",
@@ -25,27 +25,39 @@ async function upload()
         );
 
         if (res.status !== 200 && res.status !== 409)
-            throw new Error("HTTP " + res.status + " : " + await res.text());
+        {
+            var str = await res.text()
+            throw new Error(`HTTP ${res.status} : ${str}`);
+        }
+
         if (res.status === 409)
-            console.log("Already exist: " + imageName);
+        {
+            throw new Error(`Already exist: ${imageName}`);
+        }
+
+        var k = await res.json();
+        return k.result.id;
     }
     catch (e)
     {
-        console.log("ERROR:" + e);
+        console.log(`ERROR: ${e}`);
     }
 }
 
-async function load()
+async function load(json)
 {
-    for (var n = 0; n < 5; n++)
+    for (var n = 0; n < json.data.length; n++)
     {
-        await upload()
+        var id = await upload(json.data[n])
+        json.data[n].id = id;
     }
+
+    console.log(json);
 }
 
-fs.readFile('./post.json', 'utf8', (error, data) =>
-
+fs.readFile(args[2], 'utf8', (error, str) =>
 {
-     console.log(JSON.parse(data));
+    var json = JSON.parse(str);
+    load(json);
 })
 

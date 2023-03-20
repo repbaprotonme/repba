@@ -3004,15 +3004,20 @@ var menulst =
                 user.thumbimg.src = user.object;
                 user.thumbimg.onload = function()
                 {
-                    user.thumbimg = resizeimage(user.thumbimg,0.5); _4cnvctx.refersh();
+                    user.thumbimg = resizeimage(user.thumbimg,0.5);
+                    _4cnvctx.refersh();
                 }
             }
             else if (!user.thumbimg)
             {
                 user.thumbimg = new Image();
                 user.thumbimg.src = `https://reportbase.com/image/${user.id}/${galleryobj.thumb}`;
-                if (galleryobj.repos)
+                if (user.thumb)
                     user.thumbimg.src = user.thumb;
+                else if (user.full)
+                    user.thumbimg.src = user.full;
+                else if (user.url)
+                    user.thumbimg.src = user.url;
                 user.thumbimg.onload = function()
                 {
                     context.refresh();
@@ -3348,7 +3353,7 @@ var extentlst =
         positxpobj.set(50);
         positypobj.set(90);
         positxlobj.set(50);
-        positylobj.set(50);
+        positylobj.set(90);
         traitobj.split(75, "0.1-1.0", traitobj.length());
         scapeobj.split(75, "0.1-1.0", scapeobj.length());
     },
@@ -3384,9 +3389,9 @@ var extentlst =
         galleryobj.template = "landscape";
         galleryobj.thumb = "landthumb";
         positxpobj.set(50);
-        positypobj.set(97.5);
+        positypobj.set(95);
         positxlobj.set(50);
-        positylobj.set(97.5);
+        positylobj.set(95);
         traitobj.split(90, "0.1-1.0", traitobj.length());
         scapeobj.split(50, "0.1-1.0", scapeobj.length());
     },
@@ -3403,9 +3408,9 @@ var extentlst =
         galleryobj.template = "landscape";
         galleryobj.thumb = "landthumb";
         positxpobj.set(50);
-        positypobj.set(97.5);
+        positypobj.set(95);
         positxlobj.set(50);
-        positylobj.set(85);
+        positylobj.set(95);
         traitobj.split(95, "0.1-1.0", traitobj.length());
         scapeobj.split(50, "0.1-1.0", scapeobj.length());
     },
@@ -3567,8 +3572,10 @@ var ContextObj = (function ()
                 var id = galleryobj.getcurrent().id;
                 var template = galleryobj.template ? galleryobj.template : "medium";
                 var path = `https://reportbase.com/image/${id}/${template}`;
-                if (galleryobj.repos)
+                if (galleryobj.getcurrent().full)
                     path = galleryobj.getcurrent().full;
+                else if (galleryobj.getcurrent().url)
+                    path = galleryobj.getcurrent().url;
                 else if (galleryobj.getcurrent().object)
                     path = galleryobj.getcurrent().object;
                 seteventspanel(new Empty());
@@ -4615,18 +4622,7 @@ var headlst =
 		{
             if (context.downpanel && context.downpanel.hitest(x,y))
             {
-                if (galleryobj.getcurrent().object)
-                    return;
-                if (galleryobj.getcurrent().photographer_url)
-                {
-                    window.location.href = galleryobj.getcurrent().photographer_url;
-                }
-                else
-                {
-                    var id = galleryobj.getcurrent().id;
-                    var path = `https://reportbase.com/image/${id}/blob`;
-                    window.open(path,url.hostname);
-                }
+                download();
             }
             else if (context.thumbpanel && context.thumbpanel.hitest(x,y))
             {
@@ -5088,22 +5084,7 @@ galleryobj.init = function(obj)
 
     slices.data.push({title:"Download", path: "DOWNLOAD", func: function()
     {
-        if (galleryobj.getcurrent().object)
-            return;
-        if (galleryobj.getcurrent().photographer_url)
-        {
-            window.location.href = galleryobj.getcurrent().photographer_url;
-        }
-        else if (galleryobj.repos)
-        {
-
-        }
-        else
-        {
-            var id = galleryobj.getcurrent().id;
-            var path = `https://reportbase.com/image/${id}/blob`;
-            window.open(path,url.hostname);
-        }
+        download();
     }});
 
     slices.data.push({title:"Info", path: "INFO", func: function()
@@ -5122,19 +5103,6 @@ galleryobj.init = function(obj)
                 })
             .then(data => console.log(data))
         }});
-
-  slices.data.push({title:"Search", path: "SEARCH", func: function()
-      {
-        var path = `https://reportbase.com/search.html`;
-        window.open(path,url.hostname);
-      }})
-
-
-  slices.data.push({title:"Upload", path: "UPLOAD", func: function()
-      {
-        var path = `https://reportbase.com/upload`;
-        window.open(path,url.hostname);
-      }})
 
     slices.data.push({title:"Reload", path: "RELOAD", func: function()
         {
@@ -5221,4 +5189,26 @@ else
           });
 }
 
-
+function download()
+{
+    if (galleryobj.getcurrent().object)
+        return;
+    if (galleryobj.getcurrent().photographer_url)
+    {
+        window.location.href = galleryobj.getcurrent().photographer_url;
+    }
+    else if (galleryobj.getcurrent().url)
+    {
+        window.open(path,galleryobj.getcurrent().url);
+    }
+    else if (galleryobj.getcurrent().full)
+    {
+        window.open(path,galleryobj.getcurrent().full);
+    }
+    else
+    {
+        var id = galleryobj.getcurrent().id;
+        var path = `https://reportbase.com/image/${id}/blob`;
+        window.open(path,url.hostname);
+    }
+}
