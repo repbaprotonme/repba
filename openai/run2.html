@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>Cloudflare Worker</title>
+  </head>
+  <body>
+    <h1>Cloudflare Worker</h1>
+    <p>This page will run the Cloudflare Worker.</p>
+    <script>
+      fetch('https://openai.reportbase5836.workers.dev')
+        .then(response => response.text())
+        .then(data => {
+          document.body.innerHTML += data;
+        });
+    </script>
+  </body>
+</html>
+
+
+export default
+{
+	async fetch(request, env, ctx)
+    {
+return new Response("You have reached the Cloudflare Worker!", {
+    headers: {'content-type': 'text/plain',
+              'Access-Control-Allow-Origin': '*'},
+  })
+    }
+}

@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <title>Poem Generator</title>
+  </head>
+  <body>
+    <h1>Poem Generator</h1>
+    <form>
+      <label>Text Prompt:</label>
+      <input type="text" id="textInput" />
+      <button type="submit" onclick="generatePoem()">Generate Poem</button>
+    </form>
+    <p id="poemOutput"></p>
+    <script>
+      async function generatePoem() {
+        // get the text prompt
+        let text = document.getElementById('textInput').value;
+
+async function complete(text)
+{
+   let response = await fetch('https://openai.reportbase5836.workers.dev',
+   {
+         method: 'POST',
+         body: text,
+         headers: { "Content-Type": "text/plain" }
+   });
+
+    return await response.text();
+}
+
+        document.getElementById('poemOutput').innerText = complete(text);
+      }
+    </script>
+  </body>
+</html>
