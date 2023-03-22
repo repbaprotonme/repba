@@ -1,19 +1,23 @@
+
 export default
 {
 	async fetch(request, env, ctx)
     {
-        let txtprompt = await request.text();
-        var response = await fetch("https://api.openai.com/v1/engines/davinci/completions",
+        let OPENAI_KEY = env.OPENAI_KEY;
+        let PROMPTEXT = await request.text();
+
+        var response = await fetch("https://api.openai.com/v1/completions",
         {
             method: 'POST',
             headers:
             {
-                'Authorization': 'Bearer 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',
+                'Authorization': `Bearer ${OPENAI_KEY}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(
             {
-                "prompt": txtprompt,
+                "model": "text-davinci-003",
+                "prompt": PROMPTEXT,
                 "max_tokens": 5,
                 "temperature": 1,
                 "top_p": 1,
@@ -34,4 +38,4 @@ export default
             }
         });
     }
-};
+}

@@ -38,8 +38,8 @@ const ARROWFILL = "white";
 const REDUCEFACTOR = 40000;
 const SMALLFOOT = 70;
 const LARGEFOOT = 90;
-const SLIDETOP = 12;
-const SLIDEFACTOR = 48;
+const SLIDETOP = 18
+const SLIDEFACTOR = 60;
 
 globalobj = {};
 globalobj.errors = 0;
@@ -52,6 +52,7 @@ function numberRange (start, end) {return new Array(end - start).fill().map((d, 
 let url = new URL(window.location.href);
 url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 1;
 url.time = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : TIMEOBJ/2;
+url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 
 Math.clamp = function (min, max, val)
 {
@@ -517,16 +518,12 @@ function drawslices()
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
         context.visibles = [];
 
+        var k;
         for (var m = 0; m < slices.length; ++m)
         {
             var slice = slices[m];
             slice.fitwidth = 0;
             slice.fitheight = 0;
-        }
-
-        for (var m = 0; m < slices.length; ++m)
-        {
-            var slice = slices[m];
             slice.time = time + (m*context.delayinterval);
             var e = (context.virtualheight-r.height)/2;
             var bos = Math.tan(slice.time *VIRTCONST);
@@ -536,45 +533,34 @@ function drawslices()
             var j = context.buttonheight;
             if (y < -j || y >= window.innerHeight+j)
                 continue;
-            context.visibles.push({slice, x, y, m});
+            context.visibles.push({slice, x, y});
         }
 
         for (var m = 0; m < context.visibles.length; ++m)
         {
             var j = context.visibles[m];
             j.slice.center = {x: j.x, y: j.y};
-            j.slice.fitwidth = 0;
-            j.slice.fitheight = 0;
             context.save();
             context.translate(j.x, j.y);
-            context.draw(context, context.rect(), j.slice, j.m);
+            context.draw(context, context.rect(), j.slice, 0);
             context.restore();
         }
 
-        if (context.index == 7)
-        {
-            var rect = context.rect();
-            var a = new ColA([9,0,9],
-            [
-                new CurrentVPanel(new Fill("white"), 90, 0),
-                0,
-                new CurrentVPanel(new Fill("white"), 90, 1),
-            ]);
+        var rect = context.rect();
+        var a = new ColA([9,0,9],
+        [
+            context.index == 7?new CurrentVPanel(new Fill("white"), 90, 0):0,
+            0,
+            new CurrentVPanel(new Fill("white"), 90, 1),
+        ]);
 
-            a.draw(context, rect,
-            [
-                context.scrollobj,
-                0,
-                context.timeobj
-            ],
-            0);
-        }
-        else
-        {
-            var rect = context.rect();
-            var a = new CurrentVPanel(new Fill("white"), 90, 1);
-            a.draw(context, new rectangle(rect.width-9,0,9,rect.height), context.timeobj, 0);
-        }
+        a.draw(context, rect,
+        [
+            context.scrollobj,
+            0,
+            context.timeobj
+        ],
+        0);
     }
 }
 
@@ -1222,6 +1208,8 @@ addressobj.full = function (k)
     var p = url.path;
     if (!k)
         p+="."+galleryobj.current().pad(4);
+
+    //todo
     if (url.searchParams.has("unsplash"))
         out += "?unsplash="+p;
     else if (url.searchParams.has("pexels"))
@@ -1819,7 +1807,7 @@ var pinchlst =
 ];
 
 var rowobj = new Data("ROW", window.innerHeight);
-rowobj.set(Math.floor(0.5*window.innerHeight));
+rowobj.set(Math.floor((url.row/100)*window.innerHeight));
 
 var pretchobj = new Data("PORTSTRETCH", 100);
 var letchobj = new Data("LANDSTRETCH", 100);
@@ -1910,8 +1898,6 @@ function dropfiles(files)
     _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
     _8cnvctx.rvalue = 2;
     _8cnvctx.buttonheight = 200;
-    if (_8cnvctx.buttonheight>window.innerHeight-100)
-        _8cnvctx.buttonheight = window.innerHeight-100
     _8cnvctx.delayinterval = DELAYCENTER / slices.length();
     _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
     _8cnvctx.slidereduce = 0.0225;
@@ -1975,6 +1961,16 @@ var panlst =
              m = Math.floor((1-m)*obj.length());
              obj.set(m);
              context.refresh()
+        }
+        else if (type == "panleft" || type == "panright")
+        {
+            var k = panhorz(context.scrollobj, x);
+            if (k == -1)
+                return;
+            if (k == context.scrollobj.anchor())
+                return;
+            context.scrollobj.set(k);
+            context.refresh()
         }
         else if (type == "panup" || type == "pandown")
         {
@@ -2494,10 +2490,10 @@ var keylst =
         }
         else if (evt.key == " ")
         {
-            _4cnvctx.tapping = 0;
-            _4cnvctx.isthumbrect = 0;
-            headobj.enabled = headobj.enabled?0:1;
-            _4cnvctx.refresh();
+            headobj.rotate(1);
+            headham.panel = headobj.getcurrent();
+            headcnvctx.clear();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
         else if (evt.key == "\\")
         {
@@ -2565,7 +2561,14 @@ var keylst =
             stretchobj.getcurrent().add(1);
             context.refresh();
         }
-        else if (evt.key == "Tab" || evt.key == "Enter")
+        else if (evt.key == "Tab")
+        {
+            thumbobj.rotate(1);
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+            _4cnvctx.refresh();
+            evt.preventDefault();
+        }
+        else if (evt.key == "Enter")
         {
             context.movepage(evt.shiftKey?-1:1);
             evt.preventDefault();
@@ -2966,7 +2969,7 @@ var menulst =
         rect.width -= 50;
         context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
-        user.fitheight = rect.height;
+        user.fitheight = rect.height+60;
         context.font = "0.9rem Archivo Black";
         var clr = SCROLLNAB;
         if (user.tap)
@@ -3368,7 +3371,7 @@ var extentlst =
     init: function ()
     {
         galleryobj.template = "wide";
-        galleryobj.thumb = "widethumb";
+        galleryobj.thumb = "widethumbnail";//"widethumb";
         positxpobj.set(50);
         positypobj.set(100);
         positxlobj.set(50);
@@ -4288,7 +4291,7 @@ function resize()
     var n = eventlst.findIndex(function(a){return a.name == "_4cnvctx";})
     setevents(_4cnvctx, eventlst[n])
     _4cnvctx.tapping = 0;
-    _4cnvctx.refresh();
+    galleryobj.init(galleryobj);
 }
 
 function escape()
@@ -4301,12 +4304,12 @@ function escape()
     var n = eventlst.findIndex(function(a){return a.name == "_4cnvctx";})
     setevents(_4cnvctx, eventlst[n])
     _4cnvctx.setcolumncomplete = 0;
-    reset();
-    _4cnvctx.refresh();
+    localStorage.removeItem("LAST");
+    location.reload();
 }
 
 window.addEventListener("focus", (evt) => { });
-window.addEventListener("blur", (evt) => { escape(); });
+window.addEventListener("blur", (evt) => { });
 window.addEventListener("resize", (evt) => { resize(); });
 window.addEventListener("screenorientation", (evt) => { resize(); });
 
@@ -5064,8 +5067,6 @@ galleryobj.init = function(obj)
     _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
     _8cnvctx.rvalue = 3;
     _8cnvctx.buttonheight = 200;
-    if (_8cnvctx.buttonheight>window.innerHeight-100)
-        _8cnvctx.buttonheight = window.innerHeight-100
     _8cnvctx.delayinterval = DELAYCENTER / slices.length();
     _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
     _8cnvctx.slidereduce = 0.0225;
@@ -5150,8 +5151,8 @@ galleryobj.init = function(obj)
     }});
 
     _9cnvctx.delayinterval = DELAYCENTER / slices.data.length;
-    _9cnvctx.virtualheight = slices.data.length*_9cnvctx.buttonheight;
     _9cnvctx.buttonheight = 30;
+    _9cnvctx.virtualheight = slices.data.length*_9cnvctx.buttonheight;
     _9cnvctx.rvalue = 2;
     _9cnvctx.slidereduce = 0.75;
 
@@ -5169,6 +5170,7 @@ var last = localStorage.getItem("LAST");
 var lastpath = localStorage.getItem("LASTPATH");
 var lastrepos = localStorage.getItem("LASTREPOS");
 var repos = url.searchParams.has(lastrepos);
+//todo: use expiring cookie
 if (last && lastpath == url.path && repos)
 {
     galleryobj.init(JSON.parse(last));
