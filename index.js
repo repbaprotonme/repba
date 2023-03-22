@@ -834,8 +834,8 @@ var InfoPanel = function (color, shadow)
 
         var a = new Layer(
         [
-            _5cnvctx.enabled ? new Shrink(new CirclePanel("rgba(0,0,0,0)","rgb(255,155,0)",4),18,18) : 0,
             new Shrink(new CirclePanel(SCROLLNAB,"white",3),15,15),
+            _5cnvctx.enabled ? new Shrink(new CirclePanel("rgba(0,0,0,0)","rgb(255,155,0)",4),18,18) : 0,
             new Text("white", "center", "middle",0, 0, 0),
         ]);
 
@@ -2675,43 +2675,6 @@ var taplst =
     tap: function (context, rect, x, y)
     {
         delete _4cnvctx.thumbcanvas;
-        /*
-        if (context.selectpage && context.selectpage.hitest(x,y))
-        {
-            _6cnvctx.movingpage = 1;
-            context.refresh();
-            setTimeout(function()
-            {
-                _6cnvctx.movingpage = 0;
-                _6cnvctx.timeobj.set((1-_6cnvctx.sliceobj.berp())*TIMEOBJ);
-                menushow(_6cnvctx)
-            }, 500);
-        }
-        else if (context.prevpage && context.prevpage.hitest(x,y))
-        {
-            if (url.page == 1)
-                url.page = galleryobj.pages+1;
-            _8cnvctx.movingpage = -1;
-            context.refresh();
-            setTimeout(function()
-            {
-                url.page = Math.clamp(1,galleryobj.pages,url.page-1);
-                window.location.href = addressobj.full(true);
-            }, 500);
-        }
-        else if (context.nextpage && context.nextpage.hitest(x,y))
-        {
-            if (url.page == galleryobj.pages)
-                url.page = 0;
-            _8cnvctx.movingpage = 1;
-            context.refresh();
-            setTimeout(function()
-            {
-                url.page = Math.clamp(1,galleryobj.pages,url.page+1);
-                window.location.href = addressobj.full(true);
-            }, 500);
-        }
-        */
         if (x < MENUBARWIDTH+3)
         {
             var j = y/rect.height;
@@ -2733,9 +2696,6 @@ var taplst =
             {
                 return;
             }
-
-            delete _4cnvctx.thumbcanvas;
-            delete photo.image;
 
             var slice = context.sliceobj.data[k];
             slice.tap = 1;
@@ -4467,12 +4427,10 @@ var headlst =
             {
                 _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
                 menushow(_8cnvctx)
-                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             }
             else if (context.option.hitest(x,y))
             {
                 menushow(_9cnvctx);
-                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             }
             else if (menuenabled())
             {
@@ -4483,9 +4441,9 @@ var headlst =
                 headobj.rotate(1);
                 headham.panel = headobj.getcurrent();
                 headcnvctx.clear();
-                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             }
 
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnvctx.refresh();
 		};
 
@@ -4628,7 +4586,7 @@ var headlst =
                 return;
             }
 
-             headobj.rotate(1);
+            headobj.rotate(1);
             headham.panel = headobj.getcurrent();
             headcnvctx.clear();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -4643,8 +4601,6 @@ var headlst =
             else if (context.thumbpanel && context.thumbpanel.hitest(x,y))
             {
                 thumbobj.rotate(1);
-                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-                _4cnvctx.refresh();
             }
             else if (context.infopanel && context.infopanel.hitest(x,y))
             {
@@ -4674,8 +4630,10 @@ var headlst =
                 headobj.rotate(1);
                 headham.panel = headobj.getcurrent();
                 headcnvctx.clear();
-                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             }
+
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+            _4cnvctx.refresh();
 		};
 
 		this.draw = function (context, rect, user, time)

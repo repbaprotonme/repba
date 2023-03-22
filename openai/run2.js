@@ -1,3 +1,5 @@
+const fs = require('fs');
+var OPENAI_KEY = process.env.OPENAI_KEY
 async function complete(txtprompt)
 {
     var url = "https://api.openai.com/v1/engines/davinci/completions";
@@ -6,7 +8,7 @@ async function complete(txtprompt)
         method: 'POST',
         headers:
         {
-            'Authorization': 'Bearer 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',
+            'Authorization': `Bearer ${OPENAI_KEY}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(

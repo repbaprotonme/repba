@@ -16,6 +16,9 @@ fetch('https://api.openai.com/v1/images/generations',
   })
 })
 .then(res => res.json())
-.then(json => fs.writeFileSync("a.png",json.data[0].b64_json,{encoding: 'base64'}))
+.then(function(json)
+    {
+        json => fs.writeFileSync("a.png",json.data[0].b64_json,{encoding: 'base64'}))
+    })
 .catch(error => console.log(error))
 
