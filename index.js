@@ -533,7 +533,7 @@ function drawslices()
             var j = context.buttonheight;
             if (y < -j || y >= window.innerHeight+j)
                 continue;
-            context.visibles.push({slice, x, y});
+            context.visibles.push({slice, x, y, m});
         }
 
         for (var m = 0; m < context.visibles.length; ++m)
@@ -542,7 +542,7 @@ function drawslices()
             j.slice.center = {x: j.x, y: j.y};
             context.save();
             context.translate(j.x, j.y);
-            context.draw(context, context.rect(), j.slice, 0);
+            context.draw(context, context.rect(), j.slice, j.m);
             context.restore();
         }
 
@@ -5093,7 +5093,7 @@ galleryobj.init = function(obj)
             menushow(_5cnvctx);
         }});
 
-  slices.data.push({title:"Delete", path: "DELETE", func: function()
+    slices.data.push({title:"Delete", path: "DELETE", func: function()
         {
             var id = galleryobj.getcurrent().id;
             fetch(`https://reportbase.com/image/${id}`, { method: 'DELETE' })
