@@ -1,6 +1,7 @@
 {
   "title": "Repba Gallery",
-  "thumb": "porthumb",
+  "portrait": "landscape",
+  "thumb": "landthumb",
   "data": [
     {
       "id": "NAVY.0000",

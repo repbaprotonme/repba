@@ -1,5 +1,6 @@
 {
   "title": "Gallery",
+  "template": "portrait",
   "thumb": "porthumb",
   "data": [
     {

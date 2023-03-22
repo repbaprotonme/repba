@@ -1,6 +1,7 @@
 {
   "title": "Repba Gallery",
-  "thumb": "posthumb",
+  "template": "portrait",
+  "thumb": "porthumb",
   "data": [
     {
       "id": "TALE.0000",

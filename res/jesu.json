@@ -1,6 +1,7 @@
 {
   "title": "Repba Gallery",
-  "thumb": "porthumb",
+  "template": "landscape",
+  "thumb": "landthumb",
   "data": [
     {
       "id": "JESU.0000",

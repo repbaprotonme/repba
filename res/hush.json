@@ -1,5 +1,7 @@
 {
   "title": "Hush Comicbook",
+  "template": "portrait",
+  "thumb": "porthumb",
   "data": [
     {
       "id": "HUSH.0000",

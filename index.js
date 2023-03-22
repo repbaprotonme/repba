@@ -1,5 +1,7 @@
 //todo: https://obfuscator.io
 //todo: safari max size
+//todo: first image broken
+
 
 /* ++ += ==
 Copyright 2017 Tom Brinkman
@@ -1964,6 +1966,9 @@ var panlst =
         }
         else if (type == "panleft" || type == "panright")
         {
+            if (context.type == "panup" || context.type == "pandown")
+                return;
+            context.type = type;
             var k = panhorz(context.scrollobj, x);
             if (k == -1)
                 return;
@@ -1974,6 +1979,9 @@ var panlst =
         }
         else if (type == "panup" || type == "pandown")
         {
+            if (context.type == "panleft" || context.type == "panright")
+                return;
+            context.type = type;
             var jvalue = ((context.timeobj.length()/context.virtualheight)*(context.starty-y));
             var j = context.startt - jvalue;
             var len = context.timeobj.length();
@@ -1988,6 +1996,7 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
     {
+        context.type = 0;
         if (context.scrollobj)
             context.leftside = x < MENUPANWIDTH;
         context.rightside = x > rect.width-MENUPANWIDTH;
@@ -2666,6 +2675,7 @@ var taplst =
     tap: function (context, rect, x, y)
     {
         delete _4cnvctx.thumbcanvas;
+        /*
         if (context.selectpage && context.selectpage.hitest(x,y))
         {
             _6cnvctx.movingpage = 1;
@@ -2701,7 +2711,8 @@ var taplst =
                 window.location.href = addressobj.full(true);
             }, 500);
         }
-        else if (x < MENUBARWIDTH+3)
+        */
+        if (x < MENUBARWIDTH+3)
         {
             var j = y/rect.height;
             var k = context.scrollobj.length()*(1-j);
@@ -2722,6 +2733,9 @@ var taplst =
             {
                 return;
             }
+
+            delete _4cnvctx.thumbcanvas;
+            delete photo.image;
 
             var slice = context.sliceobj.data[k];
             slice.tap = 1;
@@ -3014,17 +3028,18 @@ var menulst =
             else if (!user.thumbimg)
             {
                 user.thumbimg = new Image();
-                user.thumbimg.src = `https://reportbase.com/image/${user.id}/${galleryobj.thumb}`;
                 if (user.thumb)
                     user.thumbimg.src = user.thumb;
                 else if (user.full)
                     user.thumbimg.src = user.full;
                 else if (user.url)
                     user.thumbimg.src = user.url;
-                user.thumbimg.onload = function()
+                else
                 {
-                    context.refresh();
+                    var template = galleryobj.thumb ? galleryobj.thumb : "thumb";
+                    user.thumbimg.src = `https://reportbase.com/image/${user.id}/${template}`;
                 }
+                user.thumbimg.onload = function() { context.refresh(); }
             }
         }
 
@@ -3371,7 +3386,7 @@ var extentlst =
     init: function ()
     {
         galleryobj.template = "wide";
-        galleryobj.thumb = "widethumbnail";//"widethumb";
+        galleryobj.thumb = "widethumbnail";
         positxpobj.set(50);
         positypobj.set(100);
         positxlobj.set(50);
@@ -3664,8 +3679,7 @@ function masterload()
         galleryobj.rotate(1);
         lst[n] = new Image();
         var id = galleryobj.getcurrent().id;
-        var template = galleryobj.template ? galleryobj.template : "medium";
-        var path = `https://reportbase.com/image/${id}/${template}`;
+        var path = `https://reportbase.com/image/${id}/${galleryobj.template}`;
         if (galleryobj.repos)
             path = galleryobj.getcurrent().url;
         lst[n].src = path;
@@ -3679,8 +3693,7 @@ function masterload()
     galleryobj.rotate(-6);
     var img = new Image();
     var id = galleryobj.getcurrent().id;
-    var template = galleryobj.template ? galleryobj.template : "medium";
-    var path = `https://reportbase.com/image/${id}/${template}`;
+    var path = `https://reportbase.com/image/${id}/${galleryobj.template}`;
     if (galleryobj.repos)
         path = galleryobj.getcurrent().url;
     img.src = path;
@@ -4964,9 +4977,6 @@ galleryobj.init = function(obj)
     letchobj.split(60, "40-90", letchobj.length());
     speedyobj.split(1.25, "1-20", speedyobj.length());
 
-    if (typeof galleryobj.thumb == "undefined")
-        galleryobj.thumb = "largethumb";
-
     galleryobj.set(url.project);
 
   function getslices()
@@ -5170,7 +5180,6 @@ var last = localStorage.getItem("LAST");
 var lastpath = localStorage.getItem("LASTPATH");
 var lastrepos = localStorage.getItem("LASTREPOS");
 var repos = url.searchParams.has(lastrepos);
-//todo: use expiring cookie
 if (last && lastpath == url.path && repos)
 {
     galleryobj.init(JSON.parse(last));

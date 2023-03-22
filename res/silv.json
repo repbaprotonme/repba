@@ -1,6 +1,7 @@
 {
   "title": "Repba Gallery",
-  "thumb": "porthumb",
+  "template": "portrait",
+  "thumb": "portthumb",
   "data": [
     {
       "id": "SILV.0000",

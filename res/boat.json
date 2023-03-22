@@ -1,5 +1,7 @@
 {
   "title": "Digital Media Gallery",
+  "template": "landscape",
+  "thumb": "landthumb",
   "data": [
     {
       "id": "BOAT.0001",

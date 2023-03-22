@@ -1,5 +1,7 @@
 {
   "title": "Repba Gallery",
+  "template": "portrait",
+  "thumb": "porthumb",
   "data": [
     {
       "id": "BAKE.0000",
