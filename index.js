@@ -1,6 +1,5 @@
 //todo: https://obfuscator.io
 //todo: safari max size
-//todo: first image broken
 
 
 /* ++ += ==
@@ -534,7 +533,11 @@ function drawslices()
             var x = w/2;
             var j = context.buttonheight;
             if (y < -j || y >= window.innerHeight+j)
+            {
+                delete slice.thumbimg;
                 continue;
+            }
+
             context.visibles.push({slice, x, y, m});
         }
 
@@ -1211,13 +1214,8 @@ addressobj.full = function (k)
     if (!k)
         p+="."+galleryobj.current().pad(4);
 
-    //todo
-    if (url.searchParams.has("unsplash"))
-        out += "?unsplash="+p;
-    else if (url.searchParams.has("pexels"))
-        out += "?pexels="+p;
-    else if (url.searchParams.has("pixabay"))
-        out += "?pixabay="+p;
+    if (galleryobj.repos)
+        out += `?${galleryobj.repos}=${p}`;
     else if (url.searchParams.has("sidney"))
         out += "?sidney="+p;
     else
@@ -2033,7 +2031,6 @@ var panlst =
             y = pt?pt.y:y;
             var k = guideobj.getcurrent();
             k.pan(context, rect, x, y, type);
-            headcnv.height = 0;
         }
         else if (context.pantype != 2 && (type == "panleft" || type == "panright"))
         {
@@ -2069,6 +2066,8 @@ var panlst =
                 contextobj.reset();
             }
         }
+
+        headcnv.height = 0;
     },
 	panstart: function (context, rect, x, y)
 	{
@@ -2374,13 +2373,14 @@ var presslst =
         }
         else
         {
-                headobj.rotate(1);
-                headham.panel = headobj.getcurrent();
-                headcnvctx.clear();
-                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            headobj.enabled = headobj.enabled?0:1;
+            headobj.rotate(1);
+            headham.panel = headobj.getcurrent();
+            headcnvctx.clear();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
 
+        headcnv.height = 80;
+        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         context.refresh();
     }
 },
@@ -4305,11 +4305,6 @@ function menuhide()
     _8cnvctx.hide();
     _9cnvctx.hide();
     _4cnvctx.refresh();
-    for (var n = 0; n < _8cnvctx.sliceobj.length(); ++n)
-    {
-        delete _8cnvctx.sliceobj.data[n].thumbimg;
-    }
-
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     return k;
 }
@@ -5264,3 +5259,4 @@ function download()
         window.open(path,url.hostname);
     }
 }
+
