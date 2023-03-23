@@ -615,7 +615,7 @@ var eventlst =
     {name: "_5cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "BMENU", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
     {name: "_6cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "BMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
     {name: "_7cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
-    {name: "_8cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "GMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "GPRESS", pinch: "DEFAULT"},
+    {name: "_8cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "GMENU", wheel: "MENU", drop: "DEFAULT", key: "GMENU", press: "GPRESS", pinch: "DEFAULT"},
     {name: "_9cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
 ];
 
@@ -2387,7 +2387,19 @@ var swipelst =
 },
 {
     name: "MENU",
-    swipeleftright: function (context, rect, x, y, evt) {},
+    swipeleftright: function (context, rect, x, y, evt)
+    {
+        if (evt.type == "swipeleft")
+        {
+            context.scrollobj.addperc(-25);
+            context.refresh()
+        }
+        else
+        {
+            context.scrollobj.addperc(25);
+            context.refresh()
+        }
+    },
     swipeupdown: function (context, rect, x, y, evt)
     {
         context.slideshow = (context.timeobj.length()/context.virtualheight)*18;
@@ -2435,6 +2447,36 @@ var keylst =
 	name: "DEFAULT",
 	keyup: function (evt) { },
 	keydown: function (evt) { }
+},
+{
+	name: "GMENU",
+	keyup: function (evt) { },
+	keydown: function (evt)
+	{
+		var context = _8cnvctx;
+		if (evt.key == "ArrowUp" || evt.key == "j")
+		{
+            var k = (20/context.virtualheight)*context.timeobj.length();
+            context.timeobj.rotate(k);
+            context.refresh()
+        }
+        else if (evt.key == "ArrowLeft" || evt.key == "h")
+		{
+            context.scrollobj.add(-5);
+            context.refresh()
+        }
+        else if (evt.key == "ArrowRight" || evt.key == "l")
+		{
+            context.scrollobj.add(5);
+            context.refresh()
+        }
+        else if (evt.key == "ArrowDown" || evt.key == "k")
+		{
+            var k = (20/context.virtualheight)*context.timeobj.length();
+            context.timeobj.rotate(-k);
+            context.refresh()
+        }
+ 	}
 },
 {
 	name: "MENU",

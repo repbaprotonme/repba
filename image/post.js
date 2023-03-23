@@ -1,6 +1,8 @@
 //node post.js post.json
 const fs = require('fs');
 const args = process.argv;
+const CLOUDFLARE_ID = process.env.CLOUDFLARE_ID;
+const CLOUDFLARE_IMAGE_TOKEN = process.env.CLOUDFLARE_IMAGE_TOKEN;
 
 async function upload(obj)
 {
@@ -13,12 +15,12 @@ async function upload(obj)
         body.append("requireSignedURLs", "false");
         body.append("metadata", JSON.stringify(obj));
 
-        const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1`,
+        const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1`,
             {
                 method: "POST",
                 headers:
                 {
-                    "Authorization": `Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb`,
+                    "Authorization": `Bearer ${CLOUDFLARE_IMAGE_TOKEN}`,
                 },
                 body,
             }

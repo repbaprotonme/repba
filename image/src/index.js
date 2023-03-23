@@ -1,7 +1,14 @@
-export default {
-  async fetch(request) {
-
-    switch (request.method) {
+export default
+{
+  async fetch(request, env, ctx)
+  {
+    let CLOUDFLARE_ID = env.CLOUDFLARE_ID;
+    let CLOUDFLARE_IMAGE_TOKEN = env.CLOUDFLARE_IMAGE_TOKEN;
+    let CLOUDFLARE_AUTH_KEY = env.CLOUDFLARE_AUTH_KEY;
+    let CLOUDFLARE_AUTH_EMAIL = env.CLOUDFLARE_AUTH_EMAIL;
+    let CLOUDFLARE_ACCOUNT_HASH = env.CLOUDFLARE_ACCOUNT_HASH;
+    switch (request.method)
+    {
       case 'REPORT':
       {
             const options =
@@ -11,16 +18,16 @@ export default {
                 {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Methods': 'GET, DELETE, POST, REPORT, PATCH',
-                    'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb',
-                    'X-Auth-Key': 'd27e8f43b04336d419f9b85927dc1e25bb915',
-                    'X-Auth-Email': 'reportbase@gmail.com',
+                    'Authorization': `Bearer ${CLOUDFLARE_IMAGE_TOKEN}`,
+                    'X-Auth-Key': `${CLOUDFLARE_AUTH_KEY}`,
+                    'X-Auth-Email': `${CLOUDFLARE_AUTH_EMAIL}`,
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Headers': '*'
                 }
             };
 
             var id = request.url.split("/").slice(-1).join("/");
-            return fetch(`https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1/${id}`, options);
+            return fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1/${id}`, options);
       }
       case 'PATCH':
       {
@@ -31,50 +38,28 @@ export default {
                 {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Methods': 'GET, DELETE, POST, REPORT, PATCH',
-                    'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb',
-                    'X-Auth-Key': 'd27e8f43b04336d419f9b85927dc1e25bb915',
-                    'X-Auth-Email': 'reportbase@gmail.com',
-                    'Access-Control-Allow-Origin': '*',//todo not working
+                    'Authorization': `Bearer ${CLOUDFLARE_IMAGE_TOKEN}`,
+                    'X-Auth-Key': `${CLOUDFLARE_AUTH_KEY}`,
+                    'X-Auth-Email': `${CLOUDFLARE_AUTH_EMAIL}`,
+                    'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Headers': '*'
                 },
                 body: '{"metadata":{},"requireSignedURLs":false}'
             };
 
             var id = request.url.split("/").slice(-1).join("/");
-            return fetch(`https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1/${id}`, options);
+            return fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1/${id}`, options);
       }
       case 'POST':
       {
-            const url = new URL(request.url);
-            const body = new FormData();
-            body.append("url", "https://i.imgur.com/lEWdncT.jpg");
+const body = await request.json()
+    return new Response(JSON.stringify(body), {
+      headers: {
+        "content-type": "application/json",
+      },
+    });
 
-            var id = request.url.split("/").slice(-1).join("/");
-            id = id.split("?")[0];
-            //body.append("id", id);
 
-            var metadata = {};
-            metadata.email = url.searchParams.get("email");
-            metadata.party = url.searchParams.get("party");
-            body.append("metadata", JSON.stringify(metadata));
-            body.append("requireSignedURLs", "");
-
-            return fetch(`https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1`,
-                {
-                    method: "POST",
-                    headers:
-                    {
-                        //'Content-Type': 'application/json',
-                        //'Access-Control-Allow-Methods': 'GET, DELETE, POST, REPORT, PATCH',
-                        "Authorization": `Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb`,
-                        //'X-Auth-Key': 'd27e8f43b04336d419f9b85927dc1e25bb915',
-                        //'X-Auth-Email': 'reportbase@gmail.com',
-                        //'Access-Control-Allow-Origin': '*',
-                        //'Access-Control-Allow-Headers': '*'
-                    },
-                    body,
-                }
-            );
       }
       case 'GET':
       {
@@ -88,22 +73,21 @@ export default {
                     {
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Methods': 'GET, DELETE, POST, REPORT, PATCH',
-                        'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb',
-                        'X-Auth-Key': 'd27e8f43b04336d419f9b85927dc1e25bb915',
-                        'X-Auth-Email': 'reportbase@gmail.com',
+                        'Authorization': `Bearer ${CLOUDFLARE_IMAGE_TOKEN}`,
+                        'X-Auth-Key': `${CLOUDFLARE_AUTH_KEY}`,
+                        'X-Auth-Email': `${CLOUDFLARE_AUTH_EMAIL}`,
                         'Access-Control-Allow-Origin': '*',
                         'Access-Control-Allow-Headers': '*'
                     }
                 };
 
                 var suffix = request.url.split("/").slice(-2).join("/")
-                return fetch(`https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1/${suffix}`, options)
+                return fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1/${suffix}`, options)
             }
             else
             {
-                //https://reportbase.com/image/BAKE.0000/quality=85,fit=crop,width=2112,height=2840
                 var suffix = request.url.split("/").slice(-2).join("/")
-                return fetch(`https://imagedelivery.net/w9Lvwo1EAmYzHfbI5TkJ7g/${suffix}`)
+                return fetch(`https://imagedelivery.net/${CLOUDFLARE_ACCOUNT_HASH}/${suffix}`)
             }
       }
       case 'DELETE':
@@ -115,14 +99,14 @@ export default {
                 {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Methods': 'GET, DELETE, POST, REPORT, PATCH',
-                    'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb',
+                    'Authorization': `Bearer ${CLOUDFLARE_IMAGE_TOKEN}`,
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Headers': '*'
                 }
             };
 
             var id = request.url.split("/").slice(-1).join("/");
-            return fetch(`https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1/${id}`, options);
+            return fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1/${id}`, options);
       }
       default:
       {
