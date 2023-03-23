@@ -6,28 +6,18 @@ const CLOUDFLARE_IMAGE_TOKEN = process.env.CLOUDFLARE_IMAGE_TOKEN;
 
 async function upload(obj)
 {
-    try
+    const res = await fetch('https://reportbase.com/image/',
     {
-const res = await fetch('https://reportbase.com/image/XXX', {
-  method: 'POST',
-  body: JSON.stringify({
-    data: {
-      name: 'John',
-      age: 25,
-    }
-  }),
-  headers: {
-    'Content-Type': 'application/json'
-  }
-});
+      method: 'POST',
+      headers:
+      {
+        'Content-Type': 'application/json'
+      },
+        body: JSON.stringify(obj),
+    });
 
-        const body = await res.text()
-        console.log(body);
-    }
-    catch (e)
-    {
-        console.log(`ERROR: ${e}`);
-    }
+    const str = await res.json()
+    console.log(str);
 }
 
 async function load(json)

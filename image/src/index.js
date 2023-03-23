@@ -52,14 +52,31 @@ export default
       }
       case 'POST':
       {
-const body = await request.json()
-    return new Response(JSON.stringify(body), {
-      headers: {
-        "content-type": "application/json",
-      },
-    });
+            const obj = await request.json()
+            const body = new FormData();
+            if (obj.id)
+                body.append("id", obj.id);
+            body.append("url", obj.url);
+            body.append("requireSignedURLs", "false");
+            body.append("metadata", JSON.stringify(obj));
 
+            const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1`,
+                {
+                    method: "POST",
+                    headers:
+                    {
+                        "Authorization": `Bearer ${CLOUDFLARE_IMAGE_TOKEN}`,
+                    },
+                    body,
+                }
+            );
 
+          var k = await res.json();
+            return new Response(JSON.stringify(k.result), {
+              headers: {
+                "content-type": "application/json",
+              },
+            });
       }
       case 'GET':
       {
