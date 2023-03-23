@@ -1,7 +1,6 @@
 //todo: https://obfuscator.io
 //todo: safari max size
 
-
 /* ++ += ==
 Copyright 2017 Tom Brinkman
 http://www.reportbase.com
@@ -44,6 +43,7 @@ const SLIDEFACTOR = 60;
 
 globalobj = {};
 globalobj.errors = 0;
+
 let photo = {}
 photo.image = 0;
 
@@ -534,7 +534,12 @@ function drawslices()
             var j = context.buttonheight;
             if (y < -j || y >= window.innerHeight+j)
             {
-                delete slice.thumbimg;
+                if (slice.thumbimg)
+                {
+                    delete slice.thumbimg;
+                    slice.thumbimg = 0;
+                }
+
                 continue;
             }
 
@@ -609,6 +614,13 @@ let footcnvctx = footcnv.getContext("2d", opts);
 
 let contextlst = [_1cnvctx,_2cnvctx,_3cnvctx,_4cnvctx,_5cnvctx,_6cnvctx,_7cnvctx,_8cnvctx,_9cnvctx];
 let canvaslst = [];
+canvaslst[0] = document.createElement("canvas");
+canvaslst[1] = document.createElement("canvas");
+canvaslst[2] = document.createElement("canvas");
+canvaslst[3] = document.createElement("canvas");
+canvaslst[4] = document.createElement("canvas");
+canvaslst[5] = document.createElement("canvas");
+
 var eventlst =
 [
     {name: "_1cnvctx", mouse: "DEFAULT", guide: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", draw: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "DEFAULT", press: "DEFAULT", pinch: "DEFAULT"},
@@ -3328,12 +3340,6 @@ function resetcanvas()
     var j = 0;
     for (var n = 0; n < canvaslen; ++n)
     {
-        if (!canvaslst[n])
-        {
-            var cnv = document.createElement("canvas");
-            canvaslst[n] = cnv;
-        }
-
         var cnv = canvaslst[n];
         if (cnv.height != context.canvas.height)
             cnv.height = context.canvas.height;
@@ -4305,7 +4311,6 @@ function menuhide()
     _8cnvctx.hide();
     _9cnvctx.hide();
     _4cnvctx.refresh();
-    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     return k;
 }
 
