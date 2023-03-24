@@ -845,7 +845,7 @@ var InfoPanel = function (color, shadow)
         context.save();
 		context.fillStyle = "white";
 		context.strokeStyle = "white";
-        context.font = "1rem Archivo Black";
+        context.font = "1.75rem Archivo Black";
 
         var a = new Layer(
         [
@@ -1258,6 +1258,17 @@ addressobj.update = function()
 }
 
 history.pushState(null, null, document.URL);
+
+window.onpopstate = function ()
+{
+    if (ismenu())
+    {
+        menuhide();
+        return;
+    }
+
+    window.history.go(1);
+};
 
 CanvasRenderingContext2D.prototype.moveup = function()
 {
@@ -2727,7 +2738,7 @@ var taplst =
         }
         else
         {
-            if (menuenabled())
+            if (ismenu())
             {
                 menuhide();
             }
@@ -2763,6 +2774,10 @@ var taplst =
             var k = TIMEOBJ*(1-j);
             context.timeobj.set(k);
             context.refresh();
+        }
+        else if (y < 80)
+        {
+            menuhide();
         }
         else
         {
@@ -4280,7 +4295,7 @@ function rotate(pointX, pointY, originX, originY, angle)
 	return k;
 }
 
-function menuenabled()
+function ismenu()
 {
     var k = _2cnv.height || _3cnv.height || _5cnv.height || _6cnv.height || _7cnv.height ||
         _8cnv.height || _9cnv.height;
@@ -4289,7 +4304,7 @@ function menuenabled()
 
 function menuhide()
 {
-    var k = menuenabled();
+    var k = ismenu();
     _2cnvctx.enabled = 0;
     _3cnvctx.enabled = 0;
     _5cnvctx.enabled = 0;
@@ -4305,6 +4320,7 @@ function menuhide()
     _8cnvctx.hide();
     _9cnvctx.hide();
     _4cnvctx.refresh();
+    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     return k;
 }
 
@@ -4329,6 +4345,12 @@ function resize()
 
 function escape()
 {
+    if (ismenu())
+    {
+        menuhide();
+        return;
+    }
+
     _4cnvctx.panhide  = 0
     _4cnvctx.pinched = 0;
     delete _4cnvctx.thumbcanvas;
@@ -4345,14 +4367,6 @@ window.addEventListener("focus", (evt) => { });
 window.addEventListener("blur", (evt) => { });
 window.addEventListener("resize", (evt) => { resize(); });
 window.addEventListener("screenorientation", (evt) => { resize(); });
-
-//block back
-window.history.pushState(null, null, window.location.href);
-window.onpopstate = function ()
-{
-    menuhide();
-    window.history.go(1);
-};
 
 var YollPanel = function ()
 {
@@ -4476,7 +4490,7 @@ var headlst =
 	{
     	this.press = function (context, rect, x, y)
 		{
-            if (menuenabled())
+            if (ismenu())
             {
                 menuhide();
             }
@@ -4505,7 +4519,7 @@ var headlst =
                 if (galleryobj.repos)
                     download();
             }
-            else if (menuenabled())
+            else if (ismenu())
             {
                 menuhide();
             }
@@ -4571,7 +4585,7 @@ var headlst =
 	{
     	this.press = function (context, rect, x, y)
 		{
-            if (menuenabled())
+            if (ismenu())
             {
                 menuhide();
                 return;
@@ -4597,7 +4611,7 @@ var headlst =
             {
                 window.location.href = `${url.origin}/search.html`;
             }
-            else if (menuenabled())
+            else if (ismenu())
             {
                 menuhide();
             }
@@ -4657,7 +4671,7 @@ var headlst =
 	{
     	this.press = function (context, rect, x, y)
 		{
-            if (menuenabled())
+            if (ismenu())
             {
                 menuhide();
                 return;
@@ -4698,7 +4712,7 @@ var headlst =
                         screenfull.request();
                 }
             }
-            else if (menuenabled())
+            else if (ismenu())
             {
                 menuhide();
             }
