@@ -1,15 +1,32 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npx wrangler dev src/index.js` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npx wrangler publish src/index.js --name my-worker` to publish your worker
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+export default
+{
+	async fetch(request, env, ctx)
+    {
+        let OPENAI_KEY = env.OPENAI_KEY;
+        let PROMPTEXT = await request.text();
+        var res = await fetch('https://api.openai.com/v1/images/generations',
+        {
+          method: 'POST',
+          headers:
+          {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'authorization': `bearer ${OPENAI_KEY}`
+          },
+          body: JSON.stringify({
+            'prompt': `${PROMPTEXT}`,
+            'n': 2,
+            'size': '1024x1024'
+          })
+        });
 
-export default {
-	async fetch(request, env, ctx) {
-		return new Response("Hello World!");
+        var json = await res.json();
+        return new Response(JSON.stringify(json.data), {
+          headers: {
+            "content-type": "application/json",
+          },
+        });
 	},
 };
+
+

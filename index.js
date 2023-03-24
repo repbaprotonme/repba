@@ -22,7 +22,7 @@ const DELAY = 10000000;
 const HNUB = 10;
 const ALIEXTENT = 60;
 const ARROWBORES = 22;
-const DELAYCENTER = 3.926;
+const DELAYCENTER = 3.927;
 const TIMEOBJ = 3926;
 const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(255,175,0,0.75)";
@@ -845,7 +845,7 @@ var InfoPanel = function (color, shadow)
         context.save();
 		context.fillStyle = "white";
 		context.strokeStyle = "white";
-        context.font = "1.5rem Archivo Black";
+        context.font = "1rem Archivo Black";
 
         var a = new Layer(
         [
@@ -2982,7 +2982,7 @@ var menulst =
         context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
         user.fitheight = rect.height;
-        context.font = "0.9rem Archivo Black";
+        context.font = "1rem Archivo Black";
         var clr = SCROLLNAB;
         var str = user.title;
         if (user.tap)
@@ -3005,11 +3005,11 @@ var menulst =
     {
         context.save();
         rect.height = context.buttonheight;
-        rect.width -= 50;
+        rect.width -= 25;
         context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
         user.fitheight = rect.height+60;
-        context.font = "0.9rem Archivo Black";
+        context.font = "1rem Archivo Black";
         var clr = SCROLLNAB;
         if (user.tap)
             clr = MENUTAP;
@@ -3141,7 +3141,7 @@ var menulst =
         context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
         user.fitheight = rect.height;
-        context.font = "0.9rem Archivo Black";
+        context.font = "1rem Archivo Black";
         var clr = SCROLLNAB;
         var str = user.title;
 
@@ -3187,7 +3187,7 @@ var menulst =
         context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
         user.fitheight = rect.height;
-        context.font = "0.9rem Archivo Black";
+        context.font = "1rem Archivo Black";
         var clr = SCROLLNAB;
         var fontclr = "white";
         var str = user.title;
@@ -3259,11 +3259,6 @@ function resetcanvas()
     zoomobj.set(window.landscape());
     positxobj.set(window.landscape());
     posityobj.set(window.landscape());
-
-    var h = window.self !== window.top ? 0 : 80;
-    headcnvctx.show(0,0,window.innerWidth,h);
-    headham.panel = headobj.getcurrent();
-    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
     var canvas = _4cnv;
     var context = _4cnvctx;
@@ -5215,6 +5210,11 @@ galleryobj.init = function(obj)
         menushow(_8cnvctx)
         _4cnvctx.refresh();
     }
+
+    var h = window.self !== window.top ? 0 : 80;
+    headcnvctx.show(0,0,window.innerWidth,h);
+    headham.panel = headobj.getcurrent();
+    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 };
 
 var last = localStorage.getItem("LAST");

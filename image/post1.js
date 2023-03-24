@@ -16,8 +16,8 @@ async function upload(obj)
         body: JSON.stringify(obj),
     });
 
-    const str = await res.json()
-    console.log(str);
+    const json = await res.json()
+    return json.id;
 }
 
 async function load(json)

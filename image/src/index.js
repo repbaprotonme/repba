@@ -71,7 +71,7 @@ export default
                 }
             );
 
-          var k = await res.json();
+            var k = await res.json();
             return new Response(JSON.stringify(k.result), {
               headers: {
                 "content-type": "application/json",
