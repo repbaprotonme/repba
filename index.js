@@ -66,8 +66,7 @@ Math.clamp = function (min, max, val)
 
 let Data = function (title, data)
 {
-    this.title = title.toLowerCase().replace(/\./g, "");
-    this.fulltitle = title;
+    this.title = title;
     this.ANCHOR = 0;
     this.CURRENT = 0;
     this.data = data;
@@ -1057,20 +1056,23 @@ var Stroke = function (color, width)
     }
 }
 
-var PlusPanel = function (color, shadow)
+var PlusPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
+        var a = new Shrink(new CirclePanel(SCROLLNAB,"white",3),15,15);
+        a.draw(context, rect, 0, 0);
+
         context.save();
-        context.translate(rect.width/2-8,rect.height/2-6);
+        context.translate(rect.width/2-9,rect.height/2-8);
 	    var w = rect.width
         var h = rect.height
         var x = rect.x;
         var y = rect.y;
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
-        context.shadowColor = shadow;
-		context.fillStyle = color;
+        context.shadowColor = "black";
+		context.fillStyle = "white";
 	    var path = new Path2D();
         x += 6;
         y -= 3;
@@ -1097,24 +1099,27 @@ var PlusPanel = function (color, shadow)
         y += 5;
 		path.lineTo(x,y);
 		context.fill(path);
-
         context.restore();
     };
 };
 
-var MinusPanel = function (color, shadow)
+var MinusPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
+        var a = new Shrink(new CirclePanel(SCROLLNAB,"white",3),15,15);
+        a.draw(context, rect, 0, 0);
+
         context.save();
-        context.translate(rect.width/2-8,rect.height/2-5);
+        context.translate(rect.width/2-7,rect.height/2-7);
 	    var w = rect.width
         var h = rect.height
         var x = rect.x;
         var y = rect.y;
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
-        context.shadowColor = shadow;
+		context.fillStyle = "white";
+        context.shadowColor = "black";
 	    var path = new Path2D();
         var x = rect.x-3;
         var y = rect.y+5;
@@ -1127,9 +1132,7 @@ var MinusPanel = function (color, shadow)
 		path.lineTo(x,y);
         y += 5;
 		path.lineTo(x,y);
-		context.fillStyle = color;
 		context.fill(path);
-
         context.restore();
     };
 };
@@ -1804,16 +1807,22 @@ var pinchlst =
 
             contextobj.reset();
         }
+
+        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     },
     pinchstart: function (context, rect, x, y)
     {
+        headcnv.height = 80;
+        headobj.set(2);
+        headham.panel = headobj.getcurrent();
+        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         context.clearpoints();
         context.isthumbrect = context.thumbrect && context.thumbrect.expand &&
             context.thumbrect.expand(40,40).hitest(x,y);
         if (context.isthumbrect)
             context.obj = heightobj.getcurrent();
         else
-            context.obj = globalobj.shifthit ? stretchobj.getcurrent() : zoomobj.getcurrent();
+            context.obj = pinchobj.getcurrent().getcurrent();
         context.savepinch = context.obj.getcurrent()
     },
     pinchend: function (context)
@@ -1834,11 +1843,13 @@ rowobj.set(Math.floor((url.row/100)*window.innerHeight));
 
 var pretchobj = new Data("PORTSTRETCH", 100);
 var letchobj = new Data("LANDSTRETCH", 100);
-var stretchobj = new Data("STRETCH", [pretchobj,letchobj]);
+var stretchobj = new Data("Stretch", [pretchobj,letchobj]);
 
 var poomobj = new Data("PORTZOOM", 100);
 var loomobj = new Data("LANDZOOM", 100);
-var zoomobj = new Data("ZOOM", [poomobj,loomobj]);
+var zoomobj = new Data("Zoom", [poomobj,loomobj]);
+
+var pinchobj = new Data("PINCH", [zoomobj,stretchobj]);
 
 var traitobj = new Data("TRAIT", 100);
 var scapeobj = new Data("SCAPE", 100);
@@ -4514,20 +4525,13 @@ var headlst =
             {
                 menushow(_9cnvctx);
             }
-            else if (context.picture.hitest(x,y))
+            else if (galleryobj.repos && context.picture.hitest(x,y))
             {
-                if (galleryobj.repos)
-                    download();
+                download();
             }
             else if (ismenu())
             {
                 menuhide();
-            }
-            else
-            {
-                headobj.rotate(1);
-                headham.panel = headobj.getcurrent();
-                headcnvctx.clear();
             }
 
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -4599,7 +4603,11 @@ var headlst =
 
     	this.tap = function (context, rect, x, y)
 		{
-            if (context.moveprev && context.moveprev.hitest(x,y))
+            if (ismenu())
+            {
+                menuhide();
+            }
+            else if (context.moveprev && context.moveprev.hitest(x,y))
             {
                 _4cnvctx.movepage(-1);
             }
@@ -4610,17 +4618,6 @@ var headlst =
             else if (context.picture.hitest(x,y))
             {
                 window.location.href = `${url.origin}/search.html`;
-            }
-            else if (ismenu())
-            {
-                menuhide();
-            }
-            else
-            {
-                headobj.rotate(1);
-                headham.panel = headobj.getcurrent();
-                headcnvctx.clear();
-                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             }
 		};
 
@@ -4674,6 +4671,94 @@ var headlst =
             if (ismenu())
             {
                 menuhide();
+            }
+            else
+            {
+                headobj.rotate(1);
+                headham.panel = headobj.getcurrent();
+                headcnvctx.clear();
+                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+            }
+        }
+
+     	this.tap = function (context, rect, x, y)
+		{
+            if (ismenu())
+            {
+                menuhide();
+            }
+            else if (context.minuspanel.hitest(x,y))
+            {
+                pinchobj.getcurrent().getcurrent().add(-5);
+                contextobj.reset();
+            }
+            else if (context.pluspanel.hitest(x,y))
+            {
+                pinchobj.getcurrent().getcurrent().add(5);
+                contextobj.reset();
+            }
+            else if (context.picture.hitest(x,y))
+            {
+                pinchobj.rotate(1);
+            }
+
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+            _4cnvctx.refresh();
+		};
+
+		this.draw = function (context, rect, user, time)
+		{
+            context.clear()
+            context.save()
+            context.shadowOffsetX = 0;
+            context.shadowOffsetY = 0;
+            context.shadowColor = "black"
+            context.pluspanel = new rectangle()
+            context.minuspanel = new rectangle()
+//            context.thumbnail = new rectangle()
+            context.picture = new rectangle()
+            context.font = "1rem Archivo Black";
+            var e = Math.min(520,rect.width-190);
+            var a = new Col([80,0,e,0,80],
+                    [
+                        new Layer(
+                        [
+                            new MinusPanel(),
+                            new Rectangle(context.minuspanel),
+                        ]),
+                        0,
+                        new Layer(
+                        [
+                            new Rectangle(context.picture),
+                            new RowA([0,25,25,0],
+                            [
+                                0,
+                                new Text("white", "center", "middle",0,0,1),
+                                new Text("white", "center", "middle",0,0,1),
+                                0,
+                            ]),
+                        ]),
+                        0,
+                        new Layer(
+                        [
+                            new PlusPanel(),
+                            new Rectangle(context.pluspanel),
+                        ])
+                    ]);
+
+            var st = pinchobj.getcurrent().title;
+            var k = (pinchobj.getcurrent().getcurrent().berp()*100).toFixed(0)+"%";
+            a.draw(context, rect, [0,st,k,0], time);
+            context.restore()
+		};
+	},
+	new function ()
+	{
+    	this.press = function (context, rect, x, y)
+		{
+            if (ismenu())
+            {
+                menuhide();
                 return;
             }
 
@@ -4685,7 +4770,11 @@ var headlst =
 
      	this.tap = function (context, rect, x, y)
 		{
-            if (context.downpanel && context.downpanel.hitest(x,y))
+            if (ismenu())
+            {
+                menuhide();
+            }
+            else if (context.downpanel && context.downpanel.hitest(x,y))
             {
                 download();
             }
@@ -4711,16 +4800,6 @@ var headlst =
                     else
                         screenfull.request();
                 }
-            }
-            else if (ismenu())
-            {
-                menuhide();
-            }
-            else
-            {
-                headobj.rotate(1);
-                headham.panel = headobj.getcurrent();
-                headcnvctx.clear();
             }
 
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -4794,7 +4873,7 @@ var headlst =
             a.draw(context, rect, 0, 0);
             context.restore();
         }
-    }
+    },
 ];
 
 var headobj = new Data("HEAD", headlst);
@@ -4886,13 +4965,7 @@ var PagePanel = function (size)
                 0,
             ]),
         ])
-/*
-        var a = new Layer(
-        [
-            new Shrink(new CirclePanel(SCROLLNAB,"white",3),10,10),
-            new Shrink(new ProgressPanel(),5,5),
-        ])
-*/
+
         a.draw(context, rect, user, time);
         context.restore()
     }
