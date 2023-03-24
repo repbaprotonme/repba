@@ -1768,7 +1768,7 @@ var pinchlst =
         if (context.isthumbrect)
         {
             delete context.thumbcanvas;
-            var f = Math.floor(obj.length()*e);
+            var f = Math.floor(obj.length()*Math.max(e,0.1));
             obj.set(f);
             context.refresh();
         }
@@ -2982,7 +2982,7 @@ var menulst =
         context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
         user.fitheight = rect.height;
-        context.font = "1rem Archivo Black";
+        context.font = "0.9rem Archivo Black";
         var clr = SCROLLNAB;
         var str = user.title;
         if (user.tap)
@@ -3009,7 +3009,7 @@ var menulst =
         context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
         user.fitheight = rect.height+60;
-        context.font = "1rem Archivo Black";
+        context.font = "0.9rem Archivo Black";
         var clr = SCROLLNAB;
         if (user.tap)
             clr = MENUTAP;
@@ -3141,7 +3141,7 @@ var menulst =
         context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
         user.fitheight = rect.height;
-        context.font = "1rem Archivo Black";
+        context.font = "0.9rem Archivo Black";
         var clr = SCROLLNAB;
         var str = user.title;
 
@@ -3187,7 +3187,7 @@ var menulst =
         context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
         user.fitheight = rect.height;
-        context.font = "1rem Archivo Black";
+        context.font = "0.9rem Archivo Black";
         var clr = SCROLLNAB;
         var fontclr = "white";
         var str = user.title;
@@ -3618,7 +3618,6 @@ var ContextObj = (function ()
                     path = galleryobj.getcurrent().url;
                 else if (galleryobj.getcurrent().object)
                     path = galleryobj.getcurrent().object;
-                seteventspanel(new Empty());
                 photo.image = new Image();
                 photo.image.crossOrigin = 1;
                 photo.image.src = path;
@@ -3663,7 +3662,6 @@ var ContextObj = (function ()
                     _4cnvctx.pinched = 0;
                     contextobj.resize(context);
                     resetcanvas(context);
-                    seteventspanel(new YollPanel());
 
                     if (typeof galleryobj.getcurrent().row !== "undefined")
                         rowobj.set(window.innerHeight*(galleryobj.getcurrent().row/100));
@@ -3677,6 +3675,7 @@ var ContextObj = (function ()
                 }
 			}
 
+            seteventspanel(new YollPanel());
 			return 1;
     	},
 		resetcontext: function (context)
@@ -5097,7 +5096,7 @@ galleryobj.init = function(obj)
     var func = function (index)
     {
         galleryobj.set(this.pos);
-        window.location.href = addressobj.full();
+        window.open(addressobj.full());
     }
 
     for (var n = 0; n < galleryobj.data.length; ++n)
@@ -5173,7 +5172,7 @@ galleryobj.init = function(obj)
         {
             var path = url.path.toLowerCase();
             path = `${url.origin}/res/${path}.json`;
-            window.open(path,url.hostname);
+            window.open(path);
         }})
 
     slices.data.push({title:"Fullscreen", path: "FULLPANEL", func: function ()
@@ -5251,17 +5250,17 @@ function download()
     }
     else if (galleryobj.getcurrent().url)
     {
-        window.open(path,galleryobj.getcurrent().url);
+        window.open(galleryobj.getcurrent().url);
     }
     else if (galleryobj.getcurrent().full)
     {
-        window.open(path,galleryobj.getcurrent().full);
+        window.open(galleryobj.getcurrent().full);
     }
     else
     {
         var id = galleryobj.getcurrent().id;
         var path = `https://reportbase.com/image/${id}/blob`;
-        window.open(path,url.hostname);
+        window.open(path);
     }
 }
 
