@@ -3298,12 +3298,12 @@ function resetcanvas()
         var height = photo.image.height*zoom;
         var aspect = photo.image.width/height;
         var width = context.canvas.height * aspect;
-        if (width/window.innerWidth > 1.7)
+        if (width/window.innerWidth > 1.5)
             break;
     }
 
     var zoom = zoomobj.getcurrent()
-    zoom.split(zoom.current(), `${n}-${zoomax}`, poomobj.length());
+    zoom.split(zoom.current(), `${n}-${zoomax}`, 100);
     var z = zoom.getcurrent();
     var zoom = (100-z)/100;
     context.imageheight = photo.image.height*zoom;
@@ -3404,11 +3404,6 @@ var extentlst =
         traitobj.split(40, "0.1-1.0", traitobj.length());
         scapeobj.split(70, "0.1-1.0", scapeobj.length());
     },
-    zoom: function ()
-    {
-        loomobj.split(50, "90-95", loomobj.length());
-        poomobj.split(50, "75-90", poomobj.length());
-    }
 },
 {
     name: "PORTRAIT",
@@ -3423,11 +3418,6 @@ var extentlst =
         traitobj.split(75, "0.1-1.0", traitobj.length());
         scapeobj.split(75, "0.1-1.0", scapeobj.length());
     },
-    zoom: function ()
-    {
-        loomobj.split(0, "90-95", loomobj.length());
-        poomobj.split(40, "75-90", poomobj.length());
-    }
 },
 {
     name: "ULTRAWIDE",
@@ -3442,11 +3432,6 @@ var extentlst =
         traitobj.split(95, "0.1-1.0", traitobj.length());
         scapeobj.split(95, "0.1-1.0", scapeobj.length());
     },
-    zoom: function ()
-    {
-        loomobj.split(0, "0-50", loomobj.length());
-        poomobj.split(0, "0-50", poomobj.length());
-    }
 },
 {
     name: "WIDE",
@@ -3461,11 +3446,6 @@ var extentlst =
         traitobj.split(90, "0.1-1.0", traitobj.length());
         scapeobj.split(50, "0.1-1.0", scapeobj.length());
     },
-    zoom: function ()
-    {
-        loomobj.split(0, "25-90", loomobj.length());
-        poomobj.split(0, "0-90", poomobj.length());
-    }
 },
 {
     name: "LANDSCAPE",
@@ -3480,11 +3460,6 @@ var extentlst =
         traitobj.split(95, "0.1-1.0", traitobj.length());
         scapeobj.split(50, "0.1-1.0", scapeobj.length());
     },
-    zoom: function ()
-    {
-        loomobj.split(25, "70-90", loomobj.length());
-        poomobj.split(25, "25-90", poomobj.length());
-    }
 },
 ];
 
@@ -3682,7 +3657,6 @@ var ContextObj = (function ()
                         if (!extentobj.done)
                            extentobj.getcurrent().init();
                         extentobj.done = 1;
-                        extentobj.getcurrent().zoom();
                     }
 
                     _4cnvctx.pinched = 0;

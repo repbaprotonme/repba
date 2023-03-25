@@ -58,6 +58,7 @@ export default
                 body.append("id", obj.id);
             body.append("url", obj.url);
             body.append("requireSignedURLs", "false");
+            delete obj.url;
             body.append("metadata", JSON.stringify(obj));
 
             const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1`,

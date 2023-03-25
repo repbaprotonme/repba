@@ -18,7 +18,8 @@ export default
             'Accept': 'application/json',
             'authorization': `bearer ${OPENAI_KEY}`
           },
-          body: JSON.stringify({
+          body: JSON.stringify(
+          {
             'prompt': `${PROMPTEXT}`,
             'n': 10,
             'size': '1024x1024'
@@ -36,17 +37,25 @@ export default
               {
                 'Content-Type': 'application/json'
               },
-                body: JSON.stringify(obj),
+              body: JSON.stringify(obj),
             });
 
             const json = await res.json()
             return json.id;
         }
 
+        let gallery = Date.now().toString(36) + Math.random().toString(36).substring(2);
+
         for (var n = 0; n < json.data.length; n++)
         {
-            var id = await upload(json.data[n])
-            json.data[n].id = id;
+            var k = json.data[n];
+            k["prompt"] = `${PROMPTEXT}`;
+            k.gallery = gallery;
+            k.model = "dalle";
+            k.index = n;
+            k.length = json.data.length;
+            k.extent = "1024x1024";
+            await upload(k)
         }
 
         return Response.redirect("https://reportbase.com/?sidney=dalle",301);
