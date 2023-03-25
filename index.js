@@ -4793,7 +4793,6 @@ var headlst =
                             }
                         }
 
-                        delete globalobj.imageinfo.result.meta.url;
                         var keys = Object.keys(globalobj.imageinfo.result.meta);
                         for (var n = 0; n < keys.length; ++n)
                         {
@@ -4801,6 +4800,7 @@ var headlst =
                             var value = globalobj.imageinfo.result.meta[key];
                             if (value && value.length && typeof value === 'string')
                             {
+                                value = value.substr(0,50);
                                 key = key.toLowerCase()
                                 key  = key.charAt(0).toUpperCase() + key.slice(1)
                                 slices.push({title:key, title1: value, func: function() { menuhide(); }})
