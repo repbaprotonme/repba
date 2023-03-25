@@ -5122,7 +5122,13 @@ galleryobj.init = function(obj)
       .then(response => response.json())
       .then(function(response)
           {
-              galleryobj.concat(response.result.meta);
+            let keys = Object.keys(response.result.meta);
+            for (var n = 0; n < keys.length; ++n)
+            {
+                var key = keys[n];
+                var value = user[key];
+                galleryobj[key] = value;
+            }
           });
 
     //7
