@@ -5126,7 +5126,7 @@ galleryobj.init = function(obj)
             for (var n = 0; n < keys.length; ++n)
             {
                 var key = keys[n];
-                var value = user[key];
+                var value = response.result.meta[key];
                 galleryobj[key] = value;
             }
           });
