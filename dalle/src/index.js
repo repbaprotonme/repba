@@ -21,8 +21,12 @@ export default
         });
 
         var json = await res.json();
-        return new Response(JSON.stringify(json.data), {
-          headers: {
+        return new Response(JSON.stringify(json.data),
+        {
+          status: 200,
+          headers:
+          {
+            'Access-Control-Allow-Origin': '*',
             "content-type": "application/json",
           },
         });

@@ -17,6 +17,7 @@ export default
         var response = await fetch('https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1/direct_upload', options);
         var body = await response.json();
         var action = body.result.uploadURL;
+
         var html =
         `<!DOCTYPE html>
          <html lang="en">
@@ -25,18 +26,20 @@ export default
           <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
          <link rel="stylesheet" href="custom.css">
          <body>
-<main class="container">
-<section id="preview">
-            <form id="form1" name="form1"
-             method="post"
-             action="javascript:submit()"
-             enctype="multipart/form-data">
-             <input type="file" id="myFile" name="file" />
-             <input type="submit" />
-           </form>
-</section>
-</main>
-            <script>
+
+        <main class="container">
+        <section id="preview">
+                    <form id="form1" name="form1"
+                     method="post"
+                     action="javascript:submit()"
+                     enctype="multipart/form-data">
+                     <input type="file" id="myFile" name="file" />
+                     <input type="submit" />
+                   </form>
+        </section>
+        </main>
+
+           <script>
            function submit()
            {
                 var form1 = document.getElementById("form1")
@@ -54,8 +57,8 @@ export default
                     img.src = e.target.result;
                     img.onload = function ()
                     {
-                        var w = this.width;//max 12000
-                        var h = this.height;//max 12000
+                        var w = this.width;
+                        var h = this.height;
                     }
                 }
 
