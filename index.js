@@ -4774,7 +4774,6 @@ var headlst =
                         if (!slices)
                       {
                         slices = [];
-
                         var index = `${galleryobj.current()+1} of ${galleryobj.length()}`
                         slices.push({title: "Index", title1: index, func: function() { menuhide(); }})
                         var extent = `${photo.image.extent}`
@@ -4794,6 +4793,7 @@ var headlst =
                             }
                         }
 
+                        delete globalobj.imageinfo.result.meta.url;
                         var keys = Object.keys(globalobj.imageinfo.result.meta);
                         for (var n = 0; n < keys.length; ++n)
                         {
