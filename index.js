@@ -4814,7 +4814,8 @@ var headlst =
                 _5cnvctx.buttonheight = 60;
                 _5cnvctx.rvalue = 2;
                 _5cnvctx.slidereduce = 0.75;
-                _5cnvctx.sliceobj.data = getslices();
+                galleryobj.getcurrent().slices = getslices();
+                _5cnvctx.sliceobj.data = galleryobj.getcurrent().slices;
                 _5cnvctx.delayinterval = DELAYCENTER / _5cnvctx.sliceobj.data.length;
                 _5cnvctx.virtualheight = _5cnvctx.sliceobj.data.length*_5cnvctx.buttonheight;
                 menushow(_5cnvctx);
