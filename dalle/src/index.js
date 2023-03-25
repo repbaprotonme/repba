@@ -3,7 +3,12 @@ export default
 	async fetch(request, env, ctx)
     {
         let OPENAI_KEY = env.OPENAI_KEY;
-        let PROMPTEXT = await request.text();
+    const formData = await request.formData();
+    const body = {};
+    for (const entry of formData.entries())
+      body[entry[0]] = entry[1];
+    var PROMPTEXT = body["prompt"];
+
         var res = await fetch('https://api.openai.com/v1/images/generations',
         {
           method: 'POST',
@@ -15,21 +20,36 @@ export default
           },
           body: JSON.stringify({
             'prompt': `${PROMPTEXT}`,
-            'n': 2,
+            'n': 10,
             'size': '1024x1024'
           })
         });
 
         var json = await res.json();
-        return new Response(JSON.stringify(json.data),
+
+        async function upload(obj)
         {
-          status: 200,
-          headers:
-          {
-            'Access-Control-Allow-Origin': '*',
-            "content-type": "application/json",
-          },
-        });
+            const res = await fetch('https://reportbase.com/image/',
+            {
+              method: 'POST',
+              headers:
+              {
+                'Content-Type': 'application/json'
+              },
+                body: JSON.stringify(obj),
+            });
+
+            const json = await res.json()
+            return json.id;
+        }
+
+        for (var n = 0; n < json.data.length; n++)
+        {
+            var id = await upload(json.data[n])
+            json.data[n].id = id;
+        }
+
+        return Response.redirect("https://reportbase.com/?sidney=dalle",301);
 	},
 };
 

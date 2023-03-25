@@ -16,7 +16,7 @@ export default
           },
         };
 
-        for (var page = 1; page <= 10; ++page)
+        for (var page = 1; page <= 3; ++page)
         {
             var response = await fetch(`https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1?per_page=${per_page}&page=${page}`, init);
             var json = await response.json();
