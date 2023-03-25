@@ -5122,7 +5122,7 @@ galleryobj.init = function(obj)
       .then(response => response.json())
       .then(function(response)
           {
-              galleryobj = [...galleryobj, ...response.result.meta];
+              galleryobj.concat(response.result.meta);
           });
 
     //7
