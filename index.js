@@ -3138,6 +3138,7 @@ var menulst =
 
             var st = galleryobj.repos;
             var s = galleryobj.getcurrent().photographer;
+            var j = user.pos + 1;
 
             a.draw(context, rect,
             [
