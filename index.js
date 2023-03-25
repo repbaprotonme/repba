@@ -4778,7 +4778,7 @@ var headlst =
                         slices.push({title: "Extent", title1: extent, func: function() { menuhide(); }})
                         var aspect = `${(photo.image.aspect).toFixed(2)}`
                         slices.push({title: "Aspect", title1: aspect, func: function() { menuhide(); }})
-                        let keys = Object.keys(galleryobj.getcurrent());
+                        var keys = Object.keys(galleryobj.getcurrent());
                         for (var n = 0; n < keys.length; ++n)
                         {
                             var key = keys[n];
@@ -4791,7 +4791,7 @@ var headlst =
                             }
                         }
 
-                        let keys = Object.keys(globalobj.imageinfo);
+                        var keys = Object.keys(globalobj.imageinfo);
                         for (var n = 0; n < keys.length; ++n)
                         {
                             var key = keys[n];
