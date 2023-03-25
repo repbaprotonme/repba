@@ -51,7 +51,6 @@ function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) 
 function numberRange (start, end) {return new Array(end - start).fill().map((d, i) => i + start); }
 
 let url = new URL(window.location.href);
-url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 1;
 url.time = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : TIMEOBJ/2;
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 
@@ -924,10 +923,10 @@ var OpenPanel = function (color, shadow)
         a.draw(context, rect, user, time);
 		context.fillStyle = "white";
 		context.strokeStyle = "white";
-        var x = rect.x+20;
+        var x = rect.x+21;
         var y = rect.y+30;
         context.lineWidth = 2;
-        context.strokeRect(x, y, 19, 13);
+        context.strokeRect(x, y, 17, 12);
         context.fillRect(x, y-4, 9, 3);
         context.restore();
     }
@@ -1848,6 +1847,8 @@ var stretchobj = new Data("Stretch", [pretchobj,letchobj]);
 var poomobj = new Data("PORTZOOM", 100);
 var loomobj = new Data("LANDZOOM", 100);
 var zoomobj = new Data("Zoom", [poomobj,loomobj]);
+poomobj.set(30);
+loomobj.set(30);
 
 var pinchobj = new Data("PINCH", [zoomobj,stretchobj]);
 
@@ -3048,6 +3049,8 @@ var menulst =
         if (!user.lst)
         {
             var lst = [];
+            var index = `${time+1} of ${galleryobj.length()}`
+            lst.push(index);
             let keys = Object.keys(user);
             for (var n = 0; n < keys.length; ++n)
             {
@@ -3119,9 +3122,6 @@ var menulst =
                 context.drawImage(user.thumbimg, x1, y1, w1, h1,
                     10, -40, w2, h2);
             }
-
-            var j = user.pos + 1;
-            j += (url.page-1)*_8cnvctx.sliceobj.length();
 
             var a = new RowA([30,0,60,0,30],
                 [
@@ -3298,7 +3298,7 @@ function resetcanvas()
         var height = photo.image.height*zoom;
         var aspect = photo.image.width/height;
         var width = context.canvas.height * aspect;
-        if (width/window.innerWidth > 1.5)
+        if (width/window.innerWidth > 2.0)
             break;
     }
 
@@ -4501,7 +4501,17 @@ var headlst =
             }
             else if (galleryobj.repos && context.picture.hitest(x,y))
             {
-                download();
+                if (galleryobj.repos)
+                {
+                    download();
+                }
+                else
+                {
+                    headobj.rotate(1);
+                    headham.panel = headobj.getcurrent();
+                    headcnvctx.clear();
+                    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+                }
             }
             else if (ismenu())
             {
@@ -4758,6 +4768,38 @@ var headlst =
             }
             else if (context.infopanel && context.infopanel.hitest(x,y))
             {
+                  function getslices()
+                  {
+                        var slices = [];
+
+                        var index = `${galleryobj.current()+1} of ${galleryobj.length()}`
+                        slices.push({title: "Index", title1: index, func: function() { menuhide(); }})
+                        var extent = `${photo.image.extent}`
+                        slices.push({title: "Extent", title1: extent, func: function() { menuhide(); }})
+                        var aspect = `${(photo.image.aspect).toFixed(2)}`
+                        slices.push({title: "Aspect", title1: aspect, func: function() { menuhide(); }})
+                        let keys = Object.keys(galleryobj.getcurrent());
+                        for (var n = 0; n < keys.length; ++n)
+                        {
+                            var key = keys[n];
+                            var value = galleryobj.getcurrent()[key]
+                            if (value && value.length && typeof value === 'string' && value.substr(0,4) != "blob")
+                            {
+                                key = key.toLowerCase()
+                                key  = key.charAt(0).toUpperCase() + key.slice(1)
+                                slices.push({title:key, title1: value, func: function() { menuhide(); }})
+                            }
+                        }
+
+                        return slices;
+                  }
+
+                _5cnvctx.buttonheight = 60;
+                _5cnvctx.rvalue = 2;
+                _5cnvctx.slidereduce = 0.75;
+                _5cnvctx.sliceobj.data = getslices();
+                _5cnvctx.delayinterval = DELAYCENTER / _5cnvctx.sliceobj.data.length;
+                _5cnvctx.virtualheight = _5cnvctx.sliceobj.data.length*_5cnvctx.buttonheight;
                 menushow(_5cnvctx);
             }
             else if (context.openpanel && context.openpanel.hitest(x,y))
@@ -5074,55 +5116,14 @@ galleryobj.init = function(obj)
     speedyobj.split(1.25, "1-20", speedyobj.length());
 
     galleryobj.set(url.project);
+    var id = galleryobj.getcurrent().id;
 
-  function getslices()
-  {
-        var slices = [];
-        let keys = Object.keys(galleryobj.getcurrent());
-        for (var n = 0; n < keys.length; ++n)
-        {
-            var key = keys[n];
-            var value = galleryobj.getcurrent()[key]
-            if (value && value.length && typeof value === 'string')
-            {
-                if (value.substr(0,4).toLowerCase() != "http")
-                {
-                    key = key.toLowerCase()
-                    key  = key.charAt(0).toUpperCase() + key.slice(1)
-                    slices.push({page: n, title:key, title1: value, path: "OPEN", func: function() { menuhide(); }})
-                }
-            }
-        }
-
-        return slices;
-  }
-
-    _5cnvctx.buttonheight = 60;
-    _5cnvctx.rvalue = 2;
-    _5cnvctx.slidereduce = 0.75;
-    _5cnvctx.sliceobj.data = getslices();
-    _5cnvctx.delayinterval = DELAYCENTER / _5cnvctx.sliceobj.data.length;
-    _5cnvctx.virtualheight = _5cnvctx.sliceobj.data.length*_5cnvctx.buttonheight;
-
-    var slices = _6cnvctx.sliceobj;
-    slices.data = [];
-    for (var n = 0; n < galleryobj.pages; ++n)
-    {
-        slices.data.push({page: n, title:`Page ${n+1}`, title1: "", path: "OPEN", func: function()
-        {
-            url.page = this.page+1;
-            window.location.href = addressobj.full(true);
-        }});
-    }
-
-    _6cnvctx.delayinterval = DELAYCENTER / slices.data.length;
-    _6cnvctx.buttonheight = 60;
-    _6cnvctx.virtualheight = slices.data.length*_6cnvctx.buttonheight;
-    _6cnvctx.rvalue = 2;
-    _6cnvctx.slidereduce = 0.75;
-    _6cnvctx.title = "Page";
-    _6cnvctx.sliceobj.set(url.page-1);
-    _6cnvctx.timeobj.set((1-_6cnvctx.sliceobj.berp())*TIMEOBJ);
+    fetch(`https://reportbase.com/image/${id}`, {method: 'REPORT'})
+      .then(response => response.json())
+      .then(function(response)
+          {
+              console.log(response);
+          });
 
     //7
     var lst =
@@ -5156,6 +5157,7 @@ galleryobj.init = function(obj)
 
     var func = function (index)
     {
+        menuhide();
         galleryobj.set(this.pos);
         window.open(addressobj.full());
     }
@@ -5280,7 +5282,7 @@ galleryobj.init = function(obj)
 var last = localStorage.getItem("LAST");
 var lastpath = localStorage.getItem("LASTPATH");
 var lastrepos = localStorage.getItem("LASTREPOS");
-var repos = url.searchParams.has(lastrepos);
+var repos = url.searchParams.has(lastrepos);//todo timed
 if (last && lastpath == url.path && repos)
 {
     galleryobj.init(JSON.parse(last));
