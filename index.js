@@ -4791,11 +4791,11 @@ var headlst =
                             }
                         }
 
-                        var keys = Object.keys(globalobj.imageinfo);
+                        var keys = Object.keys(globalobj.imageinfo.result.meta);
                         for (var n = 0; n < keys.length; ++n)
                         {
                             var key = keys[n];
-                            var value = globalobj.imageinfo[key];
+                            var value = globalobj.imageinfo.result.meta[key];
                             if (value && value.length && typeof value === 'string')
                             {
                                 key = key.toLowerCase()
