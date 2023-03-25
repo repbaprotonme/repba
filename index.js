@@ -4791,6 +4791,19 @@ var headlst =
                             }
                         }
 
+                        let keys = Object.keys(globalobj.imageinfo);
+                        for (var n = 0; n < keys.length; ++n)
+                        {
+                            var key = keys[n];
+                            var value = globalobj.imageinfo[key];
+                            if (value && value.length && typeof value === 'string')
+                            {
+                                key = key.toLowerCase()
+                                key  = key.charAt(0).toUpperCase() + key.slice(1)
+                                slices.push({title:key, title1: value, func: function() { menuhide(); }})
+                            }
+                        }
+
                         return slices;
                   }
 
@@ -5122,13 +5135,7 @@ galleryobj.init = function(obj)
       .then(response => response.json())
       .then(function(response)
           {
-            let keys = Object.keys(response.result.meta);
-            for (var n = 0; n < keys.length; ++n)
-            {
-                var key = keys[n];
-                var value = response.result.meta[key];
-                galleryobj[key] = value;
-            }
+              globalobj.imageinfo = response;
           });
 
     //7

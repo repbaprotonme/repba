@@ -52,8 +52,6 @@ export default
             k["prompt"] = `${PROMPTEXT}`;
             k.gallery = gallery;
             k.model = "dalle";
-            k.index = n;
-            k.length = json.data.length;
             k.extent = "1024x1024";
             await upload(k)
         }
