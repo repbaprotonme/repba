@@ -4770,10 +4770,10 @@ var headlst =
             {
                   function getslices()
                   {
-                        if (!galleryobj.getcurrent().slices)
-                      {
-                        galleryobj.getcurrent().slices = [];
                           var slices = galleryobj.getcurrent().slices;
+                        if (!slices)
+                      {
+                        slices = [];
 
                         var index = `${galleryobj.current()+1} of ${galleryobj.length()}`
                         slices.push({title: "Index", title1: index, func: function() { menuhide(); }})
@@ -4806,6 +4806,7 @@ var headlst =
                                 slices.push({title:key, title1: value, func: function() { menuhide(); }})
                             }
                         }
+                     }
 
                         return slices;
                   }
