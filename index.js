@@ -738,7 +738,7 @@ Math.lerp = function (v0, v1, t) { return (1 - t) * v0 + t * v1; };
 
 function titleCase(str)
 {
-    if (str)
+    if (!str)
         return;
     return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
 }
