@@ -736,6 +736,13 @@ function downloadtext(name, text)
 Math.berp = function (v0, v1, t) { return (t - v0) / (v1 - v0); };
 Math.lerp = function (v0, v1, t) { return (1 - t) * v0 + t * v1; };
 
+function titleCase(str)
+{
+    if (str)
+        return;
+    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+}
+
 String.prototype.clean = function()
 {
 	let _trimLeft  = /^\s+/,
@@ -1245,6 +1252,7 @@ addressobj.full = function (k)
 
 addressobj.update = function()
 {
+    /*
     try
     {
         clearTimeout(globalobj.addresstime);
@@ -1257,10 +1265,11 @@ addressobj.update = function()
     {
 
     }
+    */
 }
 
-history.pushState(null, null, document.URL);
-
+//history.pushState(null, null, document.URL);
+/*
 window.onpopstate = function ()
 {
     if (ismenu())
@@ -1271,6 +1280,7 @@ window.onpopstate = function ()
 
     window.history.go(1);
 };
+*/
 
 CanvasRenderingContext2D.prototype.moveup = function()
 {
@@ -1321,7 +1331,7 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
             _4cnvctx.refresh();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }, 500);
-    }, 50);
+    }, 0);
 }
 
 CanvasRenderingContext2D.prototype.hide = function ()
@@ -2127,6 +2137,9 @@ var panlst =
             delete context.startt;
             delete rowobj.offset;
             context.refresh();
+            headobj.set(0);
+            headham.panel = headobj.getcurrent();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             addressobj.update();
         }, 40);
 
@@ -3136,7 +3149,7 @@ var menulst =
                     galleryobj.repos?new Text("white", "center", "middle",0, 0, 1):0,
                 ]);
 
-            var st = galleryobj.repos;
+            var st = titleCase(galleryobj.repos);
             var s = galleryobj.getcurrent().photographer;
             var j = user.pos + 1;
 
@@ -3664,15 +3677,17 @@ var ContextObj = (function ()
                     contextobj.resize(context);
                     resetcanvas(context);
 
-                    if (typeof galleryobj.getcurrent().row !== "undefined")
-                        rowobj.set(window.innerHeight*(galleryobj.getcurrent().row/100));
-                    else if (typeof galleryobj.row !== "undefined")
-                        rowobj.set(window.innerHeight*(galleryobj.row/100));
-                    else if (typeof rowobj.row !== "undefined")
-                        rowobj.set(window.innerHeight*(rowobj.row/100));
-
                     contextobj.reset()
                     _4cnvctx.movepagetime = setTimeout(function() { masterload(); }, 500);
+
+                    delete globalobj.imageinfo;
+                    var id = galleryobj.getcurrent().id;
+                    fetch(`https://reportbase.com/image/${id}`, {method: 'REPORT'})
+                      .then(response => response.json())
+                      .then(function(response)
+                          {
+                              globalobj.imageinfo = response;
+                          });
                 }
 			}
 
@@ -4500,7 +4515,7 @@ var headlst =
             {
                 menushow(_9cnvctx);
             }
-            else if (galleryobj.repos && context.picture.hitest(x,y))
+            else if (context.picture.hitest(x,y))
             {
                 if (galleryobj.repos)
                 {
@@ -4508,10 +4523,7 @@ var headlst =
                 }
                 else
                 {
-                    headobj.rotate(1);
-                    headham.panel = headobj.getcurrent();
-                    headcnvctx.clear();
-                    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+                    window.location.href = `${url.origin}/search.html`;
                 }
             }
             else if (ismenu())
@@ -4564,9 +4576,10 @@ var headlst =
                         ])
                     ]);
 
-            var st = galleryobj.repos;
-            var s = galleryobj.getcurrent().photographer;
-            a.draw(context, rect, [0,st,s,0], time);
+            var st = url.path;//jjgalleryobj.repos;
+            if (globalobj.imageinfo)
+                st = globalobj.imageinfo.result.meta["prompt"];
+            a.draw(context, rect, [0,st,"",0], time);
             context.restore()
 		};
 	},
@@ -4644,8 +4657,9 @@ var headlst =
                         ]),10,10),
                     ]);
 
+            var s = titleCase(`${galleryobj.repos} - ${galleryobj.getcurrent().photographer}`);
             var j = `${galleryobj.current() + 1} of ${galleryobj.length()}`;
-            a.draw(context, rect, [0,url.path,j,0], time);
+            a.draw(context, rect, [0,s,j,0], time);
             context.restore();
 		};
 	},
@@ -4794,17 +4808,20 @@ var headlst =
                             }
                         }
 
-                        var keys = Object.keys(globalobj.imageinfo.result.meta);
-                        for (var n = 0; n < keys.length; ++n)
+                        if (globalobj.imageinfo)
                         {
-                            var key = keys[n];
-                            var value = globalobj.imageinfo.result.meta[key];
-                            if (value && value.length && typeof value === 'string')
+                            var keys = Object.keys(globalobj.imageinfo.result.meta);
+                            for (var n = 0; n < keys.length; ++n)
                             {
-                                value = value.substr(0,50);
-                                key = key.toLowerCase()
-                                key  = key.charAt(0).toUpperCase() + key.slice(1)
-                                slices.push({title:key, title1: value, func: function() { menuhide(); }})
+                                var key = keys[n];
+                                var value = globalobj.imageinfo.result.meta[key];
+                                if (value && value.length && typeof value === 'string')
+                                {
+                                    value = value.substr(0,50);
+                                    key = key.toLowerCase()
+                                    key  = key.charAt(0).toUpperCase() + key.slice(1)
+                                    slices.push({title:key, title1: value, func: function() { menuhide(); }})
+                                }
                             }
                         }
                      }
@@ -5087,7 +5104,6 @@ function setfavicon()
 
 window.addEventListener("visibilitychange", (evt) =>
 {
-    reset();
 });
 
 window.addEventListener("load", async () =>
@@ -5135,14 +5151,6 @@ galleryobj.init = function(obj)
     speedyobj.split(1.25, "1-20", speedyobj.length());
 
     galleryobj.set(url.project);
-    var id = galleryobj.getcurrent().id;
-
-    fetch(`https://reportbase.com/image/${id}`, {method: 'REPORT'})
-      .then(response => response.json())
-      .then(function(response)
-          {
-              globalobj.imageinfo = response;
-          });
 
     //7
     var lst =
@@ -5176,9 +5184,11 @@ galleryobj.init = function(obj)
 
     var func = function (index)
     {
-        menuhide();
         galleryobj.set(this.pos);
-        window.open(addressobj.full());
+        setTimeout(function()
+        {
+            window.open(addressobj.full());
+        }, 100);
     }
 
     for (var n = 0; n < galleryobj.data.length; ++n)
