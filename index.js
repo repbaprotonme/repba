@@ -4577,7 +4577,7 @@ var headlst =
                     ]);
 
             var st = galleryobj.repos ? url.path : "";
-            if (globalobj.imageinfo)
+            if (globalobj.imageinfo && globalobj.imageinfo.result && globalobj.imageinfo.result.meta)
                 st = globalobj.imageinfo.result.meta["prompt"];
             a.draw(context, rect, [0,st,"",0], time);
             context.restore()
