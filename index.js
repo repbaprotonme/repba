@@ -4662,7 +4662,7 @@ var headlst =
                 s = titleCase(`${galleryobj.repos} - ${galleryobj.getcurrent().photographer}`);
             else if (galleryobj.repos)
                 s = titleCase(`${galleryobj.repos}`);
-            else if (globalobj.imageinfo)
+            else if (globalobj.imageinfo && globalobj.imageinfo.result && globalobj.imageinfo.result.meta)
                 s = titleCase(`${globalobj.imageinfo.result.meta.model}`);
 
             var j = `${galleryobj.current() + 1} of ${galleryobj.length()}`;
@@ -4815,7 +4815,7 @@ var headlst =
                             }
                         }
 
-                        if (globalobj.imageinfo)
+                        if (globalobj.imageinfo && globalobj.imageinfo.result && globalobj.imageinfo.result.meta)
                         {
                             var keys = Object.keys(globalobj.imageinfo.result.meta);
                             for (var n = 0; n < keys.length; ++n)
