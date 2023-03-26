@@ -4657,7 +4657,14 @@ var headlst =
                         ]),10,10),
                     ]);
 
-            var s = titleCase(`${galleryobj.repos} - ${galleryobj.getcurrent().photographer}`);
+            var s = "";
+            if (galleryobj.repos && galleryobj.getcurrent().photographer)
+                s = titleCase(`${galleryobj.repos} - ${galleryobj.getcurrent().photographer}`);
+            else if (galleryobj.repos)
+                s = titleCase(`${galleryobj.repos}`);
+            else if (globalobj.imageinfo)
+                s = titleCase(`${globalobj.imageinfo.result.model}`);
+
             var j = `${galleryobj.current() + 1} of ${galleryobj.length()}`;
             a.draw(context, rect, [0,s,j,0], time);
             context.restore();
