@@ -3687,6 +3687,7 @@ var ContextObj = (function ()
                       .then(function(response)
                           {
                               globalobj.imageinfo = response;
+                              headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
                           });
                 }
 			}
@@ -4548,8 +4549,7 @@ var headlst =
             context.picture = new rectangle()
             context.font = "1rem Archivo Black";
             var s = _5cnvctx.enabled || _8cnvctx.enabled;
-            var e = Math.min(520,rect.width-190);
-            var a = new Col([80,0,e,0,80],
+            var a = new Col([80,20,0,20,80],
                     [
                         new Layer(
                         [
@@ -4576,7 +4576,7 @@ var headlst =
                         ])
                     ]);
 
-            var st = url.path;//jjgalleryobj.repos;
+            var st = galleryobj.repos ? url.path : "";
             if (globalobj.imageinfo)
                 st = globalobj.imageinfo.result.meta["prompt"];
             a.draw(context, rect, [0,st,"",0], time);
