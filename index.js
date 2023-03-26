@@ -4663,7 +4663,7 @@ var headlst =
             else if (galleryobj.repos)
                 s = titleCase(`${galleryobj.repos}`);
             else if (globalobj.imageinfo)
-                s = titleCase(`${globalobj.imageinfo.result.model}`);
+                s = titleCase(`${globalobj.imageinfo.result.meta.model}`);
 
             var j = `${galleryobj.current() + 1} of ${galleryobj.length()}`;
             a.draw(context, rect, [0,s,j,0], time);
