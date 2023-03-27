@@ -3735,6 +3735,7 @@ var ContextObj = (function ()
                               galleryobj.getcurrent().prompt = response.result.meta.prompt;
                               galleryobj.getcurrent().gallery = response.result.meta.gallery;
                               galleryobj.getcurrent().model = response.result.meta.model;
+                                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
                           })
                     .catch((error) =>
                     {
