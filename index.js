@@ -5317,6 +5317,16 @@ galleryobj.init = function(obj)
             menuhide();
         }})
 
+    slices.data.push({title:"Search", path: "SEARCH", func: function()
+        {
+            window.location.href = "https://reportbase.com/search.html";
+        }})
+
+    slices.data.push({title:"Upload", path: "UPLOAD", func: function()
+        {
+            window.location.href = "https://reportbase.com/upload.html";
+        }})
+
     slices.data.push({title:"Thumbnail", path: "THUMBNAIL", func: function()
         {
             menuhide();
