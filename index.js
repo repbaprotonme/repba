@@ -1354,6 +1354,9 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     delete _4cnvctx.thumbcanvas;
     delete photo.image;
     _4cnvctx.setcolumncomplete = 0;
+    headcnv.height = 80;
+    headobj.set(3);
+    headham.panel = headobj.getcurrent();
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     contextobj.reset();
     addressobj.update();
@@ -3437,6 +3440,7 @@ function resetcanvas()
     }
 
     context.refresh();
+    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 }
 
 var extentlst =
@@ -3676,6 +3680,7 @@ var ContextObj = (function ()
                 photo.image = new Image();
                 photo.image.crossOrigin = 1;
                 photo.image.src = path;
+                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
                 photo.image.onerror =
                     photo.image.onabort = function(e)
@@ -3719,6 +3724,7 @@ var ContextObj = (function ()
 
                     contextobj.reset()
                     _4cnvctx.movepagetime = setTimeout(function() { masterload(); }, 500);
+                    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
                     var id = galleryobj.getcurrent().id;
                     fetch(`https://reportbase.com/image/${id}`, {method: 'REPORT'})
@@ -5233,6 +5239,13 @@ galleryobj.init = function(obj)
     _7cnvctx.slidereduce = 0.75;
     _7cnvctx.title = "Help";
 
+    if (leftmenu)
+    {
+        _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+        menushow(_8cnvctx)
+        _4cnvctx.refresh();
+    }
+
     var func = function (index)
     {
         galleryobj.set(this.pos);
@@ -5345,16 +5358,7 @@ galleryobj.init = function(obj)
     _9cnvctx.virtualheight = slices.data.length*_9cnvctx.buttonheight;
     _9cnvctx.rvalue = 2;
     _9cnvctx.slidereduce = 0.75;
-
     contextobj.reset();
-
-    if (leftmenu)
-    {
-        _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-        menushow(_8cnvctx)
-        _4cnvctx.refresh();
-    }
-
 };
 
 var last = localStorage.getItem("LAST");
