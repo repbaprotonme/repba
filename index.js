@@ -1354,9 +1354,6 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     delete _4cnvctx.thumbcanvas;
     delete photo.image;
     _4cnvctx.setcolumncomplete = 0;
-    headcnv.height = 80;
-    headobj.set(3);
-    headham.panel = headobj.getcurrent();
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     contextobj.reset();
     addressobj.update();
