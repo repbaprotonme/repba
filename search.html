@@ -9,33 +9,33 @@
 <main class="container">
 <section id="form">
   
-  <h2>Dalle</h2>
+  <h2 id="dallehead">Dalle</h2>
     <form action="https://dalle.reportbase5836.workers.dev" method="POST">
-      <textarea cols="46" rows="3" name="prompt"></textarea>
+      <textarea cols="46" rows="3" name="prompt" id="dalle"></textarea>
       <input type="submit" value="Submit" />
     </form>
 
-  <h2>Pixabay</h2>
+  <h2 id="pixabayhead">Pixabay</h2>
     <form>
-      <input name="pixabay" type="text" maxlength="128" />
+      <input name="pixabay" id="pixabay" type="text" maxlength="128" />
       <input type="submit" formaction="https://reportbase.com/" value="Submit" />
     </form>
 
-  <h2>Pexels</h2>
+  <h2 id="pexelshead">Pexels</h2>
     <form>
-      <input name="pexels"y type="text" maxlength="128" />
+      <input name="pexels" id="pexels" type="text" maxlength="128" />
       <input type="submit" formaction="https://reportbase.com/" value="Submit" />
     </form>
 
-  <h2>Unsplash</h2>
+  <h2 id="unsplshhead">Unsplash</h2>
     <form>
-      <input name="unsplash"y type="text" maxlength="128" />
+      <input id="unsplash" id="unsplash" name="unsplash" type="text" maxlength="128" />
       <input type="submit" formaction="https://reportbase.com/" value="Submit" />
     </form>
     
-  <h2>Sidney</h2>
+  <h2 id="sidneyhead">Sidney</h2>
     <form>
-      <input name="sidney" type="text" maxlength="128" />
+      <input name="sidney" id="sidney" type="text" maxlength="128" />
       <input type="submit" formaction="https://reportbase.com/" value="Submit" />
     </form>
 
@@ -43,4 +43,18 @@
 
 </main>
 </body>
+
+<script>
+let url = new URL(window.location.href);
+var search = url.searchParams.get("unsplsh");
+document.getElementById("unsplash").value = search;
+var search = url.searchParams.get("pexels");
+document.getElementById("pexels").value = search;
+var search = url.searchParams.get("pixabay");
+document.getElementById("pixabay").value = search;
+var search = url.searchParams.get("dalle");
+document.getElementById("dalle").value = search;
+ 
+</script>
+
 </html>

@@ -4586,10 +4586,11 @@ var headlst =
             }
             else if (context.picture.hitest(x,y))
             {
-                if (galleryobj.repos)
-                    download();
-                else
-                    window.location.href = `${url.origin}/search.html`;
+                var p = galleryobj.getcurrent().prompt;
+                if (p)
+                    window.location.href = `${url.origin}/search.html?dalle=${encodeURIComponent(p)}#dallehead`;
+                else if (galleryobj.repos)
+                    window.location.href = `${url.origin}/search.html?${galleryobj.repos}=${encodeURIComponent(url.path)}#${galleryobj.repos}head`;
             }
 
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
