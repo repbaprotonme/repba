@@ -3727,7 +3727,8 @@ var ContextObj = (function ()
                     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
                     var id = galleryobj.getcurrent().id;
-                    fetch(`https://reportbase.com/image/${id}`, {method: 'REPORT'})
+                    var u = `https://reportbase.com/image/${id}`;
+                    fetch(u, {method: 'REPORT'})
                       .then(response => response.json())
                       .then(function(response)
                           {
