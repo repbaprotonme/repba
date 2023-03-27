@@ -3732,7 +3732,9 @@ var ContextObj = (function ()
                       .then(response => response.json())
                       .then(function(response)
                           {
-                              galleryobj.getcurrent() = Object.assign(galleryobj.getcurrent(), response.result.meta)
+                              galleryobj.getcurrent().prompt = response.result.meta.prompt;
+                              galleryobj.getcurrent().gallery = response.result.meta.gallery;
+                              galleryobj.getcurrent().model = response.result.meta.model;
                           })
                     .catch((error) =>
                     {
