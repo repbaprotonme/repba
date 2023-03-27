@@ -33,7 +33,7 @@ export default
                      method="post"
                      action="javascript:submit()"
                      enctype="multipart/form-data">
-                     <input type="file" id="myFile" name="file" />
+                     <input type="file" id="myFile" name="file" multiple="multiple" />
                      <input type="submit" />
                    </form>
         </section>

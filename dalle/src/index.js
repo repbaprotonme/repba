@@ -9,51 +9,57 @@ export default
       body[entry[0]] = entry[1];
     var PROMPTEXT = body["prompt"];
 
-        var res = await fetch('https://api.openai.com/v1/images/generations',
+        try
         {
-          method: 'POST',
-          headers:
-          {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'authorization': `bearer ${OPENAI_KEY}`
-          },
-          body: JSON.stringify(
-          {
-            'prompt': `${PROMPTEXT}`,
-            'n': 10,
-            'size': '1024x1024'
-          })
-        });
-
-        var json = await res.json();
-
-        async function upload(obj)
-        {
-            const res = await fetch('https://reportbase.com/image/',
+            var res = await fetch('https://api.openai.com/v1/images/generations',
             {
               method: 'POST',
               headers:
               {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'authorization': `bearer ${OPENAI_KEY}`
               },
-              body: JSON.stringify(obj),
+              body: JSON.stringify(
+              {
+                'prompt': `${PROMPTEXT}`,
+                'n': 10,
+                'size': '1024x1024'
+              })
             });
+            var json = await res.json();
 
-            const json = await res.json()
-            return json.id;
+            async function upload(obj)
+            {
+                const res = await fetch('https://reportbase.com/image/',
+                {
+                  method: 'POST',
+                  headers:
+                  {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(obj),
+                });
+
+                const json = await res.json()
+                return json.id;
+            }
+
+            let gallery = Date.now().toString(36) + Math.random().toString(36).substring(2);
+
+            for (var n = 0; n < json.data.length; n++)
+            {
+                var k = json.data[n];
+                k["prompt"] = `${PROMPTEXT}`;
+                k.gallery = gallery;
+                k.model = "dalle";
+                k.extent = "1024x1024";
+                await upload(k)
+            }
         }
-
-        let gallery = Date.now().toString(36) + Math.random().toString(36).substring(2);
-
-        for (var n = 0; n < json.data.length; n++)
+        catch (error)
         {
-            var k = json.data[n];
-            k["prompt"] = `${PROMPTEXT}`;
-            k.gallery = gallery;
-            k.model = "dalle";
-            k.extent = "1024x1024";
-            await upload(k)
+          console.log('There was an error', error);
         }
 
         return Response.redirect("https://reportbase.com/?sidney=dalle",301);

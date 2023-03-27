@@ -9,6 +9,7 @@
       "height": 1937,
       "extent": "3096x1937 1.60",
       "size": "6.0MP",
+      "prompt": "earth reviving after human extinction, a new beginning, nature taking over buildings, animal kingdom, harmony, peace, earth balanced --version 3 --s 1250 --uplight --ar 4:3 --no text, blur",
       "quote": "May God have mercy on my enemies, cause I will not."
     },
     {
@@ -17,6 +18,7 @@
       "height": 2000,
       "extent": "3000x2000 1.50",
       "size": "6.0MP",
+      "prompt": "Freeform ferrofluids, beautiful dark chaos, swirling black frequency --ar 3:4 --iw 9 --q 2 --s 1250",
       "quote": "The difference between genius and stupidity is that genius has its limits."
     },
     {
@@ -25,6 +27,7 @@
       "height": 1836,
       "extent": "3266x1836 1.78",
       "size": "6.0MP",
+      "prompt": "a home built in a huge Soap bubble, windows, doors, porches, awnings, middle of SPACE, cyberpunk lights, Hyper Detail, 8K, HD, Octane Rendering, Unreal Engine, V-Ray, full hd -- s5000 --uplight --q 3 --stop 80--w 0.5 --ar 1:3",
       "quote": "The Harder You Work, The Luckier You Get"
     },
     {
@@ -33,6 +36,16 @@
       "height": 1960,
       "extent": "3060x1960 1.56",
       "size": "6.0MP",
+      "prompt": "photo of an extremely cute alien fish swimming an alien habitable underwater planet, coral reefs, dream-like atmosphere, water, plants, peaceful, serenity, calm ocean, tansparent water, reefs, fish, coral, inner peace, awareness, silence, nature, evolution --version 3 --s 42000 --uplight --ar 4:3 --no text, blur",
+      "quote": "The difference between genius and stupidity is that genius has its limits."
+    },
+    {
+      "id": "BOAT.0003",
+      "width": 3266,
+      "height": 1836,
+      "extent": "3266x1836 1.78",
+      "size": "6.0MP",
+      "prompt": "ossuary cemetary segmented shelves overgrown, graveyard, vertical shelves, zdzisław beksiński, hr giger, mystical occult symbol in real life, high detail, green fog --ar 9:16 --iw 1",
       "quote": "Teamwork Makes the Dream Work"
     },
     {
@@ -41,6 +54,7 @@
       "height": 1837,
       "extent": "3265x1837 1.78",
       "size": "6.0MP",
+      "prompt": "Rubber Duck Aliens visiting the Earth for the first time, hyper-realistic, cinematic, detailed --ar 16:9",
       "quote": "OK Monday, Lets Do This"
     },
     {
@@ -49,6 +63,7 @@
       "height": 1597,
       "extent": "3755x1597 2.35",
       "size": "6.0MP",
+      "prompt": "noir detective mr. Rubber Duck. Smoke, rain, moustache and bravery. He can solve any puzzle. But can't beat his inner demons. Expressive dark matte gouche painting. --ar 4:5",
       "quote": "Do Not Decrease the Goal, Increase the Effort"
     },
     {
@@ -57,6 +72,7 @@
       "height": 1864,
       "extent": "3218x1864 1.73",
       "size": "6.0MP",
+      "prompt": "Reunion of man, team, squad, cyberpunk, abstract, full hd render + 3d octane render +4k UHD + immense detail + dramatic lighting + well lit + black, purple, blue, pink, cerulean, teal, metallic colours, + fine details + octane render + 8k",
       "quote": "We Didn't Lose the Game, We Just Ran Out of Time"
     },
     {
@@ -65,6 +81,7 @@
       "height": 1837,
       "extent": "3265x1837 1.78",
       "size": "6.0MP",
+      "prompt": "rubber duck duke ellington. Harlem jazz club. Singing. Mic. Ambience",
       "quote": "The Seeds of Doubt Grow Bitter Fruit"
     },
     {
@@ -73,6 +90,7 @@
       "height": 2000,
       "extent": "3000x2000 1.50",
       "size": "6.0MP",
+      "prompt": "surreal blueish monk, dodecahedron for his head, amazing details, hyperrealistic photograph, octane made of billions of intricate small houses, GODLIKE, bokeh, photography on mars, cinematic lighting, --ar 9:21",
       "quote": "Success Consists of Getting Up Just One More Time Than You Fail"
     },
     {
@@ -81,6 +99,7 @@
       "height": 1851,
       "extent": "3240x1851 1.75",
       "size": "6.0MP",
+      "prompt": "2 medieval warriors ::0.4 travelling on a cliff to a background castle , view of a coast line landscape , English coastline, Irish coastline, scottish coastline, perspective, folklore, King Arthur, Lord of the Rings, Game of Thrones. Photographic, Photography, photorealistic, concept art, Artstation trending , cinematic lighting, cinematic composition, rule of thirds , ultra-detailed, dusk sky , low contrast, natural lighting, fog, realistic, light fogged, detailed, atmosphere hyperrealistic , volumetric light, ultra photoreal, | 35mm| , Matte painting, movie concept art, hyper-detailed, insanely detailed, corona render, octane render, 8k, --ar 3:1 --no blur",
       "quote": "Enjoy Life Today, Yesterday Is Gone Tomorrow"
     },
     {
@@ -89,6 +108,7 @@
       "height": 1936,
       "extent": "3098x1936 1.60",
       "size": "6.0MP",
+      "prompt": "viking north druid lich mermaid king wise old man god of death witch pagan face portrait, underwater, covered in runes, crown made of bones, necromancer, zdzisław beksiński, mikhail vrubel, hr giger, gustav klimt, symmetry, mystical occult symbol in real life, high detail, green light --ar 9:16",
       "quote": "If Not Us Who? If Not Now When?"
     },
     {
@@ -97,6 +117,7 @@
       "height": 1837,
       "extent": "3265x1837 1.78",
       "size": "6.0MP",
+      "prompt": "full body character + beautiful female neopunk wizard opening a portal to the sidereal multiverse :: Mandelbrot neuro web :: intricate galaxy inlay + ultra high detail, plasma neon internal glow, precise :: consciousness projection :: astral projection :: laser sharp, octane render + unreal render + photo real :: 8k, volumetric lighting high contrast --uplight --quality 2 --stop 80 --ar 9:16",
       "quote": "If Opportunity Does Not Knock, Build a Door"
     },
     {
@@ -105,6 +126,7 @@
       "height": 1997,
       "extent": "3004x1997 1.50",
       "size": "6.0MP",
+      "prompt": "Samhain figure, creature, wicca, occult, harvest, fall, hyper-realistic, ultra resolution, creepy, dark, witchcore",
       "quote": "It Was Not Raining When Noah Built the Ark"
     },
     {
@@ -113,6 +135,7 @@
       "height": 2000,
       "extent": "2998x2000 1.50",
       "size": "6.0MP",
+      "prompt": "a seamless tileable jade tree pattern, spiral carvings, octane renderer, trending on CGsociety --ar 1:1 --q 2",
       "quote": "What We Are is God's Gift, What We Become is Our Gift to God"
     },
     {
@@ -121,6 +144,7 @@
       "height": 1732,
       "extent": "3464x1732 2.00",
       "size": "6.0MP",
+      "prompt": "hyerophant, god light, cinematic look, octane render, under water, --wallpaper",
       "quote": "The Best Way to Predict the Future is To Invent It"
     },
     {
@@ -129,6 +153,7 @@
       "height": 1837,
       "extent": "3265x1837 1.78",
       "size": "6.0MP",
+      "prompt": "Sophia Loren in a heart shaped bath tub surrounded by rubber ducks:: hightly detailed, hyper realistic, photographic, wide angle lens:: in the style of Richard Avedon, Patrick Demarchelier, Vogue, Baron Adolphe De Meyer:: --ar 9:16 --q 2",
       "quote": "Failure is the Condiment Which Gives Success Its Flavor"
     },
     {
@@ -137,6 +162,7 @@
       "height": 1837,
       "extent": "3265x1837 1.78",
       "size": "6.0MP",
+      "prompt": "modern kids play area landscape architecture, water play area, floating kids, seating areas, perspective view, rainy weather, biopunk, cinematic photo, highly detailed, cinematic lighting, ultra-detailed, ultrarealistic, photorealism, 8k, octane render, --ar 16:12",
       "quote": "I can Resist Everything Except Temptation"
     },
     {
@@ -145,6 +171,7 @@
       "height": 1837,
       "extent": "3265x1837 1.78",
       "size": "6.0MP",
+      "prompt": "Lovecraftian character Cthulhu, with the hunter hat, and the saw cleaver, with bloodborne weapons, full body, in the style bloodborne style, full body, dark fantasy, trending on ArtStation, --ar 4:5",
       "quote": "What's Another Word For Thesaurus"
     },
     {
@@ -153,6 +180,7 @@
       "height": 2000,
       "extent": "3000x2000 1.50",
       "size": "6.0MP",
+      "prompt": "photorealistic flying house, many details, Ultra detailed, octane render, by Alexander Jansson --ar 2:1",
       "quote": "It Is During the Darkest Moments That We Must Focus To See the Light"
     },
     {
@@ -161,6 +189,7 @@
       "height": 1947,
       "extent": "3080x1947 1.58",
       "size": "6.0MP",
+      "prompt": "Swirls :: fog :: phantom + ghost + dog + glowing eyes + bright silver ::3 smoke + shine + sphere:: black paper + elements + dark grey + dark blue + neon + baroque + rococo + white + ink + tarot card with ornate border frame + sébastien mitton, viktor antonov, sergey kolesov, detailed, intricate ink illustration + magic + glow --ar 63:88",
       "quote": "Winners Never Quit, Quitters Never Win"
     },
     {
@@ -169,6 +198,7 @@
       "height": 2001,
       "extent": "2997x2001 1.50",
       "size": "6.0MP",
+      "prompt": "full page technical drawing technocore mind meld evil-god symmetric::2 Hieroglyphic Occult::.5 esoterism hyper realistic, rendered, 8K, old, neon, vibrant fine details symmetric --ar 9:16",
       "quote": "If Two Wrongs Don't Make a Right, Try Three"
     },
     {
@@ -177,6 +207,7 @@
       "height": 1781,
       "extent": "3367x1781 1.89",
       "size": "6.0MP",
+      "prompt": "Wet chitinous texture, greasy --q 2 --s 12000",
       "quote": "Try Being Informed Instead of Being Opinionated"
     },
     {
@@ -185,6 +216,7 @@
       "height": 1584,
       "extent": "3787x1584 2.39",
       "size": "6.0MP",
+      "prompt": "tyriel archangel, king shamn , avatar , swords , angel wings . 4k , unreal engine --wallpaper",
       "quote": "I Refuse to Join Any Club That Would Have Me As a Member"
     },
     {
@@ -193,6 +225,7 @@
       "height": 1835,
       "extent": "3268x1835 1.78",
       "size": "6.0MP",
+      "prompt": "ultra quality. hyper realistic smiling rubber duck with 4 wings, intricate silver, intricate brown and orange, neon armor, ornate, cinematic lighting, floral, symetric, portrait, statue cyberpunk, abstract, full hd render + 3d octane render +4k UHD + immense detail + dramatic lighting + well lit + black, purple, blue, pink, cerulean, teal, metallic colours, + fine details + octane render + 8k, abstract",
       "quote": "Life is A Series of Commas, Not Periods"
     },
     {
@@ -201,6 +234,7 @@
       "height": 2133,
       "extent": "2811x2133 1.32",
       "size": "6.0MP",
+      "prompt": "orange looking like water-universe-Earth in the background is a dusty wooden desk, room interior, realistic, abstract art, cinematic bright lighting, colorful, foggy, smokes --ar 16:9",
       "quote": "My Fake Plants Died Because I Did Not Pretend to Water Them"
     },
     {
@@ -209,6 +243,7 @@
       "height": 1968,
       "extent": "3048x1968 1.55",
       "size": "6.0MP",
+      "prompt": "dense woodland landscape, ::0.4 , English forest, Irish forest, scottish forest, perspective, folklore,King Arthur, Lord of the Rings, Game of Thrones. ultra photoreal , photographic, concept art, cinematic lighting, cinematic composition, rule of thirds , mysterious, eerie, cinematic lighting, ultra-detailed, ultrarealistic, photorealism, 8k, octane render, Albert Bierstadt --ar 16:12",
       "quote": "Life is What Happens When You Are Busy Making Other Plans"
     },
     {
@@ -217,6 +252,7 @@
       "height": 1837,
       "extent": "3265x1837 1.78",
       "size": "6.0MP",
+      "prompt": "arch demon, god, underworld, reclaim, throne, characters, wandering, showing off his power, decimating a large nation, Control, Controlling mass power, realistic, cinematic, high detail, hyper detailed, magic, copper, gold, black, red, green, purple, crimson, smoke, particles, Beam of light, necromancy, divination, supernatural powers, omen, hidden knowledge, event, foresee, foretell, fortold, art, fantasy, towering stature, grandiose, overpowering render, dark fantasy, unreal engine, raytracing, post-processing, zbrush, substance painter, trending on ArtStation, epic perspective, composition, photorealistic, vfx, cgsociety, volumetric lighting, + cinematic + photo + realism + high detail, cgi, 8k, --ar 16:9",
       "quote": "We are a Conclave of Geniuses, Knows as the Intelligencia"
     },
     {
@@ -225,6 +261,7 @@
       "height": 1837,
       "extent": "3265x1837 1.78",
       "size": "6.0MP",
+      "prompt": "Portrait In the style of Rembrandt Harmenszoon van Rijn oil painting --w 1024 --h 1920 --hd",
       "quote": "Believe You Can and You are Half Way There"
     },
     {
@@ -233,6 +270,7 @@
       "height": 1752,
       "extent": "3424x1752 1.95",
       "size": "6.0MP",
+      "prompt": "Tentacles + marble + ebony ::3 fog + smoke + shine + sphere:: black paper + elements + dark grey + dark purple + neon + baroque + rococo + white + ink + tarot card with ornate border frame + sébastien mitton, viktor antonov, sergey kolesov, detailed, intricate ink illustration + magic + glow --ar 63:88",
       "quote": "If you Think You Can Or Think You Can't, Either Way Your Right"
     },
     {
@@ -241,6 +279,7 @@
       "height": 2207,
       "extent": "2718x2207 1.23",
       "size": "6.0MP",
+      "prompt": "devilcore cyberpunk vaporwave pixel diffusion, unholy geometry, radiating --stylize 1250",
       "quote": "The Road to Success and The Road To Failure Are Exactly the Same"
     },
     {
@@ -249,6 +288,7 @@
       "height": 1962,
       "extent": "3057x1962 1.56",
       "size": "6.0MP",
+      "prompt": "fibonacci, stone, snail, wallpaper, colorful, blue gray green, 3d pattern, 8k",
       "quote": "The Secret of Getting Ahead Is Getting Started"
     },
     {
@@ -257,6 +297,7 @@
       "height": 2000,
       "extent": "3000x2000 1.50",
       "size": "6.0MP",
+      "prompt": "king shamn , avatar , swords , angel wings . 4k , unreal engine , wallpaper",
       "quote": "What Does Not Kill You Makes You Stronger"
     },
     {
@@ -265,6 +306,7 @@
       "height": 1881,
       "extent": "3189x1881 1.70",
       "size": "6.0MP",
+      "prompt": "Kodak Portra 160 35mm photograph of \"rubber duck skeleton\" aged, decayed, mossy \"in glass case\" --ar 7:5",
       "quote": "The Harder the Conflict the More Glorious the Triumph"
     },
     {
@@ -273,6 +315,7 @@
       "height": 1837,
       "extent": "3265x1837 1.78",
       "size": "6.0MP",
+      "prompt": "wicked man spending the night in the gaze of strange eyes, vintage, promiscuous, black and white, detailed, intricate ink, illustration, bittersweet, hd, surreal",
       "quote": "Don't Spend Time Beating On a Wall Hoping To Tranform It Into A Door"
     },
     {
@@ -281,6 +324,7 @@
       "height": 1747,
       "extent": "3433x1747 1.97",
       "size": "6.0MP",
+      "prompt": "Stockholm city hall, but built in the medeival style, Photorealism, extreme detail, dusk, pink skies, aspect ratio = 6:4",
       "quote": "I May Not Be There Yet but I'm Closer Than I Was Yesterday"
     },
     {
@@ -289,6 +333,7 @@
       "height": 1837,
       "extent": "3265x1837 1.78",
       "size": "6.0MP",
+      "prompt": "pale young man sitting in an armchair reading beside a big fireplace, bookshelves covering the dark walls, dogs lying on the floor, rule of thirds, dark room, --ar 21:9",
       "quote": "Do What You Love, Love What You Do"
     },
     {
@@ -297,6 +342,7 @@
       "height": 2000,
       "extent": "3000x2000 1.50",
       "size": "6.0MP",
+      "prompt": "Axel Auriant, ultra detail, ultra realist, 8K, 3D, natural light, photorealism",
       "quote": "The Pessimist Sees Difficulty In Every Opportunity The Optimist Sees Opportunity In Every Difficulty"
     },
     {
@@ -305,6 +351,7 @@
       "height": 1837,
       "extent": "3265x1837 1.78",
       "size": "6.0MP",
+      "prompt": "--iw 5 :: generative lines intricate but well defined linework lines running parralel to each other as they twist and turn to form a large geometric design that is almost symettrical but for a few glitchs and defects covering small portions of the image monochrome :: .01 thin purple lines on white wood",
       "quote": "If Your Going Through Hell Keep Going"
     },
     {
@@ -313,6 +360,7 @@
       "height": 1936,
       "extent": "3098x1936 1.60",
       "size": "6.0MP",
+      "prompt": "A string structure, made of silver, enclosing a silicone translucent humanoïde creature ::195 large shot::75 panoramic ::75 black and white ::50 with a glimpse of red ::25 with a glimpse of green ::23 atmospheric ::22 intricate fine ornemental::80 cinematic ::80 hyper realism ::100 mono directional light::45 Caustics ::30 blade runner ::5 David Lynch inspiration ::4 Terry Gilliam inspiration ::8 Luis Bunuel inspiration ::11 Jean Jeunet inspiration ::9 crystalcore ::25 high detail ::100 octane redshift Lumion render 8k ::90 concept art ::1 hyper detailed, insane details, intricate ::22 elite, ornate, elegant, luxury, realist ::30 golden ratio ::75 octane render, weta digital, ray trace, 8k ::50 --stylize 3650 --aspect 9:16 --seed 1969 --version 3 --quality 2",
       "quote": "Open Your Mind Before Your Mouth"
     },
     {
@@ -321,6 +369,7 @@
       "height": 1836,
       "extent": "3266x1836 1.78",
       "size": "6.0MP",
+      "prompt": "imagine unwashed unclean decrepid matterpattern",
       "quote": "If You Can Dream It You Can Do It"
     },
     {
@@ -329,6 +378,7 @@
       "height": 2018,
       "extent": "2972x2018 1.47",
       "size": "6.0MP",
+      "prompt": "hungarian parliament underwater-beach, palm trees behind, aerial shot, real photography, unreal-engine, 4k, highly detailed --wallpaper --uplight",
       "quote": "Creativity Is Intelligence Having Fun"
     },
     {
@@ -337,6 +387,7 @@
       "height": 1774,
       "extent": "3380x1774 1.91",
       "size": "6.0MP",
+      "prompt": "secret vintage photo of rubber duck commitng war crimes in World war 2, why is he did that. --ar 4:5",
       "quote": "Fake It Until You Make It"
     },
     {
@@ -345,6 +396,7 @@
       "height": 2017,
       "extent": "2974x2017 1.47",
       "size": "6.0MP",
+      "prompt": "pencil drawing of an insect, abstract, surrealism, hyper detail, line art --ar 15:10",
       "quote": "The Secret of Getting Ahead is Getting Started"
     },
     {
@@ -353,6 +405,7 @@
       "height": 1881,
       "extent": "3189x1881 1.70",
       "size": "6.0MP",
+      "prompt": "in darkest blue subway,a side road of huge underground sewage channel --s 8000 --hd --wallpaper",
       "quote": "The Best Way to Keep One's Word is Not to Give It"
     },
     {
@@ -361,6 +414,7 @@
       "height": 1881,
       "extent": "3188x1881 1.69",
       "size": "6.0MP",
+      "prompt": "city center public park, modern landscape architectural design for industrialpunk, water in the middle, dramatic lighting and composition, octane render, unreal engine 5, 8k --ar 3:1",
       "quote": "Learn to Say 'No' to the Good so You can Say 'Yes' to the Best"
     },
     {
@@ -369,6 +423,7 @@
       "height": 1860,
       "extent": "3225x1860 1.73",
       "size": "6.0MP",
+      "prompt": "gaelic forest spirit, qirin, god, deity, illustrated, detailed, serene",
       "quote": "The Best Way to Hold a Man is in Your Arms"
     },
     {
@@ -377,6 +432,7 @@
       "height": 2000,
       "extent": "2998x2000 1.50",
       "size": "6.0MP",
+      "prompt": "victorian rocking toy carousel theme park horse, overgrown, zdzisław beksiński, hr giger, mystical occult symbol in real life, high detail, green fog --ar 9:16 --iw 0.75",
       "quote": "The Best Question is Not What is Best, but Who Shall Decide What is Best"
     },
     {
@@ -385,6 +441,7 @@
       "height": 1993,
       "extent": "3009x1993 1.51",
       "size": "6.0MP",
+      "prompt": "--iw 5 :: generative lines intricate defined linework many fine line details with lines running parralel to each other as they twist and turn to form a large geometric design that is almost symettrical but for a few glitchs and defects covering small portions of the image monochrome :: .01 thin purple lines on white wood",
       "quote": "Only a Mediocre Person is Always at His Best"
     },
     {
@@ -393,6 +450,7 @@
       "height": 1790,
       "extent": "3351x1790 1.87",
       "size": "6.0MP",
+      "prompt": "synthwave galaxy being eaten by Galactus, HDR, cinematic, ultrawide, realistic, highly detailed --aspect 16:9 --quality 2 --stylize 650",
       "quote": "We've Been Gone Five Years and the Best they Could Come up With was Boy Bands?"
     },
     {
@@ -401,6 +459,7 @@
       "height": 2120,
       "extent": "2829x2120 1.33",
       "size": "6.0MP",
+      "prompt": "meaty cyborg wall texture. Lots of tentacles, wires and tumors",
       "quote": "No Man has a Good Enough Memory to be a Successful Liar"
     },
     {
