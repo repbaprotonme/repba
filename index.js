@@ -532,7 +532,7 @@ function drawslices()
             var j = context.buttonheight;
             if (y < -j || y >= window.innerHeight+j)
             {
-                if (slice.thumbimg)
+                if (!galleryobj.getcurrent().object && slice.thumbimg)
                 {
                     delete slice.thumbimg;
                     slice.thumbimg = 0;
@@ -4587,11 +4587,7 @@ var headlst =
             }
             else if (context.picture.hitest(x,y))
             {
-                var p = galleryobj.getcurrent().prompt;
-                if (p)
-                    window.location.href = `${url.origin}/search.html?dalle=${encodeURIComponent(p)}#dallehead`;
-                else if (galleryobj.repos)
-                    window.location.href = `${url.origin}/search.html?${galleryobj.repos}=${encodeURIComponent(url.path)}#${galleryobj.repos}head`;
+                search();
             }
 
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -5278,7 +5274,7 @@ galleryobj.init = function(obj)
     var slices = _9cnvctx.sliceobj;
     slices.data = [];
 
-    slices.data.push({title:"Open", path: "OPEN", func: function()
+    slices.data.push({title:"Upload", path: "UPLOAD", func: function()
     {
         menuhide();
         promptFile().then(function(files) { dropfiles(files); })
@@ -5319,12 +5315,7 @@ galleryobj.init = function(obj)
 
     slices.data.push({title:"Search", path: "SEARCH", func: function()
         {
-            window.location.href = "https://reportbase.com/search.html";
-        }})
-
-    slices.data.push({title:"Upload", path: "UPLOAD", func: function()
-        {
-            window.location.href = "https://reportbase.com/upload.html";
+            search();
         }})
 
     slices.data.push({title:"Thumbnail", path: "THUMBNAIL", func: function()
@@ -5425,3 +5416,11 @@ function download()
     }
 }
 
+function search()
+{
+    var p = galleryobj.getcurrent().prompt;
+    if (p)
+        window.location.href = `${url.origin}/search.html?dalle=${encodeURIComponent(p)}#dallehead`;
+    else if (galleryobj.repos)
+        window.location.href = `${url.origin}/search.html?${galleryobj.repos}=${encodeURIComponent(url.path)}#${galleryobj.repos}head`;
+}
