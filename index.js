@@ -801,24 +801,22 @@ var DrawHeader = function (e)
         var lst = wraptext(context, user, rect.width);
         var len = Math.min(lst.length,Math.floor(rect.height/20));
         var k = len < lst.length;
-
-        {
-        }
         rect.y -= 12;
-    //    for (var n = 0; n < Math.min(len,lst.length); n++)
+        var lines = wraptext(context, user, rect.width);
+        if (e)
         {
-            var lines = wraptext(context, user, rect.width);
             var j = Math.floor(Math.lerp(0,lines.length-1,e));
             lines = lines.slice(j);
-            for (var m = 0; m < lines.length; m++)
-            {
-                var str = lines[m].clean();
-                if (!str.length)
-                    continue;
-                var a = new Text("white", "center", "middle", 0, 0, 1);
-                a.draw(context, rect, str, 0);
-                rect.y += 20;
-            }
+        }
+
+        for (var m = 0; m < lines.length; m++)
+        {
+            var str = lines[m].clean();
+            if (!str.length)
+                continue;
+            var a = new Text("white", "center", "middle", 0, 0, 1);
+            a.draw(context, rect, str, 0);
+            rect.y += 20;
         }
     };
 };
@@ -3064,11 +3062,10 @@ var menulst =
         var a = new Layer(
         [
             new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 20),
-            new MultiText()
+            new DrawHeader()
         ]);
 
-        var lst = user.line.split("\n");
-        a.draw(context, rect, lst, time);
+        a.draw(context, rect, user.line, time);
         context.restore();
     }
 },
@@ -3599,8 +3596,8 @@ var ContextObj = (function ()
             context.sliceobj = new Data("", []);
             context.timeobj = new Data("", TIMEOBJ);
             context.timeobj.set(TIMEOBJ/2);
-            context.imagescrollobj = new Data("IMAGESCROLL", window.innerHeight/2);
-            context.imagescrollobj.set(window.innerHeight/2);
+            context.imagescrollobj = new Data("IMAGESCROLL", Math.floor(window.innerHeight/2));
+            context.imagescrollobj.set(context.imagescrollobj.length()/2);
             context.textscrollobj = new Data("TEXTSCROLL", window.innerHeight/2);
             context.textscrollobj.set(0);
             context.scrollobj = new Data("SCROLL", [context.imagescrollobj,context.textscrollobj]);
@@ -4945,7 +4942,7 @@ var headlst =
                         new Layer(
                         [
                             new Rectangle(context.picture),
-                            new RowA([0,24,24,24],
+                            new RowA([14,22,22,22],
                             [
                                 0,
                                 new Text("white", "center", "middle", 0, 0, 1),
@@ -4967,7 +4964,8 @@ var headlst =
             var bt = `${galleryobj.current()+1} of ${galleryobj.length()}`;
             if (!st)
             {
-                lt = bt;
+                st = bt;
+                lt = "";
                 bt = "";
             }
 
@@ -5235,7 +5233,7 @@ galleryobj.init = function(obj)
     _7cnvctx.virtualheight = lst.length*_7cnvctx.buttonheight;
     _7cnvctx.rvalue = 2;
     _7cnvctx.slidereduce = 0.75;
-    _7cnvctx.title = "Help";
+    _7cnvctx.title = "Help";//todo same as _5
 
     if (leftmenu)
     {
