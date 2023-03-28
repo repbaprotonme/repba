@@ -848,7 +848,7 @@ var MultiText = function (e)
 
         if (e)
         {
-            var j = Math.floor(Math.lerp(0,lst.length-1,e));
+            var j = Math.round(Math.lerp(0,lst.length-1,e));
             lst = lst.slice(j);
         }
 
@@ -1990,7 +1990,7 @@ var panlst =
         var obj = context.scrollobj;
         if (context.index == 7)
             obj = context.scrollobj.getcurrent();
-        if (context.leftside)
+        if (obj && context.leftside)
         {
             var k = panvert(obj, y);
             if (k == -1)
@@ -2002,13 +2002,13 @@ var panlst =
         }
         else if (context.rightside)
         {
-             var obj = context.timeobj;
+             var time = context.timeobj;
              var m = y/rect.height;
-             m = Math.floor((1-m)*obj.length());
-             obj.set(m);
+             m = Math.floor((1-m)*time.length());
+             time.set(m);
              context.refresh()
         }
-        else if (type == "panleft" || type == "panright")
+        else if (obj && (type == "panleft" || type == "panright"))
         {
             if (context.type == "panup" || context.type == "pandown")
                 return;
@@ -2054,7 +2054,8 @@ var panlst =
         var obj = context.scrollobj;
         if (context.index == 7)
             obj = context.scrollobj.getcurrent();
-        delete obj.offset;
+        if (obj)
+            delete obj.offset;
     }
 },
 {
@@ -2449,6 +2450,8 @@ var swipelst =
         var obj = context.scrollobj;
         if (context.index == 7)
             obj = context.scrollobj.getcurrent();
+        if (!obj)
+            return;
         if (evt.type == "swipeleft")
         {
             obj.addperc(-10);
@@ -2520,6 +2523,8 @@ var keylst =
         var obj = context.scrollobj;
         if (context.index == 7)
             obj = context.scrollobj.getcurrent();
+        if (!obj)
+            return;
 		var context = _8cnvctx;
 		if (evt.key == "ArrowUp" || evt.key == "j")
 		{
@@ -2795,6 +2800,8 @@ var taplst =
         var obj = context.scrollobj;
         if (context.index == 7)
             obj = context.scrollobj.getcurrent();
+        if (!obj)
+            return;
         delete _4cnvctx.thumbcanvas;
         if (x < MENUBARWIDTH+3)
         {
