@@ -900,7 +900,7 @@ var InfoPanel = function (color, shadow)
     }
 };
 
-var DownPanel = function (color, shadow)
+var SharePanel = function (color, shadow)
 {
     this.draw = function (context, rect, user, time)
     {
@@ -2523,8 +2523,6 @@ var keylst =
         var obj = context.scrollobj;
         if (context.index == 7)
             obj = context.scrollobj.getcurrent();
-        if (!obj)
-            return;
 		var context = _8cnvctx;
 		if (evt.key == "ArrowUp" || evt.key == "j")
 		{
@@ -2532,12 +2530,12 @@ var keylst =
             context.timeobj.rotate(k);
             context.refresh()
         }
-        else if (evt.key == "ArrowLeft" || evt.key == "h")
+        else if (obj && (evt.key == "ArrowLeft" || evt.key == "h"))
 		{
             obj.addperc(-2.5);
             context.refresh()
         }
-        else if (evt.key == "ArrowRight" || evt.key == "l")
+        else if (obj && (evt.key == "ArrowRight" || evt.key == "l"))
 		{
             obj.addperc(2.5);
             context.refresh()
@@ -2800,10 +2798,8 @@ var taplst =
         var obj = context.scrollobj;
         if (context.index == 7)
             obj = context.scrollobj.getcurrent();
-        if (!obj)
-            return;
         delete _4cnvctx.thumbcanvas;
-        if (x < MENUBARWIDTH+3)
+        if (obj && x < MENUBARWIDTH+3)
         {
             var j = y/rect.height;
             var k = obj.length()*(1-j);
@@ -2825,9 +2821,7 @@ var taplst =
         {
             var k = getbuttonfrompoint(context, x, y);
             if (k == -1)
-            {
                 return;
-            }
 
             var slice = context.sliceobj.data[k];
             slice.tap = 1;
@@ -4599,7 +4593,7 @@ var headlst =
             {
                 menuhide();
             }
-            else if (context.downpanel && context.downpanel.hitest(x,y))
+            else if (context.sharepanel && context.sharepanel.hitest(x,y))
             {
                 download();
             }
@@ -4677,7 +4671,7 @@ var headlst =
             context.footpanel = new rectangle()
             context.infopanel = new rectangle()
             context.openpanel = new rectangle()
-            context.downpanel = new rectangle()
+            context.sharepanel = new rectangle()
             var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
             var a = new Row([0,h],
             [
@@ -4701,8 +4695,8 @@ var headlst =
                            0,
                            new Layer(
                            [
-                               new DownPanel("white","black"),
-                               new Rectangle(context.downpanel),
+                               new SharePanel("white","black"),
+                               new Rectangle(context.sharepanel),
                            ]),
                            new Layer(
                            [
