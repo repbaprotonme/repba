@@ -631,7 +631,7 @@ var eventlst =
     {name: "_3cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
     {name: "_4cnvctx", mouse: "BOSS", guide: "GUIDE", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", draw: "BOSS", wheel: "BOSS", drop: "BOSS", key: "BOSS", press: "BOSS", pinch: "BOSS"},
     {name: "_5cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
-    {name: "_6cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
+    {name: "_6cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
     {name: "_7cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
     {name: "_8cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "GMENU", wheel: "MENU", drop: "DEFAULT", key: "GMENU", press: "GPRESS", pinch: "DEFAULT"},
     {name: "_9cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
@@ -905,10 +905,40 @@ var SharePanel = function (color, shadow)
     this.draw = function (context, rect, user, time)
     {
         context.save();
+
+        var Panel = function ()
+        {
+            this.draw = function (context, rect, user, time)
+            {
+                context.save();
+                var a = new CirclePanel("white","rgba(0,0,0,0)",3);
+                rect.x += 11;
+                rect.y += 3;
+                rect.width = 7;
+                rect.height = 7;
+                a.draw(context, rect, user, time);
+                rect.y += 17;
+                a.draw(context, rect, user, time);
+                rect.x += -14;
+                rect.y += -8;
+                a.draw(context, rect, user, time);
+		        context.strokeStyle = "white";
+                context.lineWidth = 1.5;
+                context.beginPath();
+                context.moveTo(rect.x+2, rect.y+2);
+                context.lineTo(rect.x+16, rect.y+11);
+                context.stroke();
+                context.moveTo(rect.x+2, rect.y+4);
+                context.lineTo(rect.x+16, rect.y-5);
+                context.stroke();
+                context.restore();
+            }
+        };
+                var a = new CirclePanel(SCROLLNAB,"white",3);
         var a = new Layer(
         [
             new Shrink(new CirclePanel(SCROLLNAB,"white",3),16,16),
-            new Shrink(new ArrowPanel(ARROWFILL,180),22,27),
+            new Shrink(new Panel(),20,20),
         ]);
 
         a.draw(context, rect, user, time);
@@ -3536,8 +3566,8 @@ var ContextObj = (function ()
         _4cnvctx.timeobj.set(url.time);
         _5cnvctx.scrollobj = new Data("TEXTSCROLL", window.innerHeight/2);
         _5cnvctx.scrollobj.set(0);
-        _6cnvctx.scrollobj = new Data("TEXTSCROLL", window.innerHeight/2);
-        _6cnvctx.scrollobj.set(0);
+        _7cnvctx.scrollobj = new Data("TEXTSCROLL", window.innerHeight/2);
+        _7cnvctx.scrollobj.set(0);
         _8cnvctx.imagescrollobj = new Data("IMAGESCROLL", Math.floor(window.innerHeight/2));
         _8cnvctx.imagescrollobj.set(_8cnvctx.imagescrollobj.length()/2);
         _8cnvctx.textscrollobj = new Data("TEXTSCROLL", window.innerHeight/2);
@@ -4595,7 +4625,7 @@ var headlst =
             }
             else if (context.sharepanel && context.sharepanel.hitest(x,y))
             {
-                download();
+                menushow(_6cnvctx)
             }
             else if (context.thumbpanel && context.thumbpanel.hitest(x,y))
             {
@@ -5144,8 +5174,24 @@ galleryobj.init = function(obj)
     headham.panel = headobj.getcurrent();
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
+    _6cnvctx.sliceobj.data =
+    [
+        {title:"Download", path: "DOWNLOAD", func: function() {download();}},
+        {title:"Copy Link", path: "COPYLINK", func: function() {}},
+        {title:"Twitter", path: "TWITTER", func: function() {}},
+        {title:"Instagram", path: "INSTAGRAM", func: function() {}},
+    ];
+
+    var data = _6cnvctx.sliceobj.data;
+    _6cnvctx.buttonheight = 30;
+    _6cnvctx.delayinterval = DELAYCENTER / data.length;
+    _6cnvctx.virtualheight = data.length*_6cnvctx.buttonheight;
+    _6cnvctx.rvalue = 2;
+    _6cnvctx.slidereduce = 0.75;
+    _6cnvctx.title = "Share";
+
     //7
-    var lst =
+    _7cnvctx.sliceobj.data =
     [
         {
             line: "Image Viewer\nhttps://reportbase.com\nimages@reportbase.com\nTom Brinkman",
@@ -5165,11 +5211,10 @@ galleryobj.init = function(obj)
         },
     ];
 
-    var slices = _7cnvctx.sliceobj;
-    slices.data = lst;
+    var data = _7cnvctx.sliceobj.data;
     _7cnvctx.buttonheight = 90;
-    _7cnvctx.delayinterval = DELAYCENTER / lst.length;
-    _7cnvctx.virtualheight = lst.length*_7cnvctx.buttonheight;
+    _7cnvctx.delayinterval = DELAYCENTER / data.length;
+    _7cnvctx.virtualheight = data.length*_7cnvctx.buttonheight;
     _7cnvctx.rvalue = 2;
     _7cnvctx.slidereduce = 0.75;
     _7cnvctx.title = "Help";
@@ -5212,11 +5257,6 @@ galleryobj.init = function(obj)
     {
         menuhide();
         promptFile().then(function(files) { dropfiles(files); })
-    }});
-
-    slices.data.push({title:"Download", path: "DOWNLOAD", func: function()
-    {
-        download();
     }});
 
     slices.data.push({title:"Info", path: "INFO", func: function()
