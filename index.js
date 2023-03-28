@@ -557,14 +557,17 @@ function drawslices()
         var rect = context.rect();
         var a = new ColA([7,0,7],
         [
-            context.index == 7?new CurrentVPanel(new Fill("white"), 90, 0):0,
+            (context.index == 4||
+            context.index == 6 ||
+             context.index == 7) ?
+                new CurrentVPanel(new Fill("white"), 90, 0):0,
             0,
             new CurrentVPanel(new Fill("white"), 90, 1),
         ]);
 
         a.draw(context, rect,
         [
-            context.scrollobj.getcurrent(),
+            context.index == 7 ? context.scrollobj.getcurrent(): context.scrollobj,
             0,
             context.timeobj
         ],
@@ -627,8 +630,8 @@ var eventlst =
     {name: "_2cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
     {name: "_3cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
     {name: "_4cnvctx", mouse: "BOSS", guide: "GUIDE", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", draw: "BOSS", wheel: "BOSS", drop: "BOSS", key: "BOSS", press: "BOSS", pinch: "BOSS"},
-    {name: "_5cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "BMENU", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
-    {name: "_6cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "BMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
+    {name: "_5cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
+    {name: "_6cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
     {name: "_7cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
     {name: "_8cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "GMENU", wheel: "MENU", drop: "DEFAULT", key: "GMENU", press: "GPRESS", pinch: "DEFAULT"},
     {name: "_9cnvctx", mouse: "MENU", guide: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT"},
@@ -837,12 +840,13 @@ var MultiText = function (e)
             lst = lst.concat(wraptext(context, str, Math.min(640,rect.width)));
         }
 
-        var len = Math.min(lst.length,Math.floor(rect.height/20));
+        var rowheight = 20;
+        var len = Math.min(lst.length,Math.floor(rect.height/rowheight));
         var k = len < lst.length;
-        rect.y = (rect.height-len*20)/2
-        rect.y -= rect.height/2
+        rect.y -= (len*(rowheight))/2;
+        rect.y += 5;
 
-        if (e)// && k)
+        if (e)
         {
             var j = Math.floor(Math.lerp(0,lst.length-1,e));
             lst = lst.slice(j);
@@ -858,7 +862,7 @@ var MultiText = function (e)
                     continue;
                 var a = new Text("white", "center", "middle", 0, 0, 1);
                 a.draw(context, rect, str, 0);
-                rect.y += 20;
+                rect.y += rowheight;
             }
         }
     };
@@ -1282,38 +1286,6 @@ addressobj.full = function (k)
     return out;
 };
 
-addressobj.update = function()
-{
-    /*
-    try
-    {
-        clearTimeout(globalobj.addresstime);
-        globalobj.addresstime = setTimeout(function()
-        {
-            history.replaceState(null, document.title, addressobj.full());
-        }, 100);
-    }
-    catch(e)
-    {
-
-    }
-    */
-}
-
-//history.pushState(null, null, document.URL);
-/*
-window.onpopstate = function ()
-{
-    if (ismenu())
-    {
-        menuhide();
-        return;
-    }
-
-    window.history.go(1);
-};
-*/
-
 CanvasRenderingContext2D.prototype.moveup = function()
 {
     var k = rowobj.length()/channelobj.length()
@@ -1348,13 +1320,11 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     galleryobj.rotate(j);
     _4cnvctx.movingpage = j;
     clearTimeout(globalobj.move);
-    _4cnvctx.refresh();
     delete _4cnvctx.thumbcanvas;
     delete photo.image;
     _4cnvctx.setcolumncomplete = 0;
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     contextobj.reset();
-    addressobj.update();
     setTimeout(function()
     {
         _4cnvctx.movingpage = 0;
@@ -1870,7 +1840,6 @@ var pinchlst =
         {
             context.isthumbrect = 0;
             context.refresh();
-            addressobj.update();
         }, 40);
     },
 },
@@ -2018,14 +1987,17 @@ var panlst =
 
 	pan: function (context, rect, x, y, type)
     {
+        var obj = context.scrollobj;
+        if (context.index == 7)
+            obj = context.scrollobj.getcurrent();
         if (context.leftside)
         {
-            var k = panvert(context.scrollobj.getcurrent(), y);
+            var k = panvert(obj, y);
             if (k == -1)
                 return;
-            if (k == context.scrollobj.getcurrent().anchor())
+            if (k == obj.anchor())
                 return;
-            context.scrollobj.getcurrent().set(k);
+            obj.set(k);
             context.refresh()
         }
         else if (context.rightside)
@@ -2041,12 +2013,12 @@ var panlst =
             if (context.type == "panup" || context.type == "pandown")
                 return;
             context.type = type;
-            var k = panhorz(context.scrollobj.getcurrent(), rect.width-x);
+            var k = panhorz(obj, rect.width-x);
             if (k == -1)
                 return;
-            if (k == context.scrollobj.getcurrent().anchor())
+            if (k == obj.anchor())
                 return;
-            context.scrollobj.getcurrent().set(k);
+            obj.set(k);
             context.refresh()
         }
         else if (type == "panup" || type == "pandown")
@@ -2079,7 +2051,10 @@ var panlst =
         delete context.starty;
         delete context.startt;
         delete context.timeobj.offset;
-        delete context.scrollobj.getcurrent().offset;
+        var obj = context.scrollobj;
+        if (context.index == 7)
+            obj = context.scrollobj.getcurrent();
+        delete obj.offset;
     }
 },
 {
@@ -2167,7 +2142,6 @@ var panlst =
             headobj.set(0);
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            addressobj.update();
         }, 40);
 
         clearTimeout(context.hideheadtime);
@@ -2472,14 +2446,17 @@ var swipelst =
     name: "MENU",
     swipeleftright: function (context, rect, x, y, evt)
     {
+        var obj = context.scrollobj;
+        if (context.index == 7)
+            obj = context.scrollobj.getcurrent();
         if (evt.type == "swipeleft")
         {
-            context.scrollobj.getcurrent().addperc(-10);
+            obj.addperc(-10);
             context.refresh()
         }
         else
         {
-            context.scrollobj.getcurrent().addperc(10);
+            obj.addperc(10);
             context.refresh()
         }
     },
@@ -2540,6 +2517,9 @@ var keylst =
 	keyup: function (evt) { },
 	keydown: function (evt)
 	{
+        var obj = context.scrollobj;
+        if (context.index == 7)
+            obj = context.scrollobj.getcurrent();
 		var context = _8cnvctx;
 		if (evt.key == "ArrowUp" || evt.key == "j")
 		{
@@ -2549,12 +2529,12 @@ var keylst =
         }
         else if (evt.key == "ArrowLeft" || evt.key == "h")
 		{
-            context.scrollobj.getcurrent().addperc(-2.5);
+            obj.addperc(-2.5);
             context.refresh()
         }
         else if (evt.key == "ArrowRight" || evt.key == "l")
 		{
-            context.scrollobj.getcurrent().addperc(2.5);
+            obj.addperc(2.5);
             context.refresh()
         }
         else if (evt.key == "ArrowDown" || evt.key == "k")
@@ -2711,8 +2691,6 @@ var keylst =
             context.movepage(evt.shiftKey?-1:1);
             evt.preventDefault();
         }
-
-        addressobj.update();
 	}
 },
 
@@ -2808,20 +2786,21 @@ var taplst =
 
             context.refresh();
         }
-
-        addressobj.update();
     }
 },
 {
     name: "MENU",
     tap: function (context, rect, x, y)
     {
+        var obj = context.scrollobj;
+        if (context.index == 7)
+            obj = context.scrollobj.getcurrent();
         delete _4cnvctx.thumbcanvas;
         if (x < MENUBARWIDTH+3)
         {
             var j = y/rect.height;
-            var k = context.scrollobj.getcurrent().length()*(1-j);
-            context.scrollobj.getcurrent().set(k);
+            var k = obj.length()*(1-j);
+            obj.set(k);
             context.refresh();
         }
         else if (x > rect.width - (MENUBARWIDTH+3) )
@@ -3058,14 +3037,15 @@ var menulst =
         var str = user.title;
         if (user.tap)
             clr = MENUTAP;
+        var e = context.scrollobj.berp();
 
         var a = new Layer(
         [
-            new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 20),
-            new DrawHeader()
+            new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 17),
+            new MultiText(e)
         ]);
 
-        a.draw(context, rect, user.line, time);
+        a.draw(context, rect, user.line.split("\n"), time);
         context.restore();
     }
 },
@@ -3141,7 +3121,8 @@ var menulst =
             }
         }
 
-        if (context.scrollobj.current() == 0 &&
+        var obj = context.scrollobj;
+        if (obj.current() == 0 &&
             user.thumbimg && user.thumbimg.width)
         {
             var h2 = rect.height+80;
@@ -3152,8 +3133,8 @@ var menulst =
                 var h1 = user.thumbimg.height;
                 var w1 = h1*a2;
                 var y1 = 0;
-                var x1 = Math.nub(context.scrollobj.getcurrent().getcurrent(),
-                    context.scrollobj.getcurrent().length(), w1, user.thumbimg.width);
+                var x1 = Math.nub(obj.getcurrent().getcurrent(),
+                    obj.getcurrent().length(), w1, user.thumbimg.width);
                 context.drawImage(user.thumbimg, x1, y1, w1, h1,
                     10, -40, w2, h2);
             }
@@ -3162,8 +3143,8 @@ var menulst =
                 var w1 = user.thumbimg.width;
                 var h1 = w1/a2;
                 var x1 = 0;
-                var y1 = Math.nub(context.scrollobj.getcurrent().getcurrent(),
-                    context.scrollobj.getcurrent().length(), h1, user.thumbimg.height);
+                var y1 = Math.nub(obj.getcurrent().getcurrent(),
+                    obj.getcurrent().length(), h1, user.thumbimg.height);
                 context.drawImage(user.thumbimg, x1, y1, w1, h1,
                     10, -40, w2, h2);
             }
@@ -3196,57 +3177,11 @@ var menulst =
         }
         else
         {
-            var e = context.scrollobj.getcurrent().berp();
+            var e = obj.getcurrent().berp();
             var a = new MultiText(e);
             a.draw(context, rect, user.lst, 0);
         }
 
-        context.restore();
-    }
-},
-{
-    name: "BMENU",
-    draw: function (context, rect, user, time)
-    {
-        context.save();
-        rect.height = context.buttonheight;
-        rect.width -= 40;
-        context.translate(-rect.width/2, -rect.height/2);
-        user.fitwidth = rect.width;
-        user.fitheight = rect.height;
-        context.font = "0.9rem Archivo Black";
-        var clr = SCROLLNAB;
-        var str = user.title;
-
-        if (user.tap)
-        {
-            clr = MENUTAP;
-        }
-
-        var a = new LayerA(
-        [
-            new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 10),
-            user.obj?new Shrink(new CurrentHPanel(new Fill(MENUSELECT), 90),15,0):0,
-            new RowA([0,25,25,0],
-            [
-                0,
-                new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                new Shrink(new Text("white", "center", "middle",0, 0, 1),20,0),
-                0,
-            ]),
-        ]);
-
-        a.draw(context, rect,
-        [
-            0,
-            user.obj,
-            [
-                0,
-                user.title,
-                user.title1,
-                0,
-            ]
-        ], time);
         context.restore();
     }
 },
@@ -3294,14 +3229,13 @@ var menulst =
                 clr = MENUSELECT;
         }
 
-        var a = new LayerA(
+        var a = new Layer(
         [
             new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 3),
-            user.obj?new Shrink(new CurrentHPanel(new Fill(MENUSELECT), 90),15,0):0,
             new Shrink(new Text(fontclr, "center", "middle",0, 0, 1),20,0),
         ]);
 
-        a.draw(context, rect, [0,user.obj,user.title], time);
+        a.draw(context, rect, user.title, time);
         context.restore();
     }
 },
@@ -3596,14 +3530,18 @@ var ContextObj = (function ()
             context.sliceobj = new Data("", []);
             context.timeobj = new Data("", TIMEOBJ);
             context.timeobj.set(TIMEOBJ/2);
-            context.imagescrollobj = new Data("IMAGESCROLL", Math.floor(window.innerHeight/2));
-            context.imagescrollobj.set(context.imagescrollobj.length()/2);
-            context.textscrollobj = new Data("TEXTSCROLL", window.innerHeight/2);
-            context.textscrollobj.set(0);
-            context.scrollobj = new Data("SCROLL", [context.imagescrollobj,context.textscrollobj]);
         }
 
         _4cnvctx.timeobj.set(url.time);
+        _5cnvctx.scrollobj = new Data("TEXTSCROLL", window.innerHeight/2);
+        _5cnvctx.scrollobj.set(0);
+        _6cnvctx.scrollobj = new Data("TEXTSCROLL", window.innerHeight/2);
+        _6cnvctx.scrollobj.set(0);
+        _8cnvctx.imagescrollobj = new Data("IMAGESCROLL", Math.floor(window.innerHeight/2));
+        _8cnvctx.imagescrollobj.set(_8cnvctx.imagescrollobj.length()/2);
+        _8cnvctx.textscrollobj = new Data("TEXTSCROLL", window.innerHeight/2);
+        _8cnvctx.textscrollobj.set(0);
+        _8cnvctx.scrollobj = new Data("SCROLL", [_8cnvctx.imagescrollobj,_8cnvctx.textscrollobj]);
     }
 
     init.prototype =
@@ -4671,11 +4609,11 @@ var headlst =
                       {
                         slices = [];
                         var index = `${galleryobj.current()+1} of ${galleryobj.length()}`
-                        slices.push({title: "Index", title1: index, func: function() { menuhide(); }})
+                        slices.push({line: `Index\n${index}`, func: function() { menuhide(); }})
                         var extent = `${photo.image.extent}`
-                        slices.push({title: "Extent", title1: extent, func: function() { menuhide(); }})
+                        slices.push({line: `Extent\n${extent}`, func: function() { menuhide(); }})
                         var aspect = `${(photo.image.aspect).toFixed(2)}`
-                        slices.push({title: "Aspect", title1: aspect, func: function() { menuhide(); }})
+                        slices.push({line: `Aspect\n${aspect}`, func: function() { menuhide(); }})
                         var keys = Object.keys(galleryobj.getcurrent());
                         for (var n = 0; n < keys.length; ++n)
                         {
@@ -4685,7 +4623,7 @@ var headlst =
                             {
                                 key = key.toLowerCase()
                                 key  = key.charAt(0).toUpperCase() + key.slice(1)
-                                slices.push({title:key, title1: value, func: function() { menuhide(); }})
+                                slices.push({line:`${key}\n${value}`, func: function() { menuhide(); }})
                             }
                         }
                      }
@@ -4693,7 +4631,7 @@ var headlst =
                         return slices;
                   }
 
-                _5cnvctx.buttonheight = 60;
+                _5cnvctx.buttonheight = 90;
                 _5cnvctx.rvalue = 2;
                 _5cnvctx.slidereduce = 0.75;
                 galleryobj.getcurrent().slices = getslices();
@@ -5228,12 +5166,12 @@ galleryobj.init = function(obj)
 
     var slices = _7cnvctx.sliceobj;
     slices.data = lst;
-    _7cnvctx.buttonheight = 80;
+    _7cnvctx.buttonheight = 90;
     _7cnvctx.delayinterval = DELAYCENTER / lst.length;
     _7cnvctx.virtualheight = lst.length*_7cnvctx.buttonheight;
     _7cnvctx.rvalue = 2;
     _7cnvctx.slidereduce = 0.75;
-    _7cnvctx.title = "Help";//todo same as _5
+    _7cnvctx.title = "Help";
 
     if (leftmenu)
     {
@@ -5245,10 +5183,7 @@ galleryobj.init = function(obj)
     var func = function (index)
     {
         galleryobj.set(this.pos);
-        setTimeout(function()
-        {
-            window.open(addressobj.full());
-        }, 100);
+        setTimeout(function() { window.open(addressobj.full()); }, 100);
     }
 
     for (var n = 0; n < galleryobj.data.length; ++n)
