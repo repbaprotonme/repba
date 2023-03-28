@@ -3089,7 +3089,7 @@ var menulst =
         rect.width -= 25;
         context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
-        user.fitheight = rect.height+60;
+        user.fitheight = rect.height+70;
         context.font = "0.9rem Archivo Black";
         var clr = SCROLLNAB;
         if (user.tap)
@@ -5176,10 +5176,10 @@ galleryobj.init = function(obj)
 
     _6cnvctx.sliceobj.data =
     [
-        {title:"Download", path: "DOWNLOAD", func: function() {download();}},
-        {title:"Copy Link", path: "COPYLINK", func: function() {}},
-        {title:"Twitter", path: "TWITTER", func: function() {}},
-        {title:"Instagram", path: "INSTAGRAM", func: function() {}},
+        {title:"Download", path: "DOWNLOAD", func: function() {download(); menuhide();}},
+        {title:"Copy Link", path: "COPYLINK", func: function() { copytext(addressobj.full());  menuhide();}},
+        {title:"Twitter", path: "TWITTER", func: function() { menuhide();}},
+        {title:"Instagram", path: "INSTAGRAM", func: function() { menuhide();}},
     ];
 
     var data = _6cnvctx.sliceobj.data;
@@ -5287,10 +5287,8 @@ galleryobj.init = function(obj)
             menuhide();
         }})
 
-    slices.data.push({title:"Search", path: "SEARCH", func: function()
-        {
-            search();
-        }})
+    slices.data.push({title:"Share", path: "SHARE", func: function() { menushow(_6cnvctx); }})
+    slices.data.push({title:"Search", path: "SEARCH", func: function() { search(); }})
 
     slices.data.push({title:"Thumbnail", path: "THUMBNAIL", func: function()
         {
@@ -5398,3 +5396,15 @@ function search()
     else if (galleryobj.repos)
         window.location.href = `${url.origin}/search.html?${galleryobj.repos}=${encodeURIComponent(url.path)}#${galleryobj.repos}head`;
 }
+
+function copytext(text)
+{
+    var input = document.createElement('textarea');
+    input.innerHTML = text;
+    document.body.appendChild(input);
+    input.select();
+    var result = document.execCommand('copy');
+    document.body.removeChild(input);
+    return result;
+}
+
