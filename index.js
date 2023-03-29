@@ -2453,14 +2453,11 @@ var presslst =
         }
         else
         {
-            headobj.set(headobj.current()?0:1);
-            headham.panel = headobj.getcurrent();
-            headcnvctx.clear();
+            thumbobj.rotate(1);
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+            _4cnvctx.refresh();
         }
 
-        headcnv.height = 80;
-        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         context.refresh();
     }
 },
@@ -2506,9 +2503,6 @@ var swipelst =
     name: "BOSS",
     swipeleftright: function (context, rect, x, y, evt)
     {
-        var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
-        if (isthumbrect)
-            return;
         setTimeout(function()
         {
             headcnv.height = 80;
@@ -2550,10 +2544,16 @@ var keylst =
 	keyup: function (evt) { },
 	keydown: function (evt)
 	{
+		var context =
+            _5cnvctx.enabled ? _5cnvctx :
+            _6cnvctx.enabled ? _6cnvctx :
+            _7cnvctx.enabled ? _7cnvctx :
+			_8cnvctx.enabled ? _8cnvctx :
+            _9cnvctx.enabled ? _9cnvctx :
+		    _4cnv.height ? _4cnvctx : _1cnvctx;
         var obj = context.scrollobj;
         if (context.index == 7)
             obj = context.scrollobj.getcurrent();
-		var context = _8cnvctx;
 		if (evt.key == "ArrowUp" || evt.key == "j")
 		{
             var k = (20/context.virtualheight)*context.timeobj.length();
@@ -2714,9 +2714,11 @@ var keylst =
         }
         else if (evt.key == "Tab")
         {
-            thumbobj.rotate(1);
+            headcnv.height = 80;
+            headobj.set(3);
+            headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            _4cnvctx.refresh();
+            _4cnvctx.tab();
             evt.preventDefault();
         }
         else if (evt.key == "Enter")
