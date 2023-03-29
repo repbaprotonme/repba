@@ -998,7 +998,7 @@ var UploadPanel = function (color, shadow)
 		context.fillStyle = "white";
 		context.strokeStyle = "white";
         var x = rect.x+20;
-        var y = rect.y+32;
+        var y = rect.y+33;
         context.lineWidth = 2.5;
         context.strokeRect(x, y, 21, 16);
         context.fillRect(x, y-5, 10, 4);
@@ -2835,7 +2835,7 @@ var taplst =
         if (obj && x < MENUBARWIDTH+3)
         {
             var j = y/rect.height;
-            var k = obj.length()*(1-j);
+            var k = obj.length()*j;
             obj.set(k);
             context.refresh();
         }
@@ -2846,15 +2846,15 @@ var taplst =
             context.timeobj.set(k);
             context.refresh();
         }
-        else if (y < 80)
-        {
-            menuhide();
-        }
         else
         {
             var k = getbuttonfrompoint(context, x, y);
             if (k == -1)
+            {
+                if (y < 80)
+                    menuhide();
                 return;
+            }
 
             var slice = context.sliceobj.data[k];
             slice.tap = 1;
