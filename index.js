@@ -912,14 +912,14 @@ var SharePanel = function (color, shadow)
             {
                 context.save();
                 var a = new CirclePanel("white","rgba(0,0,0,0)",3);
-                rect.x += 11;
-                rect.y += 3;
-                rect.width = 7;
-                rect.height = 7;
+                rect.x += 12;
+                rect.y += 7;
+                rect.width = 9;
+                rect.height = 9;
                 a.draw(context, rect, user, time);
                 rect.y += 17;
                 a.draw(context, rect, user, time);
-                rect.x += -14;
+                rect.x += -16;
                 rect.y += -8;
                 a.draw(context, rect, user, time);
 		        context.strokeStyle = "white";
@@ -928,8 +928,8 @@ var SharePanel = function (color, shadow)
                 context.moveTo(rect.x+2, rect.y+2);
                 context.lineTo(rect.x+16, rect.y+11);
                 context.stroke();
-                context.moveTo(rect.x+2, rect.y+4);
-                context.lineTo(rect.x+16, rect.y-5);
+                context.moveTo(rect.x+2, rect.y+5);
+                context.lineTo(rect.x+16, rect.y-3);
                 context.stroke();
                 context.restore();
             }
@@ -938,6 +938,7 @@ var SharePanel = function (color, shadow)
         var a = new Layer(
         [
             new Shrink(new CirclePanel(SCROLLNAB,"white",3),16,16),
+            _6cnvctx.enabled ? new Shrink(new CirclePanel("rgba(0,0,0,0)","rgb(255,155,0)",4),18,18) : 0,
             new Shrink(new Panel(),20,20),
         ]);
 
@@ -983,7 +984,7 @@ var ThumbPanel = function (color, shadow)
 };
 
 
-var OpenPanel = function (color, shadow)
+var UploadPanel = function (color, shadow)
 {
     this.draw = function (context, rect, user, time)
     {
@@ -996,11 +997,11 @@ var OpenPanel = function (color, shadow)
         a.draw(context, rect, user, time);
 		context.fillStyle = "white";
 		context.strokeStyle = "white";
-        var x = rect.x+21;
-        var y = rect.y+30;
-        context.lineWidth = 2;
-        context.strokeRect(x, y, 17, 12);
-        context.fillRect(x, y-4, 9, 3);
+        var x = rect.x+20;
+        var y = rect.y+32;
+        context.lineWidth = 2.5;
+        context.strokeRect(x, y, 21, 16);
+        context.fillRect(x, y-5, 10, 4);
         context.restore();
     }
 };
@@ -1021,11 +1022,11 @@ var FullPanel = function (color, shadow)
 		context.strokeStyle = color;
 		context.shadowColor = shadow;
 
-        var e = 5;
-        var j = 28;
-        var k = 23;
-        var r = new rectangle(rect.x+k,rect.y+j,rect.width,rect.height);
-        context.lineWidth = 2.5;
+        var e = 6;
+        var x = 21;
+        var y = 31;
+        var r = new rectangle(rect.x+x,rect.y+y,rect.width,rect.height);
+        context.lineWidth = 3;
         var x = r.x;
         var y = r.y;
         var path = new Path2D();
@@ -3088,7 +3089,7 @@ var menulst =
     {
         context.save();
         rect.height = context.buttonheight;
-        rect.width -= 25;
+        rect.width -= 40;
         context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
         user.fitheight = rect.height+70;
@@ -4673,7 +4674,7 @@ var headlst =
                 _5cnvctx.virtualheight = _5cnvctx.sliceobj.data.length*_5cnvctx.buttonheight;
                 menushow(_5cnvctx);
             }
-            else if (context.openpanel && context.openpanel.hitest(x,y))
+            else if (context.uploadpanel && context.uploadpanel.hitest(x,y))
             {
                 menuhide();
                 promptFile().then(function(files) { dropfiles(files); })
@@ -4700,61 +4701,44 @@ var headlst =
             context.font = "1rem Archivo Black";
             context.fullpanel = new rectangle()
             context.thumbpanel = new rectangle()
-            context.footpanel = new rectangle()
             context.infopanel = new rectangle()
-            context.openpanel = new rectangle()
+            context.uploadpanel = new rectangle()
             context.sharepanel = new rectangle()
             var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
-            var a = new Row([0,h],
-            [
-                0,
-                new Layer(
-                [
-                   new Rectangle(context.footpanel),
-                   new Row([70,0],
+            var w = ALIEXTENT;
+           var a = new Row([80,0],
+           [
+               new Col( [ 0, w, w, w, w, w, 0 ],
+               [
+                   0,
+                   new Layer(
                    [
-                       new Col(
-                       [
-                           0,
-                           ALIEXTENT,
-                           ALIEXTENT,
-                           ALIEXTENT,
-                           ALIEXTENT,
-                           ALIEXTENT,
-                           0
-                       ],
-                       [
-                           0,
-                           new Layer(
-                           [
-                               new SharePanel("white","black"),
-                               new Rectangle(context.sharepanel),
-                           ]),
-                           new Layer(
-                           [
-                               new FullPanel("white","black"),
-                               new Rectangle(context.fullpanel),
-                           ]),
-                           new Layer(
-                           [
-                               new ThumbPanel("white","black"),
-                               new Rectangle(context.thumbpanel),
-                           ]),
-                           new Layer(
-                           [
-                               new OpenPanel("white","black"),
-                               new Rectangle(context.openpanel),
-                           ]),
-                           new Layer(
-                           [
-                               new InfoPanel("white","black"),
-                               new Rectangle(context.infopanel),
-                           ]),
-                           0
-                        ]),
-                       0,
+                       new SharePanel("white","black"),
+                       new Rectangle(context.sharepanel),
                    ]),
-               ]),
+                   new Layer(
+                   [
+                       new FullPanel("white","black"),
+                       new Rectangle(context.fullpanel),
+                   ]),
+                   new Layer(
+                   [
+                       new ThumbPanel("white","black"),
+                       new Rectangle(context.thumbpanel),
+                   ]),
+                   new Layer(
+                   [
+                       new UploadPanel("white","black"),
+                       new Rectangle(context.uploadpanel),
+                   ]),
+                   new Layer(
+                   [
+                       new InfoPanel("white","black"),
+                       new Rectangle(context.infopanel),
+                   ]),
+                   0
+                ]),
+               0,
             ]);
 
             a.draw(context, rect, 0, 0);
