@@ -40,6 +40,7 @@ const SMALLFOOT = 70;
 const LARGEFOOT = 90;
 const SLIDETOP = 18
 const SLIDEFACTOR = 60;
+const MAXDROPFILES = 10;
 
 globalobj = {};
 globalobj.errors = 0;
@@ -532,7 +533,7 @@ function drawslices()
             var j = context.buttonheight;
             if (y < -j || y >= window.innerHeight+j)
             {
-                if (!galleryobj.getcurrent().object && slice.thumbimg)
+                if (slices.length > MAXDROPFILES && slice.thumbimg)
                 {
                     delete slice.thumbimg;
                     slice.thumbimg = 0;
@@ -886,7 +887,7 @@ var InfoPanel = function (color, shadow)
         context.save();
 		context.fillStyle = "white";
 		context.strokeStyle = "white";
-        context.font = "1.75rem Archivo Black";
+        context.font = "2rem Archivo Black";
 
         var a = new Layer(
         [
@@ -984,7 +985,7 @@ var ThumbPanel = function (color, shadow)
 };
 
 
-var UploadPanel = function (color, shadow)
+var FolderPanel = function (color, shadow)
 {
     this.draw = function (context, rect, user, time)
     {
@@ -992,7 +993,7 @@ var UploadPanel = function (color, shadow)
         var a = new Layer(
         [
             new Shrink(new CirclePanel(SCROLLNAB,"white",3),15,15),
-            galleryobj.getcurrent().object ? new Shrink(new CirclePanel("rgba(0,0,0,0)","rgb(255,155,0)",4),18,18) : 0,
+            galleryobj.getcurrent().file ? new Shrink(new CirclePanel("rgba(0,0,0,0)","rgb(255,155,0)",4),18,18) : 0,
         ])
         a.draw(context, rect, user, time);
 		context.fillStyle = "white";
@@ -1023,7 +1024,7 @@ var FullPanel = function (color, shadow)
 		context.shadowColor = shadow;
 
         var e = 6;
-        var x = 21;
+        var x = 21.5;
         var y = 31;
         var r = new rectangle(rect.x+x,rect.y+y,rect.width,rect.height);
         context.lineWidth = 3;
@@ -1339,7 +1340,7 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     galleryobj.rotate(j);
     var k = galleryobj.getcurrent();
     galleryobj.set(e);
-    if (!k.object && (_4cnvctx.movingpage || !k.loaded || galleryobj.length() == 1))
+    if (!k.file && (_4cnvctx.movingpage || !k.loaded || galleryobj.length() == 1))
     {
         clearTimeout(context.movepagetime);
         context.movepagetime = setTimeout(function() { masterload(); }, 500);
@@ -1924,45 +1925,47 @@ function promptFile()
 
 function dropfiles(files)
 {
+    menuhide();
     if (!files || !files.length)
         return;
     delete galleryobj.repos;
     galleryobj.data = [];
-    var func = function (index)
+    for (var i = 0; i < Math.min(files.length,MAXDROPFILES); i++)
     {
-        delete galleryobj.repos;
-        delete photo.image;
-        menuhide();
-        galleryobj.set(this.pos);
-        contextobj.reset()
-    }
-
-    for (var i = 0; i < files.length; i++)
-    {
-        if (files[i].size > 100000000)//100mp
-            continue;
         var fileName = files[i].name;
         var fileExtension = fileName.replace(/^.*\./, '');
         if (fileExtension == 'png' || fileExtension == 'jpg' || fileExtension == 'jpeg' ||
-        fileExtension == 'webp' || fileExtension == 'avif' || fileExtension == 'gif')
+            fileExtension == 'webp' || fileExtension == 'avif' || fileExtension == 'gif')
         {
-            var reader = new FileReader();
-            reader.onload = function (e)
+            var k = {}
+            k.file = files[i];
+            k.thumbimg = new Image();
+            k.thumbimg.crossOrigin = 1;
+            k.pos = i;
+            var object = URL.createObjectURL(files[i]);
+            k.thumbimg.src = object;
+            k.thumbimg.onload = function()
             {
-                var img = new Image();
-                img.src = e.target.result;
-                img.onload = function ()
-                {
-                    var w = this.width;//max 12000
-                    var h = this.height;//max 12000
-                }
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                var a = this.width/this.height;
+                canvas.height = 400;
+                canvas.width = canvas.height*a;
+                ctx.drawImage(this, 0, 0, this.width, this.height, 0, 0, canvas.width, canvas.height);
+                this.src = canvas.toDataURL();
+                this.width = canvas.width;
+                this.height = canvas.height;
             }
 
-            reader.readAsDataURL(files[i]);
-            var k = {}
-            k.object = URL.createObjectURL(files[i]);
-            k.pos = i;
-            k.func = func;
+            k.func = function (index)
+            {
+                delete galleryobj.repos;
+                delete photo.image;
+                menuhide();
+                galleryobj.set(this.pos);
+                contextobj.reset()
+            }
+
             galleryobj.data.push(k);
         }
     }
@@ -2832,14 +2835,14 @@ var taplst =
         if (context.index == 7)
             obj = context.scrollobj.getcurrent();
         delete _4cnvctx.thumbcanvas;
-        if (obj && x < MENUBARWIDTH+3)
+        if (obj && x < MENUBARWIDTH*2)
         {
             var j = y/rect.height;
             var k = obj.length()*j;
             obj.set(k);
             context.refresh();
         }
-        else if (x > rect.width - (MENUBARWIDTH+3) )
+        else if (x > rect.width - (MENUBARWIDTH*2) )
         {
             var j = y/rect.height;
             var k = TIMEOBJ*(1-j);
@@ -3033,23 +3036,6 @@ var getbuttonfrompoint = function (context, x, y)
 	return k<lst.length?k:-1;
 }
 
-function makethumbnail(imgToResize)
-{
-  const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
-  const originalWidth = imgToResize.width;
-  const originalHeight = imgToResize.height;
-  const a = originalWidth/originalHeight;
-  const canvasHeight = 400;//originalHeight * resizingFactor;
-  const canvasWidth = canvasHeight*a;//originalWidth * resizingFactor;
-  canvas.width = canvasWidth;
-  canvas.height = canvasHeight;
-  context.drawImage( imgToResize, 0, 0, canvas.width, canvas.height );
-    let image = new Image();
-  image.src = canvas.toDataURL();
-  return image;
-}
-
 var menulst =
 [
 {
@@ -3125,34 +3111,20 @@ var menulst =
 
         if (!user.thumbimg)
         {
-            if (user.object)
-            {
-                user.thumbimg = new Image();
-                user.thumbimg.crossOrigin = 1;
-                user.thumbimg.src = user.object;
-                user.thumbimg.onload = function()
-                {
-                    user.thumbimg = makethumbnail(user.thumbimg);
-                    _4cnvctx.refresh();
-                }
-            }
+            user.thumbimg = new Image();
+            if (user.thumb)
+                user.thumbimg.src = user.thumb;
+            else if (user.full)
+                user.thumbimg.src = user.full;
+            else if (user.url)
+                user.thumbimg.src = user.url;
             else
             {
-                user.thumbimg = new Image();
-                if (user.thumb)
-                    user.thumbimg.src = user.thumb;
-                else if (user.full)
-                    user.thumbimg.src = user.full;
-                else if (user.url)
-                    user.thumbimg.src = user.url;
-                else
-                {
-                    var template = galleryobj.thumb ? galleryobj.thumb : "thumb";
-                    user.thumbimg.src = `https://reportbase.com/image/${user.id}/${template}`;
-                }
-
-                user.thumbimg.onload = function() { context.refresh(); }
+                var template = galleryobj.thumb ? galleryobj.thumb : "thumb";
+                user.thumbimg.src = `https://reportbase.com/image/${user.id}/${template}`;
             }
+
+            user.thumbimg.onload = function() { context.refresh(); }
         }
 
         var obj = context.scrollobj;
@@ -3198,7 +3170,7 @@ var menulst =
 
             var st = titleCase(galleryobj.repos);
             var s = galleryobj.getcurrent().photographer;
-            var j = user.pos + 1;
+            var j = time + 1;
 
             a.draw(context, rect,
             [
@@ -3641,8 +3613,11 @@ var ContextObj = (function ()
                     path = galleryobj.getcurrent().full;
                 else if (galleryobj.getcurrent().url)
                     path = galleryobj.getcurrent().url;
-                else if (galleryobj.getcurrent().object)
-                    path = galleryobj.getcurrent().object;
+                else if (galleryobj.getcurrent().file)
+                {
+                    var file = galleryobj.getcurrent().file;
+                    path = URL.createObjectURL(file)
+                }
                 photo.image = new Image();
                 photo.image.crossOrigin = 1;
                 photo.image.src = path;
@@ -4674,7 +4649,7 @@ var headlst =
                 _5cnvctx.virtualheight = _5cnvctx.sliceobj.data.length*_5cnvctx.buttonheight;
                 menushow(_5cnvctx);
             }
-            else if (context.uploadpanel && context.uploadpanel.hitest(x,y))
+            else if (context.folderpanel && context.folderpanel.hitest(x,y))
             {
                 menuhide();
                 promptFile().then(function(files) { dropfiles(files); })
@@ -4702,7 +4677,7 @@ var headlst =
             context.fullpanel = new rectangle()
             context.thumbpanel = new rectangle()
             context.infopanel = new rectangle()
-            context.uploadpanel = new rectangle()
+            context.folderpanel = new rectangle()
             context.sharepanel = new rectangle()
             var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
             var w = ALIEXTENT;
@@ -4728,8 +4703,8 @@ var headlst =
                    ]),
                    new Layer(
                    [
-                       new UploadPanel("white","black"),
-                       new Rectangle(context.uploadpanel),
+                       new FolderPanel("white","black"),
+                       new Rectangle(context.folderpanel),
                    ]),
                    new Layer(
                    [
@@ -5239,7 +5214,7 @@ galleryobj.init = function(obj)
     var slices = _9cnvctx.sliceobj;
     slices.data = [];
 
-    slices.data.push({title:"Upload", path: "UPLOAD", func: function()
+    slices.data.push({title:"Folder", path:"FOLDER", func:function()
     {
         menuhide();
         promptFile().then(function(files) { dropfiles(files); })
@@ -5352,8 +5327,6 @@ else
 
 function download()
 {
-    if (galleryobj.getcurrent().object)
-        return;
     if (galleryobj.getcurrent().photographer_url)
     {
         window.location.href = galleryobj.getcurrent().photographer_url;
@@ -5365,6 +5338,10 @@ function download()
     else if (galleryobj.getcurrent().full)
     {
         window.open(galleryobj.getcurrent().full);
+    }
+    else if (galleryobj.getcurrent().file)
+    {
+//        window.open(galleryobj.getcurrent().file);
     }
     else
     {
