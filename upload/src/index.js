@@ -8,7 +8,7 @@ export default
           headers:
           {
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb',
+              'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb',//todo: secrets
               'X-Auth-Email': 'reportbase@gmail.com',
               'X-Auth-Key': 'd27e8f43b04336d419f9b85927dc1e25bb915',
           }
@@ -34,6 +34,7 @@ export default
                      action="javascript:submit()"
                      enctype="multipart/form-data">
                      <input type="file" id="myFile" name="file" multiple="multiple" />
+            //todo: add prompt, description, tags, url
                      <input type="submit" />
                    </form>
         </section>
@@ -43,7 +44,7 @@ export default
            function submit()
            {
                 var form1 = document.getElementById("form1")
-                form1.action="${action}"
+                form1.action="${action}"//todo: send to worker
            }
 
             document.getElementById("myFile").onchange = function()
@@ -69,6 +70,7 @@ export default
          </body>
         </html>`;
 
+        //todo: grab this json
 		return new Response(html,
         {
             headers:

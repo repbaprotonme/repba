@@ -40,7 +40,6 @@ const SMALLFOOT = 70;
 const LARGEFOOT = 90;
 const SLIDETOP = 18
 const SLIDEFACTOR = 60;
-const MAXDROPFILES = 10;
 
 globalobj = {};
 globalobj.errors = 0;
@@ -533,7 +532,7 @@ function drawslices()
             var j = context.buttonheight;
             if (y < -j || y >= window.innerHeight+j)
             {
-                if (slices.length > MAXDROPFILES && slice.thumbimg)
+                if (slice.thumbimg)
                 {
                     delete slice.thumbimg;
                     slice.thumbimg = 0;
@@ -935,7 +934,7 @@ var SharePanel = function (color, shadow)
                 context.restore();
             }
         };
-                var a = new CirclePanel(SCROLLNAB,"white",3);
+
         var a = new Layer(
         [
             new Shrink(new CirclePanel(SCROLLNAB,"white",3),16,16),
@@ -984,6 +983,42 @@ var ThumbPanel = function (color, shadow)
     }
 };
 
+var SearchPanel = function (color, shadow)
+{
+    this.draw = function (context, rect, user, time)
+    {
+        var Panel = function ()
+        {
+            this.draw = function (context, rect, user, time)
+            {
+                context.save();
+                var a = new CirclePanel("rgba(0,0,0,0)","white",4);
+                rect.x -= 2;
+                rect.y += 7;
+                rect.width = 19 ;
+                rect.height = 19;
+                a.draw(context, rect, user, time);
+		        context.strokeStyle = "white";
+                context.lineWidth = 8;
+                context.beginPath();
+                context.moveTo(rect.x+14, rect.y+16);
+                context.lineTo(rect.x+22, rect.y+27);
+                context.stroke();
+                context.restore();
+            }
+        };
+
+        var a = new Layer(
+        [
+            new Shrink(new CirclePanel(SCROLLNAB,"white",3),16,16),
+            new Shrink(new Panel(),20,20),
+        ]);
+
+        a.draw(context, rect, user, time);
+        context.restore();
+
+    }
+};
 
 var FolderPanel = function (color, shadow)
 {
@@ -1930,7 +1965,7 @@ function dropfiles(files)
         return;
     delete galleryobj.repos;
     galleryobj.data = [];
-    for (var i = 0; i < Math.min(files.length,MAXDROPFILES); i++)
+    for (var i = 0; i < files.length; i++)
     {
         var fileName = files[i].name;
         var fileExtension = fileName.replace(/^.*\./, '');
@@ -1938,23 +1973,23 @@ function dropfiles(files)
             fileExtension == 'webp' || fileExtension == 'avif' || fileExtension == 'gif')
         {
             var k = {}
-            k.file = files[i];
-            k.thumbimg = new Image();
-            k.thumbimg.crossOrigin = 1;
             k.pos = i;
-            var object = URL.createObjectURL(files[i]);
-            k.thumbimg.src = object;
+            k.file = files[i];
+            if (k.file.size > 4000*3000)
+                continue;
+            k.thumbimg = new Image();
+            k.thumbimg.src = URL.createObjectURL(files[i]);
             k.thumbimg.onload = function()
             {
-                var canvas = document.createElement("canvas");
-                var ctx = canvas.getContext("2d");
+                var can = document.createElement("canvas");
+                var ctx = can.getContext("2d");
                 var a = this.width/this.height;
-                canvas.height = 400;
-                canvas.width = canvas.height*a;
-                ctx.drawImage(this, 0, 0, this.width, this.height, 0, 0, canvas.width, canvas.height);
-                this.src = canvas.toDataURL();
-                this.width = canvas.width;
-                this.height = canvas.height;
+                can.height = 400;
+                can.width = can.height*a;
+                ctx.drawImage(this, 0, 0, this.width, this.height, 0, 0, can.width, can.height);
+                this.src = can.toDataURL();
+                this.width = can.width;
+                this.height = can.height;
             }
 
             k.func = function (index)
@@ -1985,7 +2020,6 @@ function dropfiles(files)
     _4cnvctx.isthumbrect = 0;
     headobj.set(0);
     headham.panel = headobj.getcurrent();
-    headcnvctx.clear();
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     _4cnvctx.setcolumncomplete = 0;
     contextobj.reset();
@@ -3285,7 +3319,7 @@ function resetcanvas()
         var height = photo.image.height*zoom;
         var aspect = photo.image.width/height;
         var width = context.canvas.height * aspect;
-        if (width/window.innerWidth > 2.0)
+        if (width/window.innerWidth > 1.5)
             break;
     }
 
@@ -3608,19 +3642,25 @@ var ContextObj = (function ()
             {
                 var id = galleryobj.getcurrent().id;
                 var template = galleryobj.template ? galleryobj.template : "medium";
-                var path = `https://reportbase.com/image/${id}/${template}`;
-                if (galleryobj.getcurrent().full)
-                    path = galleryobj.getcurrent().full;
-                else if (galleryobj.getcurrent().url)
-                    path = galleryobj.getcurrent().url;
-                else if (galleryobj.getcurrent().file)
+                if (galleryobj.getcurrent().file)
                 {
                     var file = galleryobj.getcurrent().file;
-                    path = URL.createObjectURL(file)
+                    var path = URL.createObjectURL(file)
+                    photo.image = new Image();
+                    photo.image.src = path;
                 }
-                photo.image = new Image();
-                photo.image.crossOrigin = 1;
-                photo.image.src = path;
+                else
+                {
+                    var path = `https://reportbase.com/image/${id}/${template}`;
+                    if (galleryobj.getcurrent().full)
+                        path = galleryobj.getcurrent().full;
+                    else if (galleryobj.getcurrent().url)
+                        path = galleryobj.getcurrent().url;
+                    photo.image = new Image();
+                    photo.image.crossOrigin = 1;
+                    photo.image.src = path;
+                }
+
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
                 photo.image.onerror =
@@ -4335,7 +4375,10 @@ function resize()
     var n = eventlst.findIndex(function(a){return a.name == "_4cnvctx";})
     setevents(_4cnvctx, eventlst[n])
     _4cnvctx.tapping = 0;
-    galleryobj.init(galleryobj);
+    var h = window.self !== window.top ? 0 : 80;
+    headcnvctx.show(0,0,window.innerWidth,h);
+    headham.panel = headobj.getcurrent();
+    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 }
 
 function escape()
@@ -4649,10 +4692,9 @@ var headlst =
                 _5cnvctx.virtualheight = _5cnvctx.sliceobj.data.length*_5cnvctx.buttonheight;
                 menushow(_5cnvctx);
             }
-            else if (context.folderpanel && context.folderpanel.hitest(x,y))
+            else if (context.searchpanel && context.searchpanel.hitest(x,y))
             {
-                menuhide();
-                promptFile().then(function(files) { dropfiles(files); })
+                search();
             }
             else if (context.fullpanel && context.fullpanel.hitest(x,y))
             {
@@ -4677,7 +4719,7 @@ var headlst =
             context.fullpanel = new rectangle()
             context.thumbpanel = new rectangle()
             context.infopanel = new rectangle()
-            context.folderpanel = new rectangle()
+            context.searchpanel = new rectangle()
             context.sharepanel = new rectangle()
             var h = (SAFARI && window.innerWidth > window.innerHeight) ? LARGEFOOT : SMALLFOOT;
             var w = ALIEXTENT;
@@ -4703,8 +4745,8 @@ var headlst =
                    ]),
                    new Layer(
                    [
-                       new FolderPanel("white","black"),
-                       new Rectangle(context.folderpanel),
+                       new SearchPanel("white","black"),
+                       new Rectangle(context.searchpanel),
                    ]),
                    new Layer(
                    [
@@ -5137,10 +5179,34 @@ galleryobj.init = function(obj)
 
     _6cnvctx.sliceobj.data =
     [
-        {title:"Download", path: "DOWNLOAD", func: function() {download(); menuhide();}},
-        {title:"Copy Link", path: "COPYLINK", func: function() { copytext(addressobj.full());  menuhide();}},
-        {title:"Twitter", path: "TWITTER", func: function() { menuhide();}},
-        {title:"Instagram", path: "INSTAGRAM", func: function() { menuhide();}},
+        {title:"Download Image", path: "DOWNLOAD", func: function()
+            {
+                download();
+                menuhide();
+            }},
+        {title:"Copy Image", path: "CLIPBOARD", func: function()
+            {
+                var k = document.createElement('canvas');
+                var link = document.createElement("a");
+                link.href = _4cnvctx.canvas.toDataURL();
+                link.download = galleryobj.getcurrent()[0] + ".jpg";
+                link.click();
+            }},
+        {title:"Copy Link", path: "COPYLINK", func: function()
+            {
+                copytext(addressobj.full());
+                menuhide();
+            }},
+        {title:"Copy Prompt", path: "COPYPROMPT", func: function()
+            {
+                copytext(galleryobj.getcurrent().prompt);
+                menuhide();
+            }},
+        {title:"Copy ID", path: "COPYID", func: function()
+            {
+                copytext(galleryobj.getcurrent().id);
+                menuhide();
+            }},
     ];
 
     var data = _6cnvctx.sliceobj.data;
@@ -5214,12 +5280,6 @@ galleryobj.init = function(obj)
     var slices = _9cnvctx.sliceobj;
     slices.data = [];
 
-    slices.data.push({title:"Folder", path:"FOLDER", func:function()
-    {
-        menuhide();
-        promptFile().then(function(files) { dropfiles(files); })
-    }});
-
     slices.data.push({title:"Info", path: "INFO", func: function()
         {
             menushow(_5cnvctx);
@@ -5274,20 +5334,6 @@ galleryobj.init = function(obj)
         if (screenfull.isEnabled)
             screenfull.toggle();
     }})
-
-    slices.data.push({ title: "Screenshot", path: "SCREENSHOT", func: function()
-    {
-        _4cnvctx.refresh()
-        setTimeout(function()
-        {
-            var k = document.createElement('canvas');
-            var link = document.createElement("a");
-            link.href = _4cnvctx.canvas.toDataURL('image/jpg');
-            link.download = galleryobj.getcurrent()[0] + ".jpg";
-            link.click();
-            _4cnvctx.refresh()
-        }, 1000);
-    }});
 
     _9cnvctx.delayinterval = DELAYCENTER / slices.data.length;
     _9cnvctx.buttonheight = 30;
@@ -5358,16 +5404,25 @@ function search()
         window.location.href = `${url.origin}/search.html?dalle=${encodeURIComponent(p)}#dallehead`;
     else if (galleryobj.repos)
         window.location.href = `${url.origin}/search.html?${galleryobj.repos}=${encodeURIComponent(url.path)}#${galleryobj.repos}head`;
+    else
+        window.location.href = `${url.origin}/search.html#sidneyhead`;
 }
 
-function copytext(text)
+async function copytext(text)
 {
-    var input = document.createElement('textarea');
-    input.innerHTML = text;
-    document.body.appendChild(input);
-    input.select();
-    var result = document.execCommand('copy');
-    document.body.removeChild(input);
-    return result;
+    try
+    {
+        await navigator.clipboard.writeText(text);
+    }
+    catch (_)
+    {
+        const el = document.createElement('textarea')
+        el.value = text
+        document.body.appendChild(el)
+        el.select()
+        const result = document.execCommand('copy')
+        document.body.removeChild(el)
+    }
 }
+
 
