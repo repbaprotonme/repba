@@ -555,7 +555,7 @@ function drawslices()
         }
 
         var rect = context.rect();
-        var a = new ColA([7,0,7],
+        var a = new ColA([9,0,9],
         [
             (context.index == 4||
             context.index == 6 ||
@@ -976,7 +976,7 @@ var ThumbPanel = function (color, shadow)
         [
             new Shrink(new CirclePanel(SCROLLNAB,"white",3),15,15),
             thumbobj.current() ? new Shrink(new CirclePanel("rgba(0,0,0,0)","rgb(255,155,0)",4),18,18) : 0,
-            new Shrink(new CirclePanel(SCROLLNAB,"white",3),22,22),
+            new Shrink(new CirclePanel("rgba(0,0,0,0)","white",3),22,22),
         ])
         a.draw(context, rect, user, time);
         context.restore();
@@ -2655,6 +2655,9 @@ var keylst =
 	},
 	keydown: function (evt)
 	{
+        const overlay = document.querySelector('.modal-overlay');
+        if (overlay.style.display == 'flex')
+            return;
 		var context = _4cnvctx;
 		var rect = context.rect();
         if (evt.ctrlKey)
@@ -4396,9 +4399,8 @@ function escape()
     menuhide();
     var n = eventlst.findIndex(function(a){return a.name == "_4cnvctx";})
     setevents(_4cnvctx, eventlst[n])
-    _4cnvctx.setcolumncomplete = 0;
-    localStorage.removeItem("LAST");
-    location.reload();
+    closeprompt()
+    contextobj.reset();
 }
 
 window.addEventListener("focus", (evt) => { });
@@ -4572,9 +4574,8 @@ var headlst =
             {
                 menuhide();
             }
-            else if (context.picture.hitest(x,y))
+            else if (context.prompt.hitest(x,y))
             {
-                search();
             }
 
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -4591,7 +4592,7 @@ var headlst =
             context.page = new rectangle()
             context.option = new rectangle()
             context.thumbnail = new rectangle()
-            context.picture = new rectangle()
+            context.prompt = new rectangle()
             context.font = "1rem Archivo Black";
             var a = new Col([80,0,80],
                     [
@@ -4602,7 +4603,7 @@ var headlst =
                         ]),
                         new Layer(
                         [
-                            new Rectangle(context.picture),
+                            new Rectangle(context.prompt),
                             new Row([0,60,0],
                             [
                                 0,
@@ -4618,6 +4619,13 @@ var headlst =
                     ]);
 
             var st = galleryobj.repos ? url.path : galleryobj.getcurrent().prompt;
+            context.font = "1rem Archivo Black";
+            if (!st)
+            {
+                context.font = "3rem Archivo Black";
+                st = "...";
+            }
+
             a.draw(context, rect, st, time);
             context.restore()
 		};
@@ -4694,7 +4702,6 @@ var headlst =
             }
             else if (context.searchpanel && context.searchpanel.hitest(x,y))
             {
-                search();
             }
             else if (context.fullpanel && context.fullpanel.hitest(x,y))
             {
@@ -4888,10 +4895,8 @@ var headlst =
             {
                 _4cnvctx.movepage(1);
             }
-            else if (context.picture.hitest(x,y))
+            else if (context.prompt.hitest(x,y))
             {
-                if (galleryobj.repos)
-                    download();
             }
 		};
 
@@ -4902,6 +4907,7 @@ var headlst =
             context.font = "1rem Archivo Black";
             context.moveprev = new rectangle()
             context.movenext = new rectangle()
+            context.prompt = new rectangle()
 
             var a = new Col([80,0,80],
                     [
@@ -4913,7 +4919,7 @@ var headlst =
                         ]),10,10),
                         new Layer(
                         [
-                            new Rectangle(context.picture),
+                            new Rectangle(context.prompt),
                             new RowA([14,22,22,22],
                             [
                                 0,
@@ -4941,7 +4947,7 @@ var headlst =
                 bt = "";
             }
 
-            a.draw(context, rect, [0,st,lt,bt,0], time);
+            a.draw(context, rect, [0,st,lt,bt], time);
             context.restore()
 		};
 	},
@@ -5280,6 +5286,11 @@ galleryobj.init = function(obj)
     var slices = _9cnvctx.sliceobj;
     slices.data = [];
 
+    slices.data.push({title:"Edit Prompt", path: "EDITPROMPT", func: function()
+        {
+            editprompt()
+        }});
+
     slices.data.push({title:"Info", path: "INFO", func: function()
         {
             menushow(_5cnvctx);
@@ -5423,6 +5434,44 @@ async function copytext(text)
         const result = document.execCommand('copy')
         document.body.removeChild(el)
     }
+}
+
+document.addEventListener("click", (evt) =>
+{
+    if (headobj.current() == 1)
+        return;
+    if (evt.screenX < ALIEXTENT || evt.screenX > window.innerWidth-ALIEXTENT)
+        return;
+    if (evt.target.className == "modal-overlay")
+    {
+        closeprompt()
+    }
+    else if (evt.target.id == "head")
+    {
+        editprompt();
+    }
+});
+
+function editprompt()
+{
+    var prompt = galleryobj.getcurrent().prompt
+    if (prompt)
+        document.getElementById('prompt').value = prompt;
+    const overlay = document.querySelector('.modal-overlay');
+    overlay.style.display = 'flex';
+}
+
+function submitprompt()
+{
+    closeprompt();
+    galleryobj.getcurrent().prompt = document.getElementById('prompt').value;
+    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+}
+
+function closeprompt()
+{
+    const overlay = document.querySelector('.modal-overlay');
+    overlay.style.display = 'none';
 }
 
 
