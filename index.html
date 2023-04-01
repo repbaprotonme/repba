@@ -21,57 +21,6 @@ html, body {height: 100%; margin: 0; background-color: white}
 * { -webkit-user-select: none; -webkit-tap-highlight-color: rgba(0,0,0,0); }
 canvas {outline: none; position: absolute; }
 
-.modal-overlay 
-{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
-}
-
-.modal-dialog 
-{
-  position: absolute;
-  width: 600px;
-  max-width: 80%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-.modal-header 
-{
-  text-align: center;
-}
-
-.but 
-{
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.modal-body 
-{
-  padding: 10px;
-}
-
-.modal-search-input 
-{
-  box-sizing: border-box;
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
 </style>
 
 <link href="https://fonts.googleapis.com/css?family=Archivo+Black" rel="stylesheet">
@@ -98,14 +47,33 @@ canvas {outline: none; position: absolute; }
 </head>
 <body ondragstart="return false;" ondrop="return false"; oncontextmenu='return false;'>
 
-<div class="modal-overlay" style="z-index: 15; display: none;">
-  <div class="modal-dialog" role="dialog">
-    <div class="modal-content">
-      <div class="modal-body">
-        <textarea id="prompt" placeholder="Enter Prompt" rows=10 class="modal-search-input"></textarea>
-        <button class="but" type="button" onclick="submitprompt()">Submit</button>
+<div class="search-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5);">
+  <div style="position: absolute; width: 600px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 10px; border-radius: 5px;" role="dialog">
+    <div id="search-label" style="padding: 10px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></div>
+      <div style="padding: 10px;">
+        <textarea id="search" placeholder="Enter Search" rows=10 style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; box-sizing: border-box; width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px;"></textarea>
+        <button style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;" type="button" onclick="submitsearch()">Search</button>
       </div>
-    </div>
+  </div>
+</div>
+
+<div class="prompt-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.6);">
+  <div style="position: absolute; width: 600px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 10px; border-radius: 5px;" role="dialog">
+    <div id="prompt-label" style="padding: 10px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></div>
+      <div style="padding: 10px;">
+        <textarea id="prompt" placeholder="Enter Prompt" rows=10 style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; box-sizing: border-box; width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px;"></textarea>
+        <button style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;" type="button" onclick="submitprompt()">Submit</button>
+      </div>
+  </div>
+</div>
+
+<div class="delete-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.6);">
+  <div style="position: absolute; width: 300px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 10px; border-radius: 5px;" role="dialog">
+    <div id="delete-label" style="padding: 10px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></div>
+      <div style="padding: 10px; display: flex; column-gap: 5px; justify-content: space-between; ">
+        <button style="width: 50%; float: left; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;" type="button" onclick="deleteimage()">Delete</button> 
+        <button style="width: 50%; float: left; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;" type="button" onclick="closeprompt()">Cancel</button>
+      </div>
   </div>
 </div>
 
