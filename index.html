@@ -49,31 +49,45 @@ canvas {outline: none; position: absolute; }
 
 <div class="search-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5);">
   <div style="position: absolute; width: 600px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 10px; border-radius: 5px;" role="dialog">
-    <div id="search-label" style="padding: 10px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></div>
-      <div style="padding: 10px;">
-        <textarea id="search" placeholder="Enter Search" rows=10 style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; box-sizing: border-box; width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px;"></textarea>
-        <button style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;" type="button" onclick="submitsearch()">Search</button>
-      </div>
+    <div id="search-label" style="padding: 0px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></div>
+    <div id="search-label2" style="padding: 0px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></div>
+    <div style="padding: 10px;">
+      <textarea id="search" placeholder="Enter Search" rows=8 style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; box-sizing: border-box; width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px;"></textarea>
+      <button style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;" type="button" onclick="submitsearch()">Search</button>
+    </div>
   </div>
 </div>
 
 <div class="prompt-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.6);">
   <div style="position: absolute; width: 600px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 10px; border-radius: 5px;" role="dialog">
-    <div id="prompt-label" style="padding: 10px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></div>
-      <div style="padding: 10px;">
-        <textarea id="prompt" placeholder="Enter Prompt" rows=10 style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; box-sizing: border-box; width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px;"></textarea>
-        <button style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;" type="button" onclick="submitprompt()">Submit</button>
-      </div>
+    <div id="prompt-label" style="padding: 0px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></div>
+    <div id="prompt-label2" style="padding: 0px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></div>
+    <div style="padding: 10px;">
+      <textarea id="prompt" placeholder="Enter Prompt" rows=8 style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; box-sizing: border-box; width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px;"></textarea>
+      <button style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;" type="button" onclick="submitprompt()">Submit</button>
+    </div>
   </div>
 </div>
 
 <div class="delete-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.6);">
   <div style="position: absolute; width: 300px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 10px; border-radius: 5px;" role="dialog">
     <div id="delete-label" style="padding: 10px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></div>
-      <div style="padding: 10px; display: flex; column-gap: 5px; justify-content: space-between; ">
-        <button style="width: 50%; float: left; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;" type="button" onclick="deleteimage()">Delete</button> 
-        <button style="width: 50%; float: left; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;" type="button" onclick="closeprompt()">Cancel</button>
-      </div>
+    <div style="padding: 10px; display: flex; column-gap: 5px; justify-content: space-between; ">
+      <button style="width: 50%; float: left; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;" type="button" onclick="deleteimage()">Delete</button> 
+      <button style="width: 50%; float: left; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;" type="button" onclick="closeprompt()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="upload-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.6);">
+  <div style="position: absolute; width: 300px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 10px; border-radius: 5px;" role="dialog">
+    <div id="upload-label" style="padding: 10px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></div>
+    <div style="padding: 10px;">
+      <form id="form1" name="form1" method="post" action="javascript:submit()" enctype="multipart/form-data">                                                                                   
+        <input type="file" id="myFile" name="file"/>                                                
+        <input style="width: 50%; float: left; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;" type="submit"/>                                                                                           
+      </form>      
+    </div>
   </div>
 </div>
 

@@ -34,7 +34,6 @@ export default
                      action="javascript:submit()"
                      enctype="multipart/form-data">
                      <input type="file" id="myFile" name="file" multiple="multiple" />
-            //todo: add prompt, description, tags, url
                      <input type="submit" />
                    </form>
         </section>
@@ -44,7 +43,7 @@ export default
            function submit()
            {
                 var form1 = document.getElementById("form1")
-                form1.action="${action}"//todo: send to worker
+                form1.action="${action}"
            }
 
             document.getElementById("myFile").onchange = function()
