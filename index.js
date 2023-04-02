@@ -442,6 +442,8 @@ let _9cnvctx = _9cnv.getContext("2d", opts);
 let headcnv = document.getElementById("head");
 let headcnvctx = headcnv.getContext("2d", opts);
 
+headcnvctx.scrollobj = new circular_array("TEXTSCROLL", window.innerWidth/4);
+
 let contextlst = [_1cnvctx,_2cnvctx,_3cnvctx,_4cnvctx,_5cnvctx,_6cnvctx,_7cnvctx,_8cnvctx,_9cnvctx];
 let canvaslst = [];
 canvaslst[0] = document.createElement("canvas");
@@ -4361,6 +4363,22 @@ var headlst =
 [
 	new function ()
 	{
+        this.pan = function (context, rect, x, y, type)
+        {
+            var k = panhorz(context.scrollobj, rect.width-x);
+            if (k == -1)
+                return;
+            if (k == context.scrollobj.anchor())
+                return;
+            context.scrollobj.set(k);
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        }
+
+        this.panend = function (context, rect, x, y)
+        {
+            delete context.scrollobj.offset;
+        }
+
     	this.press = function (context, rect, x, y)
 		{
             if (ismenu())
@@ -4425,13 +4443,14 @@ var headlst =
                         new Layer(
                         [
                             new Rectangle(context.prompt),
-                            new RowA([8,24,24,24],
+                            galleryobj.repos?new RowA([0,24,24,0],
                             [
                                 0,
                                 new Text("white", "center", "middle", 0, 0, 1),
                                 new Text("white", "center", "middle", 0, 0, 1),
-                                new Text("white", "center", "middle", 0, 0, 1),
-                            ]),
+                                0,
+                            ]):
+                            new DrawHeader(context.scrollobj.berp()),
                         ]),
                         new Layer(
                         [
@@ -4443,15 +4462,8 @@ var headlst =
             var k = galleryobj.getcurrent();
             var st = titleCase(galleryobj.repos);
             var lt = k.photographer;
-            var bt = `${galleryobj.current()+1} of ${galleryobj.length()}`;
-            if (!st)
-            {
-                st = "";
-                lt = bt;
-                bt = "";
-            }
 
-            a.draw(context, rect, [0,st,lt,bt], time);
+            a.draw(context, rect, galleryobj.repos?[0,st,lt,0]:k.prompt, time);
             context.restore()
 		};
 	},
@@ -4719,9 +4731,8 @@ var headlst =
                         ]),10,10)
                     ]);
 
-            context.font = "3rem Archivo Black";
-            var st = "...";
-            a.draw(context, rect, [0,st,0], time);
+            var bt = `${galleryobj.current()+1} of ${galleryobj.length()}`;
+            a.draw(context, rect, [0,bt,0], time);
             context.restore()
 		};
 	},
@@ -5088,7 +5099,7 @@ galleryobj.init = function(obj)
     var slices = _9cnvctx.sliceobj;
     slices.data = [];
 
-    slices.data.push({title:"Prompt", path: "EDITPROMPT", func: function()
+    slices.data.push({title:"Search", path: "EDITSEACH", func: function()
         {
             menushow(_3cnvctx);
         }});
