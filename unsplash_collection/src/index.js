@@ -10,13 +10,11 @@ export default
 
         for (var page = 1; page <= pages; ++page)
         {
-            var response = await fetch(`https://api.unsplash.com/search/photos?query=${search}&client_id=Xfabm2o5F9iUQon5LTX3O249PCsBpviDafSrMVGkaS0&per_page=${per_page}&page=${page}`);
+            var response = await fetch(`https://api.unsplash.com/collections/${search}/photos?client_id=Xfabm2o5F9iUQon5LTX3O249PCsBpviDafSrMVGkaS0&per_page=${per_page}&page=${page}`);
             var json = await response.json();
-            if (!json || !json.results || !json.results.length)
-                break;
-            for (var n = 0; n < json.results.length; ++n)
+            for (var n = 0; n < json.length; ++n)
             {
-                var k = json.results[n];
+                var k = json[n];
                 var j = {};
                 var width = k.width;
                 var height = k.height;
@@ -47,7 +45,7 @@ export default
         var g = {}
         g.title = `Unsplash Gallery`;
         g.title1 = `Photos Provided by Unsplash`;
-        g.repos = "unsplash";
+        g.repos = "unsplash_user";
         g.row = 50;
         g.per_page = per_page;
         g.data = data;
