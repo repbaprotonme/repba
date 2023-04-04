@@ -2,6 +2,7 @@ export default
 {
 	async fetch(request, env, ctx)
     {
+        const UNSPLASH_KEY = env.UNSPLASH_KEY
         var url = new URL(request.url);
         var search = url.searchParams.get("search");
         var per_page = 30;
@@ -10,7 +11,7 @@ export default
 
         for (var page = 1; page <= pages; ++page)
         {
-            var response = await fetch(`https://api.unsplash.com/users/${search}/photos?client_id=Xfabm2o5F9iUQon5LTX3O249PCsBpviDafSrMVGkaS0&per_page=${per_page}&page=${page}`);
+            var response = await fetch(`https://api.unsplash.com/users/${search}/photos?client_id=${UNSPLASH_KEY}&per_page=${per_page}&page=${page}`);
             var json = await response.json();
             for (var n = 0; n < json.length; ++n)
             {

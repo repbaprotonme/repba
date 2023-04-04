@@ -1,5 +1,5 @@
 # packages
-pacman -S libwebp ranger unrar rust wasm-pack ffmpeg libheif
+pacman -S libwebp ranger unrar rust wasm-pack ffmpeg libheif youtube-dl 
 
 # upgrade
 sudo pacman -S archlinux-keyring && sudo pacman -Syu

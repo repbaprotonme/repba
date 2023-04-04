@@ -3355,6 +3355,7 @@ else
         "unsplash_user",
         "unsplash_collection",
         "pexels",
+        "pexels_collection",
         "pixabay",
     ];
 

@@ -4,6 +4,7 @@ export default
     {
         const PEXEL_KEY = env.PEXEL_KEY;
         const per_page = 80;
+        const pages = 1;
         var data = [];
         var url = new URL(request.url);
         var search = url.searchParams.get("search");
@@ -16,18 +17,20 @@ export default
           },
         };
 
-        for (var page = 1; page <= 10; ++page)
+        for (var page = 1; page <= pages; ++page)
         {
-            var response = await fetch(`https://api.pexels.com/v1/search?query=${search}&per_page=${per_page}&page=${page}`, init);
+            var response = await fetch(`https://api.pexels.com/v1/collections/${search}?per_page=${per_page}&page=${page}`, init);
             var json = await response.json();
-            for (var n = 0; n < json.photos.length; ++n)
+            for (var n = 0; n < json.media.length; ++n)
             {
-                var k = json.photos[n];
+                var k = json.media[n];
+                if (k.type != "Photo")
+                    continue;
                 var j = {};
                 var width = k.width;
                 var height = k.height;
                 var aspect = (width/height).toFixed(2);
-                j.id = k.id+"";
+                j.id = k.id;
                 j.extent = `${width}x${height} ${aspect}`;
                 j.size = ((width * height)/1000000).toFixed(1) + "MP";
                 j.photographer = k.photographer;

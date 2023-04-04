@@ -2,6 +2,7 @@ export default
 {
 	async fetch(request, env, ctx)
     {
+        const PIXABAY_KEY = env.PIXABAY_KEY;
         var url = new URL(request.url);
         var search = url.searchParams.get("search");
         var per_page = 100;
@@ -9,10 +10,8 @@ export default
 
         for (var page = 1; page <= 5; ++page)
         {
-            var response = await fetch(`https://pixabay.com/api/?key=9775416-0c833e92d88d7c0fe7e79dbb0&q=${search}&image_type=photo&per_page=${per_page}&page=${page}`);
+            var response = await fetch(`https://pixabay.com/api/?key=${PIXABAY_KEY}&q=${search}&image_type=photo&per_page=${per_page}&page=${page}`);
             var json = await response.json();
-            if (!json || !json.hits || !json.hits.length)
-                break;
             for (var n = 0; n < json.hits.length; ++n)
             {
                 var k = json.hits[n];
