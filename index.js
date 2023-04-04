@@ -569,11 +569,9 @@ function downloadtext(name, text)
 Math.berp = function (v0, v1, t) { return (t - v0) / (v1 - v0); };
 Math.lerp = function (v0, v1, t) { return (1 - t) * v0 + t * v1; };
 
-function titleCase(str)
+String.prototype.proper = function()
 {
-    if (!str)
-        return;
-    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+    return this.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
 }
 
 String.prototype.clean = function()
@@ -1218,9 +1216,8 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     delete _4cnvctx.thumbcanvas;
     delete photo.image;
     _4cnvctx.setcolumncomplete = 0;
-    headobj.set(3);
+    headobj.set(4);
     headham.panel = headobj.getcurrent();
-    headcnvctx.clear();
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     contextobj.reset();
     setTimeout(function()
@@ -2348,9 +2345,9 @@ var swipelst =
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
-        context.slideshow = (context.timeobj.length()/context.virtualheight)*18;
+        context.slideshow = (context.timeobj.length()/context.virtualheight)*36;
         context.swipetype = evt.type;
-        context.slidereduce = context.slideshow/30;
+        context.slidereduce = context.slideshow/12;
         clearInterval(context.timemain);
         context.timemain = setInterval(function () { context.refresh(); }, globalobj.timemain);
     },
@@ -2578,7 +2575,7 @@ var keylst =
         else if (evt.key == "Tab")
         {
             headcnv.height = BEXTENT;
-            headobj.set(3);
+            headobj.set(headobj.current() == 0 ? 3 : 0);
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnvctx.tab();
@@ -3011,7 +3008,7 @@ var menulst =
                     galleryobj.repos?new Text("white", "center", "middle",0, 0, 1):0,
                 ]);
 
-            var st = titleCase(galleryobj.repos);
+            var st = galleryobj.repos.proper();
             if (st)
             {
                 var j = st.indexOf("_");
@@ -3019,7 +3016,7 @@ var menulst =
                     st = st.substr(0,j);
             }
 
-            var s = galleryobj.getcurrent().photographer;
+            var s = user.photographer;
             var j = time + 1;
 
             a.draw(context, rect,
@@ -3244,8 +3241,8 @@ var extentlst =
         positylobj.set(90);
         traitobj.split(40, "0.1-1.0", traitobj.length());
         scapeobj.split(70, "0.1-1.0", scapeobj.length());
-        poomobj.set(30);
-        loomobj.set(30);
+        poomobj.set(60);
+        loomobj.set(60);
     },
 },
 {
@@ -3260,8 +3257,8 @@ var extentlst =
         positylobj.set(90);
         traitobj.split(75, "0.1-1.0", traitobj.length());
         scapeobj.split(75, "0.1-1.0", scapeobj.length());
-        poomobj.set(30);
-        loomobj.set(30);
+        poomobj.set(60);
+        loomobj.set(60);
     },
 },
 {
@@ -3488,8 +3485,6 @@ var ContextObj = (function ()
                     var path = `https://reportbase.com/image/${id}/${template}`;
                     if (galleryobj.getcurrent().full)
                         path = galleryobj.getcurrent().full;
-                    else if (galleryobj.getcurrent().url)
-                        path = galleryobj.getcurrent().url;
                     photo.image = new Image();
                     photo.image.crossOrigin = 1;
                     photo.image.src = path;
@@ -3538,6 +3533,8 @@ var ContextObj = (function ()
 
                     contextobj.reset()
                     _4cnvctx.movepagetime = setTimeout(function() { masterload(); }, 500);
+                    headobj.set(3);
+                    headham.panel = headobj.getcurrent();
                     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
                     var id = galleryobj.getcurrent().id;
@@ -4407,11 +4404,8 @@ var headlst =
             }
             else if (context.prompt.hitest(x,y))
             {
-                menushow(_3cnvctx);
+                showrepospanel();
             }
-
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            _4cnvctx.refresh();
 		};
 
 		this.draw = function (context, rect, user, time)
@@ -4453,7 +4447,7 @@ var headlst =
                     ]);
 
             var k = galleryobj.getcurrent();
-            var st = titleCase(galleryobj.repos);
+            var st = galleryobj.repos.proper();
             if (st)
             {
                 var j = st.indexOf("_");
@@ -4691,7 +4685,7 @@ var headlst =
             }
             else if (context.prompt.hitest(x,y))
             {
-                menushow(_3cnvctx)
+                showrepospanel();
             }
 		};
 
@@ -4732,6 +4726,76 @@ var headlst =
 
             var bt = `${galleryobj.current()+1} of ${galleryobj.length()}`;
             a.draw(context, rect, [0,bt,0], time);
+            context.restore()
+		};
+	},
+	new function ()
+	{
+    	this.press = function (context, rect, x, y)
+		{
+            if (ismenu())
+            {
+                menuhide();
+                return;
+            }
+
+            headobj.set(headobj.current()?0:1);
+            headham.panel = headobj.getcurrent();
+            headcnvctx.clear();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        }
+
+    	this.tap = function (context, rect, x, y)
+		{
+            if (ismenu())
+            {
+                menuhide();
+            }
+            else if (context.moveprev && context.moveprev.hitest(x,y))
+            {
+                _4cnvctx.movepage(-1);
+            }
+            else if (context.movenext && context.movenext.hitest(x,y))
+            {
+                _4cnvctx.movepage(1);
+            }
+            else if (context.prompt.hitest(x,y))
+            {
+                menushow(_3cnvctx)
+            }
+		};
+
+		this.draw = function (context, rect, user, time)
+		{
+            context.save();
+            context.clear();
+            context.font = "1rem Archivo Black";
+            context.moveprev = new rectangle()
+            context.movenext = new rectangle()
+            context.prompt = new rectangle()
+
+            var a = new Col([BEXTENT,0,BEXTENT],
+                    [
+                        new Shrink(new Layer(
+                        [
+                            new Rectangle(context.moveprev),
+                            new Shrink(new CirclePanel(_4cnvctx.movingpage == -1?MENUTAP:SCROLLNAB,"white",3),5,5),
+                            new Shrink(new ArrowPanel(ARROWFILL,270),20,20),
+                        ]),10,10),
+                        new Layer(
+                        [
+                            new Rectangle(context.prompt),
+                            new Text("white", "center", "middle", 0, 0, 1),
+                        ]),
+                        new Shrink(new Layer(
+                        [
+                            new Rectangle(context.movenext),
+                            new Shrink(new CirclePanel(_4cnvctx.movingpage == 1?MENUTAP:SCROLLNAB,"white",3),5,5),
+                            new Shrink(new ArrowPanel(ARROWFILL,90),20,20),
+                        ]),10,10)
+                    ]);
+
+            a.draw(context, rect, "Loading ...", time);
             context.restore()
 		};
 	},
@@ -4963,6 +5027,7 @@ galleryobj.init = function(obj)
     speedyobj.split(1.25, "1-20", speedyobj.length());
 
     var h = window.self !== window.top ? 0 : BEXTENT;
+    headobj.set(4);
     headcnvctx.show(0,0,window.innerWidth,h);
     headham.panel = headobj.getcurrent();
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -4970,7 +5035,7 @@ galleryobj.init = function(obj)
     //todo highlight current item in menu
     _3cnvctx.sliceobj.data =
     [
-        {line:"Dalle\nText to Image\nEnter Image Prompt", path: "DALLE", func: function()
+        {line:"Dalle\nText to Image", path: "DALLE", func: function()
             {
                 setTimeout(function()
                 {
@@ -4983,38 +5048,38 @@ galleryobj.init = function(obj)
                     overlay.style.display = 'flex';
                 }, 40);
             }},
-        {line:"Unsplash\nImage Search\nEnter Search Criteria", path: "UNSPLASH", func: function()
+        {line:"Unsplash\nImage Search", path: "UNSPLASH", func: function()
             {
                 setTimeout(function()
                 {
                     globalobj.saverepos = "unsplash";
                     document.getElementById('search').value = url.path;
-                    document.getElementById('search-label').innerHTML = "Unsplash Image Search";
-                    document.getElementById('search-label2').innerHTML = "Enter Search Criteria";
+                    document.getElementById('search-label').innerHTML = "Unsplash";
+                    document.getElementById('search-label2').innerHTML = "Image Search";
                     const overlay = document.querySelector('.search-overlay');
                     overlay.style.display = 'flex';
                 }, 40);
             }},
-        {line:"Pexels\nImage Search\nEnter Search Criteria", path: "PEXELS", func: function()
+        {line:"Pexels\nImage Search", path: "PEXELS", func: function()
             {
                 setTimeout(function()
                 {
                     globalobj.saverepos = "pexels";
                     document.getElementById('search').value = url.path;
-                    document.getElementById('search-label').innerHTML = "Pexels Image Search";
-                    document.getElementById('search-label2').innerHTML = "Enter Search Criteria";
+                    document.getElementById('search-label').innerHTML = "Pexels";
+                    document.getElementById('search-label2').innerHTML = "Image Search";
                     const overlay = document.querySelector('.search-overlay');
                     overlay.style.display = 'flex';
                 }, 40);
             }},
-        {line:"Pixabay\nImage Search\nEnter Search Criteria", path: "PEXELS", func: function()
+        {line:"Pixabay\nImage Search", path: "PEXELS", func: function()
             {
                 setTimeout(function()
                 {
                     globalobj.saverepos = "pixabay";
                     document.getElementById('search').value = url.path;
-                    document.getElementById('search-label').innerHTML = "Pixabay Image Search";
-                    document.getElementById('search-label2').innerHTML = "Enter Search Criteria";
+                    document.getElementById('search-label').innerHTML = "Pixabay";
+                    document.getElementById('search-label2').innerHTML = "Image Search";
                     const overlay = document.querySelector('.search-overlay');
                     overlay.style.display = 'flex';
                 }, 40);
@@ -5227,21 +5292,13 @@ else
 
 function download()
 {
-    if (galleryobj.getcurrent().photographer_url)
+    if (galleryobj.getcurrent().original)
     {
-        window.location.href = galleryobj.getcurrent().photographer_url;
-    }
-    else if (galleryobj.getcurrent().url)
-    {
-        window.open(galleryobj.getcurrent().url);
+        window.open(galleryobj.getcurrent().original);
     }
     else if (galleryobj.getcurrent().full)
     {
         window.open(galleryobj.getcurrent().full);
-    }
-    else if (galleryobj.getcurrent().file)
-    {
-//        window.open(galleryobj.getcurrent().file);
     }
     else
     {
@@ -5313,6 +5370,28 @@ function submitprompt()
    })
 }
 
+function showrepospanel()
+{
+    setTimeout(function()
+    {
+        var linka = document.getElementById('linka');
+        linka.textContent = `www.${galleryobj.repos}.com`;
+        linka.href = `https://${galleryobj.repos}.com`;
+        var linkb = document.getElementById('linkb');
+        linkb.textContent = `Artist: ${galleryobj.getcurrent().photographer}`;
+        linkb.href = galleryobj.getcurrent().photographer_url;
+        var linkc = document.getElementById('linkc');
+        linkc.textContent = "Download";
+        linkc.href = galleryobj.getcurrent().image_url;
+        var linkd = document.getElementById('linkd');
+        linkd.textContent = "Metadata";
+        linkd.href = galleryobj.getcurrent().image_url;
+
+        const overlay = document.querySelector('.repos-overlay');
+        overlay.style.display = 'flex';
+    }, 40);
+}
+
 function closeprompt()
 {
     var overlay = document.querySelector('.delete-overlay');
@@ -5322,6 +5401,8 @@ function closeprompt()
     var overlay = document.querySelector('.search-overlay');
     overlay.style.display = 'none';
     var overlay = document.querySelector('.upload-overlay');
+    overlay.style.display = 'none';
+    var overlay = document.querySelector('.repos-overlay');
     overlay.style.display = 'none';
 }
 
@@ -5358,8 +5439,7 @@ function info()
 
     _5cnvctx.buttonheight = 90;
     _5cnvctx.slidereduce = 0.75;
-    galleryobj.getcurrent().slices = getslices();
-    _5cnvctx.sliceobj.data = galleryobj.getcurrent().slices;
+    _5cnvctx.sliceobj.data  = getslices();
     _5cnvctx.delayinterval = DELAYCENTER / _5cnvctx.sliceobj.data.length;
     _5cnvctx.virtualheight = _5cnvctx.sliceobj.data.length*_5cnvctx.buttonheight;
     menushow(_5cnvctx);

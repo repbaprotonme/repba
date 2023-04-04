@@ -36,12 +36,12 @@ export default
                 j.photographer_id = k.photographer_id;
                 if (k.alt)
                     j.description = k.alt;
-                j.url = k.src.original;
-
+                j.original = k.src.original;
+                j.image_url = k.url;
                 if (width > height)
-                    j.full = `${j.url}?auto=compress&cs=tinysrgb&fit=crop&h=1080&w=2160`;
+                    j.full = `${j.original}?auto=compress&cs=tinysrgb&fit=crop&h=1080&w=2160`;
                 else
-                    j.full = `${j.url}?auto=compress&cs=tinysrgb&fit=crop&h=2160&w=1080`;
+                    j.full = `${j.original}?auto=compress&cs=tinysrgb&fit=crop&h=2160&w=1080`;
 
                 j.thumb = k.src.medium;
                 data.push(j);

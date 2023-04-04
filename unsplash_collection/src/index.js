@@ -6,7 +6,7 @@ export default
         var url = new URL(request.url);
         var search = url.searchParams.get("search");
         var per_page = 30;
-        var pages = 1;
+        var pages = 4;
         var data = [];
 
         for (var page = 1; page <= pages; ++page)
@@ -25,17 +25,18 @@ export default
                 j.size = ((width * height)/1000000).toFixed(1) + "MP";
                 j.photographer = user.name;
                 j.required = "Photos provided by Unsplash";
-                j.photographer_url = user.portfolio_url;
+                j.photographer_url = user.links.html;
                 j.photographer_id = user.id;
                  if (k.description)
                     j.description = k.description;
                 if (k.alt_description)
                     j.alt_description = k.alt_description;
-                j.url = k.urls.raw;
+                j.image_url = k.links.html;
+                j.original = k.urls.raw;
                 if (width > height)
-                    j.full = `${j.url}&q=80&h=1080`;
+                    j.full = `${j.original}&q=80&h=1080`;
                 else
-                    j.full = `${j.url}&q=80&w=2160`;
+                    j.full = `${j.original}&q=80&w=2160`;
                 j.thumb = k.urls.small;
                 j.created = k.created_at.substr(0,10);
                 j.id = k.id;

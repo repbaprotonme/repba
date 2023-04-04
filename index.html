@@ -20,7 +20,11 @@
 html, body {height: 100%; margin: 0; background-color: white}
 * { -webkit-user-select: none; -webkit-tap-highlight-color: rgba(0,0,0,0); }
 canvas {outline: none; position: absolute; }
-
+A:link { COLOR: black; TEXT-DECORATION: none; font-weight: normal }
+A:visited { COLOR: black; TEXT-DECORATION: none; font-weight: normal }
+A:active { COLOR: black; TEXT-DECORATION: none }
+A:hover { COLOR: blue; TEXT-DECORATION: none; font-weight: none }
+</style>
 </style>
 
 <link href="https://fonts.googleapis.com/css?family=Archivo+Black" rel="stylesheet">
@@ -89,6 +93,27 @@ canvas {outline: none; position: absolute; }
           <button style="width: 50%; float: left; padding: 10px; border: 1px solid #777; font-size: 16px; border-radius: 4px;" type="button" onclick="closeprompt()">Cancel</button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<div class="repos-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5);">
+  <div style="position: absolute; width: 400px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 10px; border-radius: 5px;" role="dialog">
+    <div style="display: flex;">
+      <div style="flex: 100px; padding: 10px;">
+        <img style="padding: 10px;" src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.2.0/pexels.svg" width=90 height=90></img>
+      </div>
+      <div style="flex: 100%; padding: 10px;">
+        <a id="linka" target="reportbase" style="text-align: left; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></a><br>
+        <a id="linkb" target="reportbase" style="none; text-align: left; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></a><br>
+        <a id="linkc" target="reportbase" style="text-align: left; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></a><br>
+        <a id="linkd" target="reportbase" style="text-align: left; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></a><br>
+        <a id="linke" target="reportbase" style="text-align: left; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></a><br>
+      </div>
+    </div>
+    <div style="padding: 10px;">
+      <textarea id="search" placeholder="Enter Search" rows=3 style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; box-sizing: border-box; width: 100%; padding: 10px; font-size: 16px; border: 1px solid #777; border-radius: 8px;"></textarea>
+      <button style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #777; border-radius: 4px;" type="button" onclick="submitsearch()">Search</button>
     </div>
   </div>
 </div>

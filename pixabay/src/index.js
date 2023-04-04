@@ -17,10 +17,11 @@ export default
                 var k = json.hits[n];
                 k.thumb = k.webformatURL;
                 k.full = k.largeImageURL;
-                k.url = k.largeImageURL;
+                k.original = k.largeImageURL;//imageURL after approved
+                k.image_url = k.pageURL;
                 k.website = `Photos Provided by Pixabay`;
                 k.photographer = k.user;
-                k.photographer_url = k.pageURL;
+                k.photographer_url = `https://pixabay.com/users/${k.user}-${k.user_id}/`;
                 k.photographer_id = k.user_id;
                 data.push(k);
             }
