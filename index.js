@@ -3008,7 +3008,7 @@ var menulst =
                     galleryobj.repos?new Text("white", "center", "middle",0, 0, 1):0,
                 ]);
 
-            var st = galleryobj.repos.proper();
+            var st = galleryobj.repos?galleryobj.repos.proper():"";
             if (st)
             {
                 var j = st.indexOf("_");
@@ -4447,7 +4447,7 @@ var headlst =
                     ]);
 
             var k = galleryobj.getcurrent();
-            var st = galleryobj.repos.proper();
+            var st = galleryobj.repos?galleryobj.repos.proper():"";
             if (st)
             {
                 var j = st.indexOf("_");
