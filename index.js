@@ -358,7 +358,7 @@ function drawslices()
             let y = Math.berp(-1, 1, bos) * context.virtualheight;
             y -= e;
             var x = w/2;
-            var j = context.buttonheight;
+            var j = context.buttonheight*4;
             if (y < -j || y >= window.innerHeight+j)
                 continue;
             context.visibles.push({slice, x, y, m});
@@ -2854,7 +2854,7 @@ var getbuttonfrompoint = function (context, x, y)
 		if (!hit.fitwidth || !hit.fitheight)
 			continue;
 		var w = hit.fitwidth;
-		var h = hit.fitheight + 18*2;
+		var h = hit.fitheight;
 		var x1 = hit.center.x - w / 2;
 		var y1 = hit.center.y - h / 2;
 		var x2 = x1 + w;
@@ -2909,7 +2909,7 @@ var menulst =
         rect.width -= 40;
         context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
-        user.fitheight = rect.height+50;
+        user.fitheight = rect.height+100;
         context.font = "0.9rem Archivo Black";
         var clr = SCROLLNAB;
         if (user.tap)
@@ -5166,7 +5166,7 @@ galleryobj.init = function(obj)
     var slices = _9cnvctx.sliceobj;
     slices.data = [];
 
-    slices.data.push({title:"Search", path: "PROVIDER", func: function()
+    slices.data.push({title:"Source", path: "PROVIDER", func: function()
         {
             menushow(_3cnvctx);
         }});
