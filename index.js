@@ -5260,7 +5260,11 @@ else
 
 function download()
 {
-    if (galleryobj.getcurrent().original)
+    if (galleryobj.getcurrent().image_url)
+    {
+        window.open(galleryobj.getcurrent().image_url);
+    }
+    else if (galleryobj.getcurrent().original)
     {
         window.open(galleryobj.getcurrent().original);
     }
