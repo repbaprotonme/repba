@@ -47,7 +47,7 @@ export default
         var g = {}
         g.title = `Unsplash Gallery`;
         g.title1 = `Photos Provided by Unsplash`;
-        g.repos = "unsplash_user";
+        g.repos = "unsplash_collection";
         g.row = 50;
         g.per_page = per_page;
         g.data = data;

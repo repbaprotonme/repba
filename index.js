@@ -3525,7 +3525,7 @@ var ContextObj = (function ()
 
                     contextobj.reset()
                     _4cnvctx.movepagetime = setTimeout(function() { masterload(); }, 500);
-                    headobj.set(3);
+                    headobj.set(0);
                     headham.panel = headobj.getcurrent();
                     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
@@ -5351,6 +5351,7 @@ function closeprompt()
 
 function info()
 {
+    closeprompt();
   function getslices()
   {
       var slices = galleryobj.getcurrent().slices;

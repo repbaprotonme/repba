@@ -4,7 +4,7 @@ export default
     {
         const PEXEL_KEY = env.PEXEL_KEY;
         const per_page = 80;
-        const pages = 1;
+        const pages = 4;
         var data = [];
         var url = new URL(request.url);
         var search = url.searchParams.get("search");
@@ -21,13 +21,11 @@ export default
         {
             var response = await fetch(`https://api.pexels.com/v1/collections/${search}?per_page=${per_page}&page=${page}`, init);
             var json = await response.json();
-            if (!json.photos.length)
+            if (!json.media.length)
                 break;
             for (var n = 0; n < json.media.length; ++n)
             {
                 var k = json.media[n];
-                if (k.type != "Photo")
-                    continue;
                 var j = {};
                 var width = k.width;
                 var height = k.height;
@@ -56,7 +54,7 @@ export default
         var g = {}
         g.title = `Pexels Curated`;
         g.title1 = `Photos Provided by Pexels`;
-        g.repos = `pexels`;
+        g.repos = `pexels_collection`;
         g.per_page = json.per_page;
         g.total = json.total_results;
         g.data = data;

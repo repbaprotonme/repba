@@ -10,7 +10,7 @@ var init =
   },
 };
 
-fetch(`https://api.pexels.com/v1/collections/u8udhbp`, init)
+fetch(`https://api.pexels.com/v1/collections/hdtefpy`, init)
 .then(resp =>
 {
     return resp.json()
@@ -18,9 +18,4 @@ fetch(`https://api.pexels.com/v1/collections/u8udhbp`, init)
 .then(data =>
 {
     console.log(data);
-    for (var n = 0; n < data.length; ++n)
-    {
-        var k = data[n];
-        console.log(k);
-    }
 })
