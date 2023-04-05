@@ -20,6 +20,8 @@ export default
         {
             var response = await fetch(`https://api.pexels.com/v1/search?query=${search}&per_page=${per_page}&page=${page}`, init);
             var json = await response.json();
+            if (!json.photos.length)
+                break;
             for (var n = 0; n < json.photos.length; ++n)
             {
                 var k = json.photos[n];

@@ -360,16 +360,7 @@ function drawslices()
             var x = w/2;
             var j = context.buttonheight;
             if (y < -j || y >= window.innerHeight+j)
-            {
-                if (0)//slice.thumbimg)
-                {
-                    delete slice.thumbimg;
-                    slice.thumbimg = 0;
-                }
-
                 continue;
-            }
-
             context.visibles.push({slice, x, y, m});
         }
 
@@ -1923,10 +1914,11 @@ var panlst =
             var jvalue = ((context.timeobj.length()/context.virtualheight)*(context.starty-y));
             var j = context.startt - jvalue;
             var len = context.timeobj.length();
-            if (j >= len)
-                j = j-len;
-            else if (j < 0)
-                j = len-j;
+            if (j < 0)
+                 j = len+j-1;
+            else if (j >= len)
+                 j = j-len-1;
+            j = j % context.timeobj.length();
             context.timeobj.set(j);
             context.refresh()
         }
@@ -3582,7 +3574,7 @@ function masterload()
         var id = galleryobj.getcurrent().id;
         var path = `https://reportbase.com/image/${id}/${galleryobj.template}`;
         if (galleryobj.repos)
-            path = galleryobj.getcurrent().url;
+            path = galleryobj.getcurrent().full;
         lst[n].src = path;
         lst[n].index = galleryobj.current();
         lst[n].onload = function()
@@ -3596,7 +3588,7 @@ function masterload()
     var id = galleryobj.getcurrent().id;
     var path = `https://reportbase.com/image/${id}/${galleryobj.template}`;
     if (galleryobj.repos)
-        path = galleryobj.getcurrent().url;
+        path = galleryobj.getcurrent().full;
     img.src = path;
     img.index = galleryobj.current();
     img.onload = function()
@@ -4404,7 +4396,7 @@ var headlst =
             }
             else if (context.prompt.hitest(x,y))
             {
-                showrepospanel();
+                showrepospanel(galleryobj.repos)
             }
 		};
 
@@ -4685,7 +4677,7 @@ var headlst =
             }
             else if (context.prompt.hitest(x,y))
             {
-                showrepospanel();
+                showrepospanel(galleryobj.repos)
             }
 		};
 
@@ -4761,7 +4753,7 @@ var headlst =
             }
             else if (context.prompt.hitest(x,y))
             {
-                menushow(_3cnvctx)
+                showrepospanel(galleryobj.repos)
             }
 		};
 
@@ -4774,9 +4766,12 @@ var headlst =
             context.movenext = new rectangle()
             context.prompt = new rectangle()
 
-            var a = new Col([BEXTENT,0,BEXTENT],
+            var a = new Layer(
+            [
+                    galleryobj.length()?0:new Fill("rgb(70,70,70)"),
+                    new Col([BEXTENT,0,BEXTENT],
                     [
-                        new Shrink(new Layer(
+                        galleryobj.length()==0?0:new Shrink(new Layer(
                         [
                             new Rectangle(context.moveprev),
                             new Shrink(new CirclePanel(_4cnvctx.movingpage == -1?MENUTAP:SCROLLNAB,"white",3),5,5),
@@ -4787,15 +4782,17 @@ var headlst =
                             new Rectangle(context.prompt),
                             new Text("white", "center", "middle", 0, 0, 1),
                         ]),
-                        new Shrink(new Layer(
+                        galleryobj.length()==0?0:new Shrink(new Layer(
                         [
                             new Rectangle(context.movenext),
                             new Shrink(new CirclePanel(_4cnvctx.movingpage == 1?MENUTAP:SCROLLNAB,"white",3),5,5),
                             new Shrink(new ArrowPanel(ARROWFILL,90),20,20),
                         ]),10,10)
-                    ]);
+                    ])
+               ]);
 
-            a.draw(context, rect, "Loading ...", time);
+            var s = galleryobj.length() ? "Loading ..." : "0 Images"
+            a.draw(context, rect, s, time);
             context.restore()
 		};
 	},
@@ -5037,52 +5034,23 @@ galleryobj.init = function(obj)
     [
         {line:"Dalle\nText to Image", path: "DALLE", func: function()
             {
-                setTimeout(function()
-                {
-                    var prompt = galleryobj.getcurrent().prompt
-                    if (prompt)
-                        document.getElementById('prompt').value = prompt;
-                    document.getElementById('prompt-label').innerHTML = "Dalle";
-                    document.getElementById('prompt-label2').innerHTML = "Text to Image";
-                    const overlay = document.querySelector('.prompt-overlay');
-                    overlay.style.display = 'flex';
-                }, 40);
+                menuhide();
+                showprompt();
             }},
         {line:"Unsplash\nImage Search", path: "UNSPLASH", func: function()
             {
-                setTimeout(function()
-                {
-                    globalobj.saverepos = "unsplash";
-                    document.getElementById('search').value = url.path;
-                    document.getElementById('search-label').innerHTML = "Unsplash";
-                    document.getElementById('search-label2').innerHTML = "Image Search";
-                    const overlay = document.querySelector('.search-overlay');
-                    overlay.style.display = 'flex';
-                }, 40);
+                menuhide();
+                showrepospanel("unsplash");
             }},
         {line:"Pexels\nImage Search", path: "PEXELS", func: function()
             {
-                setTimeout(function()
-                {
-                    globalobj.saverepos = "pexels";
-                    document.getElementById('search').value = url.path;
-                    document.getElementById('search-label').innerHTML = "Pexels";
-                    document.getElementById('search-label2').innerHTML = "Image Search";
-                    const overlay = document.querySelector('.search-overlay');
-                    overlay.style.display = 'flex';
-                }, 40);
+                menuhide();
+                showrepospanel("pexels");
             }},
         {line:"Pixabay\nImage Search", path: "PEXELS", func: function()
             {
-                setTimeout(function()
-                {
-                    globalobj.saverepos = "pixabay";
-                    document.getElementById('search').value = url.path;
-                    document.getElementById('search-label').innerHTML = "Pixabay";
-                    document.getElementById('search-label2').innerHTML = "Image Search";
-                    const overlay = document.querySelector('.search-overlay');
-                    overlay.style.display = 'flex';
-                }, 40);
+                menuhide();
+                showrepospanel("pixabay");
             }},
         {line:"Image dump", path: "DUMP", func: function()
             {
@@ -5123,7 +5091,7 @@ galleryobj.init = function(obj)
                 copytext(galleryobj.getcurrent().prompt);
                 menuhide();
             }},
-        {title:"Copy ID", path: "COPYID", func: function()
+        {title:"Copy Image ID", path: "COPYID", func: function()
             {
                 copytext(galleryobj.getcurrent().id);
                 menuhide();
@@ -5198,7 +5166,7 @@ galleryobj.init = function(obj)
     var slices = _9cnvctx.sliceobj;
     slices.data = [];
 
-    slices.data.push({title:"Data Source", path: "DATASOURCE", func: function()
+    slices.data.push({title:"Search", path: "PROVIDER", func: function()
         {
             menushow(_3cnvctx);
         }});
@@ -5209,7 +5177,7 @@ galleryobj.init = function(obj)
             promptFile().then(function(files) { dropfiles(files); })
         }});
 
-    slices.data.push({title:"Info", path: "INFO", func: info})
+    slices.data.push({title:"Metadata", path: "METADATA", func: info})
 
     slices.data.push({title:"Delete", path: "DELETE", func: function()
         {
@@ -5266,7 +5234,7 @@ var last = localStorage.getItem("LAST");
 var lastpath = localStorage.getItem("LASTPATH");
 var lastrepos = localStorage.getItem("LASTREPOS");
 var repos = url.searchParams.has(lastrepos);//todo timed
-if (last && lastpath == url.path && repos)
+if (0)//last && lastpath == url.path && repos)
 {
     galleryobj.init(JSON.parse(last));
 }
@@ -5329,8 +5297,6 @@ document.addEventListener("click", (evt) =>
 {
     if (!headcnv.height)
         return;
-    if (!ismenu() && headobj.current() == 1)
-        return;
     if (evt.screenY < BEXTENT && (evt.screenX < BEXTENT || evt.screenX > window.innerWidth-BEXTENT))
         return;
     if (evt.target.className.search("overlay") >= 0)
@@ -5356,7 +5322,8 @@ function deleteimage()
 function submitsearch()
 {
     closeprompt();
-    window.open(`http://reportbase.me?${globalobj.saverepos}=${document.getElementById('search').value}`);
+    var s =`${url.origin}?${globalobj.saverepos}=${document.getElementById('search').value}`;
+    window.open(s, "_self");
 }
 
 function submitprompt()
@@ -5370,28 +5337,6 @@ function submitprompt()
    })
 }
 
-function showrepospanel()
-{
-    setTimeout(function()
-    {
-        var linka = document.getElementById('linka');
-        linka.textContent = `www.${galleryobj.repos}.com`;
-        linka.href = `https://${galleryobj.repos}.com`;
-        var linkb = document.getElementById('linkb');
-        linkb.textContent = `Artist: ${galleryobj.getcurrent().photographer}`;
-        linkb.href = galleryobj.getcurrent().photographer_url;
-        var linkc = document.getElementById('linkc');
-        linkc.textContent = "Download";
-        linkc.href = galleryobj.getcurrent().image_url;
-        var linkd = document.getElementById('linkd');
-        linkd.textContent = "Metadata";
-        linkd.href = galleryobj.getcurrent().image_url;
-
-        const overlay = document.querySelector('.repos-overlay');
-        overlay.style.display = 'flex';
-    }, 40);
-}
-
 function closeprompt()
 {
     var overlay = document.querySelector('.delete-overlay');
@@ -5401,8 +5346,6 @@ function closeprompt()
     var overlay = document.querySelector('.search-overlay');
     overlay.style.display = 'none';
     var overlay = document.querySelector('.upload-overlay');
-    overlay.style.display = 'none';
-    var overlay = document.querySelector('.repos-overlay');
     overlay.style.display = 'none';
 }
 
@@ -5425,7 +5368,9 @@ function info()
             {
                 var key = keys[n];
                 var value = galleryobj.getcurrent()[key]
-                if (value && value.length && typeof value === 'string' && value.substr(0,4) != "blob")
+                if (value && value.length && typeof value === 'string' &&
+                    value.substr(0,4) != "blob" &&
+                    value.substr(0,4) != "http")
                 {
                     key = key.toLowerCase()
                     key  = key.charAt(0).toUpperCase() + key.slice(1)
@@ -5445,4 +5390,48 @@ function info()
     menushow(_5cnvctx);
 }
 
+function artistpage()
+{
+    var s = galleryobj.getcurrent().photographer_url;
+    if (!s)
+        return;
+    closeprompt();
+    window.open(s);
+}
 
+function showrepospanel(repos)
+{
+    if (repos)
+    {
+        setTimeout(function()
+        {
+            globalobj.saverepos = repos;
+
+            var linka = document.getElementById('linka');
+            linka.textContent = repos?repos.proper():"";
+            linka.href = `https://${galleryobj.repos}.com`;
+
+            document.getElementById('search').value = url.path;
+            const overlay = document.querySelector('.search-overlay');
+            overlay.style.display = 'flex';
+        }, 40);
+    }
+    else
+    {
+        showprompt();
+    }
+}
+
+function showprompt()
+{
+    setTimeout(function()
+    {
+        var prompt = galleryobj.getcurrent().prompt
+        if (prompt)
+            document.getElementById('prompt').value = prompt;
+        document.getElementById('prompt-label').innerHTML = "Dalle";
+        document.getElementById('prompt-label2').innerHTML = "Text to Image";
+        const overlay = document.querySelector('.prompt-overlay');
+        overlay.style.display = 'flex';
+    }, 40);
+}
