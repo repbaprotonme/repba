@@ -3525,7 +3525,7 @@ var ContextObj = (function ()
 
                     contextobj.reset()
                     _4cnvctx.movepagetime = setTimeout(function() { masterload(); }, 500);
-                    headobj.set(0);
+                    headobj.set(3);
                     headham.panel = headobj.getcurrent();
                     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
