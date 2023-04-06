@@ -24,7 +24,7 @@ const TIMEOBJ = 3927;
 const DELAYCENTER = TIMEOBJ/1000;
 const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(255,175,0,0.75)";
-const MENUTAP = "rgba(255,0,0,0.75)";
+const MENUTAP = "rgba(255,175,0,0.75)";
 const SCROLLNAB = "rgba(0,0,0,0.4)";
 const MENUCOLOR = "rgba(0,0,0,0.60)";
 const OPTIONFILL = "white";
@@ -1927,6 +1927,7 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
     {
+        context.panning = 1;
         context.type = 0;
         context.leftside = x < MENUPANWIDTH;
         context.rightside = x > rect.width-MENUPANWIDTH;
@@ -1935,6 +1936,7 @@ var panlst =
     },
 	panend: function (context, rect, x, y)
     {
+        context.panning = 0;
         delete context.starty;
         delete context.startt;
         delete context.timeobj.offset;
@@ -1944,6 +1946,7 @@ var panlst =
             obj = context.scrollobj.getcurrent();
         if (obj)
             delete obj.offset;
+        context.refresh();
     }
 },
 {
@@ -2339,11 +2342,19 @@ var swipelst =
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
+        context.swipped = 1;
         context.slideshow = (context.timeobj.length()/context.virtualheight)*36;
         context.swipetype = evt.type;
         context.slidereduce = context.slideshow/12;
         clearInterval(context.timemain);
         context.timemain = setInterval(function () { context.refresh(); }, globalobj.timemain);
+        context.refresh();
+        clearTimeout(context.swipeupdown);
+        context.swipeupdown = setTimeout(function()
+        {
+            context.swipped = 0;
+            context.refresh();
+        }, 1000);
     },
 },
 {
@@ -2713,7 +2724,7 @@ var taplst =
                 slice.func(context, rect, x, y);
                 slice.tap = 0;
                 context.refresh();
-            }, JULIETIME*2);
+            }, JULIETIME*3);
         }
     },
 },
@@ -2928,6 +2939,8 @@ var menulst =
         var clr = SCROLLNAB;
         if (time == galleryobj.current())
             clr = MENUSELECT;
+        else if (user.tap)
+            clr = MENUTAP;
 
         var a = new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 50);
         a.draw(context, rect, 0, 0);
@@ -2999,42 +3012,47 @@ var menulst =
                     10, -40, w2, h2);
             }
 
-            var a = new Expand(new RowA([20,30,0,60,0,30,20],
+            if (!context.panning && !context.swipped)
+            {
+                var a = new Expand(new RowA([20,24,24,0,60,0,24,24,20],
+                    [
+                        0,
+                        galleryobj.repos?new Text("white", "center", "middle",0, 0, 1):0,
+                        galleryobj.repos?new Text("white", "center", "middle",0, 0, 1):0,
+                        0,
+                        new Layer(
+                        [
+                                new CirclePanel(user.tap?MENUTAP:SCROLLNAB,"white",3),
+                                new Text("white", "center", "middle",0, 0, 1)
+                        ]),
+                        0,
+                        galleryobj.repos?new Text("white", "center", "middle",0, 0, 1):0,
+                        galleryobj.repos?new Text("white", "center", "middle",0, 0, 1):0,
+                        0,
+                    ]),-60,50);
+
+                var j = time + 1;
+                var repos = galleryobj.repos;
+                if (repos)
+                {
+                    var k = repos.indexOf("_");
+                    if (k >= 1)
+                        repos = repos.substr(0,k);
+                }
+
+                a.draw(context, rect,
                 [
                     0,
-                    galleryobj.repos?new Text("white", "center", "middle",0, 0, 1):0,
+                    repos?repos.proper():"",
+                    url.path?url.path.proper():"",
                     0,
-                    new Layer(
-                    [
-                            new CirclePanel(user.tap?MENUTAP:SCROLLNAB,"white",3),
-                            new Text("white", "center", "middle",0, 0, 1)
-                    ]),
+                    j.toFixed(0),
                     0,
-                    galleryobj.repos?new Text("white", "center", "middle",0, 0, 1):0,
+                    "Credit",
+                    user.photographer,
                     0,
-                ]),-60,50);
-
-            var st = url.path?url.path.proper():"";
-            if (st)
-            {
-                var j = st.indexOf("_");
-                if (j >= 1)
-                    st = st.substr(0,j);
+                ], 0);
             }
-
-            var s = user.photographer;
-            var j = time + 1;
-
-            a.draw(context, rect,
-            [
-                0,
-                st,
-                0,
-                j.toFixed(0),
-                0,
-                s,
-                0,
-            ], 0);
         }
         else
         {
@@ -4455,19 +4473,12 @@ var headlst =
                     ]);
 
             var k = galleryobj.getcurrent();
-            var st = galleryobj.repos?galleryobj.repos.proper():"";
-            if (st)
-            {
-                var j = st.indexOf("_");
-                if (j >= 1)
-                    st = st.substr(0,j);
-            }
-
+            var st = url.path.proper();
             var lt = k.photographer;
             var size = (k.prompt||galleryobj.repos)?1:3;
             context.font = `${size}rem Archivo Black`;
             var prompt = k.prompt?k.prompt:"...";
-            a.draw(context, rect, galleryobj.repos?[0,st,lt,0]:prompt, time);
+            a.draw(context, rect, galleryobj.repos?[0,lt,st,0]:prompt, time);
             context.restore()
 		};
 	},
@@ -5159,7 +5170,7 @@ galleryobj.init = function(obj)
     var func = function (index)
     {
         galleryobj.set(this.pos);
-        setTimeout(function() { window.open(addressobj.full()); }, 100);
+        window.open(addressobj.full());
     }
 
     for (var n = 0; n < galleryobj.data.length; ++n)
@@ -5454,6 +5465,10 @@ function showrepospanel(repos)
             var linka = document.getElementById('linka');
             linka.textContent = repos?repos.proper():"";
             linka.href = `https://${galleryobj.repos}.com`;
+
+            var linkb = document.getElementById('linkb');
+            linkb.textContent = galleryobj.getcurrent().photographer?galleryobj.getcurrent().photographer:"";
+            linkb.href = galleryobj.getcurrent().photographer_url;
 
             document.getElementById('search').value = url.path;
             const overlay = document.querySelector('.search-overlay');
