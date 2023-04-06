@@ -2479,8 +2479,9 @@ var keylst =
             globalobj.shifthit = 1;
 
         context.refresh();
+        var key = evt.key.toLowerCase();
 
-        if (evt.key == "f")
+        if (key == "f")
         {
             if (screenfull.isEnabled)
             {
@@ -2493,32 +2494,32 @@ var keylst =
             context.refresh();
             evt.preventDefault();
         }
-        else if (evt.key == " ")
+        else if (key == " ")
         {
             headobj.set(headobj.current()?0:1);
             headham.panel = headobj.getcurrent();
             headcnvctx.clear();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
-        else if (evt.key == "\\")
+        else if (key == "\\")
         {
             evt.preventDefault();
             factorobj.enabled = factorobj.enabled ? 0 : 1;
             context.refresh();
         }
-        else if (evt.key == "ArrowLeft" || evt.key == "h")
+        else if (key == "arrowleft" || key == "h")
         {
             evt.preventDefault();
             context.autodirect = 1;
             context.tab();
         }
-        else if (evt.key == "ArrowRight" || evt.key == "l")
+        else if (key == "arrowright" || key == "l")
         {
             context.autodirect = -1;
             evt.preventDefault();
             context.tab();
         }
-        else if (evt.key == "Pageup" || evt.key == "ArrowUp" || evt.key == "k")
+        else if (key == "arrowup" || key == "k")
         {
             if (!rowobj.current())
                 return;
@@ -2526,7 +2527,7 @@ var keylst =
             contextobj.reset();
             evt.preventDefault();
         }
-        else if (evt.key == "Pageup" || evt.key == "ArrowDown" || evt.key == "j" )
+        else if (key == "arrowDown" || key == "j" )
         {
             if (rowobj.current() >= rowobj.length()-1)
                 return;
@@ -2534,40 +2535,41 @@ var keylst =
             contextobj.reset();
             evt.preventDefault();
         }
-        else if (evt.key == "-")
+        else if (key == "-")
         {
             context.pinched = 1;
             zoomobj.getcurrent().add(-1);
             contextobj.reset()
         }
-        else if (evt.key == "+")
+        else if (key == "+")
         {
             context.pinched = 1;
             zoomobj.getcurrent().add(1);
             contextobj.reset()
         }
-        else if (evt.key == "9")
+        else if (key == "9")
         {
             factorobj.add(-1);
             contextobj.reset()
         }
-        else if (evt.key == "0")
+        else if (key == "0")
         {
             factorobj.add(1);
             contextobj.reset()
         }
-        else if (evt.key == "[")
+        else if (key == "[")
         {
             stretchobj.getcurrent().add(-1);
             context.refresh();
         }
-        else if (evt.key == "]")
+        else if (key == "]")
         {
             stretchobj.getcurrent().add(1);
             context.refresh();
         }
-        else if (evt.key == "Tab")
+        else if (key == "tab")
         {
+            context.autodirect = (evt.shiftKey)?1:-1;
             headcnv.height = BEXTENT;
             headobj.set(headobj.current() == 0 ? 3 : 0);
             headham.panel = headobj.getcurrent();
@@ -2575,9 +2577,19 @@ var keylst =
             _4cnvctx.tab();
             evt.preventDefault();
         }
-        else if (evt.key == "Enter")
+        else if (key == "enter")
         {
             context.movepage(evt.shiftKey?-1:1);
+            evt.preventDefault();
+        }
+        else if (key == "pageup")
+        {
+            context.movepage(-1);
+            evt.preventDefault();
+        }
+        else if (key == "pagedown")
+        {
+            context.movepage(1);
             evt.preventDefault();
         }
 	}
@@ -4795,7 +4807,7 @@ var headlst =
                     ])
                ]);
 
-            var s = galleryobj.length() ? "Loading ..." : "0 Images"
+            var s = galleryobj.length() ? "" : "0 Images"
             a.draw(context, rect, s, time);
             context.restore()
 		};
@@ -5183,6 +5195,24 @@ galleryobj.init = function(obj)
 
     slices.data.push({title:"Metadata", path: "METADATA", func: info})
 
+    if (url.protocol == "https:")
+    {
+        slices.data.push({title:"Login", path: "LOGIN", func: function()
+            {
+                authClient.redirectToLoginPage();
+            }});
+
+        slices.data.push({title:"Logout", path: "LOGOUT", func: function()
+            {
+                authClient.logout(true)
+            }});
+
+        slices.data.push({title:"Account", path: "ACCOUNT", func: function()
+            {
+                authClient.redirectToAccountPage()
+            }});
+    }
+
     slices.data.push({title:"Delete", path: "DELETE", func: function()
         {
             var modalTitle = document.getElementById("delete-label");
@@ -5191,15 +5221,18 @@ galleryobj.init = function(obj)
             overlay.style.display = 'flex';
         }});
 
-    slices.data.push({title:"Upload", path: "UPLOAD", func: function()
-        {
-            setTimeout(function()
+    if (!galleryobj.repos)
+    {
+        slices.data.push({title:"Upload", path: "UPLOAD", func: function()
             {
-                document.getElementById('upload-label').innerHTML = "Upload Image";
-                const overlay = document.querySelector('.upload-overlay');
-                overlay.style.display = 'flex';
-            }, 40);
-        }})
+                setTimeout(function()
+                {
+                    document.getElementById('upload-label').innerHTML = "Upload Image";
+                    const overlay = document.querySelector('.upload-overlay');
+                    overlay.style.display = 'flex';
+                }, 40);
+            }})
+    }
 
     slices.data.push({title:"Reload", path: "RELOAD", func: function()
         {
@@ -5446,3 +5479,15 @@ function showprompt()
         overlay.style.display = 'flex';
     }, 40);
 }
+
+if (url.protocol == "https:")
+{
+    authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+    authClient.getAuthenticationInfoOrNull(false)
+    .then(function(client)
+    {
+        if (client)
+            globalobj.user = client.user;
+    })
+}
+
