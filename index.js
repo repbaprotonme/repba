@@ -5413,6 +5413,9 @@ function showrepospanel(repos)
     {
         setTimeout(function()
         {
+            var k = repos.indexOf("_");
+            if (k >= 0)
+                repos = repos.substr(0,k);
             globalobj.saverepos = repos;
 
             var linka = document.getElementById('linka');
