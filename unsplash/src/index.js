@@ -6,13 +6,15 @@ export default
         var url = new URL(request.url);
         var search = url.searchParams.get("search");
         var per_page = 30;
-        var pages = 4;
+        var pages = 8;
         var data = [];
 
         for (var page = 1; page <= pages; ++page)
         {
             var response = await fetch(`https://api.unsplash.com/search/photos?query=${search}&client_id=${UNSPLASH_KEY}&per_page=${per_page}&page=${page}`);
             var json = await response.json();
+            if (!json.results.length)
+                break;
             for (var n = 0; n < json.results.length; ++n)
             {
                 var k = json.results[n];

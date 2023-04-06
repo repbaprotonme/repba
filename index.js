@@ -34,6 +34,7 @@ const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
 const SLIDETOP = 18
 const SLIDEFACTOR = 60;
+const SCROLLBARWIDTH = 8;
 
 globalobj = {};
 
@@ -234,7 +235,8 @@ function drawslices()
             if (!slice)
                 break;
             context.save();
-            context.clear();
+            if (factorobj.enabled)
+                context.clear();
             context.translate(-colwidth, 0);
             context.shadowOffsetX = 0;
             context.shadowOffsetY = 0;
@@ -375,7 +377,7 @@ function drawslices()
         }
 
         var rect = context.rect();
-        var a = new ColA([9,0,9],
+        var a = new ColA([SCROLLBARWIDTH,0,SCROLLBARWIDTH],
         [
             (context.index == 2||
             context.index == 4 ||
@@ -2912,9 +2914,7 @@ var menulst =
         user.fitheight = rect.height+100;
         context.font = "0.9rem Archivo Black";
         var clr = SCROLLNAB;
-        if (user.tap)
-            clr = MENUTAP;
-        else if (time == galleryobj.current())
+        if (time == galleryobj.current())
             clr = MENUSELECT;
 
         var a = new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 50);
@@ -2987,8 +2987,9 @@ var menulst =
                     10, -40, w2, h2);
             }
 
-            var a = new RowA([30,0,60,0,30],
+            var a = new Expand(new RowA([20,30,0,60,0,30,20],
                 [
+                    0,
                     galleryobj.repos?new Text("white", "center", "middle",0, 0, 1):0,
                     0,
                     new Layer(
@@ -2998,9 +2999,10 @@ var menulst =
                     ]),
                     0,
                     galleryobj.repos?new Text("white", "center", "middle",0, 0, 1):0,
-                ]);
+                    0,
+                ]),-60,50);
 
-            var st = galleryobj.repos?galleryobj.repos.proper():"";
+            var st = url.path?url.path.proper():"";
             if (st)
             {
                 var j = st.indexOf("_");
@@ -3013,11 +3015,13 @@ var menulst =
 
             a.draw(context, rect,
             [
+                0,
                 st,
                 0,
                 j.toFixed(0),
                 0,
                 s,
+                0,
             ], 0);
         }
         else
@@ -4491,7 +4495,7 @@ var headlst =
             }
             else if (context.promptpanel && context.promptpanel.hitest(x,y))
             {
-                menushow(_3cnvctx);
+                showrepospanel(galleryobj.repos)
             }
             else if (context.fullpanel && context.fullpanel.hitest(x,y))
             {
@@ -5166,9 +5170,9 @@ galleryobj.init = function(obj)
     var slices = _9cnvctx.sliceobj;
     slices.data = [];
 
-    slices.data.push({title:"Source", path: "PROVIDER", func: function()
+    slices.data.push({title:"Search", path: "PROVIDER", func: function()
         {
-            menushow(_3cnvctx);
+            showrepospanel(galleryobj.repos)
         }});
 
     slices.data.push({title:"Open", path: "OPEN", func: function()
@@ -5191,7 +5195,6 @@ galleryobj.init = function(obj)
         {
             setTimeout(function()
             {
-                //todo get update url
                 document.getElementById('upload-label').innerHTML = "Upload Image";
                 const overlay = document.querySelector('.upload-overlay');
                 overlay.style.display = 'flex';
@@ -5233,8 +5236,8 @@ galleryobj.init = function(obj)
 var last = localStorage.getItem("LAST");
 var lastpath = localStorage.getItem("LASTPATH");
 var lastrepos = localStorage.getItem("LASTREPOS");
-var repos = url.searchParams.has(lastrepos);//todo timed
-if (0)//last && lastpath == url.path && repos)
+var repos = url.searchParams.has(lastrepos);
+if (last && lastpath == url.path && repos)
 {
     galleryobj.init(JSON.parse(last));
 }
