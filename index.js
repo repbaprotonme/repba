@@ -1676,6 +1676,12 @@ var pinchlst =
         var e = Math.lerp(0,obj.length(),j)/obj.length();
         _4cnvctx.pinched = 1;
 
+        if (globalobj.slideshow)
+        {
+            clearInterval(globalobj.slideshow);
+            globalobj.slideshow = 0;
+        }
+
         if (context.isthumbrect)
         {
             delete context.thumbcanvas;
@@ -3017,7 +3023,7 @@ var menulst =
 
         var obj = context.scrollobj;
         if (obj.current() == 0 &&
-            user.thumbimg && user.thumbimg.width)
+            user.thumbimg && user.thumbimg.complete && user.thumbimg.naturalHeight)
         {
             obj = obj.getcurrent();
             var h2 = rect.height+BEXTENT;
@@ -4273,10 +4279,14 @@ function resize()
     var n = eventlst.findIndex(function(a){return a.name == "_4cnvctx";})
     setevents(_4cnvctx, eventlst[n])
     _4cnvctx.tapping = 0;
-    var h = window.self !== window.top ? 0 : BEXTENT;
-    headcnvctx.show(0,0,window.innerWidth,h);
-    headham.panel = headobj.getcurrent();
-    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+    headcnvctx.show(0,0,window.innerWidth,0);
+    if (headcnv.height)
+    {
+        var h = window.self !== window.top ? 0 : BEXTENT;
+        headcnvctx.show(0,0,window.innerWidth,h);
+        headham.panel = headobj.getcurrent();
+        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+    }
 }
 
 function escape()
@@ -5302,7 +5312,7 @@ galleryobj.init = function(obj)
             globalobj.slideshow = setInterval(function()
             {
                 _4cnvctx.movepage(1)
-            }, 2000);
+            }, url.slideshow?url.slideshow:2000);
         }});
 
     slices.data.push({title:"Open", path: "OPEN", func: function()
