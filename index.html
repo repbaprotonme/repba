@@ -86,6 +86,19 @@ A:hover { COLOR: blue; TEXT-DECORATION: none; font-weight: none }
   </div>
 </div>
 
+<div class="search-overlay-small" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5);">
+  <div style="position: absolute; width: 400px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 10px; border-radius: 5px;" role="dialog">
+    <div style="display: flex; flex-direction: column; width: 100%; justify-content: center;">
+      <label style="text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;">Image Search</label>
+    </div>
+    <div style="padding: 10px; justify-content: center;">
+      <textarea id="search" placeholder="Enter Search" rows=3 style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; box-sizing: border-box; width: 100%; padding: 10px; font-size: 16px; border: 1px solid #777; border-radius: 8px;"></textarea>
+      <button style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #777; border-radius: 4px; font-weight: bold" type="button" onclick="submitsearch()">Search</button>
+      <button style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #777; border-radius: 4px;" type="button" onclick="closeprompt(); menushow(_3cnvctx)">Image Source</button>
+    </div>
+   </div>
+</div>
+
 <div class="search-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5);">
   <div style="position: absolute; width: 400px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 10px; border-radius: 5px;" role="dialog">
     <div style="display: flex; flex-direction: column; width: 100%; justify-content: center;">
@@ -98,7 +111,7 @@ A:hover { COLOR: blue; TEXT-DECORATION: none; font-weight: none }
     </div>
     <div style="justify-content: center;">
       <center>
-        <label style="text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px;"></label><br>
+        <label style="text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px;">Photo Credit</label><br>
         <a id="linkcredit" target="reportbase" style="text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px;"></a>
       </center>
     </div>

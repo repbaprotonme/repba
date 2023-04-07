@@ -3075,7 +3075,7 @@ var menulst =
                     0,
                     j.toFixed(0),
                     0,
-                    "Credit",
+                    "Photo Credit",
                     user.photographer,
                     0,
                 ], 0);
@@ -4523,7 +4523,7 @@ var headlst =
             var lt = k.photographer?k.photographer.proper():"";
             context.font = "1rem Archivo Black";
             var prompt = k.prompt
-            if (!prompt)
+            if (!galleryobj.repos)
             {
                 context.font = "3rem Archivo Black";
                 prompt = "...";
@@ -5471,6 +5471,8 @@ function closeprompt()
     overlay.style.display = 'none';
     var overlay = document.querySelector('.search-overlay');
     overlay.style.display = 'none';
+    var overlay = document.querySelector('.search-overlay-small');
+    overlay.style.display = 'none';
     var overlay = document.querySelector('.upload-overlay');
     overlay.style.display = 'none';
 }
@@ -5530,7 +5532,7 @@ function showsearch(repos)
 {
     setTimeout(function()
     {
-        globalobj.saverepos = repos;
+        globalobj.saverepos = repos?repos:"pexels";
 
         if (galleryobj.getcurrent().photographer)
         {
@@ -5539,12 +5541,9 @@ function showsearch(repos)
             linkcredit.href = galleryobj.getcurrent().photographer_url;
         }
 
-        if (url.path)
-        {
-            document.getElementById('search').value = url.path;
-            const overlay = document.querySelector('.search-overlay');
-            overlay.style.display = 'flex';
-        }
+        document.getElementById('search').value = url.path;
+        const overlay = document.querySelector(repos?'.search-overlay':'.search-overlay-small');
+        overlay.style.display = 'flex';
 
     }, 40);
 }
