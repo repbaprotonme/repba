@@ -2044,15 +2044,12 @@ var panlst =
             context.refresh();
         }, 40);
 
-        if (!globalobj.slideshow)
+        clearTimeout(context.hideheadtime);
+        context.hideheadtime = setTimeout(function()
         {
-            clearTimeout(context.hideheadtime);
-            context.hideheadtime = setTimeout(function()
-            {
-                headcnv.height = BEXTENT;
-                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            }, 1500);
-        }
+            headcnv.height = BEXTENT;
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        }, 1500);
     }
 },
 ];
@@ -2370,13 +2367,10 @@ var swipelst =
     {
         setTimeout(function()
         {
-            if (!globalobj.slideshow)
-            {
-                headcnv.height = BEXTENT;
-                headobj.set(headobj.current() == 0 ? 3 : 0);
-                headham.panel = headobj.getcurrent();
-                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            }
+            headcnv.height = BEXTENT;
+            headobj.set(headobj.current() == 0 ? 3 : 0);
+            headham.panel = headobj.getcurrent();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
             context.autodirect = evt.type == "swipeleft"?-1:1;
             context.tab();
@@ -2719,7 +2713,6 @@ var taplst =
         var obj = context.scrollobj;
         if (context.index == 7)
             obj = context.scrollobj.getcurrent();
-        delete _4cnvctx.thumbcanvas;
         if (obj && x < MENUBARWIDTH*2)
         {
             var j = y/rect.height;
@@ -2748,8 +2741,9 @@ var taplst =
             context.refresh();
             setTimeout(function ()
             {
-                slice.func(context, rect, x, y);
                 slice.tap = 0;
+                if (slice.func(context, rect, x, y) == -1)
+                    return;
                 context.refresh();
             }, JULIETIME*3);
         }
@@ -3071,12 +3065,12 @@ var menulst =
                 [
                     0,
                     url.path?url.path.proper():"",
-                    repos?repos.proper():"",
+                    "",
                     0,
                     j.toFixed(0),
                     0,
-                    "Photo Credit",
-                    user.photographer,
+                    `Photo by ${user.photographer}`,
+                    `from Pexels`,
                     0,
                 ], 0);
             }
@@ -5228,8 +5222,21 @@ galleryobj.init = function(obj)
 
     var func = function (index)
     {
-        galleryobj.set(this.pos);
-        window.open(addressobj.full());
+        if (galleryobj.repos && _8cnvctx.scrollobj.current() == 1)
+        {
+            _8cnvctx.refresh();
+            galleryobj.set(this.pos);
+            window.open(galleryobj.getcurrent().photographer_url, url.origin);
+            return 0;
+        }
+        else
+        {
+            galleryobj.set(this.pos);
+            _4cnv.height = 0;
+            _8cnv.height = 0;
+            window.open(addressobj.full(), "_self");
+            return -1;
+        }
     }
 
     for (var n = 0; n < galleryobj.data.length; ++n)
@@ -5532,16 +5539,26 @@ function showsearch(repos)
 {
     setTimeout(function()
     {
+        if (repos)
+        {
+            var k = repos.indexOf("_");
+            if (k >= 1)
+                repos = repos.substr(0,k);
+        }
+
         globalobj.saverepos = repos?repos:"pexels";
 
         if (galleryobj.getcurrent().photographer)
         {
-            var linkcredit = document.getElementById('linkcredit');
-            linkcredit.textContent = galleryobj.getcurrent().photographer.proper();
-            linkcredit.href = galleryobj.getcurrent().photographer_url;
+            var credit1 = document.getElementById('credit1');
+            credit1.textContent = `Photo by ${galleryobj.getcurrent().photographer.proper()}`;
+            credit1.href = galleryobj.getcurrent().photographer_url;
+            var credit2 = document.getElementById('credit2');
+            credit2.textContent = `from ${galleryobj.repos.proper()}`;
+            credit2.href = galleryobj.getcurrent().photographer_url;
         }
 
-        document.getElementById('search').value = url.path;
+        document.getElementById(repos?'search':'search-small').value = url.path;
         const overlay = document.querySelector(repos?'.search-overlay':'.search-overlay-small');
         overlay.style.display = 'flex';
 
