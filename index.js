@@ -1676,12 +1676,6 @@ var pinchlst =
         var e = Math.lerp(0,obj.length(),j)/obj.length();
         _4cnvctx.pinched = 1;
 
-        if (globalobj.slideshow)
-        {
-            clearInterval(globalobj.slideshow);
-            globalobj.slideshow = 0;
-        }
-
         if (context.isthumbrect)
         {
             delete context.thumbcanvas;
@@ -2660,8 +2654,11 @@ var taplst =
         context.pressed = 0;
         if (globalobj.slideshow)
         {
-            clearInterval(globalobj.slideshow);
-            globalobj.slideshow = 0;
+            if (!context.thumbrect.hitest(x,y))
+            {
+                clearInterval(globalobj.slideshow);
+                globalobj.slideshow = 0;
+            }
         }
 
         clearInterval(context.timemain);
@@ -4297,6 +4294,8 @@ function escape()
         return;
     }
 
+    clearInterval(globalobj.slideshow);
+    globalobj.slideshow = 0;
     headobj.set(0);
     _4cnvctx.panhide  = 0
     _4cnvctx.pinched = 0;
