@@ -2702,15 +2702,12 @@ var taplst =
             }
             else
             {
-                if (headobj.current() == 0)
-                    headobj.set(1);
-                else
-                    headobj.set(0);
+                headobj.set(headobj.current()?0:1);
                 headham.panel = headobj.getcurrent();
                 headcnvctx.clear();
-                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             }
 
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             context.refresh();
         }
     }
@@ -4485,6 +4482,8 @@ var headlst =
                 else
                     showprompt()
             }
+
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 		};
 
 		this.draw = function (context, rect, user, time)
@@ -4581,6 +4580,12 @@ var headlst =
                     else
                         screenfull.request();
                 }
+            }
+            else
+            {
+                headobj.set(headobj.current()?0:1);
+                headham.panel = headobj.getcurrent();
+                headcnvctx.clear();
             }
 
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
