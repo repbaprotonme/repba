@@ -565,6 +565,8 @@ Math.lerp = function (v0, v1, t) { return (1 - t) * v0 + t * v1; };
 
 String.prototype.proper = function()
 {
+    if (!this.length)
+        return this;
     return this.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
 }
 
@@ -1193,7 +1195,7 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
         return;
 
     var e = galleryobj.current();
-    galleryobj.rotate(j);
+    galleryobj.rotate(j);//todo does not work for 1 of 100 previous
     var k = galleryobj.getcurrent();
     galleryobj.set(e);
     if (!k.file && (_4cnvctx.movingpage || !k.loaded || galleryobj.length() == 1))
@@ -2516,10 +2518,18 @@ var keylst =
         }
         else if (key == " ")
         {
-            headobj.set(headobj.current()?0:1);
-            headham.panel = headobj.getcurrent();
-            headcnvctx.clear();
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+            var j = globalobj.slideshow;
+            menuhide();
+            headcnv.height = 0;
+            clearInterval(globalobj.slideshow);
+            globalobj.slideshow = 0;
+            if (!j)
+            {
+                globalobj.slideshow = setInterval(function()
+                {
+                    _4cnvctx.movepage(1)
+                }, url.slideshow?url.slideshow:1000);
+            }
         }
         else if (key == "\\")
         {
@@ -2590,7 +2600,6 @@ var keylst =
         else if (key == "tab")
         {
             context.autodirect = (evt.shiftKey)?1:-1;
-            headcnv.height = BEXTENT;
             headobj.set(headobj.current() == 0 ? 3 : 0);
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -2693,24 +2702,10 @@ var taplst =
             }
             else
             {
-                if (galleryobj.repos)
-                {
-                    if (headobj.current() == 0)
-                        headobj.set(1);
-                    else if (headobj.current() == 1)
-                        headobj.set(5);
-                    else
-                        headobj.set(0);
-                }
+                if (headobj.current() == 0)
+                    headobj.set(1);
                 else
-                {
-                    if (headobj.current() == 0)
-                        headobj.set(1);
-                    else
-                        headobj.set(0);
-
-                }
-
+                    headobj.set(0);
                 headham.panel = headobj.getcurrent();
                 headcnvctx.clear();
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -3049,9 +3044,10 @@ var menulst =
 
             if (!context.panning && !context.swipped)
             {
-                var a = new Expand(new RowA([20,24,0,60,0,24,20],
+                var a = new Expand(new RowA([20,24,24,0,60,0,24,24,20],
                     [
                         0,
+                        galleryobj.repos?new Text("white", "center", "middle",0, 0, 1):0,
                         galleryobj.repos?new Text("white", "center", "middle",0, 0, 1):0,
                         0,
                         new Layer(
@@ -3060,6 +3056,7 @@ var menulst =
                                 new Text("white", "center", "middle",0, 0, 1)
                         ]),
                         0,
+                        galleryobj.repos?new Text("white", "center", "middle",0, 0, 1):0,
                         galleryobj.repos?new Text("white", "center", "middle",0, 0, 1):0,
                         0,
                     ]),-60,50);
@@ -3077,9 +3074,11 @@ var menulst =
                 [
                     0,
                     url.path?url.path.proper():"",
+                    repos?repos.proper():"",
                     0,
                     j.toFixed(0),
                     0,
+                    "Credit",
                     user.photographer,
                     0,
                 ], 0);
@@ -3662,7 +3661,7 @@ function masterload()
         }
     }
 
-    galleryobj.rotate(-6);
+    galleryobj.rotate(-6);//todo not working
     var img = new Image();
     var id = galleryobj.getcurrent().id;
     var path = `https://reportbase.com/image/${id}/${galleryobj.template}`;
@@ -4481,7 +4480,10 @@ var headlst =
             }
             else if (context.prompt.hitest(x,y))
             {
-                showrepospanel(galleryobj.repos)
+                if (galleryobj.repos)
+                    showsearch(galleryobj.repos)
+                else
+                    showprompt()
             }
 		};
 
@@ -4506,14 +4508,9 @@ var headlst =
                         _4cnvctx.setcolumncomplete?new Layer(
                         [
                             new Rectangle(context.prompt),
-                            galleryobj.repos?new RowA([0,24,24,0],
-                            [
-                                0,
-                                new Text("white", "center", "middle", 0, 0, 1),
-                                new Text("white", "center", "middle", 0, 0, 1),
-                                0,
-                            ]):
-                            new DrawHeader(context.scrollobj.berp()),
+                            galleryobj.repos?
+                                new Row([0,24,0], [ 0, new Text("white", "center", "middle", 0, 0, 1), 0, ]):
+                                new DrawHeader(context.scrollobj.berp()),
                         ]):0,
                         new Layer(
                         [
@@ -4523,11 +4520,17 @@ var headlst =
                     ]);
 
             var k = galleryobj.getcurrent();
-            var st = url.path.proper();
-            var lt = k.photographer;
+            var st = url.path?url.path.proper():"";
+            var lt = k.photographer?k.photographer.proper():"";
             context.font = "1rem Archivo Black";
-            var prompt = k.prompt?k.prompt:"...";
-            a.draw(context, rect, galleryobj.repos?[0,lt,st,0]:prompt, time);
+            var prompt = k.prompt
+            if (!prompt)
+            {
+                context.font = "3rem Archivo Black";
+                prompt = "...";
+            }
+
+            a.draw(context, rect, galleryobj.repos?st:prompt, time);
             context.restore()
 		};
 	},
@@ -4567,7 +4570,7 @@ var headlst =
             }
             else if (context.promptpanel && context.promptpanel.hitest(x,y))
             {
-                showrepospanel(galleryobj.repos)
+                showsearch(galleryobj.repos)
             }
             else if (context.fullpanel && context.fullpanel.hitest(x,y))
             {
@@ -4588,7 +4591,7 @@ var headlst =
         {
             context.save();
             context.clear();
-            context.font = "1.12rem Archivo Black";
+            context.font = "1rem Archivo Black";
             context.fullpanel = new rectangle()
             context.thumbpanel = new rectangle()
             context.infopanel = new rectangle()
@@ -4686,7 +4689,7 @@ var headlst =
             context.pluspanel = new rectangle()
             context.minuspanel = new rectangle()
             context.picture = new rectangle()
-            context.font = "1.12rem Archivo Black";
+            context.font = "1rem Archivo Black";
             var e = Math.min(520,rect.width-190);
             var a = new Col([BEXTENT,0,e,0,BEXTENT],
                     [
@@ -4753,7 +4756,8 @@ var headlst =
             }
             else if (context.prompt.hitest(x,y))
             {
-                showrepospanel(galleryobj.repos)
+                _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+                menushow(_8cnvctx)
             }
 		};
 
@@ -4761,7 +4765,7 @@ var headlst =
 		{
             context.save();
             context.clear();
-            context.font = "1.12rem Archivo Black";
+            context.font = "1rem Archivo Black";
             context.moveprev = new rectangle()
             context.movenext = new rectangle()
             context.prompt = new rectangle()
@@ -4829,7 +4833,7 @@ var headlst =
             }
             else if (context.prompt.hitest(x,y))
             {
-                showrepospanel(galleryobj.repos)
+                showsearch(galleryobj.repos)
             }
 		};
 
@@ -4837,7 +4841,7 @@ var headlst =
 		{
             context.save();
             context.clear();
-            context.font = "1.12rem Archivo Black";
+            context.font = "1rem Archivo Black";
             context.moveprev = new rectangle()
             context.movenext = new rectangle()
             context.prompt = new rectangle()
@@ -4869,63 +4873,6 @@ var headlst =
 
             var s = galleryobj.length() ? "" : "0 Images"
             a.draw(context, rect, s, time);
-            context.restore()
-		};
-	},
-	new function ()
-	{
-    	this.press = function (context, rect, x, y)
-		{
-            if (ismenu())
-            {
-                menuhide();
-                return;
-            }
-
-            headobj.set(headobj.current()?0:1);
-            headham.panel = headobj.getcurrent();
-            headcnvctx.clear();
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-        }
-
-    	this.tap = function (context, rect, x, y)
-		{
-            if (context.image && context.image.hitest(x,y))
-            {
-                var s = galleryobj.getcurrent().photographer_url
-                if (s)
-                    window.open(s, "_self");
-            }
-		};
-
-		this.draw = function (context, rect, user, time)
-		{
-            context.save();
-            context.clear();
-            context.image = new rectangle()
-            context.font = "1.5rem Archivo Black";
-
-            var a = new Layer(
-            [
-                    galleryobj.length()?0:new Fill("rgb(70,70,70)"),
-                    new Col([0,180,0],
-                    [
-                        0,
-                        new Layer(
-                        [
-                            new Rectangle(context.image),
-                            new Text("white", "center", "middle",0, 0, 1)
-                        ]),
-                        0
-                    ])
-               ]);
-
-            var repos = galleryobj.repos.proper();
-            var k = repos.indexOf("_");
-            if (k >= 0)
-                repos = repos.substr(0,k);
-
-            a.draw(context, rect, repos, time);
             context.restore()
 		};
 	},
@@ -5107,6 +5054,8 @@ function setfavicon()
 
 window.addEventListener("visibilitychange", (evt) =>
 {
+    clearInterval(globalobj.slideshow);
+    globalobj.slideshow = 0;
 });
 
 window.addEventListener("load", async () =>
@@ -5172,17 +5121,17 @@ galleryobj.init = function(obj)
         {line:"Unsplash\nImage Search", path: "UNSPLASH", func: function()
             {
                 menuhide();
-                showrepospanel("unsplash");
+                showserch("unsplash");
             }},
         {line:"Pexels\nImage Search", path: "PEXELS", func: function()
             {
                 menuhide();
-                showrepospanel("pexels");
+                showsearch("pexels");
             }},
         {line:"Pixabay\nImage Search", path: "PEXELS", func: function()
             {
                 menuhide();
-                showrepospanel("pixabay");
+                showsearch("pixabay");
             }},
         {line:"Image dump", path: "DUMP", func: function()
             {
@@ -5298,9 +5247,14 @@ galleryobj.init = function(obj)
     var slices = _9cnvctx.sliceobj;
     slices.data = [];
 
-    slices.data.push({title:"Search", path: "PROVIDER", func: function()
+    slices.data.push({title:"Search", path: "SEARCH", func: function()
         {
-            showrepospanel(galleryobj.repos)
+            showsearch(galleryobj.repos)
+        }});
+
+    slices.data.push({title:"Prompt", path: "PROMPT", func: function()
+        {
+            showprompt()
         }});
 
     slices.data.push({title:"Slideshow", path: "SLIDESHOW", func: function()
@@ -5311,7 +5265,7 @@ galleryobj.init = function(obj)
             globalobj.slideshow = setInterval(function()
             {
                 _4cnvctx.movepage(1)
-            }, url.slideshow?url.slideshow:2000);
+            }, url.slideshow?url.slideshow:1000);
         }});
 
     slices.data.push({title:"Open", path: "OPEN", func: function()
@@ -5567,30 +5521,27 @@ function artistpage()
     window.open(s);
 }
 
-function showrepospanel(repos)
+function showsearch(repos)
 {
-    if (repos)
+    setTimeout(function()
     {
-        setTimeout(function()
+        globalobj.saverepos = repos;
+
+        if (galleryobj.getcurrent().photographer)
         {
-            var k = repos.indexOf("_");
-            if (k >= 0)
-                repos = repos.substr(0,k);
-            globalobj.saverepos = repos;
+            var linkcredit = document.getElementById('linkcredit');
+            linkcredit.textContent = galleryobj.getcurrent().photographer.proper();
+            linkcredit.href = galleryobj.getcurrent().photographer_url;
+        }
 
-            var linka = document.getElementById('linka');
-            linka.textContent = repos?repos.proper():"";
-            linka.href = `https://${galleryobj.repos}.com`;
-
+        if (url.path)
+        {
             document.getElementById('search').value = url.path;
             const overlay = document.querySelector('.search-overlay');
             overlay.style.display = 'flex';
-        }, 40);
-    }
-    else
-    {
-        showprompt();
-    }
+        }
+
+    }, 40);
 }
 
 function showprompt()
@@ -5600,8 +5551,6 @@ function showprompt()
         var prompt = galleryobj.getcurrent().prompt
         if (prompt)
             document.getElementById('prompt').value = prompt;
-        document.getElementById('prompt-label').innerHTML = "Dalle";
-        document.getElementById('prompt-label2').innerHTML = "Text to Image";
         const overlay = document.querySelector('.prompt-overlay');
         overlay.style.display = 'flex';
     }, 40);
