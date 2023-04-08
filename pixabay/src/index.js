@@ -20,7 +20,10 @@ export default
                 k.original = k.largeImageURL;//imageURL after approved
                 k.image_url = k.pageURL;
                 k.website = `Photos Provided by Pixabay`;
+
                 k.photographer = k.user;
+                k.datasource = "Pixabay";
+                k.credit  = `Photo by ${k.photographer} from Pixabay`
                 k.photographer_url = `https://pixabay.com/users/${k.user}-${k.user_id}/`;
                 k.photographer_id = k.user_id;
                 data.push(k);
@@ -29,7 +32,6 @@ export default
 
         var g = {}
         g.title = `Pixabay`;
-        g.title1 = `Photos Provided by Pixabay`;
         g.repos = `pixabay`;
         g.hits = json.hits.length;
         g.per_page = per_page;

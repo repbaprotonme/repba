@@ -444,12 +444,26 @@ var SearchBarPanel = function (size)
     {
         context.save();
         context.font = "1rem Archivo Black";
-        var a = new Row([0,80],
+        var a = new Row([80,0,80],
         [
+            new Layer(
+            [
+                0,//new Fill(BARFILL),
+                new Col([0,60,0],
+                [
+                    0,
+                    new Layer(
+                    [
+                        new Shrink(new CirclePanel(SCROLLNAB,"white",3),17,17),
+                        new Shrink(new ArrowPanel(ARROWFILL,90),19,31),
+                    ]),
+                    0,
+                ]),
+            ]),
             0,
             new Layer(
             [
-                new Fill(BARFILL),
+                0,//new Fill(BARFILL),
                 new ColA([0,20,60,20,0],
                 [
                     new Text("white", "right", "middle",0, 0, 1),
@@ -901,7 +915,7 @@ var SearchPanel = function (color, shadow)
 
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,"white",3),16,16),
+            new Shrink(new CirclePanel(SCROLLNAB,"white",3),13,13),
             new Shrink(new Panel(),20,20),
         ]);
 
@@ -2480,11 +2494,7 @@ var keylst =
 	keyup: function (evt) { },
 	keydown: function (evt)
 	{
-        var overlay = document.querySelector('.prompt-overlay');
-        if (overlay.style.display == 'flex')
-            return;
-        var overlay = document.querySelector('.search-overlay');
-        if (overlay.style.display == 'flex')
+        if (ismodal())
             return;
 		var context =
             _5cnvctx.enabled ? _5cnvctx :
@@ -2496,27 +2506,33 @@ var keylst =
         var obj = context.scrollobj;
         if (context.index == 7)
             obj = context.scrollobj.getcurrent();
-		if (evt.key == "ArrowUp" || evt.key == "j")
+        var key = evt.key.toLowerCase();
+		if (key == "pageup" || key == "arrowup" || key == "j")
 		{
             var k = (20/context.virtualheight)*context.timeobj.length();
             context.timeobj.rotate(k);
             context.refresh()
         }
-        else if (obj && (evt.key == "ArrowLeft" || evt.key == "h"))
+        else if (key == "pagedown" || obj && (key == "arrowleft" || key == "h"))
 		{
             obj.addperc(-2.5);
             context.refresh()
         }
-        else if (obj && (evt.key == "ArrowRight" || evt.key == "l"))
+        else if (obj && (key == "arrowright" || key == "l"))
 		{
             obj.addperc(2.5);
             context.refresh()
         }
-        else if (evt.key == "ArrowDown" || evt.key == "k")
+        else if (key == "arrowdown" || key == "k")
 		{
             var k = (20/context.virtualheight)*context.timeobj.length();
             context.timeobj.rotate(-k);
             context.refresh()
+        }
+        else if (key == " ")
+        {
+            menuhide();
+            startslideshow();
         }
  	}
 },
@@ -2525,11 +2541,7 @@ var keylst =
 	keyup: function (evt) { },
 	keydown: function (evt)
 	{
-        var overlay = document.querySelector('.prompt-overlay');
-        if (overlay.style.display == 'flex')
-            return;
-        var overlay = document.querySelector('.search-overlay');
-        if (overlay.style.display == 'flex')
+        if (ismodal())
             return;
 		var context =
             _3cnvctx.enabled ? _3cnvctx :
@@ -2540,19 +2552,25 @@ var keylst =
             _9cnvctx.enabled ? _9cnvctx :
             _4cnvctx;
 
-		if (evt.key == "ArrowUp" || evt.key == "j")
+        var key = evt.key.toLowerCase();
+		if (key == "pageup" || key == "arrowup" || evt.key == "j")
 		{
             var k = (20/context.virtualheight)*context.timeobj.length();
             context.timeobj.rotate(k);
             context.refresh()
         }
-        else if (evt.key == "ArrowDown" || evt.key == "k")
+        else if (key == "pagedown" || kkey == "arrowdown" || evt.key == "k")
 		{
             var k = (20/context.virtualheight)*context.timeobj.length();
             context.timeobj.rotate(-k);
             context.refresh()
         }
- 	}
+        else if (key == " ")
+        {
+            menuhide();
+            startslideshow();
+        }
+  	}
 },
 {
 	name: "BOSS",
@@ -2565,13 +2583,8 @@ var keylst =
 	},
 	keydown: function (evt)
 	{
-        var overlay = document.querySelector('.prompt-overlay');
-        if (overlay.style.display == 'flex')
+        if (ismodal())
             return;
-        var overlay = document.querySelector('.search-overlay');
-        if (overlay.style.display == 'flex')
-            return;
-
 		var context = _4cnvctx;
 		var rect = context.rect();
         if (evt.ctrlKey)
@@ -2846,6 +2859,11 @@ var taplst =
             var k = TIMEOBJ*(1-j);
             context.timeobj.set(k);
             context.refresh();
+        }
+        else if (y < BEXTENT)
+        {
+            menuhide();
+            startslideshow();
         }
         else if (y > rect.height-BEXTENT)
         {
@@ -3412,13 +3430,12 @@ var extentlst =
     init: function ()
     {
         galleryobj.template = "portrait";
-        galleryobj.thumb = "porthumb";
         positxpobj.set(50);
         positypobj.set(90);
         positxlobj.set(50);
         positylobj.set(90);
-        traitobj.split(40, "0.1-1.0", traitobj.length());
-        scapeobj.split(70, "0.1-1.0", scapeobj.length());
+        traitobj.split(75, "0.1-1.0", traitobj.length());
+        scapeobj.split(75, "0.1-1.0", scapeobj.length());
         poomobj.set(60);
         loomobj.set(60);
     },
@@ -3428,7 +3445,6 @@ var extentlst =
     init: function ()
     {
         galleryobj.template = "portrait";
-        galleryobj.thumb = "porthumb";
         positxpobj.set(50);
         positypobj.set(90);
         positxlobj.set(50);
@@ -3739,6 +3755,8 @@ var ContextObj = (function ()
                             console.log("Error:", error);
                         });
                     }
+
+                    //todo: unsplash photo
                 }
 			}
 
@@ -4411,12 +4429,6 @@ function resize()
 
 function escape()
 {
-    if (ismenu())
-    {
-        menuhide();
-        return;
-    }
-
     clearInterval(globalobj.slideshow);
     globalobj.slideshow = 0;
     headobj.set(0);
@@ -4747,13 +4759,13 @@ var headlst =
                    ]),
                    new Layer(
                    [
-                       new ThumbPanel("white","black"),
-                       new Rectangle(context.thumbpanel),
+                       new SearchPanel("white","black"),
+                       new Rectangle(context.searchpanel),
                    ]),
                    new Layer(
                    [
-                       new SearchPanel("white","black"),
-                       new Rectangle(context.searchpanel),
+                       new ThumbPanel("white","black"),
+                       new Rectangle(context.thumbpanel),
                    ]),
                    new Layer(
                    [
@@ -5325,15 +5337,13 @@ galleryobj.init = function(obj)
         {
             _8cnvctx.refresh();
             galleryobj.set(this.pos);
-            window.open(galleryobj.getcurrent().photographer_url, url.origin);
+            window.open(galleryobj.getcurrent().photographer_url, "_blank");
             return 0;
         }
         else
         {
             galleryobj.set(this.pos);
-            _4cnv.height = 0;
-            _8cnv.height = 0;
-            window.open(addressobj.full(), "_self");
+            window.open(addressobj.full(), "_blank");
             return -1;
         }
     }
@@ -5536,6 +5546,20 @@ function submitprompt()
    })
 }
 
+function ismodal()
+{
+    var res = 0;
+    const divlst = document.querySelectorAll("div");
+    divlst.forEach(function(div)
+    {
+        var k = div.className.indexOf("-overlay");
+        if (k >= 0 && div.style.display == 'flex')
+            res = 1;
+    });
+
+    return res;
+}
+
 function closeprompt()
 {
     const divlst = document.querySelectorAll("div");
@@ -5610,17 +5634,8 @@ function showsearch(repos)
         }
 
         globalobj.saverepos = repos?repos:"pexels";
-
-        if (galleryobj.getcurrent().photographer)
-        {
-            var credit1 = document.getElementById('credit1');
-            credit1.textContent = `Photo by ${galleryobj.getcurrent().photographer.proper()}`;
-            credit1.href = galleryobj.getcurrent().photographer_url;
-            var credit2 = document.getElementById('credit2');
-            credit2.textContent = `from ${galleryobj.repos.proper()}`;
-            credit2.href = galleryobj.getcurrent().photographer_url;
-        }
-
+        var btn = document.getElementById('search-source');
+        btn.textContent = `Source: ${globalobj.saverepos.proper()}`;
         document.getElementById('search').value = url.path;
         const overlay = document.querySelector('.search-overlay');
         overlay.style.display = 'flex';

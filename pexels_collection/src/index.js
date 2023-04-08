@@ -33,10 +33,13 @@ export default
                 j.id = k.id;
                 j.extent = `${width}x${height} ${aspect}`;
                 j.size = ((width * height)/1000000).toFixed(1) + "MP";
+
                 j.photographer = k.photographer;
-                j.required  = "Photos provided by Pexels";
+                j.datasource = "Pexels";
+                j.credit  = `Photo by ${j.photographer} from Pexels`
                 j.photographer_url = k.photographer_url;
                 j.photographer_id = k.photographer_id;
+
                 if (k.alt)
                     j.description = k.alt;
                 j.original = k.src.original;
@@ -52,8 +55,7 @@ export default
         }
 
         var g = {}
-        g.title = `Pexels Curated`;
-        g.title1 = `Photos Provided by Pexels`;
+        g.title = `Pexels Collection`;
         g.repos = `pexels_collection`;
         g.per_page = json.per_page;
         g.total = json.total_results;
