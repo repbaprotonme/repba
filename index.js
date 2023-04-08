@@ -36,6 +36,7 @@ const ARROWFILL = "white";
 const SLIDETOP = 18
 const SLIDEFACTOR = 60;
 const SCROLLBARWIDTH = 8;
+const SLIDEDEFAULT = 1500;
 
 globalobj = {};
 
@@ -310,7 +311,7 @@ function drawslices()
                 thumbobj.getcurrent().draw(context, rect, 0, 0);
             }
 
-            context.setcolumncomplete = 1;
+             context.setcolumncomplete = 1;
         }
     }
 
@@ -446,24 +447,11 @@ var SearchBarPanel = function (size)
         context.font = "1rem Archivo Black";
         var a = new Row([80,0,80],
         [
-            new Layer(
-            [
-                0,//new Fill(BARFILL),
-                new Col([0,60,0],
-                [
-                    0,
-                    new Layer(
-                    [
-                        new Shrink(new CirclePanel(SCROLLNAB,"white",3),17,17),
-                        new Shrink(new ArrowPanel(ARROWFILL,90),19,31),
-                    ]),
-                    0,
-                ]),
-            ]),
+            0,
             0,
             new Layer(
             [
-                0,//new Fill(BARFILL),
+                //new Fill(BARFILL),
                 new ColA([0,20,60,20,0],
                 [
                     new Text("white", "right", "middle",0, 0, 1),
@@ -913,9 +901,13 @@ var SearchPanel = function (color, shadow)
             }
         };
 
+        const overlay = document.querySelector('.search-overlay');
+        var j = overlay.style.display == 'flex';
+
         var a = new Layer(
         [
             new Shrink(new CirclePanel(SCROLLNAB,"white",3),13,13),
+            j ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),17,17) : 0,
             new Shrink(new Panel(),20,20),
         ]);
 
@@ -2860,11 +2852,6 @@ var taplst =
             context.timeobj.set(k);
             context.refresh();
         }
-        else if (y < BEXTENT)
-        {
-            menuhide();
-            startslideshow();
-        }
         else if (y > rect.height-BEXTENT)
         {
             var overlay = document.querySelector('.search-overlay');
@@ -2872,6 +2859,7 @@ var taplst =
                 showsearch(galleryobj.repos)
             else
                 overlay.style.display = 'none'
+            setTimeout(function() { menuhide(); },500);
         }
         else
         {
@@ -3219,7 +3207,7 @@ var menulst =
                     j.toFixed(0),
                     0,
                     `Photo by ${user.photographer}`,
-                    `from Pexels`,
+                    `from ${user.datasource}`,
                     0,
                 ], 0);
             }
@@ -3755,8 +3743,6 @@ var ContextObj = (function ()
                             console.log("Error:", error);
                         });
                     }
-
-                    //todo: unsplash photo
                 }
 			}
 
@@ -4407,24 +4393,19 @@ function resize()
     delete _4cnvctx.thumbcanvas;
     reset();
     var n = eventlst.findIndex(function(a){return a.name == "_4cnvctx";})
+    closeprompt()
+    menuhide();
     setevents(_4cnvctx, eventlst[n])
     _4cnvctx.tapping = 0;
-    headcnvctx.show(0,0,window.innerWidth,0);
     if (headcnv.height)
     {
         var h = window.self !== window.top ? 0 : BEXTENT;
         headcnvctx.show(0,0,window.innerWidth,h);
-        headham.panel = headobj.getcurrent();
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     }
 
-    _3cnvctx.refresh();
+    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     _4cnvctx.refresh();
-    _5cnvctx.refresh();
-    _6cnvctx.refresh();
-    _7cnvctx.refresh();
-    _8cnvctx.refresh();
-    _9cnvctx.refresh();
 }
 
 function escape()
@@ -4727,8 +4708,11 @@ var headlst =
                 headcnvctx.clear();
             }
 
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            _4cnvctx.refresh();
+            setTimeout(function ()
+            {
+                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+                _4cnvctx.refresh();
+            }, JULIETIME);
 		};
 
 		this.draw = function (context, rect, user, time)
@@ -4900,8 +4884,15 @@ var headlst =
             }
             else if (context.prompt.hitest(x,y))
             {
-                _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-                menushow(_8cnvctx)
+                if (galleryobj.repos)
+                {
+                    window.open(galleryobj.getcurrent().photographer_url, "_blank");
+                }
+                else
+                {
+                    _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+                    menushow(_8cnvctx)
+                }
             }
 		};
 
@@ -4909,7 +4900,7 @@ var headlst =
 		{
             context.save();
             context.clear();
-            context.font = "1rem Archivo Black";
+            context.font = "0.94rem Archivo Black";
             context.moveprev = new rectangle()
             context.movenext = new rectangle()
             context.prompt = new rectangle()
@@ -4925,9 +4916,11 @@ var headlst =
                         new Layer(
                         [
                             new Rectangle(context.prompt),
-                            new RowA([0,0,0],
+                            new RowA([0,21,21,21],
                             [
                                 0,
+                                new Text("white", "center", "middle", 0, 0, 1),
+                                new Text("white", "center", "middle", 0, 0, 1),
                                 new Text("white", "center", "middle", 0, 0, 1),
                                 0,
                             ]),
@@ -4941,7 +4934,21 @@ var headlst =
                     ]);
 
             var bt = `${galleryobj.current()+1} of ${galleryobj.length()}`;
-            a.draw(context, rect, [0,bt,0], time);
+            a.draw(context, rect,
+                galleryobj.repos?
+                [
+                    0,
+                    `Photo by ${galleryobj.getcurrent().photographer.proper()}`,
+                    `${galleryobj.getcurrent().datasource.proper()}`,
+                    bt,
+                    0
+                ] :
+                [
+                    0,
+                    bt,
+                    0,
+                    0
+                ], time);
             context.restore()
 		};
 	},
@@ -5259,14 +5266,17 @@ galleryobj.init = function(obj)
     [
         {line:"Unsplash\nImage Search", path: "UNSPLASH", func: function()
             {
+                menuhide();
                 showsearch("unsplash");
             }},
         {line:"Pexels\nImage Search", path: "PEXELS", func: function()
             {
+                menuhide();
                 showsearch("pexels");
             }},
         {line:"Pixabay\nImage Search", path: "PEXELS", func: function()
             {
+                menuhide();
                 showsearch("pixabay");
             }},
     ];
@@ -5337,7 +5347,7 @@ galleryobj.init = function(obj)
         {
             _8cnvctx.refresh();
             galleryobj.set(this.pos);
-            window.open(galleryobj.getcurrent().photographer_url, "_blank");
+            window.open(addressobj.full(), "_blank");
             return 0;
         }
         else
@@ -5403,7 +5413,6 @@ galleryobj.init = function(obj)
 
     slices.data.push({title:"Reload", path: "RELOAD", func: function()
         {
-            localStorage.removeItem("LAST");
            location.reload();
             menuhide();
         }})
@@ -5435,33 +5444,19 @@ galleryobj.init = function(obj)
     contextobj.reset();
 };
 
-var last = localStorage.getItem("LAST");
-var lastpath = localStorage.getItem("LASTPATH");
-var lastrepos = localStorage.getItem("LASTREPOS");
-var repos = url.searchParams.has(lastrepos);
-if (last && lastpath == url.path && repos)
+fetch(path)
+.then(function (response)
 {
-    galleryobj.init(JSON.parse(last));
-}
-else
+  return response.json()
+})
+.then(function (obj)
 {
-    fetch(path)
-      .then(function (response)
-          {
-              return response.json()
-          })
-      .then(function (obj)
-          {
-              galleryobj.init(obj);
-              localStorage.setItem("LAST",JSON.stringify(obj));
-              localStorage.setItem("LASTPATH",url.path);
-              localStorage.setItem("LASTREPOS",galleryobj.repos);
-          })
-        .catch((error) =>
-        {
-            console.log("Error:", error);
-        });
-}
+  galleryobj.init(obj);
+})
+.catch((error) =>
+{
+    console.log("Error:", error);
+});
 
 function download()
 {
@@ -5569,6 +5564,12 @@ function closeprompt()
         if (k >= 1)
             div.style.display = 'none';
     });
+
+    setTimeout(function()
+    {
+        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        _4cnvctx.refesh();
+    }, 100);
 }
 
 function info()
@@ -5639,7 +5640,8 @@ function showsearch(repos)
         document.getElementById('search').value = url.path;
         const overlay = document.querySelector('.search-overlay');
         overlay.style.display = 'flex';
-
+        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        _4cnvctx.refresh();
     }, 40);
 }
 
@@ -5654,7 +5656,7 @@ function startslideshow()
             _4cnvctx.pinching)
             return;
         _4cnvctx.movepage(1)
-    }, url.slideshow?url.slideshow:1000);
+    }, url.slideshow?url.slideshow:SLIDEDEFAULT);
 }
 
 function showprompt()

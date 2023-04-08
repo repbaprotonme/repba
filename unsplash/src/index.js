@@ -25,10 +25,13 @@ export default
                 var user = k.user;
                 j.extent = `${width}x${height} ${aspect}`;
                 j.size = ((width * height)/1000000).toFixed(1) + "MP";
+
                 j.photographer = user.name;
-                j.required = "Photos provided by Unsplash";
+                j.credit  = `Photo by ${j.photographer} from Unsplash`
+                j.datasource = "Unsplash";
                 j.photographer_url = user.links.html;
                 j.photographer_id = user.id;
+
                 if (k.description)
                     j.description = k.description;
                 if (k.alt_description)
@@ -48,7 +51,6 @@ export default
 
         var g = {}
         g.title = `Unsplash Gallery`;
-        g.title1 = `Photos Provided by Unsplash`;
         g.repos = "unsplash";
         g.row = 50;
         g.per_page = per_page;
