@@ -5185,7 +5185,7 @@ galleryobj.init = function(obj)
         */
         {line:"Unsplash\nImage Search", path: "UNSPLASH", func: function()
             {
-                showserch("unsplash");
+                showsearch("unsplash");
             }},
         {line:"Pexels\nImage Search", path: "PEXELS", func: function()
             {
