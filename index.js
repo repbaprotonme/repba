@@ -26,6 +26,7 @@ const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(255,175,0,0.75)";
 const MENUTAP = "rgba(255,175,0,0.75)";
 const SCROLLNAB = "rgba(0,0,0,0.4)";
+const BARFILL = "rgba(0,0,0,0.5)";
 const MENUCOLOR = "rgba(0,0,0,0.60)";
 const OPTIONFILL = "white";
 const THUMBFILL = "rgba(0,0,0,0.3)";
@@ -378,6 +379,40 @@ function drawslices()
         }
 
         var rect = context.rect();
+        if (context.index == 7)
+        {
+            context.save();
+            context.font = "1rem Archivo Black";
+            var a = new Row([0,80],
+            [
+                0,
+                new Layer(
+                [
+                    new Fill(BARFILL),
+                    new ColA([0,20,60,20,0],
+                    [
+                        new Text("white", "right", "middle",0, 0, 1),
+                        0,
+                        new SearchPanel("white","black"),
+                        0,
+                        new Text("white", "left", "middle",0, 0, 1),
+                    ]),
+                ])
+            ]);
+
+            var j = Math.floor((1-context.timeobj.berp())*context.sliceobj.length())+1;
+            a.draw(context, rect,
+            [
+                j.toFixed(0),
+                0,
+                0,
+                0,
+                context.sliceobj.length().toFixed(0),
+            ])
+
+            context.restore();
+        }
+
         var a = new ColA([SCROLLBARWIDTH,0,SCROLLBARWIDTH],
         [
             (context.index == 2||
@@ -805,15 +840,15 @@ var ThumbPanel = function (color, shadow)
     }
 };
 
-var PromptPanel = function (color, shadow)
+var SearchPanel = function (color, shadow)
 {
     this.draw = function (context, rect, user, time)
     {
+        context.save();
         var Panel = function ()
         {
             this.draw = function (context, rect, user, time)
             {
-                context.save();
                 var a = new CirclePanel(TRANSPARENT,"white",4);
                 rect.x -= 2;
                 rect.y += 7;
@@ -826,7 +861,6 @@ var PromptPanel = function (color, shadow)
                 context.moveTo(rect.x+14, rect.y+16);
                 context.lineTo(rect.x+22, rect.y+27);
                 context.stroke();
-                context.restore();
             }
         };
 
@@ -2407,6 +2441,12 @@ var keylst =
 	keyup: function (evt) { },
 	keydown: function (evt)
 	{
+        var overlay = document.querySelector('.prompt-overlay');
+        if (overlay.style.display == 'flex')
+            return;
+        var overlay = document.querySelector('.search-overlay');
+        if (overlay.style.display == 'flex')
+            return;
 		var context =
             _5cnvctx.enabled ? _5cnvctx :
             _6cnvctx.enabled ? _6cnvctx :
@@ -2446,6 +2486,12 @@ var keylst =
 	keyup: function (evt) { },
 	keydown: function (evt)
 	{
+        var overlay = document.querySelector('.prompt-overlay');
+        if (overlay.style.display == 'flex')
+            return;
+        var overlay = document.querySelector('.search-overlay');
+        if (overlay.style.display == 'flex')
+            return;
 		var context =
             _3cnvctx.enabled ? _3cnvctx :
             _5cnvctx.enabled ? _5cnvctx :
@@ -2661,6 +2707,7 @@ var taplst =
             {
                 clearInterval(globalobj.slideshow);
                 globalobj.slideshow = 0;
+                url.slideshow = 0;
             }
         }
 
@@ -2726,6 +2773,14 @@ var taplst =
             var k = TIMEOBJ*(1-j);
             context.timeobj.set(k);
             context.refresh();
+        }
+        else if (context.index == 7 && y > rect.height-BEXTENT)
+        {
+            var overlay = document.querySelector('.search-overlay');
+            if (overlay.style.display == 'none')
+                showsearch(galleryobj.repos)
+            else
+                overlay.style.display = 'none'
         }
         else
         {
@@ -3033,7 +3088,10 @@ var menulst =
                     10, -40, w2, h2);
             }
 
-            if (!context.panning && !context.swipped)
+            if (context.panning || context.swipped)
+            {
+            }
+            else
             {
                 var a = new Expand(new RowA([20,24,24,0,60,0,24,24,20],
                     [
@@ -4262,7 +4320,6 @@ function resize()
     _4cnvctx.pinched = 0;
     delete _4cnvctx.thumbcanvas;
     reset();
-    menuhide();
     var n = eventlst.findIndex(function(a){return a.name == "_4cnvctx";})
     setevents(_4cnvctx, eventlst[n])
     _4cnvctx.tapping = 0;
@@ -4274,6 +4331,14 @@ function resize()
         headham.panel = headobj.getcurrent();
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     }
+
+    _3cnvctx.refresh();
+    _4cnvctx.refresh();
+    _5cnvctx.refresh();
+    _6cnvctx.refresh();
+    _7cnvctx.refresh();
+    _8cnvctx.refresh();
+    _9cnvctx.refresh();
 }
 
 function escape()
@@ -4561,7 +4626,7 @@ var headlst =
             {
                 info();
             }
-            else if (context.promptpanel && context.promptpanel.hitest(x,y))
+            else if (context.searchpanel && context.searchpanel.hitest(x,y))
             {
                 showsearch(galleryobj.repos)
             }
@@ -4594,7 +4659,7 @@ var headlst =
             context.fullpanel = new rectangle()
             context.thumbpanel = new rectangle()
             context.infopanel = new rectangle()
-            context.promptpanel = new rectangle()
+            context.searchpanel = new rectangle()
             context.sharepanel = new rectangle()
             var w = ALIEXTENT;
            var a = new Row([BEXTENT,0],
@@ -4619,8 +4684,8 @@ var headlst =
                    ]),
                    new Layer(
                    [
-                       new PromptPanel("white","black"),
-                       new Rectangle(context.promptpanel),
+                       new SearchPanel("white","black"),
+                       new Rectangle(context.searchpanel),
                    ]),
                    new Layer(
                    [
@@ -5112,31 +5177,30 @@ galleryobj.init = function(obj)
 
     _3cnvctx.sliceobj.data =
     [
+        /*
         {line:"Dalle\nText to Image", path: "DALLE", func: function()
             {
-                menuhide();
                 showprompt();
             }},
+        */
         {line:"Unsplash\nImage Search", path: "UNSPLASH", func: function()
             {
-                menuhide();
                 showserch("unsplash");
             }},
         {line:"Pexels\nImage Search", path: "PEXELS", func: function()
             {
-                menuhide();
                 showsearch("pexels");
             }},
         {line:"Pixabay\nImage Search", path: "PEXELS", func: function()
             {
-                menuhide();
                 showsearch("pixabay");
             }},
+        /*
         {line:"Image dump", path: "DUMP", func: function()
             {
-                closeprompt();
                 window.open(`https://reportbase.com?$sydney=dump`);
             }},
+        */
     ];
 
     var data = _3cnvctx.sliceobj.data;
@@ -5304,27 +5368,27 @@ galleryobj.init = function(obj)
             {
                 authClient.redirectToAccountPage()
             }});
-    }
 
-    slices.data.push({title:"Delete", path: "DELETE", func: function()
+        if (!galleryobj.repos)
         {
-            var modalTitle = document.getElementById("delete-label");
-            modalTitle.innerHTML = `Delete Image: ${galleryobj.current()+1} of ${galleryobj.length()}`;
-            const overlay = document.querySelector('.delete-overlay');
-            overlay.style.display = 'flex';
-        }});
-
-    if (!galleryobj.repos)
-    {
-        slices.data.push({title:"Upload", path: "UPLOAD", func: function()
+            slices.data.push({title:"Delete", path: "DELETE", func: function()
             {
-                setTimeout(function()
+                var modalTitle = document.getElementById("delete-label");
+                modalTitle.innerHTML = `Delete Image: ${galleryobj.current()+1} of ${galleryobj.length()}`;
+                const overlay = document.querySelector('.delete-overlay');
+                overlay.style.display = 'flex';
+            }});
+
+            slices.data.push({title:"Upload", path: "UPLOAD", func: function()
                 {
-                    document.getElementById('upload-label').innerHTML = "Upload Image";
-                    const overlay = document.querySelector('.upload-overlay');
-                    overlay.style.display = 'flex';
-                }, 40);
-            }})
+                    setTimeout(function()
+                    {
+                        document.getElementById('upload-label').innerHTML = "Upload Image";
+                        const overlay = document.querySelector('.upload-overlay');
+                        overlay.style.display = 'flex';
+                    }, 40);
+                }})
+        }
     }
 
     slices.data.push({title:"Reload", path: "RELOAD", func: function()
@@ -5478,8 +5542,6 @@ function closeprompt()
     overlay.style.display = 'none';
     var overlay = document.querySelector('.search-overlay');
     overlay.style.display = 'none';
-    var overlay = document.querySelector('.search-overlay-small');
-    overlay.style.display = 'none';
     var overlay = document.querySelector('.upload-overlay');
     overlay.style.display = 'none';
 }
@@ -5558,8 +5620,8 @@ function showsearch(repos)
             credit2.href = galleryobj.getcurrent().photographer_url;
         }
 
-        document.getElementById(repos?'search':'search-small').value = url.path;
-        const overlay = document.querySelector(repos?'.search-overlay':'.search-overlay-small');
+        document.getElementById('search').value = url.path;
+        const overlay = document.querySelector('.search-overlay');
         overlay.style.display = 'flex';
 
     }, 40);
