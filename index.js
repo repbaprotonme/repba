@@ -4393,7 +4393,6 @@ function resize()
     delete _4cnvctx.thumbcanvas;
     reset();
     var n = eventlst.findIndex(function(a){return a.name == "_4cnvctx";})
-    closeprompt()
     menuhide();
     setevents(_4cnvctx, eventlst[n])
     _4cnvctx.tapping = 0;
@@ -4938,7 +4937,7 @@ var headlst =
                 galleryobj.repos?
                 [
                     0,
-                    `Photo by ${galleryobj.getcurrent().photographer.proper()}`,
+                    `${galleryobj.getcurrent().photographer.proper()}`,
                     `${galleryobj.getcurrent().datasource.proper()}`,
                     bt,
                     0
