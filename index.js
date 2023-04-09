@@ -523,9 +523,9 @@ var ScrollDualPanel = function ()
         context.font = "1rem Archivo Black";
         var a = new ColA([SCROLLBARWIDTH,0,SCROLLBARWIDTH],
         [
-            new CurrentVPanel(new Fill("white"), 90, 0),
+            new CurrentVPanel(new Fill("rgba(255,255,255,0.75)"), 90, 0),
             0,
-            new CurrentVPanel(new Fill("white"), 90, 1),
+            new CurrentVPanel(new Fill("rgba(255,255,255,0.75)"), 90, 1),
         ]);
 
         a.draw(context, rect,
@@ -551,7 +551,7 @@ var ScrollBarPanel = function ()
         [
             0,
             0,
-            new CurrentVPanel(new Fill("white"), 90, 1),
+            new CurrentVPanel(new Fill("rgba(255,255,255,0.75)"), 90, 1),
         ]);
 
         a.draw(context, rect, context.timeobj, 0);
@@ -3278,8 +3278,12 @@ var menulst =
                 var y1 = 0;
                 var x1 = Math.nub(obj.getcurrent(), obj.length(), w1, user.thumbimg.width);
                 context.drawImage(user.thumbimg, x1, y1, w1, h1, 10, -40, w2, h2);
-                var a = new CurrentHPanel(new Fill("white"), 90, 0);
-                a.draw(context, new rectangle(10,-46,w2,6), obj, 0);
+                var a = new Layer(
+                    [
+                        new Fill("rgba(0,0,0,0.4)"),
+                        new CurrentHPanel(new Fill("rgb(255,255,255,0.75)"), 90, 0),
+                    ]);
+                a.draw(context, new rectangle(10,-40,w2,6), obj, 0);
             }
             else
             {
@@ -3288,8 +3292,12 @@ var menulst =
                 var x1 = 0;
                 var y1 = Math.nub(obj.getcurrent(), obj.length(), h1, user.thumbimg.height);
                 context.drawImage(user.thumbimg, x1, y1, w1, h1, 10, -40, w2, h2);
-                var a = new CurrentVPanel(new Fill("white"), 90, 0);
-                a.draw(context, new rectangle(3,-40,6,h2), obj, 0);
+                var a = new Layer(
+                    [
+                        new Fill("rgba(0,0,0,0.4)"),
+                        new CurrentVPanel(new Fill("rgba(255,255,255,0.75)"), 90, 0),
+                    ]);
+                a.draw(context, new rectangle(10,-40,6,h2), obj, 0);
             }
 
             if (!context.panning)
