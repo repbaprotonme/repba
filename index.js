@@ -465,7 +465,7 @@ var AboutBarPanel = function (size)
         a.draw(context, rect,
         [
             0,
-            "Tom Brinkman",
+            "Contact",
             "images@reportbase.com",
             0,
         ])
@@ -567,7 +567,7 @@ var eventlst =
     {name: "_6cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 30},
     {name: "_7cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollDualPanel(), buttonheight: 90},
     {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "GMENU", pan: "MENU", swipe: "MENU", draw: "GMENU", wheel: "MENU", drop: "DEFAULT", key: "GMENU", press: "GPRESS", pinch: "DEFAULT", bar: new SearchBarPanel(), scroll: new ScrollDualPanel(), buttonheight: 200},
-    {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new AboutBarPanel(), scroll: new ScrollBarPanel(), buttonheight: 30},
+    {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MMENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new AboutBarPanel(), scroll: new ScrollBarPanel(), buttonheight: 30},
 ];
 
 function seteventspanel(panel)
@@ -2859,6 +2859,50 @@ var taplst =
             {
                 slice.tap = 0;
                 slice.func(context, rect, x, y)
+                context.refresh();
+            }, JULIETIME*3);
+        }
+    },
+},
+{
+    name: "MMENU",
+    tap: function (context, rect, x, y)
+    {
+        var obj = context.scrollobj;
+        if (x < MENUBARWIDTH*2)
+        {
+            var j = y/rect.height;
+            var k = obj.length()*j;
+            obj.set(k);
+            context.refresh();
+        }
+        else if (x > rect.width - (MENUBARWIDTH*2) )
+        {
+            var j = y/rect.height;
+            var k = TIMEOBJ*(1-j);
+            context.timeobj.set(k);
+            context.refresh();
+        }
+        else if (y > rect.height-BEXTENT)
+        {
+            window.location.href = "mailto:images@reportbase.com";
+        }
+        else
+        {
+            var k = getbuttonfrompoint(context, x, y);
+            if (k == -1)
+            {
+                menuhide();
+                return;
+            }
+
+            var slice = context.sliceobj.data[k];
+            slice.tap = 1;
+            context.refresh();
+            setTimeout(function ()
+            {
+                slice.tap = 0;
+                slice.func(context, rect, x, y);
                 context.refresh();
             }, JULIETIME*3);
         }
