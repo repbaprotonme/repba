@@ -4689,7 +4689,7 @@ var headlst =
             if (!galleryobj.repos)
             {
                 context.font = "3rem Archivo Black";
-                prompt = "...";
+                prompt = "";
             }
 
             a.draw(context, rect, galleryobj.repos?st:prompt, time);
@@ -4981,13 +4981,12 @@ var headlst =
                         new Layer(
                         [
                             new Rectangle(context.prompt),
-                            new RowA([0,21,21,21,0],
+                            new RowA([0,21,21,21],
                             [
                                 0,
                                 new Text("white", "center", "middle", 0, 0, 1),
                                 new Text("white", "center", "middle", 0, 0, 1),
                                 new Text("white", "center", "middle", 0, 0, 1),
-                                0,
                             ]),
                         ]),
                         new Shrink(new Layer(
