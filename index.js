@@ -2778,11 +2778,8 @@ var taplst =
         context.pressedthumb = 0;
         if (globalobj.slideshow)
         {
-            if (!context.thumbrect && context.thumbrect.hitest(x,y))
-            {
-                clearInterval(globalobj.slideshow);
-                globalobj.slideshow = 0;
-            }
+            clearInterval(globalobj.slideshow);
+            globalobj.slideshow = 0;
         }
 
         clearInterval(context.timemain);
