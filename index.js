@@ -15,7 +15,7 @@ const SWIPETIME = 100;
 const MENUBARWIDTH = 12;
 const MENUPANWIDTH = 40;
 const MENUBARHEIGHT = 60;
-const THUMBORDER = 3.5;
+const THUMBORDER = 3;
 const JULIETIME = 100;
 const DELAY = 10000000;
 const ALIEXTENT = 60;
@@ -29,7 +29,9 @@ const SCROLLNAB = "rgba(0,0,0,0.4)";
 const BARFILL = "rgba(0,0,0,0.5)";
 const MENUCOLOR = "rgba(0,0,0,0.60)";
 const OPTIONFILL = "white";
-const THUMBFILL = "rgba(0,0,0,0.3)";
+const THUMBFILP = "rgba(0,0,0,0.2)";
+const THUMBFILL = "rgba(0,0,0,0.4)";
+const THUMBFILK = "rgba(0,0,0,0.3)";
 const THUMBSTROKE = "rgba(255,255,255,0.75)";
 const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
@@ -2858,7 +2860,7 @@ var taplst =
             setTimeout(function ()
             {
                 slice.tap = 0;
-                slice.func(context, rect, x, y)
+                slice.func.exec(k)
                 context.refresh();
             }, JULIETIME*3);
         }
@@ -2902,7 +2904,7 @@ var taplst =
             setTimeout(function ()
             {
                 slice.tap = 0;
-                slice.func(context, rect, x, y);
+                slice.func.exec(k)
                 context.refresh();
             }, JULIETIME*3);
         }
@@ -2951,7 +2953,7 @@ var taplst =
             setTimeout(function ()
             {
                 slice.tap = 0;
-                slice.func(context, rect, x, y);
+                slice.func.exec(k)
                 context.refresh();
             }, JULIETIME*3);
         }
@@ -3017,11 +3019,10 @@ var thumblst =
             context.save();
             context.shadowOffsetX = 0;
             context.shadowOffsetY = 0;
-
-            var blackfill = new Fill(THUMBFILL);
-
+            var thumborder = context.panning?THUMBORDER/2:THUMBORDER;
             if ((context.isthumbrect && jp) || context.tapping || context.pressedthumb)
             {
+                var blackfill = new Fill(context.panning?THUMBFILP:THUMBFILL);
                 blackfill.draw(context, context.thumbrect, 0, 0);
             }
             else
@@ -3041,7 +3042,7 @@ var thumblst =
             }
 
             var r = new rectangle(x,y,w,h);
-            var whitestroke = new Stroke(THUMBSTROKE,THUMBORDER);
+            var whitestroke = new Stroke(THUMBSTROKE,context.panning?THUMBORDER/2:THUMBORDER);
             whitestroke.draw(context, r, 0, 0);
             var region = new Path2D();
             region.rect(x,y,w,h);
@@ -3067,8 +3068,9 @@ var thumblst =
             var r = new rectangle(xx,yy,ww,hh);
             context.selectrect = []
             context.selectrect.push(r);
+            var blackfill = new Fill(THUMBFILL);
             blackfill.draw(context, r, 0, 0);
-            var whitestroke = new Stroke(THUMBSTROKE,THUMBORDER);
+            var whitestroke = new Stroke(THUMBSTROKE,thumborder);
             whitestroke.draw(context, r, 0, 0);
 
             if (xx > x)//leftside
@@ -5447,19 +5449,20 @@ galleryobj.init = function(obj)
         _4cnvctx.refresh();
     }
 
-    var func = function (index)
-    {
-        let a= document.createElement('a');
-        a.target= '_blank';
-        a.href= addressobj.full();
-        a.click();
-    }
-
     for (var n = 0; n < galleryobj.data.length; ++n)
     {
         var k = galleryobj.data[n];
-        k.pos = n;
-        k.func = func;
+        k.func = new function ()
+        {
+            this.exec = function(index)
+            {
+                galleryobj.set(index);
+                let a = document.createElement('a');
+                a.target= '_blank';
+                a.href= addressobj.full();
+                a.click();
+            }
+        }
     }
 
     _8cnvctx.sliceobj.data = galleryobj.data;
