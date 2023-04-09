@@ -1992,6 +1992,14 @@ var panlst =
 
 	pan: function (context, rect, x, y, type)
     {
+        context.panning = 1;
+        clearTimeout(context.panend);
+        context.panend = setTimeout(function()
+        {
+            context.panning = 0;
+            context.refresh();
+        }, 1000);
+
         var obj = context.scrollobj;
         if (context.index == 7)
             obj = context.scrollobj.getcurrent();
@@ -2045,7 +2053,6 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
     {
-        context.panning = 1;
         context.type = 0;
         context.leftside = x < MENUPANWIDTH;
         context.rightside = x > rect.width-MENUPANWIDTH;
@@ -2054,7 +2061,6 @@ var panlst =
     },
 	panend: function (context, rect, x, y)
     {
-        context.panning = 0;
         delete context.starty;
         delete context.startt;
         delete context.timeobj.offset;
@@ -3270,26 +3276,23 @@ var menulst =
                 var h1 = user.thumbimg.height;
                 var w1 = h1*a2;
                 var y1 = 0;
-                var x1 = Math.nub(obj.getcurrent(),
-                    obj.length(), w1, user.thumbimg.width);
-                context.drawImage(user.thumbimg, x1, y1, w1, h1,
-                    10, -40, w2, h2);
+                var x1 = Math.nub(obj.getcurrent(), obj.length(), w1, user.thumbimg.width);
+                context.drawImage(user.thumbimg, x1, y1, w1, h1, 10, -40, w2, h2);
+                var a = new CurrentHPanel(new Fill("white"), 90, 0);
+                a.draw(context, new rectangle(10,-46,w2,6), obj, 0);
             }
             else
             {
                 var w1 = user.thumbimg.width;
                 var h1 = w1/a2;
                 var x1 = 0;
-                var y1 = Math.nub(obj.getcurrent(),
-                    obj.length(), h1, user.thumbimg.height);
-                context.drawImage(user.thumbimg, x1, y1, w1, h1,
-                    10, -40, w2, h2);
+                var y1 = Math.nub(obj.getcurrent(), obj.length(), h1, user.thumbimg.height);
+                context.drawImage(user.thumbimg, x1, y1, w1, h1, 10, -40, w2, h2);
+                var a = new CurrentVPanel(new Fill("white"), 90, 0);
+                a.draw(context, new rectangle(3,-40,6,h2), obj, 0);
             }
 
-            if (context.panning || context.swipped)
-            {
-            }
-            else
+            if (!context.panning)
             {
                 var a = new Expand(new RowA([20,24,24,0,60,0,24,24,20],
                     [
@@ -3299,8 +3302,8 @@ var menulst =
                         0,
                         new Layer(
                         [
-                                new CirclePanel(user.tap?MENUTAP:SCROLLNAB,"white",3),
-                                new Text("white", "center", "middle",0, 0, 1)
+                            new CirclePanel(user.tap?MENUTAP:SCROLLNAB,"white",3),
+                            new Text("white", "center", "middle",0, 0, 1)
                         ]),
                         0,
                         galleryobj.repos?new Text("white", "center", "middle",0, 0, 1):0,
