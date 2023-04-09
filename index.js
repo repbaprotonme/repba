@@ -439,6 +439,42 @@ var Empty = function()
     }
 };
 
+var AboutBarPanel = function (size)
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.save();
+        context.font = "1rem Archivo Black";
+        var a = new Row([80,0,80],
+        [
+            0,
+            0,
+            new Layer(
+            [
+                new Fill(BARFILL),
+                new RowA([0,24,24,0],
+                [
+                    0,
+                    new Text("white", "center", "middle",0, 0, 1),
+                    new Text("white", "center", "middle",0, 0, 1),
+                    0,
+                ]),
+            ])
+        ]);
+
+        a.draw(context, rect,
+        [
+            0,
+            "Tom Brinkman",
+            "images@reportbase.com",
+            0,
+        ])
+
+        context.restore();
+    }
+};
+
+
 var SearchBarPanel = function (size)
 {
     this.draw = function (context, rect, user, time)
@@ -531,7 +567,7 @@ var eventlst =
     {name: "_6cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 30},
     {name: "_7cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollDualPanel(), buttonheight: 90},
     {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "GMENU", pan: "MENU", swipe: "MENU", draw: "GMENU", wheel: "MENU", drop: "DEFAULT", key: "GMENU", press: "GPRESS", pinch: "DEFAULT", bar: new SearchBarPanel(), scroll: new ScrollDualPanel(), buttonheight: 200},
-    {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 30},
+    {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new AboutBarPanel(), scroll: new ScrollBarPanel(), buttonheight: 30},
 ];
 
 function seteventspanel(panel)
@@ -2746,7 +2782,6 @@ var taplst =
             {
                 clearInterval(globalobj.slideshow);
                 globalobj.slideshow = 0;
-                url.slideshow = 0;
             }
         }
 
@@ -2826,8 +2861,7 @@ var taplst =
             setTimeout(function ()
             {
                 slice.tap = 0;
-                if (slice.func(context, rect, x, y) == -1)
-                    return;
+                slice.func(context, rect, x, y)
                 context.refresh();
             }, JULIETIME*3);
         }
@@ -2876,8 +2910,7 @@ var taplst =
             setTimeout(function ()
             {
                 slice.tap = 0;
-                if (slice.func(context, rect, x, y) == -1)
-                    return;
+                slice.func(context, rect, x, y);
                 context.refresh();
             }, JULIETIME*3);
         }
@@ -4566,16 +4599,27 @@ var headlst =
 
     	this.press = function (context, rect, x, y)
 		{
-            if (ismenu())
+            if (context.page.hitest(x,y))
             {
-                menuhide();
+                startslideshow();
+            }
+            else if (context.option.hitest(x,y))
+            {
+                startslideshow();
             }
             else
             {
-                headobj.set(headobj.current()?0:1);
-                headham.panel = headobj.getcurrent();
-                headcnvctx.clear();
-                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+                if (ismenu())
+                {
+                    menuhide();
+                }
+                else
+                {
+                    headobj.set(headobj.current()?0:1);
+                    headham.panel = headobj.getcurrent();
+                    headcnvctx.clear();
+                    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+                }
             }
         }
 
@@ -4768,16 +4812,27 @@ var headlst =
 	{
     	this.press = function (context, rect, x, y)
 		{
-            if (ismenu())
+            if (context.minuspanel.hitest(x,y))
             {
-                menuhide();
+                startslideshow();
+            }
+            else if (context.pluspanel.hitest(x,y))
+            {
+                startslideshow();
             }
             else
             {
-                headobj.set(headobj.current()?0:1);
-                headham.panel = headobj.getcurrent();
-                headcnvctx.clear();
-                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+                if (ismenu())
+                {
+                    menuhide();
+                }
+                else
+                {
+                    headobj.set(headobj.current()?0:1);
+                    headham.panel = headobj.getcurrent();
+                    headcnvctx.clear();
+                    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+                }
             }
         }
 
@@ -4855,16 +4910,27 @@ var headlst =
 	{
     	this.press = function (context, rect, x, y)
 		{
-            if (ismenu())
+            if (context.moveprev && context.moveprev.hitest(x,y))
             {
-                menuhide();
-                return;
+                startslideshow();
             }
+            else if (context.movenext && context.movenext.hitest(x,y))
+            {
+                startslideshow();
+            }
+            else
+            {
+                if (ismenu())
+                {
+                    menuhide();
+                    return;
+                }
 
-            headobj.set(headobj.current()?0:1);
-            headham.panel = headobj.getcurrent();
-            headcnvctx.clear();
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+                headobj.set(headobj.current()?0:1);
+                headham.panel = headobj.getcurrent();
+                headcnvctx.clear();
+                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+            }
         }
 
     	this.tap = function (context, rect, x, y)
@@ -4915,7 +4981,7 @@ var headlst =
                         new Layer(
                         [
                             new Rectangle(context.prompt),
-                            new RowA([0,21,21,21],
+                            new RowA([0,21,21,21,0],
                             [
                                 0,
                                 new Text("white", "center", "middle", 0, 0, 1),
@@ -4943,6 +5009,7 @@ var headlst =
                     0
                 ] :
                 [
+                    0,
                     0,
                     bt,
                     0,
@@ -5342,19 +5409,10 @@ galleryobj.init = function(obj)
 
     var func = function (index)
     {
-        if (galleryobj.repos && _8cnvctx.scrollobj.current() == 1)
-        {
-            _8cnvctx.refresh();
-            galleryobj.set(this.pos);
-            window.open(addressobj.full(), "_blank");
-            return 0;
-        }
-        else
-        {
-            galleryobj.set(this.pos);
-            window.open(addressobj.full(), "_blank");
-            return -1;
-        }
+        let a= document.createElement('a');
+        a.target= '_blank';
+        a.href= addressobj.full();
+        a.click();
     }
 
     for (var n = 0; n < galleryobj.data.length; ++n)
