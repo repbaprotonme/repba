@@ -2135,6 +2135,12 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
 	{
+        if (globalobj.slideshow)
+        {
+            clearInterval(globalobj.slideshow);
+            globalobj.slideshow = 0;
+        }
+
         clearInterval(context.timemain);
         context.panning = 1;
         context.timemain = 0;
@@ -2163,7 +2169,10 @@ var panlst =
         clearTimeout(context.hideheadtime);
         context.hideheadtime = setTimeout(function()
         {
+            context.refresh();
             headcnv.height = BEXTENT;
+            headobj.set(3);
+            headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }, 1500);
     }
@@ -2715,25 +2724,61 @@ var keylst =
         }
         else if (key == "tab")
         {
+            evt.preventDefault();
+            if (globalobj.slideshow)
+            {
+                clearInterval(globalobj.slideshow);
+                globalobj.slideshow = 0;
+            }
+
             context.autodirect = (evt.shiftKey)?1:-1;
-            headobj.set(headobj.current() == 0 ? 3 : 0);
+            if (headcnv.height)
+            {
+                headobj.set(headobj.current() == 0 ? 3 : 0);
+            }
+            else
+            {
+                headcnv.height = BEXTENT;
+                headobj.set(3);
+            }
+
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnvctx.tab();
-            evt.preventDefault();
         }
         else if (key == "enter")
         {
+            evt.preventDefault();
+            if (globalobj.slideshow)
+            {
+                clearInterval(globalobj.slideshow);
+                globalobj.slideshow = 0;
+            }
+
             context.movepage(evt.shiftKey?-1:1);
             evt.preventDefault();
         }
         else if (key == "pageup")
         {
+            evt.preventDefault();
+            if (globalobj.slideshow)
+            {
+                clearInterval(globalobj.slideshow);
+                globalobj.slideshow = 0;
+            }
+
             context.movepage(-1);
             evt.preventDefault();
         }
         else if (key == "pagedown")
         {
+            evt.preventDefault();
+            if (globalobj.slideshow)
+            {
+                clearInterval(globalobj.slideshow);
+                globalobj.slideshow = 0;
+            }
+
             context.movepage(1);
             evt.preventDefault();
         }
@@ -2776,16 +2821,22 @@ var taplst =
 	name: "BOSS",
 	tap: function (context, rect, x, y, shift, ctrl)
 	{
+        clearInterval(context.timemain);
+        context.timemain = 0;
         context.pressed = 0;
         context.pressedthumb = 0;
         if (globalobj.slideshow)
         {
             clearInterval(globalobj.slideshow);
             globalobj.slideshow = 0;
+            return;
         }
 
-        clearInterval(context.timemain);
-        context.timemain = 0;
+        if (ismenu())
+        {
+            menuhide();
+            return;
+        }
 
         if (context.thumbrect && context.thumbrect.hitest(x,y))
         {
@@ -2805,22 +2856,16 @@ var taplst =
         }
         else if (!headcnv.height)
         {
+            headobj.set(3);
+            headham.panel = headobj.getcurrent();
+            headcnvctx.clear();
             headcnv.height = BEXTENT;
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
         else
         {
-            if (ismenu())
-            {
-                menuhide();
-            }
-            else
-            {
-                headobj.set(headobj.current()?0:1);
-                headham.panel = headobj.getcurrent();
-                headcnvctx.clear();
-            }
-
+            headobj.set(headobj.current()?0:1);
+            headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             context.refresh();
         }
@@ -4732,7 +4777,7 @@ var headlst =
             if (!galleryobj.repos)
             {
                 context.font = "3rem Archivo Black";
-                prompt = "";
+                prompt = "...";
             }
 
             a.draw(context, rect, galleryobj.repos?st:prompt, time);
@@ -5013,6 +5058,23 @@ var headlst =
             context.movenext = new rectangle()
             context.prompt = new rectangle()
 
+            var main = new RowA([0,21,21,21,0],
+                [
+                    0,
+                    new Text("white", "center", "middle", 0, 0, 1),
+                    new Text("white", "center", "middle", 0, 0, 1),
+                    new Text("white", "center", "middle", 0, 0, 1),
+                    0,
+                ]);
+            if (galleryobj.repos)
+                main = new RowA([0,21,21,21],
+                [
+                    0,
+                    new Text("white", "center", "middle", 0, 0, 1),
+                    new Text("white", "center", "middle", 0, 0, 1),
+                    new Text("white", "center", "middle", 0, 0, 1),
+                ]);
+
             var a = new Col([BEXTENT,0,BEXTENT],
                     [
                         new Shrink(new Layer(
@@ -5024,13 +5086,7 @@ var headlst =
                         new Layer(
                         [
                             new Rectangle(context.prompt),
-                            new RowA([0,21,21,21],
-                            [
-                                0,
-                                new Text("white", "center", "middle", 0, 0, 1),
-                                new Text("white", "center", "middle", 0, 0, 1),
-                                new Text("white", "center", "middle", 0, 0, 1),
-                            ]),
+                            main,
                         ]),
                         new Shrink(new Layer(
                         [
@@ -5041,22 +5097,16 @@ var headlst =
                     ]);
 
             var bt = `${galleryobj.current()+1} of ${galleryobj.length()}`;
-            a.draw(context, rect,
-                galleryobj.repos?
+            var user = [ 0, 0, bt, 0, 0 ];
+            if (galleryobj.repos)
+                user =
                 [
                     0,
                     `${galleryobj.getcurrent().photographer.proper()}`,
                     `${galleryobj.getcurrent().datasource.proper()}`,
-                    bt,
-                    0
-                ] :
-                [
-                    0,
-                    0,
-                    bt,
-                    0,
-                    0
-                ], time);
+                    bt
+                ];
+            a.draw(context, rect, user, time);
             context.restore()
 		};
 	},
@@ -5751,10 +5801,6 @@ function startslideshow()
     clearInterval(globalobj.slideshow);
     globalobj.slideshow = setInterval(function()
     {
-        if (_4cnvctx.panning ||
-            _4cnvctx.pressed ||
-            _4cnvctx.pinching)
-            return;
         _4cnvctx.movepage(1)
     }, url.slideshow?url.slideshow:SLIDEDEFAULT);
 }
