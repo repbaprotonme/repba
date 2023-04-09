@@ -15,7 +15,7 @@ const SWIPETIME = 100;
 const MENUBARWIDTH = 12;
 const MENUPANWIDTH = 40;
 const MENUBARHEIGHT = 60;
-const THUMBORDER = 3;
+const THUMBORDER = 2;
 const JULIETIME = 100;
 const DELAY = 10000000;
 const ALIEXTENT = 60;
@@ -30,8 +30,7 @@ const BARFILL = "rgba(0,0,0,0.5)";
 const MENUCOLOR = "rgba(0,0,0,0.60)";
 const OPTIONFILL = "white";
 const THUMBFILP = "rgba(0,0,0,0.2)";
-const THUMBFILL = "rgba(0,0,0,0.4)";
-const THUMBFILK = "rgba(0,0,0,0.3)";
+const THUMBFILL = "rgba(0,0,0,0.2)";
 const THUMBSTROKE = "rgba(255,255,255,0.75)";
 const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
@@ -215,6 +214,7 @@ function drawslices()
             else
                 context.lastime = context.timeobj.current();
 
+            context.timeobj.CURRENT = Math.clamp(1,context.timeobj.length(),context.timeobj.CURRENT);
             if (context.timemain)
             {
                 context.slidestop -= context.slidereduce;
@@ -2171,7 +2171,6 @@ var panlst =
         {
             context.refresh();
             headcnv.height = BEXTENT;
-            headobj.set(3);
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }, 1500);
@@ -3064,10 +3063,9 @@ var thumblst =
             context.save();
             context.shadowOffsetX = 0;
             context.shadowOffsetY = 0;
-            var thumborder = context.panning?THUMBORDER/2:THUMBORDER;
             if ((context.isthumbrect && jp) || context.tapping || context.pressedthumb)
             {
-                var blackfill = new Fill(context.panning?THUMBFILP:THUMBFILL);
+                var blackfill = new Fill(THUMBFILP);
                 blackfill.draw(context, context.thumbrect, 0, 0);
             }
             else
@@ -3087,7 +3085,7 @@ var thumblst =
             }
 
             var r = new rectangle(x,y,w,h);
-            var whitestroke = new Stroke(THUMBSTROKE,context.panning?THUMBORDER/2:THUMBORDER);
+            var whitestroke = new Stroke(THUMBSTROKE,THUMBORDER);
             whitestroke.draw(context, r, 0, 0);
             var region = new Path2D();
             region.rect(x,y,w,h);
@@ -3109,13 +3107,13 @@ var thumblst =
             var jj = context.timeobj.berp();
             var bb = w*(1-jj);
             var xx = x+bb-ww/2;
-            context.lineWidth = THUMBORDER/2;
+            context.lineWidth = THUMBORDER;
             var r = new rectangle(xx,yy,ww,hh);
             context.selectrect = []
             context.selectrect.push(r);
             var blackfill = new Fill(THUMBFILL);
             blackfill.draw(context, r, 0, 0);
-            var whitestroke = new Stroke(THUMBSTROKE,thumborder);
+            var whitestroke = new Stroke(THUMBSTROKE,THUMBORDER);
             whitestroke.draw(context, r, 0, 0);
 
             if (xx > x)//leftside
@@ -3887,6 +3885,7 @@ function masterload()
     var lst = [];
     var k = galleryobj.current();
     var size = Math.min(5,galleryobj.length());
+    galleryobj.getcurrent().loaded = 1;
     for (var n = 0; n < size; ++n)
     {
         galleryobj.rotate(1);
@@ -3901,19 +3900,6 @@ function masterload()
         {
             galleryobj.data[this.index].loaded = 1;
         }
-    }
-
-    galleryobj.rotate(-6);//todo not working
-    var img = new Image();
-    var id = galleryobj.getcurrent().id;
-    var path = `https://reportbase.com/image/${id}/${galleryobj.template}`;
-    if (galleryobj.repos)
-        path = galleryobj.getcurrent().full;
-    img.src = path;
-    img.index = galleryobj.current();
-    img.onload = function()
-    {
-        galleryobj.data[this.index].loaded = 1;
     }
 
     galleryobj.set(k);
@@ -4510,20 +4496,15 @@ function reset()
 
 function resize()
 {
-    _4cnvctx.pinched = 0;
     delete _4cnvctx.thumbcanvas;
     reset();
     var n = eventlst.findIndex(function(a){return a.name == "_4cnvctx";})
-    menuhide();
     setevents(_4cnvctx, eventlst[n])
+    menuhide();
+    _4cnvctx.pinched = 0;
     _4cnvctx.tapping = 0;
-    if (headcnv.height)
-    {
-        var h = window.self !== window.top ? 0 : BEXTENT;
-        headcnvctx.show(0,0,window.innerWidth,h);
-        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-    }
-
+    var h = window.self !== window.top ? 0 : BEXTENT;
+    headcnvctx.show(0,0,window.innerWidth,h);
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     _4cnvctx.refresh();
 }
@@ -5755,7 +5736,7 @@ function info()
 
         return slices;
     }
-
+//todo
     _5cnvctx.buttonheight = 90;
     _5cnvctx.slidereduce = 0.75;
     _5cnvctx.sliceobj.data  = getslices();
