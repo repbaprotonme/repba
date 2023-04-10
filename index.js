@@ -2834,14 +2834,10 @@ var taplst =
         {
             clearInterval(globalobj.slideshow);
             globalobj.slideshow = 0;
-            return;
         }
 
         if (ismenu())
-        {
             menuhide();
-            return;
-        }
 
         if (context.thumbrect && context.thumbrect.hitest(x,y))
         {
