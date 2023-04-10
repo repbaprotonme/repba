@@ -483,20 +483,30 @@ var SearchBarPanel = function (size)
     {
         context.save();
         context.font = "1rem Archivo Black";
-        var a = new Row([80,0,80],
+        var a = new RowA([80,0,80],
         [
-            0,
+            new Layer(
+            [
+                new Fill(BARFILL),
+                new RowA([0,24,24,0],
+                [
+                    0,
+                    new Text("white", "center", "middle", 0, 0, 1),
+                    new Text("white", "center", "middle", 0, 0, 1),
+                    0,
+                ])
+            ]),
             0,
             new Layer(
             [
-                //new Fill(BARFILL),
+                new Fill(BARFILL),
                 new ColA([0,20,60,20,0],
                 [
-                    new Text("white", "right", "middle",0, 0, 1),
+                    new Text("white", "right", "middle", 0, 0, 1),
                     0,
                     new SearchPanel("white","black"),
                     0,
-                    new Text("white", "left", "middle",0, 0, 1),
+                    new Text("white", "left", "middle", 0, 0, 1),
                 ]),
             ])
         ]);
@@ -504,11 +514,20 @@ var SearchBarPanel = function (size)
         var j = Math.floor((1-context.timeobj.berp())*context.sliceobj.length())+1;
         a.draw(context, rect,
         [
-            j.toFixed(0),
+            [
+                0,
+                galleryobj.repos?galleryobj.repos.proper():"Dalle2",
+                "Image Search",
+                0,
+            ],
             0,
-            0,
-            0,
-            context.sliceobj.length().toFixed(0),
+            [
+                j.toFixed(0),
+                0,
+                0,
+                0,
+                context.sliceobj.length().toFixed(0),
+            ],
         ])
 
         context.restore();
@@ -2939,6 +2958,10 @@ var taplst =
             context.timeobj.set(k);
             context.refresh();
         }
+        else if (y < BEXTENT)
+        {
+            menushow(_3cnvctx);
+        }
         else if (y > rect.height-BEXTENT)
         {
             var overlay = document.querySelector('.search-overlay');
@@ -2946,7 +2969,6 @@ var taplst =
                 showsearch(galleryobj.repos)
             else
                 overlay.style.display = 'none'
-            setTimeout(function() { menuhide(); },500);
         }
         else
         {
@@ -3182,7 +3204,7 @@ var menulst =
         else if (user.tap)
             clr = MENUTAP;
 
-        var a = new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 50);
+        var a = new Expand(new Rounded(clr, 3, "white", 8, 8), 0, 50);
         a.draw(context, rect, 0, 0);
 
         if (!user.lst)
@@ -4999,7 +5021,12 @@ var headlst =
                         ]),10,10),
                         new Layer(
                         [
-                            new Rectangle(context.prompt),
+                            new Col([0,360,0],
+                            [
+                                0,
+                                new Rectangle(context.prompt),
+                                0,
+                            ]),
                             main,
                         ]),
                         new Shrink(new Layer(
@@ -5335,17 +5362,14 @@ galleryobj.init = function(obj)
     [
         {line:"Unsplash\nImage Search", path: "UNSPLASH", func: function()
             {
-                menuhide();
                 showsearch("unsplash");
             }},
         {line:"Pexels\nImage Search", path: "PEXELS", func: function()
             {
-                menuhide();
                 showsearch("pexels");
             }},
         {line:"Pixabay\nImage Search", path: "PEXELS", func: function()
             {
-                menuhide();
                 showsearch("pixabay");
             }},
     ];
@@ -5694,8 +5718,8 @@ function showsearch(repos)
         }
 
         globalobj.saverepos = repos?repos:"pexels";
-        var btn = document.getElementById('search-source');
-        btn.textContent = `Source: ${globalobj.saverepos.proper()}`;
+        var btn = document.getElementById('source');
+        btn.textContent = globalobj.saverepos.proper();
         document.getElementById('search').value = url.path;
         const overlay = document.querySelector('.search-overlay');
         overlay.style.display = 'flex';
