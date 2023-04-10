@@ -2803,10 +2803,10 @@ var taplst =
 	{
         clearInterval(context.timemain);
         context.timemain = 0;
-        context.pressed = 0;
-        context.pressedthumb = 0;
         clearInterval(globalobj.slideshow);
         globalobj.slideshow = 0;
+        context.pressed = 0;
+        context.pressedthumb = 0;
 
         if (ismenu())
             menuhide();
@@ -4663,6 +4663,8 @@ var headlst =
 
      	this.tap = function (context, rect, x, y)
 		{
+            clearInterval(globalobj.slideshow);
+            globalobj.slideshow = 0;
             if (context.page.hitest(x,y))
             {
                 _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
@@ -4745,6 +4747,8 @@ var headlst =
 
      	this.tap = function (context, rect, x, y)
 		{
+            clearInterval(globalobj.slideshow);
+            globalobj.slideshow = 0;
             if (ismenu())
             {
                 menuhide();
@@ -4850,6 +4854,8 @@ var headlst =
 
      	this.tap = function (context, rect, x, y)
 		{
+            clearInterval(globalobj.slideshow);
+            globalobj.slideshow = 0;
             if (ismenu())
             {
                 menuhide();
@@ -4929,6 +4935,8 @@ var headlst =
 
     	this.tap = function (context, rect, x, y)
 		{
+            clearInterval(globalobj.slideshow);
+            globalobj.slideshow = 0;
             if (ismenu())
             {
                 menuhide();
@@ -5027,6 +5035,8 @@ var headlst =
 
     	this.tap = function (context, rect, x, y)
 		{
+            clearInterval(globalobj.slideshow);
+            globalobj.slideshow = 0;
             if (ismenu())
             {
                 menuhide();
@@ -5097,6 +5107,8 @@ var posityobj = new circular_array("POSITIONY", [positypobj,positylobj]);
 
 function menushow(context)
 {
+    clearInterval(globalobj.slideshow);
+    globalobj.slideshow = 0;
     _4cnvctx.slideshow = 0;
     var enabled = context.enabled;
     _2cnvctx.hide();
