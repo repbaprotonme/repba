@@ -3835,6 +3835,17 @@ var ContextObj = (function ()
                         extentobj.done = 1;
                     }
 
+                    if (url.slideshow)
+                    {
+                        menuhide();
+                        _4cnvctx.timeobj.set(TIMEOBJ/2);
+                        startslideshow();
+                    }
+                    else
+                    {
+                        _4cnvctx.tab();
+                    }
+
                     _4cnvctx.pinched = 0;
                     contextobj.resize(context);
                     resetcanvas(context);
@@ -3844,12 +3855,6 @@ var ContextObj = (function ()
                     headobj.set(3);
                     headham.panel = headobj.getcurrent();
                     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-
-                    if (url.slideshow)
-                    {
-                        menuhide();
-                        startslideshow();
-                    }
 
                     if (!galleryobj.repos)
                     {
