@@ -26,7 +26,7 @@ const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(255,175,0,0.75)";
 const MENUTAP = "rgba(255,175,0,0.75)";
 const SCROLLNAB = "rgba(0,0,0,0.4)";
-const BARFILL = "rgba(0,0,0,0.5)";
+const BARFILL = "rgba(0.0,0,0.6)";
 const MENUCOLOR = "rgba(0,0,0,0.60)";
 const OPTIONFILL = "white";
 const THUMBFILP = "rgba(0,0,0,0.2)";
@@ -447,9 +447,19 @@ var AboutBarPanel = function (size)
     {
         context.save();
         context.font = "1rem Archivo Black";
-        var a = new Row([80,0,80],
+        var a = new RowA([BEXTENT,0,BEXTENT],
         [
-            0,
+            new Layer(
+            [
+                new Fill(BARFILL),
+                new RowA([0,24,24,0],
+                [
+                    0,
+                    new Text("white", "center", "middle",0, 0, 1),
+                    new Text("white", "center", "middle",0, 0, 1),
+                    0,
+                ]),
+            ]),
             0,
             new Layer(
             [
@@ -466,11 +476,21 @@ var AboutBarPanel = function (size)
 
         a.draw(context, rect,
         [
+            [
+                0,
+                "Contact",
+                "images@reportbase.com",
+                0,
+            ],
             0,
-            "Contact",
-            "images@reportbase.com",
-            0,
-        ])
+            [
+                0,
+                "Contact",
+                "images@reportbase.com",
+                0,
+            ]
+        ]
+        )
 
         context.restore();
     }
