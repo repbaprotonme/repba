@@ -263,7 +263,7 @@ function drawslices()
                 var j = time + slice.time;
                 var b = Math.tan(j*VIRTCONST);
                 var bx2 = Math.berp(-1, 1, b) * context.virtualpinch - context.virtualeft;
-                var stretchwidth = bx2-bx;//+1;
+                var stretchwidth = Math.ceil(bx2-bx);
                 slice.stretchwidth = stretchwidth;
                 slice.bx = bx;
                 if (m == 1)
@@ -1825,7 +1825,6 @@ var pinchlst =
     pinchstart: function (context, rect, x, y)
     {
         context.pinching = 1;
-        headcnv.height = BEXTENT;
         headobj.set(2);
         headham.panel = headobj.getcurrent();
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -2135,9 +2134,6 @@ var panlst =
                 contextobj.reset();
             }
         }
-
-        if (headobj.current() != 2)
-            headcnv.height = 0;
     },
 	panstart: function (context, rect, x, y)
 	{
@@ -2171,18 +2167,11 @@ var panlst =
             delete rowobj.offset;
             context.refresh();
         }, 40);
-
-        clearTimeout(context.hideheadtime);
-        context.hideheadtime = setTimeout(function()
-        {
-            context.refresh();
-            headcnv.height = BEXTENT;
-            headham.panel = headobj.getcurrent();
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-        }, 1500);
     }
 },
 ];
+
+var panobj = new circular_array("PAN", panlst);
 
 CanvasRenderingContext2D.prototype.clearpoints = function()
 {
@@ -2498,7 +2487,6 @@ var swipelst =
     {
         setTimeout(function()
         {
-            headcnv.height = BEXTENT;
             headobj.set(headobj.current() == 0 ? 3 : 0);
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -2510,6 +2498,10 @@ var swipelst =
 
     swipeupdown: function (context, rect, x, y, evt)
     {
+        headobj.set(1);
+        headham.panel = headobj.getcurrent();
+        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        context.refresh();
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
             return;
@@ -2578,6 +2570,10 @@ var keylst =
             menuhide();
             startslideshow();
         }
+        else if (key == "enter")
+        {
+            menuhide();
+        }
  	}
 },
 {
@@ -2613,6 +2609,10 @@ var keylst =
         {
             menuhide();
             startslideshow();
+        }
+        else if (key == "enter")
+        {
+            menuhide();
         }
   	}
 },
@@ -2737,16 +2737,7 @@ var keylst =
             }
 
             context.autodirect = (evt.shiftKey)?1:-1;
-            if (headcnv.height)
-            {
-                headobj.set(headobj.current() == 0 ? 3 : 0);
-            }
-            else
-            {
-                headcnv.height = BEXTENT;
-                headobj.set(3);
-            }
-
+            headobj.set(headobj.current() == 0 ? 3 : 0);
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnvctx.tab();
@@ -2855,17 +2846,9 @@ var taplst =
                 context.refresh();
             }
         }
-        else if (!headcnv.height)
-        {
-            headobj.set(3);
-            headham.panel = headobj.getcurrent();
-            headcnvctx.clear();
-            headcnv.height = BEXTENT;
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-        }
         else
         {
-            headobj.set(headobj.current()?0:1);
+            headobj.set(headobj.current()?0:3);
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             context.refresh();
@@ -3838,13 +3821,11 @@ var ContextObj = (function ()
                     if (url.slideshow)
                     {
                         menuhide();
-                        _4cnvctx.timeobj.set(TIMEOBJ/2);
                         startslideshow();
                     }
-                    else
-                    {
-                        _4cnvctx.tab();
-                    }
+
+                    _4cnvctx.timeobj.set(TIMEOBJ/2);
+                    _4cnvctx.tab();
 
                     _4cnvctx.pinched = 0;
                     contextobj.resize(context);
@@ -4667,21 +4648,12 @@ var headlst =
 [
 	new function ()
 	{
-        this.pan = function (context, rect, x, y, type)
-        {
-            var k = panhorz(context.scrollobj, rect.width-x);
-            if (k == -1)
-                return;
-            if (k == context.scrollobj.anchor())
-                return;
-            context.scrollobj.set(k);
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-        }
-
-        this.panend = function (context, rect, x, y)
-        {
-            delete context.scrollobj.offset;
-        }
+        this.pan = function (context, rect, x, y, type) { panlst[2].pan(_4cnvctx, rect, x, y, type); }
+        this.panend = function (context, rect, x, y) { panlst[2].panend(_4cnvctx, rect, x, y); }
+        this.panstart = function (context, rect, x, y) { panlst[2].panstart(_4cnvctx, rect, x, y); }
+        this.swipeleftright = function (context, rect, x, y, evt) { swipelst[2].swipeleftright(_4cnvctx, rect, x, y, evt); }
+        this.swipeupdown = function (context, rect, x, y, evt) { swipelst[2].swipeupdown(_4cnvctx, rect, x, y, evt); }
+    	this.press = function (context, rect, x, y) {presslst[2].press(_4cnvctx, rect, x, y)}
 
     	this.press = function (context, rect, x, y)
 		{
@@ -4784,19 +4756,12 @@ var headlst =
 	},
 	new function ()
 	{
-    	this.press = function (context, rect, x, y)
-		{
-            if (ismenu())
-            {
-                menuhide();
-                return;
-            }
-
-            headobj.set(headobj.current()?0:1);
-            headham.panel = headobj.getcurrent();
-            headcnvctx.clear();
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-        }
+        this.pan = function (context, rect, x, y, type) { panlst[2].pan(_4cnvctx, rect, x, y, type); }
+        this.panend = function (context, rect, x, y) { panlst[2].panend(_4cnvctx, rect, x, y); }
+        this.panstart = function (context, rect, x, y) { panlst[2].panstart(_4cnvctx, rect, x, y); }
+        this.swipeleftright = function (context, rect, x, y, evt) { swipelst[2].swipeleftright(_4cnvctx, rect, x, y, evt); }
+        this.swipeupdown = function (context, rect, x, y, evt) { swipelst[2].swipeupdown(_4cnvctx, rect, x, y, evt); }
+    	this.press = function (context, rect, x, y) {presslst[2].press(_4cnvctx, rect, x, y)}
 
      	this.tap = function (context, rect, x, y)
 		{
@@ -4896,31 +4861,12 @@ var headlst =
     },
 	new function ()
 	{
-    	this.press = function (context, rect, x, y)
-		{
-            if (context.minuspanel.hitest(x,y))
-            {
-                startslideshow();
-            }
-            else if (context.pluspanel.hitest(x,y))
-            {
-                startslideshow();
-            }
-            else
-            {
-                if (ismenu())
-                {
-                    menuhide();
-                }
-                else
-                {
-                    headobj.set(headobj.current()?0:1);
-                    headham.panel = headobj.getcurrent();
-                    headcnvctx.clear();
-                    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-                }
-            }
-        }
+        this.pan = function (context, rect, x, y, type) { panlst[2].pan(_4cnvctx, rect, x, y, type); }
+        this.panend = function (context, rect, x, y) { panlst[2].panend(_4cnvctx, rect, x, y); }
+        this.panstart = function (context, rect, x, y) { panlst[2].panstart(_4cnvctx, rect, x, y); }
+        this.swipeleftright = function (context, rect, x, y, evt) { swipelst[2].swipeleftright(_4cnvctx, rect, x, y, evt); }
+        this.swipeupdown = function (context, rect, x, y, evt) { swipelst[2].swipeupdown(_4cnvctx, rect, x, y, evt); }
+    	this.press = function (context, rect, x, y) {presslst[2].press(_4cnvctx, rect, x, y)}
 
      	this.tap = function (context, rect, x, y)
 		{
@@ -4994,30 +4940,12 @@ var headlst =
 	},
 	new function ()
 	{
-    	this.press = function (context, rect, x, y)
-		{
-            if (context.moveprev && context.moveprev.hitest(x,y))
-            {
-                startslideshow();
-            }
-            else if (context.movenext && context.movenext.hitest(x,y))
-            {
-                startslideshow();
-            }
-            else
-            {
-                if (ismenu())
-                {
-                    menuhide();
-                    return;
-                }
-
-                headobj.set(headobj.current()?0:1);
-                headham.panel = headobj.getcurrent();
-                headcnvctx.clear();
-                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            }
-        }
+        this.pan = function (context, rect, x, y, type) { panlst[2].pan(_4cnvctx, rect, x, y, type); }
+        this.panend = function (context, rect, x, y) { panlst[2].panend(_4cnvctx, rect, x, y); }
+        this.panstart = function (context, rect, x, y) { panlst[2].panstart(_4cnvctx, rect, x, y); }
+        this.swipeleftright = function (context, rect, x, y, evt) { swipelst[2].swipeleftright(_4cnvctx, rect, x, y, evt); }
+        this.swipeupdown = function (context, rect, x, y, evt) { swipelst[2].swipeupdown(_4cnvctx, rect, x, y, evt); }
+    	this.press = function (context, rect, x, y) {presslst[2].press(_4cnvctx, rect, x, y)}
 
     	this.tap = function (context, rect, x, y)
 		{
@@ -5110,19 +5038,12 @@ var headlst =
 	},
 	new function ()
 	{
-    	this.press = function (context, rect, x, y)
-		{
-            if (ismenu())
-            {
-                menuhide();
-                return;
-            }
-
-            headobj.set(headobj.current()?0:1);
-            headham.panel = headobj.getcurrent();
-            headcnvctx.clear();
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-        }
+        this.pan = function (context, rect, x, y, type) { panlst[2].pan(_4cnvctx, rect, x, y, type); }
+        this.panend = function (context, rect, x, y) { panlst[2].panend(_4cnvctx, rect, x, y); }
+        this.panstart = function (context, rect, x, y) { panlst[2].panstart(_4cnvctx, rect, x, y); }
+        this.swipeleftright = function (context, rect, x, y, evt) { swipelst[2].swipeleftright(_4cnvctx, rect, x, y, evt); }
+        this.swipeupdown = function (context, rect, x, y, evt) { swipelst[2].swipeupdown(_4cnvctx, rect, x, y, evt); }
+    	this.press = function (context, rect, x, y) {presslst[2].press(_4cnvctx, rect, x, y)}
 
     	this.tap = function (context, rect, x, y)
 		{
@@ -5647,8 +5568,6 @@ async function copytext(text)
 
 document.addEventListener("click", (evt) =>
 {
-    if (!headcnv.height)
-        return;
     if (evt.screenY < BEXTENT && (evt.screenX < BEXTENT || evt.screenX > window.innerWidth-BEXTENT))
         return;
     if (evt.target.className.search("overlay") >= 0)
@@ -5795,7 +5714,6 @@ function showsearch(repos)
 
 function startslideshow()
 {
-    headcnv.height = 0;
     clearInterval(globalobj.slideshow);
     globalobj.slideshow = setInterval(function()
     {
