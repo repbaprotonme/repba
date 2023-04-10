@@ -30,7 +30,7 @@ const BARFILL = "rgba(0,0,0,0.5)";
 const MENUCOLOR = "rgba(0,0,0,0.60)";
 const OPTIONFILL = "white";
 const THUMBFILP = "rgba(0,0,0,0.2)";
-const THUMBFILL = "rgba(0,0,0,0.2)";
+const THUMBFILL = "rgba(0,0,0,0.4)";
 const THUMBSTROKE = "rgba(255,255,255,0.75)";
 const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
@@ -2910,7 +2910,7 @@ var taplst =
             setTimeout(function ()
             {
                 slice.tap = 0;
-                slice.func.exec(k)
+                slice.func(k)
                 context.refresh();
             }, JULIETIME*3);
         }
@@ -2954,7 +2954,7 @@ var taplst =
             setTimeout(function ()
             {
                 slice.tap = 0;
-                slice.func.exec(k)
+                slice.func(k)
                 context.refresh();
             }, JULIETIME*3);
         }
@@ -3119,7 +3119,7 @@ var thumblst =
             context.selectrect.push(r);
             var blackfill = new Fill(THUMBFILL);
             blackfill.draw(context, r, 0, 0);
-            var whitestroke = new Stroke(THUMBSTROKE,THUMBORDER);
+            var whitestroke = new Stroke(THUMBSTROKE,THUMBORDER*2);
             whitestroke.draw(context, r, 0, 0);
 
             if (xx > x)//leftside
@@ -3893,14 +3893,12 @@ var contextobj = new ContextObj();
 
 function masterload()
 {
-    var lst = [];
-    var k = galleryobj.current();
-    var size = Math.min(5,galleryobj.length());
-    galleryobj.getcurrent().loaded = 1;
-    for (var n = 0; n < size; ++n)
+    function func(direction, index)
     {
-        galleryobj.rotate(1);
+        galleryobj.rotate(direction);
         lst[n] = new Image();
+        if (galleryobj.getcurrent().loaded)
+           return;
         var id = galleryobj.getcurrent().id;
         var path = `https://reportbase.com/image/${id}/${galleryobj.template}`;
         if (galleryobj.repos)
@@ -3913,6 +3911,13 @@ function masterload()
         }
     }
 
+    var lst = [];
+    var k = galleryobj.current();
+    var size = Math.min(5,galleryobj.length());
+    galleryobj.getcurrent().loaded = 1;
+    for (var n = 0; n < size; ++n) { func(1,n); }
+    galleryobj.set(k);
+    for (var n = size; n < size+2; ++n) { func(-1,n); }
     galleryobj.set(k);
 }
 
