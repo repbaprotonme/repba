@@ -2137,12 +2137,7 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
 	{
-        if (globalobj.slideshow)
-        {
-            clearInterval(globalobj.slideshow);
-            globalobj.slideshow = 0;
-        }
-
+        clearInterval(globalobj.slideshow);
         clearInterval(context.timemain);
         context.panning = 1;
         context.timemain = 0;
@@ -2434,6 +2429,9 @@ var presslst =
     },
     press: function (context, rect, x, y)
     {
+        clearInterval(globalobj.slideshow);
+        globalobj.slideshow = 0;
+
         context.pressed = 1;
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
@@ -2443,6 +2441,8 @@ var presslst =
         else
         {
             thumbobj.rotate(1);
+            headobj.set(headobj.current() == 1 ? 3 : 1);
+            headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnvctx.refresh();
         }
@@ -2498,7 +2498,7 @@ var swipelst =
 
     swipeupdown: function (context, rect, x, y, evt)
     {
-        headobj.set(1);
+        headobj.set(evt.type == "swipeup"?0:1);
         headham.panel = headobj.getcurrent();
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         context.refresh();
@@ -2730,12 +2730,8 @@ var keylst =
         else if (key == "tab")
         {
             evt.preventDefault();
-            if (globalobj.slideshow)
-            {
-                clearInterval(globalobj.slideshow);
-                globalobj.slideshow = 0;
-            }
-
+            clearInterval(globalobj.slideshow);
+            globalobj.slideshow = 0;
             context.autodirect = (evt.shiftKey)?1:-1;
             headobj.set(headobj.current() == 0 ? 3 : 0);
             headham.panel = headobj.getcurrent();
@@ -2745,36 +2741,24 @@ var keylst =
         else if (key == "enter")
         {
             evt.preventDefault();
-            if (globalobj.slideshow)
-            {
-                clearInterval(globalobj.slideshow);
-                globalobj.slideshow = 0;
-            }
-
+            clearInterval(globalobj.slideshow);
+            globalobj.slideshow = 0;
             context.movepage(evt.shiftKey?-1:1);
             evt.preventDefault();
         }
         else if (key == "pageup")
         {
             evt.preventDefault();
-            if (globalobj.slideshow)
-            {
-                clearInterval(globalobj.slideshow);
-                globalobj.slideshow = 0;
-            }
-
+            clearInterval(globalobj.slideshow);
+            globalobj.slideshow = 0;
             context.movepage(-1);
             evt.preventDefault();
         }
         else if (key == "pagedown")
         {
             evt.preventDefault();
-            if (globalobj.slideshow)
-            {
-                clearInterval(globalobj.slideshow);
-                globalobj.slideshow = 0;
-            }
-
+            clearInterval(globalobj.slideshow);
+            globalobj.slideshow = 0;
             context.movepage(1);
             evt.preventDefault();
         }
@@ -2821,11 +2805,8 @@ var taplst =
         context.timemain = 0;
         context.pressed = 0;
         context.pressedthumb = 0;
-        if (globalobj.slideshow)
-        {
-            clearInterval(globalobj.slideshow);
-            globalobj.slideshow = 0;
-        }
+        clearInterval(globalobj.slideshow);
+        globalobj.slideshow = 0;
 
         if (ismenu())
             menuhide();
@@ -3824,7 +3805,6 @@ var ContextObj = (function ()
                         startslideshow();
                     }
 
-                    _4cnvctx.timeobj.set(TIMEOBJ/2);
                     _4cnvctx.tab();
 
                     _4cnvctx.pinched = 0;
