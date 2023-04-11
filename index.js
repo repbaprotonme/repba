@@ -26,7 +26,7 @@ const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(255,175,0,0.75)";
 const MENUTAP = "rgba(255,175,0,0.75)";
 const SCROLLNAB = "rgba(0,0,0,0.4)";
-const BARFILL = "rgba(0,0,0,0.3)";
+const BARFILL = "rgba(0,0,0,0.4)";
 const MENUCOLOR = "rgba(0,0,0,0.60)";
 const OPTIONFILL = "white";
 const THUMBFILP = "rgba(0,0,0,0.2)";
@@ -365,7 +365,7 @@ function drawslices()
             let y = Math.berp(-1, 1, bos) * context.virtualheight;
             y -= e;
             var x = w/2;
-            var j = context.buttonheight*4;
+            var j = context.buttonheight*2;
             if (y < -j || y >= window.innerHeight+j)
                 continue;
             context.visibles.push({slice, x, y, m});
@@ -535,18 +535,12 @@ var AboutBar = function (size)
     {
         context.save();
         context.font = "1rem Archivo Black";
-        var a = new RowA([70,0,BEXTENT],
+        var a = new RowA([50,0,BEXTENT],
         [
             new Layer(
             [
                 new Fill(BARFILL),
-                new RowA([0,24,24,0],
-                [
-                    0,
-                    new Text("white", "center", "middle",0, 0, 1),
-                    new Text("white", "center", "middle",0, 0, 1),
-                    0,
-                ]),
+                new Text("white", "center", "middle",0, 0, 1),
             ]),
             0,
             new Layer(
@@ -564,12 +558,7 @@ var AboutBar = function (size)
 
         a.draw(context, rect,
         [
-            [
-                0,
-                "Panoramic",
-                "Image Browser",
-                0,
-            ],
+            "Options",
             0,
             [
                 0,
@@ -591,15 +580,14 @@ var SearchBar = function (size)
     {
         context.save();
         context.font = "1rem Archivo Black";
-        var a = new RowA([70,0,80],
+        var a = new RowA([50,0,80],
         [
             new Layer(
             [
                 new Fill(BARFILL),
-                new RowA([0,24,24,0],
+                new Row([0,24,0],
                 [
                     0,
-                    new Text("white", "center", "middle", 0, 0, 1),
                     new Text("white", "center", "middle", 0, 0, 1),
                     0,
                 ])
@@ -622,12 +610,7 @@ var SearchBar = function (size)
         var j = Math.floor((1-context.timeobj.berp())*context.sliceobj.length())+1;
         a.draw(context, rect,
         [
-            [
-                0,
-                galleryobj.repos?galleryobj.repos.proper():"Dalle2",
-                "Image Search",
-                0,
-            ],
+            url.path.proper(),
             0,
             [
                 j.toFixed(0),
@@ -688,15 +671,15 @@ var ScrollBarPanel = function ()
 
 var eventlst =
 [
-    {name: "_1cnvctx", contextmenu: "DEFAULT", mouse: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", draw: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "DEFAULT", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 0},
-    {name: "_2cnvctx", contextmenu: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 0},
-    {name: "_3cnvctx", contextmenu: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new SourceBar(), scroll: new ScrollDualPanel(), buttonheight: 90},
-    {name: "_4cnvctx", contextmenu: "DEFAULT", mouse: "BOSS", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", draw: "BOSS", wheel: "BOSS", drop: "BOSS", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new Empty(), scroll: new ScrollDualPanel(), buttonheight: 30},
-    {name: "_5cnvctx", contextmenu: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new InfoBar(), scroll: new ScrollBarPanel(), buttonheight: 90},
-    {name: "_6cnvctx", contextmenu: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new ShareBar(), scroll: new ScrollBarPanel(), buttonheight: 60},
-    {name: "_7cnvctx", contextmenu: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollDualPanel(), buttonheight: 90},
-    {name: "_8cnvctx", contextmenu: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "GMENU", pan: "MENU", swipe: "MENU", draw: "GMENU", wheel: "MENU", drop: "DEFAULT", key: "GMENU", press: "GPRESS", pinch: "DEFAULT", bar: new SearchBar(), scroll: new ScrollDualPanel(), buttonheight: 200},
-    {name: "_9cnvctx", contextmenu: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MMENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new AboutBar(), scroll: new ScrollBarPanel(), buttonheight: 60},
+    {name: "_1cnvctx", mouse: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", draw: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "DEFAULT", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 0},
+    {name: "_2cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 0},
+    {name: "_3cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new SourceBar(), scroll: new ScrollDualPanel(), buttonheight: 90},
+    {name: "_4cnvctx", mouse: "BOSS", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", draw: "BOSS", wheel: "BOSS", drop: "BOSS", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new Empty(), scroll: new ScrollDualPanel(), buttonheight: 30},
+    {name: "_5cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new InfoBar(), scroll: new ScrollDualPanel(), buttonheight: 90},
+    {name: "_6cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new ShareBar(), scroll: new ScrollBarPanel(), buttonheight: 50},
+    {name: "_7cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollDualPanel(), buttonheight: 90},
+    {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "GMENU", pan: "MENU", swipe: "MENU", draw: "GMENU", wheel: "MENU", drop: "DEFAULT", key: "GMENU", press: "GPRESS", pinch: "DEFAULT", bar: new SearchBar(), scroll: new ScrollDualPanel(), buttonheight: 200},
+    {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MMENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new AboutBar(), scroll: new ScrollBarPanel(), buttonheight: 50},
 ];
 
 function seteventspanel(panel)
@@ -732,10 +715,6 @@ function setevents(context, obj)
     k = keylst[k];
     context.keyup_ = k.keyup;
     context.keydown_ = k.keydown;
-
-    var k = contextmenulst.findIndex(function (a) { return a.name == obj.contextmenu });
-    k = contextmenulst[k];
-    context.contextmenu = k.hit;
 
     var k = wheelst.findIndex(function (a) { return a.name == obj.wheel });
     k = wheelst[k];
@@ -1457,8 +1436,6 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     delete _4cnvctx.thumbcanvas;
     delete photo.image;
     _4cnvctx.setcolumncomplete = 0;
-    headobj.set(4);
-    headham.panel = headobj.getcurrent();
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     contextobj.reset();
     setTimeout(function()
@@ -1580,15 +1557,6 @@ var makehammer = function (context, v, t)
         if (typeof (ham.panel.swipeupdown) == "function")
             ham.panel.swipeupdown(context, new rectangle(0, 0, ham.element.width, ham.element.height), x, y, evt);
     });
-
-    ham.element.addEventListener("contextmenu", function (evt)
-    {
-   	    evt.preventDefault();
-        var x = evt.offsetX;
-        var y = evt.offsetY;
-        if (typeof (ham.panel.contextmenu) == "function")
-            ham.panel.contextmenu(context, new rectangle(0, 0, ham.element.width, ham.element.height), x, y);
-    }, false);
 
     ham.element.addEventListener("dragleave", function (evt)
     {
@@ -1797,21 +1765,6 @@ var _8ham = makehammer(_8cnvctx,0.5,15);
 var _9ham = makehammer(_9cnvctx,0.5,15);
 var headham = makehammer(headcnvctx,0.5,15);
 _4ham.get('pinch').set({ enable: true });
-
-var contextmenulst =
-[
-{
-    name: "DEFAULT",
-    hit: function (context, rect, x, y) { },
-},
-{
-    name: "BOSS",
-    hit: function (context, rect, x, y)
-    {
-        menushow(_6cnvctx);
-    },
-},
-]
 
 var wheelst =
 [
@@ -3066,7 +3019,7 @@ var taplst =
             context.timeobj.set(k);
             context.refresh();
         }
-        else if (y < BEXTENT)
+        else if (y < 50)
         {
             menuhide();
         }
@@ -3114,7 +3067,7 @@ var taplst =
             context.timeobj.set(k);
             context.refresh();
         }
-        else if (y < BEXTENT)
+        else if (y < 50)
         {
             menuhide();
         }
@@ -3332,7 +3285,7 @@ var menulst =
 
         var a = new Layer(
         [
-            new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 17),
+            new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 20),
             new MultiText(e)
         ]);
 
@@ -3533,8 +3486,8 @@ var menulst =
 
         var a = new Layer(
         [
-            new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 3),
-            new Shrink(new Text(fontclr, "center", "middle",0, 0, 1),20,0),
+            new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 10),
+            new Shrink(new Text(fontclr, "center", "middle",0, 0, 1), 20, 0),
         ]);
 
         a.draw(context, rect, user.title, time);
@@ -4787,12 +4740,6 @@ var YollPanel = function ()
         	context.pinchend_(context);
 	}
 
-    this.contextmenu = function(context, rect, x, y)
-	{
-   		if (context.contextmenu)
-        	context.contextmenu(context, rect, x, y);
-	}
-
     this.pinchstart = function(context, rect, x, y)
 	{
    		if (context.pinchstart_)
@@ -5225,24 +5172,7 @@ var headlst =
 
     	this.tap = function (context, rect, x, y)
 		{
-            clearInterval(globalobj.slideshow);
-            globalobj.slideshow = 0;
-            if (ismenu())
-            {
-                menuhide();
-            }
-            else if (context.moveprev && context.moveprev.hitest(x,y))
-            {
-                _4cnvctx.movepage(-1);
-            }
-            else if (context.movenext && context.movenext.hitest(x,y))
-            {
-                _4cnvctx.movepage(1);
-            }
-            else if (context.prompt.hitest(x,y))
-            {
-                showsearch(galleryobj.repos)
-            }
+            menushow(_3cnvctx);
 		};
 
 		this.draw = function (context, rect, user, time)
@@ -5250,37 +5180,19 @@ var headlst =
             context.save();
             context.clear();
             context.font = "1rem Archivo Black";
-            context.moveprev = new rectangle()
-            context.movenext = new rectangle()
-            context.prompt = new rectangle()
 
             var a = new Layer(
             [
-                    galleryobj.length()?0:new Fill("rgb(70,70,70)"),
-                    new Col([BEXTENT,0,BEXTENT],
+                    new Fill("black"),
+                    new Col([0,60,0],
                     [
-                        galleryobj.length()==0?0:new Shrink(new Layer(
-                        [
-                            new Rectangle(context.moveprev),
-                            new Shrink(new CirclePanel(_4cnvctx.movingpage == -1?MENUTAP:SCROLLNAB,"white",3),5,5),
-                            new Shrink(new ArrowPanel(ARROWFILL,270),20,20),
-                        ]),10,10),
-                        new Layer(
-                        [
-                            new Rectangle(context.prompt),
-                            new Text("white", "center", "middle", 0, 0, 1),
-                        ]),
-                        galleryobj.length()==0?0:new Shrink(new Layer(
-                        [
-                            new Rectangle(context.movenext),
-                            new Shrink(new CirclePanel(_4cnvctx.movingpage == 1?MENUTAP:SCROLLNAB,"white",3),5,5),
-                            new Shrink(new ArrowPanel(ARROWFILL,90),20,20),
-                        ]),10,10)
+                        0,
+                        new SearchPanel("white","black"),
+                        0
                     ])
                ]);
 
-            var s = galleryobj.length() ? "" : "0 Images"
-            a.draw(context, rect, s, time);
+            a.draw(context, rect, user, time);
             context.restore()
 		};
 	},
@@ -5536,26 +5448,26 @@ galleryobj.init = function(obj)
     speedyobj.split(1.25, "1-20", speedyobj.length());
 
     var h = window.self !== window.top ? 0 : BEXTENT;
-    headobj.set(4);
+    headobj.set(0);
     headcnvctx.show(0,0,window.innerWidth,h);
     headham.panel = headobj.getcurrent();
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+
+    if (!galleryobj.length())
+        showsearch("pexels");
 
     _3cnvctx.sliceobj.data =
     [
         {line:"Unsplash\nImage Search", path: "UNSPLASH", func: function()
             {
-                menuhide();
                 showsearch("unsplash");
             }},
         {line:"Pexels\nImage Search", path: "PEXELS", func: function()
             {
-                menuhide();
                 showsearch("pexels");
             }},
         {line:"Pixabay\nImage Search", path: "PEXELS", func: function()
             {
-                menuhide();
                 showsearch("pixabay");
             }},
     ];
@@ -5643,7 +5555,7 @@ galleryobj.init = function(obj)
     var slices = _9cnvctx.sliceobj;
     slices.data = [];
 
-    slices.data.push({title:"Image Search", path: "SEARCH", func: function() { showsearch(galleryobj.repos) }});
+    slices.data.push({title:"Image Search", path: "SEARCH", func: function() { menushow(_3cnvctx); }});
     slices.data.push({title:"Image Prompt", path: "PROMPT", func: function() { showprompt() }});
     slices.data.push({title:"Image Slideshow", path: "SLIDESHOW", func: function() { menuhide(); startslideshow(); }});
     slices.data.push({title:"Image Metadata", path: "METADATA", func: info})
