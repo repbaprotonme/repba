@@ -26,11 +26,11 @@ const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(255,175,0,0.75)";
 const MENUTAP = "rgba(255,175,0,0.75)";
 const SCROLLNAB = "rgba(0,0,0,0.4)";
-const BARFILL = "rgba(0.0,0,0.6)";
+const BARFILL = "rgba(0,0,0,0.3)";
 const MENUCOLOR = "rgba(0,0,0,0.60)";
 const OPTIONFILL = "white";
 const THUMBFILP = "rgba(0,0,0,0.2)";
-const THUMBFILL = "rgba(0,0,0,0.4)";
+const THUMBFILL = "rgba(0,0,0,0.3)";
 const THUMBSTROKE = "rgba(255,255,255,0.75)";
 const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
@@ -441,13 +441,71 @@ var Empty = function()
     }
 };
 
-var AboutBarPanel = function (size)
+var ShareBar = function (size)
 {
     this.draw = function (context, rect, user, time)
     {
         context.save();
         context.font = "1rem Archivo Black";
-        var a = new RowA([BEXTENT,0,BEXTENT],
+        var a = new RowA([50,0,BEXTENT],
+        [
+            new Layer(
+            [
+                new Fill(BARFILL),
+                new Text("white", "center", "middle",0, 0, 1),
+            ]),
+            0,
+            0
+        ]);
+
+        a.draw(context, rect,
+        [
+           "Share Menu",
+            0,
+            0,
+        ]
+        )
+
+        context.restore();
+    }
+};
+
+var SourceBar = function (size)
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.save();
+        context.font = "1rem Archivo Black";
+        var a = new RowA([50,0,BEXTENT],
+        [
+            new Layer(
+            [
+                new Fill(BARFILL),
+                new Text("white", "center", "middle",0, 0, 1),
+            ]),
+            0,
+            0
+        ]);
+
+        a.draw(context, rect,
+        [
+           "Image Source",
+            0,
+            0,
+        ]
+        )
+
+        context.restore();
+    }
+};
+
+var AboutBar = function (size)
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.save();
+        context.font = "1rem Archivo Black";
+        var a = new RowA([70,0,BEXTENT],
         [
             new Layer(
             [
@@ -478,8 +536,8 @@ var AboutBarPanel = function (size)
         [
             [
                 0,
-                "Contact",
-                "images@reportbase.com",
+                "Panoramic",
+                "Image Browser",
                 0,
             ],
             0,
@@ -497,13 +555,13 @@ var AboutBarPanel = function (size)
 };
 
 
-var SearchBarPanel = function (size)
+var SearchBar = function (size)
 {
     this.draw = function (context, rect, user, time)
     {
         context.save();
         context.font = "1rem Archivo Black";
-        var a = new RowA([80,0,80],
+        var a = new RowA([70,0,80],
         [
             new Layer(
             [
@@ -600,15 +658,15 @@ var ScrollBarPanel = function ()
 
 var eventlst =
 [
-    {name: "_1cnvctx", mouse: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", draw: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "DEFAULT", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 0},
-    {name: "_2cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 0},
-    {name: "_3cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollDualPanel(), buttonheight: 90},
-    {name: "_4cnvctx", mouse: "BOSS", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", draw: "BOSS", wheel: "BOSS", drop: "BOSS", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new Empty(), scroll: new ScrollDualPanel(), buttonheight: 30},
-    {name: "_5cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 30},
-    {name: "_6cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 30},
-    {name: "_7cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollDualPanel(), buttonheight: 90},
-    {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "GMENU", pan: "MENU", swipe: "MENU", draw: "GMENU", wheel: "MENU", drop: "DEFAULT", key: "GMENU", press: "GPRESS", pinch: "DEFAULT", bar: new SearchBarPanel(), scroll: new ScrollDualPanel(), buttonheight: 200},
-    {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MMENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new AboutBarPanel(), scroll: new ScrollBarPanel(), buttonheight: 30},
+    {name: "_1cnvctx", contextmenu: "DEFAULT", mouse: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", draw: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "DEFAULT", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 0},
+    {name: "_2cnvctx", contextmenu: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 0},
+    {name: "_3cnvctx", contextmenu: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new SourceBar(), scroll: new ScrollDualPanel(), buttonheight: 90},
+    {name: "_4cnvctx", contextmenu: "BOSS", mouse: "BOSS", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", draw: "BOSS", wheel: "BOSS", drop: "BOSS", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new Empty(), scroll: new ScrollDualPanel(), buttonheight: 30},
+    {name: "_5cnvctx", contextmenu: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 90},
+    {name: "_6cnvctx", contextmenu: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new ShareBar(), scroll: new ScrollBarPanel(), buttonheight: 30},
+    {name: "_7cnvctx", contextmenu: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollDualPanel(), buttonheight: 90},
+    {name: "_8cnvctx", contextmenu: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "GMENU", pan: "MENU", swipe: "MENU", draw: "GMENU", wheel: "MENU", drop: "DEFAULT", key: "GMENU", press: "GPRESS", pinch: "DEFAULT", bar: new SearchBar(), scroll: new ScrollDualPanel(), buttonheight: 200},
+    {name: "_9cnvctx", contextmenu: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MMENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new AboutBar(), scroll: new ScrollBarPanel(), buttonheight: 30},
 ];
 
 function seteventspanel(panel)
@@ -644,6 +702,10 @@ function setevents(context, obj)
     k = keylst[k];
     context.keyup_ = k.keyup;
     context.keydown_ = k.keydown;
+
+    var k = contextmenulst.findIndex(function (a) { return a.name == obj.contextmenu });
+    k = contextmenulst[k];
+    context.contextmenu = k.hit;
 
     var k = wheelst.findIndex(function (a) { return a.name == obj.wheel });
     k = wheelst[k];
@@ -1347,7 +1409,7 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
         return;
 
     var e = galleryobj.current();
-    galleryobj.rotate(j);//todo does not work for 1 of 100 previous
+    galleryobj.rotate(j);
     var k = galleryobj.getcurrent();
     galleryobj.set(e);
     if (!k.file && (_4cnvctx.movingpage || !k.loaded || galleryobj.length() == 1))
@@ -1489,13 +1551,13 @@ var makehammer = function (context, v, t)
             ham.panel.swipeupdown(context, new rectangle(0, 0, ham.element.width, ham.element.height), x, y, evt);
     });
 
-    ham.element.addEventListener("auxclick", function (evt)
+    ham.element.addEventListener("contextmenu", function (evt)
     {
    	    evt.preventDefault();
         var x = evt.offsetX;
         var y = evt.offsetY;
-        if (typeof (ham.panel.auxclick) == "function")
-            ham.panel.auxclick(context, new rectangle(0, 0, ham.element.width, ham.element.height), x, y);
+        if (typeof (ham.panel.contextmenu) == "function")
+            ham.panel.contextmenu(context, new rectangle(0, 0, ham.element.width, ham.element.height), x, y);
     }, false);
 
     ham.element.addEventListener("dragleave", function (evt)
@@ -1705,6 +1767,21 @@ var _8ham = makehammer(_8cnvctx,0.5,15);
 var _9ham = makehammer(_9cnvctx,0.5,15);
 var headham = makehammer(headcnvctx,0.5,15);
 _4ham.get('pinch').set({ enable: true });
+
+var contextmenulst =
+[
+{
+    name: "DEFAULT",
+    hit: function (context, rect, x, y) { },
+},
+{
+    name: "BOSS",
+    hit: function (context, rect, x, y)
+    {
+        menushow(_6cnvctx);
+    },
+},
+]
 
 var wheelst =
 [
@@ -2916,23 +2993,50 @@ var taplst =
     },
 },
 {
+    name: "SMENU",
+    tap: function (context, rect, x, y)
+    {
+        var obj = context.scrollobj;
+        if (y < 50)
+        {
+            menuhide();
+        }
+        else
+        {
+            var k = getbuttonfrompoint(context, x, y);
+            if (k == -1)
+            {
+                menuhide();
+                return;
+            }
+
+            var slice = context.sliceobj.data[k];
+            slice.tap = 1;
+            context.refresh();
+            setTimeout(function ()
+            {
+                slice.tap = 0;
+                slice.func(k)
+                context.refresh();
+            }, JULIETIME*3);
+        }
+    },
+},
+{
     name: "MMENU",
     tap: function (context, rect, x, y)
     {
         var obj = context.scrollobj;
-        if (x < MENUBARWIDTH*2)
-        {
-            var j = y/rect.height;
-            var k = obj.length()*j;
-            obj.set(k);
-            context.refresh();
-        }
-        else if (x > rect.width - (MENUBARWIDTH*2) )
+        if (x > rect.width - (MENUBARWIDTH*2) )
         {
             var j = y/rect.height;
             var k = TIMEOBJ*(1-j);
             context.timeobj.set(k);
             context.refresh();
+        }
+        else if (y < BEXTENT)
+        {
+            menuhide();
         }
         else if (y > rect.height-BEXTENT)
         {
@@ -4647,6 +4751,12 @@ var YollPanel = function ()
         	context.pinchend_(context);
 	}
 
+    this.contextmenu = function(context, rect, x, y)
+	{
+   		if (context.contextmenu)
+        	context.contextmenu(context, rect, x, y);
+	}
+
     this.pinchstart = function(context, rect, x, y)
 	{
    		if (context.pinchstart_)
@@ -5314,9 +5424,9 @@ function setfavicon()
 {
     var element = document.querySelector("link[rel='icon']");
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
-      element.setAttribute("href","res/favicon-light.svg");
+      element.setAttribute("href","res/light.svg");
     else
-      element.setAttribute("href","res/favicon-dark.svg");
+      element.setAttribute("href","res/dark.svg");
 }
 
 window.addEventListener("visibilitychange", (evt) =>
@@ -5710,7 +5820,6 @@ function info()
     }
 //todo
     _5cnvctx.buttonheight = 90;
-    _5cnvctx.slidereduce = 0.75;
     _5cnvctx.sliceobj.data  = getslices();
     _5cnvctx.delayinterval = DELAYCENTER / _5cnvctx.sliceobj.data.length;
     _5cnvctx.virtualheight = _5cnvctx.sliceobj.data.length*_5cnvctx.buttonheight;
@@ -5739,6 +5848,8 @@ function showsearch(repos)
 
         globalobj.saverepos = repos?repos:"pexels";
         var btn = document.getElementById('source');
+        btn.textContent = globalobj.saverepos.proper();
+        var btn = document.getElementById('search-source');
         btn.textContent = globalobj.saverepos.proper();
         document.getElementById('search').value = url.path;
         const overlay = document.querySelector('.search-overlay');
