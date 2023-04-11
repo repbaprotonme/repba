@@ -5447,14 +5447,20 @@ galleryobj.init = function(obj)
     letchobj.split(60, "40-90", letchobj.length());
     speedyobj.split(1.25, "1-20", speedyobj.length());
 
+    if (!galleryobj.length())
+    {
+        headobj.set(4);
+        showsearch("pexels");
+    }
+    else
+    {
+        headobj.set(0);
+    }
+
     var h = window.self !== window.top ? 0 : BEXTENT;
-    headobj.set(0);
     headcnvctx.show(0,0,window.innerWidth,h);
     headham.panel = headobj.getcurrent();
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-
-    if (!galleryobj.length())
-        showsearch("pexels");
 
     _3cnvctx.sliceobj.data =
     [
