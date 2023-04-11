@@ -240,7 +240,7 @@ function drawslices()
             if (!slice)
                 break;
             context.save();
-            if (factorobj.enabled)
+            if (galleryobj.pose || factorobj.enabled)
                 context.clear();
             context.translate(-colwidth, 0);
             context.shadowOffsetX = 0;
@@ -3226,7 +3226,8 @@ var thumblst =
 
             var r = new rectangle(x,y,w,h);
             var whitestroke = new Stroke(THUMBSTROKE,THUMBORDER);
-            whitestroke.draw(context, r, 0, 0);
+            if (!galleryobj.pose)
+                whitestroke.draw(context, r, 0, 0);
             var region = new Path2D();
             region.rect(x,y,w,h);
             context.clip(region);
@@ -3678,6 +3679,12 @@ function resetcanvas()
 var extentlst =
 [
 {
+    name: "DEFAULT",
+    init: function ()
+    {
+    },
+},
+{
     name: "TALL",
     init: function ()
     {
@@ -3979,7 +3986,8 @@ var ContextObj = (function ()
                         startslideshow();
                     }
 
-                    _4cnvctx.tab();
+                    if (!galleryobj.pose)
+                        _4cnvctx.tab();
 
                     _4cnvctx.pinched = 0;
                     contextobj.resize(context);
@@ -4037,7 +4045,7 @@ function masterload()
            return;
         var id = galleryobj.getcurrent().id;
         var path = `https://reportbase.com/image/${id}/${galleryobj.template}`;
-        if (galleryobj.repos)
+        if (!id || galleryobj.repos)
             path = galleryobj.getcurrent().full;
         lst[n].src = path;
         lst[n].index = galleryobj.current();
@@ -5635,10 +5643,10 @@ galleryobj.init = function(obj)
     var slices = _9cnvctx.sliceobj;
     slices.data = [];
 
-    slices.data.push({title:"Search", path: "SEARCH", func: function() { showsearch(galleryobj.repos) }});
-    slices.data.push({title:"Prompt", path: "PROMPT", func: function() { showprompt() }});
-    slices.data.push({title:"Slideshow", path: "SLIDESHOW", func: function() { menuhide(); startslideshow(); }});
-    slices.data.push({title:"Metadata", path: "METADATA", func: info})
+    slices.data.push({title:"Image Search", path: "SEARCH", func: function() { showsearch(galleryobj.repos) }});
+    slices.data.push({title:"Image Prompt", path: "PROMPT", func: function() { showprompt() }});
+    slices.data.push({title:"Image Slideshow", path: "SLIDESHOW", func: function() { menuhide(); startslideshow(); }});
+    slices.data.push({title:"Image Metadata", path: "METADATA", func: info})
     slices.data.push({title:"Open", path: "OPEN", func: function()
         {
             menuhide();
@@ -5680,15 +5688,14 @@ galleryobj.init = function(obj)
             menuhide();
         }})
 
-    slices.data.push({title:"Thumbnail", path: "THUMBNAIL", func: function()
+    slices.data.push({title:"Image Thumbnail", path: "THUMBNAIL", func: function()
         {
                thumbobj.rotate(1);
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
                 _4cnvctx.refresh();
         }})
 
-    slices.data.push({title:"Share", path: "SHARE", func: function() { menushow(_6cnvctx); }})
-    slices.data.push({title:"Close", path: "CLOSE", func: function(){menuhide(); }})
+    slices.data.push({title:"Image Share", path: "SHARE", func: function() { menushow(_6cnvctx); }})
     slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
 
     slices.data.push({title:"Fullscreen", path: "FULLPANEL", func: function ()
