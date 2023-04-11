@@ -34,10 +34,10 @@ const THUMBFILL = "rgba(0,0,0,0.3)";
 const THUMBSTROKE = "rgba(255,255,255,0.75)";
 const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
-const SLIDETOP = 18
-const SLIDEFACTOR = 60;
 const SCROLLBARWIDTH = 8;
 const SLIDEDEFAULT = 1500;
+const SLIDETOP = 1.0;
+const SLIDEFACTOR = 1000;
 
 globalobj = {};
 
@@ -214,7 +214,6 @@ function drawslices()
             else
                 context.lastime = context.timeobj.current();
 
-            context.timeobj.CURRENT = Math.clamp(1,context.timeobj.length(),context.timeobj.CURRENT);
             if (context.timemain)
             {
                 context.slidestop -= context.slidereduce;
@@ -1457,7 +1456,7 @@ CanvasRenderingContext2D.prototype.hide = function ()
 CanvasRenderingContext2D.prototype.tab = function ()
 {
     var context = this;
-    context.slidestop = (context.timeobj.length()/context.virtualwidth)*SLIDETOP;
+    context.slidestop = (context.virtualwidth/context.timeobj.length())*SLIDETOP;
     context.slidereduce = context.slidestop/SLIDEFACTOR;
     clearInterval(context.timemain);
     context.timemain = setInterval(function () { drawslices() }, timemain.getcurrent());
@@ -5437,7 +5436,13 @@ function wraptext(ctx, text, maxWidth)
 }
 
 var galleryobj = new circular_array("", 0);
-galleryobj.init = function(obj)
+
+fetch(path)
+.then(function (response)
+{
+  return response.json()
+})
+.then(function (obj)
 {
     galleryobj = Object.assign(galleryobj,obj);
     galleryobj.set(url.project);
@@ -5630,16 +5635,6 @@ galleryobj.init = function(obj)
         });
 
     contextobj.reset();
-};
-
-fetch(path)
-.then(function (response)
-{
-  return response.json()
-})
-.then(function (obj)
-{
-  galleryobj.init(obj);
 })
 .catch((error) =>
 {
