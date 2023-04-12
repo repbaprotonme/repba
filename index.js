@@ -316,7 +316,7 @@ function drawslices()
         }
     }
 
-    var lst = [_3cnvctx,  _5cnvctx, _6cnvctx, _7cnvctx, _8cnvctx, _9cnvctx,];
+    var lst = [_1cnvctx, _2cnvctx, _3cnvctx,  _5cnvctx, _6cnvctx, _7cnvctx, _8cnvctx, _9cnvctx,];
     for (var n = 0; n < lst.length; n++)
     {
         var context = lst[n];
@@ -440,18 +440,31 @@ var Empty = function()
     }
 };
 
-var ShareBar = function (size)
+var BarPanel = function (header)
 {
     this.draw = function (context, rect, user, time)
     {
         context.save();
+        context.cancel = new rectangle();
         context.font = "1rem Archivo Black";
         var a = new RowA([50,0,BEXTENT],
         [
-            new Layer(
+            new LayerA(
             [
                 new Fill(BARFILL),
-                new Text("white", "center", "middle",0, 0, 1),
+                new Text("white", "center", "middle", 0, 0, 1),
+                new Col([0,0,50,15],
+                [
+                    0,
+                    0,
+                    new Layer(
+                    [
+                        new Rectangle(context.cancel),
+                        new Shrink(new CirclePanel(SCROLLNAB,THUMBSTROKE,4),10,10),
+                        new Text("white", "center", "middle", 0, 0, 1),
+                    ]),
+                    0,
+                ]),
             ]),
             0,
             0
@@ -459,88 +472,28 @@ var ShareBar = function (size)
 
         a.draw(context, rect,
         [
-           "Image Share",
-            0,
-            0,
-        ]
-        )
-
-        context.restore();
-    }
-};
-
-var InfoBar = function (size)
-{
-    this.draw = function (context, rect, user, time)
-    {
-        context.save();
-        context.font = "1rem Archivo Black";
-        var a = new RowA([50,0,BEXTENT],
-        [
-            new Layer(
             [
-                new Fill(BARFILL),
-                new Text("white", "center", "middle",0, 0, 1),
-            ]),
+                0,
+                header,
+                "X",
+            ],
             0,
-            0
+            0,
         ]);
 
-        a.draw(context, rect,
-        [
-           "Image Metadata",
-            0,
-            0,
-        ]
-        )
-
         context.restore();
     }
 };
 
-
-var SourceBar = function (size)
+var AboutBar = function ()
 {
     this.draw = function (context, rect, user, time)
     {
         context.save();
         context.font = "1rem Archivo Black";
-        var a = new RowA([50,0,BEXTENT],
+        var a = new Row([50,0,BEXTENT],
         [
-            new Layer(
-            [
-                new Fill(BARFILL),
-                new Text("white", "center", "middle",0, 0, 1),
-            ]),
-            0,
-            0
-        ]);
-
-        a.draw(context, rect,
-        [
-           "Image Search",
-            0,
-            0,
-        ]
-        )
-
-        context.restore();
-    }
-};
-
-var AboutBar = function (size)
-{
-    this.draw = function (context, rect, user, time)
-    {
-        context.save();
-        context.font = "1rem Archivo Black";
-        var a = new RowA([50,0,BEXTENT],
-        [
-            new Layer(
-            [
-                new Fill(BARFILL),
-                new Text("white", "center", "middle",0, 0, 1),
-            ]),
+            new BarPanel("Options"),
             0,
             new Layer(
             [
@@ -556,51 +509,41 @@ var AboutBar = function (size)
         ]);
 
         a.draw(context, rect,
-        [
-            "Options",
-            0,
             [
                 0,
                 "Contact",
                 "images@reportbase.com",
                 0,
-            ]
-        ]
-        )
+            ])
 
         context.restore();
     }
 };
 
 
-var SearchBar = function (size)
+var SearchBar = function ()
 {
     this.draw = function (context, rect, user, time)
     {
         context.save();
         context.font = "1rem Archivo Black";
-        var a = new RowA([50,0,80],
+        var a = new RowA([70,0,80],
         [
-            new LayerA(
+            new Layer(
             [
                 new Fill(BARFILL),
-                new Col([0,0,50,15],
+                new ColA([15,70,0,70,15],
                 [
                     0,
                     0,
+                    new MultiText(0),
                     new Layer(
                     [
-                        new Shrink(new CirclePanel(SCROLLNAB,THUMBSTROKE,3),11,11),
+                        new Shrink(new CirclePanel(SCROLLNAB,THUMBSTROKE,3),16,16),
                         new Text("white", "center", "middle", 0, 0, 1),
                     ]),
                     0,
                 ]),
-                new Row([0,24,0],
-                [
-                    0,
-                    new Text("white", "center", "middle", 0, 0, 1),
-                    0,
-                ])
             ]),
             0,
             new Layer(
@@ -629,13 +572,16 @@ var SearchBar = function (size)
             ])
         ]);
 
+        var e = galleryobj.title ? galleryobj.title : url.path.proper();
         var j = Math.floor((1-context.timeobj.berp())*context.sliceobj.length())+1;
         a.draw(context, rect,
         [
             [
                 0,
+                0,
+                e.split("\n"),
                 "X",
-                url.path.proper(),
+                0,
             ],
             0,
             [
@@ -702,11 +648,11 @@ var ScrollBarPanel = function ()
 var eventlst =
 [
     {name: "_1cnvctx", mouse: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", draw: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "DEFAULT", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 0},
-    {name: "_2cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 0},
-    {name: "_3cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new SourceBar(), scroll: new ScrollDualPanel(), buttonheight: 90},
+    {name: "_2cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new BarPanel("Account"), scroll: new ScrollBarPanel(), buttonheight: 50},
+    {name: "_3cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new BarPanel("Search"), scroll: new ScrollDualPanel(), buttonheight: 90},
     {name: "_4cnvctx", mouse: "BOSS", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", draw: "BOSS", wheel: "BOSS", drop: "BOSS", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new Empty(), scroll: new ScrollDualPanel(), buttonheight: 30},
-    {name: "_5cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new InfoBar(), scroll: new ScrollDualPanel(), buttonheight: 90},
-    {name: "_6cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new ShareBar(), scroll: new ScrollBarPanel(), buttonheight: 50},
+    {name: "_5cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new BarPanel("Metadata"), scroll: new ScrollDualPanel(), buttonheight: 90},
+    {name: "_6cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new BarPanel("Share"), scroll: new ScrollBarPanel(), buttonheight: 50},
     {name: "_7cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollDualPanel(), buttonheight: 90},
     {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "GMENU", pan: "MENU", swipe: "MENU", draw: "GMENU", wheel: "MENU", drop: "DEFAULT", key: "GMENU", press: "GPRESS", pinch: "DEFAULT", bar: new SearchBar(), scroll: new ScrollDualPanel(), buttonheight: 200},
     {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MMENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new AboutBar(), scroll: new ScrollBarPanel(), buttonheight: 50},
@@ -901,8 +847,8 @@ var MultiText = function (e)
 {
     this.draw = function (context, rect, user, time)
     {
-        rect.x = 20;
-        rect.width -= 40;
+        //todo rect.x = 20;
+        //rect.width -= 40;
         var lst = [];
         for (var n = 0; n < user.length; n++)
         {
@@ -916,7 +862,7 @@ var MultiText = function (e)
         var len = Math.min(lst.length,Math.floor(rect.height/rowheight));
         var k = len < lst.length;
         rect.y -= (len*(rowheight))/2;
-        rect.y += 5;
+        rect.y += 10;
 
         if (e)
         {
@@ -1091,7 +1037,6 @@ var SearchPanel = function (color, shadow)
 
         a.draw(context, rect, user, time);
         context.restore();
-
     }
 };
 
@@ -3014,7 +2959,7 @@ var taplst =
     tap: function (context, rect, x, y)
     {
         var obj = context.scrollobj;
-        if (y < 50)
+        if (context.cancel && context.cancel.hitest(x,y))
         {
             menuhide();
         }
@@ -3053,7 +2998,8 @@ var taplst =
         }
         else if (y < 50)
         {
-            menuhide();
+            if (x >  rect.width - 70)
+                menuhide();
         }
         else if (y > rect.height-BEXTENT)
         {
@@ -3466,7 +3412,13 @@ var menulst =
         else
         {
             var e = _8cnvctx.textscrollobj.berp();
-            var a = new MultiText(e);
+            var a = new Col([20,0,20],
+            [
+                0,
+                new MultiText(e),
+                0,
+            ]);
+
             a.draw(context, rect, user.lst, 0);
         }
 
@@ -5506,6 +5458,34 @@ fetch(path)
     headcnvctx.show(0,0,window.innerWidth,h);
     headham.panel = headobj.getcurrent();
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+
+    //_2cnv
+    _2cnvctx.sliceobj.data =
+    [
+        {title:"Login", path: "LOGIN", func: function() { authClient.redirectToLoginPage(); }},
+        {title:"Logout", path: "LOGOUT", func: function() { authClient.logout(true) }},
+        {title:"Account", path: "ACCOUNT", func: function() { authClient.redirectToAccountPage() }},
+
+        {title:"Delete", path: "DELETE", func: function()
+            {
+                var modalTitle = document.getElementById("delete-label");
+                modalTitle.innerHTML = `Delete Image: ${galleryobj.current()+1} of ${galleryobj.length()}`;
+                const overlay = document.querySelector('.delete-overlay');
+                overlay.style.display = 'flex';
+            }},
+
+        {title:"Upload", path: "UPLOAD", func: function()
+            {
+                setTimeout(function()
+                {
+                    document.getElementById('upload-label').innerHTML = "Upload Image";
+                    const overlay = document.querySelector('.upload-overlay');
+                    overlay.style.display = 'flex';
+                }, 40);
+            }},
+    ];
+
+    //_3cnv
     _3cnvctx.sliceobj.data =
     [
         {line:"Unsplash\nImage Search", path: "UNSPLASH", func: function()
@@ -5605,10 +5585,11 @@ fetch(path)
     var slices = _9cnvctx.sliceobj;
     slices.data = [];
 
-    slices.data.push({title:"Image Search", path: "SEARCH", func: function() { menushow(_3cnvctx); }});
-    slices.data.push({title:"Image Prompt", path: "PROMPT", func: function() { showprompt() }});
-    slices.data.push({title:"Image Slideshow", path: "SLIDESHOW", func: function() { menuhide(); startslideshow(); }});
-    slices.data.push({title:"Image Metadata", path: "METADATA", func: info})
+    slices.data.push({title:"Account", path: "ACCOUNt", func: function() { menushow(_2cnvctx); }});
+    slices.data.push({title:"Search", path: "SEARCH", func: function() { menushow(_3cnvctx); }});
+    slices.data.push({title:"Prompt", path: "PROMPT", func: function() { showprompt() }});
+    slices.data.push({title:"Slideshow", path: "SLIDESHOW", func: function() { menuhide(); startslideshow(); }});
+    slices.data.push({title:"Metadata", path: "METADATA", func: info})
     slices.data.push({title:"Open", path: "OPEN", func: function()
         {
             menuhide();
@@ -5616,48 +5597,20 @@ fetch(path)
         }});
 
 
-    if (url.protocol == "https:")
-    {
-        slices.data.push({title:"Login", path: "LOGIN", func: function() { authClient.redirectToLoginPage(); }});
-        slices.data.push({title:"Logout", path: "LOGOUT", func: function() { authClient.logout(true) }});
-        slices.data.push({title:"Account", path: "ACCOUNT", func: function() { authClient.redirectToAccountPage() }});
-
-        if (!galleryobj.repos)
-        {
-            slices.data.push({title:"Delete", path: "DELETE", func: function()
-            {
-                var modalTitle = document.getElementById("delete-label");
-                modalTitle.innerHTML = `Delete Image: ${galleryobj.current()+1} of ${galleryobj.length()}`;
-                const overlay = document.querySelector('.delete-overlay');
-                overlay.style.display = 'flex';
-            }});
-
-            slices.data.push({title:"Upload", path: "UPLOAD", func: function()
-                {
-                    setTimeout(function()
-                    {
-                        document.getElementById('upload-label').innerHTML = "Upload Image";
-                        const overlay = document.querySelector('.upload-overlay');
-                        overlay.style.display = 'flex';
-                    }, 40);
-                }})
-        }
-    }
-
     slices.data.push({title:"Reload", path: "RELOAD", func: function()
         {
            location.reload();
             menuhide();
         }})
 
-    slices.data.push({title:"Image Thumbnail", path: "THUMBNAIL", func: function()
+    slices.data.push({title:"Thumbnail", path: "THUMBNAIL", func: function()
         {
                thumbobj.rotate(1);
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
                 _4cnvctx.refresh();
         }})
 
-    slices.data.push({title:"Image Share", path: "SHARE", func: function() { menushow(_6cnvctx); }})
+    slices.data.push({title:"Share", path: "SHARE", func: function() { menushow(_6cnvctx); }})
     slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
 
     slices.data.push({title:"Fullscreen", path: "FULLPANEL", func: function ()
