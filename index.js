@@ -36,8 +36,6 @@ const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
 const SCROLLBARWIDTH = 8;
 const SLIDEDEFAULT = 1500;
-const SLIDETOP = 1.0;
-const SLIDEFACTOR = 1000;
 
 globalobj = {};
 
@@ -51,6 +49,8 @@ let url = new URL(window.location.href);
 url.time = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : TIMEOBJ/2;
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.slideshow = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 0;
+url.slidetop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 1;
+url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : 500;
 
 Math.clamp = function (min, max, val)
 {
@@ -262,7 +262,7 @@ function drawslices()
                 var j = time + slice.time;
                 var b = Math.tan(j*VIRTCONST);
                 var bx2 = Math.berp(-1, 1, b) * context.virtualpinch - context.virtualeft;
-                var stretchwidth = Math.ceil(bx2-bx);
+                var stretchwidth = bx2-bx;//todo shows lines on firefox
                 slice.stretchwidth = stretchwidth;
                 slice.bx = bx;
                 if (m == 1)
@@ -581,9 +581,20 @@ var SearchBar = function (size)
         context.font = "1rem Archivo Black";
         var a = new RowA([50,0,80],
         [
-            new Layer(
+            new LayerA(
             [
                 new Fill(BARFILL),
+                new Col([0,0,50,15],
+                [
+                    0,
+                    0,
+                    new Layer(
+                    [
+                        new Shrink(new CirclePanel(SCROLLNAB,THUMBSTROKE,3),11,11),
+                        new Text("white", "center", "middle", 0, 0, 1),
+                    ]),
+                    0,
+                ]),
                 new Row([0,24,0],
                 [
                     0,
@@ -595,13 +606,25 @@ var SearchBar = function (size)
             new Layer(
             [
                 new Fill(BARFILL),
-                new ColA([0,20,60,20,0],
+                new ColA([15,60,0, 20,60,20, 0,60,15],
                 [
+                    0,
+                    new Layer(
+                    [
+                        new Shrink(new CirclePanel(SCROLLNAB,THUMBSTROKE,3),20,20),
+                        new Shrink(new ArrowPanel("white",270),22,32),
+                    ]),
                     new Text("white", "right", "middle", 0, 0, 1),
-                    0,
-                    new SearchPanel("white","black"),
-                    0,
+                        0,
+                        new SearchPanel("white","black"),
+                        0,
                     new Text("white", "left", "middle", 0, 0, 1),
+                    new Layer(
+                    [
+                        new Shrink(new CirclePanel(SCROLLNAB,THUMBSTROKE,3),20,20),
+                        new Shrink(new ArrowPanel("white",90),22,32),
+                    ]),
+                    0,
                 ]),
             ])
         ]);
@@ -609,14 +632,22 @@ var SearchBar = function (size)
         var j = Math.floor((1-context.timeobj.berp())*context.sliceobj.length())+1;
         a.draw(context, rect,
         [
-            url.path.proper(),
+            [
+                0,
+                "X",
+                url.path.proper(),
+            ],
             0,
             [
+                0,
+                0,
                 j.toFixed(0),
                 0,
                 0,
                 0,
                 context.sliceobj.length().toFixed(0),
+                0,
+                0,
             ],
         ])
 
@@ -1391,6 +1422,8 @@ addressobj.full = function (k)
 
     out +=
         "&s="+url.slideshow+
+        "&o="+url.slidetop+
+        "&e="+url.slidereduce+
         "&t="+_4cnvctx.timeobj.current().toFixed(4)+
         "&h="+headobj.current()+
         "&r="+(100*rowobj.berp()).toFixed();
@@ -1456,8 +1489,8 @@ CanvasRenderingContext2D.prototype.hide = function ()
 CanvasRenderingContext2D.prototype.tab = function ()
 {
     var context = this;
-    context.slidestop = (context.virtualwidth/context.timeobj.length())*SLIDETOP;
-    context.slidereduce = context.slidestop/SLIDEFACTOR;
+    context.slidestop = url.slidetop;
+    context.slidereduce = context.slidestop/url.slidereduce;
     clearInterval(context.timemain);
     context.timemain = setInterval(function () { drawslices() }, timemain.getcurrent());
 }
@@ -3068,7 +3101,8 @@ var taplst =
         }
         else if (y < 50)
         {
-            menuhide();
+            if (x >  rect.width - 70)
+                menuhide();
         }
         else if (y > rect.height-BEXTENT)
         {
@@ -3561,6 +3595,12 @@ function resetcanvas()
     var y = Math.clamp(0,context.canvas.height-1,context.canvas.height*rowobj.berp());
     context.nuby = Math.nub(y, context.canvas.height, context.imageheight, photo.image.height);
 
+    if (!context.isthumbrect &&
+        !galleryobj.pose)
+    {
+        _4cnvctx.tab();
+    }
+
     var f = 3;
     if (factorobj.enabled)
         f = factorobj.current();
@@ -3933,13 +3973,12 @@ var ContextObj = (function ()
                     }
 
                     if (url.slideshow)
+                        context.timeobj.set(TIMEOBJ/2);
+                    if (!globalobj.slideshow && url.slideshow)
                     {
                         menuhide();
                         startslideshow();
                     }
-
-                    if (!galleryobj.pose)
-                        _4cnvctx.tab();
 
                     _4cnvctx.pinched = 0;
                     contextobj.resize(context);
@@ -5395,8 +5434,6 @@ function setfavicon()
 
 window.addEventListener("visibilitychange", (evt) =>
 {
-    clearInterval(globalobj.slideshow);
-    globalobj.slideshow = 0;
 });
 
 window.addEventListener("load", async () =>
@@ -5462,11 +5499,13 @@ fetch(path)
         headobj.set(0);
     }
 
+    galleryobj.slidetop = galleryobj.slidetop ? galleryobj.slidetop : 1;
+    galleryobj.slidereduce = galleryobj.slidereduce ? galleryobj.slidereduce : 1000;
+
     var h = window.self !== window.top ? 0 : BEXTENT;
     headcnvctx.show(0,0,window.innerWidth,h);
     headham.panel = headobj.getcurrent();
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-
     _3cnvctx.sliceobj.data =
     [
         {line:"Unsplash\nImage Search", path: "UNSPLASH", func: function()
@@ -5827,6 +5866,7 @@ function showsearch(repos)
 
 function startslideshow()
 {
+    _4cnvctx.movepage(1)
     clearInterval(globalobj.slideshow);
     globalobj.slideshow = setInterval(function()
     {
