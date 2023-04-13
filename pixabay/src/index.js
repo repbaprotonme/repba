@@ -5,22 +5,26 @@ export default
         const PIXABAY_KEY = env.PIXABAY_KEY;
         var url = new URL(request.url);
         var search = url.searchParams.get("search");
+        var page = url.searchParams.has("page") ?url.searchParams.get("page") : 0;
         var per_page = 100;
         var data = [];
-
-        for (var page = 1; page <= 5; ++page)
+        var pages = 6;//seems to be the max
+        var start = page*pages;
+        var finish = (page+1)*pages;
+        for (var n = start; n < finish; ++n)
         {
-            var response = await fetch(`https://pixabay.com/api/?key=${PIXABAY_KEY}&q=${search}&image_type=photo&per_page=${per_page}&page=${page}`);
-            var json = await response.json();
-            for (var n = 0; n < json.hits.length; ++n)
+            var response = await fetch(`https://pixabay.com/api/?key=${PIXABAY_KEY}&q=${search}&image_type=photo&per_page=${per_page}&page=${n+1}`)
+            if (!response.ok)
+                break;
+            var json = await response.json()
+            for (var m = 0; m < json.hits.length; ++m)
             {
-                var k = json.hits[n];
+                var k = json.hits[m];
                 k.thumb = k.webformatURL;
                 k.full = k.largeImageURL;
                 k.original = k.largeImageURL;//imageURL after approved
                 k.image_url = k.pageURL;
                 k.website = `Photos Provided by Pixabay`;
-
                 k.photographer = k.user;
                 k.datasource = "Pixabay";
                 k.credit  = `Photo by ${k.photographer} from Pixabay`
@@ -28,6 +32,9 @@ export default
                 k.photographer_id = k.user_id;
                 data.push(k);
             }
+
+            if (json.hits.length < per_page)
+                break;
         }
 
         var g = {}
@@ -35,13 +42,14 @@ export default
         g.repos = `pixabay`;
         g.hits = json.hits.length;
         g.per_page = per_page;
+        g.start = start;
+        g.finish = finish;
         g.total = json.totalHits;
-        g.totalhits = json.totalhits;
         g.data = data;
 
         let headers = new Headers(
         {
-		    'content-type': 'application/json;charset=UTF-8',
+            'content-type': 'application/json;charset=UTF-8',
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS',
             'Access-Control-Allow-Headers': '*'

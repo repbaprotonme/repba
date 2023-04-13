@@ -2,6 +2,8 @@ export default
 {
 	async fetch(request, env, ctx)
     {
+        const CLOUDFLARE_IMAGE_TOKEN = env.CLOUDFLARE_IMAGE_TOKEN;
+        const CLOUDFLARE_ID = env.CLOUDFLARE_ID;
         var per_page = 100;
         var data = [];
         const url = new URL(request.url);
@@ -10,7 +12,7 @@ export default
         {
           headers:
           {
-            'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb',
+            'Authorization': `Bearer ${CLOUDFLARE_IMAGE_TOKEN}`,
             'Content-Type': 'application/json',
             'X-Auth-Email': 'reportbase@gmail.com',
           },
@@ -18,10 +20,9 @@ export default
 
         for (var page = 1; page <= 3; ++page)
         {
-            var response = await fetch(`https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1?per_page=${per_page}&page=${page}`, init);
+            var response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1?per_page=${per_page}&page=${page}`, init);
+            //todo ok
             var json = await response.json();
-            if (!json || !json.result || !json.result.images || !json.result.images.length)
-                break;
             var images = json.result.images;
             for (var n = 0; n < images.length; ++n)
             {
@@ -33,8 +34,7 @@ export default
         }
 
         var g = {}
-        g.title = `reportbase.com`;
-        g.title1 = `Sidney`;
+        g.title = `Image Gallery`;
         g.total = data.length;
         g.per_page = per_page;
         g.data = data;
@@ -48,7 +48,6 @@ export default
 	    });
 
         return new Response(JSON.stringify(g), { headers, });
-
 	},
 };
 
