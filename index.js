@@ -537,6 +537,7 @@ var SearchBar = function ()
         context.save();
         context.cancel = new rectangle();
         context.header = new rectangle();
+        context.footer = new rectangle();
         context.moveup = new rectangle();
         context.movedown = new rectangle();
         context.search = new rectangle();
@@ -565,6 +566,7 @@ var SearchBar = function ()
             new Layer(
             [
                 new Fill(BARFILL),
+                new Rectangle(context.footer),
                 new ColA([15,60,0, 20,60,20, 0,60,15],
                 [
                     0,
@@ -3131,6 +3133,9 @@ var taplst =
                     context.tapped = 0;
                     context.refresh()
                 }, 400);
+        }
+        else if (context.footer && context.footer.hitest(x,y))
+        {
         }
         else
         {
