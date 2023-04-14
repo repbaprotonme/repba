@@ -1,4 +1,4 @@
-//todo: https://obfuscator.io a
+//todo: https://obfuscator.io
 //todo: safari max size
 
 /* ++ += ==
@@ -5809,6 +5809,7 @@ function submitsearch()
     localStorage.setItem("repos", globalobj.saverepos);
     hideprompt();
     var search = document.getElementById('search').value;
+    search = search.clean().toLowerCase();
     var s = `${url.origin}?${globalobj.saverepos}=${search}&page=${url.page}`;
     window.open(s, "_self");
 }
