@@ -4,9 +4,9 @@ export default
     {
         const CLOUDFLARE_IMAGE_TOKEN = env.CLOUDFLARE_IMAGE_TOKEN;
         const CLOUDFLARE_ID = env.CLOUDFLARE_ID;
-        var per_page = 100;
-        var data = [];
+        const per_page = 100;
         const url = new URL(request.url);
+        var data = [];
 
         const init =
         {
@@ -18,19 +18,27 @@ export default
           },
         };
 
-        for (var page = 1; page <= 3; ++page)
+        var page = 0;
+        var pages = 6;
+        var start = page*pages;
+        var finish = (page+1)*pages;
+        for (var n = start; n < finish; ++n)
         {
-            var response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1?per_page=${per_page}&page=${page}`, init);
-            //todo ok
+            var response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1?per_page=${per_page}&page=${n+1}`, init);
+            if (!response.ok)
+                break;
             var json = await response.json();
             var images = json.result.images;
-            for (var n = 0; n < images.length; ++n)
+            for (var m = 0; m < images.length; ++m)
             {
-                var k = images[n];
+                var k = images[m];
                 var j = {};
                 j.id = k.id;
                 data.push(j);
             }
+
+            if (images.length < per_page)
+                break;
         }
 
         var g = {}

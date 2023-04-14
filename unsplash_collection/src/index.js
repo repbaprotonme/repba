@@ -5,16 +5,18 @@ export default
         const UNSPLASH_KEY = env.UNSPLASH_KEY
         var url = new URL(request.url);
         var search = url.searchParams.get("search");
+        var page = url.searchParams.has("page") ?url.searchParams.get("page") : 0;
         var per_page = 30;
         var pages = 8;
         var data = [];
-
-        for (var page = 1; page <= pages; ++page)
+        var start = page*pages;
+        var finish = (page+1)*pages;
+        for (var n = start; n < finish; ++n)
         {
-            var response = await fetch(`https://api.unsplash.com/collections/${search}/photos?client_id=${UNSPLASH_KEY}&per_page=${per_page}&page=${page}`);
-            var json = await response.json();
-            if (!json.length)
+            var response = await fetch(`https://api.unsplash.com/collections/${search}/photos?client_id=${UNSPLASH_KEY}&per_page=${per_page}&page=${n+1}`);
+            if (!response.ok)
                 break;
+            var json = await response.json();
             for (var n = 0; n < json.length; ++n)
             {
                 var k = json[n];
@@ -25,13 +27,11 @@ export default
                 var user = k.user;
                 j.extent = `${width}x${height} ${aspect}`;
                 j.size = ((width * height)/1000000).toFixed(1) + "MP";
-
                 j.photographer = user.name;
                 j.credit  = `Photo by ${j.photographer} from Unsplash`
                 j.datasource = "Unsplash";
                 j.photographer_url = user.links.html;
                 j.photographer_id = user.id;
-
                 if (k.description)
                     j.description = k.description;
                 if (k.alt_description)
@@ -47,6 +47,9 @@ export default
                 j.id = k.id;
                 data.push(j);
             }
+
+            if (json.length < per_page)
+                break;
         }
 
         var g = {}

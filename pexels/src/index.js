@@ -7,6 +7,8 @@ export default
         var data = [];
         var url = new URL(request.url);
         var search = url.searchParams.get("search");
+        var page = url.searchParams.has("page") ?url.searchParams.get("page") : 0;
+        var pages = 8;
 
         var init =
         {
@@ -16,15 +18,17 @@ export default
           },
         };
 
-        for (var page = 1; page <= 10; ++page)
+        var start = page*pages;
+        var finish = (page+1)*pages;
+        for (var n = start; n < finish; ++n)
         {
-            var response = await fetch(`https://api.pexels.com/v1/search?query=${search}&per_page=${per_page}&page=${page}`, init);
-            var json = await response.json();
-            if (!json.photos.length)
+            var response = await fetch(`https://api.pexels.com/v1/search?query=${search}&per_page=${per_page}&page=${n+1}`, init);
+            if (!response.ok)
                 break;
-            for (var n = 0; n < json.photos.length; ++n)
+            var json = await response.json();
+            for (var m = 0; m < json.photos.length; ++m)
             {
-                var k = json.photos[n];
+                var k = json.photos[m];
                 var j = {};
                 var width = k.width;
                 var height = k.height;
@@ -49,6 +53,9 @@ export default
                 j.thumb = k.src.medium;
                 data.push(j);
             }
+
+            if (json.photos.length < per_page)
+                break;
         }
 
         var g = {}

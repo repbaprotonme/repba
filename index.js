@@ -364,7 +364,7 @@ function drawslices()
             let y = Math.berp(-1, 1, bos) * context.virtualheight;
             y -= e;
             var x = w/2;
-            var j = context.buttonheight*2;
+            var j = context.buttonheight*3;
             if (y < -j || y >= window.innerHeight+j)
                 continue;
             context.visibles.push({slice, x, y, m});
@@ -1398,7 +1398,7 @@ addressobj.full = function (k)
         "&h="+headobj.current()+
         "&r="+(100*rowobj.berp()).toFixed();
 
-    return out;
+    return out.toLowerCase();
 };
 
 CanvasRenderingContext2D.prototype.moveup = function()
@@ -3839,7 +3839,7 @@ else
 
     for (var n = 0; n < lst.length; ++n)
     {
-        var j = lst[n];
+        var j = lst[n].toLowerCase();
         var e = url.searchParams.get(j)
         if (!e)
             continue;
