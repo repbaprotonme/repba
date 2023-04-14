@@ -36,6 +36,7 @@ const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
 const SCROLLBARWIDTH = 8;
 const SLIDEDEFAULT = 1500;
+const SEARCHBOT = "rgb(200,200,200)";
 
 globalobj = {};
 let photo = {}
@@ -45,7 +46,6 @@ function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) 
 function numberRange (start, end) {return new Array(end - start).fill().map((d, i) => i + start); }
 
 let url = new URL(window.location.href);
-url.time = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : TIMEOBJ/2;
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.slideshow = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 0;
 url.slidetop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 1;
@@ -239,7 +239,7 @@ function drawslices()
             if (!slice)
                 break;
             context.save();
-            if (galleryobj.pose || factorobj.enabled)
+            if (galleryobj.getcurrent().ispng || factorobj.enabled)
                 context.clear();
             context.translate(-colwidth, 0);
             context.shadowOffsetX = 0;
@@ -462,8 +462,8 @@ var BarPanel = function (header)
                     new Layer(
                     [
                         new Rectangle(context.cancel),
-                        new Shrink(new CirclePanel(SCROLLNAB,THUMBSTROKE,4),10,10),
-                        new Text("white", "center", "middle", 0, 0, 1),
+                        new Shrink(new CirclePanel(context.tapped==1?MENUSELECT:SCROLLNAB,SEARCHBOT,4),10,10),
+                        new Text(SEARCHBOT, "center", "middle", 0, 0, 1),
                     ]),
                     0,
                 ]),
@@ -493,14 +493,16 @@ var AboutBar = function ()
     this.draw = function (context, rect, user, time)
     {
         context.save();
+        context.email = new rectangle();
         context.font = "1rem Archivo Black";
         var a = new Row([50,0,BEXTENT],
         [
             new BarPanel("Options"),
             0,
-            new Layer(
+            new LayerA(
             [
                 new Fill(BARFILL),
+                new Rectangle(),
                 new RowA([0,24,24,0],
                 [
                     0,
@@ -512,12 +514,16 @@ var AboutBar = function ()
         ]);
 
         a.draw(context, rect,
+        [
+            0,
+            context.email,
             [
                 0,
                 "Contact",
                 "images@reportbase.com",
                 0,
-            ])
+            ]
+        ], time);
 
         context.restore();
     }
@@ -531,6 +537,9 @@ var SearchBar = function ()
         context.save();
         context.cancel = new rectangle();
         context.header = new rectangle();
+        context.moveup = new rectangle();
+        context.movedown = new rectangle();
+        context.search = new rectangle();
         context.font = "1rem Archivo Black";
         var a = new RowA([70,0,80],
         [
@@ -546,8 +555,8 @@ var SearchBar = function ()
                     new Layer(
                     [
                         new Rectangle(context.cancel),
-                        new Shrink(new CirclePanel(SCROLLNAB,THUMBSTROKE,4),19,19),
-                        new Text("white", "center", "middle", 0, 0, 1),
+                        new Shrink(new CirclePanel(context.tapped==3?MENUSELECT:SCROLLNAB,THUMBSTROKE,4),19,19),
+                        new Text(THUMBSTROKE, "center", "middle", 0, 0, 1),
                     ]),
                     0,
                 ]),
@@ -561,32 +570,42 @@ var SearchBar = function ()
                     0,
                     new Layer(
                     [
-                        new Shrink(new CirclePanel(SCROLLNAB,THUMBSTROKE,3),20,20),
-                        new Shrink(new ArrowPanel("white",270),22,32),
+                        new Rectangle(context.moveup),
+                        new Shrink(new CirclePanel(context.tapped==1?MENUSELECT:SCROLLNAB,SEARCHBOT,4),22,22),
+                        new Shrink(new ArrowPanel(SEARCHBOT,0),22,32),
                     ]),
                     new Text("white", "right", "middle", 0, 0, 1),
                         0,
-                        new SearchPanel("white","black"),
+                        new Layer(
+                        [
+                            new Rectangle(context.search),
+                            new SearchPanel("white","black"),
+                        ]),
                         0,
                     new Text("white", "left", "middle", 0, 0, 1),
                     new Layer(
                     [
-                        new Shrink(new CirclePanel(SCROLLNAB,THUMBSTROKE,3),20,20),
-                        new Shrink(new ArrowPanel("white",90),22,32),
+                        new Rectangle(context.movedown),
+                        new Shrink(new CirclePanel(context.tapped==2?MENUSELECT:SCROLLNAB,SEARCHBOT,4),22,22),
+                        new Shrink(new ArrowPanel(SEARCHBOT,180),22,32),
                     ]),
                     0,
                 ]),
             ])
         ]);
 
-        var e = galleryobj.title ? galleryobj.title : url.path.proper();
+        var e = url.path;
+        if (galleryobj.repos)
+            e = `${galleryobj.repos}\n${url.path}`;
+        else if (galleryobj.title)
+            e = galleryobj.title;
         var j = Math.lerp(1,context.sliceobj.length(),1-context.timeobj.berp());
         a.draw(context, rect,
         [
             [
                 0,
                 0,
-                e.split("\n"),
+                e.proper().split("\n"),
                 "X",
                 0,
             ],
@@ -661,8 +680,8 @@ var eventlst =
     {name: "_5cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new BarPanel("Metadata"), scroll: new DualPanel(), buttonheight: 90},
     {name: "_6cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new BarPanel("Share"), scroll: new ScrollBarPanel(), buttonheight: 50},
     {name: "_7cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new DualPanel(), buttonheight: 90},
-    {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "STAP", pan: "MENU", swipe: "MENU", draw: "SDRAW", wheel: "MENU", drop: "DEFAULT", key: "GMENU", press: "GPRESS", pinch: "DEFAULT", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 200},
-    {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MTAP", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new AboutBar(), scroll: new ScrollBarPanel(), buttonheight: 50},
+    {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SEARCHTAP", pan: "MENU", swipe: "MENU", draw: "SEARCHDRAW", wheel: "MENU", drop: "DEFAULT", key: "GMENU", press: "GPRESS", pinch: "DEFAULT", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 200},
+    {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTIONTAP", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new AboutBar(), scroll: new ScrollBarPanel(), buttonheight: 50},
 ];
 
 function seteventspanel(panel)
@@ -849,13 +868,10 @@ var DrawHeader = function (e)
     };
 };
 
-
 var MultiText = function (e)
 {
     this.draw = function (context, rect, user, time)
     {
-        //todo rect.x = 20;
-        //rect.width -= 40;
         var lst = [];
         for (var n = 0; n < user.length; n++)
         {
@@ -1037,7 +1053,7 @@ var SearchPanel = function (color, shadow)
 
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,"white",3),13,13),
+            new Shrink(new CirclePanel(SCROLLNAB,"white",4),13,13),
             j ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),17,17) : 0,
             new Shrink(new Panel(),20,20),
         ]);
@@ -1196,7 +1212,7 @@ var PlusPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
-        var a = new Shrink(new CirclePanel(SCROLLNAB,"white",3),15,15);
+        var a = new Shrink(new CirclePanel(SCROLLNAB,"white",4),15,15);
         a.draw(context, rect, 0, 0);
 
         context.save();
@@ -1243,7 +1259,7 @@ var MinusPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
-        var a = new Shrink(new CirclePanel(SCROLLNAB,"white",3),15,15);
+        var a = new Shrink(new CirclePanel(SCROLLNAB,"white",4),15,15);
         a.draw(context, rect, 0, 0);
 
         context.save();
@@ -1377,7 +1393,6 @@ addressobj.full = function (k)
         "&s="+url.slideshow+
         "&o="+url.slidetop+
         "&e="+url.slidereduce+
-        "&t="+_4cnvctx.timeobj.current().toFixed(4)+
         "&h="+headobj.current()+
         "&r="+(100*rowobj.berp()).toFixed();
 
@@ -2587,6 +2602,7 @@ var swipelst =
 
     swipeupdown: function (context, rect, x, y, evt)
     {
+        context.autodirect = evt.type == "swipeup"?-1:1;
         headobj.set(evt.type == "swipeup" ? 5 : 1);
         headham.panel = headobj.getcurrent();
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -2968,7 +2984,15 @@ var taplst =
         var obj = context.scrollobj;
         if (context.cancel && context.cancel.hitest(x,y))
         {
-            menuhide();
+            context.tapped = 1;
+            context.refresh()
+            clearTimeout(context.tappedhit)
+            context.tappedhit = setTimeout(function()
+                {
+                    menuhide();
+                    context.tapped = 0;
+                    context.refresh()
+                }, 400);
         }
         else if (context.header && context.header.hitest(x,y))
         {
@@ -2995,7 +3019,7 @@ var taplst =
     },
 },
 {
-    name: "MTAP",
+    name: "OPTIONTAP",
     tap: function (context, rect, x, y)
     {
         var obj = context.scrollobj;
@@ -3006,12 +3030,22 @@ var taplst =
             context.timeobj.set(k);
             context.refresh();
         }
-        else if (y < 50)
+        else if (context.cancel && context.cancel.hitest(x,y))
         {
-            if (x >  rect.width - 70)
-                menuhide();
+            context.tapped = 1;
+            context.refresh()
+            clearTimeout(context.tappedhit)
+            context.tappedhit = setTimeout(function()
+                {
+                    menuhide();
+                    context.tapped = 0;
+                    context.refresh()
+                }, 400);
         }
-        else if (y > rect.height-BEXTENT)
+        else if (context.header && context.header.hitest(x,y))
+        {
+        }
+        else if (context.email && context.email.hitest(x,y))
         {
             window.location.href = "mailto:images@reportbase.com";
         }
@@ -3037,7 +3071,7 @@ var taplst =
     },
 },
 {
-    name: "STAP",
+    name: "SEARCHTAP",
     tap: function (context, rect, x, y)
     {
         var obj = context.scrollobj.getcurrent();
@@ -3057,27 +3091,46 @@ var taplst =
         }
         else if (context.cancel && context.cancel.hitest(x,y))
         {
-            menuhide();
+            context.tapped = 3;
+            context.refresh()
+            clearTimeout(context.tappedhit)
+            context.tappedhit = setTimeout(function()
+                {
+                    menuhide();
+                    context.tapped = 0;
+                    context.refresh()
+                }, 400);
         }
         else if (context.header && context.header.hitest(x,y))
         {
         }
-        else if (y > rect.height-BEXTENT)
+        else if (context.search && context.search.hitest(x,y))
         {
-            if (x < 90)
-            {
-                context.timeobj.rotate(TIMEOBJ/context.sliceobj.length());
-                context.refresh()
-            }
-            else if (x > rect.width-90)
-            {
-                context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
-                context.refresh()
-            }
-            else
-            {
-                menushow(_3cnvctx);
-            }
+            showsearch();
+        }
+        else if (context.moveup && context.moveup.hitest(x,y))
+        {
+            context.timeobj.rotate(TIMEOBJ/context.sliceobj.length());
+            context.tapped = 1;
+            context.refresh()
+            clearTimeout(context.tappedhit)
+            context.tappedhit = setTimeout(function()
+                {
+                    context.tapped = 0;
+                    context.refresh()
+                }, 400);
+        }
+        else if (context.movedown && context.movedown.hitest(x,y))
+        {
+            context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
+            context.tapped = 2;
+            context.refresh()
+            clearTimeout(context.tappedhit)
+            context.tappedhit = setTimeout(function()
+                {
+                    context.tapped = 0;
+                    context.refresh()
+                }, 400);
         }
         else
         {
@@ -3298,7 +3351,7 @@ var menulst =
     }
 },
 {
-    name: "SDRAW",
+    name: "SEARCHDRAW",
     draw: function (context, rect, user, time)
     {
         context.save();
@@ -3307,7 +3360,7 @@ var menulst =
         context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
         user.fitheight = rect.height+100;
-        context.font = "0.9rem Archivo Black";
+        context.font = "1rem Archivo Black";
         var clr = SCROLLNAB;
         if (time == galleryobj.current())
             clr = MENUSELECT;
@@ -3402,7 +3455,7 @@ var menulst =
                         0,
                         new Layer(
                         [
-                            new CirclePanel(user.tap?MENUTAP:SCROLLNAB,"white",3),
+                            new CirclePanel(user.tap?MENUTAP:SCROLLNAB,"white",4),
                             new Text("white", "center", "middle",0, 0, 1)
                         ]),
                         0,
@@ -3423,7 +3476,7 @@ var menulst =
                 a.draw(context, rect,
                 [
                     0,
-                    url.path?url.path.proper():"",
+                    "",
                     "",
                     0,
                     j.toFixed(0),
@@ -3826,7 +3879,6 @@ var ContextObj = (function ()
 
         _3cnvctx.scrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
         _3cnvctx.scrollobj.set(0);
-        _4cnvctx.timeobj.set(url.time);
         _5cnvctx.scrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
         _5cnvctx.scrollobj.set(0);
         _7cnvctx.scrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
@@ -3961,12 +4013,8 @@ var ContextObj = (function ()
                     _4cnvctx.pinched = 0;
                     contextobj.resize(context);
                     resetcanvas(context);
-
                     contextobj.reset()
                     _4cnvctx.movepagetime = setTimeout(function() { masterload(); }, 500);
-                    //headobj.set(3);
-                    //headham.panel = headobj.getcurrent();
-                    //headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
                     if (!galleryobj.repos)
                     {
@@ -3976,6 +4024,14 @@ var ContextObj = (function ()
                           .then(response => response.json())
                           .then(function(response)
                               {
+                                  function getext(filename)
+                                  {
+                                    var ext = /^.+\.([^.]+)$/.exec(filename);
+                                    return ext == null ? "" : ext[1];
+                                  }
+
+                                  var ext = getext(response.result.filename);
+                                  galleryobj.getcurrent().ispng = ext.toLowerCase() == "png";
                                   galleryobj.getcurrent().prompt = response.result.meta.prompt;
                                   galleryobj.getcurrent().gallery = response.result.meta.gallery;
                                   galleryobj.getcurrent().model = response.result.meta.model;
@@ -4173,18 +4229,12 @@ var Rectangle = function (r)
 {
     this.draw = function (context, rect, user, time)
     {
+        if (!r)
+            r = user;
         r.x  = rect.x;
         r.y  = rect.y;
         r.width  = rect.width;
         r.height  = rect.height;
-    }
-}
-
-var Rectangles = function ()
-{
-    this.draw = function (context, rect, user, time)
-    {
-        user.push(rect);
     }
 }
 
@@ -4650,7 +4700,7 @@ function escape()
     menuhide();
     var n = eventlst.findIndex(function(a){return a.name == "_4cnvctx";})
     setevents(_4cnvctx, eventlst[n])
-    closeprompt()
+    hideprompt()
     contextobj.reset();
 }
 
@@ -4779,8 +4829,22 @@ var headlst =
 [
 	new function ()
 	{
-        this.pan = function (context, rect, x, y, type) { panlst[2].pan(_4cnvctx, rect, x, y, type); }
-        this.panend = function (context, rect, x, y) { panlst[2].panend(_4cnvctx, rect, x, y); }
+        this.pan = function (context, rect, x, y, type)
+        {
+            var k = panhorz(context.scrollobj, rect.width-x);
+            if (k == -1)
+                return;
+            if (k == context.scrollobj.anchor())
+                return;
+            context.scrollobj.set(k);
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        }
+
+        this.panend = function (context, rect, x, y)
+        {
+            delete context.scrollobj.offset;
+        }
+
         this.panstart = function (context, rect, x, y) { panlst[2].panstart(_4cnvctx, rect, x, y); }
         this.swipeleftright = function (context, rect, x, y, evt) { swipelst[2].swipeleftright(_4cnvctx, rect, x, y, evt); }
         this.swipeupdown = function (context, rect, x, y, evt) { swipelst[2].swipeupdown(_4cnvctx, rect, x, y, evt); }
@@ -4831,7 +4895,7 @@ var headlst =
             }
             else if (context.prompt.hitest(x,y))
             {
-                menushow(_3cnvctx)
+                showsearch()
             }
 
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -4855,13 +4919,16 @@ var headlst =
                             new PagePanel(0.1),
                             new Rectangle(context.page),
                         ]),
-                        _4cnvctx.setcolumncomplete?new Layer(
+                        new Row([10,0,10],
                         [
-                            new Rectangle(context.prompt),
-                            galleryobj.repos?
-                                new Row([0,24,0], [ 0, new Text("white", "center", "middle", 0, 0, 1), 0, ]):
-                                new DrawHeader(context.scrollobj.berp()),
-                        ]):0,
+                            0,
+                            new Layer(
+                            [
+                                new Rectangle(context.prompt),
+                                new MultiText(context.scrollobj.berp())
+                            ]),
+                            0
+                        ]),
                         new Layer(
                         [
                             new OptionPanel(0.1),
@@ -4870,17 +4937,22 @@ var headlst =
                     ]);
 
             var k = galleryobj.getcurrent();
-            var st = url.path?url.path.proper():"";
-            var lt = k.photographer?k.photographer.proper():"";
-            context.font = "1rem Archivo Black";
-            var prompt = k.prompt
-            if (!galleryobj.repos)
+            var st = [];
+            if (galleryobj.repos && url.path)
             {
-                context.font = "3rem Archivo Black";
-                prompt = "...";
+                st.push(url.path.proper());
+            }
+            else
+            {
+                st = [];
+                st.push(galleryobj.title);
+                if (galleryobj.title1)
+                    st.push(galleryobj.title1);
             }
 
-            a.draw(context, rect, galleryobj.repos?st:prompt, time);
+            context.font = "0.9rem Archivo Black";
+            var prompt = k.prompt?k.prompt.split("\n"):st;
+            a.draw(context, rect, prompt, time);
             context.restore()
 		};
 	},
@@ -4915,7 +4987,7 @@ var headlst =
             }
             else if (context.searchpanel && context.searchpanel.hitest(x,y))
             {
-                menushow(_3cnvctx)
+                showsearch()
             }
             else if (context.fullpanel && context.fullpanel.hitest(x,y))
             {
@@ -5099,15 +5171,10 @@ var headlst =
             }
             else if (context.prompt.hitest(x,y))
             {
-                if (galleryobj.repos)
-                {
+                if (galleryobj.getcurrent().photographer_url)
                     window.open(galleryobj.getcurrent().photographer_url, "_blank");
-                }
                 else
-                {
-                    _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-                    menushow(_8cnvctx)
-                }
+                    showsearch();
             }
 		};
 
@@ -5115,6 +5182,9 @@ var headlst =
 		{
             context.save();
             context.clear();
+            context.shadowOffsetX = 1;
+            context.shadowOffsetY = 1;
+            context.shadowColor = "black";
             context.font = "0.94rem Archivo Black";
             context.moveprev = new rectangle()
             context.movenext = new rectangle()
@@ -5142,7 +5212,7 @@ var headlst =
                         new Shrink(new Layer(
                         [
                             new Rectangle(context.moveprev),
-                            new Shrink(new CirclePanel(_4cnvctx.movingpage == -1?MENUTAP:SCROLLNAB,"white",3),5,5),
+                            new Shrink(new CirclePanel(_4cnvctx.movingpage == -1?MENUTAP:SCROLLNAB,"white",4),5,5),
                             new Shrink(new ArrowPanel(ARROWFILL,270),20,20),
                         ]),10,10),
                         new Layer(
@@ -5158,7 +5228,7 @@ var headlst =
                         new Shrink(new Layer(
                         [
                             new Rectangle(context.movenext),
-                            new Shrink(new CirclePanel(_4cnvctx.movingpage == 1?MENUTAP:SCROLLNAB,"white",3),5,5),
+                            new Shrink(new CirclePanel(_4cnvctx.movingpage == 1?MENUTAP:SCROLLNAB,"white",4),5,5),
                             new Shrink(new ArrowPanel(ARROWFILL,90),20,20),
                         ]),10,10)
                     ]);
@@ -5316,7 +5386,7 @@ var PagePanel = function (size)
         var s = _8cnvctx.enabled;
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,"white",3),15,15),
+            new Shrink(new CirclePanel(SCROLLNAB,"white",4),15,15),
             s ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),18,18) : 0,
             new Row( [0, rect.height*0.25, 0],
             [
@@ -5342,7 +5412,7 @@ var OptionPanel = function (size)
         var s = _9cnvctx.enabled;
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,"white",3),15,15),
+            new Shrink(new CirclePanel(SCROLLNAB,"white",4),15,15),
             s ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),18,18) : 0,
             new Col( [0,rect.height*0.25,0],
             [
@@ -5470,7 +5540,7 @@ fetch(path)
     if (!galleryobj.length())
     {
         headobj.set(4);
-        showsearch("pexels");
+        showsearch();
     }
     else if (url.slideshow)
     {
@@ -5520,14 +5590,17 @@ fetch(path)
     [
         {line:"Unsplash\nImage Search", path: "UNSPLASH", func: function()
             {
+                menuhide();
                 showsearch("unsplash");
             }},
         {line:"Pexels\nImage Search", path: "PEXELS", func: function()
             {
+                menuhide();
                 showsearch("pexels");
             }},
         {line:"Pixabay\nImage Search", path: "PEXELS", func: function()
             {
+                menuhide();
                 showsearch("pixabay");
             }},
     ];
@@ -5616,7 +5689,7 @@ fetch(path)
     slices.data = [];
 
     slices.data.push({title:"Account", path: "ACCOUNt", func: function() { menushow(_2cnvctx); }});
-    slices.data.push({title:"Search", path: "SEARCH", func: function() { menushow(_3cnvctx); }});
+    slices.data.push({title:"Search", path: "SEARCH", func: function() { showsearch(); }});
     slices.data.push({title:"Prompt", path: "PROMPT", func: function() { showprompt() }});
     slices.data.push({title:"Slideshow", path: "SLIDESHOW", func: function() { menuhide(); startslideshow(); }});
     slices.data.push({title:"Metadata", path: "METADATA", func: info})
@@ -5707,7 +5780,7 @@ document.addEventListener("click", (evt) =>
     if (evt.screenY < BEXTENT && (evt.screenX < BEXTENT || evt.screenX > window.innerWidth-BEXTENT))
         return;
     if (evt.target.className.search("overlay") >= 0)
-        closeprompt()
+        hideprompt()
 });
 
 function deleteimage()
@@ -5728,8 +5801,10 @@ function deleteimage()
 
 function submitsearch()
 {
-    closeprompt();
-    var s =`${url.origin}?${globalobj.saverepos}=${document.getElementById('search').value}&page=${url.page}`;
+    localStorage.setItem("repos", globalobj.saverepos);
+    hideprompt();
+    var search = document.getElementById('search').value;
+    var s = `${url.origin}?${globalobj.saverepos}=${search}&page=${url.page}`;
     window.open(s, "_self");
 }
 
@@ -5758,7 +5833,7 @@ function ismodal()
     return res;
 }
 
-function closeprompt()
+function hideprompt()
 {
     const divlst = document.querySelectorAll("div");
     divlst.forEach(function(div)
@@ -5771,13 +5846,14 @@ function closeprompt()
     setTimeout(function()
     {
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-        _4cnvctx.refesh();
-    }, 100);
+        _4cnvctx.refresh();
+        _8cnvctx.refresh();
+    }, 40);
 }
 
 function info()
 {
-  closeprompt();
+  hideprompt();
   function getslices()
   {
       var slices = galleryobj.getcurrent().slices;
@@ -5821,22 +5897,24 @@ function artistpage()
     var s = galleryobj.getcurrent().photographer_url;
     if (!s)
         return;
-    closeprompt();
+    hideprompt();
     window.open(s);
+}
+
+function showsource()
+{
+    hideprompt();
+    menushow(_3cnvctx);
 }
 
 function showsearch(repos)
 {
     setTimeout(function()
     {
-        if (repos)
-        {
-            var k = repos.indexOf("_");
-            if (k >= 1)
-                repos = repos.substr(0,k);
-        }
-
-        globalobj.saverepos = repos?repos:"pexels";
+        var lrepos = localStorage.getItem("repos");
+        if (!lrepos)
+            lrepos = "Pexels";
+        globalobj.saverepos = repos?repos:lrepos;
         var btn = document.getElementById('source');
         btn.textContent = globalobj.saverepos.proper();
         document.getElementById('search').value = url.path;
@@ -5844,7 +5922,8 @@ function showsearch(repos)
         overlay.style.display = 'flex';
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         _4cnvctx.refresh();
-    }, 40);
+        _8cnvctx.refresh();
+    }, 60);
 }
 
 function startslideshow()
