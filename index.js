@@ -51,6 +51,7 @@ url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.slideshow = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 0;
 url.slidetop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 1;
 url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : 500;
+url.thumb = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : 1;
 url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
 
 Math.clamp = function (min, max, val)
@@ -558,7 +559,7 @@ var SearchBar = function ()
                     [
                         new Rectangle(context.cancel),
                         new Shrink(new CirclePanel(context.tapped==3?MENUSELECT:SCROLLNAB,SEARCHFRAME,4),19,19),
-                        new Text(THUMBSTROKE, "center", "middle", 0, 0, 1),
+                        new Text("white",  "center", "middle", 0, 0, 1),
                     ]),
                     0,
                 ]),
@@ -1393,6 +1394,7 @@ addressobj.full = function (k)
 
     out +=
         "&page="+url.page+
+        "&t="+thumbobj.current()+
         "&s="+url.slideshow+
         "&o="+url.slidetop+
         "&e="+url.slidereduce+
@@ -2061,7 +2063,7 @@ function dropfiles(files)
     delete photo.image;
     _4cnvctx.tapping = 0;
     _4cnvctx.isthumbrect = 0;
-    headobj.set(0);
+    headobj.set(3);
     headham.panel = headobj.getcurrent();
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     _4cnvctx.setcolumncomplete = 0;
@@ -2226,6 +2228,7 @@ var panlst =
         }
         else if (context.pantype != 1 && (type == "panup" || type == "pandown"))
         {
+            context.autodirect = (x < rect.width/2) ? 1 : -1;
             context.pantype = 2
             var zoom = zoomobj.getcurrent()
             if (Number(zoom.getcurrent()))
@@ -2595,7 +2598,10 @@ var swipelst =
     {
         setTimeout(function()
         {
-            headobj.set(headobj.current() == 0 ? 3 : 0);
+            if (headobj.current() == 5)
+                headobj.set(3);
+            else
+                headobj.set(headobj.current()?0:3);
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             context.autodirect = evt.type == "swipeleft"?-1:1;
@@ -2605,7 +2611,6 @@ var swipelst =
 
     swipeupdown: function (context, rect, x, y, evt)
     {
-        context.autodirect = evt.type == "swipeup"?-1:1;
         headobj.set(evt.type == "swipeup" ? 5 : 1);
         headham.panel = headobj.getcurrent();
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -2933,7 +2938,10 @@ var taplst =
         }
         else
         {
-            headobj.set(headobj.current()?0:3);
+            if (headobj.current() == 5)
+                headobj.set(3);
+            else
+                headobj.set(headobj.current()?0:3);
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             context.refresh();
@@ -3294,7 +3302,7 @@ var thumblst =
 ];
 
 var thumbobj = new circular_array("THUMB", thumblst);
-thumbobj.set(1);
+thumbobj.set(url.thumb);
 
 var alphaobj = new circular_array("ALPHA", 100);
 alphaobj.set(100)
@@ -3840,7 +3848,7 @@ else
 
     for (var n = 0; n < lst.length; ++n)
     {
-        var j = lst[n].toLowerCase();
+        var j = lst[n];
         var e = url.searchParams.get(j)
         if (!e)
             continue;
@@ -4698,7 +4706,7 @@ function escape()
 {
     clearInterval(globalobj.slideshow);
     globalobj.slideshow = 0;
-    headobj.set(0);
+    headobj.set(3);
     _4cnvctx.panhide  = 0
     _4cnvctx.pinched = 0;
     delete _4cnvctx.thumbcanvas;
@@ -5554,7 +5562,7 @@ fetch(path)
     }
     else
     {
-        headobj.set(0);
+        headobj.set(3);
     }
 
     galleryobj.slidetop = galleryobj.slidetop ? galleryobj.slidetop : 1;
@@ -5608,6 +5616,36 @@ fetch(path)
             {
                 menuhide();
                 showsearch("pixabay");
+            }},
+        {line:"Pexels Collection\nImage Gallery", path: "PEXELSCOLLECT", func: function()
+            {
+                menuhide();
+                showsearch("pixabay");//todo
+            }},
+        {line:"Pexels Curated\nImage Gallery", path: "PEXELSCURATED", func: function()
+            {
+                menuhide();
+                showsearch("pixabay");//todo
+            }},
+        {line:"Unsplsh Collection\nImage Gallery", path: "UNSPLASHCOLLECT", func: function()
+            {
+                menuhide();
+                showsearch("pixabay");//todo
+            }},
+        {line:"Unsplsh User\nImage Gallery", path: "UNSPLASHUSER", func: function()
+            {
+                menuhide();
+                showsearch("pixabay");//todo
+            }},
+        {line:"Dalle\nText to Image", path: "DALLE", func: function()
+            {
+                menuhide();
+                showprompt("pixabay");//todo
+            }},
+        {line:"Sidney\nImage Gallery", path: "SIDNEY", func: function()
+            {
+                menuhide();
+                showprompt("pixabay");//todo
             }},
     ];
 
@@ -5664,7 +5702,7 @@ fetch(path)
         },
     ];
 
-    if (leftmenu && galleryobj.length())
+    if (leftmenu && galleryobj.length() && !url.slideshow)
     {
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
         menushow(_8cnvctx)
@@ -5694,7 +5732,7 @@ fetch(path)
     var slices = _9cnvctx.sliceobj;
     slices.data = [];
 
-    slices.data.push({title:"Account", path: "ACCOUNt", func: function() { menushow(_2cnvctx); }});
+    slices.data.push({title:"User", path: "USER", func: function() { menushow(_2cnvctx); }});
     slices.data.push({title:"Search", path: "SEARCH", func: function() { showsearch(); }});
     slices.data.push({title:"Prompt", path: "PROMPT", func: function() { showprompt() }});
     slices.data.push({title:"Slideshow", path: "SLIDESHOW", func: function() { menuhide(); startslideshow(); }});

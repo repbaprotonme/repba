@@ -5,11 +5,11 @@ compatibility_date = "2022-04-05"
 workers_dev = true
 
 kv_namespaces = [
-    { binding = "MY_KV", id = "0fa41388238d45819a302d18ecdb3d5b" }
+    { binding = "KV", id = "0fa41388238d45819a302d18ecdb3d5b" }
 ]
 
 [[r2_buckets]]
-binding = 'MY_BUCKET' 
+binding = 'BUCKET' 
 bucket_name = 'bucket1'
 
 routes = [
