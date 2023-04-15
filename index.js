@@ -31,7 +31,8 @@ const MENUCOLOR = "rgba(0,0,0,0.60)";
 const OPTIONFILL = "white";
 const THUMBFILP = "rgba(0,0,0,0.2)";
 const THUMBFILL = "rgba(0,0,0,0.3)";
-const THUMBSTROKE = "rgba(255,255,255,0.75)";
+const THUMBSTROKE = "rgba(255,255,255,0.4)";
+const SEARCHFRAME = "rgba(255,255,255,0.5)";
 const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
 const SCROLLBARWIDTH = 8;
@@ -462,7 +463,7 @@ var BarPanel = function (header)
                     new Layer(
                     [
                         new Rectangle(context.cancel),
-                        new Shrink(new CirclePanel(context.tapped==1?MENUSELECT:SCROLLNAB,SEARCHBOT,4),10,10),
+                        new Shrink(new CirclePanel(context.tapped==1?MENUSELECT:SCROLLNAB,SEARCHFRAME,4),10,10),
                         new Text(SEARCHBOT, "center", "middle", 0, 0, 1),
                     ]),
                     0,
@@ -541,7 +542,7 @@ var SearchBar = function ()
         context.moveup = new rectangle();
         context.movedown = new rectangle();
         context.search = new rectangle();
-        context.font = "1rem Archivo Black";
+        context.font = "0.92rem Archivo Black";
         var a = new RowA([70,0,80],
         [
             new Layer(
@@ -556,7 +557,7 @@ var SearchBar = function ()
                     new Layer(
                     [
                         new Rectangle(context.cancel),
-                        new Shrink(new CirclePanel(context.tapped==3?MENUSELECT:SCROLLNAB,THUMBSTROKE,4),19,19),
+                        new Shrink(new CirclePanel(context.tapped==3?MENUSELECT:SCROLLNAB,SEARCHFRAME,4),19,19),
                         new Text(THUMBSTROKE, "center", "middle", 0, 0, 1),
                     ]),
                     0,
@@ -573,7 +574,7 @@ var SearchBar = function ()
                     new Layer(
                     [
                         new Rectangle(context.moveup),
-                        new Shrink(new CirclePanel(context.tapped==1?MENUSELECT:SCROLLNAB,SEARCHBOT,4),22,22),
+                        new Shrink(new CirclePanel(context.tapped==1?MENUSELECT:SCROLLNAB,SEARCHFRAME,4),19,19),
                         new Shrink(new ArrowPanel(SEARCHBOT,0),22,32),
                     ]),
                     new Text("white", "right", "middle", 0, 0, 1),
@@ -588,7 +589,7 @@ var SearchBar = function ()
                     new Layer(
                     [
                         new Rectangle(context.movedown),
-                        new Shrink(new CirclePanel(context.tapped==2?MENUSELECT:SCROLLNAB,SEARCHBOT,4),22,22),
+                        new Shrink(new CirclePanel(context.tapped==2?MENUSELECT:SCROLLNAB,SEARCHFRAME,4),19,19),
                         new Shrink(new ArrowPanel(SEARCHBOT,180),22,32),
                     ]),
                     0,
@@ -682,7 +683,7 @@ var eventlst =
     {name: "_5cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new BarPanel("Metadata"), scroll: new DualPanel(), buttonheight: 90},
     {name: "_6cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SMENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new BarPanel("Share"), scroll: new ScrollBarPanel(), buttonheight: 50},
     {name: "_7cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new DualPanel(), buttonheight: 90},
-    {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SEARCHTAP", pan: "MENU", swipe: "MENU", draw: "SEARCHDRAW", wheel: "MENU", drop: "DEFAULT", key: "GMENU", press: "GPRESS", pinch: "DEFAULT", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 200},
+    {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SEARCHTAP", pan: "MENU", swipe: "MENU", draw: "SEARCH", wheel: "MENU", drop: "DEFAULT", key: "GMENU", press: "GPRESS", pinch: "DEFAULT", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 200},
     {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTIONTAP", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new AboutBar(), scroll: new ScrollBarPanel(), buttonheight: 50},
 ];
 
@@ -933,7 +934,7 @@ var InfoPanel = function (color, shadow)
 
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,"white",3),15,15),
+            new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,3),15,15),
             _5cnvctx.enabled ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),18,18) : 0,
             new Text("white", "center", "middle",0, 0, 0),
         ]);
@@ -980,7 +981,7 @@ var SharePanel = function (color, shadow)
 
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,"white",3),16,16),
+            new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,3),16,16),
             _6cnvctx.enabled ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),18,18) : 0,
             new Shrink(new Panel(),20,20),
         ]);
@@ -1017,7 +1018,7 @@ var ThumbPanel = function (color, shadow)
         context.save();
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,"white",3),15,15),
+            new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,3),15,15),
             thumbobj.current() ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),18,18) : 0,
             new Shrink(new CirclePanel(TRANSPARENT,"white",3),22,22),
         ])
@@ -1055,7 +1056,7 @@ var SearchPanel = function (color, shadow)
 
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,"white",4),13,13),
+            new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,4),13,13),
             j ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),17,17) : 0,
             new Shrink(new Panel(),20,20),
         ]);
@@ -1094,7 +1095,7 @@ var FullPanel = function (color, shadow)
         context.save();
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,"white",3),15,15),
+            new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,3),15,15),
             screenfull.isFullscreen ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),18,18) : 0,
         ])
         a.draw(context, rect, user, time);
@@ -1214,7 +1215,7 @@ var PlusPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
-        var a = new Shrink(new CirclePanel(SCROLLNAB,"white",4),15,15);
+        var a = new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,4),15,15);
         a.draw(context, rect, 0, 0);
 
         context.save();
@@ -1261,7 +1262,7 @@ var MinusPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
-        var a = new Shrink(new CirclePanel(SCROLLNAB,"white",4),15,15);
+        var a = new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,4),15,15);
         a.draw(context, rect, 0, 0);
 
         context.save();
@@ -3347,8 +3348,8 @@ var menulst =
 
         var a = new Layer(
         [
-            new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 20),
-            new MultiText(e)
+            new Expand(new Rounded(clr, 2, SEARCHFRAME, 8, 8), 0, 20),
+            new Col([10,0,10], [0,new MultiText(e),0])
         ]);
 
         a.draw(context, rect, user.line.split("\n"), time);
@@ -3356,7 +3357,7 @@ var menulst =
     }
 },
 {
-    name: "SEARCHDRAW",
+    name: "SEARCH",
     draw: function (context, rect, user, time)
     {
         context.save();
@@ -3365,14 +3366,14 @@ var menulst =
         context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
         user.fitheight = rect.height+100;
-        context.font = "1rem Archivo Black";
+        context.font = "0.92rem Archivo Black";
         var clr = SCROLLNAB;
         if (time == galleryobj.current())
             clr = MENUSELECT;
         else if (user.tap)
             clr = MENUTAP;
 
-        var a = new Expand(new Rounded(clr, 3, "white", 8, 8), 0, 50);
+        var a = new Expand(new Rounded(clr, 3, SEARCHFRAME, 8, 8), 0, 50);
         a.draw(context, rect, 0, 0);
 
         if (!user.lst)
@@ -3460,7 +3461,7 @@ var menulst =
                         0,
                         new Layer(
                         [
-                            new CirclePanel(user.tap?MENUTAP:SCROLLNAB,"white",4),
+                            new CirclePanel(user.tap?MENUTAP:SCROLLNAB,SEARCHFRAME,4),
                             new Text("white", "center", "middle",0, 0, 1)
                         ]),
                         0,
@@ -3554,7 +3555,7 @@ var menulst =
 
         var a = new Layer(
         [
-            new Expand(new Rounded(clr, 2, "white", 8, 8), 0, 10),
+            new Expand(new Rounded(clr, 2, SEARCHFRAME, 8, 8), 0, 10),
             new Shrink(new Text(fontclr, "center", "middle",0, 0, 1), 20, 0),
         ]);
 
@@ -5217,7 +5218,7 @@ var headlst =
                         new Shrink(new Layer(
                         [
                             new Rectangle(context.moveprev),
-                            new Shrink(new CirclePanel(_4cnvctx.movingpage == -1?MENUTAP:SCROLLNAB,"white",4),5,5),
+                            new Shrink(new CirclePanel(_4cnvctx.movingpage == -1?MENUTAP:SCROLLNAB,SEARCHFRAME,4),5,5),
                             new Shrink(new ArrowPanel(ARROWFILL,270),20,20),
                         ]),10,10),
                         new Layer(
@@ -5233,7 +5234,7 @@ var headlst =
                         new Shrink(new Layer(
                         [
                             new Rectangle(context.movenext),
-                            new Shrink(new CirclePanel(_4cnvctx.movingpage == 1?MENUTAP:SCROLLNAB,"white",4),5,5),
+                            new Shrink(new CirclePanel(_4cnvctx.movingpage == 1?MENUTAP:SCROLLNAB,SEARCHFRAME,4),5,5),
                             new Shrink(new ArrowPanel(ARROWFILL,90),20,20),
                         ]),10,10)
                     ]);
@@ -5391,7 +5392,7 @@ var PagePanel = function (size)
         var s = _8cnvctx.enabled;
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,"white",4),15,15),
+            new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,4),15,15),
             s ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),18,18) : 0,
             new Row( [0, rect.height*0.25, 0],
             [
@@ -5417,7 +5418,7 @@ var OptionPanel = function (size)
         var s = _9cnvctx.enabled;
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,"white",4),15,15),
+            new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,4),15,15),
             s ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),18,18) : 0,
             new Col( [0,rect.height*0.25,0],
             [
@@ -5919,7 +5920,7 @@ function showsearch(repos)
     {
         var lrepos = localStorage.getItem("repos");
         if (!lrepos)
-            lrepos = "Pexels";
+            lrepos = "pexels";
         globalobj.saverepos = repos?repos:lrepos;
         var btn = document.getElementById('source');
         btn.textContent = globalobj.saverepos.proper();
