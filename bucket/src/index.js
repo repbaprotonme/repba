@@ -4,8 +4,8 @@ export default
     {
         const url = new URL(request.url);
         const key = url.pathname.slice(1);
-        var a = await env.KV.put("tom","brinkman");
-        var b = await env.KV.get("TOM");
+        var a = await env.KV.put("XXX","YYY");
+        var b = await env.KV.get("XXX");
 
         let headers = new Headers(
         {
@@ -17,9 +17,12 @@ export default
         switch (request.method)
         {
             case 'PUT':
-                console.log(request.body);
                 await env.BUCKET.put(key, request.body);
                 return new Response(`Put ${key} successfully ${b}!\n`);
+
+            case 'POST':
+                await env.BUCKET.put(key, request.body);
+                return new Response(`Post ${key} successfully ${b}!\n`);
 
             case 'GET':
                 const object = await env.BUCKET.get(key);

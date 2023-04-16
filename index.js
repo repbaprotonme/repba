@@ -2020,25 +2020,10 @@ function dropfiles(files)
             var k = {}
             k.pos = i;
             k.file = files[i];
-            if (k.file.size > 4000*4000)
+            if (k.file.size > 6000*4000)
                 continue;
             k.thumbimg = new Image();
             k.thumbimg.src = URL.createObjectURL(files[i]);
-            k.thumbimg.onload = function()
-            {
-                /*
-                var can = document.createElement("canvas");
-                var ctx = can.getContext("2d");
-                var a = this.width/this.height;
-                can.height = 400;
-                can.width = can.height*a;
-                ctx.drawImage(this, 0, 0, this.width, this.height, 0, 0, can.width, can.height);
-                this.src = can.toDataURL();
-                this.width = can.width;
-                this.height = can.height;
-                */
-            }
-
             k.func = function (index)
             {
                 delete galleryobj.repos;
@@ -6007,3 +5992,16 @@ if (url.protocol == "https:")
     })
 }
 
+function cnvtoblob()
+{
+  _4cnv.toBlob(function(blob)
+  {
+    fetch(`https://bucket.reportbase5836.workers.dev/gallery/screen1`,
+    {
+      method: 'POST',
+      body: blob
+    })
+      .then(response => response.text())
+      .then(result => alert(result, null, 2))
+  }, 'image/png');
+}
