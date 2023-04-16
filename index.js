@@ -600,7 +600,7 @@ var SearchBar = function ()
 
         var e = url.path;
         if (galleryobj.repos)
-            e = `${galleryobj.repos}\n${url.path}`;
+            e = `${galleryobj.title}\n${url.path}`;
         else if (galleryobj.title)
             e = galleryobj.title;
         var j = Math.lerp(1,context.sliceobj.length(),1-context.timeobj.berp());
@@ -4939,6 +4939,8 @@ var headlst =
             var st = [];
             if (galleryobj.repos && url.path)
             {
+                st.push(galleryobj.repos.proper());
+                st.push("Image Search");
                 st.push(url.path.proper());
             }
             else
@@ -5170,8 +5172,8 @@ var headlst =
             }
             else if (context.prompt.hitest(x,y))
             {
-                if (galleryobj.getcurrent().photographer_url)
-                    window.open(galleryobj.getcurrent().photographer_url, "_blank");
+                if (galleryobj.getcurrent().image_url)
+                    window.open(galleryobj.getcurrent().image_url);
                 else
                     showsearch();
             }
@@ -5189,23 +5191,6 @@ var headlst =
             context.movenext = new rectangle()
             context.prompt = new rectangle()
 
-            var main = new RowA([0,21,21,21,0],
-                [
-                    0,
-                    new Text("white", "center", "middle", 0, 0, 1),
-                    new Text("white", "center", "middle", 0, 0, 1),
-                    new Text("white", "center", "middle", 0, 0, 1),
-                    0,
-                ]);
-            if (galleryobj.repos)
-                main = new RowA([0,21,21,21],
-                [
-                    0,
-                    new Text("white", "center", "middle", 0, 0, 1),
-                    new Text("white", "center", "middle", 0, 0, 1),
-                    new Text("white", "center", "middle", 0, 0, 1),
-                ]);
-
             var a = new Col([BEXTENT,0,BEXTENT],
                     [
                         new Shrink(new Layer(
@@ -5222,7 +5207,7 @@ var headlst =
                                 new Rectangle(context.prompt),
                                 0,
                             ]),
-                            main,
+                            new MultiText(0)
                         ]),
                         new Shrink(new Layer(
                         [
@@ -5232,17 +5217,15 @@ var headlst =
                         ]),10,10)
                     ]);
 
-            var bt = `${galleryobj.current()+1} of ${galleryobj.length()}`;
-            var user = [ 0, 0, bt, 0, 0 ];
+            var bt = [];
             if (galleryobj.repos)
-                user =
-                [
-                    0,
-                    `${galleryobj.getcurrent().photographer.proper()}`,
-                    `${galleryobj.getcurrent().datasource.proper()}`,
-                    bt
-                ];
-            a.draw(context, rect, user, time);
+            {
+                bt.push(galleryobj.repos.proper());
+                bt.push(galleryobj.getcurrent().photographer.proper());
+            }
+
+            bt.push(`${galleryobj.current()+1} of ${galleryobj.length()}`);
+            a.draw(context, rect, bt, time);
             context.restore()
 		};
 	},
@@ -5605,22 +5588,17 @@ fetch(path)
         {line:"Pexels Collection\nImage Gallery", path: "PEXELSCOLLECT", func: function()
             {
                 menuhide();
-                showsearch("pixabay");//todo
-            }},
-        {line:"Pexels Curated\nImage Gallery", path: "PEXELSCURATED", func: function()
-            {
-                menuhide();
-                showsearch("pixabay");//todo
+                showsearch("pexels_collection");
             }},
         {line:"Unsplsh Collection\nImage Gallery", path: "UNSPLASHCOLLECT", func: function()
             {
                 menuhide();
-                showsearch("pixabay");//todo
+                showsearch("unsplash_collection");
             }},
         {line:"Unsplsh User\nImage Gallery", path: "UNSPLASHUSER", func: function()
             {
                 menuhide();
-                showsearch("pixabay");//todo
+                showsearch("unsplash_user");
             }},
         {line:"Dalle\nText to Image", path: "DALLE", func: function()
             {
@@ -5665,6 +5643,15 @@ fetch(path)
                 menuhide();
             }},
     ];
+
+    if (galleryobj.getcurrent().photographer_url)
+    {
+        _6cnvctx.sliceobj.data.push(
+         {title:"Photographer URL", path: "PHOTOGRAPHER_URL", func: function()
+            {
+                window.open(galleryobj.getcurrent().photographer_url, "_blank");
+            }})
+    }
 
     //7
     _7cnvctx.sliceobj.data =
@@ -5992,14 +5979,3 @@ if (url.protocol == "https:")
     })
 }
 
-function cnvtoblob()
-{
-    let image = _4cnv.toDataURL("image/png");
-      fetch(`https://bucket.reportbase5836.workers.dev/gallery/screen1`,
-    {
-      method: 'POST',
-      body: image
-    })
-      .then(response => response.text())
-      .then(result => alert(result, null, 2))
-}
