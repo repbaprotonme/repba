@@ -5994,8 +5994,6 @@ if (url.protocol == "https:")
 
 function cnvtoblob()
 {
-  _4cnv.toBlob(function(blob)
-  {
     let image = _4cnv.toDataURL("image/png");
       fetch(`https://bucket.reportbase5836.workers.dev/gallery/screen1`,
     {
@@ -6004,5 +6002,4 @@ function cnvtoblob()
     })
       .then(response => response.text())
       .then(result => alert(result, null, 2))
-  }, 'image/png');
 }
