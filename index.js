@@ -5996,10 +5996,11 @@ function cnvtoblob()
 {
   _4cnv.toBlob(function(blob)
   {
-    fetch(`https://bucket.reportbase5836.workers.dev/gallery/screen1`,
+    let image = _4cnv.toDataURL("image/png");
+      fetch(`https://bucket.reportbase5836.workers.dev/gallery/screen1`,
     {
       method: 'POST',
-      body: blob
+      body: image
     })
       .then(response => response.text())
       .then(result => alert(result, null, 2))
