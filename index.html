@@ -119,43 +119,17 @@ button
   </div>
 </div>
 
-<div class="prompt-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.6);">
-  <div style="position: absolute; width: 600px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 10px; border-radius: 5px;" role="dialog">
-    <div id="prompt-label" style="padding: 0px; text-align: center; font-family: Helvetica, sans-serif; font-size: 16px; font-weight: bold;">Dalle2</div>
-    <div id="prompt-label" style="padding: 0px; text-align: center; font-family: Helvetica, sans-serif; font-size: 16px; font-weight: bold;">Text to Image</div>
-    <div style="padding: 10px;">
-      <div style="padding: 2px;">
-        <textarea id="prompt" autocapitalize="off" placeholder="Enter Prompt" rows=8 style=""></textarea>
-      </div>
-      <div style="padding: 2px;">
-        <button class="fade" style="" type="button" onclick="submitprompt()">Submit</button>
-      </div>
-      <div style="padding: 2px;">
-        <button class="fade" style="" type="button" onclick="showsource()">Source</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="search-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5);">
-  <div style="position: absolute; width: 400px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; border-radius: 5px;" role="dialog">
+  <div style="position: fixed; width: 520px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; border-radius: 5px;" role="dialog">
     <div class="earth">
-      <label class="animate__animated animate__bounce" style="text-align: center; font-family: Helvetica, sans-serif; font-size: 20px; font-weight: bold;">Search Images</label>
-      <a class="animate__animated animate__bounce" id="photgrapher" style="padding: 2px; text-align: center; font-family: Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></a>
-      <a class="animate__animated animate__bounce" id="source" style="text-align: center; font-family: Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></a>
-    </div>
-    <div class="earth"></div>
-    <div class="earth"></div>
-    <div class="earth"></div>
-    <div class="earth">
-      <textarea id="search" autocapitalize="off" placeholder="Enter Search" rows=3 style=""></textarea>
+      <textarea id="search" autocapitalize="off" placeholder="Enter Search" rows=8 style=""></textarea>
     </div>
     <div class="earth"></div>
     <div class="earth">
       <button class="fade" style="" type="button" onclick="submitsearch()">Search</button>
     </div>
     <div class="earth">
-      <button class="fade" style="" type="button" onclick="showsource()">Image Sources</button>
+      <button id="sources" class="fade" style="" type="button" onclick="showsource()"></button>
     </div>
   </div>
 </div>
