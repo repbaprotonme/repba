@@ -8,7 +8,7 @@ export default
         var data = [];
         var url = new URL(request.url);
         var search = url.searchParams.get("search");
-        var page = url.searchParams.has("page") ? url.searchParams.get("page") : 0;
+        var page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
 
         var init =
         {
@@ -26,34 +26,26 @@ export default
             if (!response.ok)
                 break;
             var json = await response.json();
-            for (var m = 0; m < json.media.length; ++m)
+            json.media.forEach(function(image)
             {
-                var k = json.media[m];
-                if (k.type.toLowerCase() != "photo")
-                    continue;
+                if (image.type.toLowerCase() != "photo")
+                    return;
                 var j = {};
-                var width = k.width;
-                var height = k.height;
-                var aspect = (width/height).toFixed(2);
-                j.id = k.id+"";
-                j.extent = `${width}x${height} ${aspect}`;
-                j.size = ((width * height)/1000000).toFixed(1) + "MP";
-                j.photographer = k.photographer;
-                j.datasource = "Pexels";
-                j.credit  = `Photo by ${j.photographer} from Pexels`
-                j.photographer_url = k.photographer_url;
-                j.photographer_id = k.photographer_id;
-                if (k.alt)
-                  j.description = k.alt;
-                j.image_url = k.url;
-                j.original = k.src.original;
-                j.thumb = k.src.medium;
+                var width = image.width;
+                var height = image.height;
+                j.photographer = image.photographer;
+                j.photographer_url = image.photographer_url;
+                j.photographer_id = image.photographer_id;
+                j.description = image.alt;
+                j.image_url = image.url;
+                j.original = image.src.original;
+                j.thumb = image.src.medium;
                 if (width > height)
                     j.full = `${j.original}?auto=compress&cs=tinysrgb&fit=crop&h=1080&w=2160`;
                 else
                     j.full = `${j.original}?auto=compress&cs=tinysrgb&fit=crop&h=2160&w=1080`;
                 data.push(j);
-            }
+            })
 
             if (json.media.length < per_page)
                 break;

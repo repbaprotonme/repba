@@ -5,7 +5,7 @@ export default
         const UNSPLASH_KEY = env.UNSPLASH_KEY
         var url = new URL(request.url);
         var search = url.searchParams.get("search");
-        var page = url.searchParams.has("page") ?url.searchParams.get("page") : 0;
+        var page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
         var per_page = 30;
         var pages = 4;
         var data = [];
@@ -17,37 +17,29 @@ export default
             if (!response.ok)
                 break;
             var json = await response.json();
-            for (var n = 0; n < json.length; ++n)
+            json.forEach(function(image)
             {
-                var k = json[n];
                 var j = {};
-                var width = k.width;
-                var height = k.height;
+                var width = image.width;
+                var height = image.height;
                 var aspect = (width/height).toFixed(2);
-                var user = k.user;
-                j.extent = `${width}x${height} ${aspect}`;
-                j.size = ((width * height)/1000000).toFixed(1) + "MP";
-
+                var user = image.user;
                 j.photographer = user.name;
-                j.credit  = `Photo by ${j.photographer} from Unsplash`
-                j.datasource = "Unsplash";
                 j.photographer_url = user.links.html;
                 j.photographer_id = user.id;
-                 if (k.description)
-                    j.description = k.description;
-                if (k.alt_description)
-                    j.alt_description = k.alt_description;
-                j.image_url = k.links.html;
-                j.original = k.urls.raw;
+                j.description = image.description?image.description:"";
+                if (image.alt_description)
+                    j.description += " " + image.alt_description;
+                j.image_url = image.links.html;
+                j.original = image.urls.raw;
                 if (width > height)
                     j.full = `${j.original}&q=80&h=1080`;
                 else
                     j.full = `${j.original}&q=80&w=2160`;
-                j.thumb = k.urls.small;
-                j.created = k.created_at.substr(0,10);
-                j.id = k.id;
+                j.thumb = image.urls.small;
+                j.created = image.created_at.substr(0,10);
                 data.push(j);
-            }
+            })
 
             if (json.length < per_page)
                 break;

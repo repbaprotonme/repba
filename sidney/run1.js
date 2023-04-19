@@ -19,7 +19,7 @@ async function run()
       },
     };
 
-    var page = 0;
+    var page = 1;
     var data = [];
     var pages = 6;//seems to be the max
     var start = page*pages;

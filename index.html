@@ -23,9 +23,63 @@ canvas {outline: none; position: absolute; }
 A:link { COLOR: black; TEXT-DECORATION: none; font-weight: normal }
 A:visited { COLOR: black; TEXT-DECORATION: none; font-weight: normal }
 A:active { COLOR: black; TEXT-DECORATION: none }
-A:hover { COLOR: blue; TEXT-DECORATION: none; font-weight: none }
+A:hover { COLOR: blue; TEXT-DECORATION: none; font-weight: none; cursor: pointer }
+
+textarea 
+{
+  background: #eee; 
+  outline: none; 
+  font-family: Helvetica, sans-serif; 
+  font-size: 16px; 
+  box-sizing: border-box; 
+  width: 100%; 
+  padding: 10px; 
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+button
+{
+  width: 100%; 
+  padding: 12px; 
+  font-size: 16px; 
+  font-weight: bold; 
+  border: 0px solid #99B;
+  border-radius: 5px;
+}
+
+.earth
+{
+  padding: 2px; 
+  display: flex; 
+  flex-direction: column; 
+  width: 100%; 
+  justify-content: center;
+}
+
+.fade 
+{
+  background-color: #DB1F48;
+  color: #fff;
+  transition: background-color 1s;
+}
+
+.fade:hover 
+{
+  background-color: #004369;
+  cursor: pointer;
+}
+
+.fade:focus,
+.fade:active 
+{
+  background-color: darkgreen;
+  transition: none;
+}
 </style>
-</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
 
 <link href="https://fonts.googleapis.com/css?family=Archivo+Black" rel="stylesheet">
 <canvas id='_4' style='z-index: 1' width='0' height='0'></canvas>
@@ -41,6 +95,7 @@ A:hover { COLOR: blue; TEXT-DECORATION: none; font-weight: none }
 <canvas id='_9' style='z-index: 11' width='0' height='0'></canvas>
 <script type="text/javascript" src="js/screenfull.min.js"></script>
 <script type="text/javascript" src="js/hammer.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script src="https://www.unpkg.com/@propelauth/javascript@2.0.0/dist/javascript.min.js" 
          integrity="sha384-CnMW/GT96q1vxl3xq1fIbUrmXpDIsXVtY+/FpJW+rMSCgjlOWpbVfs5G0dg2bMN5" 
@@ -51,53 +106,58 @@ A:hover { COLOR: blue; TEXT-DECORATION: none; font-weight: none }
 </head>
 <body ondragstart="return false;" ondrop="return false"; oncontextmenu='return false;'>
 
-<div class="prompt-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.6);">
-  <div style="position: absolute; width: 600px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 10px; border-radius: 5px;" role="dialog">
-    <div id="prompt-label" style="padding: 0px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;">Dalle2</div>
-    <div id="prompt-label" style="padding: 0px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;">Text to Image</div>
-    <div style="padding: 10px;">
-      <textarea id="prompt" placeholder="Enter Prompt" rows=8 style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; box-sizing: border-box; width: 100%; padding: 10px; font-size: 16px; border: 1px solid #777; border-radius: 8px;"></textarea>
-      <button style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #777; border-radius: 4px; font-weight: bold;" type="button" onclick="submitprompt()">Submit</button>
-      <button style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #777; border-radius: 4px; font-weight: bold" type="button" onclick="closeprompt()">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<div class="delete-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.6);">
-  <div style="position: absolute; width: 300px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 10px; border-radius: 5px;" role="dialog">
-    <div id="delete-label" style="padding: 10px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></div>
-    <div style="padding: 10px; display: flex; column-gap: 5px; justify-content: space-between; ">
-      <button style="width: 50%; float: left; padding: 10px; border: 1px solid #777; font-size: 16px; border-radius: 4px;" type="button" onclick="deleteimage()">Delete</button> 
-      <button style="width: 50%; float: left; padding: 10px; border: 1px solid #777; font-size: 16px; border-radius: 4px;" type="button" onclick="closeprompt()">Cancel</button>
-    </div>
-  </div>
-</div>
-
 <div class="upload-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.6);">
   <div style="position: absolute; width: 400px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 10px; border-radius: 5px;" role="dialog">
-    <div id="upload-label" style="padding: 10px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></div>
+    <div id="upload-label" style="padding: 10px; text-align: center; font-family: Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></div>
       <form id="form1" name="form1" method="post" action="javascript:submit()" enctype="multipart/form-data">                                                                                   
         <input style="width: 100%; height: 30px; float: left; padding: 10px; font-size: 16px; border-radius: 4px;" type="file" id="myFile" name="file"/>                                                
         <div style="padding: 10px; display: flex; column-gap: 5px; justify-content: space-between; ">
-          <button style="width: 50%; float: left; padding: 10px; border: 1px solid #777; font-size: 16px; border-radius: 4px;" type="button" onclick="deleteimage()">Submit</button> 
-          <button style="width: 50%; float: left; padding: 10px; border: 1px solid #777; font-size: 16px; border-radius: 4px;" type="button" onclick="closeprompt()">Cancel</button>
+          <button class="fade" style="" type="button" onclick="deleteimage()">Submit</button> 
         </div>
       </form>
     </div>
   </div>
 </div>
 
+<div class="prompt-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.6);">
+  <div style="position: absolute; width: 600px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 10px; border-radius: 5px;" role="dialog">
+    <div id="prompt-label" style="padding: 0px; text-align: center; font-family: Helvetica, sans-serif; font-size: 16px; font-weight: bold;">Dalle2</div>
+    <div id="prompt-label" style="padding: 0px; text-align: center; font-family: Helvetica, sans-serif; font-size: 16px; font-weight: bold;">Text to Image</div>
+    <div style="padding: 10px;">
+      <div style="padding: 2px;">
+        <textarea id="prompt" autocapitalize="off" placeholder="Enter Prompt" rows=8 style=""></textarea>
+      </div>
+      <div style="padding: 2px;">
+        <button class="fade" style="" type="button" onclick="submitprompt()">Submit</button>
+      </div>
+      <div style="padding: 2px;">
+        <button class="fade" style="" type="button" onclick="showsource()">Source</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="search-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5);">
-  <div style="position: absolute; width: 400px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 10px; border-radius: 5px;" role="dialog">
-    <div style="display: flex; flex-direction: column; width: 100%; justify-content: center;">
-      <label id="source" style="text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></label>
-      <label style="text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold;">Image Search</label>
+  <div style="position: absolute; width: 400px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; border-radius: 5px;" role="dialog">
+    <div class="earth">
+      <label class="animate__animated animate__bounce" style="text-align: center; font-family: Helvetica, sans-serif; font-size: 20px; font-weight: bold;">Search Images</label>
+      <a class="animate__animated animate__bounce" id="photgrapher" style="padding: 2px; text-align: center; font-family: Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></a>
+      <a class="animate__animated animate__bounce" id="source" style="text-align: center; font-family: Helvetica, sans-serif; font-size: 16px; font-weight: bold;"></a>
     </div>
-    <div style="padding: 10px; justify-content: center;">
-      <textarea id="search" placeholder="Enter Search" rows=3 style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; box-sizing: border-box; width: 100%; padding: 10px; font-size: 16px; border: 1px solid #777; border-radius: 8px;"></textarea>
-      <button style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #777; border-radius: 4px; font-weight: bold" type="button" onclick="submitsearch()">Search</button>
-      <button style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #777; border-radius: 4px; font-weight: bold" type="button" onclick="showsource()">Source</button>
+    <div class="earth"></div>
+    <div class="earth"></div>
+    <div class="earth"></div>
+    <div class="earth">
+      <textarea id="search" autocapitalize="off" placeholder="Enter Search" rows=3 style=""></textarea>
     </div>
+    <div class="earth"></div>
+    <div class="earth">
+      <button class="fade" style="" type="button" onclick="submitsearch()">Search</button>
+    </div>
+    <div class="earth">
+      <button class="fade" style="" type="button" onclick="showsource()">Image Sources</button>
+    </div>
+  </div>
 </div>
 
 </body>

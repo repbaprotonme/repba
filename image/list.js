@@ -1,7 +1,10 @@
 //node list.js
+const CLOUDFLARE_IMAGE_BEARER = process.env.CLOUDFLARE_IMAGE_BEARER;
+const CLOUDFLARE_AUTH_KEY = process.env.CLOUDFLARE_AUTH_KEY;
+const CLOUDFLARE_ID = process.env.CLOUDFLARE_ID;
 
 var lst = [];
-for (var page = 1; page < 4; ++page)
+for (var page = 1; page < 2; ++page)
 {
     const options =
     {
@@ -9,24 +12,21 @@ for (var page = 1; page < 4; ++page)
         headers:
         {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer hXCWi4iJ8wDztj3LUWqzqXyqjgPCmPypnr5Rjkjb',
+            'Authorization': `${CLOUDFLARE_IMAGE_BEARER}`,
             'X-Auth-Email': 'reportbase@gmail.com',
-            'X-Auth-Key': 'd27e8f43b04336d419f9b85927dc1e25bb915',
+            'X-Auth-Key': `${CLOUDFLARE_AUTH_KEY}`,
         }
     };
 
-    fetch(`https://api.cloudflare.com/client/v4/accounts/41f6f507a22c7eec431dbc5e9670c73d/images/v1?page=${page}`, options)
+    fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1?page=${page}`, options)
       .then(response =>
            {
-    //           console.log(response.headers);
                return response.json()
            })
       .then(function(json)
           {
-                 // lst = lst.concat(json.result.images);
-                //console.log(lst.length);
                 console.log(JSON.stringify(json));
+              console.log(json.result.images.length);
           })
       .catch(err => console.error(err));
-
 }

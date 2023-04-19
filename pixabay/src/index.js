@@ -5,7 +5,7 @@ export default
         const PIXABAY_KEY = env.PIXABAY_KEY;
         var url = new URL(request.url);
         var search = url.searchParams.get("search");
-        var page = url.searchParams.has("page") ?url.searchParams.get("page") : 0;
+        var page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
         var per_page = 100;
         var data = [];
         var pages = 6;//seems to be the max
@@ -17,21 +17,20 @@ export default
             if (!response.ok)
                 break;
             var json = await response.json()
-            for (var m = 0; m < json.hits.length; ++m)
+            json.hits.forEach(function(image)
             {
-                var k = json.hits[m];
-                k.thumb = k.webformatURL;
-                k.full = k.largeImageURL;
-                k.original = k.largeImageURL;//imageURL after approved
-                k.image_url = k.pageURL;
-                k.website = `Photos Provided by Pixabay`;
-                k.photographer = k.user;
-                k.datasource = "Pixabay";
-                k.credit  = `Photo by ${k.photographer} from Pixabay`
-                k.photographer_url = `https://pixabay.com/users/${k.user}-${k.user_id}/`;
-                k.photographer_id = k.user_id;
-                data.push(k);
-            }
+                image.description = image.tags;
+                image.thumb = image.webformatURL;
+                image.full = image.largeImageURL;
+                image.original = image.largeImageURL;//imageURL after approved
+                image.image_url = image.pageURL;
+                image.photographer = image.user;
+                image.photographer_url = `https://pixabay.com/users/${image.user}-${image.user_id}/`;
+                image.photographer_id = image.user_id;
+                delete image.tags;
+                delete image.type;
+                 data.push(image);
+            })
 
             if (json.hits.length < per_page)
                 break;

@@ -5,7 +5,9 @@ export default
         const CLOUDFLARE_IMAGE_TOKEN = env.CLOUDFLARE_IMAGE_TOKEN;
         const CLOUDFLARE_ID = env.CLOUDFLARE_ID;
         const per_page = 100;
+        const pages = 6;
         const url = new URL(request.url);
+        var page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
         var data = [];
 
         const init =
@@ -18,8 +20,6 @@ export default
           },
         };
 
-        var page = 0;
-        var pages = 6;
         var start = page*pages;
         var finish = (page+1)*pages;
         for (var n = start; n < finish; ++n)
@@ -29,13 +29,13 @@ export default
                 break;
             var json = await response.json();
             var images = json.result.images;
-            for (var m = 0; m < images.length; ++m)
+            images.forEach(function(image)
             {
-                var k = images[m];
-                var j = {};
-                j.id = k.id;
-                data.push(j);
-            }
+                delete image.variants;
+                image = Object.assign(image, image.meta);
+                delete image.meta;
+                data.push(image);
+            })
 
             if (images.length < per_page)
                 break;
