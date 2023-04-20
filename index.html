@@ -25,12 +25,27 @@ A:visited { COLOR: black; TEXT-DECORATION: none; font-weight: normal }
 A:active { COLOR: black; TEXT-DECORATION: none }
 A:hover { COLOR: blue; TEXT-DECORATION: none; font-weight: none; cursor: pointer }
 
+.swal2-popup 
+{
+  font-size: 1rem !important;
+  font-family: Helvetica, sans-serif; 
+}
+
+label
+{
+  font-family: Helvetica, sans-serif; 
+  font-weight: bold; 
+  text-align: center;
+  font-size: 1.2rem; 
+  width: 100%; 
+  padding: 10px; 
+}
+
 textarea 
 {
   background: #eee; 
   outline: none; 
   font-family: Helvetica, sans-serif; 
-  font-size: 16px; 
   box-sizing: border-box; 
   width: 100%; 
   padding: 10px; 
@@ -120,7 +135,9 @@ button
 </div>
 
 <div class="search-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5);">
-  <div style="position: fixed; width: 520px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; border-radius: 5px;" role="dialog">
+  <div style="position: fixed;width: 520px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; border-radius: 5px;" role="dialog">
+    <center><label>Image Search</label><center>
+    <div class="earth"></div>
     <div class="earth">
       <textarea id="search" autocapitalize="off" placeholder="Enter Search" rows=8 style=""></textarea>
     </div>
