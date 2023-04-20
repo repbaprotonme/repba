@@ -49,7 +49,7 @@ function numberRange (start, end) {return new Array(end - start).fill().map((d, 
 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
-url.slideshow = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : SLIDEDEFAULT;
+url.slideshow = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 0;
 url.slidetop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 1;
 url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : 500;
 url.thumb = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : 1;
@@ -485,7 +485,6 @@ var AboutBar = function ()
             0,
             new LayerA(
             [
-                0,//new Fill(BARFILL),
                 new Rectangle(),
                 new RowA([0,24,24,0],
                 [
@@ -499,7 +498,6 @@ var AboutBar = function ()
 
         a.draw(context, rect,
         [
-            0,
             context.email,
             [
                 0,
@@ -525,7 +523,6 @@ var MetaBar = function ()
             0,
             new LayerA(
             [
-                0,//new Fill(BARFILL),
                 new Rectangle(),
                 new RowA([0,24,24,0],
                 [
@@ -537,14 +534,21 @@ var MetaBar = function ()
             ])
         ]);
 
+        var s = galleryobj.getcurrent().photographer?galleryobj.getcurrent().photographer:"";
+        if (s)
+            s = s.proper();
+
+        var t = galleryobj.repos?galleryobj.repos:"";
+        if (t)
+            t = t.proper();
+
         a.draw(context, rect,
         [
-            0,
             context.photographer,
             [
                 0,
-                galleryobj.getcurrent().photographer?galleryobj.getcurrent().photographer:"",
-                galleryobj.repos?galleryobj.repos.proper():"",
+                t,
+                s,
                 0,
             ]
         ], time);
@@ -571,21 +575,20 @@ var SearchBar = function ()
             new Layer(
             [
                 new Rectangle(context.header),
-                new ColA([15,75,0, 20,60,20, 0,75,15],
+                new ColA([0,100,15, 60, 15,100,0],
                 [
                     0,
+                    new Text("white", "right", "middle", 0, 0, 1, 0.9),
                     0,
-                    0,
-                    0,
+
                     new Layer(
                     [
-                        new Rectangle(context.slide),
-                        new Shrink(new CirclePanel(context.tapped==5?MENUSELECT:SCROLLNAB,SEARCHFRAME,4),13,13),
-                        new Shrink(new ArrowPanel("white",90),18,28),
+                        new Rectangle(context.search),
+                        new SearchPanel("white","black"),
                     ]),
+
                     0,
-                    0,
-                    0,
+                    new Text("white", "left", "middle", 0, 0, 1, 0.9),
                     0,
                 ]),
             ]),
@@ -593,30 +596,25 @@ var SearchBar = function ()
             new Layer(
             [
                 new Rectangle(context.footer),
-                new ColA([15,75,0, 20,60,20, 0,75,15],
+                new Col([25,75,0, 10,60,10, 0,75,25],
                 [
                     0,
+                    0,
+                    0,
+
+                    0,
+
                     new Layer(
                     [
-                        new Rectangle(context.moveup),
-                        new Shrink(new CirclePanel(context.tapped==1?MENUSELECT:SCROLLNAB,SEARCHFRAME,4),16,16),
-                        new Shrink(new ArrowPanel("white",0),28,32),
+                        new Rectangle(context.slide),
+                        new Shrink(new CirclePanel(context.tapped==2?MENUSELECT:SCROLLNAB,SEARCHFRAME,4),13,13),
+                        new Shrink(new ArrowPanel("white",90),18,28),
                     ]),
-                    new Text("white", "right", "middle", 0, 0, 1),
-                        0,
-                        new Layer(
-                        [
-                            new Rectangle(context.search),
-                            new SearchPanel("white","black"),
-                        ]),
-                        0,
-                    new Text("white", "left", "middle", 0, 0, 1),
-                    new Layer(
-                    [
-                        new Rectangle(context.movedown),
-                        new Shrink(new CirclePanel(context.tapped==2?MENUSELECT:SCROLLNAB,SEARCHFRAME,4),16,16),
-                        new Shrink(new ArrowPanel("white",180),28,32),
-                    ]),
+
+                    0,
+
+                    0,
+                    0,
                     0,
                 ]),
             ])
@@ -627,27 +625,15 @@ var SearchBar = function ()
         [
             [
                 0,
-                "?",
-                0,
-                0,
-                0,
-                0,
-                0,
-                "X",
-                0,
-            ],
-            0,
-            [
-                0,
-                0,
                 j.toFixed(0),
                 0,
                 0,
                 0,
                 context.sliceobj.length().toFixed(0),
                 0,
-                0,
             ],
+            0,
+            0,
         ])
 
         context.restore();
@@ -2687,12 +2673,9 @@ var keylst =
         }
         else if (key == " ")
         {
-            menuhide();
-            startslideshow();
         }
         else if (key == "enter")
         {
-            menuhide();
         }
  	}
 },
@@ -2727,12 +2710,9 @@ var keylst =
         }
         else if (key == " ")
         {
-            menuhide();
-            startslideshow();
         }
         else if (key == "enter")
         {
-            menuhide();
         }
   	}
 },
@@ -3108,38 +3088,6 @@ var taplst =
         }
         else if (context.slide && context.slide.hitest(x,y))
         {
-            context.tapped = 5;
-            context.refresh()
-            clearTimeout(context.tappedhit)
-            context.tappedhit = setTimeout(function()
-                {
-                    menuhide();
-                    context.tapped = 0;
-                    context.refresh()
-                    startslideshow();
-                }, 200);
-        }
-        else if (context.search && context.search.hitest(x,y))
-        {
-            showsearch()
-        }
-        else if (context.header && context.header.hitest(x,y))
-        {
-        }
-        else if (context.moveup && context.moveup.hitest(x,y))
-        {
-            context.timeobj.rotate(TIMEOBJ/context.sliceobj.length());
-            context.tapped = 1;
-            context.refresh()
-            clearTimeout(context.tappedhit)
-            context.tappedhit = setTimeout(function()
-                {
-                    context.tapped = 0;
-                    context.refresh()
-                }, 400);
-        }
-        else if (context.movedown && context.movedown.hitest(x,y))
-        {
             context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
             context.tapped = 2;
             context.refresh()
@@ -3150,8 +3098,9 @@ var taplst =
                     context.refresh()
                 }, 400);
         }
-        else if (context.footer && context.footer.hitest(x,y))
+        else if (context.search && context.search.hitest(x,y))
         {
+            showsearch()
         }
         else
         {
@@ -3525,43 +3474,32 @@ var menulst =
                 var k = user.photographer;
                 var j = galleryobj.repos;
                 photographer = `${k.proper()}`;
-                datasource = `from ${j.proper()}`;
+                datasource = `${j.proper()}`;
             }
 
             var j = galleryobj.getcurrent().full;
-            if (!context.panning)
-            {
-                var a = new Expand(new RowA([20,24,24,0,60,0,24,24,20],
-                    [
-                        0,
-                        j?new Text("white", "center", "middle",0, 0, 1):0,
-                        j?new Text("white", "center", "middle",0, 0, 1):0,
-                        0,
-                        new Layer(
-                        [
-                            new CirclePanel(user.tap?MENUTAP:SCROLLNAB,SEARCHFRAME,4),
-                            new Text("white", "center", "middle",0, 0, 1)
-                        ]),
-                        0,
-                        j?new Text("white", "center", "middle",0, 0, 1):0,
-                        j?new Text("white", "center", "middle",0, 0, 1):0,
-                        0,
-                    ]),-60,50);
-
-                var j = time + 1;
-                a.draw(context, rect,
+            var a = new Expand(new RowA([20,24,24,0,24,24,20],
                 [
                     0,
-                    "",
-                    "",
+                    new Text("white", "center", "middle",0, 0, 1),
                     0,
-                    j.toFixed(0),
                     0,
-                    photographer,
-                    datasource,
+                    new Text("white", "center", "middle",0, 0, 1),
+                    new Text("white", "center", "middle",0, 0, 1),
                     0,
-                ], 0);
-            }
+                ]),-60,50);
+
+            var j = time + 1;
+            a.draw(context, rect,
+            [
+                0,
+                j.toFixed(0),
+                0,
+                0,
+                datasource,
+                photographer,
+                0,
+            ], 0);
         }
         else
         {
@@ -4877,6 +4815,8 @@ var headlst =
             {
                 _8cnvctx.scrollobj.set(0);
                 _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+                var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
+                _8cnvctx.timeobj.rotate(k);
                 menushow(_8cnvctx)
             }
 
@@ -4983,7 +4923,9 @@ var headlst =
             }
             else if (context.searchpanel && context.searchpanel.hitest(x,y))
             {
-                showsearch()
+                _8cnvctx.scrollobj.set(0);
+                _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+                menushow(_8cnvctx)
             }
             else if (context.fullpanel && context.fullpanel.hitest(x,y))
             {
@@ -5194,6 +5136,8 @@ var headlst =
             {
                 _8cnvctx.scrollobj.set(0);
                 _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+                var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
+                _8cnvctx.timeobj.rotate(k);
                 menushow(_8cnvctx)
             }
 		};
@@ -5737,6 +5681,12 @@ fetch(path)
         {
             this.exec = function(index)
             {
+                if (index == galleryobj.current())
+                {
+                    menuhide();
+                    return;
+                }
+
                 galleryobj.set(index);
                 let a = document.createElement('a');
                 a.target= '_blank';
@@ -5753,10 +5703,15 @@ fetch(path)
     var slices = _9cnvctx.sliceobj;
     slices.data = [];
 
-    slices.data.push({title:"User", path: "USER", func: function() { menushow(_2cnvctx); }});
-    slices.data.push({title:"Prompt", path: "PROMPT", func: function() { showsearch(); }});
+    slices.data.push({title:"User Account", path: "USER", func: function() { menushow(_2cnvctx); }});
+    slices.data.push({title:"Search", path: "SEARCH", func: function()
+        {
+            _8cnvctx.scrollobj.set(0);
+            _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+            menushow(_8cnvctx)
+        }});
     slices.data.push({title:"Slideshow", path: "SLIDESHOW", func: function() { menuhide(); startslideshow(); }});
-    slices.data.push({title:"Metadata", path: "METADATA", func: showmeta})
+    slices.data.push({title:"Image Metadata", path: "METADATA", func: showmeta})
     slices.data.push({title:"Open", path: "OPEN", func: function()
         {
             menuhide();
@@ -5777,7 +5732,7 @@ fetch(path)
                 _4cnvctx.refresh();
         }})
 
-    slices.data.push({title:"Share", path: "SHARE", func: function() { menushow(_6cnvctx); }})
+    slices.data.push({title:"Share Image", path: "SHARE", func: function() { menushow(_6cnvctx); }})
     slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
 
     slices.data.push({title:"Fullscreen", path: "FULLPANEL", func: function ()
@@ -5794,6 +5749,11 @@ fetch(path)
         });
 
     contextobj.reset();
+
+    setTimeout(function()
+        {
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        }, 300);
 })
 .catch((error) =>
 {
@@ -6001,7 +5961,7 @@ function showsearch(repos)
         var k = galleryobj.getcurrent();
         document.getElementById('search').value = k.prompt ? k.prompt : url.path;
         var j = globalobj.saverepos;
-        document.getElementById('sources').innerHTML = `Image Provider: ${j.proper()}`;
+        document.getElementById('sources').innerHTML = `Service: ${j.proper()}`;
         const overlay = document.querySelector('.search-overlay');
         overlay.style.display = 'flex';
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -6034,3 +5994,5 @@ if (url.protocol == "https:")
             globalobj.user = client.user;
     })
 }
+
+
