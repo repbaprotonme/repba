@@ -26,6 +26,7 @@ const DELAYCENTER = TIMEOBJ/1000;
 const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(255,175,0,0.75)";
 const MENUTAP = "rgba(255,175,0,0.75)";
+const SELECTAP = "rgba(255,0,0.75,0.75)";
 const SCROLLNAB = "rgba(0,0,0,0.4)";
 const BARFILL = "rgba(0,0,0,0.5)";
 const MENUCOLOR = "rgba(0,0,0,0.30)";
@@ -516,6 +517,45 @@ var AboutBar = function (header)
     }
 };
 
+var UserBar = function ()
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.save();
+        context.login = new rectangle();
+        var a = new Row([50,0,BEXTENT],
+        [
+            new BarPanel("User"),
+            0,
+            new LayerA(
+            [
+                new Rectangle(),
+                new RowA([0,24,24,0],
+                [
+                    0,
+                    new Text("white", "center", "middle",0, 0, 1),
+                    new Text("white", "center", "middle",0, 0, 1),
+                    0,
+                ]),
+            ])
+        ]);
+
+        a.draw(context, rect,
+        [
+            context.login,
+            [
+                0,
+                "Tom Brinkman",
+                "reportbase@gmail.com",
+                0,
+            ]
+        ], time);
+
+        context.restore();
+    }
+};
+
+
 var MetaBar = function ()
 {
     this.draw = function (context, rect, user, time)
@@ -524,7 +564,7 @@ var MetaBar = function ()
         context.photographer = new rectangle();
         var a = new Row([50,0,BEXTENT],
         [
-            new BarPanel("Image Metadata"),
+            new BarPanel("Metadata"),
             0,
             new LayerA(
             [
@@ -568,9 +608,8 @@ var SearchBar = function ()
     {
         context.save();
         context.search = new rectangle();
-        context.help = new rectangle();
-        context.options = new rectangle();
-        context.cancel = new rectangle();
+        context.gallery = new rectangle();
+        context.auto = new rectangle();
         context.header = new rectangle();
         context.footer = new rectangle();
         context.slide = new rectangle();
@@ -584,20 +623,26 @@ var SearchBar = function ()
                     new Rectangle(context.header),
                     0,
                 ]),
-                new ColA([25,0,15, 60, 15,0,25],
+                new ColA([0, 80,60,80, 0],
                 [
-                    0,
-                    new Text("white", "right", "middle", 0, 0, 1, 0.9),
                     0,
 
                     new Layer(
                     [
+                        new Rectangle(context.gallery),
+                        new GalleryPanel(),
+                    ]),
+                    new Layer(
+                    [
                         new Rectangle(context.search),
-                        new SearchPanel("white","black"),
+                        new SearchPanel(),
+                    ]),
+                    new Layer(
+                    [
+                        new Rectangle(context.auto),
+                        new AutoPanel(),
                     ]),
 
-                    0,
-                    new Text("white", "left", "middle", 0, 0, 1, 0.9),
                     0,
                 ]),
             ]),
@@ -613,11 +658,7 @@ var SearchBar = function ()
                 new ColA([25,0,15, 60, 15,0,25],
                 [
                     0,
-                    new Layer(
-                    [
-                        new Rectangle(context.options),
-                        new Text("white", "right", "middle", 0, 0, 1, 0.9),
-                    ]),
+                    new Text("white", "right", "middle", 0, 0, 1, 0.9),
                     0,
 
                     new Layer(
@@ -628,11 +669,7 @@ var SearchBar = function ()
                     ]),
 
                     0,
-                    new Layer(
-                    [
-                        new Rectangle(context.help),
-                        new Text("white", "left", "middle", 0, 0, 1, 0.9),
-                    ]),
+                    new Text("white", "left", "middle", 0, 0, 1, 0.9),
                     0,
                 ]),
             ])
@@ -646,21 +683,21 @@ var SearchBar = function ()
         [
             [
                 0,
-                j.toFixed(0),
                 0,
                 0,
                 0,
-                context.sliceobj.length().toFixed(0),
+                0,
+                0,
                 0,
             ],
             0,
             [
                 0,
-                "",
+                j.toFixed(0),
                 0,
                 0,
                 0,
-                "",
+                context.sliceobj.length().toFixed(0),
                 0,
             ],
         ])
@@ -714,11 +751,11 @@ var ScrollBarPanel = function ()
 var eventlst =
 [
     {name: "_1cnvctx", mouse: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", draw: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "DEFAULT", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 0},
-    {name: "_2cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "BAR", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new BarPanel("User Account"), scroll: new ScrollBarPanel(), buttonheight: 50},
-    {name: "_3cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "BAR", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new BarPanel("Image Sources"), scroll: new DualPanel(), buttonheight: 90},
+    {name: "_2cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "USER", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new UserBar(), scroll: new ScrollBarPanel(), buttonheight: 50},
+    {name: "_3cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "BAR", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new BarPanel("Sources"), scroll: new DualPanel(), buttonheight: 90},
     {name: "_4cnvctx", mouse: "BOSS", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", draw: "BOSS", wheel: "BOSS", drop: "BOSS", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new Empty(), scroll: new DualPanel(), buttonheight: 30},
     {name: "_5cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "BAR", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new MetaBar(), scroll: new DualPanel(), buttonheight: 90},
-    {name: "_6cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new AboutBar("Share Image"), scroll: new ScrollBarPanel(), buttonheight: 50},
+    {name: "_6cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new AboutBar("Share"), scroll: new ScrollBarPanel(), buttonheight: 50},
     {name: "_7cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new AboutBar("Help"), scroll: new DualPanel(), buttonheight: 90},
     {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SEARCH", pan: "MENU", swipe: "MENU", draw: "SEARCH", wheel: "MENU", drop: "DEFAULT", key: "GMENU", press: "SEARCH", pinch: "DEFAULT", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 200},
     {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new AboutBar("Image Browser"), scroll: new ScrollBarPanel(), buttonheight: 50},
@@ -961,7 +998,7 @@ var Fill = function (color)
     };
 };
 
-var HelPanel = function (color, shadow)
+var AutoPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
@@ -971,9 +1008,46 @@ var HelPanel = function (color, shadow)
 
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,3),15,15),
-            _7cnvctx.enabled ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),18,18) : 0,
-            new Text("white", "center", "middle",0, 0, 0, 2.5),
+            context.autotime ? new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,4),13,13) : 0,
+            new Text("white", "center", "middle",0, 0, 1, 1.75),
+        ]);
+
+        a.draw(context, rect, "⚡️", time);
+        context.restore();
+    }
+};
+
+var GalleryPanel = function ()
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.save();
+		context.fillStyle = "white";
+		context.strokeStyle = "white";
+
+        var a = new Layer(
+        [
+            _8cnvctx.scrollobj.current() ? 0 : new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,4),13,13),
+            new Text("white", "center", "middle",0, 0, 1, 1.75),
+        ]);
+
+        a.draw(context, rect, "💫", time);
+        context.restore();
+    }
+};
+
+var HelPanel = function ()
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.save();
+		context.fillStyle = "white";
+		context.strokeStyle = "white";
+
+        var a = new Layer(
+        [
+            _7cnvctx.enabled ? new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,4),18,18) : 0,
+            new Text("white", "center", "middle",0, 0, 1, 2),
         ]);
 
         a.draw(context, rect, "?", time);
@@ -981,49 +1055,21 @@ var HelPanel = function (color, shadow)
     }
 };
 
-var SharePanel = function (color, shadow)
+var SharePanel = function (k)
 {
     this.draw = function (context, rect, user, time)
     {
         context.save();
-
-        var Panel = function ()
-        {
-            this.draw = function (context, rect, user, time)
-            {
-                context.save();
-                var a = new CirclePanel("white",TRANSPARENT,3);
-                rect.x += 12;
-                rect.y += 7;
-                rect.width = 9;
-                rect.height = 9;
-                a.draw(context, rect, user, time);
-                rect.y += 17;
-                a.draw(context, rect, user, time);
-                rect.x += -16;
-                rect.y += -8;
-                a.draw(context, rect, user, time);
-		        context.strokeStyle = "white";
-                context.lineWidth = 1.5;
-                context.beginPath();
-                context.moveTo(rect.x+2, rect.y+2);
-                context.lineTo(rect.x+16, rect.y+11);
-                context.stroke();
-                context.moveTo(rect.x+2, rect.y+5);
-                context.lineTo(rect.x+16, rect.y-3);
-                context.stroke();
-                context.restore();
-            }
-        };
+		context.fillStyle = "white";
+		context.strokeStyle = "white";
 
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,3),16,16),
-            _6cnvctx.enabled ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),18,18) : 0,
-            new Shrink(new Panel(),20,20),
+            _6cnvctx.enabled ? new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,4),18,18) : 0,
+            new Text("white", "center", "middle",0, 0, 1, 2),
         ]);
 
-        a.draw(context, rect, user, time);
+        a.draw(context, rect, k, time);
         context.restore();
     }
 };
@@ -1048,27 +1094,34 @@ var PagesPanel = function ()
     }
 };
 
-var ThumbPanel = function (color, shadow)
+var ThumbPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
         context.save();
+		context.fillStyle = "white";
+		context.strokeStyle = "white";
+
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,3),15,15),
-            thumbobj.current() ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),18,18) : 0,
-            new Shrink(new CirclePanel(TRANSPARENT,"white",3),22,22),
-        ])
-        a.draw(context, rect, user, time);
+            thumbobj.current() ? new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,4),18,18) : 0,
+            new Text("white", "center", "middle",0, 0, 1, 2),
+        ]);
+
+        a.draw(context, rect, "#", time);
         context.restore();
     }
 };
 
-var SearchPanel = function (color, shadow)
+var SearchPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
         context.save();
+        context.shadowOffsetX = 1;
+        context.shadowOffsetY = 1;
+		context.strokeStyle = "white";
+		context.shadowColor = "black";
         var Panel = function ()
         {
             this.draw = function (context, rect, user, time)
@@ -1093,8 +1146,8 @@ var SearchPanel = function (color, shadow)
 
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,4),13,13),
-            j ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),17,17) : 0,
+            j ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",6),15,15) : 0,
+            _8cnvctx.enabled ? new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,4),11,11) : 0,
             new Shrink(new Panel(),20,20),
         ]);
 
@@ -1103,43 +1156,20 @@ var SearchPanel = function (color, shadow)
     }
 };
 
-var FolderPanel = function (color, shadow)
+var FullPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
         context.save();
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,"white",3),15,15),
-            galleryobj.getcurrent().file ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),18,18) : 0,
+            screenfull.isFullscreen ? new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,4),18,18) : 0,
         ])
         a.draw(context, rect, user, time);
-		context.fillStyle = "white";
+        context.shadowOffsetX = 1;
+        context.shadowOffsetY = 1;
 		context.strokeStyle = "white";
-        var x = rect.x+20;
-        var y = rect.y+33;
-        context.lineWidth = 2.5;
-        context.strokeRect(x, y, 21, 16);
-        context.fillRect(x, y-5, 10, 4);
-        context.restore();
-    }
-};
-
-var FullPanel = function (color, shadow)
-{
-    this.draw = function (context, rect, user, time)
-    {
-        context.save();
-        var a = new Layer(
-        [
-            new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,3),15,15),
-            screenfull.isFullscreen ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),18,18) : 0,
-        ])
-        a.draw(context, rect, user, time);
-        context.shadowOffsetX = 0;
-        context.shadowOffsetY = 0;
-		context.strokeStyle = color;
-		context.shadowColor = shadow;
+		context.shadowColor = "black";
 
         var e = 6;
         var x = 21.5;
@@ -1965,6 +1995,10 @@ var pinchlst =
     },
     pinchstart: function (context, rect, x, y)
     {
+        clearInterval(globalobj.slideshow);
+        globalobj.slideshow = 0;
+        clearInterval(context.timemain);
+        context.timemain = 0;
         context.pinching = 1;
         headobj.set(2);
         headham.panel = headobj.getcurrent();
@@ -2117,14 +2151,6 @@ var panlst =
 
 	pan: function (context, rect, x, y, type)
     {
-        context.panning = 1;
-        clearTimeout(context.panend);
-        context.panend = setTimeout(function()
-        {
-            context.panning = 0;
-            context.refresh();
-        }, 1000);
-
         var obj = context.scrollobj;
         if (context.index == 7)
             obj = context.scrollobj.getcurrent();
@@ -2178,6 +2204,8 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
     {
+        clearInterval(context.autotime);
+        context.autotime = 0;
         context.type = 0;
         context.leftside = x < MENUPANWIDTH;
         context.rightside = x > rect.width-MENUPANWIDTH;
@@ -2264,11 +2292,6 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
 	{
-        clearInterval(globalobj.slideshow);
-        globalobj.slideshow = 0;
-        clearInterval(context.timemain);
-        context.panning = 1;
-        context.timemain = 0;
         context.startx = x;
         context.starty = y;
         context.pantype = 0;
@@ -2280,7 +2303,6 @@ var panlst =
 	{
         setTimeout(function()
         {
-            context.panning = 0;
             context.pressedthumb = 0;
             context.isthumbrect = 0;
             delete context.isthumbrect;
@@ -2672,6 +2694,8 @@ var keylst =
 			_8cnvctx.enabled ? _8cnvctx :
             _9cnvctx.enabled ? _9cnvctx :
 		    _4cnv.height ? _4cnvctx : _1cnvctx;
+        clearInterval(context.autotime);
+        context.autotime = 0;
         var obj = context.scrollobj;
         if (context.index == 7)
             obj = context.scrollobj.getcurrent();
@@ -2738,6 +2762,8 @@ var keylst =
             _9cnvctx.enabled ? _9cnvctx :
             _4cnvctx;
 
+        clearInterval(context.autotime);
+        context.autotime = 0;
         var key = evt.key.toLowerCase();
 		if (key == "pageup" || key == "arrowup" || evt.key == "j")
 		{
@@ -3059,6 +3085,42 @@ var taplst =
     },
 },
 {
+    name: "USER",
+    tap: function (context, rect, x, y)
+    {
+        var obj = context.scrollobj;
+        if (context.header && context.header.hitest(x,y))
+        {
+            menuhide();
+            context.tapped = 0;
+            context.refresh()
+        }
+        else if (context.login && context.login.hitest(x,y))
+        {
+
+        }
+        else
+        {
+            var k = getbuttonfrompoint(context, x, y);
+            var slice = context.sliceobj.data[k];
+            if (!slice)
+            {
+                menuhide();
+                return;
+            }
+
+            slice.tap = 1;
+            context.refresh();
+            setTimeout(function ()
+            {
+                slice.tap = 0;
+                slice.func(k)
+                context.refresh();
+            }, JULIETIME*3);
+        }
+    },
+},
+{
     name: "BAR",
     tap: function (context, rect, x, y)
     {
@@ -3192,11 +3254,34 @@ var taplst =
         {
             showsearch()
         }
-        else if (context.help && context.help.hitest(x,y))
+        else if (context.gallery && context.gallery.hitest(x,y))
         {
+            context.scrollobj.rotate(1);
+            context.refresh();
         }
-        else if (context.options && context.options.hitest(x,y))
+        else if (context.auto && context.auto.hitest(x,y))
         {
+            if (context.autotime)
+            {
+                clearInterval(context.autotime);
+                context.autotime = 0;
+                context.refresh()
+            }
+            else
+            {
+                context.autotime = 1;
+                context.refresh()
+                context.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+                var k = Math.lerp(0,TIMEOBJ/context.sliceobj.length(),galleryobj.berp())
+                context.timeobj.rotate(k);
+                context.refresh()
+                clearInterval(context.autotime);
+                context.autotime = setInterval(function()
+                {
+                    context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
+                    context.refresh()
+                }, 1000);
+            }
         }
         else if (context.header && context.header.hitest(x,y))
         {
@@ -3236,10 +3321,14 @@ var taplst =
                         '<i class="fa fa-thumbs-up"></i>Close',
                     })
                 }
-                else
+                else if (k != galleryobj.current())
                 {
                     galleryobj.set(k);
                     slice.func.exec()
+                }
+                else
+                {
+                    menuhide();
                 }
             }, JULIETIME);
         }
@@ -3506,10 +3595,10 @@ var menulst =
         user.fitwidth = rect.width;
         user.fitheight = rect.height+100;
         var clr = SCROLLNAB;
-        if (time == galleryobj.current())
+        if (user.tap)
+            clr = SELECTAP;
+        else if (time == galleryobj.current())
             clr = MENUSELECT;
-        else if (user.tap)
-            clr = MENUTAP;
 
         var a = new Expand(new Rounded(clr, 3, SEARCHFRAME, 8, 8), 0, 50);
         a.draw(context, rect, 0, 0);
@@ -4296,8 +4385,8 @@ var CirclePanel = function (color, scolor, width)
     	context.beginPath();
         context.arc(rect.x + rect.width / 2, rect.y + rect.height / 2, radius, 0, 2 * Math.PI, false);
         context.fillStyle = color;
-        context.shadowOffsetX = 0;
-        context.shadowOffsetY = 0;
+        context.shadowOffsetX = 1;
+        context.shadowOffsetY = 1;
         context.fill();
         if (width)
         {
@@ -4710,6 +4799,8 @@ function menuhide()
     _8cnvctx.hide();
     _9cnvctx.hide();
     _4cnvctx.refresh();
+    clearInterval(_8cnvctx.autotime);
+    _8cnvctx.autotime = 0;
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     return k;
 }
@@ -5085,27 +5176,27 @@ var headlst =
                    0,
                    new Layer(
                    [
-                       new SharePanel("white","black"),
+                       new SharePanel("✤"),
                        new Rectangle(context.sharepanel),
                    ]),
                    new Layer(
                    [
-                       new FullPanel("white","black"),
+                       new FullPanel(),
                        new Rectangle(context.fullpanel),
                    ]),
                    new Layer(
                    [
-                       new SearchPanel("white","black"),
+                       new SearchPanel(),
                        new Rectangle(context.searchpanel),
                    ]),
                    new Layer(
                    [
-                       new ThumbPanel("white","black"),
+                       new ThumbPanel(),
                        new Rectangle(context.thumbpanel),
                    ]),
                    new Layer(
                    [
-                       new HelPanel("white","black"),
+                       new HelPanel(),
                        new Rectangle(context.helpanel),
                    ]),
                    0
@@ -5150,17 +5241,13 @@ var headlst =
             }
             else if (context.minuspanel.hitest(x,y))
             {
-                _4cnvctx.pinching = 1;
                 pinchobj.getcurrent().getcurrent().add(-5);
                 contextobj.reset();
-                _4cnvctx.pinching = 0;
             }
             else if (context.pluspanel.hitest(x,y))
             {
-                _4cnvctx.pinching = 1;
                 pinchobj.getcurrent().getcurrent().add(5);
                 contextobj.reset();
-                _4cnvctx.pinching = 0;
             }
             else if (context.picture.hitest(x,y))
             {
@@ -5369,7 +5456,7 @@ var headlst =
                     new Col([0,60,0],
                     [
                         0,
-                        new SearchPanel("white","black"),
+                        new SearchPanel(),
                         0
                     ])
                ]);
@@ -5493,8 +5580,7 @@ var PagePanel = function (size)
         var s = _5cnvctx.enabled;
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,4),15,15),
-            s ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),18,18) : 0,
+            new Shrink(new CirclePanel(s?MENUTAP:SCROLLNAB,SEARCHFRAME,4),15,15),
             new Row( [0, rect.height*0.25, 0],
             [
                 0,
@@ -5517,10 +5603,10 @@ var OptionPanel = function (size)
         var k = j/2;
         var e = new Fill(OPTIONFILL);
         var s = _9cnvctx.enabled;
+
         var a = new Layer(
         [
-            new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,4),15,15),
-            s ? new Shrink(new CirclePanel(TRANSPARENT,"rgb(255,155,0)",4),18,18) : 0,
+            new Shrink(new CirclePanel(s?MENUTAP:SCROLLNAB,SEARCHFRAME,4),15,15),
             new Col( [0,rect.height*0.25,0],
             [
                 0,
@@ -5727,7 +5813,7 @@ fetch(path)
 
     _6cnvctx.sliceobj.data =
     [
-        {title:"Download Link", path: "DOWNLOAD", func: function()
+        {title:"Download", path: "DOWNLOAD", func: function()
             {
                 download();
                 menuhide();
@@ -5760,7 +5846,7 @@ fetch(path)
     if (galleryobj.getcurrent().photographer_url)
     {
         _6cnvctx.sliceobj.data.push(
-         {title:"Photographer Link", path: "PHOTOGRAPHER_URL", func: function()
+         {title:"Artist", path: "PHOTOGRAPHER_URL", func: function()
             {
                 window.open(galleryobj.getcurrent().photographer_url, "_blank");
             }})
@@ -5816,7 +5902,7 @@ fetch(path)
     var slices = _9cnvctx.sliceobj;
     slices.data = [];
 
-    slices.data.push({title:"User Account", path: "USER", func: function() { menushow(_2cnvctx); }});
+    slices.data.push({title:"User", path: "USER", func: function() { menushow(_2cnvctx); }});
     slices.data.push({title:"Search", path: "SEARCH", func: function()
         {
             _8cnvctx.scrollobj.set(0);
@@ -5824,7 +5910,7 @@ fetch(path)
             menushow(_8cnvctx)
         }});
     slices.data.push({title:"Slideshow", path: "SLIDESHOW", func: function() { menuhide(); startslideshow(); }});
-    slices.data.push({title:"Image Metadata", path: "METADATA", func: showmeta})
+    slices.data.push({title:"Metadata", path: "METADATA", func: showmeta})
     slices.data.push({title:"Open", path: "OPEN", func: function()
         {
             menuhide();
@@ -5845,7 +5931,7 @@ fetch(path)
                 _4cnvctx.refresh();
         }})
 
-    slices.data.push({title:"Share Image", path: "SHARE", func: function() { menushow(_6cnvctx); }})
+    slices.data.push({title:"Share", path: "SHARE", func: function() { menushow(_6cnvctx); }})
     slices.data.push({title:"Help", path: "HELP", func: function(){menushow(_7cnvctx); }})
 
     slices.data.push({title:"Fullscreen", path: "FULLPANEL", func: function ()
