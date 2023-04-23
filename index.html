@@ -25,18 +25,12 @@ A:visited { COLOR: black; TEXT-DECORATION: none; font-weight: normal }
 A:active { COLOR: black; TEXT-DECORATION: none }
 A:hover { COLOR: blue; TEXT-DECORATION: none; font-weight: none; cursor: pointer }
 
-.swal2-popup 
-{
-  font-size: 1rem !important;
-  font-family: Helvetica, sans-serif; 
-}
-
 label
 {
   font-family: Helvetica, sans-serif; 
   font-weight: bold; 
   text-align: center;
-  font-size: 1.2rem; 
+  font-size: 1rem; 
   width: 100%; 
   padding: 10px; 
 }
@@ -93,9 +87,8 @@ button
 }
 </style>
 
+<link rel="stylesheet" href="@sweetalert2/themes/dark/dark.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
-
 <link href="https://fonts.googleapis.com/css?family=Archivo+Black" rel="stylesheet">
 <canvas id='_4' style='z-index: 1' width='0' height='0'></canvas>
 <canvas id='head' style='z-index: 2' width='0' height='0'></canvas>
@@ -134,21 +127,18 @@ button
   </div>
 </div>
 
-<div class="search-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5);">
-  <div style="position: fixed;width: 520px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; border-radius: 5px;" role="dialog">
+<div class="search-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.0);">
+  <div style="position: fixed;width: 400px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; border-radius: 5px;" role="dialog">
     <div class="earth">
       <label>Image Search</label>
     </div>
     <div class="earth"></div>
     <div class="earth">
-      <textarea id="search" autocapitalize="off" placeholder="Enter Search" rows=8 style=""></textarea>
+      <textarea id="search" autocapitalize="off" placeholder="Enter Search" rows=6 style=""></textarea>
     </div>
     <div class="earth"></div>
     <div class="earth">
       <button class="fade" style="" type="button" onclick="submitsearch()">Search</button>
-    </div>
-    <div class="earth">
-      <button id="sources" class="fade" style="" type="button" onclick="showsource()"></button>
     </div>
   </div>
 </div>
