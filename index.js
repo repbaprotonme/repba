@@ -1,5 +1,6 @@
 //todo: https://obfuscator.io
 //todo: safari max size
+//todo: correct blank vertical draw lines
 
 /* ++ += ==
 Copyright 2017 Tom Brinkman
@@ -23,12 +24,12 @@ const BEXTENT = 80;
 const TIMEOBJ = 3927;
 const DELAYCENTER = TIMEOBJ/1000;
 const TIMEMID = TIMEOBJ/2;
-const MENUSELECT = "rgba(255,175,0,0.6)";
-const MENUTAP = "rgba(255,175,0,0.6)";
-const SELECTAP = "rgba(255,0,0.75,0.6)";
+const MENUSELECT = "rgba(255,175,0,0.7)";
+const MENUTAP = "rgba(255,175,0,0.7)";
+const SELECTAP = "rgba(255,0,0.75,0.7)";
 const SCROLLNAB = "rgba(0,0,0,0.35)";
 const BARFILL = "rgba(0,0,0,0.5)";
-const MENUCOLOR = "rgba(0,0,0,0.40)";
+const MENUCOLOR = "rgba(0,0,0,0.7)";
 const OPTIONFILL = "white";
 const THUMBFILP = "rgba(0,0,0,0.2)";
 const THUMBFILL = "rgba(0,0,0,0.3)";
@@ -38,7 +39,7 @@ const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
 const SCROLLBARWIDTH = 8;
 const SLIDEDEFAULT = 2500;
-const MENUWIDTH = 420;
+const MENUWIDTH = 720;
 const SEARCHBOT = "rgb(200,200,200)";
 
 globalobj = {};
@@ -458,18 +459,23 @@ var BarPanel = function (header)
     {
         context.save();
         context.header = new rectangle();
-        var a = new Row([60,0,80],
+        var a = new Row([80,0,80],
         [
-           new Layer(
-           [
-                new Rectangle(context.header),
-                new Row([0,24,0],
+            new Col([80,0,80],
                 [
-                    0,
-                    new Text("white", "center", "middle",0, 0, 1),
-                    0,
+                    new PagePanel(),
+                   new Layer(
+                   [
+                        new Rectangle(context.header),
+                        new Row([0,24,0],
+                        [
+                            0,
+                            new Text("white", "center", "middle",0, 0, 1),
+                            0,
+                        ]),
+                   ]),
+                    new OptionPanel(),
                 ]),
-           ]),
            0,
            new Col( [ 0, ALIEXTENT,  ALIEXTENT,  ALIEXTENT, ALIEXTENT, ALIEXTENT, 0 ],
            [
@@ -508,10 +514,10 @@ var SearchBar = function ()
                     new Rectangle(context.header),
                     0,
                 ]),
-                new ColA([0, 60,60,60, 0],
+                new ColA([80, 0,60,60,60,0, 80],
                 [
+                    new PagePanel(),
                     0,
-
                     new GalleryPanel(),
                     new Layer(
                     [
@@ -519,8 +525,8 @@ var SearchBar = function ()
                         new SearchPanel(),
                     ]),
                     new AutoPanel(),
-
                     0,
+                    new OptionPanel(),
                 ]),
             ]),
             0,
@@ -884,6 +890,7 @@ var AutoPanel = function ()
 		context.strokeStyle = "white";
         context.auto = new rectangle();
 
+        rect.x += 5;
         var a = new Layer(
         [
             new Rectangle(context.auto),
@@ -905,6 +912,7 @@ var GalleryPanel = function ()
 		context.strokeStyle = "white";
         context.gallery = new rectangle();
 
+        rect.x -= 5;
         var a = new Layer(
         [
             new Rectangle(context.gallery),
@@ -1106,11 +1114,12 @@ var ThumbPanel = function ()
         var a = new Layer(
         [
             new Rectangle(context.thumbpanel),
-            thumbobj.current() ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),20,20) : 0,
-            new Shrink(new CirclePanel(thumbobj.current()?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),16,16),
+            thumbobj.current() ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),19,19) : 0,
+            new Shrink(new CirclePanel(thumbobj.current()?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),15,15),
             new Text("white", "center", "middle",0, 0, 1, 1.75),
         ]);
 
+        rect.x += 5;
         a.draw(context, rect, "#", time);
         context.restore();
     }
@@ -1168,11 +1177,13 @@ var FullPanel = function ()
         context.save();
         context.fullpanel = new rectangle()
 
+        rect.x -= 5;
+
         var a = new Layer(
         [
             new Rectangle(context.fullpanel),
-            screenfull.isFullscreen ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),20,20) : 0,
-            new Shrink(new CirclePanel(screenfull.isFullscreen ? TRANSPARENT : SCROLLNAB, SEARCHFRAME,4),16,16),
+            screenfull.isFullscreen ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),19,20) : 0,
+            new Shrink(new CirclePanel(screenfull.isFullscreen ? TRANSPARENT : SCROLLNAB, SEARCHFRAME,4),15,15),
         ]);
 
         a.draw(context, rect, user, time);
@@ -1537,13 +1548,14 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     _4cnvctx.setcolumncomplete = 0;
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     contextobj.reset();
+
     setTimeout(function()
     {
-       _4cnvctx.movingpage = 0;
+        _4cnvctx.movingpage = 0;
         _4cnvctx.refresh();
         _8cnvctx.refresh();
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-    }, 100);
+    }, 400);
 }
 
 CanvasRenderingContext2D.prototype.hide = function ()
@@ -3108,6 +3120,7 @@ var taplst =
         }
     },
 },
+    /*
 {
     name: "BAR",
     tap: function (context, rect, x, y)
@@ -3115,9 +3128,6 @@ var taplst =
         var obj = context.scrollobj;
         if (context.header && context.header.hitest(x,y))
         {
-            menuhide();
-            context.tapped = 0;
-            context.refresh()
         }
         else if (context.aboutpanel && context.aboutpanel.hitest(x,y))
         {
@@ -3148,6 +3158,7 @@ var taplst =
         }
     },
 },
+*/
 {
     name: "OPTION",
     tap: function (context, rect, x, y)
@@ -3162,7 +3173,6 @@ var taplst =
         }
         else if (context.header && context.header.hitest(x,y))
         {
-            menuhide();
         }
         else if (context.metapanel && context.metapanel.hitest(x,y))
         {
@@ -3188,7 +3198,22 @@ var taplst =
         {
             menushow(_7cnvctx,0);
         }
-        else
+        else if (context.page && context.page.hitest(x,y))
+        {
+            _8cnvctx.scrollobj.set(0);
+            _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+            var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
+            _8cnvctx.timeobj.rotate(k);
+            menushow(_8cnvctx)
+        }
+        else if (context.option && context.option.hitest(x,y))
+        {
+            clearTimeout(context.menutime);
+            context.refresh();
+            menushow(_9cnvctx)
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        }
+         else
         {
             var k = getbuttonfrompoint(context, x, y);
             var slice = context.sliceobj.data[k];
@@ -3242,6 +3267,21 @@ var taplst =
         else if (context.search && context.search.hitest(x,y))
         {
             showsearch()
+        }
+        else if (context.page && context.page.hitest(x,y))
+        {
+            _8cnvctx.scrollobj.set(0);
+            _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+            var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
+            _8cnvctx.timeobj.rotate(k);
+            menushow(_8cnvctx)
+        }
+        else if (context.option && context.option.hitest(x,y))
+        {
+            clearTimeout(context.menutime);
+            context.refresh();
+            menushow(_9cnvctx)
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
         else if (context.gallery && context.gallery.hitest(x,y))
         {
@@ -4153,9 +4193,7 @@ var ContextObj = (function ()
                     if (_4cnvctx.movingpage || url.slideshow)
                         context.timeobj.set(TIMEOBJ/2);
                     if (!globalobj.slideshow && url.slideshow)
-                    {
                         startslideshow();
-                    }
 
                     _4cnvctx.pinched = 0;
                     contextobj.resize(context);
@@ -5032,12 +5070,6 @@ var headlst =
                         screenfull.request();
                 }
             }
-            else
-            {
-                menuhide();
-                headobj.set(1);
-                headham.panel = headobj.getcurrent();
-            }
 
             setTimeout(function ()
             {
@@ -5050,7 +5082,7 @@ var headlst =
         {
             context.save();
             context.clear();
-            var w = rect.width < 340 ? -1 : ALIEXTENT;
+            var w = rect.width < 320 ? -1 : (rect.width < 340 ? 50 : ALIEXTENT);
             var a = new Row([BEXTENT,0],
             [
                new Col( [ BEXTENT,0, w,ALIEXTENT,w, 0,BEXTENT ],
@@ -5124,12 +5156,6 @@ var headlst =
             else if (context.picture.hitest(x,y))
             {
                 pinchobj.rotate(1);
-            }
-            else
-            {
-                menuhide();
-                headobj.set(1);
-                headham.panel = headobj.getcurrent();
             }
 
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -5220,12 +5246,6 @@ var headlst =
             {
                 showsearch();
             }
-            else
-            {
-                menuhide();
-                headobj.set(1);
-                headham.panel = headobj.getcurrent();
-            }
 
             _8cnvctx.refresh();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -5239,6 +5259,8 @@ var headlst =
             context.shadowOffsetY = 1;
             context.shadowColor = "black";
             context.prompt = new rectangle()
+            delete context.pagepanel;
+            delete context.optionpanel;
             var w = 640;
             if (w > rect.width-BEXTENT*2)
                 w = rect.width-BEXTENT*2;
@@ -5335,11 +5357,7 @@ var headlst =
             clearInterval(_4cnvctx.timemain);
             clearInterval(globalobj.slideshow);
             globalobj.slideshow = 0;
-
-            if (headobj.current() == 1 || headobj.current() == 5)
-                headobj.set(3);
-            else
-                headobj.set(headobj.current()?0:3);
+            headobj.set(headobj.current() == 3?1:3);
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             context.refresh();
