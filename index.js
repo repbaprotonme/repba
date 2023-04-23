@@ -14,7 +14,6 @@ const MAXVIRTUAL = 5760*2;
 const SWIPETIME = 100;
 const MENUBARWIDTH = 12;
 const MENUPANWIDTH = 40;
-const MENUBARHEIGHT = 60;
 const THUMBORDER = 5;
 const THUMBSELECT = 7;
 const JULIETIME = 100;
@@ -29,7 +28,7 @@ const MENUTAP = "rgba(255,175,0,0.6)";
 const SELECTAP = "rgba(255,0,0.75,0.6)";
 const SCROLLNAB = "rgba(0,0,0,0.35)";
 const BARFILL = "rgba(0,0,0,0.5)";
-const MENUCOLOR = "rgba(0,0,0,0.30)";
+const MENUCOLOR = "rgba(0,0,0,0.40)";
 const OPTIONFILL = "white";
 const THUMBFILP = "rgba(0,0,0,0.2)";
 const THUMBFILL = "rgba(0,0,0,0.3)";
@@ -5053,7 +5052,7 @@ var headlst =
             context.clear();
            var a = new Row([BEXTENT,0],
            [
-               new Col( [ BEXTENT,0, BEXTENT,ALIEXTENT,BEXTENT, 0,BEXTENT ],
+               new Col( [ BEXTENT,0, BEXTENT,rect.width<420?-1:ALIEXTENT,BEXTENT, 0,BEXTENT ],
                [
                    new PagePanel(),
                    0,
