@@ -1541,9 +1541,6 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
 
     galleryobj.rotate(j);
     _4cnvctx.movingpage = j;
-    headobj.set(3);
-    headham.panel = headobj.getcurrent();
-    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     delete _4cnvctx.thumbcanvas;
     delete photo.image;
     _4cnvctx.setcolumncomplete = 0;
@@ -2979,6 +2976,9 @@ var keylst =
         }
         else if (key == "enter")
         {
+            headobj.set(3);
+            headham.panel = headobj.getcurrent();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             evt.preventDefault();
             clearInterval(globalobj.slideshow);
             globalobj.slideshow = 0;
@@ -2987,6 +2987,9 @@ var keylst =
         }
         else if (key == "pageup")
         {
+            headobj.set(3);
+            headham.panel = headobj.getcurrent();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             evt.preventDefault();
             clearInterval(globalobj.slideshow);
             globalobj.slideshow = 0;
@@ -2995,6 +2998,9 @@ var keylst =
         }
         else if (key == "pagedown")
         {
+            headobj.set(3);
+            headham.panel = headobj.getcurrent();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             evt.preventDefault();
             clearInterval(globalobj.slideshow);
             globalobj.slideshow = 0;
