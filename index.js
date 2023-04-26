@@ -5754,7 +5754,7 @@ function deleteimage()
     });
 }
 
-async function submitprompt()
+function submitprompt()
 {
    var prompt = document.getElementById('prompt-value').value;
     var obj =
@@ -5764,7 +5764,7 @@ async function submitprompt()
             'size': '1024x1024'
           };
 
-   let response = await fetch('https://dalle.reportbase5836.workers.dev',
+   let response = fetch('https://dalle.reportbase5836.workers.dev',
    {
          method: 'PUT',
         headers:
@@ -5772,10 +5772,15 @@ async function submitprompt()
             "Content-Type": "application/json",
         },
        body: JSON.stringify(obj)
-   });
-
-    var str = await response.json();
-    console.log(str);
+   })
+.then(function (response)
+{
+  return response.json()
+})
+.then(function (obj)
+{
+    console.log(obj);
+})
 }
 
 function submitpage()

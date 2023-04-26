@@ -11,6 +11,9 @@ export default
           method: 'POST',
           headers:
           {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'authorization': `bearer ${OPENAI_KEY}`
@@ -19,7 +22,11 @@ export default
         });
         var json = await res.json();
         return new Response(JSON.stringify(json.data), {
-              headers: {
+              headers:
+            {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
                 "content-type": "application/json;charset=UTF-8",
               },
             });
