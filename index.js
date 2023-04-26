@@ -25,11 +25,11 @@ const TIMEOBJ = 3927;
 const DELAYCENTER = TIMEOBJ/1000;
 const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(255,175,0,0.7)";
-const MENUTAP = "rgba(255,175,0,0.7)";
+const MENUTAP = "rgba(255,125,0,0.9)";
 const SELECTAP = "rgba(255,0,0.75,0.7)";
 const SCROLLNAB = "rgba(0,0,0,0.35)";
 const BARFILL = "rgba(0,0,0,0.5)";
-const MENUCOLOR = "rgba(0,0,0,0.3)";
+const MENUCOLOR = "rgba(0,0,0,0.5)";
 const OPTIONFILL = "white";
 const THUMBFILP = "rgba(0,0,0,0.2)";
 const THUMBFILL = "rgba(0,0,0,0.3)";
@@ -375,7 +375,7 @@ function drawslices()
             let y = Math.berp(-1, 1, bos) * context.virtualheight;
             y -= e;
             var x = w/2;
-            var j = context.buttonheight*3;
+            var j = context.buttonheight*(_8cnvctx.autotime?6:3);
             if (y < -j || y >= window.innerHeight+j)
                 continue;
             context.visibles.push({slice, x, y, m});
@@ -536,18 +536,19 @@ var SearchBar = function ()
                 new ColA([25,0,15, 60, 15,0,25],
                 [
                     0,
-                    new Text("white", "right", "middle", 0, 0, 1, 0.9),
+                    new ShadowPanel(new Text("white", "right", "middle", 0, 0, 1, 0.9),1,1),
                     0,
 
                     new Layer(
                     [
                         new Rectangle(context.slide),
-                        new Shrink(new CirclePanel(context.tapped==2?MENUSELECT:SCROLLNAB,SEARCHFRAME,4),13,13),
+                        new Shrink(new CirclePanel(context.tapped==2?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),13,13),
+                        context.tapped==2 ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),17,17) : 0,
                         new Shrink(new ArrowPanel("white",90),18,28),
                     ]),
 
                     0,
-                    new Text("white", "left", "middle", 0, 0, 1, 0.9),
+                    new ShadowPanel(new Text("white", "left", "middle", 0, 0, 1, 0.9),1,1),
                     0,
                 ]),
             ])
@@ -978,37 +979,10 @@ var ThumbPanel = function ()
             new Rectangle(context.thumbpanel),
             thumbobj.current() ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),19,19) : 0,
             new Shrink(new CirclePanel(thumbobj.current()?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),15,15),
+            new Shrink(new Rounded(TRANSPARENT, 3, "white", 4, 4),20,30),
         ]);
 
         a.draw(context, rect, user, time);
-		context.strokeStyle = "white";
-        context.lineWidth = 3;
-
-        var w = rect.width/2;
-        var h = rect.height/2;
-        var x = rect.x+w-5;
-        var y = rect.y+h-11;
-
-        var path = new Path2D();
-        path.moveTo(x,y);
-        y += 21;
-        path.lineTo(x,y);
-        x += 10;
-        y -= 21;
-        path.moveTo(x,y);
-        y += 21;
-        path.lineTo(x,y);
-        x -= 17;
-        y -= 15;
-        path.moveTo(x,y);
-        x += 24;
-        path.lineTo(x,y);
-        y += 9;
-        path.moveTo(x,y);
-        x -= 24;
-        path.lineTo(x,y);
-        context.stroke(path);
-
         context.restore();
     }
 };
@@ -1050,10 +1024,10 @@ var LoginPanel = function ()
             new Rectangle(context.loginpanel),
             _2cnvctx.enabled ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),19,19) : 0,
             new Shrink(new CirclePanel(_2cnvctx.enabled?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),15,15),
-            new Text("white", "center", "middle",0, 0, 0, 2.2),
+            new Shrink(new CirclePanel("white",TRANSPARENT,4),30,30),
         ]);
 
-        a.draw(context, rect, "☵", time);
+        a.draw(context, rect, user, time);
         context.restore();
     }
 };
@@ -1160,10 +1134,10 @@ var SourcePanel = function ()
             new Rectangle(context.sourcepanel),
             _3cnvctx.enabled ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),19,19) : 0,
             new Shrink(new CirclePanel(_3cnvctx.enabled?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),15,15),
-            new Text("white", "center", "middle",0, 0, 0, 2.2),
+            new Shrink(new CirclePanel(TRANSPARENT,"white",4),30,30),
         ]);
 
-        a.draw(context, rect, "☳", time);
+        a.draw(context, rect, user, time);
         context.restore();
     }
 };
@@ -1464,6 +1438,7 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
 
     galleryobj.rotate(j);
     _4cnvctx.movingpage = j;
+    headcnvctx.scrollobj.set(0);
     delete _4cnvctx.thumbcanvas;
     delete photo.image;
     _4cnvctx.setcolumncomplete = 0;
@@ -1932,20 +1907,23 @@ var pinchlst =
         }
         else
         {
-            var f = Math.floor(obj.length()*e);
-            scale = parseFloat(scale).toFixed(2);
-            if (scale >= 1 && obj.current() < (obj.length()*0.15))
+            if (0)//scale >= 1 && obj.current() < (obj.length()*0.15))
             {
+                var f = Math.floor(obj.length()*e);
+                scale = parseFloat(scale).toFixed(2);
                 obj.set(f+2);
                 context.savepinch = obj.getcurrent();
             }
-            else if (scale <= 1 && obj.current() < (obj.length()*0.15))
+            else if (0)//scale <= 1 && obj.current() < (obj.length()*0.15))
             {
+                var f = Math.floor(obj.length()*e);
+                scale = parseFloat(scale).toFixed(2);
                 obj.set(f-2);
                 context.savepinch = obj.getcurrent();
             }
             else
             {
+                var f = Math.floor(obj.length()*Math.max(e,0.1));
                 obj.set(f);
             }
 
@@ -1956,6 +1934,7 @@ var pinchlst =
     },
     pinchstart: function (context, rect, x, y)
     {
+        menuhide();
         clearInterval(globalobj.slideshow);
         globalobj.slideshow = 0;
         clearInterval(context.timemain);
@@ -3067,7 +3046,7 @@ var taplst =
         }
         else if (context.search && context.search.hitest(x,y))
         {
-            showsearch()
+            modalshow()
         }
         else if (context.sourcepanel && context.sourcepanel.hitest(x,y))
         {
@@ -3092,7 +3071,7 @@ var taplst =
         else if (context.header && context.header.hitest(x,y))
         {
         }
-         else
+        else
         {
             var k = getbuttonfrompoint(context, x, y);
             var slice = context.sliceobj.data[k];
@@ -3138,14 +3117,14 @@ var taplst =
             context.refresh()
             clearTimeout(context.tappedhit)
             context.tappedhit = setTimeout(function()
-                {
-                    context.tapped = 0;
-                    context.refresh()
-                }, 400);
+            {
+                context.tapped = 0;
+                context.refresh()
+            }, 400);
         }
         else if (context.search && context.search.hitest(x,y))
         {
-            showsearch()
+            modalshow()
         }
         else if (context.page && context.page.hitest(x,y))
         {
@@ -3186,7 +3165,7 @@ var taplst =
                 {
                     context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
                     context.refresh()
-                }, 1000);
+                }, 500);
             }
         }
         else if (context.header && context.header.hitest(x,y))
@@ -3204,10 +3183,10 @@ var taplst =
             var image = slice.image_url;
             if ((y >= (slice.center.y + slice.fitheight/2 - 70)) &&
                 (y < slice.center.y + slice.fitheight/2) &&
-                galleryobj.repos &&
-                image)
+                galleryobj.repos && image)
             {
                 slice.externalink = 1;
+                galleryobj.set(k);
                 context.refresh();
                 setTimeout(function()
                 {
@@ -3233,6 +3212,7 @@ var taplst =
                     {
                         galleryobj.set(k);
                         slice.func.exec()
+                        context.refresh();
                     }
                     else
                     {
@@ -3595,16 +3575,17 @@ var menulst =
                 photographer = `${k.proper()}`;
                 datasource = `${j.proper()}`;
             }
-
+            var s = user.externalink ? -1 : 1;
+            var e = user.externalink ? "black" : "white";
             var j = galleryobj.getcurrent().full;
             var a = new Expand(new RowA([20,24,24,0,24,24,20],
                 [
                     0,
-                    new Text("white", "center", "middle",0, 0, 1),
+                    new ShadowPanel(new Text("white", "center", "middle",0, 0, 1),1,1),
                     0,
                     0,
-                    new Text(user.externalink?"black":"white", "center", "middle",0, 0, user.externalink?-1:1),
-                    new Text(user.externalink?"black":"white", "center", "middle",0, 0, user.externalink?-1:1),
+                    new ShadowPanel(new Text(e, "center", "middle",0,0,0),s,s),
+                    new ShadowPanel(new Text(e, "center", "middle",0,0,0),s,s),
                     0,
                 ]),-20,50);
 
@@ -4077,6 +4058,16 @@ var ContextObj = (function ()
                     resetcanvas(context);
                     contextobj.reset()
                     setTimeout(function() { masterload(); }, 500);
+
+                    if (_8cnvctx.enabled)
+                    {
+                        clearInterval(_8cnvctx.autotime);
+                        _8cnvctx.autotime = setInterval(function()
+                        {
+                            _8cnvctx.timeobj.rotate(-TIMEOBJ/_8cnvctx.sliceobj.length());
+                            _8cnvctx.refresh()
+                        }, 500);
+                    }
                 }
 			}
 
@@ -4325,7 +4316,7 @@ var RotatedText = function()
     }
 };
 
-var Text = function (color,  align="center", baseline="middle", reverse=0, noclip=0, shadow=0, size=0.92)
+var Text = function (color,  align="center", baseline="middle", reverse=0, noclip=0, unused=0, size=0.92)
 {
     this.draw = function (context, rect, user, time)
     {
@@ -4345,9 +4336,6 @@ var Text = function (color,  align="center", baseline="middle", reverse=0, nocli
         context.textAlign = align;
         context.textBaseline = baseline;
         context.fillStyle = color;
-        context.shadowOffsetX = shadow;
-        context.shadowOffsetY = shadow;
-        context.shadowColor = shadow==-1?"white":"black"
         context.font = `${size}rem Archivo Black`;
 
         var metrics;
@@ -4508,14 +4496,14 @@ var Expand = function (panel, extentw, extenth)
     };
 };
 
-var ShadowPanel  = function (panel)
+var ShadowPanel  = function (panel, x, y)
 {
     this.draw = function (context, rect, user, time)
     {
         context.save();
-        context.shadowOffsetX = 1;
-        context.shadowOffsetY = 1;
-        context.shadowColor = "black"
+        context.shadowOffsetX = x;
+        context.shadowOffsetY = y;
+        context.shadowColor = x == 1 ? "black" : "white";
         panel.draw(context, rect, user, time);
         context.restore();
     };
@@ -4704,6 +4692,8 @@ function ismenu()
 function menuhide()
 {
     var k = ismenu();
+    if (!k)
+        return;
     _2cnvctx.enabled = 0;
     _3cnvctx.enabled = 0;
     _5cnvctx.enabled = 0;
@@ -4759,7 +4749,7 @@ function escape()
     menuhide();
     var n = eventlst.findIndex(function(a){return a.name == "_4cnvctx";})
     setevents(_4cnvctx, eventlst[n])
-    hidemodals()
+    modalshide()
     contextobj.reset();
 }
 
@@ -4936,15 +4926,11 @@ var headlst =
             }
             else if (context.searchpanel && context.searchpanel.hitest(x,y))
             {
-                showsearch();
+                modalshow();
             }
             else if (context.page && context.page.hitest(x,y))
             {
-                _8cnvctx.scrollobj.set(0);
-                _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-                var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-                _8cnvctx.timeobj.rotate(k);
-                menushow(_8cnvctx)
+                galleryshow();
             }
             else if (context.option && context.option.hitest(x,y))
             {
@@ -5025,7 +5011,7 @@ var headlst =
             {
                 context.hitbt = 1;
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-                pinchobj.getcurrent().getcurrent().add(-5);
+                pinchobj.getcurrent().getcurrent().add(-1);
                 contextobj.reset();
                 clearInterval(_4cnvctx.timemain);
                 _4cnvctx.timemain = 0;
@@ -5042,7 +5028,7 @@ var headlst =
             {
                 context.hitbt = 2;
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-                pinchobj.getcurrent().getcurrent().add(5);
+                pinchobj.getcurrent().getcurrent().add(1);
                 contextobj.reset();
                 clearInterval(_4cnvctx.timemain);
                 _4cnvctx.timemain = 0;
@@ -5080,7 +5066,7 @@ var headlst =
                         new Layer(
                         [
                             new Rectangle(context.picture),
-                            new MultiText(context.scrollobj.berp())
+                            new ShadowPanel(new MultiText(context.scrollobj.berp()),1,1),
                         ]),
                         0,
                         new PlusPanel(),
@@ -5146,7 +5132,7 @@ var headlst =
             }
             else if (context.prompt.hitest(x,y))
             {
-                showsearch();
+                modalshow();
             }
 
             _8cnvctx.refresh();
@@ -5177,7 +5163,7 @@ var headlst =
                                 new Layer(
                                 [
                                     new Rectangle(context.prompt),
-                                    new MultiText(context.scrollobj.berp())
+                                    new ShadowPanel(new MultiText(context.scrollobj.berp()),1,1),
                                 ]),
                                 0,
                             ]),
@@ -5199,10 +5185,7 @@ var headlst =
             }
             else
             {
-                if (galleryobj.title)
-                    st.push(galleryobj.title);
-                if (galleryobj.title1)
-                    st.push(galleryobj.title1);
+                st.push(`${galleryobj.current()+1} of ${galleryobj.length()}`);
             }
 
             a.draw(context, rect, st, time);
@@ -5528,7 +5511,7 @@ fetch(path)
     if (!galleryobj.length())
     {
         headobj.set(4);
-        showsearch();
+        modalshow();
     }
     else if (url.slideshow)
     {
@@ -5631,15 +5614,15 @@ fetch(path)
     [
         {line:"Unsplash\nImage Search", path: "UNSPLASH", func: function()
             {
-                showsearch("unsplash");
+                modalshow("unsplash");
             }},
         {line:"Pexels\nImage Search", path: "PEXELS", func: function()
             {
-                showsearch("pexels");
+                modalshow("pexels");
             }},
         {line:"Pixabay\nImage Search", path: "PEXELS", func: function()
             {
-                showsearch("pixabay");
+                modalshow("pixabay");
             }},
     ];
 
@@ -5752,7 +5735,7 @@ document.addEventListener("click", (evt) =>
     if (evt.screenY < BEXTENT && (evt.screenX < BEXTENT || evt.screenX > window.innerWidth-BEXTENT))
         return;
     if (evt.target.className.search("overlay") >= 0)
-        hidemodals()
+        modalshide()
 });
 
 function deleteimage()
@@ -5771,29 +5754,49 @@ function deleteimage()
     });
 }
 
+async function submitprompt()
+{
+   var prompt = document.getElementById('prompt-value').value;
+    var obj =
+          {
+            'prompt': prompt,
+            'n': 2,
+            'size': '1024x1024'
+          };
+
+   let response = await fetch('https://dalle.reportbase5836.workers.dev',
+   {
+         method: 'PUT',
+        headers:
+       {
+            "Content-Type": "application/json",
+        },
+       body: JSON.stringify(obj)
+   });
+
+    var str = await response.json();
+    console.log(str);
+}
+
+function submitpage()
+{
+    var page = document.getElementById('page-value').value;
+    galleryobj.set(Number(page)-1);
+    let a = document.createElement('a');
+    a.href = addressobj.full();
+    a.click();
+}
+
 function submitsearch()
 {
     setTimeout(function()
     {
-            localStorage.setItem("repos", globalobj.saverepos);
-        if (globalobj.saverepos == "dalle")
-        {
-            var prompt = document.getElementById('prompt').value;
-           fetch('https://dalle.reportbase5836.workers.dev',
-           {
-                 method: 'POST',
-                 body: prompt,
-                 headers: { "Content-Type": "text/plain" }
-           })
-         }
-         else
-        {
-            var search = document.getElementById('search').value;
-            search = search.clean();
-            var s = `${url.origin}?${globalobj.saverepos}=${search}&page=${url.page}`;
-            window.open(s, "_self");
-        }
-    }, 400)
+        localStorage.setItem("repos", globalobj.saverepos);
+        var search = document.getElementById('search-value').value;
+        search = search.clean();
+        var s = `${url.origin}?${globalobj.saverepos}=${search}&page=${url.page}`;
+        window.open(s, "_self");
+    }, 40)
 }
 
 function ismodal()
@@ -5810,7 +5813,7 @@ function ismodal()
     return res;
 }
 
-function hidemodals()
+function modalshide()
 {
     const divlst = document.querySelectorAll("div");
     divlst.forEach(function(div)
@@ -5839,7 +5842,7 @@ function hidemodals()
 
 function showmeta()
 {
-  hidemodals();
+  modalshide();
   function getslices()
   {
       var slices = galleryobj.getcurrent().slices;
@@ -5875,39 +5878,41 @@ function showmeta()
     menushow(_5cnvctx,0);
 }
 
-function showsource()
-{
-    setTimeout(function()
-    {
-        hidemodals();
-        menushow(_3cnvctx);
-    }, 80)
-}
-
-function showshare()
-{
-    setTimeout(function()
-    {
-        hidemodals();
-        menushow(_6cnvctx);
-    }, 80)
-}
-
-function showsearch(repos)
+function modalshow(repos)
 {
     clearInterval(_8cnvctx.autotime);
     _8cnvctx.autotime = 0;
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     setTimeout(function()
     {
-        var lrepos = localStorage.getItem("repos");
-        if (!lrepos)
-            lrepos = "pexels";
-        globalobj.saverepos = repos?repos:lrepos;
-        var k = galleryobj.getcurrent();
-        document.getElementById('search').value = k.prompt ? k.prompt : url.path;
-        const overlay = document.querySelector('.search-overlay');
-        overlay.style.display = 'flex';
+        var e = galleryobj.getcurrent();
+        if (galleryobj.repos)
+        {
+            var lrepos = localStorage.getItem("repos");
+            if (!lrepos)
+                lrepos = "pexels";
+            globalobj.saverepos = repos?repos:lrepos;
+            document.getElementById('search-header').innerHTML = `${galleryobj.current()+1} of ${galleryobj.length()}`;
+//            document.getElementById('search-header').innerHTML = galleryobj.repos.proper();
+            document.getElementById('search-value').value = url.path;
+            const overlay = document.querySelector(".search-overlay");
+            overlay.style.display = 'flex';
+        }
+        else if (e.prompt)
+        {
+            document.getElementById('prompt-header').innerHTML = `${galleryobj.current()+1} of ${galleryobj.length()}`;
+            document.getElementById('prompt-value').value = e.prompt;
+            const overlay = document.querySelector(".prompt-overlay");
+            overlay.style.display = 'flex';
+        }
+        else
+        {
+            document.getElementById('page-header').innerHTML = `${galleryobj.current()+1} of ${galleryobj.length()}`;
+            document.getElementById('page-value').value = galleryobj.current()+1;
+            const overlay = document.querySelector(".page-overlay");
+            overlay.style.display = 'flex';
+        }
+
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         _2cnvctx.refresh();
         _3cnvctx.refresh();
@@ -5950,4 +5955,13 @@ if (url.protocol == "https:")
     })
 }
 
-
+function galleryshow()
+{
+    modalshide();
+    _8cnvctx.scrollobj.set(0);
+    _8cnvctx.scrollobj.data[1].set(0);
+    _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+    var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
+    _8cnvctx.timeobj.rotate(k);
+    menushow(_8cnvctx,0)
+}
