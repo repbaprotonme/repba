@@ -58,6 +58,7 @@ url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) 
 url.thumb = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : 1;
 url.transparent = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 1;
 url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
+url.gallery = url.searchParams.has("b") ? Number(url.searchParams.get("b")) : 500;
 
 Math.clamp = function (min, max, val)
 {
@@ -1398,6 +1399,7 @@ addressobj.full = function (k)
         "&t="+thumbobj.current()+
         "&g="+url.transparent+
         "&s="+url.slideshow+
+        "&b="+url.gallery+
         "&o="+url.slidetop+
         "&e="+url.slidereduce+
         "&r="+(100*rowobj.berp()).toFixed();
@@ -2990,48 +2992,6 @@ var taplst =
         }
     }
 },
-    /*
-{
-    name: "MENU",
-    tap: function (context, rect, x, y)
-    {
-        var obj = context.scrollobj;
-        if (obj && x < MENUBARWIDTH*2)
-        {
-            var j = y/rect.height;
-            var k = obj.length()*j;
-            obj.set(k);
-            context.refresh();
-        }
-        else if (x > rect.width - (MENUBARWIDTH*2) )
-        {
-            var j = y/rect.height;
-            var k = TIMEOBJ*(1-j);
-            context.timeobj.set(k);
-            context.refresh();
-        }
-        else
-        {
-            var k = getbuttonfrompoint(context, x, y);
-            var slice = context.sliceobj.data[k];
-            if (!slice)
-            {
-                menuhide();
-                return;
-            }
-
-            slice.tap = 1;
-            context.refresh();
-            setTimeout(function ()
-            {
-                slice.tap = 0;
-                slice.func(k)
-                context.refresh();
-            }, JULIETIME*3);
-        }
-    },
-},
-*/
 {
     name: "OPTION",
     tap: function (context, rect, x, y)
@@ -3165,7 +3125,7 @@ var taplst =
                 {
                     context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
                     context.refresh()
-                }, 500);
+                }, url.gallery);
             }
         }
         else if (context.header && context.header.hitest(x,y))
@@ -4066,7 +4026,7 @@ var ContextObj = (function ()
                         {
                             _8cnvctx.timeobj.rotate(-TIMEOBJ/_8cnvctx.sliceobj.length());
                             _8cnvctx.refresh()
-                        }, 500);
+                        }, url.gallery);
                     }
                 }
 			}
@@ -5580,11 +5540,6 @@ fetch(path)
                 copytext(addressobj.full());
                 menuhide();
             }},
-        {title:"Copy Prompt", path: "COPYPROMPT", func: function()
-            {
-                copytext(galleryobj.getcurrent().prompt);
-                menuhide();
-            }},
         {title:"Copy ID", path: "COPYID", func: function()
             {
                 copytext(galleryobj.getcurrent().id);
@@ -5593,20 +5548,6 @@ fetch(path)
         {title:"Login", path: "LOGIN", func: function() { authClient.redirectToLoginPage(); }},
         {title:"Logout", path: "LOGOUT", func: function() { authClient.logout(true) }},
         {title:"Account", path: "ACCOUNT", func: function() { authClient.redirectToAccountPage() }},
-
-        {title:"Delete", path: "DELETE", func: function()
-            {
-            }},
-
-        {title:"Upload", path: "UPLOAD", func: function()
-            {
-                setTimeout(function()
-                {
-                    document.getElementById('upload-label').innerHTML = "Upload Image";
-                    const overlay = document.querySelector('.upload-overlay');
-                    overlay.style.display = 'flex';
-                }, 40);
-            }},
     ];
 
     //_3cnv
@@ -5759,7 +5700,7 @@ function submitprompt()
    var prompt = document.getElementById('prompt-value').value;
     var obj =
           {
-            'prompt': prompt,
+            'prompt': 'lion',
             'n': 2,
             'size': '1024x1024'
           };
@@ -5970,3 +5911,37 @@ function galleryshow()
     _8cnvctx.timeobj.rotate(k);
     menushow(_8cnvctx,0)
 }
+
+var path = `https://sidney.reportbase5836.workers.dev`;
+fetch(path)
+.then(resp =>
+{
+    if (resp.ok)
+        return resp.json()
+    else
+        throw Error(resp.statusText);
+})
+.then(data =>
+{
+    console.log(data);
+})
+.catch((error) =>
+{
+    console.log(error);
+});
+
+
+async function go()
+{
+    let response = await fetch('https://dalle.reportbase5836.workers.dev',
+    {
+         method: 'PUT',
+        headers: { "Content-Type": "application/json", },
+       body: JSON.stringify({ 'prompt': 'Lion', 'n': 2, 'size': '1024x1024' })
+    });
+
+    var str = await response.text();
+    console.log(str);
+}
+
+go();

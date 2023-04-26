@@ -10,21 +10,20 @@ export default
         var page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
         var data = [];
 
-        const init =
-        {
-          headers:
-          {
-            'Authorization': `Bearer ${CLOUDFLARE_IMAGE_TOKEN}`,
-            'Content-Type': 'application/json',
-            'X-Auth-Email': 'reportbase@gmail.com',
-          },
-        };
-
         var start = page*pages;
         var finish = (page+1)*pages;
         for (var n = start; n < finish; ++n)
         {
-            var response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1?per_page=${per_page}&page=${n+1}`, init);
+            var response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1?per_page=${per_page}&page=${n+1}`,
+            {
+                headers:
+                  {
+                    'Authorization': `Bearer ${CLOUDFLARE_IMAGE_TOKEN}`,
+                    'Content-Type': 'application/json',
+                    'X-Auth-Email': 'reportbase@gmail.com',
+                  },
+            });
+
             if (!response.ok)
                 break;
             var json = await response.json();
@@ -41,18 +40,26 @@ export default
                 break;
         }
 
+    let r = await fetch('https://dalle.reportbase5836.workers.dev',
+    {
+         method: 'PUT',
+        headers: { "Content-Type": "application/json", },
+       body: JSON.stringify({ 'prompt': 'Lion', 'n': 2, 'size': '1024x1024' })
+    });
+
+    var str = await r.text();
+
         var g = {}
         g.title = `Image Gallery`;
         g.total = data.length;
         g.per_page = per_page;
         g.data = data;
+        g.dalle = str;
 
         let headers = new Headers(
         {
 		    'content-type': 'application/json;charset=UTF-8',
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS',
-            'Access-Control-Allow-Headers': '*'
 	    });
 
         return new Response(JSON.stringify(g), { headers, });
