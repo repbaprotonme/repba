@@ -454,7 +454,6 @@ var Empty = function()
     }
 };
 
-//todo: footer
 var BarPanel = function (header)
 {
     this.draw = function (context, rect, user, time)
@@ -2231,7 +2230,7 @@ var panlst =
                 if (k == rowobj.anchor())
                     return;
                 rowobj.set(k);
-                contextobj.reset();
+                resetcanvas();
             }
         }
     },
@@ -3867,39 +3866,37 @@ else
     }
 }
 
+for (var n = 0; n < contextlst.length; ++n)
+{
+    var context = contextlst[n];
+    context.index = n;
+    context.enabled = 0;
+    context.canvas.width = 1;
+    context.canvas.height = 1;
+    context.autodirect = -1;
+    context.font = "0.92rem Archivo Black";
+    context.fillText("  ", 0, 0);
+    context.slideshow = 0;
+    context.lastime = 0;
+    context.buttonheight = 30;
+    context.slidereduce = 0;
+    context.slidestop = 0;
+    setevents(context, eventlst[n]);
+    context.sliceobj = new circular_array("", []);
+    context.timeobj = new circular_array("", TIMEOBJ);
+    context.timeobj.set(TIMEOBJ/2);
+    context.scrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
+    context.imagescrollobj = new circular_array("IMAGESCROLL", Math.floor(window.innerHeight/2));
+    context.imagescrollobj.set(context.imagescrollobj.length()/2);
+    context.textscrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
+}
+
+_8cnvctx.scrollobj = new circular_array("SCROLL", [_8cnvctx.imagescrollobj,_8cnvctx.textscrollobj]);
+
 var ContextObj = (function ()
 {
     function init()
     {
-        this.ANCHOR = 0;
-        this.CURRENT = 0;
-
-        for (var n = 0; n < contextlst.length; ++n)
-        {
-            var context = contextlst[n];
-            context.index = n;
-            context.enabled = 0;
-            context.canvas.width = 1;
-            context.canvas.height = 1;
-            context.autodirect = -1;
-            context.font = "0.92rem Archivo Black";
-            context.fillText("  ", 0, 0);
-            context.slideshow = 0;
-            context.lastime = 0;
-            context.buttonheight = 30;
-            context.slidereduce = 0;
-            context.slidestop = 0;
-            setevents(context, eventlst[n]);
-            context.sliceobj = new circular_array("", []);
-            context.timeobj = new circular_array("", TIMEOBJ);
-            context.timeobj.set(TIMEOBJ/2);
-            context.scrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
-            context.imagescrollobj = new circular_array("IMAGESCROLL", Math.floor(window.innerHeight/2));
-            context.imagescrollobj.set(context.imagescrollobj.length()/2);
-            context.textscrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
-        }
-
-        _8cnvctx.scrollobj = new circular_array("SCROLL", [_8cnvctx.imagescrollobj,_8cnvctx.textscrollobj]);
     }
 
     init.prototype =
@@ -3915,45 +3912,13 @@ var ContextObj = (function ()
         name: function () { return this.CURRENT.toString(); },
         title: function () { return this.CURRENT.toString(); },
 
-		resize: function (context)
-       	{
-			var top = 0;
-			var left = 0;
-			if (!context.enabled)
-			{
-				context.enabled = 0
-				context.canvas.height = 0;
-				return;
-			}
-
-            var k = MENUWIDTH;
-            var w = Math.min(k, window.innerWidth);
-            var l = Math.floor((window.innerWidth-w)/2);
-            context.show(l, 0, w, window.innerHeight);
-        },
-
 		reset: function ()
        	{
-            contextobj.resetcontext4(_4cnvctx);
-            setTimeout(function()
-            {
-                var lst = [_1cnvctx, _2cnvctx, _3cnvctx,  _5cnvctx,
-                    _6cnvctx, _7cnvctx, _8cnvctx, _9cnvctx];
-                for (var n = 0; n < lst.length; n++)
-                {
-                    var context = lst[n];
-                    contextobj.resetcontext(context);
-                }
-            }, JULIETIME);
-		},
-
-        resetcontext4: function (context)
-       	{
+            var context = _4cnvctx;
             if (photo.image &&
                 photo.image.complete &&
                 photo.image.naturalHeight)
             {
-                contextobj.resize(context);
                 resetcanvas(context);
             }
             else
@@ -4018,7 +3983,6 @@ var ContextObj = (function ()
                         startslideshow();
 
                     _4cnvctx.pinched = 0;
-                    contextobj.resize(context);
                     resetcanvas(context);
                     contextobj.reset()
                     setTimeout(function() { masterload(); }, 500);
@@ -4038,17 +4002,14 @@ var ContextObj = (function ()
             seteventspanel(new YollPanel());
 			return 1;
     	},
-		resetcontext: function (context)
-       	{
-			contextobj.resize(context);
-            return 1;
-    	},
 	};
 
 	return init;
 })();
 
 var contextobj = new ContextObj();
+contextobj.ANCHOR = 0;
+contextobj.CURRENT = 0;
 
 function masterload()
 {
@@ -4686,7 +4647,7 @@ function reset()
     setTimeout(function() { contextobj.reset(); }, 1000);
 }
 
-function resize()
+function browseresize()
 {
     delete _4cnvctx.thumbcanvas;
     reset();
@@ -4719,8 +4680,8 @@ function escape()
 
 window.addEventListener("focus", (evt) => { });
 window.addEventListener("blur", (evt) => { });
-window.addEventListener("resize", (evt) => { resize(); });
-window.addEventListener("screenorientation", (evt) => { resize(); });
+window.addEventListener("resize", (evt) => { browseresize(); });
+window.addEventListener("screenorientation", (evt) => { browseresize(); });
 
 var YollPanel = function ()
 {
@@ -5246,15 +5207,9 @@ function menushow(context, toggle=1)
         return;
 
     context.enabled = 1;
-    if (context.complete)
-    {
-        contextobj.resize(context);
-    }
-    else
-    {
-        contextobj.resetcontext(context);
-        context.complete = 1;
-    }
+    var w = Math.min(MENUWIDTH, window.innerWidth);
+    var l = Math.floor((window.innerWidth-w)/2);
+    context.show(l, 0, w, window.innerHeight);
 
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     context.refresh();
@@ -5699,35 +5654,6 @@ function deleteimage()
     });
 }
 
-function submitprompt()
-{
-   var prompt = document.getElementById('prompt-value').value;
-    var obj =
-          {
-            'prompt': 'lion',
-            'n': 2,
-            'size': '1024x1024'
-          };
-
-   let response = fetch('https://dalle.reportbase5836.workers.dev',
-   {
-         method: 'PUT',
-        headers:
-       {
-            "Content-Type": "application/json",
-        },
-       body: JSON.stringify(obj)
-   })
-.then(function (response)
-{
-  return response.json()
-})
-.then(function (obj)
-{
-    console.log(obj);
-})
-}
-
 function submitpage()
 {
     var page = document.getElementById('page-value').value;
@@ -5913,7 +5839,7 @@ function galleryshow()
     _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
     var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
     _8cnvctx.timeobj.rotate(k);
-    menushow(_8cnvctx,0)
+    menushow(_8cnvctx)
 }
 
 /*
@@ -5935,6 +5861,7 @@ fetch(path)
     console.log(error);
 });
 */
+
 //todo
 async function go()
 {
@@ -5969,6 +5896,10 @@ async function go()
         var id = await upload(lst[n])
         lst[n].id = id;
     }
+}
+
+function submitprompt()
+{
 }
 
 //go();
