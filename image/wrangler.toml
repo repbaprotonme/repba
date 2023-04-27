@@ -15,8 +15,3 @@ bucket_name = 'bucket1'
 routes = [
     { pattern = "reportbase.com/image/*", zone_id = "41f6f507a22c7eec431dbc5e9670c73d" }
 ]
-
-
-
-
-

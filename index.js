@@ -1105,9 +1105,13 @@ var SearchPanel = function ()
             }
         };
 
-        const overlay = document.querySelector('.search-overlay');
-        var j = overlay.style.display == 'flex';
-
+        var search = document.querySelector('.search-overlay');
+        var prompt = document.querySelector('.prompt-overlay');
+        var page = document.querySelector('.page-overlay');
+        search = search.style.display == 'flex';
+        prompt = prompt.style.display == 'flex';
+        page = page.style.display == 'flex';
+        var j = search || page || prompt;
         var a = new Layer(
         [
             new Rectangle(context.searchpanel),
@@ -1987,7 +1991,7 @@ var heightobj = new circular_array("HEIGHT", [traitobj,scapeobj]);
 var factorobj = new circular_array("FACTOR", 100);
 factorobj.set(12);
 
-function promptFile()
+function explore()
 {
     var input = document.createElement("input");
     input.type = "file";
@@ -5519,7 +5523,7 @@ fetch(path)
         {title:"Open", path: "OPEN", func: function()
         {
             menuhide();
-            promptFile().then(function(files) { dropfiles(files); })
+            explore().then(function(files) { dropfiles(files); })
         }},
 
         {title:"Download", path: "DOWNLOAD", func: function()
@@ -5912,7 +5916,8 @@ function galleryshow()
     menushow(_8cnvctx,0)
 }
 
-var path = `https://sidney.reportbase5836.workers.dev`;
+/*
+var path = `https://reportbase.com/dalle/generations`;
 fetch(path)
 .then(resp =>
 {
@@ -5929,19 +5934,42 @@ fetch(path)
 {
     console.log(error);
 });
-
-
+*/
+//todo
 async function go()
 {
-    let response = await fetch('https://dalle.reportbase5836.workers.dev',
+    let response = await fetch('https://reportbase.com/dalle/generations',
     {
-         method: 'PUT',
-        headers: { "Content-Type": "application/json", },
+         method: 'POST',
        body: JSON.stringify({ 'prompt': 'Lion', 'n': 2, 'size': '1024x1024' })
     });
 
-    var str = await response.text();
-    console.log(str);
+    async function upload(obj)
+    {
+        const res = await fetch('https://reportbase.com/image/',
+        {
+          method: 'POST',
+          headers:
+          {
+            'Content-Type': 'application/json'
+          },
+            body: JSON.stringify(obj),
+        });
+
+        const json = await res.json()
+        return json.id;
+    }
+
+    var lst = await response.json();
+    for (var n = 0; n < lst.length; n++)
+    {
+        lst[n].prompt = `Lion`;
+        lst[n].model = "dalle";
+        lst[n].extent = "1024x1024";
+        var id = await upload(lst[n])
+        lst[n].id = id;
+    }
 }
 
-go();
+//go();
+

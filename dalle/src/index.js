@@ -3,6 +3,7 @@ export default
 	async fetch(request, env, ctx)
     {
         let OPENAI_KEY = env.OPENAI_KEY;
+        //var body = { 'prompt': 'Lion', 'n': 2, 'size': '1024x1024' };
         var body = await request.json();
 
         var res = await fetch('https://api.openai.com/v1/images/generations',

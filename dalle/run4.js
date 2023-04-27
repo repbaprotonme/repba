@@ -2,19 +2,16 @@ const readline = require('readline');
 
 const rl = readline.createInterface(
 {
-  input: process.stdin,
-  output: process.stdout
+    input: process.stdin,
+    output: process.stdout
 });
 
 async function upload(obj)
 {
     const res = await fetch('https://reportbase.com/image/',
     {
-      method: 'POST',
-      headers:
-      {
-        'Content-Type': 'application/json'
-      },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj),
     });
 
@@ -39,7 +36,7 @@ rl.question('Please enter the text prompt: ', async (text) =>
     }
 
     console.log(json);
-  rl.close();
+    rl.close();
 });
 
 

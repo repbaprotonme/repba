@@ -40,21 +40,11 @@ export default
                 break;
         }
 
-    let r = await fetch('https://dalle.reportbase5836.workers.dev',
-    {
-         method: 'PUT',
-        headers: { "Content-Type": "application/json", },
-       body: JSON.stringify({ 'prompt': 'Lion', 'n': 2, 'size': '1024x1024' })
-    });
-
-    var str = await r.text();
-
         var g = {}
         g.title = `Image Gallery`;
         g.total = data.length;
         g.per_page = per_page;
         g.data = data;
-        g.dalle = str;
 
         let headers = new Headers(
         {
