@@ -54,7 +54,7 @@ function numberRange (start, end) {return new Array(end - start).fill().map((d, 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.slideshow = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 0;
-url.slidetop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 1;
+url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 1;
 url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : 500;
 url.thumb = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : 1;
 url.transparent = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 1;
@@ -200,7 +200,7 @@ let circular_array = function (title, data)
 };
 
 var timemain = new circular_array("TIMEMAIN", 30);
-timemain.set(10);
+timemain.set(12);
 var speedyobj = new circular_array("SPEEDY", 100);
 var colobj = new circular_array("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new circular_array("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
@@ -501,7 +501,7 @@ var SearchBar = function ()
         [
             new Layer(
             [
-                new Col([0,160,0],
+                new Col([20,0,20],
                 [
                     0,
                     new Rectangle(context.header),
@@ -523,7 +523,7 @@ var SearchBar = function ()
             0,
             new Layer(
             [
-                new Col([0,160,0],
+                new Col([20,0,20],
                 [
                     0,
                     new Rectangle(context.footer),
@@ -1404,7 +1404,7 @@ addressobj.full = function (k)
         "&g="+url.transparent+
         "&s="+url.slideshow+
         "&b="+url.gallery+
-        "&o="+url.slidetop+
+        "&o="+url.slidestop+
         "&e="+url.slidereduce+
         "&r="+(100*rowobj.berp()).toFixed();
 
@@ -1471,7 +1471,8 @@ CanvasRenderingContext2D.prototype.hide = function ()
 CanvasRenderingContext2D.prototype.tab = function ()
 {
     var context = this;
-    context.slidestop = url.slidetop;
+    context.slidestop = url.slidestop;
+    context.slidestop = (2500/context.virtualwidth)*context.slidestop;
     context.slidereduce = context.slidestop/url.slidereduce;
     clearInterval(context.timemain);
     context.timemain = setInterval(function () { drawslices() }, timemain.getcurrent());
@@ -2989,6 +2990,7 @@ var taplst =
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             context.refresh();
+            menuhide();
         }
     }
 },
@@ -3027,6 +3029,10 @@ var taplst =
             var k = TIMEOBJ*(1-j);
             context.timeobj.set(k);
             context.refresh();
+        }
+        else if (context.header && context.header.hitest(x,y))
+        {
+            menuhide();
         }
         else
         {
@@ -3113,6 +3119,7 @@ var taplst =
         }
         else if (context.header && context.header.hitest(x,y))
         {
+            menuhide();
         }
         else if (x < MENUBARWIDTH*2)
         {
