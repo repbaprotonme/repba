@@ -5,8 +5,8 @@ const googleSheets = require('google-sheets');
 const client = new googleSheets();
 
 // Get the OAuth 2.0 client ID and secret from the Google Cloud Platform Console
-const clientId = '343028434226-jk0hi74kao7mtjq88e5e16cl9ff6q6ml.apps.googleusercontent.com';
-const clientSecret = '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';
+const clientId = '';
+const clientSecret = '';
 
 // Create an OAuth 2.0 authentication object
 const auth = new google.auth.OAuth2(clientId, clientSecret);
