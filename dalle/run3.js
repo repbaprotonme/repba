@@ -7,7 +7,7 @@ async function go()
        body: JSON.stringify({ 'prompt': 'Lion', 'n': 2, 'size': '1024x1024' })
     });
 
-    var str = await response.json();
+    var str = await response.text();
     console.log(str);
 }
 

@@ -54,12 +54,13 @@ function numberRange (start, end) {return new Array(end - start).fill().map((d, 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.slideshow = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 0;
-url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 1;
-url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : 500;
+url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 0.5;
+url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : 200;
 url.thumb = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : 1;
 url.transparent = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 1;
 url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
 url.gallery = url.searchParams.has("b") ? Number(url.searchParams.get("b")) : 500;
+url.autotime = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 0;
 
 Math.clamp = function (min, max, val)
 {
@@ -200,7 +201,7 @@ let circular_array = function (title, data)
 };
 
 var timemain = new circular_array("TIMEMAIN", 30);
-timemain.set(12);
+timemain.set(10);
 var speedyobj = new circular_array("SPEEDY", 100);
 var colobj = new circular_array("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new circular_array("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
@@ -1105,18 +1106,12 @@ var SearchPanel = function ()
             }
         };
 
-        var search = document.querySelector('.search-overlay');
-        var prompt = document.querySelector('.prompt-overlay');
-        var page = document.querySelector('.page-overlay');
-        search = search.style.display == 'flex';
-        prompt = prompt.style.display == 'flex';
-        page = page.style.display == 'flex';
-        var j = search || page || prompt;
+        const dialog = document.getElementById("search-overlay");
         var a = new Layer(
         [
             new Rectangle(context.searchpanel),
-            new Shrink(new CirclePanel(j?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),13,13),
-            j ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),17,17) : 0,
+            new Shrink(new CirclePanel(dialog.open?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),13,13),
+            dialog.open ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),17,17) : 0,
             new Shrink(new Panel(),15,20),
         ]);
 
@@ -1124,6 +1119,20 @@ var SearchPanel = function ()
         context.restore();
     }
 };
+
+function searchcancel()
+{
+    const dialog = document.getElementById("search-overlay");
+    dialog.close()
+    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+}
+
+function pagecancel()
+{
+    const dialog = document.getElementById("page-overlay");
+    dialog.close()
+    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+}
 
 var SourcePanel = function ()
 {
@@ -1402,6 +1411,7 @@ addressobj.full = function (k)
         "&page="+url.page+
         "&t="+thumbobj.current()+
         "&g="+url.transparent+
+        "&f="+url.autotime+
         "&s="+url.slideshow+
         "&b="+url.gallery+
         "&o="+url.slidestop+
@@ -2514,7 +2524,6 @@ var presslst =
     },
     press: function (context, rect, x, y)
     {
-        menuhide();
     }
 },
 {
@@ -2805,19 +2814,21 @@ var keylst =
                 _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
                 var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
                 _8cnvctx.timeobj.rotate(k);
-                menushow(_8cnvctx)
+                menutoggle(_8cnvctx)
             }
         }
         else if (key == "arrowleft" || key == "h")
         {
             evt.preventDefault();
+            context.timeobj.addperc(5);
             context.autodirect = 1;
             context.tab();
         }
         else if (key == "arrowright" || key == "l")
         {
-            context.autodirect = -1;
             evt.preventDefault();
+            context.timeobj.addperc(-5);
+            context.autodirect = -1;
             context.tab();
         }
         else if (key == "arrowup" || key == "k")
@@ -2977,11 +2988,9 @@ var taplst =
             }
             else
             {
-                menuhide();
                 context.hithumb(x,y);
-                contextobj.reset()
                 url.transparent = 1;
-                context.refresh();
+                contextobj.reset()
             }
         }
         else
@@ -3001,27 +3010,15 @@ var taplst =
         var obj = context.scrollobj;
         if (context.search && context.search.hitest(x,y))
         {
-            modalshow()
+            showserch("pexels")
         }
         else if (context.sourcepanel && context.sourcepanel.hitest(x,y))
         {
-            menushow(_3cnvctx,0);
+            menushow(_3cnvctx);
         }
         else if (context.loginpanel && context.loginpanel.hitest(x,y))
         {
-            menushow(_2cnvctx,0);
-        }
-        else if (context.page && context.page.hitest(x,y))
-        {
-            _8cnvctx.scrollobj.set(0);
-            _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-            var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-            _8cnvctx.timeobj.rotate(k);
-            menushow(_8cnvctx)
-        }
-        else if (context.option && context.option.hitest(x,y))
-        {
-            menuhide();
+            menushow(_2cnvctx);
         }
         else if (x > rect.width - (MENUBARWIDTH*2) )
         {
@@ -3073,7 +3070,7 @@ var taplst =
         }
         else if (context.search && context.search.hitest(x,y))
         {
-            modalshow()
+            showserch("pexels")
         }
         else if (context.page && context.page.hitest(x,y))
         {
@@ -3081,14 +3078,14 @@ var taplst =
             _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
             var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
             _8cnvctx.timeobj.rotate(k);
-            menushow(_8cnvctx)
+            menutoggle(_8cnvctx)
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
         else if (context.option && context.option.hitest(x,y))
         {
             clearTimeout(context.menutime);
             context.refresh();
-            menushow(_3cnvctx)
+            menutoggle(_3cnvctx)
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
         else if (context.gallery && context.gallery.hitest(x,y))
@@ -3513,7 +3510,7 @@ var menulst =
                         new FillPanel("rgba(0,0,0,0.4)"),
                         new CurrentHPanel(new FillPanel("rgb(255,255,255,0.75)"), 90, 0),
                     ]);
-                a.draw(context, new rectangle(10,-40,w2,6), obj, 0);
+                a.draw(context, new rectangle(10,-40,w2,SCROLLBARWIDTH), obj, 0);
             }
             else
             {
@@ -3527,7 +3524,7 @@ var menulst =
                         new FillPanel("rgba(0,0,0,0.4)"),
                         new CurrentVPanel(new FillPanel("rgba(255,255,255,0.75)"), 90, 0),
                     ]);
-                a.draw(context, new rectangle(10,-40,6,h2), obj, 0);
+                a.draw(context, new rectangle(10,-40,SCROLLBARWIDTH,h2), obj, 0);
             }
 
             var photographer = "";
@@ -3823,16 +3820,6 @@ url.project = 0;
 var leftmenu = 1;
 var path = `res/boat.json`;
 
-function setpathparoject(str)
-{
-    var e = url.searchParams.get(str);
-    let k = e ? e.split(".") : [0000];
-    leftmenu = k.length == 1;
-    url.path = k[0];
-    if (k.length == 2)
-        url.project = Number(k[1]);
-}
-
 if (url.searchParams.has("p"))
 {
     var e = url.searchParams.get("p");
@@ -3864,10 +3851,11 @@ else
         if (!e)
             continue;
         var k = e.split(".");
-        if (k.length > 1)
-            k = k[0];
-        setpathparoject(j);
-        path = `https://${j}.reportbase5836.workers.dev/?search=${k}&page=${url.page}`;
+        url.project = 0;
+        leftmenu = k.length == 1;
+        if (k.length == 2)
+            url.project = Number(k[1]);
+        path = `https://${j}.reportbase5836.workers.dev/?search=${k[0]}&page=${url.page}`;
         break;
     }
 }
@@ -3975,7 +3963,7 @@ contextobj.reset = function ()
             contextobj.reset()
             setTimeout(function() { masterload(); }, 500);
 
-            if (_8cnvctx.enabled)
+            if (url.autotime)
             {
                 clearInterval(_8cnvctx.autotime);
                 _8cnvctx.autotime = setInterval(function()
@@ -4588,8 +4576,8 @@ function rotate(pointX, pointY, originX, originY, angle)
 
 function ismenu()
 {
-    var k = _2cnv.enabled || _3cnv.enabled || _5cnv.enabled || _6cnv.enabled || _7cnv.enabled ||
-        _8cnv.enabled || _9cnv.enabled;
+    var k = _2cnvctx.enabled || _3cnvctx.enabled || _5cnvctx.enabled || _6cnvctx.enabled || _7cnvctx.enabled ||
+        _8cnvctx.enabled || _9cnvctx.enabled;
     return k;
 }
 
@@ -4812,13 +4800,13 @@ var headlst =
 		{
             clearInterval(globalobj.slideshow);
             globalobj.slideshow = 0;
-           if (context.thumbpanel && context.thumbpanel.hitest(x,y))
+            if (context.thumbpanel && context.thumbpanel.hitest(x,y))
             {
                 thumbobj.rotate(1);
             }
             else if (context.searchpanel && context.searchpanel.hitest(x,y))
             {
-                modalshow();
+                showserch("pexels");
             }
             else if (context.page && context.page.hitest(x,y))
             {
@@ -4832,7 +4820,7 @@ var headlst =
                     return;
                 }
 
-                menushow(_3cnvctx)
+                menutoggle(_3cnvctx)
             }
             else if (context.fullpanel && context.fullpanel.hitest(x,y))
             {
@@ -4953,6 +4941,7 @@ var headlst =
             context.shadowColor = "black"
             context.picture = new rectangle()
             var e = Math.min(520,rect.width-190);
+            var f = context.scrollobj.berp();
             var a = new Col([5,60,0,e,0,60,5],
                     [
                         0,
@@ -4961,7 +4950,7 @@ var headlst =
                         new Layer(
                         [
                             new Rectangle(context.picture),
-                            new ShadowPanel(new MultiText(context.scrollobj.berp()),1,1),
+                            new ShadowPanel(new MultiText(f),1,1),
                         ]),
                         0,
                         new PlusPanel(),
@@ -5017,6 +5006,8 @@ var headlst =
                 _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
                 var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
                 _8cnvctx.timeobj.rotate(k);
+                _8cnvctx.refresh();
+                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             }
             else if (context.movenext && context.movenext.hitest(x,y))
             {
@@ -5025,14 +5016,15 @@ var headlst =
                 _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
                 var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
                 _8cnvctx.timeobj.rotate(k);
+                _8cnvctx.refresh();
+                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             }
             else if (context.prompt.hitest(x,y))
             {
-                modalshow();
+                document.getElementById('page-value').value = galleryobj.current()+1;
+                const dialog = document.getElementById("page-overlay");
+                dialog.showModal();
             }
-
-            _8cnvctx.refresh();
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 		};
 
 		this.draw = function (context, rect, user, time)
@@ -5046,12 +5038,12 @@ var headlst =
             var w = 640;
             if (w > rect.width-BEXTENT*2)
                 w = rect.width-BEXTENT*2;
-
+            var e = context.scrollobj.berp();
             var a = new Col([5,60,0,60,5],
                     [
                         0,
                         new PrevPanel(),
-                        _8cnvctx.enabled?0:new Row([10,0,10],
+                        ismenu()?0:new Row([10,0,10],
                         [
                             0,
                             new Col([0,w,0],
@@ -5060,7 +5052,7 @@ var headlst =
                                 new Layer(
                                 [
                                     new Rectangle(context.prompt),
-                                    new ShadowPanel(new MultiText(context.scrollobj.berp()),1,1),
+                                    new ShadowPanel(new MultiText(e),1,1),
                                 ]),
                                 0,
                             ]),
@@ -5081,10 +5073,8 @@ var headlst =
             {
                 st = k.prompt.split("\n");
             }
-            else
-            {
-                st.push(`${galleryobj.current()+1} of ${galleryobj.length()}`);
-            }
+
+            st.push(`${galleryobj.current()+1} of ${galleryobj.length()}`);
 
             a.draw(context, rect, st, time);
              context.restore()
@@ -5101,7 +5091,7 @@ var headlst =
 
     	this.tap = function (context, rect, x, y)
 		{
-            menushow(_3cnvctx);
+            menutoggle(_3cnvctx);
 		};
 
 		this.draw = function (context, rect, user, time)
@@ -5162,35 +5152,71 @@ var positylobj = new circular_array("POSITIONY", 100);
 var positxobj = new circular_array("POSITIONX", [positxpobj,positxlobj]);
 var posityobj = new circular_array("POSITIONY", [positypobj,positylobj]);
 
-function menushow(context, toggle=1)
+function menushow(context)
+{
+    if (context.enabled)
+        return;
+    clearInterval(globalobj.slideshow);
+    globalobj.slideshow = 0;
+    _4cnvctx.slideshow = 0;
+    [_2cnvctx,_3cnvctx,_5cnvctx,_6cnvctx,_7cnvctx,_8cnvctx,_9cnvctx].forEach(function(k)
+        {
+            k.enabled = 0;
+            k.hide();
+        });
+
+   context.enabled = 1;
+   context.refresh();
+
+    var w = Math.min(MENUWIDTH, window.innerWidth);
+    var l = Math.floor((window.innerWidth-w)/2);
+    context.show(l, 0, w, window.innerHeight);
+    context.refresh();
+
+    function f()
+    {
+        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        context.refresh();
+    }
+
+    setTimeout(function() { f(); }, 100);
+    setTimeout(function() { f(); }, 500);
+    setTimeout(function() { f(); }, 1000);
+    setTimeout(function() { f(); }, 1500);
+    setTimeout(function() { f(); }, 2000);
+}
+
+function menutoggle(context)
 {
     clearInterval(globalobj.slideshow);
     globalobj.slideshow = 0;
     _4cnvctx.slideshow = 0;
     var enabled = context.enabled;
-    [_2cnvctx,_3cnvctx,_5cnvctx,_6cnvctx,_7cnvctx,_8cnvctx,_9cnvctx].forEach(function(context)
+    [_2cnvctx,_3cnvctx,_5cnvctx,_6cnvctx,_7cnvctx,_8cnvctx,_9cnvctx].forEach(function(k)
         {
-            context.enabled = 0;
-            context.hide();
+            k.enabled = 0;
+            k.hide();
         });
 
-    context.refresh();
-    if (toggle && enabled)
-        return;
+   context.enabled = !enabled;
+   context.refresh();
 
-    context.enabled = 1;
     var w = Math.min(MENUWIDTH, window.innerWidth);
     var l = Math.floor((window.innerWidth-w)/2);
     context.show(l, 0, w, window.innerHeight);
-
-    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     context.refresh();
-    setTimeout(function() { context.refresh(); }, 100);
-    setTimeout(function() { context.refresh(); }, 500);
-    setTimeout(function() { context.refresh(); }, 1000);
-    setTimeout(function() { context.refresh(); }, 1500);
-    setTimeout(function() { context.refresh(); }, 2000);
-    setTimeout(function() { context.refresh(); }, 2500);
+
+    function f()
+    {
+        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        context.refresh();
+    }
+
+    setTimeout(function() { f(); }, 100);
+    setTimeout(function() { f(); }, 500);
+    setTimeout(function() { f(); }, 1000);
+    setTimeout(function() { f(); }, 1500);
+    setTimeout(function() { f(); }, 2000);
 }
 
 var ClosePanel = function (size)
@@ -5231,7 +5257,7 @@ var PagePanel = function (size)
             new Rectangle(context.page),
             s ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),22,22) : 0,
             new Shrink(new CirclePanel(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
-            new Row( [0, rect.height*0.25, 0],
+            new Row( [0, rect.height*0.20, 0],
             [
                 0,
                 new Col ([0,j,k,j,k,j,0], [0,e,0,e,0,e,0,]),
@@ -5266,7 +5292,7 @@ var OptionPanel = function ()
             new Rectangle(context.option),
             s ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),22,22) : 0,
             new Shrink(new CirclePanel(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
-            new Col( [0,rect.height*0.25,0],
+            new Col( [0,rect.height*0.20,0],
             [
                 0,
                 new Row( [0,j,k,j,k,j,0], [0,e,0,e,0,e,0]),
@@ -5374,13 +5400,7 @@ function wraptext(ctx, text, maxWidth)
 }
 
 var galleryobj = new circular_array("", 0);
-
-fetch(path)
-.then(function (response)
-{
-  return response.json()
-})
-.then(function (obj)
+galleryobj.init = function(obj)
 {
     galleryobj = Object.assign(galleryobj,obj);
     galleryobj.set(url.project);
@@ -5393,7 +5413,7 @@ fetch(path)
     if (!galleryobj.length())
     {
         headobj.set(4);
-        modalshow();
+        showserch("pexels");
     }
     else if (url.slideshow)
     {
@@ -5407,7 +5427,7 @@ fetch(path)
         {
             headobj.set(1);
             _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-            menushow(_8cnvctx)
+            menutoggle(_8cnvctx)
             _4cnvctx.refresh();
         }
         else
@@ -5426,7 +5446,7 @@ fetch(path)
     [
         {title:"About", path: "ABOUT", func: function()
         {
-            menushow(_7cnvctx);
+            menutoggle(_7cnvctx);
         }},
 
         {title:"Slideshow", path: "SLIDESHOW", func: function()
@@ -5474,15 +5494,15 @@ fetch(path)
     [
         {line:"Unsplash\nImage Search", path: "UNSPLASH", func: function()
             {
-                modalshow("unsplash");
+                showserch("unsplash");
             }},
         {line:"Pexels\nImage Search", path: "PEXELS", func: function()
             {
-                modalshow("pexels");
+                showserch("pexels");
             }},
         {line:"Pixabay\nImage Search", path: "PEXELS", func: function()
             {
-                modalshow("pixabay");
+                showserch("pixabay");
             }},
     ];
 
@@ -5540,6 +5560,16 @@ fetch(path)
     });
 
     contextobj.reset();
+}
+
+fetch(path)
+.then(function (response)
+{
+  return response.json()
+})
+.then(function (obj)
+{
+    galleryobj.init(obj);
 })
 .catch((error) =>
 {
@@ -5703,53 +5733,21 @@ function showmeta()
     _5cnvctx.sliceobj.data  = getslices();
     _5cnvctx.delayinterval = DELAYCENTER / _5cnvctx.sliceobj.data.length;
     _5cnvctx.virtualheight = _5cnvctx.sliceobj.data.length*_5cnvctx.buttonheight;
-    menushow(_5cnvctx,0);
+    menutoggle(_5cnvctx,0);
 }
 
-function modalshow(repos)
+function showserch(repos)
 {
     clearInterval(_8cnvctx.autotime);
     _8cnvctx.autotime = 0;
-    setTimeout(function()
-    {
-        var e = galleryobj.getcurrent();
-        if (galleryobj.repos)
-        {
-            var lrepos = localStorage.getItem("repos");
-            if (!lrepos)
-                lrepos = "pexels";
-            globalobj.saverepos = repos?repos:lrepos;
-            document.getElementById('search-value').value = url.path;
-            const overlay = document.querySelector(".search-overlay");
-            overlay.style.display = 'flex';
-        }
-        else if (e.prompt)
-        {
-            document.getElementById('prompt-value').value = e.prompt;
-            const overlay = document.querySelector(".prompt-overlay");
-            overlay.style.display = 'flex';
-        }
-        else
-        {
-            document.getElementById('page-value').value = galleryobj.current()+1;
-            const overlay = document.querySelector(".page-overlay");
-            overlay.style.display = 'flex';
-        }
-
-    }, 20);
-
-    _3cnvctx.refresh();
-    _8cnvctx.refresh();
-    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-    for (var n = 0; n < 10; ++n)
-    {
-        setTimeout(function()
-        {
-            _3cnvctx.refresh();
-            _8cnvctx.refresh();
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-        }, n*50);
-    }
+    var lrepos = localStorage.getItem("repos");
+    if (!lrepos)
+        lrepos = "pexels";
+    globalobj.saverepos = repos?repos:lrepos;
+    document.getElementById('search-label').innerHTML = globalobj.saverepos.proper();
+    document.getElementById('search-value').value = url.path;
+    const dialog = document.getElementById("search-overlay");
+    dialog.showModal();
 }
 
 function startslideshow()
@@ -5785,72 +5783,13 @@ if (url.protocol == "https:")
 function galleryshow()
 {
     modalshide();
-    _8cnvctx.scrollobj.set(0);
-    _8cnvctx.scrollobj.data[1].set(0);
-    _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-    var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-    _8cnvctx.timeobj.rotate(k);
-    menushow(_8cnvctx)
-}
-
-/*
-var path = `https://reportbase.com/dalle/generations`;
-fetch(path)
-.then(resp =>
-{
-    if (resp.ok)
-        return resp.json()
-    else
-        throw Error(resp.statusText);
-})
-.then(data =>
-{
-    console.log(data);
-})
-.catch((error) =>
-{
-    console.log(error);
-});
-*/
-
-async function go()
-{
-    let response = await fetch('https://reportbase.com/dalle/generations',
+    if (!url.autotime)
     {
-         method: 'POST',
-       body: JSON.stringify({ 'prompt': 'Lion', 'n': 2, 'size': '1024x1024' })
-    });
-
-    async function upload(obj)
-    {
-        const res = await fetch('https://reportbase.com/image/',
-        {
-          method: 'POST',
-          headers:
-          {
-            'Content-Type': 'application/json'
-          },
-            body: JSON.stringify(obj),
-        });
-
-        const json = await res.json()
-        return json.id;
+        _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+        var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
+        _8cnvctx.timeobj.rotate(k);
     }
 
-    var lst = await response.json();
-    for (var n = 0; n < lst.length; n++)
-    {
-        lst[n].prompt = `Lion`;
-        lst[n].model = "dalle";
-        lst[n].extent = "1024x1024";
-        var id = await upload(lst[n])
-        lst[n].id = id;
-    }
+    menutoggle(_8cnvctx)
 }
-
-function submitprompt()
-{
-}
-
-//go();
 

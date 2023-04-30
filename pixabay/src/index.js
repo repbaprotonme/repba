@@ -51,8 +51,6 @@ export default
         {
             'content-type': 'application/json;charset=UTF-8',
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS',
-            'Access-Control-Allow-Headers': '*'
 	    });
 
         return new Response(JSON.stringify(g), { headers, });

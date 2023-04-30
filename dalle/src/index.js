@@ -3,7 +3,6 @@ export default
 	async fetch(request, env, ctx)
     {
         let OPENAI_KEY = env.OPENAI_KEY;
-        //var body = { 'prompt': 'Lion', 'n': 2, 'size': '1024x1024' };
         var body = await request.json();
 
         var res = await fetch('https://api.openai.com/v1/images/generations',
@@ -19,14 +18,12 @@ export default
         });
 
         var json = await res.json();
-        return new Response(JSON.stringify(json.data), {
-              headers:
-            {
-            'Access-Control-Allow-Origin': '*',
-            "content-type": "application/json;charset=UTF-8",
-              },
-            });
+        for (var n = 0; n < json.data.length; ++n)
+        {
+        }
 
+        json.repos = "dalle"
+        return Response.redirect("https://reportbase.com/?sidney=1", 301);
     },
 };
 

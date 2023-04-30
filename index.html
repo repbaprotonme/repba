@@ -32,7 +32,7 @@ label
   text-align: center;
   font-size: 1rem; 
   width: 100%; 
-  padding: 10px; 
+  padding: 10px 0px 10px 0px; 
 }
 
 textarea 
@@ -59,7 +59,7 @@ button
 
 .earth
 {
-  padding: 20px 0px 0px 0px; 
+  padding: 0px 0px 0px 0px; 
   display: flex; 
   flex-direction: column; 
   width: 100%; 
@@ -68,7 +68,7 @@ button
 
 .header
 {
-  padding: 20px 0px 10px 0px; 
+  padding: 10px 0px 0px 0px; 
   display: flex; 
   flex-direction: column; 
   width: 100%; 
@@ -78,10 +78,13 @@ button
 .footer
 {
   padding: 10px 0px 0px 0px; 
-  display: flex; 
+  display: grid; 
   flex-direction: column; 
   width: 100%; 
   justify-content: center;
+  margin: 5px; 
+  grid-auto-flow: column;
+  grid-column-gap: 10px
 }
 
 .fade 
@@ -121,7 +124,6 @@ button
 <canvas id='_9' style='z-index: 11' width='0' height='0'></canvas>
 <script type="text/javascript" src="js/screenfull.min.js"></script>
 <script type="text/javascript" src="js/hammer.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script src="https://www.unpkg.com/@propelauth/javascript@2.0.0/dist/javascript.min.js" 
          integrity="sha384-CnMW/GT96q1vxl3xq1fIbUrmXpDIsXVtY+/FpJW+rMSCgjlOWpbVfs5G0dg2bMN5" 
@@ -132,38 +134,31 @@ button
 </head>
 <body ondragstart="return false;" ondrop="return false"; oncontextmenu='return false;'>
 
-<div class="search-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.0);">
-  <div style="position: fixed;width: 400px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 0px 20px 20px 20px; border-radius: 5px;" role="dialog">
+<dialog id="search-overlay" style="border-width: thick; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);; background-color: #fff; padding: 0px 20px 20px 20px; border-radius: 5px;">
+    <div class="header">
+      <label id="search-label">Search</label>
+    </div>
     <div class="earth">
       <textarea id="search-value" autocapitalize="off" placeholder="Enter Search" rows=6 style=""></textarea>
     </div>
     <div class="footer">
       <button class="fade" id="search-footer" style="" type="button" onclick="submitsearch()">Search</button>
+      <button class="fade" id="search-cancel" style="" type="button" onclick="searchcancel()">Cancel</button>
     </div>
-  </div>
-</div>
+</dialog>
 
-<div class="page-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.0);">
-  <div style="position: fixed;width: 300px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 0px 20px 20px 20px; border-radius: 5px;" role="dialog">
+<dialog id="page-overlay" style="border-width: thick; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);; background-color: #fff; padding: 0px 20px 20px 20px; border-radius: 5px;">
+    <div class="header">
+      <label id="page-label">Page</label>
+    </div>
     <div class="earth">
       <textarea id="page-value" autocapitalize="off" placeholder="Enter Page" rows=3 style=""></textarea>
     </div>
     <div class="footer">
-      <button class="fade" id="page-footer" style="" type="button" onclick="submitpage()">Goto</button>
+      <button class="fade" id="page-footer" style="" type="button" onclick="submitpage()">&nbsp;&nbsp;Goto&nbsp;&nbsp;</button>
+      <button class="fade" id="page-cancel" style="" type="button" onclick="pagecancel()">Cancel</button>
     </div>
-  </div>
-</div>
-
-<div class="prompt-overlay" style="z-index: 15; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.0);">
-  <div style="position: fixed;width: 600px; max-width: 80%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 0px 20px 20px 20px; border-radius: 5px;" role="dialog">
-    <div class="earth">
-      <textarea id="prompt-value" autocapitalize="off" placeholder="Enter Prompt" rows=9 style=""></textarea>
-    </div>
-    <div class="footer">
-      <button class="fade" id="prompt-footer" style="" type="button" onclick="submitprompt()">Prompt</button>
-    </div>
-  </div>
-</div>
+</dialog>
 
 </body>
 <script>
