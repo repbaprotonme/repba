@@ -23,7 +23,15 @@ export default
         }
 
         json.repos = "dalle"
-        return Response.redirect("https://reportbase.com/?sidney=1", 301);
+        return new Response(JSON.stringify(json.data),
+        {
+          status: 200,
+          headers:
+          {
+            'Access-Control-Allow-Origin': '*',
+            "content-type": "application/json",
+          },
+        });
     },
 };
 

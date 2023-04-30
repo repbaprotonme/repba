@@ -954,8 +954,8 @@ var GalleryPanel = function ()
         var a = new Layer(
         [
             new Rectangle(context.gallery),
-            _8cnvctx.scrollobj.current() ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),19,19) : 0,
-            new Shrink(new CirclePanel(_8cnvctx.scrollobj.current() ? TRANSPARENT : SCROLLNAB, SEARCHFRAME,4),15,15),
+            _8cnvctx.scrollobj.current() ? 0 : new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),19,19),
+            new Shrink(new CirclePanel(_8cnvctx.scrollobj.current() ? SCROLLNAB:TRANSPARENT, SEARCHFRAME,4),15,15),
             new Shrink(new Row([0,4,0],
             [
                 new CirclePanel("white"),
@@ -1154,49 +1154,6 @@ var SourcePanel = function ()
         a.draw(context, rect, user, time);
         context.restore();
     }
-};
-
-var ProgressPanel = function ()
-{
-    this.draw = function (context, rect, user, time)
-    {
-        const PROGRESSFILL = "white";
-        const PROGRESSFALL = "black";
-        user = _4cnvctx.timeobj;
-        context.save();
-        var percent = (1-user.berp())*100;
-        let centerX = rect.x + rect.width / 2;
-        let centerY = rect.y + rect.height / 2;
-        let radius = rect.height/2-16;
-        context.shadowOffsetX = 0;
-        context.shadowOffsetY = 0;
-        context.shadowColor = "black"
-        context.beginPath();
-        context.moveTo(centerX, centerY);
-        context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-        context.closePath();
-        context.fillStyle = PROGRESSFILL;
-        context.fill();
-
-        let startAngle = 1.5 * Math.PI;
-        let unitValue = (Math.PI - 0.5 * Math.PI) / 25;
-        if (percent >= 0 && percent <= 25)
-            endAngle = startAngle + (percent * unitValue);
-        else if (percent > 25 && percent <= 50)
-            endAngle = startAngle + (percent * unitValue);
-        else if (percent > 50 && percent <= 75)
-            endAngle = startAngle + (percent * unitValue);
-        else if (percent > 75 && percent <= 100)
-            endAngle = startAngle + (percent * unitValue);
-
-        context.beginPath();
-        context.moveTo(centerX, centerY);
-        context.arc(centerX, centerY, radius, startAngle, endAngle, false);
-        context.closePath();
-        context.fillStyle = PROGRESSFALL;
-        context.fill();
-        context.restore();
-    };
 };
 
 var Stroke = function (color, width)
@@ -1478,10 +1435,10 @@ CanvasRenderingContext2D.prototype.hide = function ()
     this.enabled = 0;
 };
 
-CanvasRenderingContext2D.prototype.tab = function ()
+CanvasRenderingContext2D.prototype.tab = function (k=1)
 {
     var context = this;
-    context.slidestop = url.slidestop;
+    context.slidestop = url.slidestop*k;
     context.slidestop = (2500/context.virtualwidth)*context.slidestop;
     context.slidereduce = context.slidestop/url.slidereduce;
     clearInterval(context.timemain);
@@ -1918,32 +1875,14 @@ var pinchlst =
         if (context.isthumbrect)
         {
             delete context.thumbcanvas;
-            var f = Math.floor(obj.length()*Math.max(e,0.1));
+            var f = Math.floor(obj.length()*Math.max(Math.min(e,0.79),0.2));
             obj.set(f);
             context.refresh();
         }
         else
         {
-            if (0)//scale >= 1 && obj.current() < (obj.length()*0.15))
-            {
-                var f = Math.floor(obj.length()*e);
-                scale = parseFloat(scale).toFixed(2);
-                obj.set(f+2);
-                context.savepinch = obj.getcurrent();
-            }
-            else if (0)//scale <= 1 && obj.current() < (obj.length()*0.15))
-            {
-                var f = Math.floor(obj.length()*e);
-                scale = parseFloat(scale).toFixed(2);
-                obj.set(f-2);
-                context.savepinch = obj.getcurrent();
-            }
-            else
-            {
-                var f = Math.floor(obj.length()*Math.max(e,0.1));
-                obj.set(f);
-            }
-
+            var f = Math.floor(obj.length()*Math.max(Math.min(e,0.89),0.1));
+            obj.set(f);
             contextobj.reset();
         }
 
@@ -2820,16 +2759,14 @@ var keylst =
         else if (key == "arrowleft" || key == "h")
         {
             evt.preventDefault();
-            context.timeobj.addperc(5);
             context.autodirect = 1;
-            context.tab();
+            context.tab(5);
         }
         else if (key == "arrowright" || key == "l")
         {
             evt.preventDefault();
-            context.timeobj.addperc(-5);
             context.autodirect = -1;
-            context.tab();
+            context.tab(5);
         }
         else if (key == "arrowup" || key == "k")
         {
@@ -2888,7 +2825,7 @@ var keylst =
             headobj.set(headobj.current() == 0 ? 3 : 0);
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            _4cnvctx.tab();
+            _4cnvctx.tab(6);
         }
         else if (key == "enter")
         {
@@ -3206,6 +3143,58 @@ var thumblst =
 	{
     	this.draw = function (context, r, user, time)
         {
+            var rect = new rectangle(r.x, r.y, r.width, r.height);
+            rect.shrink(THUMBSELECT, THUMBSELECT);
+
+            var he = heightobj.getcurrent();
+            var b = Math.berp(0,he.length()-1,he.current());
+            var height = Math.max(60,Math.lerp(0, rect.height, b));
+            var width = Math.max(60,Math.lerp(0, rect.width, b));
+            var r = calculateAspectRatioFit(photo.image.width, photo.image.height, width, height);
+            var h = Math.floor(r.height);
+            var w = Math.floor(r.width);
+
+            var jp = 0;
+            if (h < 20)
+            {
+                h = 20;
+                jp
+            }
+
+            var positx = positxobj.getcurrent();
+            var posity = posityobj.getcurrent();
+            var x = Math.floor(Math.nub(positx.getcurrent(), positx.length(), w, rect.width))+THUMBSELECT;
+            var y = Math.floor(Math.nub(posity.getcurrent(), posity.length(), h, rect.height))+THUMBSELECT;
+            context.thumbrect = new rectangle(x,y,w,h);
+            var rect = context.thumbrect;
+
+            user = _4cnvctx.timeobj;
+            context.save();
+            var percent = (1-user.berp())*100;
+            let centerX = rect.x + rect.width / 2;
+            let centerY = rect.y + rect.height / 2;
+            let radius = rect.height/2;
+
+            var a = new CirclePanel(TRANSPARENT, THUMBSTROKE, THUMBORDER)
+            a.draw(context, rect, user, time);
+
+            let startAngle = 1.5 * Math.PI;
+            let unitValue = (Math.PI - 0.5 * Math.PI) / 25;
+            let endAngle = startAngle + (percent * unitValue);
+            var j = 100*(window.innerWidth/context.virtualwidth);
+            var a = endAngle - (j/2 * unitValue);
+            var b = endAngle + (j/2 * unitValue);
+
+            context.beginPath();
+            context.moveTo(centerX, centerY);
+            context.arc(centerX, centerY, radius, a, b, false);
+            context.closePath();
+            context.fillStyle = THUMBSTROKE;
+            context.fill();
+            context.strokeStyle = THUMBSTROKE;
+            context.lineWidth = THUMBORDER;
+            context.stroke();
+            context.restore();
         }
     },
     new function ()
@@ -3240,8 +3229,8 @@ var thumblst =
             var posity = posityobj.getcurrent();
             var x = Math.floor(Math.nub(positx.getcurrent(), positx.length(), w, rect.width))+THUMBSELECT;
             var y = Math.floor(Math.nub(posity.getcurrent(), posity.length(), h, rect.height))+THUMBSELECT;
-
             context.thumbrect = new rectangle(x,y,w,h);
+
             context.save();
             context.shadowOffsetX = 0;
             context.shadowOffsetY = 0;
@@ -4893,7 +4882,7 @@ var headlst =
             {
                 context.hitbt = 1;
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-                pinchobj.getcurrent().getcurrent().add(-1);
+                pinchobj.getcurrent().getcurrent().add(1);
                 contextobj.reset();
                 clearInterval(_4cnvctx.timemain);
                 _4cnvctx.timemain = 0;
@@ -4910,7 +4899,7 @@ var headlst =
             {
                 context.hitbt = 2;
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-                pinchobj.getcurrent().getcurrent().add(1);
+                pinchobj.getcurrent().getcurrent().add(-1);
                 contextobj.reset();
                 clearInterval(_4cnvctx.timemain);
                 _4cnvctx.timemain = 0;
@@ -4958,7 +4947,7 @@ var headlst =
                     ]);
 
             var st = pinchobj.getcurrent().title;
-            var k = (pinchobj.getcurrent().getcurrent().berp()*100).toFixed(0)+"%";
+            var k = (100*(window.innerWidth/_4cnvctx.virtualwidth)).toFixed(0)+"%";
             var j = [st,k];
             a.draw(context, rect, j, time);
             context.restore()
