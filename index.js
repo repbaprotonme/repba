@@ -25,6 +25,7 @@ const DELAYCENTER = TIMEOBJ/1000;
 const TIMEMID = TIMEOBJ/2;
 const MENUSELECT = "rgba(255,175,0,0.7)";
 const MENUTAP = "rgba(255,125,0,0.9)";
+const MENUTAG = "rgba(200,0,0,0.9)";
 const SELECTAP = "rgba(255,0,0.75,0.7)";
 const SCROLLNAB = "rgba(0,0,0,0.35)";
 const BARFILL = "rgba(0,0,0,0.5)";
@@ -33,7 +34,7 @@ const OPTIONFILL = "white";
 const THUMBFILP = "rgba(0,0,0,0.2)";
 const THUMBFILL = "rgba(0,0,0,0.3)";
 const THUMBSTROKE = "rgba(255,255,255,0.4)";
-const SEARCHFRAME = "rgba(255,255,255,0.5)";
+const SEARCHFRAME = "rgba(255,255,255,0.4)";
 const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
 const SCROLLBARWIDTH = 6;
@@ -315,14 +316,13 @@ function drawslices()
             context.restore();
             delete context.selectrect;
             delete context.thumbrect;
-            delete context.slicectrl;
 
             if (context.setcolumncomplete)
             {
                 thumbobj.getcurrent().draw(context, rect, 0, 0);
             }
 
-             context.setcolumncomplete = 1;
+            context.setcolumncomplete = 1;
         }
     }
 
@@ -466,7 +466,12 @@ var BarPanel = function (header)
         [
             new Layer(
             [
-               new Rectangle(context.header),
+                new Col([0,60,20],
+                [
+                    0,
+                    new Rectangle(context.header),
+                    0,
+                ]),
                 new ColA([ 0,50,50,50,0 ],
                 [
                     0,
@@ -502,7 +507,7 @@ var SearchBar = function ()
         [
             new Layer(
             [
-                new Col([20,0,20],
+                new Col([20,60,0],
                 [
                     0,
                     new Rectangle(context.header),
@@ -975,7 +980,6 @@ var ThumbPanel = function ()
     {
         context.save();
         context.thumbpanel = new rectangle()
-
         var a = new Layer(
         [
             new Rectangle(context.thumbpanel),
@@ -995,11 +999,10 @@ var AutoPanel = function ()
     {
         context.save();
         context.auto = new rectangle();
-
         var a = new Layer(
         [
             new Rectangle(context.auto),
-            context.autotime ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),19,19) : 0,
+            context.autotime ? new Shrink(new CirclePanel( MENUTAP,TRANSPARENT,4),19,19) : 0,
             new Shrink(new CirclePanel(context.autotime?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),15,15),
             new Shrink(new Row([0,0],
             [
@@ -1106,12 +1109,11 @@ var SearchPanel = function ()
             }
         };
 
-        const dialog = document.getElementById("search-overlay");
         var a = new Layer(
         [
             new Rectangle(context.searchpanel),
-            new Shrink(new CirclePanel(dialog.open?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),13,13),
-            dialog.open ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),17,17) : 0,
+            new Shrink(new CirclePanel(globalobj.search?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),13,13),
+            globalobj.search ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),17,17) : 0,
             new Shrink(new Panel(),15,20),
         ]);
 
@@ -1122,16 +1124,17 @@ var SearchPanel = function ()
 
 function searchcancel()
 {
+    globalobj.search = 0;
     const dialog = document.getElementById("search-overlay");
     dialog.close()
-    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+    hiderefresh();
 }
 
 function pagecancel()
 {
     const dialog = document.getElementById("page-overlay");
     dialog.close()
-    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+    hiderefresh();
 }
 
 var SourcePanel = function ()
@@ -1881,7 +1884,7 @@ var pinchlst =
         }
         else
         {
-            var f = Math.floor(obj.length()*Math.max(Math.min(e,0.89),0.1));
+            var f = Math.floor(obj.length()*e);
             obj.set(f);
             contextobj.reset();
         }
@@ -1906,6 +1909,8 @@ var pinchlst =
             context.obj = heightobj.getcurrent();
         else
             context.obj = pinchobj.getcurrent().getcurrent();
+        if (context.obj.current() < 5)
+            context.obj.set(5);
         context.savepinch = context.obj.getcurrent()
     },
     pinchend: function (context)
@@ -2488,10 +2493,8 @@ var presslst =
         else
         {
             thumbobj.rotate(1);
-            headobj.set(headobj.current() == 1 ? 3 : 1);
-            headham.panel = headobj.getcurrent();
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnvctx.refresh();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
 
         context.refresh();
@@ -2543,7 +2546,9 @@ var swipelst =
     swipeupdown: function (context, rect, x, y, evt)
     {
         menuhide();
-        headobj.set(5);
+        var j = typeof headobj.last !== "undefined" ? headobj.last : 3;
+        headobj.last = headobj.current();
+        headobj.set(headobj.current() == 5 ? j : 5);
         headham.panel = headobj.getcurrent();
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         context.refresh();
@@ -3141,60 +3146,8 @@ var thumblst =
 [
     new function ()
 	{
-    	this.draw = function (context, r, user, time)
+    	this.draw = function (context, rect, user, time)
         {
-            var rect = new rectangle(r.x, r.y, r.width, r.height);
-            rect.shrink(THUMBSELECT, THUMBSELECT);
-
-            var he = heightobj.getcurrent();
-            var b = Math.berp(0,he.length()-1,he.current());
-            var height = Math.max(60,Math.lerp(0, rect.height, b));
-            var width = Math.max(60,Math.lerp(0, rect.width, b));
-            var r = calculateAspectRatioFit(photo.image.width, photo.image.height, width, height);
-            var h = Math.floor(r.height);
-            var w = Math.floor(r.width);
-
-            var jp = 0;
-            if (h < 20)
-            {
-                h = 20;
-                jp
-            }
-
-            var positx = positxobj.getcurrent();
-            var posity = posityobj.getcurrent();
-            var x = Math.floor(Math.nub(positx.getcurrent(), positx.length(), w, rect.width))+THUMBSELECT;
-            var y = Math.floor(Math.nub(posity.getcurrent(), posity.length(), h, rect.height))+THUMBSELECT;
-            context.thumbrect = new rectangle(x,y,w,h);
-            var rect = context.thumbrect;
-
-            user = _4cnvctx.timeobj;
-            context.save();
-            var percent = (1-user.berp())*100;
-            let centerX = rect.x + rect.width / 2;
-            let centerY = rect.y + rect.height / 2;
-            let radius = rect.height/2;
-
-            var a = new CirclePanel(TRANSPARENT, THUMBSTROKE, THUMBORDER)
-            a.draw(context, rect, user, time);
-
-            let startAngle = 1.5 * Math.PI;
-            let unitValue = (Math.PI - 0.5 * Math.PI) / 25;
-            let endAngle = startAngle + (percent * unitValue);
-            var j = 100*(window.innerWidth/context.virtualwidth);
-            var a = endAngle - (j/2 * unitValue);
-            var b = endAngle + (j/2 * unitValue);
-
-            context.beginPath();
-            context.moveTo(centerX, centerY);
-            context.arc(centerX, centerY, radius, a, b, false);
-            context.closePath();
-            context.fillStyle = THUMBSTROKE;
-            context.fill();
-            context.strokeStyle = THUMBSTROKE;
-            context.lineWidth = THUMBORDER;
-            context.stroke();
-            context.restore();
         }
     },
     new function ()
@@ -3206,6 +3159,39 @@ var thumblst =
                 !photo.image.complete ||
                 !photo.image.naturalHeight)
                 return;
+
+            var panel = function ()
+            {
+                this.draw = function (context, rect, user, time)
+                {
+                    var x = context.thumbrect.x;
+                    var y = context.thumbrect.y;
+                    var w = context.thumbrect.width;
+                    var h = context.thumbrect.height;
+                    var hh = context.selectrect[0].height;
+                    context.lineWidth = THUMBORDER;
+                    user = _4cnvctx.timeobj;
+                    var percent = (hh/h)*100;
+                    context.percentrect = percent;
+                    let centerX = rect.x + rect.width / 2;
+                    let centerY = rect.y + rect.height / 2;
+                    let radius = rect.height/2;
+
+                    let startAngle = 1.5 * Math.PI;
+                    let unitValue = (Math.PI - 0.5 * Math.PI) / 25;
+                    var f = (1-user.berp())*100;
+                    let endAngle = startAngle + (f * unitValue);
+                    var a = endAngle - (percent/2 * unitValue);
+                    var b = endAngle + (percent/2 * unitValue);
+
+                    context.beginPath();
+                    context.moveTo(centerX, centerY);
+                    context.arc(centerX, centerY, radius, a, b, false);
+                    context.closePath();
+                    context.fillStyle = "rgba(255,0,0,0.33)";
+                    context.fill();
+                }
+            }
 
             var rect = new rectangle(r.x, r.y, r.width, r.height);
             rect.shrink(THUMBSELECT, THUMBSELECT);
@@ -3250,7 +3236,6 @@ var thumblst =
                     thumbcontext.drawImage(photo.image,0,0,w,h);
                 }
 
-                context.globalAlpha = alphaobj.berp();
                 context.drawImage(context.thumbcanvas, x, y, w, h);
                 context.globalAlpha = 1.0;
             }
@@ -3285,7 +3270,41 @@ var thumblst =
             context.selectrect.push(r);
             var blackfill = new FillPanel(THUMBFILL);
             blackfill.draw(context, r, 0, 0);
-            var whitestroke = new Stroke(THUMBSTROKE,THUMBSELECT);
+
+
+            if (context.thumbrect.width > context.thumbrect.height)
+            {
+                var j = context.thumbrect.height*0.15;
+                var a = new Row([j,0,j],
+                    [
+                        0,
+                        new Layer(
+                        [
+                            new CirclePanel("rgba(255,255,255,0.25)", 0, 0),
+                            new panel(),
+                        ]),
+                        0,
+                    ]);
+
+                a.draw(context, context.thumbrect, 0, 0);
+            }
+            else
+            {
+                var j = context.thumbrect.width*0.70;
+                var a = new Row([0,j,0],
+                    [
+                        0,
+                        new Layer(
+                        [
+                            new CirclePanel("rgba(255,255,255,0.25)", 0, 0),
+                            new panel(),
+                        ]),
+                        0,
+                    ]);
+
+                a.draw(context, context.thumbrect, 0, 0);
+            }
+
             whitestroke.draw(context, r, 0, 0);
 
             if (xx > x)//leftside
@@ -3305,14 +3324,11 @@ var thumblst =
 
             context.restore();
         }
-    }
-];
+    },
+ ];
 
 var thumbobj = new circular_array("THUMB", thumblst);
 thumbobj.set(url.thumb);
-
-var alphaobj = new circular_array("ALPHA", 100);
-alphaobj.set(100)
 
 var getbuttonfrompoint = function (context, x, y)
 {
@@ -4763,9 +4779,8 @@ var headlst =
             }
             else
             {
-                headobj.set(headobj.current()?0:1);
-                headham.panel = headobj.getcurrent();
-                headcnvctx.clear();
+                thumbobj.rotate(1);
+                _4cnvctx.refresh();
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             }
         }
@@ -4825,7 +4840,6 @@ var headlst =
             {
                 menuhide();
             }
-
 
             _4cnvctx.refresh();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -4947,8 +4961,8 @@ var headlst =
                     ]);
 
             var st = pinchobj.getcurrent().title;
-            var k = (100*(window.innerWidth/_4cnvctx.virtualwidth)).toFixed(0)+"%";
-            var j = [st,k];
+            var k = (_4cnvctx.percentrect).toFixed(0)+"%";
+            var j = [st];
             a.draw(context, rect, j, time);
             context.restore()
 		};
@@ -5732,11 +5746,13 @@ function showserch(repos)
     var lrepos = localStorage.getItem("repos");
     if (!lrepos)
         lrepos = "pexels";
+    globalobj.search = 1;
     globalobj.saverepos = repos?repos:lrepos;
     document.getElementById('search-label').innerHTML = globalobj.saverepos.proper();
     document.getElementById('search-value').value = url.path;
     const dialog = document.getElementById("search-overlay");
     dialog.showModal();
+    hiderefresh();
 }
 
 function startslideshow()
@@ -5782,3 +5798,24 @@ function galleryshow()
     menutoggle(_8cnvctx)
 }
 
+function hiderefresh()
+{
+    function func()
+    {
+        _2cnvctx.refresh();
+        _3cnvctx.refresh();
+        _4cnvctx.refresh();
+        _5cnvctx.refresh();
+        _7cnvctx.refresh();
+        _6cnvctx.refresh();
+        _8cnvctx.refresh();
+        _9cnvctx.refresh();
+        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+    }
+
+    func();
+    setTimeout(function() {func()}, 500);
+    setTimeout(function() {func()}, 100);
+    setTimeout(function() {func()}, 200);
+    setTimeout(function() {func()}, 400);
+}
