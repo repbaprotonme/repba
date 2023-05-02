@@ -133,12 +133,12 @@ button
 </head>
 <body ondragstart="return false;" ondrop="return false"; oncontextmenu='return false;'>
 
-<dialog id="search-overlay" style="border-width: 4px 1.25em; border-color: rgba(255,175,0,0.7); position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);; background-color: #fff; padding: 0px 20px 20px 20px; border-radius: 5px;">
+<dialog id="search-overlay" style="width:80%; max-width: 640px; border-width: 4px 1.25em; border-color: black; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);; background-color: #fff; padding: 0px 20px 20px 20px; border-radius: 5px;">
     <div class="header">
-      <label id="search-label">Search</label>
+      <label id="search-label">Image Search</label>
     </div>
     <div class="earth">
-      <textarea id="search-value" autocapitalize="off" placeholder="Enter Search" rows=6 style=""></textarea>
+      <textarea id="search-value" autocapitalize="off" placeholder="Image Search" rows=6 style=""></textarea>
     </div>
     <div class="footer">
       <button class="fade" id="search-footer" style="" type="button" onclick="submitsearch()">Search</button>
@@ -146,12 +146,12 @@ button
     </div>
 </dialog>
 
-<dialog id="page-overlay" style="border-width: 4px 1.25em; border-color: rgba(255,175,0,0.7); position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);; background-color: #fff; padding: 0px 20px 20px 20px; border-radius: 5px;">
+<dialog id="page-overlay" style="width:80%; max-width: 480px; border-width: 4px 1.25em; border-color: black; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);; background-color: #fff; padding: 0px 20px 20px 20px; border-radius: 5px;">
     <div class="header">
-      <label id="page-label">Page</label>
+      <label id="page-label">Image #</label>
     </div>
     <div class="earth">
-      <textarea id="page-value" autocapitalize="off" placeholder="Enter Page" rows=3 style=""></textarea>
+      <textarea id="page-value" autocapitalize="off" placeholder="Image Number" rows=3 style=""></textarea>
     </div>
     <div class="footer">
       <button class="fade" id="page-footer" style="" type="button" onclick="submitpage()">&nbsp;&nbsp;Goto&nbsp;&nbsp;</button>
