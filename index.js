@@ -2499,6 +2499,7 @@ var presslst =
         }
         else
         {
+            url.transparent = 0;
             thumbobj.rotate(1);
             _4cnvctx.refresh();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -4634,6 +4635,7 @@ function escape()
     headobj.set(3);
     _4cnvctx.panhide  = 0
     _4cnvctx.pinched = 0;
+    globalobj.search = 0;
     delete _4cnvctx.thumbcanvas;
     url.transparent = 0;
     menuhide();
@@ -4808,6 +4810,7 @@ var headlst =
             globalobj.slideshow = 0;
             if (context.thumbpanel && context.thumbpanel.hitest(x,y))
             {
+                url.transparent = 0;
                 thumbobj.rotate(1);
             }
             else if (context.searchpanel && context.searchpanel.hitest(x,y))
@@ -5044,14 +5047,27 @@ var headlst =
             }
             else if (context.prompt.hitest(x,y))
             {
-                document.getElementById('page-value').value = galleryobj.current()+1;
-                const dialog = document.getElementById("page-overlay");
-                dialog.addEventListener("click", function(evt)
+                if (promptobj.current() == 1)
                 {
-                    //if (evt.target == dialog)
-                     //   pagecancel()
-                });
-                dialog.showModal();
+                    document.getElementById('page-value').value = galleryobj.current()+1;
+                    const dialog = document.getElementById("page-overlay");
+                    dialog.addEventListener("click", function(evt)
+                    {
+                        //if (evt.target == dialog)
+                         //   pagecancel()
+                    });
+                    dialog.showModal();
+                }
+                else if (galleryobj.getcurrent().image_url)
+                {
+                    let a = document.createElement('a');
+                    a.href = galleryobj.getcurrent().image_url;
+                    a.click();
+                }
+                else if (galleryobj.getcurrent().prompt)
+                {
+                    //todo
+                }
             }
 		};
 
@@ -5092,21 +5108,20 @@ var headlst =
 
             var st = [];
             var k = galleryobj.getcurrent();
-            if (galleryobj.repos)
-            {
-                if (k.description)
-                    st.push(k.description);
-            }
-            else if (k.prompt)
+            if (k.prompt && promptobj.current() == 0)
             {
                 st = k.prompt.split("\n");
             }
-
-            var st = [];
-            if (galleryobj.getcurrent().prompt && promptobj.current() == 1)
-                st = galleryobj.getcurrent().prompt.split("\n");
+            else if (k.description && promptobj.current() == 0)
+            {
+                st = k.description.split("\n");
+                if (k.photographer)
+                    st.unshift(k.photographer);
+            }
             else
+            {
                 st.push(`${galleryobj.current()+1} of ${galleryobj.length()}`);
+            }
 
             a.draw(context, rect, st, time);
              context.restore()
@@ -5597,6 +5612,9 @@ galleryobj.init = function(obj)
     //_3cnv
     _3cnvctx.sliceobj.data =
     [
+        {line:"Dalle\nPrompt to Image", path: "UNSPLASH", func: function()
+            {
+            }},
         {line:"Unsplash\nImage Search", path: "UNSPLASH", func: function()
             {
                 showsearch("unsplash");
@@ -5735,9 +5753,10 @@ function submitsearch()
 {
     setTimeout(function()
     {
-        localStorage.setItem("repos", globalobj.saverepos);
         var search = document.getElementById('search-value').value;
         search = search.clean();
+        localStorage.setItem("repos", globalobj.saverepos);
+        localStorage.setItem("search", search);
         var s = `${url.origin}?${globalobj.saverepos}=${search}&page=${url.page}`;
         window.open(s, "_self");
     }, 200)
@@ -5747,12 +5766,16 @@ function showsearch(repos)
 {
     clearInterval(_8cnvctx.autotime);
     _8cnvctx.autotime = 0;
+    var search = localStorage.getItem("search");
+    if (!search)
+        search = "";
     var lrepos = localStorage.getItem("repos");
     if (!lrepos)
         lrepos = "pexels";
     globalobj.search = 1;
     globalobj.saverepos = repos?repos:lrepos;
-    document.getElementById('search-value').value = url.path;
+    let kurl = new URL(addressobj.full());
+    document.getElementById('search-value').value = search;
     const dialog = document.getElementById("search-overlay");
     dialog.addEventListener("click", function(evt)
         {
