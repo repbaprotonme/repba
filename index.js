@@ -1137,13 +1137,6 @@ function searchcancel()
 
 function pagecancel()
 {
-    hiderefresh();
-    setTimeout(function()
-    {
-        const dialog = document.getElementById("page-overlay");
-        dialog.close()
-        hiderefresh();
-    }, 200)
 }
 
 var SourcePanel = function ()
@@ -5049,14 +5042,7 @@ var headlst =
             {
                 if (promptobj.current() == 1)
                 {
-                    document.getElementById('page-value').value = galleryobj.current()+1;
-                    const dialog = document.getElementById("page-overlay");
-                    dialog.addEventListener("click", function(evt)
-                    {
-                        //if (evt.target == dialog)
-                         //   pagecancel()
-                    });
-                    dialog.showModal();
+                    showpage();
                 }
                 else if (galleryobj.getcurrent().image_url)
                 {
@@ -5066,7 +5052,7 @@ var headlst =
                 }
                 else if (galleryobj.getcurrent().prompt)
                 {
-                    //todo
+                    showprompt();
                 }
             }
 		};
@@ -5737,31 +5723,6 @@ function deleteimage()
     });
 }
 
-function submitpage()
-{
-    setTimeout(function()
-    {
-        var page = document.getElementById('page-value').value;
-        galleryobj.set(Number(page)-1);
-        let a = document.createElement('a');
-        a.href = addressobj.full();
-        a.click();
-    }, 200)
-}
-
-function submitsearch()
-{
-    setTimeout(function()
-    {
-        var search = document.getElementById('search-value').value;
-        search = search.clean();
-        localStorage.setItem("repos", globalobj.saverepos);
-        localStorage.setItem("search", search);
-        var s = `${url.origin}?${globalobj.saverepos}=${search}&page=${url.page}`;
-        window.open(s, "_self");
-    }, 200)
-}
-
 function showsearch(repos)
 {
     clearInterval(_8cnvctx.autotime);
@@ -5777,13 +5738,101 @@ function showsearch(repos)
     let kurl = new URL(addressobj.full());
     document.getElementById('search-value').value = search;
     const dialog = document.getElementById("search-overlay");
-    dialog.addEventListener("click", function(evt)
-        {
-    //        if (evt.target == dialog)
-     //           searchcancel()
-        });
-
     dialog.showModal();
+    function click(evt)
+    {
+        if (evt.target == dialog)
+        {
+            //dialog.close()
+        }
+        else if (evt.target.id == "search-cancel")
+        {
+            dialog.close()
+            globalobj.search = 0;
+            hiderefresh();
+        }
+        else if (evt.target.id == "search-ok")
+        {
+            var search = document.getElementById('search-value').value;
+            search = search.clean();
+            localStorage.setItem("repos", globalobj.saverepos);
+            localStorage.setItem("search", search);
+            var s = `${url.origin}?${globalobj.saverepos}=${search}&page=${url.page}`;
+            window.open(s, "_self");
+            hiderefresh();
+        }
+    }
+
+    setTimeout(function()
+    {
+        dialog.addEventListener("click", click);
+    }, 1000)
+
+    hiderefresh();
+}
+
+function showpage()
+{
+    document.getElementById('page-value').value = galleryobj.current()+1;
+    const dialog = document.getElementById("page-overlay");
+    dialog.showModal();
+    function click(evt)
+    {
+        if (evt.target == dialog)
+        {
+            //dialog.close()
+        }
+        else if (evt.target.id == "page-cancel")
+        {
+            dialog.close()
+            hiderefresh();
+        }
+        else if (evt.target.id == "page-ok")
+        {
+            var page = document.getElementById('page-value').value;
+            galleryobj.set(Number(page)-1);
+            let a = document.createElement('a');
+            a.href = addressobj.full();
+            a.click();
+            hiderefresh();
+        }
+    }
+
+    setTimeout(function()
+    {
+        dialog.addEventListener("click", click);
+    }, 1000)
+
+    hiderefresh();
+}
+
+function showprompt()
+{
+    document.getElementById('prompt-value').value = galleryobj.getcurrent().prompt;
+    const dialog = document.getElementById("prompt-overlay");
+    dialog.showModal();
+    function click(evt)
+    {
+        if (evt.target == dialog)
+        {
+            //dialog.close()
+        }
+        else if (evt.target.id == "prompt-cancel")
+        {
+            dialog.close()
+            hiderefresh();
+        }
+        else if (evt.target.id == "prompt-ok")
+        {
+            //todo
+        }
+    }
+
+    setTimeout(function()
+    {
+        dialog.addEventListener("click", click);
+    }, 1000)
+
     hiderefresh();
 }
 
