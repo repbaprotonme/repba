@@ -25,6 +25,28 @@ A:visited { COLOR: black; TEXT-DECORATION: none; font-weight: normal }
 A:active { COLOR: black; TEXT-DECORATION: none }
 A:hover { COLOR: blue; TEXT-DECORATION: none; font-weight: none; cursor: pointer }
 
+dialog
+{
+  width:80%; 
+  max-width: 640px; 
+  border-width: 4px 1.25em; 
+  border-color: black; 
+  position: absolute; 
+  left: 50%; 
+  top: 50%; 
+  transform: translate(-50%, -50%); 
+  background-color: #fff; 
+  padding: 0px 20px 20px 20px; 
+  border-radius: 5px;
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+
+dialog::backdrop 
+{
+  background-color: rgba(0,0,0,0.5);
+}
+
 label
 {
   font-family: Helvetica, sans-serif; 
@@ -37,14 +59,18 @@ label
 
 textarea 
 {
-  background: #eee; 
+  height: 100%;
+  resize: none;
+  background-color: #ddd; 
+  border-style: inset; 
+  border-radius: 0px;
+  border-width: 0px;
   outline: none; 
   font-family: Helvetica, sans-serif; 
   box-sizing: border-box; 
   width: 100%; 
   padding: 10px; 
   font-size: 16px;
-  border-radius: 5px;
 }
 
 button
@@ -133,47 +159,43 @@ button
 </head>
 <body ondragstart="return false;" ondrop="return false"; oncontextmenu='return false;'>
 
-<dialog id="search-overlay" style="width:80%; max-width: 640px; border-width: 4px 1.25em; border-color: black; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);; background-color: #fff; padding: 0px 20px 20px 20px; border-radius: 5px;">
+<dialog id="search-overlay" style="">
     <div class="header">
       <label id="search-label">Image Search</label>
     </div>
     <div class="earth">
-      <textarea id="search-value" autocapitalize="off" placeholder="Image Search" rows=6 style=""></textarea>
+      <textarea id="search-value" autocapitalize="off" placeholder="Red autombile" rows=6 style=""></textarea>
     </div>
     <div class="footer">
       <button class="fade" id="search-ok" style="" type="button">Search</button>
-      <button class="fade" id="search-cancel" style="" type="button">Cancel</button>
     </div>
 </dialog>
 
-<dialog id="page-overlay" style="width:80%; max-width: 360px; border-width: 4px 1.25em; border-color: black; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);; background-color: #fff; padding: 0px 20px 20px 20px; border-radius: 5px;">
+<dialog id="page-overlay" style="max-width: 360px;">
     <div class="header">
       <label id="page-label">Image #</label>
     </div>
     <div class="earth">
-      <textarea id="page-value" autocapitalize="off" placeholder="Image Number" rows=3 style=""></textarea>
+      <textarea id="page-value" autocapitalize="off" placeholder="" rows=3 style=""></textarea>
     </div>
     <div class="footer">
       <button class="fade" id="page-ok" style="" type="button">&nbsp;&nbsp;Goto&nbsp;&nbsp;</button>
-      <button class="fade" id="page-cancel" style="" type="button">Cancel</button>
     </div>
 </dialog>
 
-<dialog id="prompt-overlay" style="width:80%; max-width: 640px; border-width: 4px 1.25em; border-color: black; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);; background-color: #fff; padding: 0px 20px 20px 20px; border-radius: 5px;">
+<dialog id="prompt-overlay" style="">
     <div class="header">
-      <label id="prompt-label">Prompt</label>
+      <label id="prompt-label">Text to Image</label>
     </div>
     <div class="earth">
-      <textarea id="prompt-value" autocapitalize="off" placeholder="Image Search" rows=6 style=""></textarea>
+      <textarea id="prompt-value" autocapitalize="off" placeholder="Draw a lion standing next to a polar bear." rows=8 style=""></textarea>
     </div>
     <div class="footer">
-      <button class="fade" id="prompt-ok" style="" type="button">Submit</button>
-      <button class="fade" id="prompt-cancel" style="" type="button">Cancel</button>
+      <button class="fade" id="prompt-ok" style="" type="button">Create</button>
     </div>
 </dialog></body>
 <script>
 
 </script>
-
 </html>
 

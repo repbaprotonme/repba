@@ -33,8 +33,8 @@ const MENUCOLOR = "rgba(0,0,0,0.5)";
 const OPTIONFILL = "white";
 const THUMBFILP = "rgba(0,0,0,0.2)";
 const THUMBFILL = "rgba(0,0,0,0.3)";
-const THUMBSTROKE = "rgba(255,255,255,0.4)";
-const SEARCHFRAME = "rgba(255,255,255,0.4)";
+const THUMBSTROKE = "rgba(255,255,255,0.5)";
+const SEARCHFRAME = "rgba(255,255,255,0.5)";
 const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
 const SCROLLBARWIDTH = 6;
@@ -1354,22 +1354,24 @@ var addressobj = {}
 addressobj.full = function (k)
 {
     var zoom = zoomobj.getcurrent();
-    var out = url.origin;
-    out += url.pathname;
-    if (!url.path)
-        url.path = "0000";
-    var p = url.path;
-    if (!k)
-        p+="."+galleryobj.current().pad(4);
-
-    if (galleryobj.getcurrent().full)
-        out += `?${galleryobj.repos}=${p}`;
-    else if (url.searchParams.has("sidney"))
-         out += "?sidney="+p;
+    let surl = new URL(window.location.href);
+    var j = "";
+    var e = galleryobj.current().pad(4);
+    if (url.searchParams.has(galleryobj.repos))
+    {
+        var k = url.searchParams.get(galleryobj.repos);
+        k = k.split(".")[0];
+        j = `?${galleryobj.repos}=${k}.${e}`;
+    }
     else
-        out += "?p="+p;
+    {
+        j = `?p=${url.path}.${e}`;
+    }
 
-    out +=
+    out =
+        url.origin +
+        url.pathname +
+        j +
         "&page="+url.page+
         "&t="+thumbobj.current()+
         "&g="+url.transparent+
@@ -2581,6 +2583,8 @@ var keylst =
 	keyup: function (evt) { },
 	keydown: function (evt)
 	{
+        if (globalobj.prompt)
+            return;
 		var context =
             _5cnvctx.enabled ? _5cnvctx :
             _6cnvctx.enabled ? _6cnvctx :
@@ -2645,6 +2649,8 @@ var keylst =
 	keyup: function (evt) { },
 	keydown: function (evt)
 	{
+        if (globalobj.prompt)
+            return;
 		var context =
             _2cnvctx.enabled ? _2cnvctx :
             _3cnvctx.enabled ? _3cnvctx :
@@ -2707,6 +2713,8 @@ var keylst =
 	},
 	keydown: function (evt)
 	{
+        if (globalobj.prompt)
+            return;
 		var context = _4cnvctx;
 		var rect = context.rect();
         if (evt.ctrlKey)
@@ -3071,7 +3079,14 @@ var taplst =
             clearInterval(context.autotime);
             context.autotime = 0;
             var image = slice.image_url;
-            if ((y >= (slice.center.y + slice.fitheight/2 - 70)) &&
+            if (_8cnvctx.scrollobj.current())
+            {
+                if (slice.prompt)
+                    showprompt(slice);
+                else
+                    showsearch();
+            }
+            else if ((y >= (slice.center.y + slice.fitheight/2 - 70)) &&
                 (y < slice.center.y + slice.fitheight/2) &&
                 galleryobj.repos && image)
             {
@@ -5052,7 +5067,7 @@ var headlst =
                 }
                 else if (galleryobj.getcurrent().prompt)
                 {
-                    showprompt();
+                    showprompt(galleryobj.getcurrent());
                 }
             }
 		};
@@ -5580,16 +5595,6 @@ galleryobj.init = function(obj)
                 copytext(addressobj.full());
                 menuhide();
             }},
-        {title:"Copy ID", path: "COPYID", func: function()
-            {
-                copytext(galleryobj.getcurrent().id);
-                menuhide();
-            }},
-        {title:"Copy Prompt", path: "COPYPROMPT", func: function()
-            {
-                copytext(galleryobj.getcurrent().prompt);
-                menuhide();
-            }},
         {title:"Login", path: "LOGIN", func: function() { authClient.redirectToLoginPage(); }},
         {title:"Logout", path: "LOGOUT", func: function() { authClient.logout(true) }},
         {title:"Account", path: "ACCOUNT", func: function() { authClient.redirectToAccountPage() }},
@@ -5669,6 +5674,7 @@ galleryobj.init = function(obj)
     });
 
     contextobj.reset();
+
 }
 
 fetch(path)
@@ -5725,8 +5731,33 @@ function deleteimage()
 
 function showsearch(repos)
 {
-    clearInterval(_8cnvctx.autotime);
-    _8cnvctx.autotime = 0;
+    globalobj.block = 1;
+    globalobj.prompt = 1;
+    const dialog = document.getElementById("search-overlay");
+    dialog.addEventListener("click", function()
+    {
+        const rect = dialog.getBoundingClientRect();
+        if (event.clientY < rect.top || event.clientY > rect.bottom ||
+            event.clientX < rect.left || event.clientX > rect.right)
+        {
+            if (globalobj.block)
+                return;
+            dialog.close();
+            globalobj.prompt = 0;
+            globalobj.search = 0;
+            hiderefresh();
+        }
+        else if (event.target.id == "search-ok")
+        {
+            var search = document.getElementById('search-value').value;
+            search = search.clean();
+            localStorage.setItem("repos", globalobj.saverepos);
+            localStorage.setItem("search", search);
+            var s = `${url.origin}?${globalobj.saverepos}=${search}&page=${url.page}`;
+            window.open(s, "_self");
+         }
+    });
+
     var search = localStorage.getItem("search");
     if (!search)
         search = "";
@@ -5737,103 +5768,71 @@ function showsearch(repos)
     globalobj.saverepos = repos?repos:lrepos;
     let kurl = new URL(addressobj.full());
     document.getElementById('search-value').value = search;
-    const dialog = document.getElementById("search-overlay");
     dialog.showModal();
-    function click(evt)
-    {
-        if (evt.target == dialog)
-        {
-            //dialog.close()
-        }
-        else if (evt.target.id == "search-cancel")
-        {
-            dialog.close()
-            globalobj.search = 0;
-            hiderefresh();
-        }
-        else if (evt.target.id == "search-ok")
-        {
-            var search = document.getElementById('search-value').value;
-            search = search.clean();
-            localStorage.setItem("repos", globalobj.saverepos);
-            localStorage.setItem("search", search);
-            var s = `${url.origin}?${globalobj.saverepos}=${search}&page=${url.page}`;
-            window.open(s, "_self");
-            hiderefresh();
-        }
-    }
-
-    setTimeout(function()
-    {
-        dialog.addEventListener("click", click);
-    }, 1000)
-
+    setTimeout(function() { globalobj.block = 0; }, 40);
     hiderefresh();
 }
 
 function showpage()
 {
-    document.getElementById('page-value').value = galleryobj.current()+1;
+    globalobj.block = 1;
+    globalobj.prompt = 1;
     const dialog = document.getElementById("page-overlay");
-    dialog.showModal();
-    function click(evt)
+    dialog.addEventListener("click", function()
     {
-        if (evt.target == dialog)
+        const rect = dialog.getBoundingClientRect();
+        if (event.clientY < rect.top || event.clientY > rect.bottom ||
+            event.clientX < rect.left || event.clientX > rect.right)
         {
-            //dialog.close()
+            if (globalobj.block)
+                return;
+            dialog.close();
+            globalobj.prompt = 0;
         }
-        else if (evt.target.id == "page-cancel")
-        {
-            dialog.close()
-            hiderefresh();
-        }
-        else if (evt.target.id == "page-ok")
+        else if (event.target.id == "page-ok")
         {
             var page = document.getElementById('page-value').value;
             galleryobj.set(Number(page)-1);
             let a = document.createElement('a');
             a.href = addressobj.full();
             a.click();
-            hiderefresh();
         }
-    }
+    });
 
-    setTimeout(function()
-    {
-        dialog.addEventListener("click", click);
-    }, 1000)
-
-    hiderefresh();
+    var k = document.getElementById('page-value');
+    k.value = galleryobj.current()+1;
+    k.setSelectionRange(0, 0);
+    dialog.showModal();
+    setTimeout(function() { globalobj.block = 0; }, 40);
 }
 
-function showprompt()
+function showprompt(obj)
 {
-    document.getElementById('prompt-value').value = galleryobj.getcurrent().prompt;
+    globalobj.block = 1;
+    globalobj.prompt = 1;
     const dialog = document.getElementById("prompt-overlay");
-    dialog.showModal();
-    function click(evt)
+    dialog.addEventListener("click", function()
     {
-        if (evt.target == dialog)
+        const rect = dialog.getBoundingClientRect();
+        if (event.clientY < rect.top || event.clientY > rect.bottom ||
+            event.clientX < rect.left || event.clientX > rect.right)
         {
-            //dialog.close()
+            if (globalobj.block)
+                return;
+            dialog.close();
+            globalobj.prompt = 0;
         }
-        else if (evt.target.id == "prompt-cancel")
-        {
-            dialog.close()
-            hiderefresh();
-        }
-        else if (evt.target.id == "prompt-ok")
+        else if (event.target.id == "prompt-ok")
         {
             //todo
         }
-    }
+    });
 
-    setTimeout(function()
-    {
-        dialog.addEventListener("click", click);
-    }, 1000)
-
-    hiderefresh();
+    var k = document.getElementById('prompt-value');
+    k.value = obj.prompt?obj.prompt:"";
+    k.setSelectionRange(0, 0);
+    dialog.showModal();
+    setTimeout(function() { globalobj.block = 0; }, 40);
 }
 
 function startslideshow()
