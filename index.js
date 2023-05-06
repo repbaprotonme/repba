@@ -3883,7 +3883,8 @@ else
         leftmenu = k.length == 1;
         if (k.length == 2)
             url.project = Number(k[1]);
-        path = `https://${j}.reportbase5836.workers.dev/?search=${k[0]}&page=${url.page}`;
+        var search = k[0].toLowerCase();
+        path = `https://${j}.reportbase5836.workers.dev/?search=${search}&page=${url.page}`;
         break;
     }
 }
