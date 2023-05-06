@@ -58,7 +58,7 @@ url.slideshow = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 
 url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 0.25;
 url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : 300;
 url.thumb = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : 1;
-url.transparent = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 1;
+url.transparent = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0;
 url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
 url.gallery = url.searchParams.has("b") ? Number(url.searchParams.get("b")) : 500;
 url.autotime = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 0;
@@ -5305,10 +5305,10 @@ function menushow(context)
     var l = Math.floor((window.innerWidth-w)/2);
     context.show(l, 0, w, window.innerHeight);
     context.refresh();
+    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
     function f()
     {
-        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         context.refresh();
     }
 
@@ -5332,6 +5332,17 @@ function menutoggle(context)
     context.show(l, 0, w, context.enabled?window.innerHeight:0);
     context.refresh();
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+
+    function f()
+    {
+        context.refresh();
+    }
+
+    setTimeout(function() { f(); }, 100);
+    setTimeout(function() { f(); }, 500);
+    setTimeout(function() { f(); }, 1000);
+    setTimeout(function() { f(); }, 1500);
+    setTimeout(function() { f(); }, 2000);
 }
 
 var ClosePanel = function (size)
