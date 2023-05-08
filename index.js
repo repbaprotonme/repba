@@ -3602,14 +3602,14 @@ var menulst =
         else
         {
             var e = _8cnvctx.textscrollobj.berp();
-            var a = new Col([20,0,20],
+            var a = new Col([5,0,5],
             [
                 0,
                 new MultiText(e),
                 0,
             ]);
 
-            a.draw(context, rect, user.lst, 0);
+            a.draw(context, new rectangle(40,-40,rect.width-80,rect.height+80), user.lst, 0);
         }
 
         context.restore();
