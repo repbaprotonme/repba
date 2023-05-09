@@ -56,8 +56,8 @@ function numberRange (start, end) {return new Array(end - start).fill().map((d, 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.slideshow = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 0;
-url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 0.2;
-url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : 500;
+url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 0.25;
+url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : 250;
 url.thumb = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : 1;
 url.transparent = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0;
 url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
@@ -233,7 +233,6 @@ function drawslices()
                 {
                     var j = context.autodirect*(TIMEOBJ/1000)
                     context.timeobj.rotate(j*context.slidestop);
-                    //context.timeobj.rotate(context.autodirect*context.slidestop);
                 }
                 else
                 {
@@ -1470,20 +1469,22 @@ CanvasRenderingContext2D.prototype.hide = function ()
     this.enabled = 0;
 };
 
-CanvasRenderingContext2D.prototype.tab = function (k=1)
+CanvasRenderingContext2D.prototype.tab = function (hide=1)
 {
     var context = this;
-    context.hidebuttons = 1;
-    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-    clearTimeout(context.timehidebuttons);
-    context.timehidebuttons = setTimeout(function()
+    if (hide)
     {
-        context.hidebuttons = 0;
+        context.hidebuttons = 1;
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-    }, 2000);
+        clearTimeout(context.timehidebuttons);
+        context.timehidebuttons = setTimeout(function()
+        {
+            context.hidebuttons = 0;
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        }, 2000);
+    }
 
     context.slidestop += url.slidestop;
-    context.slidestop = Math.clamp(url.slidestop,url.slidestop*4,context.slidestop);
     context.slidestop = (1500/context.virtualwidth)*context.slidestop;
     context.slidereduce = context.slidestop/url.slidereduce;
     clearInterval(context.timemain);
