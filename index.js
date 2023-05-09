@@ -4983,7 +4983,18 @@ var headlst =
 	{
         this.pan = function (context, rect, x, y, type)
         {
-            if (type == "panleft" || type == "panright")
+            if (_4cnvctx.hidebuttons)
+            {
+               _8cnvctx.hidebuttons = 1;
+                clearTimeout(context.timemainw);
+                context.timemainw = setTimeout(function()
+                {
+                    _8cnvctx.hidebuttons = 0;
+                    _8cnvctx.refresh();
+                }, 1000);
+                panlst[2].pan(_4cnvctx, rect, x, y, type);
+            }
+            else if (type == "panleft" || type == "panright")
             {
                 var k = panhorz(context.scrollobj, rect.width-x);
                 if (k == -1)
@@ -4992,24 +5003,33 @@ var headlst =
                     return;
                 context.scrollobj.set(k);
             }
-            else
-            {
-                panlst[2].pan(_4cnvctx, rect, x, y, type);
-            }
 
-            panlst[2].pan(_4cnvctx, rect, x, y, type);
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
 
         this.panend = function (context, rect, x, y)
         {
             delete context.scrollobj.offset;
-            panlst[2].panend(_4cnvctx, rect, x, y);
+            if ( _4cnvctx.hidebuttons)
+                panlst[2].panend(_4cnvctx, rect, x, y);
         }
 
-        this.panstart = function (context, rect, x, y) { panlst[2].panstart(_4cnvctx, rect, x, y); }
-        this.swipeleftright = function (context, rect, x, y, evt) { swipelst[2].swipeleftright(_4cnvctx, rect, x, y, evt); }
-        this.swipeupdown = function (context, rect, x, y, evt) { swipelst[2].swipeupdown(_4cnvctx, rect, x, y, evt); }
+        this.panstart = function (context, rect, x, y)
+        {
+            if ( _4cnvctx.hidebuttons)
+                panlst[2].panstart(_4cnvctx, rect, x, y);
+        }
+
+        this.swipeleftright = function (context, rect, x, y, evt)
+        {
+            if ( _4cnvctx.hidebuttons)
+                swipelst[2].swipeleftright(_4cnvctx, rect, x, y, evt);
+        }
+        this.swipeupdown = function (context, rect, x, y, evt)
+        {
+            if ( _4cnvctx.hidebuttons)
+                swipelst[2].swipeupdown(_4cnvctx, rect, x, y, evt);
+        }
     	this.press = function (context, rect, x, y) {headlst[0].press(_4cnvctx, rect, x, y)}
 
     	this.tap = function (context, rect, x, y)
