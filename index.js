@@ -1886,9 +1886,20 @@ var pinchlst =
         {
             obj.set(f);
         }
-        delete _4cnvctx.thumbcanvas;
-        delete photo.image;
-        contextobj.reset();
+
+        if (pinchobj.current() == 0)
+        {
+            delete _4cnvctx.thumbcanvas;
+            context.refresh();
+        }
+        else if (pinchobj.current() == 1)
+        {
+            contextobj.reset();
+        }
+        else if (pinchobj.current() == 2)
+        {
+            context.refresh();
+        }
     },
     pinchstart: function (context, rect, x, y)
     {
