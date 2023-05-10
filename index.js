@@ -56,8 +56,8 @@ function numberRange (start, end) {return new Array(end - start).fill().map((d, 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.slideshow = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 0;
-url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 0.25;
-url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : 250;
+url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : FIREFOX?0.15:0.75;
+url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : FIREFOX?25:100;
 url.thumb = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : 1;
 url.transparent = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0;
 url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
@@ -1485,6 +1485,7 @@ CanvasRenderingContext2D.prototype.tab = function (hide=1)
     }
 
     context.slidestop += url.slidestop;
+    context.slidestop = Math.clamp(url.slidestop, url.slidestop*3, context.slidestop);
     context.slidestop = (1500/context.virtualwidth)*context.slidestop;
     context.slidereduce = context.slidestop/url.slidereduce;
     clearInterval(context.timemain);
@@ -2609,9 +2610,9 @@ var swipelst =
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
-        context.slideshow = (context.timeobj.length()/context.virtualheight)*1;
+        context.slideshow = (context.timeobj.length()/context.virtualheight);
         context.swipetype = evt.type;
-        context.slidereduce = context.slideshow/256;
+        context.slidereduce = context.slideshow/(FIREFOX?20:100);
         clearInterval(context.timemain);
         context.timemain = setInterval(function () { context.refresh(); }, globalobj.timemain);
         context.refresh();
