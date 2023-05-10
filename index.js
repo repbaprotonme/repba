@@ -55,8 +55,8 @@ function numberRange (start, end) {return new Array(end - start).fill().map((d, 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.slideshow = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 0;
-url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : FIREFOX?0.15:0.75;
-url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : FIREFOX?25:100;
+url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : FIREFOX?0.1:0.5;
+url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : FIREFOX?10:100;
 url.thumb = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : 1;
 url.transparent = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0;
 url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
@@ -633,11 +633,11 @@ var eventlst =
 [
     {name: "_1cnvctx", mouse: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", draw: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 0},
     {name: "_2cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Login"), scroll: new ScrollBarPanel(), buttonheight: 50},
-    {name: "_3cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Sources"), scroll: new DualPanel(), buttonheight: 90},
+    {name: "_3cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Sources"), scroll: new DualPanel(), buttonheight: 90},
     {name: "_4cnvctx", mouse: "BOSS", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", draw: "BOSS", wheel: "BOSS", drop: "GALLERY", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new Empty(), scroll: new DualPanel(), buttonheight: 30},
-    {name: "_5cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Metadata"), scroll: new DualPanel(), buttonheight: 90},
+    {name: "_5cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Metadata"), scroll: new DualPanel(), buttonheight: 90},
     {name: "_6cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Share"), scroll: new ScrollBarPanel(), buttonheight: 50},
-    {name: "_7cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "EMENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Help"), scroll: new DualPanel(), buttonheight: 90},
+    {name: "_7cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Help"), scroll: new DualPanel(), buttonheight: 90},
     {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SEARCH", pan: "MENU", swipe: "SEARCH", draw: "SEARCH", wheel: "MENU", drop: "GALLERY", key: "SEARCH", press: "SEARCH", pinch: "DEFAULT", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 200},
     {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Image Browser"), scroll: new ScrollBarPanel(), buttonheight: 50},
 ];
@@ -2143,6 +2143,7 @@ var panlst =
  	leftright: function (context, rect, x, y, type) { },
 	pan: function (context, rect, x, y, type)
 	{
+        context.hidebuttons = 1;
         if (context.pinching)
             return;
 
@@ -2597,7 +2598,13 @@ var swipelst =
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
-        autotime();
+        context.slideshow = (context.timeobj.length()/context.virtualheight)*(FIREFOX?1:1);
+        context.swipetype = evt.type;
+        context.slidereduce = context.slideshow/(FIREFOX?10:200);
+        clearInterval(context.timemain);
+        context.timemain = setInterval(function () { context.refresh(); }, globalobj.timemain);
+        context.refresh();
+        clearTimeout(context.swipeupdown);
     },
 },
 {
@@ -2609,7 +2616,7 @@ var swipelst =
     {
         context.slideshow = (context.timeobj.length()/context.virtualheight);
         context.swipetype = evt.type;
-        context.slidereduce = context.slideshow/50;
+        context.slidereduce = context.slideshow/200;
         clearInterval(context.timemain);
         context.timemain = setInterval(function () { context.refresh(); }, globalobj.timemain);
         context.refresh();
@@ -3061,7 +3068,10 @@ var taplst =
     name: "SEARCH",
     tap: function (context, rect, x, y)
     {
+        clearInterval(context.timemain);
+        context.timemain = 0;
         var obj = context.scrollobj.getcurrent();
+
         if (context.slide && context.slide.hitest(x,y))
         {
             explore().then(function(files) { dropfiles(files); })
@@ -3405,7 +3415,7 @@ var menulst =
     draw: function (context, rect, user, time){}
 },
 {
-    name: "EMENU",
+    name: "OPTION",
     draw: function (context, rect, user, time)
     {
         context.save();
@@ -3920,6 +3930,7 @@ for (var n = 0; n < contextlst.length; ++n)
     context.timeobj.set(TIMEOBJ/2);
     context.scrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
     context.imagescrollobj = new circular_array("IMAGESCROLL", Math.floor(window.innerHeight/2));
+    context.imagescrollobj.set(context.imagescrollobj.length()/5);
     context.textscrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
 }
 
@@ -5132,25 +5143,7 @@ var headlst =
         this.swipeleftright = function (context, rect, x, y, evt) { swipelst[2].swipeleftright(_4cnvctx, rect, x, y, evt); }
         this.swipeupdown = function (context, rect, x, y, evt) { swipelst[2].swipeupdown(_4cnvctx, rect, x, y, evt); }
     	this.press = function (context, rect, x, y) {headlst[0].press(_4cnvctx, rect, x, y)}
-
-    	this.tap = function (context, rect, x, y)
-		{
-            if ( _4cnvctx.hidebuttons)
-            {
-                clearInterval(_4cnvctx.timemain);
-                 _4cnvctx.hidebuttons = 0;
-                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-                return;
-            }
-
-            clearInterval(_4cnvctx.timemain);
-            clearInterval(globalobj.slideshow);
-            globalobj.slideshow = 0;
-            headobj.set(headobj.current() == 3?1:3);
-            headham.panel = headobj.getcurrent();
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            context.refresh();
-		};
+        this.tap = function (context, rect, x, y){headlst[3].press(_4cnvctx, rect, x, y)}
 
 		this.draw = function (context, rect, user, time)
 		{
