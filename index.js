@@ -55,8 +55,8 @@ function numberRange (start, end) {return new Array(end - start).fill().map((d, 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.slideshow = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 0;
-url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : FIREFOX?0.1:0.5;
-url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : FIREFOX?10:100;
+url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 3;
+url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : FIREFOX?25:50;
 url.thumb = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : 1;
 url.transparent = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0;
 url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
@@ -2542,7 +2542,7 @@ var presslst =
 },
 ];
 
-function moveupdown(context, up)
+function moveupdown(context, up, left)
 {
     context.hidebuttons = 1;
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -2564,8 +2564,8 @@ function moveupdown(context, up)
         else
         {
             var k = rowobj.length()/channelobj.length()
-            rowobj.add(-1);//-k);
-            contextobj.reset();
+            rowobj.add(-k);
+            contextobj.reset(left);
         }
     }
     else
@@ -2578,8 +2578,8 @@ function moveupdown(context, up)
         else
         {
             var k = rowobj.length()/channelobj.length()
-            rowobj.add(1);//k);
-            contextobj.reset();
+            rowobj.add(k);
+            contextobj.reset(left);
         }
     }
 }
@@ -2598,9 +2598,9 @@ var swipelst =
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
-        context.slideshow = (context.timeobj.length()/context.virtualheight)*(FIREFOX?1:1);
+        context.slideshow = (context.timeobj.length()/context.virtualheight)*3;
         context.swipetype = evt.type;
-        context.slidereduce = context.slideshow/(FIREFOX?10:200);
+        context.slidereduce = context.slideshow/(FIREFOX?50:50);
         clearInterval(context.timemain);
         context.timemain = setInterval(function () { context.refresh(); }, globalobj.timemain);
         context.refresh();
@@ -2643,7 +2643,7 @@ var swipelst =
         clearTimeout(context.swipeupdowntime)
         context.swipeupdowntime = setTimeout(function()
         {
-            moveupdown(context, evt.type == "swipedown");
+            moveupdown(context, evt.type == "swipedown", 1);
         }, SWIPETIME);
     },
 },
@@ -2871,7 +2871,7 @@ var keylst =
             clearTimeout(context.moveupdowntime);
             context.moveupdowntime = setTimeout(function()
             {
-                moveupdown(context, 1);
+                moveupdown(context, 1, 0);
             },10);
         }
         else if (key == "arrowdown" || key == "j" )
@@ -2879,7 +2879,7 @@ var keylst =
             clearTimeout(context.moveupdowntime);
             context.moveupdowntime = setTimeout(function()
             {
-                moveupdown(context, 0);
+                moveupdown(context, 0, 0);
             },10);
         }
         else if (key == "-" || key == "{")
@@ -3649,7 +3649,7 @@ const SLICERADIUS = 130000;
 for (let n = 499; n >= 1; n=n-1)
     slicelst.push({slices: n*3, delay: SLICERADIUS/n});
 
-function resetcanvas()
+function resetcanvas(leftright=1)
 {
     if (!photo.image ||
         !photo.image.complete ||
@@ -3711,14 +3711,13 @@ function resetcanvas()
     if (!context.isthumbrect &&
         !context.panning &&
         !context.pinching &&
-        !galleryobj.pose)
+        !galleryobj.pose &&
+        leftright)
     {
         _4cnvctx.tab(0);
     }
 
-    f = 18;
-
-    var slicewidth = context.virtualwidth/f;
+    var slicewidth = 60;
 
     var j = 0;
     for (; j < slicelst.length; ++j)
@@ -3937,14 +3936,14 @@ for (var n = 0; n < contextlst.length; ++n)
 _8cnvctx.scrollobj = new circular_array("SCROLL", [_8cnvctx.imagescrollobj,_8cnvctx.textscrollobj]);
 
 var contextobj = new circular_array("CTX", contextlst);
-contextobj.reset = function ()
+contextobj.reset = function (leftright)
 {
     var context = _4cnvctx;
     if (photo.image &&
         photo.image.complete &&
         photo.image.naturalHeight)
     {
-        resetcanvas(context);
+        resetcanvas(leftright);
     }
     else
     {
@@ -4659,6 +4658,9 @@ function resize()
 
 function escape()
 {
+    headobj.set(1);
+    headham.panel = headobj.getcurrent();
+    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     clearInterval(globalobj.slideshow);
     globalobj.slideshow = 0;
     _4cnvctx.panhide  = 0
@@ -5653,7 +5655,7 @@ function showsearch(repos)
         else if (event.target.id == "search-ok")
         {
             var search = document.getElementById('search-value').value;
-            search = search.clean();
+            search = search.clean().toLowerCase();
             localStorage.setItem("repos", globalobj.saverepos);
             localStorage.setItem("search", search);
             var s = `${url.origin}?${globalobj.saverepos}=${search}&page=${url.page}`;
@@ -5671,7 +5673,6 @@ function showsearch(repos)
     globalobj.saverepos = repos?repos:lrepos;
     let kurl = new URL(addressobj.full());
     var j = globalobj.saverepos;
-    document.getElementById('search-label').innerHTML = j.proper();
     document.getElementById('search-value').value = search;
     dialog.showModal();
     setTimeout(function() { globalobj.block = 0; }, 40);
@@ -5744,7 +5745,6 @@ function showprompt(obj)
         }
     });
 
-    document.getElementById('prompt-label').innerHTML = "Dalle";
     var k = document.getElementById('prompt-value');
     k.value = obj.prompt?obj.prompt:"";
     k.setSelectionRange(0, 0);
@@ -5778,7 +5778,10 @@ if (url.protocol == "https:")
     .then(function(client)
     {
         if (client)
+        {
             globalobj.user = client.user;
+            authClient.update_user_metadata(globalobj.user.userId, 0, 0, 0, {s:100});
+        }
     })
 }
 
