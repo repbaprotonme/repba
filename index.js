@@ -5861,20 +5861,22 @@ if (url.protocol == "https:")
         if (client)
             globalobj.user = client.user;
 
-        fetch("https://auth.reportbase.com/api/v1/refresh_token")
-        .then(function (response)
+        const options =
         {
-          return response.json()
-        })
-        .then(function (obj)
-        {
-            console.log(obj);
-        })
-        .catch((error) =>
-        {
-            console.log("Error:", error);
-        });
+          method: 'GET',
+          headers:
+          {
+              'Authorization': `Bearer ${client.accessToken}`
+          }
+        };
 
+        fetch('https://propelauth.reportbase5836.workers.dev', options)
+          .then(response => response.json())
+          .then(function(obj)
+              {
+                    console.log(obj);
+              })
+          .catch(err => console.error(err));
     })
 }
 
