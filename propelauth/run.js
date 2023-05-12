@@ -1,0 +1,19 @@
+//https://auth.reportbase.com/api/v1/refresh_token
+var accesstoken="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2ODM5Mjk4OTYsImV4cCI6MTY4MzkzMTY5NiwidXNlcl9pZCI6Ijg0Zjg5ODg1LTE4MGUtNDc5ZS04OTZkLWFmZTAwMzgzODJjZCIsImlzcyI6Imh0dHBzOi8vYXV0aC5yZXBvcnRiYXNlLmNvbSIsImVtYWlsIjoicmVwb3J0YmFzZUBnbWFpbC5jb20iLCJmaXJzdF9uYW1lIjoiVG9tIiwibGFzdF9uYW1lIjoiQnJpbmttYW4iLCJ1c2VybmFtZSI6InJlcG9ydGJhc2UiLCJvcmdfaWRfdG9fb3JnX21lbWJlcl9pbmZvIjp7IjA1NDU4ZWI1LTJmNWYtNGU4NS05YjkwLWJjOGVhM2MyYmMzNCI6eyJvcmdfaWQiOiIwNTQ1OGViNS0yZjVmLTRlODUtOWI5MC1iYzhlYTNjMmJjMzQiLCJvcmdfbmFtZSI6InJlcG9ydGJhc2UiLCJ1cmxfc2FmZV9vcmdfbmFtZSI6InJlcG9ydGJhc2UiLCJvcmdfbWV0YWRhdGEiOnt9LCJ1c2VyX3JvbGUiOiJPd25lciIsImluaGVyaXRlZF91c2VyX3JvbGVzX3BsdXNfY3VycmVudF9yb2xlIjpbIk93bmVyIiwiQWRtaW4iLCJNZW1iZXIiXSwidXNlcl9wZXJtaXNzaW9ucyI6WyJwcm9wZWxhdXRoOjpjYW5faW52aXRlIiwicHJvcGVsYXV0aDo6Y2FuX2NoYW5nZV9yb2xlcyIsInByb3BlbGF1dGg6OmNhbl9yZW1vdmVfdXNlcnMiXX19fQ.APcafEhgarK1dqobkRLbZ8g7JDZtZJ5iWQEmskVGYeAMO15il6OBa_3-UXT9Ie4mdhC6wOMOB7uWDgvc1ZAIueQBxKY9Nito753QVgpzi5taHlie5QXnOjYaDIAb8BcngxhdSwQL2v9BSiomchmCz7Pqk0C2wYFOCvoCuh4kWanxBz5NP0_YUKgvTcd_LKu7bKdJ6Hv5YRsgIdkQ8Ls9I45T6I4prf9-GZY-k5VwS551dYwzdfnbx-HctEV0BjrTWw3urtUmUBTFMFnR08UWu30jyIYazTQYzpCZneoRU9oFT26B8TCiZxTCM1SxCuidARnGWMhV8L3LByy-0CPo6g";
+const options =
+{
+    headers:
+    {
+        'Authorization': `Bearer ${accesstoken}`,
+    }
+};
+
+
+fetch(`https://propelauth.reportbase5836.workers.dev`, options)
+  .then(response => response.json())
+  .then(response => console.log(response))
+  .catch(err => console.error(err));
+
+
+
+
