@@ -5864,7 +5864,7 @@ if (url.protocol == "https:")
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${client.accessToken}`
             };
-        fetch(`https://propelauth.reportbase5836.workers.dev`, { headers })
+        fetch(`https://propelauth.reportbase5836.workers.dev`);//, { headers })
           .then(response => response.json())
           .then(function(obj)
               {
