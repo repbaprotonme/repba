@@ -5876,7 +5876,10 @@ if (url.protocol == "https:")
               {
                     console.log(obj);
               })
-          .catch(err => console.error(err));
+          .catch(function(err)
+              {
+                    console.log(err);
+              });
     })
 }
 
