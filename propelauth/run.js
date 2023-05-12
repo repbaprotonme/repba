@@ -9,7 +9,7 @@ const options =
 };
 
 
-fetch(`https://propelauth.reportbase5836.workers.dev`, options)
+fetch(`https://propelauth.reportbase5836.workers.dev`)//, options)
   .then(response => response.json())
   .then(response => console.log(response))
   .catch(err => console.error(err));
