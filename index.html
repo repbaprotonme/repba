@@ -27,10 +27,8 @@ A:hover { COLOR: blue; TEXT-DECORATION: none; font-weight: none; cursor: pointer
 
 dialog
 {
-  width:80%; 
+  width: 80%; 
   max-width: 640px; 
-  border-width: 4px 1.25em; 
-  border-color: black; 
   position: absolute; 
   left: 50%; 
   top: 50%; 
@@ -39,6 +37,8 @@ dialog
   padding: 0px 20px 20px 20px; 
   border-radius: 5px;
   max-height: 80vh;
+  border-width: 0px; 
+  border-color: white; 
   overflow-y: scroll;
 }
 
@@ -61,7 +61,7 @@ textarea
 {
   height: 100%;
   resize: none;
-  background-color: #ddd; 
+  background-color: #fff; 
   border-style: inset; 
   border-radius: 0px;
   border-width: 0px;
@@ -85,7 +85,7 @@ button
 
 .earth
 {
-  padding: 20px 0px 20px 0px; 
+  padding: 0px 0px 0px 0px; 
   display: flex; 
   flex-direction: column; 
   width: 100%; 
@@ -133,7 +133,6 @@ button
 }
 </style>
 
-<link rel="stylesheet" href="@sweetalert2/themes/dark/dark.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 <link href="https://fonts.googleapis.com/css?family=Archivo+Black" rel="stylesheet">
 <canvas id='_4' style='z-index: 1' width='0' height='0'></canvas>

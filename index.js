@@ -13,7 +13,7 @@ const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*2;
 const SWIPETIME = 200;
 const MENUBARWIDTH = 12;
-const MENUPANWIDTH = 40;
+const MENUPANWIDTH = 25;
 const THUMBORDER = 5;
 const THUMBSELECT = 7;
 const JULIETIME = 100;
@@ -5579,7 +5579,6 @@ galleryobj.init = function(obj)
     });
 
     contextobj.reset();
-
 }
 
 fetch(path)
@@ -5655,7 +5654,6 @@ function showsearch(repos)
         else if (event.target.id == "search-ok")
         {
             var search = document.getElementById('search-value').value;
-            search = search.clean().toLowerCase();
             localStorage.setItem("repos", globalobj.saverepos);
             localStorage.setItem("search", search);
             var s = `${url.origin}?${globalobj.saverepos}=${search}&page=${url.page}`;
@@ -5671,8 +5669,8 @@ function showsearch(repos)
         lrepos = "pexels";
     globalobj.search = 1;
     globalobj.saverepos = repos?repos:lrepos;
+    globalobj.saverepos = globalobj.saverepos.toLowerCase();
     let kurl = new URL(addressobj.full());
-    var j = globalobj.saverepos;
     document.getElementById('search-value').value = search;
     dialog.showModal();
     setTimeout(function() { globalobj.block = 0; }, 40);
@@ -5863,14 +5861,13 @@ if (url.protocol == "https:")
 
         const options =
         {
-          method: 'GET',
-          headers:
-          {
-              'Authorization': `Bearer ${client.accessToken}`
-          }
+            headers:
+            {
+                'Authorization': `Bearer ${client.accessToken}`,
+            }
         };
 
-        fetch('https://propelauth.reportbase5836.workers.dev', options)
+        fetch(`https://propelauth.reportbase5836.workers.dev`, options)
           .then(response => response.json())
           .then(function(obj)
               {
@@ -5882,4 +5879,5 @@ if (url.protocol == "https:")
               });
     })
 }
+
 
