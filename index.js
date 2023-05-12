@@ -5771,20 +5771,6 @@ function startslideshow()
     }, url.slideshow);
 }
 
-if (url.protocol == "https:")
-{
-    authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
-    authClient.getAuthenticationInfoOrNull(false)
-    .then(function(client)
-    {
-        if (client)
-        {
-            globalobj.user = client.user;
-            authClient.update_user_metadata(globalobj.user.userId, 0, 0, 0, {s:100});
-        }
-    })
-}
-
 function galleryshow()
 {
     if (!url.autotime)
@@ -5865,3 +5851,30 @@ function autotime()
     }
 
 }
+
+if (url.protocol == "https:")
+{
+    authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+    authClient.getAuthenticationInfoOrNull(false)
+    .then(function(client)
+    {
+        if (client)
+            globalobj.user = client.user;
+
+        fetch("https://auth.reportbase.com/api/v1/refresh_token")
+        .then(function (response)
+        {
+          return response.json()
+        })
+        .then(function (obj)
+        {
+            console.log(obj);
+        })
+        .catch((error) =>
+        {
+            console.log("Error:", error);
+        });
+
+    })
+}
+
