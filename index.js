@@ -5859,15 +5859,8 @@ if (url.protocol == "https:")
         if (client)
             globalobj.user = client.user;
 
-        const options =
-        {
-            headers:
-            {
-                'Authorization': `Bearer ${client.accessToken}`,
-            }
-        };
-
-        fetch(`https://propelauth.reportbase5836.workers.dev`, options)
+        const headers = { 'Authorization': `Bearer ${client.accessToken}`};
+        fetch(`https://propelauth.reportbase5836.workers.dev`, { headers })
           .then(response => response.json())
           .then(function(obj)
               {
