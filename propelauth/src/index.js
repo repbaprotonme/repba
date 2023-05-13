@@ -38,7 +38,6 @@ qpBU/MhM9CXMwH+i7Nrcszpm+uAyIBfwHM92kM25qUZGY3up7YN70jJLTL/COyVw
         let user = await validateAuthHeaderAndGetUser(`Bearer ${body.accessToken}`)
         var success = await updateUserMetadata(user.userId, {c:3});
         var meta = await fetchUserMetadataByUserId(user.userId)
-        meta.success = success;
 
         let headers = new Headers(
         {

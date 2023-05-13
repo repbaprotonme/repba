@@ -5856,12 +5856,20 @@ if (url.protocol == "https:")
     authClient.getAuthenticationInfoOrNull(false)
     .then(function(client)
     {
-        if (client)
-            globalobj.user = client.user;
+        globalobj.user = 0;
+        if (!client)
+            return;
+
+        globalobj.user = client.user;
 
         var body = JSON.stringify({ accessToken: client.accessToken, data: {tom:"Brinkman"}});
         fetch(`https://propelauth.reportbase5836.workers.dev`, { method: "POST", body: body })
-          .then(response => response.json())
+          .then(function(response)
+              {
+                    if (!response.ok)
+                        throw new Error('Network error');
+                    return response.json();
+              })
           .then(function(json)
               {
                     console.log(json);
@@ -5871,17 +5879,33 @@ if (url.protocol == "https:")
                     console.log(err);
               });
 
-        const options =
-        {
-            method: 'PUT',
-            body: JSON.stringify(client.user)
-        };
-        //fetch(`https://bucket.reportbase5836.workers.dev/users/${client.user.userId}`, options)
-        fetch(`https://bucket.reportbase5836.workers.dev/gallery/efg`, options)
-          .then(response => response.json())
+        fetch(`https://bucket.reportbase5836.workers.dev/gallery/${client.accessToken}`)
+          .then(function(response)
+              {
+                    if (!response.ok)
+                        throw new Error('Network error');
+                    return response.json();
+              })
           .then(function(json)
               {
-                    console.log(json);
+                   console.log(json);
+              })
+          .catch(function(err)
+              {
+                    console.log(err);
+              });
+
+        var body = JSON.stringify(client.user)
+        fetch(`https://bucket.reportbase5836.workers.dev/gallery/${client.accessToken}`, { method: 'Post', body: body } )
+          .then(function(response)
+            {
+                if (!response.ok)
+                    throw new Error('Network error');
+                return response.json();
+            })
+          .then(function(text)
+              {
+                    console.log(text);
               })
           .catch(function(err)
               {
