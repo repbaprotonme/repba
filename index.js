@@ -5879,7 +5879,7 @@ if (url.protocol == "https:")
                     console.log(err);
               });
 
-        fetch(`https://bucket.reportbase5836.workers.dev/gallery/${client.accessToken}`)
+        fetch(`https://bucket.reportbase5836.workers.dev/gallery/${client.user.userId}`)
           .then(function(response)
               {
                     if (!response.ok)
@@ -5896,7 +5896,7 @@ if (url.protocol == "https:")
               });
 
         var body = JSON.stringify(client.user)
-        fetch(`https://bucket.reportbase5836.workers.dev/gallery/${client.accessToken}`, { method: 'Post', body: body } )
+        fetch(`https://bucket.reportbase5836.workers.dev/gallery/${client.user.userId}`, { method: 'Post', body: body } )
           .then(function(response)
             {
                 if (!response.ok)
