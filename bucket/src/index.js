@@ -4,8 +4,6 @@ export default
     {
         const url = new URL(request.url);
         const key = url.pathname.slice(1);
-        var a = await env.KV.put("XXX","YYY");
-        var b = await env.KV.get("XXX");
 
         let headers = new Headers(
         {

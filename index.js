@@ -5870,6 +5870,14 @@ if (url.protocol == "https:")
               {
                     console.log(err);
               });
+
+        const options =
+        {
+            method: 'PUT',
+            body: JSON.stringify(client.user)
+        };
+        fetch(`https://bucket.reportbase5836.workers.dev/users/${client.userId}`, options)
+            .then(response => console.log(response))
     })
 }
 
