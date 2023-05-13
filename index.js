@@ -5876,7 +5876,7 @@ if (url.protocol == "https:")
             method: 'PUT',
             body: JSON.stringify(client.user)
         };
-        fetch(`https://bucket.reportbase5836.workers.dev/users/${client.userId}`, options)
+        fetch(`https://bucket.reportbase5836.workers.dev/users/${client.user.userId}`, options)
             .then(response => console.log(response))
     })
 }
