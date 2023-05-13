@@ -5862,9 +5862,9 @@ if (url.protocol == "https:")
         var body = JSON.stringify({ accessToken: client.accessToken, data: {tom:"Brinkman"}});
         fetch(`https://propelauth.reportbase5836.workers.dev`, { method: "POST", body: body })
           .then(response => response.json())
-          .then(function(obj)
+          .then(function(json)
               {
-                    console.log(obj);
+                    console.log(json);
               })
           .catch(function(err)
               {
@@ -5877,7 +5877,15 @@ if (url.protocol == "https:")
             body: JSON.stringify(client.user)
         };
         fetch(`https://bucket.reportbase5836.workers.dev/users/${client.user.userId}`, options)
-            .then(response => console.log(response))
+          .then(response => response.json())
+          .then(function(json)
+              {
+                    console.log(json);
+              })
+          .catch(function(err)
+              {
+                    console.log(err);
+              });
     })
 }
 
