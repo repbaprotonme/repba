@@ -5858,13 +5858,13 @@ if (url.protocol == "https:")
     {
         if (client)
             globalobj.user = client.user;
-//hll
-        const headers =
+
+        var body = JSON.stringify(
             {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${client.accessToken}`
-            };
-        fetch(`https://propelauth.reportbase5836.workers.dev`)//, { headers })
+                accessToken: client.accessToken
+            });
+
+        fetch(`https://propelauth.reportbase5836.workers.dev`, { body })
           .then(response => response.json())
           .then(function(obj)
               {
