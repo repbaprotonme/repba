@@ -5864,11 +5864,6 @@ if (url.protocol == "https:")
         fetch(`https://propelauth.reportbase5836.workers.dev`,
             {
                 method: "POST",
-                headers:
-                {
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-
                 body: body
             })
           .then(response => response.json())

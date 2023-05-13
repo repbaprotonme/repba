@@ -5,11 +5,6 @@ var body = JSON.stringify( { accessToken: accesstoken });
 fetch(`https://propelauth.reportbase5836.workers.dev`,
     {
         method: "POST",
-        headers:
-        {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-
         body: body
     })
   .then(response => response.text())
