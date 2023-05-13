@@ -5859,7 +5859,7 @@ if (url.protocol == "https:")
         if (client)
             globalobj.user = client.user;
 
-        var body = JSON.stringify( { accessToken: client.accessToken });
+        var body = JSON.stringify({ accessToken: client.accessToken, data: {tom:"Brinkman"}});
 
         fetch(`https://propelauth.reportbase5836.workers.dev`,
             {

@@ -33,17 +33,13 @@ qpBU/MhM9CXMwH+i7Nrcszpm+uAyIBfwHM92kM25qUZGY3up7YN70jJLTL/COyVw
       }
     }
 
-    var body = await getbody(request);
+        var body = await getbody(request);
         body = JSON.parse(body);
         let user = await validateAuthHeaderAndGetUser(`Bearer ${body.accessToken}`)
-        await updateUserMetadata(user.userId,
-        {
-            metadata:
-            {
-                "user_testing_group": "A",
-            }
-        })
-        const meta = await fetchUserMetadataByUserId(user.userId)
+        var success = await updateUserMetadata(user.userId, {c:3});
+        var meta = await fetchUserMetadataByUserId(user.userId)
+        meta.success = success;
+
         let headers = new Headers(
         {
             'content-type': 'application/json;charset=UTF-8',
