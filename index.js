@@ -5859,12 +5859,18 @@ if (url.protocol == "https:")
         if (client)
             globalobj.user = client.user;
 
-        var body = JSON.stringify(
-            {
-                accessToken: client.accessToken
-            });
+        var body = JSON.stringify( { accessToken: client.accessToken });
 
-        fetch(`https://propelauth.reportbase5836.workers.dev`, { body })
+        fetch(`https://propelauth.reportbase5836.workers.dev`,
+            {
+                method: "POST",
+                headers:
+                {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+
+                body: body
+            })
           .then(response => response.json())
           .then(function(obj)
               {
@@ -5874,6 +5880,7 @@ if (url.protocol == "https:")
               {
                     console.log(err);
               });
+
     })
 }
 

@@ -18,10 +18,24 @@ qpBU/MhM9CXMwH+i7Nrcszpm+uAyIBfwHM92kM25qUZGY3up7YN70jJLTL/COyVw
 1QIDAQAB
 -----END PUBLIC KEY-----`
         });
+    async function getbody(response)
+        {
+      const { headers } = response;
+      const contentType = headers.get("content-type") || "";
+      if (contentType.includes("application/json")) {
+        return JSON.stringify(await response.json());
+      } else if (contentType.includes("application/text")) {
+        return response.text();
+      } else if (contentType.includes("text/html")) {
+        return response.text();
+      } else {
+        return response.text();
+      }
+    }
 
-//        var authorization = request.headers.get("authorization");
-        var authorization = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2ODM5MzI1NzQsImV4cCI6MTY4MzkzNDM3NCwidXNlcl9pZCI6Ijg0Zjg5ODg1LTE4MGUtNDc5ZS04OTZkLWFmZTAwMzgzODJjZCIsImlzcyI6Imh0dHBzOi8vYXV0aC5yZXBvcnRiYXNlLmNvbSIsImVtYWlsIjoicmVwb3J0YmFzZUBnbWFpbC5jb20iLCJmaXJzdF9uYW1lIjoiVG9tIiwibGFzdF9uYW1lIjoiQnJpbmttYW4iLCJ1c2VybmFtZSI6InJlcG9ydGJhc2UiLCJvcmdfaWRfdG9fb3JnX21lbWJlcl9pbmZvIjp7IjA1NDU4ZWI1LTJmNWYtNGU4NS05YjkwLWJjOGVhM2MyYmMzNCI6eyJvcmdfaWQiOiIwNTQ1OGViNS0yZjVmLTRlODUtOWI5MC1iYzhlYTNjMmJjMzQiLCJvcmdfbmFtZSI6InJlcG9ydGJhc2UiLCJ1cmxfc2FmZV9vcmdfbmFtZSI6InJlcG9ydGJhc2UiLCJvcmdfbWV0YWRhdGEiOnt9LCJ1c2VyX3JvbGUiOiJPd25lciIsImluaGVyaXRlZF91c2VyX3JvbGVzX3BsdXNfY3VycmVudF9yb2xlIjpbIk93bmVyIiwiQWRtaW4iLCJNZW1iZXIiXSwidXNlcl9wZXJtaXNzaW9ucyI6WyJwcm9wZWxhdXRoOjpjYW5faW52aXRlIiwicHJvcGVsYXV0aDo6Y2FuX2NoYW5nZV9yb2xlcyIsInByb3BlbGF1dGg6OmNhbl9yZW1vdmVfdXNlcnMiXX19fQ.r8QFaYre-u-J5p55rq2XEYs9BVVDOVjGTCUahe8B6YSBan7gXdK2Gqobyp5bx9MK_nMqPABcxvG_mU2GcZGVzg5Bk6OiTlxLk4E3CiccToQADEypaFHqqBJiNEIQO82f42XsXdaq4muKydNaVoPsW0svy8g6tBykqu5x89p6yCtubmaFVZjERG1Ei5vXCjG2606LaIGpngxD2Bot43toHNu9na5S9HS9GAajuR_BoynS0MepP3xd23O6_5YazYN8VGGrs4kityZE5eHfbcG0Yds5B4TTQXyOpFvPAkcRBEDTYUcPC_Z4_givkYsO-Ro3kMxc4MnNwhbN_3opKCP-MA"
-        let user = await validateAuthHeaderAndGetUser(authorization)
+    var body = await getbody(request);
+        body = JSON.parse(body);
+        let user = await validateAuthHeaderAndGetUser(`Bearer ${body.accessToken}`)
         await updateUserMetadata(user.userId,
         {
             metadata:
@@ -29,13 +43,13 @@ qpBU/MhM9CXMwH+i7Nrcszpm+uAyIBfwHM92kM25qUZGY3up7YN70jJLTL/COyVw
                 "user_testing_group": "A",
             }
         })
-
         const meta = await fetchUserMetadataByUserId(user.userId)
         let headers = new Headers(
         {
             'content-type': 'application/json;charset=UTF-8',
             'Access-Control-Allow-Origin': '*',
 	    });
+
         return new Response(JSON.stringify(meta), { headers });
 	},
 };
