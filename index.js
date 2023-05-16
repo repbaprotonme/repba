@@ -54,9 +54,8 @@ function numberRange (start, end) {return new Array(end - start).fill().map((d, 
 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
-url.slideshow = url.searchParams.has("s") ? Number(url.searchParams.get("s")) : 0;
-url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 10;
-url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : 25;
+url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 3;
+url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : 35;
 url.thumb = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : 1;
 url.transparent = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0;
 url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
@@ -319,12 +318,7 @@ function drawslices()
             delete context.selectrect;
             delete context.thumbrect;
 
-            if (context.setcolumncomplete)
-            {
-                thumbobj.getcurrent().draw(context, rect, 0, 0);
-            }
-
-            context.setcolumncomplete = 1;
+            thumbobj.getcurrent().draw(context, rect, 0, 0);
         }
     }
 
@@ -378,7 +372,7 @@ function drawslices()
             let y = Math.berp(-1, 1, bos) * context.virtualheight;
             y -= e;
             var x = w/2;
-            var j = context.buttonheight*2;
+            var j = context.buttonheight*3;
             if (y < -j || y >= window.innerHeight+j)
                 continue;
             context.visibles.push({slice, x, y, m});
@@ -462,7 +456,7 @@ var BarPanel = function (header)
     this.draw = function (context, rect, user, time)
     {
         context.save();
-        context.search = new rectangle();
+        context.footer = new rectangle();
         context.header = new rectangle();
         var a = new Row([80,0,80],
         [
@@ -474,21 +468,28 @@ var BarPanel = function (header)
                     new Rectangle(context.header),
                     0,
                 ]),
+
+                new ColA([MARGINBAR,60,0,50,50,50,0,60,MARGINBAR],
+                [
+                    0,
+                   (window.innerWidth > MENUMAX || !ismenu()) ? 0 : new PagePanel(),
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                   (window.innerWidth > MENUMAX || !ismenu()) ? 0 : new OptionPanel(),
+                    0,
+                ]),
+
                 new ColA([ 0,50,50,50,0 ],
                 [
                     0,
-                    new ShiftPanel(new SourcePanel(),-10,0),
-                    new Layer(
-                    [
-                        new Rectangle(context.search),
-                        new SearchPanel(),
-                    ]),
-                    new ShiftPanel(new LoginPanel(),10,0),
                     0,
                 ]),
-            ]),
+           ]),
            0,
-            0,
+           0,
         ]);
 
         a.draw(context, rect, header, 0);
@@ -501,7 +502,6 @@ var SearchBar = function ()
     this.draw = function (context, rect, user, time)
     {
         context.save();
-        context.search = new rectangle();
         context.header = new rectangle();
         context.footer = new rectangle();
         context.slide = new rectangle();
@@ -516,35 +516,35 @@ var SearchBar = function ()
                     new Rectangle(context.header),
                     0,
                 ]),
-                new ColA([0,50,50,50,0],
+                new ColA([MARGINBAR,60,0,50,50,50,0,60,MARGINBAR],
                 [
                     0,
+                   (window.innerWidth > MENUMAX || !ismenu()) ? 0 : new PagePanel(),
+                    0,
                     new ShiftPanel(new GalleryPanel(),-10,0),
-                    new Layer(
-                    [
-                        new Rectangle(context.search),
-                        new SearchPanel(),
-                    ]),
+                    new HomePanel(),
                     new ShiftPanel(new AutoPanel(),10,0),
+                    0,
+                   (window.innerWidth > MENUMAX || !ismenu()) ? 0 : new OptionPanel(),
                     0,
                 ]),
             ]),
             0,
-            j?0:new ColA([25,0,15, 60, 15,0,25],
+            j?0:new Layer(
             [
-                0,
-                0,//new ShadowPanel(new Text("white", "right", "middle", 0, 0, 1, 0.9),1,1),
-                0,
-
-                new Layer(
+                new Col([20,60,0],
                 [
-                    new Rectangle(context.slide),
-                    new FilesPanel()
+                    0,
+                    new Rectangle(context.footer),
+                    0,
                 ]),
-
-                0,
-                0,//new ShadowPanel(new Text("white", "left", "middle", 0, 0, 1, 0.9),1,1),
-                0,
+                new ColA([0,50,50,0],
+                [
+                    0,
+                    new ShiftPanel(new DropPanel(),-10,0),
+                    new ShiftPanel(new UploadPanel(),10,0),
+                    0,
+                ]),
             ]),
         ]);
 
@@ -949,18 +949,129 @@ var FullPanel = function ()
     }
 };
 
-var FilesPanel = function ()
+var DropPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
         context.save();
-        context.files = new rectangle();
+        context.drop = new rectangle();
+
+        var drop = function ()
+        {
+            this.draw = function (context, rect, user, time)
+            {
+                context.save();
+                var w = rect.width;
+                var h = rect.height;
+                var a = new ArrowPanel(ARROWFILL,180);
+                a.draw(context, rect, user, time);
+                var a = new FillPanel(ARROWFILL);
+                var r = new rectangle(rect.x+rect.width/2-3,rect.y-rect.height/2+1,6,10);
+                a.draw(context, r, user, time);
+                var r = new rectangle(rect.x,rect.y+rect.height+3,rect.width,3);
+                a.draw(context, r, user, time);
+                context.restore();
+            }
+        };
 
         var a = new Layer(
         [
-            new Rectangle(context.files),
-            new Shrink(new CirclePanel(SCROLLNAB, SEARCHFRAME,4),12,12),
-            new Shrink(new CirclePanel("white"),30,30),
+            new Rectangle(context.drop),
+            new Shrink(new CirclePanel(1 ? SCROLLNAB:TRANSPARENT, SEARCHFRAME,4),15,15),
+            new Shrink(new drop(),16,34),
+        ]);
+
+        a.draw(context, rect, user, time);
+        context.restore();
+    }
+};
+
+var UploadPanel = function ()
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.save();
+        context.upload = new rectangle();
+
+        var upload = function ()
+        {
+            this.draw = function (context, rect, user, time)
+            {
+                context.save();
+                var w = rect.width;
+                var h = rect.height;
+                var a = new ArrowPanel(ARROWFILL,0);
+                a.draw(context, rect, user, time);
+                var a = new FillPanel(ARROWFILL);
+                var r = new rectangle(rect.x+rect.width/2-3,rect.y+rect.height-6,6,12);
+                a.draw(context, r, user, time);
+                var r = new rectangle(rect.x,rect.y-rect.height+6,rect.width,3);
+                a.draw(context, r, user, time);
+                context.restore();
+            }
+        };
+
+        var a = new Layer(
+        [
+            new Rectangle(context.upload),
+            new Shrink(new CirclePanel(1 ? SCROLLNAB:TRANSPARENT, SEARCHFRAME,4),15,15),
+            new Shrink(new upload(),16,34),
+        ]);
+
+        a.draw(context, rect, user, time);
+        context.restore();
+    }
+};
+
+var HomePanel = function ()
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.save();
+		context.strokeStyle = "white";
+        context.lineWidth = 8;
+        context.home = new rectangle();
+
+        var Home = function ()
+        {
+            this.draw = function (context, rect, user, time)
+            {
+                context.save();
+                var w = rect.width;
+                var h = rect.height;
+                context.translate(rect.x+rect.width/2-w/2, rect.y+rect.height/2-h/2+h/4);
+	            var path = new Path2D();
+                path.lineTo(0, h);
+                path.lineTo(w, h);
+                path.lineTo(w, 0);
+                path.lineTo(0, 0);
+		        context.fillStyle = "white";
+		        context.fill(path);
+	            var path = new Path2D();
+                path.lineTo(0, 0);
+                path.lineTo(w/2, -h);
+                path.lineTo(w, 0);
+		        context.fill(path);
+                context.translate(w/2-w/4, h/4);
+                var w = w/2;
+                var h = h;
+	            var path = new Path2D();
+                path.lineTo(0, 0);
+                path.lineTo(0, h);
+                path.lineTo(w, h);
+                path.lineTo(w, 0);
+		        context.fillStyle = "rgba(0,0,0,0.5)";
+		        context.fill(path);
+                context.restore();
+            }
+        };
+
+        var a = new Layer(
+        [
+            new Rectangle(context.home),
+//            new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),17,17),
+            new Shrink(new CirclePanel(SCROLLNAB, SEARCHFRAME,4),13,13),
+            new Shrink(new Home(),14,34),
         ]);
 
         a.draw(context, rect, user, time);
@@ -1039,28 +1150,6 @@ var AutoPanel = function ()
     }
 };
 
-var LoginPanel = function ()
-{
-    this.draw = function (context, rect, user, time)
-    {
-        context.save();
-		context.fillStyle = "white";
-		context.strokeStyle = "white";
-        context.loginpanel = new rectangle()
-        var a = new Layer(
-        [
-            new Rectangle(context.loginpanel),
-            _2cnvctx.enabled ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),19,19) : 0,
-            new Shrink(new CirclePanel(_2cnvctx.enabled?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),15,15),
-            new Shrink(new CirclePanel("white",TRANSPARENT,4),30,30),
-        ]);
-
-        a.draw(context, rect, user, time);
-        context.restore();
-    }
-};
-
-
 var PrevPanel = function ()
 {
     this.draw = function (context, rect, user, time)
@@ -1117,13 +1206,12 @@ var SearchPanel = function ()
         {
             this.draw = function (context, rect, user, time)
             {
-                var a = new CirclePanel(TRANSPARENT,"white",4,1);
                 rect.x -= 2;
                 rect.y += 7;
                 rect.width = 19 ;
                 rect.height = 19;
+                var a = new CirclePanel(TRANSPARENT,"white",4,1);
                 a.draw(context, rect, user, time);
-		        context.strokeStyle = "white";
                 context.lineWidth = 8;
                 context.beginPath();
                 context.moveTo(rect.x+14, rect.y+16);
@@ -1135,8 +1223,7 @@ var SearchPanel = function ()
         var a = new Layer(
         [
             new Rectangle(context.searchpanel),
-            new Shrink(new CirclePanel(globalobj.search?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),13,13),
-            globalobj.search ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),17,17) : 0,
+            new Shrink(new CirclePanel(SCROLLNAB,SEARCHFRAME,4),13,13),
             new Shrink(new Panel(),15,20),
         ]);
 
@@ -1160,28 +1247,6 @@ function searchcancel()
 function pagecancel()
 {
 }
-
-var SourcePanel = function ()
-{
-    this.draw = function (context, rect, user, time)
-    {
-        context.save();
-		context.fillStyle = "white";
-		context.strokeStyle = "white";
-        context.sourcepanel = new rectangle()
-
-        var a = new Layer(
-        [
-            new Rectangle(context.sourcepanel),
-            _3cnvctx.enabled ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),19,19) : 0,
-            new Shrink(new CirclePanel(_3cnvctx.enabled?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),15,15),
-            new Shrink(new CirclePanel(TRANSPARENT,"white",4),30,30),
-        ]);
-
-        a.draw(context, rect, user, time);
-        context.restore();
-    }
-};
 
 var Stroke = function (color, width)
 {
@@ -1398,7 +1463,6 @@ addressobj.full = function (k)
         "&t="+thumbobj.current()+
         "&g="+url.transparent+
         "&f="+url.autotime+
-        "&s="+url.slideshow+
         "&b="+url.gallery+
         "&o="+url.slidestop+
         "&e="+url.slidereduce+
@@ -1410,8 +1474,6 @@ addressobj.full = function (k)
 CanvasRenderingContext2D.prototype.movepage = function(j)
 {
     var context = this;
-    if (!_4cnvctx.setcolumncomplete)
-        return;
     if (galleryobj.length() <= 1)
         return;
 
@@ -1436,10 +1498,9 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
         headcnvctx.scrollobj.set(0);
         delete _4cnvctx.thumbcanvas;
         delete photo.image;
-        _4cnvctx.setcolumncomplete = 0;
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         contextobj.reset();
-    }, 40);
+    }, 10);
 
     clearTimeout(context.timemoveb)
     context.timemoveb = setTimeout(function()
@@ -1459,20 +1520,17 @@ CanvasRenderingContext2D.prototype.hide = function ()
     this.enabled = 0;
 };
 
-CanvasRenderingContext2D.prototype.tab = function (hide=1)
+CanvasRenderingContext2D.prototype.tab = function ()
 {
     var context = this;
-    if (hide)
+    _4cnvctx.hidebuttons = 1;
+    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+    clearTimeout(context.timemainw);
+    context.timemainw = setTimeout(function()
     {
-        context.hidebuttons = 1;
-        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-        clearTimeout(context.timehidebuttons);
-        context.timehidebuttons = setTimeout(function()
-        {
-            context.hidebuttons = 0;
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-        }, 2000);
-    }
+        _4cnvctx.hidebuttons = 0;
+        _4cnvctx.refresh();
+    }, 1000);
 
     context.slidestop += url.slidestop;
     context.slidestop = Math.clamp(url.slidestop, url.slidestop*3, context.slidestop);
@@ -1529,8 +1587,10 @@ var makehammer = function (context, v, t)
 		evt.preventDefault();
 		var x = evt.center.x;
 		var y = evt.center.y;
+        var x = evt.center.x - evt.target.offsetLeft;
+        var y = evt.center.y - evt.target.offsetTop;
 		if (typeof (ham.panel.pinch) == "function")
-			ham.panel.pinch(context, evt.scale);
+			ham.panel.pinch(context, x, y, evt.scale);
 
 		context.pinchblock = 1;
 		clearTimeout(globalobj.pinch);
@@ -1860,20 +1920,22 @@ var pinchlst =
 [
 {
     name: "DEFAULT",
-    pinch: function (context, scale) { },
+    pinch: function (context, x, y, scale) { },
     pinchend: function (context) { },
     pinchstart: function (context, rect, x, y) { },
 },
 {
     name: "BOSS",
-    pinch: function (context, scale)
+    pinch: function (context, x, y, scale)
     {
+        if (ismenu())
+            return;
         var obj = context.obj;
         var data = obj.data;
         var k = Math.clamp(data[0], data[data.length-1], scale*context.savepinch);
         var j = Math.berp(data[0], data[data.length-1], k);
         var e = Math.lerp(0,obj.length(),j)/obj.length();
-        _4cnvctx.pinched = 1;
+        context.pinched = 1;
         var f = Math.floor(obj.length()*e);
         if (scale >= 1 && obj.current() < (obj.length()*0.15))
         {
@@ -2020,7 +2082,6 @@ function dropfiles(files)
     headobj.set(3);
     headham.panel = headobj.getcurrent();
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-    _4cnvctx.setcolumncomplete = 0;
     contextobj.reset();
     menushow(_8cnvctx)
 }
@@ -2150,12 +2211,7 @@ var panlst =
         if (context.pinching)
             return;
 
-        if (context.thumbcylinder && context.thumbcylinder.hitest(x,y))
-        {
-            console.log(1);
-        }
-
-        if (context.pressedthumb)
+        if (globalobj.shifthit)
         {
             var positx = positxobj.getcurrent();
             var posity = posityobj.getcurrent();
@@ -2233,7 +2289,7 @@ var panlst =
         {
             context.hidebuttons = 0;
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-        }, 2000);
+        }, 1000);
 
         setTimeout(function()
         {
@@ -2603,9 +2659,9 @@ var swipelst =
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
-        context.slideshow = (context.timeobj.length()/context.virtualheight)*1;
+        context.slideshow = (context.timeobj.length()/context.virtualheight)*2;
         context.swipetype = evt.type;
-        context.slidereduce = context.slideshow/200;
+        context.slidereduce = context.slideshow/35;
         clearInterval(context.timemain);
         context.timemain = setInterval(function () { context.refresh(); }, globalobj.timemain);
         context.refresh();
@@ -2621,7 +2677,7 @@ var swipelst =
     {
         context.slideshow = (context.timeobj.length()/context.virtualheight);
         context.swipetype = evt.type;
-        context.slidereduce = context.slideshow/200;
+        context.slidereduce = context.slideshow/25;
         clearInterval(context.timemain);
         context.timemain = setInterval(function () { context.refresh(); }, globalobj.timemain);
         context.refresh();
@@ -2632,11 +2688,13 @@ var swipelst =
     name: "BOSS",
     swipeleftright: function (context, rect, x, y, evt)
     {
-        setTimeout(function()
-        {
+            _8cnvctx.hidebuttons = 0;
+            headobj.set(headobj.current()==3?1:3);
+            headham.panel = headobj.getcurrent();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+            context.refresh();
             context.autodirect = evt.type == "swipeleft"?-1:1;
             context.tab();
-        }, 20);
     },
 
     swipeupdown: function (context, rect, x, y, evt)
@@ -2687,7 +2745,7 @@ var keylst =
         {
             _8cnvctx.hidebuttons = 0;
             _8cnvctx.refresh();
-        }, 2000);
+        }, 1000);
 
 		if (key == "pageup" || key == "arrowup" || key == "j")
 		{
@@ -2726,14 +2784,6 @@ var keylst =
             var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
             _8cnvctx.timeobj.rotate(k);
             _8cnvctx.refresh();
-        }
-        else if (key == " ")
-        {
-            var j = globalobj.slideshow;
-            clearInterval(globalobj.slideshow);
-            globalobj.slideshow = 0;
-            if (!j)
-                startslideshow();
         }
  	}
 },
@@ -2783,14 +2833,6 @@ var keylst =
             _8cnvctx.timeobj.rotate(k);
             _8cnvctx.refresh();
         }
-        else if (key == " ")
-        {
-            var j = globalobj.slideshow;
-            clearInterval(globalobj.slideshow);
-            globalobj.slideshow = 0;
-            if (!j)
-                startslideshow();
-        }
   	}
 },
 {
@@ -2829,15 +2871,6 @@ var keylst =
             context.refresh();
             evt.preventDefault();
         }
-        else if (key == " ")
-        {
-            var j = globalobj.slideshow;
-            menuhide();
-            clearInterval(globalobj.slideshow);
-            globalobj.slideshow = 0;
-            if (!j)
-                startslideshow();
-        }
         else if (key == "\\" || key == "/")
         {
             if (url.origin == "http://reportbase.me")
@@ -2857,6 +2890,7 @@ var keylst =
         }
         else if (key == "arrowleft" || key == "h")
         {
+
             context.autodirect = 1;
             context.tab();
         }
@@ -2996,6 +3030,7 @@ var taplst =
         if (ismenu())
         {
             menuhide();
+            context.refresh();
             return;
         }
 
@@ -3019,8 +3054,7 @@ var taplst =
         }
         else
         {
-            var j = headobj.current()==3?1:3;
-            headobj.set(j);
+            headobj.set(headobj.current()==3?1:3);
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             context.refresh();
@@ -3037,13 +3071,27 @@ var taplst =
         {
             showsearch()
         }
-        else if (context.sourcepanel && context.sourcepanel.hitest(x,y))
+        else if (context.page && context.page.hitest(x,y))
         {
-            menutoggle(_3cnvctx);
+            headobj.set(1);
+            headham.panel = headobj.getcurrent();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+            _8cnvctx.scrollobj.set(0);
+            _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+            var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
+            _8cnvctx.timeobj.rotate(k);
+            menutoggle(_8cnvctx)
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
-        else if (context.loginpanel && context.loginpanel.hitest(x,y))
+        else if (context.option && context.option.hitest(x,y))
         {
-            menutoggle(_2cnvctx);
+            headobj.set(1);
+            headham.panel = headobj.getcurrent();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+            clearTimeout(context.menutime);
+            context.refresh();
+            menutoggle(_2cnvctx)
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
         else if (x > rect.width - (MENUBARWIDTH*2) )
         {
@@ -3078,7 +3126,16 @@ var taplst =
         context.timemain = 0;
         var obj = context.scrollobj.getcurrent();
 
-        if (context.slide && context.slide.hitest(x,y))
+        if (context.home && context.home.hitest(x,y))
+        {
+            var j = Math.lerp(1,context.sliceobj.length(),1-context.timeobj.berp());
+            showprompt(galleryobj.data[j])
+        }
+        else if (context.upload && context.upload.hitest(x,y))
+        {
+            showupload();
+        }
+        else if (context.drop && context.drop.hitest(x,y))
         {
             explore().then(function(files) { dropfiles(files); })
         }
@@ -3088,6 +3145,9 @@ var taplst =
         }
         else if (context.page && context.page.hitest(x,y))
         {
+            headobj.set(1);
+            headham.panel = headobj.getcurrent();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             _8cnvctx.scrollobj.set(0);
             _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
             var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
@@ -3097,9 +3157,12 @@ var taplst =
         }
         else if (context.option && context.option.hitest(x,y))
         {
+            headobj.set(1);
+            headham.panel = headobj.getcurrent();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             clearTimeout(context.menutime);
             context.refresh();
-            menutoggle(_3cnvctx)
+            menutoggle(_2cnvctx)
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
         else if (context.gallery && context.gallery.hitest(x,y))
@@ -3143,15 +3206,7 @@ var taplst =
                 context.refresh();
                 clearInterval(_8cnvctx.autotime);
                 _8cnvctx.autotime = 0;
-                setTimeout(function()
-                {
-                    var target = galleryobj.repos;
-                    if (url.searchParams.has("sidney"))
-                        target = "sidney";
-                    else if (!target)
-                        target = url.path;
-                    window.open(image, target)
-                }, 100);
+                window.open(image, "reportbase.com")
 
                 setTimeout(function()
                 {
@@ -3715,15 +3770,6 @@ function resetcanvas(leftright=1)
     var y = Math.clamp(0,context.canvas.height-1,context.canvas.height*rowobj.berp());
     context.nuby = Math.nub(y, context.canvas.height, context.imageheight, photo.image.height);
 
-    if (!context.isthumbrect &&
-        !context.panning &&
-        !context.pinching &&
-        !galleryobj.pose &&
-        leftright)
-    {
-    //    _4cnvctx.tab(0);
-    }
-
     var slicewidth = 60;
 
     var j = 0;
@@ -4008,13 +4054,11 @@ contextobj.reset = function (leftright)
                 extentobj.getcurrent().init();
             }
 
-            if (_4cnvctx.movingpage || url.slideshow)
-                context.timeobj.set(TIMEOBJ/2);
-            if (!globalobj.slideshow && url.slideshow)
-                startslideshow();
-
             _4cnvctx.pinched = 0;
             contextobj.reset()
+            if (_4cnvctx.movingpage)
+                context.timeobj.set(TIMEOBJ/2);
+
             setTimeout(function() { masterload(); }, 500);
         }
     }
@@ -4252,7 +4296,7 @@ var RotatedText = function()
     }
 };
 
-var Text = function (color,  align="center", baseline="middle", reverse=0, noclip=0, unused=0)
+var Text = function (color,  align="center", baseline="middle", reverse=0, noclip=0)
 {
     this.draw = function (context, rect, user, time)
     {
@@ -4665,6 +4709,14 @@ function resize()
 
 function escape()
 {
+    if (globalobj.prompt)
+    {
+        globalobj.prompt.close();
+        globalobj.prompt = 0;
+        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        return;
+    }
+
     headobj.set(1);
     headham.panel = headobj.getcurrent();
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -4754,7 +4806,7 @@ var YollPanel = function ()
    		context.panupdown_(context, rect, x, y, type);
     };
 
-	this.panstart = function (context, rect, x, y, type)
+	this.panstart = function (context, rect, x, y)
     {
        	context.panstart_(context, rect, x, y);
 	};
@@ -4771,10 +4823,10 @@ var YollPanel = function ()
         	context.swipeupdown_(context, rect, x, y, type);
 	};
 
-    this.pinch = function (context, scale)
+    this.pinch = function (context, x, y, scale)
     {
    		if (context.pinch_)
-        	context.pinch_(context, scale);
+        	context.pinch_(context, x, y, scale);
 	};
 
     this.pinchend = function(context)
@@ -4863,13 +4915,7 @@ var headlst =
             }
             else if (context.option && context.option.hitest(x,y))
             {
-                if (_2cnvctx.enabled || _3cnvctx.enabled)
-                {
-                    menuhide();
-                    return;
-                }
-
-                menutoggle(_3cnvctx)
+                menutoggle(_2cnvctx)
             }
             else if (context.fullpanel && context.fullpanel.hitest(x,y))
             {
@@ -5424,10 +5470,7 @@ galleryobj.init = function(obj)
     }
     else
     {
-        if (url.slideshow)
-            headobj.set(5);
-        else
-            headobj.set(3);
+        headobj.set(3);
 
         if (leftmenu && galleryobj.length())
         {
@@ -5454,18 +5497,16 @@ galleryobj.init = function(obj)
             menutoggle(_7cnvctx);
         }},
 
-        {title:"Slideshow", path: "SLIDESHOW", func: function()
-        {
-            menuhide();
-            startslideshow();
-        }},
-
         {title:"Open", path: "OPEN", func: function()
         {
             menuhide();
             explore().then(function(files) { dropfiles(files); })
         }},
 
+        {title: "Providers", path: "PROVIDER", func: function()
+            {
+                menushow(_3cnvctx)
+            }},
         {title:"Download", path: "DOWNLOAD", func: function()
             {
                 download();
@@ -5479,7 +5520,7 @@ galleryobj.init = function(obj)
                 link.download = galleryobj.getcurrent()[0] + ".jpg";
                 link.click();
             }},
-        {title:"Copy Link", path: "COPYLINK", func: function()
+        {title:"Copy Address", path: "COPYLINK", func: function()
             {
                 copytext(addressobj.full());
                 menuhide();
@@ -5546,7 +5587,7 @@ galleryobj.init = function(obj)
                     target = "sidney";
                 else if (!target)
                     target = url.path;
-                window.open(addressobj.full(), target);
+                window.open(addressobj.full(), "reportbase.com");
             }
         }
     }
@@ -5566,6 +5607,7 @@ galleryobj.init = function(obj)
     });
 
     contextobj.reset();
+    _4cnvctx.refresh();
 }
 
 fetch(path)
@@ -5586,21 +5628,21 @@ function download()
 {
     if (galleryobj.getcurrent().image_url)
     {
-        window.open(galleryobj.getcurrent().image_url);
+        window.open(galleryobj.getcurrent().image_url, "reportbase.com");
     }
     else if (galleryobj.getcurrent().original)
     {
-        window.open(galleryobj.getcurrent().original);
+        window.open(galleryobj.getcurrent().original, "reportbase.com");
     }
     else if (galleryobj.getcurrent().full)
     {
-        window.open(galleryobj.getcurrent().full);
+        window.open(galleryobj.getcurrent().full, "reportbase.com");
     }
     else
     {
         var id = galleryobj.getcurrent().id;
         var path = `https://reportbase.com/image/${id}/blob`;
-        window.open(path);
+        window.open(path, "reportbase.com");
     }
 }
 
@@ -5620,29 +5662,17 @@ function deleteimage()
     });
 }
 
-function showsearch(repos)
+function showupload(repos)
 {
-    var input = document.getElementById("search-value");
-    input.addEventListener("keyup", function(event)
-    {
-      if (event.keyCode === 13)
-      {
-       event.preventDefault();
-            var search = document.getElementById('search-value').value;
-            localStorage.setItem("repos", globalobj.saverepos);
-            localStorage.setItem("search", search);
-            var s = `${url.origin}?${globalobj.saverepos}=${search}&page=${url.page}`;
-            window.open(s, "_self");
-      }
-    });
-
-    globalobj.block = 1;
-    globalobj.prompt = 1;
-    const dialog = document.getElementById("search-overlay");
+    const dialog = document.getElementById("upload-overlay");
+    globalobj.prompt = dialog;
     dialog.addEventListener("click", function()
     {
-        const rect = dialog.getBoundingClientRect();
-        if (event.clientY < rect.top || event.clientY > rect.bottom ||
+        var rect = input.getBoundingClientRect();
+        if (event.target.id == "upload-ok")
+        {
+        }
+        else if (event.clientY < rect.top || event.clientY > rect.bottom ||
             event.clientX < rect.left || event.clientX > rect.right)
         {
             if (globalobj.block)
@@ -5652,14 +5682,59 @@ function showsearch(repos)
             globalobj.search = 0;
             hiderefresh();
         }
-        else if (event.target.id == "search-ok")
+    });
+
+    dialog.showModal();
+    setTimeout(function() { globalobj.block = 0; }, 40);
+    hiderefresh();
+}
+
+
+function showsearch(repos)
+{
+    var input = document.getElementById("search-value");
+    input.addEventListener("keyup", function(event)
+    {
+      if (event.keyCode === 13)
+      {
+        event.preventDefault();
+        var search = document.getElementById('search-value').value.clean();
+        if (!search)
+          return;
+        localStorage.setItem("repos", globalobj.saverepos);
+        localStorage.setItem("search", search);
+        var s = `${url.origin}?${globalobj.saverepos}=${search}&page=${url.page}`;
+        window.open(s, "reportbase.com");
+      }
+    });
+
+    globalobj.block = 1;
+    const dialog = document.getElementById("search-overlay");
+    globalobj.prompt = dialog;
+    dialog.addEventListener("click", function()
+    {
+        var rect = input.getBoundingClientRect();
+        if (event.target.id == "search-ok")
         {
-            var search = document.getElementById('search-value').value;
+            var search = document.getElementById('search-value').value.clean();
+            if (!search)
+                return;
             localStorage.setItem("repos", globalobj.saverepos);
             localStorage.setItem("search", search);
+            globalobj.prompt = 0;
             var s = `${url.origin}?${globalobj.saverepos}=${search}&page=${url.page}`;
-            window.open(s, "_self");
-         }
+            window.open(s, "reportbase.com");
+        }
+        else if (event.clientY < rect.top || event.clientY > rect.bottom ||
+            event.clientX < rect.left || event.clientX > rect.right)
+        {
+            if (globalobj.block)
+                return;
+            dialog.close();
+            globalobj.prompt = 0;
+            globalobj.search = 0;
+            hiderefresh();
+        }
     });
 
     var search = localStorage.getItem("search");
@@ -5673,94 +5748,31 @@ function showsearch(repos)
     globalobj.saverepos = globalobj.saverepos.toLowerCase();
     let kurl = new URL(addressobj.full());
     document.getElementById('search-value').value = search;
+    var label = document.getElementById('search-label');
+    var str = globalobj.saverepos;
+    label.innerHTML = str.proper();
     dialog.showModal();
     setTimeout(function() { globalobj.block = 0; }, 40);
     hiderefresh();
 }
 
-function showpage()
-{
-    var input = document.getElementById("page-value");
-    input.addEventListener("keyup", function(event)
-    {
-      if (event.keyCode === 13)
-      {
-            var page = document.getElementById('page-value').value;
-            var j = Number(page)-1;
-            galleryobj.set(j);
-            delete _4cnvctx.thumbcanvas;
-            delete photo.image;
-            if (galleryobj.getcurrent().file)
-            {
-                contextobj.reset();
-            }
-            else
-            {
-                let a = document.createElement('a');
-                a.href = addressobj.full();
-                a.click();
-            }
-
-            dialog.close();
-       }
-    });
-
-    globalobj.block = 1;
-    globalobj.prompt = 1;
-    const dialog = document.getElementById("page-overlay");
-    dialog.addEventListener("click", function()
-    {
-        const rect = dialog.getBoundingClientRect();
-        if (event.clientY < rect.top || event.clientY > rect.bottom ||
-            event.clientX < rect.left || event.clientX > rect.right)
-        {
-            if (globalobj.block)
-                return;
-            dialog.close();
-            globalobj.prompt = 0;
-        }
-        else if (event.target.id == "page-ok")
-        {
-            var page = document.getElementById('page-value').value;
-            var j = Number(page)-1;
-            galleryobj.set(j);
-            delete _4cnvctx.thumbcanvas;
-            delete photo.image;
-            if (galleryobj.getcurrent().file)
-            {
-                contextobj.reset();
-            }
-            else
-            {
-                let a = document.createElement('a');
-                a.href = addressobj.full();
-                a.click();
-            }
-
-            dialog.close();
-        }
-    });
-
-    var k = document.getElementById('page-value');
-    k.value = galleryobj.current()+1;
-    k.setSelectionRange(0, 0);
-    dialog.showModal();
-    setTimeout(function() { globalobj.block = 0; }, 40);
-}
-
 function showprompt(obj)
 {
-     var textArea = document.getElementById ("prompt-value");
-    var rows = (window.innerHeight*0.60)/25;
-    textArea.rows = rows;
+    var textarea = document.getElementById ("prompt-value");
+    var rows = (window.innerHeight*0.50)/25;
+    textarea.rows = rows;
 
     globalobj.block = 1;
-    globalobj.prompt = 1;
     const dialog = document.getElementById("prompt-overlay");
+    globalobj.prompt = dialog;
     dialog.addEventListener("click", function()
     {
-        const rect = dialog.getBoundingClientRect();
-        if (event.clientY < rect.top || event.clientY > rect.bottom ||
+        const rect = textarea.getBoundingClientRect();
+        if (event.target.id == "prompt-ok")
+        {
+            globalobj.prompt = 0;
+        }
+        else if (event.clientY < rect.top || event.clientY > rect.bottom ||
             event.clientX < rect.left || event.clientX > rect.right)
         {
             if (globalobj.block)
@@ -5768,35 +5780,13 @@ function showprompt(obj)
             dialog.close();
             globalobj.prompt = 0;
         }
-        else if (event.target.id == "prompt-ok")
-        {
-        }
     });
 
-    var k = document.getElementById('prompt-value');
-    k.value = obj.prompt?obj.prompt:"";
-    k.setSelectionRange(0, 0);
+    textarea.value = (obj && obj.prompt)?obj.prompt:"";
     dialog.showModal();
+    textarea.focus();
+    textarea.setSelectionRange(0, 0);
     setTimeout(function() { globalobj.block = 0; }, 40);
-}
-
-function startslideshow()
-{
-    _4cnvctx.movepage(1)
-    clearInterval(globalobj.slideshow);
-    url.slideshow = url.slideshow?url.slideshow:SLIDEDEFAULT;
-    globalobj.slideshow = setInterval(function()
-    {
-        headobj.set(5);
-        headham.panel = headobj.getcurrent();
-        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-        _4cnvctx.movepage(1)
-        _8cnvctx.scrollobj.set(0);
-        _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-        var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-        _8cnvctx.timeobj.rotate(k);
-        _8cnvctx.refresh()
-    }, url.slideshow);
 }
 
 function galleryshow()

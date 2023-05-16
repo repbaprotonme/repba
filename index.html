@@ -49,12 +49,13 @@ dialog::backdrop
 
 label
 {
-  font-family: Helvetica, sans-serif; 
+  display: block;
+  font-family: sans-serif; 
   font-weight: bold; 
   text-align: center;
-  font-size: 1rem; 
+  font-size: 2rem; 
   width: 100%; 
-  padding: 10px 0px 10px 0px; 
+  color: white;
 }
 
 input
@@ -68,11 +69,11 @@ input
   color: white;
   text-align: center;
   font-weight: bold;
-  font-family: Helvetica, sans-serif; 
+  font-family: sans-serif; 
   box-sizing: border-box; 
   width: 100%; 
   padding: 10px; 
-  font-size: 24px;
+  font-size: 19px;
 }
 
 textarea 
@@ -84,11 +85,11 @@ textarea
   border-radius: 0px;
   border-width: 0px;
   outline: none; 
-  font-family: Helvetica, sans-serif; 
+  font-family: sans-serif; 
   box-sizing: border-box; 
   width: 100%; 
   padding: 10px; 
-  font-size: 21px;
+  font-size: 19px;
   color: white;
   text-align: center;
   font-weight: bold;
@@ -180,31 +181,41 @@ button
 <body ondragstart="return false;" ondrop="return false"; oncontextmenu='return false;'>
 
 <dialog id="search-overlay" style="max-width: 360px;">
+    <div>
+      <label id="search-label">Pexels</label>
+    </div>
     <div class="earth">
-      <input id="search-value" autocapitalize="off" placeholder="Search"></input>
+      <input id="search-value" autocapitalize="off" placeholder="Enter search criteria"></input>
     </div>
     <div class="footer">
       <button class="fade" id="search-ok" style="" type="button">Search</button>
     </div>
 </dialog>
 
-<dialog id="page-overlay" style="max-width: 360px;">
-    <div class="earth">
-      <input id="page-value" autocapitalize="off" placeholder="Page Number" style=""></input>
-    </div>
-    <div class="footer">
-      <button class="fade" id="page-ok" style="" type="button">&nbsp;&nbsp;Goto&nbsp;&nbsp;</button>
-    </div>
-</dialog>
-
 <dialog id="prompt-overlay" style="width: 90%; max-width: 10000px;">
+    <div>
+      <label>Dalle 2.0</label>
+    </div>
     <div class="earth">
-      <textarea id="prompt-value" autocapitalize="off" placeholder="Draw a lion standing next to a polar bear." rows=8 style=""></textarea>
+      <textarea id="prompt-value" autocapitalize="off" placeholder="Enter prompt" rows=8 style=""></textarea>
     </div>
     <div class="footer">
       <button class="fade" id="prompt-ok" style="" type="button">Submit</button>
     </div>
-</dialog></body>
+</dialog>
+
+<dialog id="upload-overlay" style="width: 90%; max-width: 10000px;">
+    <div>
+      <label>Upload</label>
+    </div>
+    <form id="form1" name="form1" method="post" action="javascript:submit()" enctype="multipart/form-data">
+      <input style="width: 100%; height: 30px; float: left; padding: 10px; font-size: 16px; border-radius: 4px;" type="file" id="myFile" name="file"/>
+      <div class="footer">
+        <button class="fade" id="prompt-ok" style="" type="button">Submit</button>
+      </div>
+    </form>
+</dialog>
+</body>
 
 <script>
 </script>
