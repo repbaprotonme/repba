@@ -32,6 +32,7 @@ export default
             {
                 delete image.variants;
                 image = Object.assign(image, image.meta);
+                image.ispng = image.filename.toLowerCase().substr(image.filename.length-4) == ".png"
                 delete image.meta;
                 data.push(image);
             })

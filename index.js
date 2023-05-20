@@ -15,7 +15,7 @@ const SWIPETIME = 200;
 const MENUBARWIDTH = 12;
 const MENUPANWIDTH = 25;
 const THUMBORDER = 5;
-const THUMBSELECT = 7;
+const THUMBSELECT = 0;
 const JULIETIME = 100;
 const DELAY = 10000000;
 const ALIEXTENT = 60;
@@ -55,7 +55,7 @@ function numberRange (start, end) {return new Array(end - start).fill().map((d, 
 let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 3;
-url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : 35;
+url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : 100;
 url.thumb = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : 1;
 url.transparent = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0;
 url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
@@ -191,12 +191,9 @@ let circular_array = function (title, data)
         this.set(k);
     };
 
-    this.find = function (k)
+    this.findindex = function (k)
     {
-        let j = this.data.findIndex(function(a){return a == k;})
-        if (j == -1)
-            return 0;
-        return this.data[j];
+        return this.data.findIndex(function(a){return a == k;})
     }
 };
 
@@ -236,6 +233,8 @@ function drawslices()
                 {
                     clearInterval(context.timemain);
                     context.timemain = 0;
+                    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+                    thumbobj.getcurrent().draw(context, rect, 0, 0);
                 }
             }
 
@@ -318,7 +317,8 @@ function drawslices()
             delete context.selectrect;
             delete context.thumbrect;
 
-            thumbobj.getcurrent().draw(context, rect, 0, 0);
+            if (!context.timemain)
+                thumbobj.getcurrent().draw(context, rect, 0, 0);
         }
     }
 
@@ -501,11 +501,13 @@ var SearchBar = function ()
 {
     this.draw = function (context, rect, user, time)
     {
+        if (context.hidebuttons)
+            return;
         context.save();
         context.header = new rectangle();
         context.footer = new rectangle();
         context.slide = new rectangle();
-        var j = 0;//context.timemain;
+        var j = context.timemain;
         var a = new RowA([80,0,80],
         [
             j?0:new Layer(
@@ -554,16 +556,7 @@ var SearchBar = function ()
         var j = Math.lerp(1,context.sliceobj.length(),1-context.timeobj.berp());
         a.draw(context, rect,
         [
-            [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-            ],
-            0,
+            [ 0, 0, 0, 0, 0, 0, 0, ], 0,
             [
                 0,
                 j.toFixed(0),
@@ -588,14 +581,14 @@ var DualPanel = function ()
         [
             new Layer(
             [
-                new FillPanel("rgba(0,0,0,0.4)"),
-                new CurrentVPanel(new FillPanel("white"), 90, 0),
+        //        new FillPanel("rgba(0,0,0,0.4)"),
+                new CurrentVPanel(new FillPanel("white"), 60, 0),
             ]),
             0,
             new Layer(
             [
-                new FillPanel("rgba(0,0,0,0.4)"),
-                new CurrentVPanel(new FillPanel("white"), 90, 1),
+         //       new FillPanel("rgba(0,0,0,0.4)"),
+                new CurrentVPanel(new FillPanel("white"), 60, 1),
             ]),
         ]);
 
@@ -632,14 +625,14 @@ var ScrollBarPanel = function ()
 var eventlst =
 [
     {name: "_1cnvctx", mouse: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", draw: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollBarPanel(), buttonheight: 0},
-    {name: "_2cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Login"), scroll: new ScrollBarPanel(), buttonheight: 50},
-    {name: "_3cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Sources"), scroll: new DualPanel(), buttonheight: 90},
-    {name: "_4cnvctx", mouse: "BOSS", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", draw: "BOSS", wheel: "BOSS", drop: "GALLERY", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new Empty(), scroll: new DualPanel(), buttonheight: 30},
-    {name: "_5cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Metadata"), scroll: new DualPanel(), buttonheight: 90},
-    {name: "_6cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Share"), scroll: new ScrollBarPanel(), buttonheight: 50},
-    {name: "_7cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Help"), scroll: new DualPanel(), buttonheight: 90},
+    {name: "_2cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU",  drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Login"), scroll: new ScrollBarPanel(), buttonheight: 50},
+    {name: "_3cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Sources"), scroll: new DualPanel(), buttonheight: 90},
+    {name: "_4cnvctx", mouse: "DEFAULT", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", draw: "BOSS", wheel: "BOSS", drop: "GALLERY", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new Empty(), scroll: new DualPanel(), buttonheight: 30},
+    {name: "_5cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Metadata"), scroll: new DualPanel(), buttonheight: 90},
+    {name: "_6cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Share"), scroll: new ScrollBarPanel(), buttonheight: 50},
+    {name: "_7cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Help"), scroll: new DualPanel(), buttonheight: 90},
     {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SEARCH", pan: "MENU", swipe: "SEARCH", draw: "SEARCH", wheel: "MENU", drop: "GALLERY", key: "SEARCH", press: "SEARCH", pinch: "DEFAULT", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 200},
-    {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Image Browser"), scroll: new ScrollBarPanel(), buttonheight: 50},
+    {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Image Browser"), scroll: new ScrollBarPanel(), buttonheight: 50},
 ];
 
 function seteventspanel(panel)
@@ -837,7 +830,7 @@ var MultiText = function (e)
             var str = user[n].clean();
             if (!str.length)
                 continue;
-            lst = lst.concat(wraptext(context, str, Math.min(640,rect.width)));
+            lst = lst.concat(wraptext(context, str, Math.min(MENUWIDTH,rect.width)));
         }
 
         var rowheight = 20;
@@ -854,7 +847,7 @@ var MultiText = function (e)
 
         for (var n = 0; n < Math.min(len,lst.length); n++)
         {
-            var lines = wraptext(context, lst[n], Math.min(640,rect.width));
+            var lines = wraptext(context, lst[n], Math.min(MENUWIDTH,rect.width));
             for (var m = 0; m < lines.length; m++)
             {
                 var str = lines[m].clean();
@@ -920,7 +913,7 @@ var FullPanel = function ()
         path.moveTo(x,y);
         y -= e;
         path.lineTo(x,y);
-        x -= e;
+        x -= e+1;
         path.lineTo(x,y);
         context.stroke(path);
 
@@ -931,7 +924,7 @@ var FullPanel = function ()
         path.moveTo(x,y);
         y += e;
         path.lineTo(x,y);
-        x -= e;
+        x -= e+1;
         path.lineTo(x,y);
         context.stroke(path);
 
@@ -954,7 +947,7 @@ var DropPanel = function ()
     this.draw = function (context, rect, user, time)
     {
         context.save();
-        context.drop = new rectangle();
+        context.dropbutton = new rectangle();
 
         var drop = function ()
         {
@@ -976,7 +969,7 @@ var DropPanel = function ()
 
         var a = new Layer(
         [
-            new Rectangle(context.drop),
+            new Rectangle(context.dropbutton),
             new Shrink(new CirclePanel(1 ? SCROLLNAB:TRANSPARENT, SEARCHFRAME,4),15,15),
             new Shrink(new drop(),16,34),
         ]);
@@ -1531,6 +1524,7 @@ CanvasRenderingContext2D.prototype.tab = function ()
        slidereduce *= 2;
     }
 
+    headcnvctx.clear();
     context.slidestop += slidestop;
     context.slidestop = Math.clamp(url.slidestop, url.slidestop*6, context.slidestop);
     context.slidestop = (1500/context.virtualwidth)*context.slidestop;
@@ -1868,19 +1862,19 @@ var wheelst =
     name: "BOSS",
     up: function (context, x, y, ctrl, shift, alt)
     {
-        if (context.thumbrect && context.thumbrect.hitest(x,y))
+        if (context.isthumbrect)
         {
             pinchobj.set(0);
             var obj = heightobj.getcurrent();
             delete context.thumbcanvas;
-            obj.add(5);
+            obj.add(1);
             context.refresh();
         }
         else if (ctrl)
         {
             pinchobj.set(1);
             context.pinched = 1;
-            zoomobj.getcurrent().add(-5);
+            zoomobj.getcurrent().add(-1);
             contextobj.reset()
         }
         else
@@ -1891,19 +1885,19 @@ var wheelst =
 	},
  	down: function (context, x, y, ctrl, shift, alt)
     {
-        if (context.thumbrect && context.thumbrect.hitest(x,y))
+        if (context.isthumbrect)
         {
             pinchobj.set(0);
             var obj = heightobj.getcurrent();
             delete context.thumbcanvas;
-            obj.add(-5);
+            obj.add(-1);
             context.refresh();
         }
         else if (ctrl)
         {
             pinchobj.set(1);
             context.pinched = 1;
-            zoomobj.getcurrent().add(5);
+            zoomobj.getcurrent().add(1);
             contextobj.reset()
         }
         else
@@ -1927,8 +1921,6 @@ var pinchlst =
     name: "BOSS",
     pinch: function (context, x, y, scale)
     {
-        if (ismenu())
-            return;
         var obj = context.obj;
         var data = obj.data;
         var k = Math.clamp(data[0], data[data.length-1], scale*context.savepinch);
@@ -2057,11 +2049,7 @@ function dropfiles(files)
             var k = {}
             k.pos = i;
             k.file = files[i];
-            if (k.file.size > 6000*4000)
-                continue;
-            k.thumbimg = new Image();
             k.ispng = (ext == 'png');
-            k.thumbimg.src = URL.createObjectURL(files[i]);
             galleryobj.data.push(k);
         }
     }
@@ -2073,6 +2061,7 @@ function dropfiles(files)
     _8cnvctx.buttonheight = 200;
     _8cnvctx.delayinterval = DELAYCENTER / slices.length();
     _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
+    _8cnvctx.scrollobj.set(0);
     galleryobj.set(0);
     delete _4cnvctx.thumbcanvas;
     delete photo.image;
@@ -2089,11 +2078,17 @@ var droplst =
 [
 {
     name: "DEFAULT",
-    drop: function (context, evt) { },
+    drop: function (context, evt)
+    {
+        dropfiles(evt.dataTransfer.files);
+    },
 },
 {
     name: "GALLERY",
-    drop: function (context, evt) { dropfiles(evt.dataTransfer.files); },
+    drop: function (context, evt)
+    {
+        dropfiles(evt.dataTransfer.files);
+    },
 },
 ];
 
@@ -2201,7 +2196,7 @@ var panlst =
         if (context.pinching)
             return;
 
-        if (globalobj.shifthit)
+        if (headobj.current() == 5 || globalobj.ctrlhit)
         {
             var positx = positxobj.getcurrent();
             var posity = posityobj.getcurrent();
@@ -2290,6 +2285,7 @@ var panlst =
 ];
 
 var panobj = new circular_array("PAN", panlst);
+panobj.set(2);
 
 CanvasRenderingContext2D.prototype.clearpoints = function()
 {
@@ -2470,7 +2466,7 @@ CanvasRenderingContext2D.prototype.getweightedpoint = function(x,y)
         x = (this.x8+this.x7+this.x6+this.x5+this.x4+this.x3+this.x2+this.x1)/8;
         y = (this.y8+this.y7+this.y6+this.y5+this.y4+this.y3+this.y2+this.y1)/8;
      }
-     if (this.x7)
+    if (this.x7)
      {
         x = (this.x7+this.x6+this.x5+this.x4+this.x3+this.x2+this.x1)/7;
         y = (this.y7+this.y6+this.y5+this.y4+this.y3+this.y2+this.y1)/7;
@@ -2481,12 +2477,12 @@ CanvasRenderingContext2D.prototype.getweightedpoint = function(x,y)
         y = (this.y6+this.y5+this.y4+this.y3+this.y2+this.y1)/6;
      }
     else if (this.x5)
-    {
+     {
         x = (this.x5+this.x4+this.x3+this.x2+this.x1)/5;
         y = (this.y5+this.y4+this.y3+this.y2+this.y1)/5;
      }
     else if (this.x4)
-    {
+     {
         x = (this.x4+this.x3+this.x2+this.x1)/4;
         y = (this.y4+this.y3+this.y2+this.y1)/4;
      }
@@ -2517,7 +2513,10 @@ var mouselst =
  	out: function (evt) { },
     enter: function (evt) { },
     up: function (evt) { },
-	move: function (context, rect, x, y) { },
+	move: function (context, rect, x, y)
+    {
+        context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
+    },
 },
 ];
 
@@ -2534,12 +2533,11 @@ var presslst =
     name: "SEARCH",
     pressup: function (context, rect, x, y)
     {
-        context.isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
-        context.scrollobj.rotate(1);
-        context.refresh();
     },
     press: function (context, rect, x, y)
     {
+        context.hidebuttons = context.hidebuttons?0:1;
+        context.refresh();
     }
 },
 {
@@ -2574,9 +2572,11 @@ var presslst =
         }
         else
         {
-            url.transparent = 0;
-            thumbobj.rotate(1);
-            _4cnvctx.refresh();
+            var obj = new circular_array("", [1,3,5]);
+            obj.set(obj.findindex(headobj.current()));
+            obj.rotate(1);
+            headobj.set(obj.getcurrent());
+            headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
 
@@ -2585,7 +2585,10 @@ var presslst =
 },
 ];
 
-function moveupdown(context, up, left)
+var pressobj = new circular_array("PRESS", presslst);
+pressobj.set(3);
+
+function moveupdown(context, up)
 {
     var e = Number(zoomobj.getcurrent().getcurrent())==0;
     if (up)
@@ -2599,7 +2602,7 @@ function moveupdown(context, up, left)
         {
             var k = rowobj.length()/channelobj.length()
             rowobj.add(-k);
-            contextobj.reset(left);
+            contextobj.reset();
         }
     }
     else
@@ -2613,7 +2616,7 @@ function moveupdown(context, up, left)
         {
             var k = rowobj.length()/channelobj.length()
             rowobj.add(k);
-            contextobj.reset(left);
+            contextobj.reset();
         }
     }
 }
@@ -2632,9 +2635,9 @@ var swipelst =
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
-        context.slideshow = (context.timeobj.length()/context.virtualheight)*2;
+        context.slideshow = (context.timeobj.length()/context.virtualheight)*4;
         context.swipetype = evt.type;
-        context.slidereduce = context.slideshow/35;
+        context.slidereduce = context.slideshow/75;
         clearInterval(context.timemain);
         context.timemain = setInterval(function () { context.refresh(); }, globalobj.timemain);
         context.refresh();
@@ -2661,16 +2664,18 @@ var swipelst =
     name: "BOSS",
     swipeleftright: function (context, rect, x, y, evt)
     {
-            headobj.set(headobj.current()==3?1:3);
-            headham.panel = headobj.getcurrent();
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            context.refresh();
-            context.autodirect = evt.type == "swipeleft"?-1:1;
-            context.tab();
+        headobj.set(3);
+        headham.panel = headobj.getcurrent();
+        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        context.autodirect = evt.type == "swipeleft"?-1:1;
+        context.tab();
     },
 
     swipeupdown: function (context, rect, x, y, evt)
     {
+        headobj.set(1);
+        headham.panel = headobj.getcurrent();
+        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         menuhide();
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
@@ -2678,11 +2683,14 @@ var swipelst =
         clearTimeout(context.swipeupdowntime)
         context.swipeupdowntime = setTimeout(function()
         {
-            moveupdown(context, evt.type == "swipedown", 1);
+             moveupdown(context, evt.type == "swipedown")
         }, SWIPETIME);
     },
 },
 ];
+
+var swipeobj = new circular_array("SWIPE", swipelst);
+swipeobj.set(3);
 
 var keylst =
 [
@@ -2838,20 +2846,7 @@ var keylst =
         }
         else if (key == "\\" || key == "/")
         {
-            if (url.origin == "http://reportbase.me")
-            {
-                evt.preventDefault();
-                factorobj.enabled = factorobj.enabled ? 0 : 1;
-                context.refresh();
-            }
-            else
-            {
-                _8cnvctx.scrollobj.set(0);
-                _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-                var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-                _8cnvctx.timeobj.rotate(k);
-                menutoggle(_8cnvctx)
-            }
+            debug();
         }
         else if (key == "arrowleft" || key == "h")
         {
@@ -2875,7 +2870,7 @@ var keylst =
             clearTimeout(context.moveupdowntime);
             context.moveupdowntime = setTimeout(function()
             {
-                moveupdown(context, 1, 0);
+                moveupdown(context, 1);
             },10);
         }
         else if (key == "arrowdown" || key == "j" )
@@ -2883,7 +2878,7 @@ var keylst =
             clearTimeout(context.moveupdowntime);
             context.moveupdowntime = setTimeout(function()
             {
-                moveupdown(context, 0, 0);
+                moveupdown(context, 0);
             },10);
         }
         else if (key == "-" || key == "{")
@@ -2897,16 +2892,6 @@ var keylst =
             context.pinched = 1;
             zoomobj.getcurrent().add(1);
             contextobj.reset()
-        }
-        else if (key == "[")
-        {
-            stretchobj.getcurrent().add(-1);
-            context.refresh();
-        }
-        else if (key == "]")
-        {
-            stretchobj.getcurrent().add(1);
-            context.refresh();
         }
         else if (key == "enter")
         {
@@ -2993,6 +2978,9 @@ var taplst =
 
         if (ismenu())
         {
+            headobj.set(1);
+            headham.panel = headobj.getcurrent();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             menuhide();
             context.refresh();
             return;
@@ -3018,9 +3006,12 @@ var taplst =
         }
         else
         {
-            headobj.set(headobj.current()==3?1:3);
+            headobj.set(1);
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+            url.transparent = 0;
+            thumbobj.rotate(1);
+            _4cnvctx.refresh();
             context.refresh();
             menuhide();
         }
@@ -3109,7 +3100,7 @@ var taplst =
         {
             showupload();
         }
-        else if (context.drop && context.drop.hitest(x,y))
+        else if (context.dropbutton && context.dropbutton.hitest(x,y))
         {
             explore().then(function(files) { dropfiles(files); })
         }
@@ -3119,7 +3110,7 @@ var taplst =
         }
         else if (context.page && context.page.hitest(x,y))
         {
-            headobj.set(1);
+            _8cnvctx.scrollobj.rotate(1);
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             _8cnvctx.scrollobj.set(0);
@@ -3215,6 +3206,9 @@ var taplst =
     },
 },
 ];
+
+var tapobj = new circular_array("TAP", taplst);
+tapobj.set(1)
 
 Number.prototype.inrange = function(a, b)
 {
@@ -3360,7 +3354,7 @@ var thumblst =
             var blackfill = new FillPanel(THUMBFILL);
             blackfill.draw(context, r, 0, 0);
 
-            if (context.thumbcylinder)
+            if (context.thumbcylinder && factorobj.enabled)
             {
                 if (context.thumbrect.width > context.thumbrect.height)
                 {
@@ -3505,7 +3499,12 @@ var menulst =
         {
             clr = "black";
         }
-        else if (user.path == "FULLPANEL")
+        else if (user.path == "DEBUG")
+        {
+            if (factorobj.enabled)
+                clr = MENUSELECT;
+        }
+        else if (user.path == "FULLSCREEN")
         {
             if (screenfull.isFullscreen)
                 clr = MENUSELECT;
@@ -3513,11 +3512,6 @@ var menulst =
         else if (user.path == "THUMBNAIL")
         {
             if (thumbobj.current() == 1)
-                clr = MENUSELECT;
-        }
-        else if (user.path == "DETACH")
-        {
-            if (factorobj.enabled)
                 clr = MENUSELECT;
         }
 
@@ -3561,25 +3555,29 @@ var menulst =
             user.lst = lst;
         }
 
-        if (!user.thumbimg)
+        if (!user.thumbcanvas)
         {
-            user.thumbimg = new Image();
+            var thumbimg = new Image();
+            user.thumbcanvas = document.createElement('canvas');
+            user.thumbcanvas.width = 0;
+            user.thumbcanvas.height = 0;
             if (user.thumb)
-                user.thumbimg.src = user.thumb;
+                thumbimg.src = user.thumb;
             else if (user.full)
-                user.thumbimg.src = user.full;
+                thumbimg.src = user.full;
             else if (user.url)
-                user.thumbimg.src = user.url;
+                thumbimg.src = user.url
+            else if (user.file)
+                thumbimg.src = URL.createObjectURL(user.file);
             else
             {
                 var template = galleryobj.thumb ? galleryobj.thumb : "thumb";
-                user.thumbimg.src = `https://reportbase.com/image/${user.id}/${template}`;
+                thumbimg.src = `https://reportbase.com/image/${user.id}/${template}`;
             }
 
-            user.thumbimg.onload = function()
+            thumbimg.onload = function()
             {
-                user.thumbcanvas = document.createElement('canvas');
-                let ctx = user.thumbcanvas.getContext("2d");
+               let ctx = user.thumbcanvas.getContext("2d");
                 var a = this.width/this.height;
                 user.thumbcanvas.width = rect.width;
                 user.thumbcanvas.height = rect.width/a;
@@ -3590,7 +3588,7 @@ var menulst =
         }
 
         var obj = context.scrollobj;
-        if (obj.current() == 0 && user.thumbcanvas)
+        if (obj.current() == 0 && user.thumbcanvas.width)
         {
             obj = obj.getcurrent();
             var h2 = rect.height+120;
@@ -3630,18 +3628,18 @@ var menulst =
 
             var s = user.externalink ? -1 : 1;
             var e = user.externalink ? "black" : "white";
-            var j = galleryobj.getcurrent().full;
             var b = time == galleryobj.current() || user.tap;
+            var j = context.timemain||context.hidebuttons;
             var a = new RowA([20,20,20,0,20,20,20],
                 [
                     0,
-                    new ShadowPanel(new Text(e, "center", "middle",0,0,0),s,s),
+                    j?0:new ShadowPanel(new Text(e, "center", "middle",0,0,0),s,s),
                     0,
 
                     0,
 
-                    new ShadowPanel(new Text(e, "center", "middle",0,0,0),s,s),
-                    new ShadowPanel(new Text(e, "center", "middle",0,0,0),s,s),
+                    j?0:new ShadowPanel(new Text(e, "center", "middle",0,0,0),s,s),
+                    j?0:new ShadowPanel(new Text(e, "center", "middle",0,0,0),s,s),
                     0,
                 ]);
 
@@ -4831,24 +4829,23 @@ var headlst =
 [
 	new function ()
 	{
-        this.pan = function (context, rect, x, y, type) { panlst[2].pan(_4cnvctx, rect, x, y, type); }
-        this.panend = function (context, rect, x, y) { panlst[2].panend(_4cnvctx, rect, x, y); }
-        this.panstart = function (context, rect, x, y) { panlst[2].panstart(_4cnvctx, rect, x, y); }
-        this.swipeleftright = function (context, rect, x, y, evt) { swipelst[2].swipeleftright(_4cnvctx, rect, x, y, evt); }
-        this.swipeupdown = function (context, rect, x, y, evt) { swipelst[2].swipeupdown(_4cnvctx, rect, x, y, evt); }
-    	this.press = function (context, rect, x, y) {headlst[0].press(_4cnvctx, rect, x, y)}
-     	this.tap = function (context, rect, x, y) {};
-    	this.press = function (context, rect, x, y) {}
+        this.pan = function (context, rect, x, y, type) { panobj.getcurrent().pan(_4cnvctx, rect, x, y, type); }
+        this.panend = function (context, rect, x, y) { panobj.getcurrent().panend(_4cnvctx, rect, x, y); }
+        this.panstart = function (context, rect, x, y) { panobj.getcurrent().panstart(_4cnvctx, rect, x, y); }
+        this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.getcurrent().swipeleftright(_4cnvctx, rect, x, y, evt); }
+        this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.getcurrent().swipeupdown(_4cnvctx, rect, x, y, evt); }
+    	this.press = function (context, rect, x, y) {pressobj.geturrent().press(_4cnvctx, rect, x, y)}
+     	this.tap = function (context, rect, x, y) {tapobj.getcurrent().tap(_4cnvctx, rect, x, y)};
 		this.draw = function (context, rect, user, time) {};
 	},
 	new function ()
 	{
-        this.pan = function (context, rect, x, y, type) { panlst[2].pan(_4cnvctx, rect, x, y, type); }
-        this.panend = function (context, rect, x, y) { panlst[2].panend(_4cnvctx, rect, x, y); }
-        this.panstart = function (context, rect, x, y) { panlst[2].panstart(_4cnvctx, rect, x, y); }
-        this.swipeleftright = function (context, rect, x, y, evt) { swipelst[2].swipeleftright(_4cnvctx, rect, x, y, evt); }
-        this.swipeupdown = function (context, rect, x, y, evt) { swipelst[2].swipeupdown(_4cnvctx, rect, x, y, evt); }
-    	this.press = function (context, rect, x, y) {headlst[0].press(_4cnvctx, rect, x, y)}
+        this.pan = function (context, rect, x, y, type) { panobj.getcurrent().pan(_4cnvctx, rect, x, y, type); }
+        this.panend = function (context, rect, x, y) { panobj.getcurrent().panend(_4cnvctx, rect, x, y); }
+        this.panstart = function (context, rect, x, y) { panobj.getcurrent().panstart(_4cnvctx, rect, x, y); }
+        this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.getcurrent().swipeleftright(_4cnvctx, rect, x, y, evt); }
+        this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.getcurrent().swipeupdown(_4cnvctx, rect, x, y, evt); }
+    	this.press = function (context, rect, x, y) {pressobj.getcurrent().press(_4cnvctx, rect, x, y)}
 
      	this.tap = function (context, rect, x, y)
 		{
@@ -4892,13 +4889,11 @@ var headlst =
                         screenfull.request();
                 }
             }
-            else if (ismenu())
+            else
             {
-                menuhide();
+     	        tapobj.getcurrent().tap(_4cnvctx, rect, x, y);
             }
 
-            _4cnvctx.refresh();
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             setTimeout(function()
             {
                 _4cnvctx.refresh();
@@ -4908,6 +4903,8 @@ var headlst =
 
 		this.draw = function (context, rect, user, time)
         {
+            if (_4cnvctx.slidestp > 0)
+                return;
             context.clear();
             context.save();
             var a = new Row([BEXTENT,0],
@@ -4933,17 +4930,14 @@ var headlst =
     },
 	new function ()
 	{
-        this.pan = function (context, rect, x, y, type) { panlst[2].pan(_4cnvctx, rect, x, y, type); }
-        this.panend = function (context, rect, x, y) { panlst[2].panend(_4cnvctx, rect, x, y); }
-        this.panstart = function (context, rect, x, y) { panlst[2].panstart(_4cnvctx, rect, x, y); }
-        this.swipeleftright = function (context, rect, x, y, evt) { swipelst[2].swipeleftright(_4cnvctx, rect, x, y, evt); }
-        this.swipeupdown = function (context, rect, x, y, evt) { swipelst[2].swipeupdown(_4cnvctx, rect, x, y, evt); }
-    	this.press = function (context, rect, x, y) {headlst[0].press(_4cnvctx, rect, x, y)}
-    	this.tap = function (context, rect, x, y) {headlst[0].tap(_4cnvctx, rect, x, y)}
-
-		this.draw = function (context, rect, user, time)
-		{
-		};
+        this.pan = function (context, rect, x, y, type) { panobj.getcurrent().pan(_4cnvctx, rect, x, y, type); }
+        this.panend = function (context, rect, x, y) { panobj.getcurrent().panend(_4cnvctx, rect, x, y); }
+        this.panstart = function (context, rect, x, y) { panobj.getcurrent().panstart(_4cnvctx, rect, x, y); }
+        this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.getcurrent().swipeleftright(_4cnvctx, rect, x, y, evt); }
+        this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.getcurrent().swipeupdown(_4cnvctx, rect, x, y, evt); }
+    	this.press = function (context, rect, x, y) {pressobj.getcurrent().press(_4cnvctx, rect, x, y)}
+    	this.tap = function (context, rect, x, y) {tapobj.getcurrent().tap(_4cnvctx, rect, x, y);}
+		this.draw = function (context, rect, user, time) { };
 	},
 	new function ()
 	{
@@ -4977,7 +4971,12 @@ var headlst =
         this.swipeupdown = function (context, rect, x, y, evt)
         {
         }
-    	this.press = function (context, rect, x, y) {headlst[0].press(_4cnvctx, rect, x, y)}
+    	this.press = function (context, rect, x, y)
+        {
+            headobj.set(5);
+            headham.panel = headobj.getcurrent();
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+        }
 
     	this.tap = function (context, rect, x, y)
 		{
@@ -5016,6 +5015,10 @@ var headlst =
                     showprompt(galleryobj.getcurrent());
                 }
             }
+            else
+            {
+                tapobj.getcurrent().tap(_4cnvctx, rect, x, y);
+            }
 		};
 
 		this.draw = function (context, rect, user, time)
@@ -5026,7 +5029,7 @@ var headlst =
             context.prompt = new rectangle()
             delete context.pagepanel;
             delete context.optionpanel;
-           var w = 640;
+           var w = MENUWIDTH;
             if (w > rect.width-BEXTENT*2)
                 w = rect.width-BEXTENT*2;
             var e = context.scrollobj.berp();
@@ -5072,17 +5075,13 @@ var headlst =
 	},
 	new function ()
 	{
-        this.pan = function (context, rect, x, y, type) { panlst[2].pan(_4cnvctx, rect, x, y, type); }
-        this.panend = function (context, rect, x, y) { panlst[2].panend(_4cnvctx, rect, x, y); }
-        this.panstart = function (context, rect, x, y) { panlst[2].panstart(_4cnvctx, rect, x, y); }
-        this.swipeleftright = function (context, rect, x, y, evt) { swipelst[2].swipeleftright(_4cnvctx, rect, x, y, evt); }
-        this.swipeupdown = function (context, rect, x, y, evt) { swipelst[2].swipeupdown(_4cnvctx, rect, x, y, evt); }
-    	this.press = function (context, rect, x, y) {headlst[0].press(_4cnvctx, rect, x, y)}
-
-    	this.tap = function (context, rect, x, y)
-		{
-            showsearch();
-		};
+        this.pan = function (context, rect, x, y, type) { panobj.getcurrent().pan(_4cnvctx, rect, x, y, type); }
+        this.panend = function (context, rect, x, y) { panobj.getcurrent().panend(_4cnvctx, rect, x, y); }
+        this.panstart = function (context, rect, x, y) { panobj.getcurrent().panstart(_4cnvctx, rect, x, y); }
+        this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.getcurrent().swipeleftright(_4cnvctx, rect, x, y, evt); }
+        this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.getcurrent().swipeupdown(_4cnvctx, rect, x, y, evt); }
+    	this.press = function (context, rect, x, y) {pressobj.getcurrent().press(_4cnvctx, rect, x, y)}
+        this.tap = function (context, rect, x, y) { showsearch(); };
 
 		this.draw = function (context, rect, user, time)
 		{
@@ -5106,13 +5105,13 @@ var headlst =
 	},
 	new function ()
 	{
-        this.pan = function (context, rect, x, y, type) { panlst[2].pan(_4cnvctx, rect, x, y, type); }
-        this.panend = function (context, rect, x, y) { panlst[2].panend(_4cnvctx, rect, x, y); }
-        this.panstart = function (context, rect, x, y) { panlst[2].panstart(_4cnvctx, rect, x, y); }
-        this.swipeleftright = function (context, rect, x, y, evt) { swipelst[2].swipeleftright(_4cnvctx, rect, x, y, evt); }
-        this.swipeupdown = function (context, rect, x, y, evt) { swipelst[2].swipeupdown(_4cnvctx, rect, x, y, evt); }
-    	this.press = function (context, rect, x, y) {headlst[0].press(_4cnvctx, rect, x, y)}
-        this.tap = function (context, rect, x, y){headlst[3].press(_4cnvctx, rect, x, y)}
+        this.pan = function (context, rect, x, y, type) { panobj.getcurrent().pan(_4cnvctx, rect, x, y, type); }
+        this.panend = function (context, rect, x, y) { panobj.getcurrent().panend(_4cnvctx, rect, x, y); }
+        this.panstart = function (context, rect, x, y) { panobj.getcurrent().panstart(_4cnvctx, rect, x, y); }
+        this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.getcurrent().swipeleftright(_4cnvctx, rect, x, y, evt); }
+        this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.getcurrent().swipeupdown(_4cnvctx, rect, x, y, evt); }
+        this.tap = function (context, rect, x, y){ tapobj.getcurrent().tap(_4cnvctx, rect, x, y); }
+    	this.press = function (context, rect, x, y) {pressobj.getcurrent().press(_4cnvctx, rect, x, y)}
 
 		this.draw = function (context, rect, user, time)
 		{
@@ -5123,17 +5122,14 @@ var headlst =
 	},
 	new function ()
 	{
-        this.pan = function (context, rect, x, y, type) { panlst[2].pan(_4cnvctx, rect, x, y, type); }
-        this.panend = function (context, rect, x, y) { panlst[2].panend(_4cnvctx, rect, x, y); }
-        this.panstart = function (context, rect, x, y) { panlst[2].panstart(_4cnvctx, rect, x, y); }
-        this.swipeleftright = function (context, rect, x, y, evt) { swipelst[2].swipeleftright(_4cnvctx, rect, x, y, evt); }
-        this.swipeupdown = function (context, rect, x, y, evt) { swipelst[2].swipeupdown(_4cnvctx, rect, x, y, evt); }
-    	this.press = function (context, rect, x, y) {headlst[0].press(_4cnvctx, rect, x, y)}
-    	this.tap = function (context, rect, x, y) {headlst[0].tap(_4cnvctx, rect, x, y)}
-
-		this.draw = function (context, rect, user, time)
-		{
-		};
+        this.pan = function (context, rect, x, y, type) { panobj.getcurrent().pan(_4cnvctx, rect, x, y, type); }
+        this.panend = function (context, rect, x, y) { panobj.getcurrent().panend(_4cnvctx, rect, x, y); }
+        this.panstart = function (context, rect, x, y) { panobj.getcurrent().panstart(_4cnvctx, rect, x, y); }
+        this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.getcurrent().swipeleftright(_4cnvctx, rect, x, y, evt); }
+        this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.getcurrent().swipeupdown(_4cnvctx, rect, x, y, evt); }
+    	this.press = function (context, rect, x, y) {pressobj.getcurrent().press(_4cnvctx, rect, x, y)}
+        this.tap = function (context, rect, x, y){ tapobj.getcurrent().tap(_4cnvctx, rect, x, y); }
+		this.draw = function (context, rect, user, time) { };
 	},
 ];
 
@@ -5404,10 +5400,9 @@ galleryobj.init = function(obj)
     }
     else
     {
-        headobj.set(3);
-
         if (leftmenu && galleryobj.length())
         {
+            headobj.set(1);
             _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
             menutoggle(_8cnvctx)
             _4cnvctx.refresh();
@@ -5454,11 +5449,26 @@ galleryobj.init = function(obj)
                 link.download = galleryobj.getcurrent()[0] + ".jpg";
                 link.click();
             }},
-        {title:"Copy Address", path: "COPYLINK", func: function()
+        {title:"Copy Link", path: "COPYLINK", func: function()
             {
                 copytext(addressobj.full());
                 menuhide();
             }},
+        {title:"Fullscreen", path: "FULLSCREEN", func: function()
+            {
+                if (screenfull.isEnabled)
+                {
+                    if (screenfull.isFullscreen)
+                        screenfull.exit();
+                    else
+                        screenfull.request();
+                }
+            }},
+        {title:"Debug", path: "DEBUG", func: function()
+            {
+                debug();
+            }},
+
         {title:"Login", path: "LOGIN", func: function() { authClient.redirectToLoginPage(); }},
         {title:"Logout", path: "LOGOUT", func: function() { authClient.logout(true) }},
         {title:"Account", path: "ACCOUNT", func: function() { authClient.redirectToAccountPage() }},
@@ -5729,6 +5739,8 @@ function galleryshow()
         _8cnvctx.timeobj.rotate(k);
     }
 
+    _8cnvctx.hidebuttons = 0;
+    _8cnvctx.scrollobj.set(0);
     menutoggle(_8cnvctx)
 }
 
@@ -5797,6 +5809,23 @@ function autotime()
             context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
             context.refresh()
         }, url.gallery);
+    }
+}
+
+function debug()
+{
+    if (url.origin == "http://reportbase.me")
+    {
+        factorobj.enabled = factorobj.enabled ? 0 : 1;
+        _4cnvctx.refresh();
+    }
+    else
+    {
+        _8cnvctx.scrollobj.set(0);
+        _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+        var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
+        _8cnvctx.timeobj.rotate(k);
+        menutoggle(_8cnvctx)
     }
 }
 
