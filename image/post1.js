@@ -1,8 +1,6 @@
 //node post.js post.json
 const fs = require('fs');
 const args = process.argv;
-const CLOUDFLARE_ID = process.env.CLOUDFLARE_ID;
-const CLOUDFLARE_IMAGE_TOKEN = process.env.CLOUDFLARE_IMAGE_TOKEN;
 
 async function upload(obj)
 {

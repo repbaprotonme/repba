@@ -1,5 +1,4 @@
-#curl -X REPORT "https://reportbase.com/image/3197aa32-8cc8-452b-7eb9-3fdb2bb5ce00"
-curl -X REPORT "https://reportbase.com/image/boat.0000"
+curl -X REPORT "https://reportbase.com/image/BOAT.0000"
 
 
 
