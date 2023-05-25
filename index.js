@@ -200,6 +200,7 @@ let circular_array = function (title, data)
 
 var timemain = new circular_array("TIMEMAIN", 30);
 timemain.set(4);
+var speedxobj = new circular_array("SPEEDX", 100);
 var speedyobj = new circular_array("SPEEDY", 100);
 var colobj = new circular_array("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new circular_array("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
@@ -297,7 +298,7 @@ function drawslices()
                 slice.strechwidth = stretchwidth;
                 var wid = factorobj.enabled ? context.colwidth : stretchwidth;
                 context.drawImage(slice.canvas, slice.x, 0, context.colwidth, rect.height,
-                  slice.bx, 0, wid, rect.height);
+                Math.ceil(slice.bx), 0, Math.ceil(wid), rect.height);
                 bx = bx2;
             }
 
@@ -577,25 +578,24 @@ var DualPanel = function ()
     this.draw = function (context, rect, user, time)
     {
         context.save();
-        var a = new ColA([SCROLLBARWIDTH,0,SCROLLBARWIDTH],
+        var a = new LayerA(
         [
-            new Layer(
+            new Row([0,SCROLLBARWIDTH],
             [
-    //            new FillPanel("rgba(0,0,0,0.7)"),
-                new CurrentVPanel(new FillPanel("white"), 60, 0),
+                0,
+                new CurrentHPanel(new FillPanel("white"), 60, 1),
             ]),
-            0,
-            new Layer(
+            new Col([0,SCROLLBARWIDTH],
             [
-     //           new FillPanel("rgba(0,0,0,0.7)"),
+                0,
                 new CurrentVPanel(new FillPanel("white"), 60, 1),
-            ]),
+            ])
         ]);
+
 
         a.draw(context, rect,
         [
             context.index == 7 ? context.scrollobj.getcurrent(): context.scrollobj,
-            0,
             context.timeobj
         ],
         0);
@@ -2077,7 +2077,6 @@ function dropfiles(files)
     menuhide();
     _8cnvctx.sliceobj.data = galleryobj.data;
     var slices = _8cnvctx.sliceobj;
-    _8cnvctx.buttonheight = 200;
     _8cnvctx.delayinterval = DELAYCENTER / slices.length();
     _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
     _8cnvctx.scrollobj.set(0);
@@ -2135,17 +2134,7 @@ var panlst =
         var obj = context.scrollobj;
         if (context.index == 7)
             obj = context.scrollobj.getcurrent();
-        if (obj && context.leftside)
-        {
-            var k = panvert(obj, y);
-            if (k == -1)
-                return;
-            if (k == obj.anchor())
-                return;
-            obj.set(k);
-            context.refresh()
-        }
-        else if (context.rightside)
+        if (context.rightside)
         {
             var obj = context.timeobj;
             var m = y/rect.height;
@@ -2155,11 +2144,10 @@ var panlst =
         }
         else if (obj && (type == "panleft" || type == "panright"))
         {
-            context.slideshow = 0;
             if (context.type == "panup" || context.type == "pandown")
                 return;
             context.type = type;
-            var k = panhorz(obj, rect.width-x);
+            var k = panhorz(obj, (rect.width-x)/obj.factor);
             if (k == -1)
                 return;
             if (k == obj.anchor())
@@ -2190,7 +2178,6 @@ var panlst =
         clearInterval(context.autotime);
         context.autotime = 0;
         context.type = 0;
-        context.leftside = x < MENUPANWIDTH;
         context.rightside = x > rect.width-MENUPANWIDTH;
         context.starty = y;
         context.startt = context.timeobj.current();
@@ -2663,12 +2650,23 @@ var swipelst =
     name: "SEARCH",
     swipeleftright: function (context, rect, x, y, evt)
     {
+        var obj = context.scrollobj.getcurrent();
+        clearInterval(context.swipeleftright)
+        globalobj.slide = 5;
+        context.swipeleftright = setInterval(function()
+        {
+            obj.rotateperc(evt.type == "swipeleft" ? globalobj.slide: -globalobj.slide);
+            context.refresh();
+            globalobj.slide -= 0.5;
+            if (globalobj.slide < 0)
+                clearInterval(context.swipeleftright)
+        }, timemain.getcurrent());
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
-        context.slideshow = (context.timeobj.length()/context.virtualheight)*4;
+        context.slideshow = (context.timeobj.length()/context.virtualheight)*5;
         context.swipetype = evt.type;
-        context.slidereduce = context.slideshow/75;
+        context.slidereduce = context.slideshow/20;
         clearInterval(context.timemain);
         context.timemain = setInterval(function () { context.refresh(); }, globalobj.timemain);
         context.refresh();
@@ -3067,8 +3065,6 @@ var taplst =
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             _8cnvctx.scrollobj.set(0);
             _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-            //var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-            //_8cnvctx.timeobj.rotate(k);
             menutoggle(_8cnvctx)
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
@@ -3118,8 +3114,6 @@ var taplst =
         if (context.home && context.home.hitest(x,y))
         {
             _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-            //var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-            //_8cnvctx.timeobj.rotate(k);
             _8cnvctx.refresh();
             clearTimeout(globalobj.timetap)
             globalobj.timetap = setTimeout(function()
@@ -3149,8 +3143,6 @@ var taplst =
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             _8cnvctx.scrollobj.set(0);
             _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-            //var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-            //_8cnvctx.timeobj.rotate(k);
             menutoggle(_8cnvctx)
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
@@ -3433,14 +3425,7 @@ var thumblst =
             {
                 whitestroke.draw(context, r, 0, 0);
 
-                if (xx > x)//leftside
-                {
-                    var r = new rectangle(xx-w,yy,ww,hh);
-                    context.selectrect.push(r);
-                    blackfill.draw(context, r, 0, 0);
-                    whitestroke.draw(context, r, 0, 0);
-                }
-                else if (xx < x)//right side
+                if (xx < x)//right side
                 {
                     var r = new rectangle(w+xx,yy,ww,hh);
                     context.selectrect.push(r);
@@ -3618,7 +3603,7 @@ var menulst =
 
             thumbimg.onload = function()
             {
-               let ctx = user.thumbcanvas.getContext("2d");
+                let ctx = user.thumbcanvas.getContext("2d");
                 var a = this.width/this.height;
                 user.thumbcanvas.width = rect.width;
                 user.thumbcanvas.height = rect.width/a;
@@ -3627,6 +3612,7 @@ var menulst =
                     user.thumbcanvas.height = rect.height+ex;
                     user.thumbcanvas.width = user.thumbcanvas.height*a;
                 }
+
                 ctx.drawImage(this, 0, 0, this.width, this.height, 0, 0, user.thumbcanvas.width,
                     user.thumbcanvas.height);
                 context.refresh();
@@ -4002,6 +3988,8 @@ for (var n = 0; n < contextlst.length; ++n)
     context.imagescrollobj = new circular_array("IMAGESCROLL", Math.floor(window.innerHeight/2));
     context.imagescrollobj.set(context.imagescrollobj.length()/5);
     context.textscrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
+    context.imagescrollobj.factor = 4;
+    context.textscrollobj.factor = 1;
 }
 
 _8cnvctx.scrollobj = new circular_array("SCROLL", [_8cnvctx.imagescrollobj,_8cnvctx.textscrollobj]);
@@ -5041,8 +5029,6 @@ var headlst =
                 _4cnvctx.movepage(-1);
                 _8cnvctx.scrollobj.set(0);
                 _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-                //var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-                //_8cnvctx.timeobj.rotate(k);
                 _8cnvctx.refresh();
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             }
@@ -5051,8 +5037,6 @@ var headlst =
                 _4cnvctx.movepage(1);
                 _8cnvctx.scrollobj.set(0);
                 _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-                //var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-                //_8cnvctx.timeobj.rotate(k);
                 _8cnvctx.refresh();
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             }
@@ -5067,6 +5051,10 @@ var headlst =
                 else if (galleryobj.getcurrent().prompt)
                 {
                     showprompt(galleryobj.getcurrent());
+                }
+                else
+                {
+                    tapobj.getcurrent().tap(_4cnvctx, rect, x, y);
                 }
             }
             else
@@ -5446,6 +5434,7 @@ galleryobj.init = function(obj)
     pretchobj.split(60, "40-90", pretchobj.length());
     letchobj.split(60, "40-90", letchobj.length());
     speedyobj.split(1.25, "1-20", speedyobj.length());
+    speedxobj.split(10.25, "1-20", speedxobj.length());
 
     if (!galleryobj.length())
     {
@@ -5864,8 +5853,6 @@ function debug()
     {
         _8cnvctx.scrollobj.set(0);
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-        //var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-        //_8cnvctx.timeobj.rotate(k);
         menutoggle(_8cnvctx)
     }
 }
