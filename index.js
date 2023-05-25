@@ -373,7 +373,7 @@ function drawslices()
             let y = Math.berp(-1, 1, bos) * context.virtualheight;
             y -= e;
             var x = w/2;
-            var j = context.buttonheight*6;
+            var j = context.buttonheight*2;
             if (y < -j || y >= window.innerHeight+j)
                 continue;
             context.visibles.push({slice, x, y, m});
@@ -541,11 +541,10 @@ var SearchBar = function ()
                     new Rectangle(context.footer),
                     0,
                 ]),
-                new ColA([0,50,50,0],
+                new Col([0,50,0],
                 [
                     0,
-                    new ShiftPanel(new DropPanel(),-10,0),
-                    new ShiftPanel(new UploadPanel(),10,0),
+                    new DropPanel(),
                     0,
                 ]),
             ]),
@@ -632,7 +631,7 @@ var eventlst =
     {name: "_5cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Metadata"), scroll: new DualPanel(), buttonheight: 90},
     {name: "_6cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Share"), scroll: new ScrollBarPanel(), buttonheight: 50},
     {name: "_7cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Help"), scroll: new DualPanel(), buttonheight: 90},
-    {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SEARCH", pan: "MENU", swipe: "SEARCH", draw: "SEARCH", wheel: "MENU", drop: "GALLERY", key: "SEARCH", press: "SEARCH", pinch: "DEFAULT", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 200},
+    {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SEARCH", pan: "MENU", swipe: "SEARCH", draw: "SEARCH", wheel: "MENU", drop: "GALLERY", key: "SEARCH", press: "SEARCH", pinch: "DEFAULT", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 320},
     {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Image Browser"), scroll: new ScrollBarPanel(), buttonheight: 50},
 ];
 
@@ -739,6 +738,26 @@ function downloadtext(name, text)
 	document.body.appendChild(element);
 	element.click();
 	document.body.removeChild(element);
+}
+
+function downloadimage()
+{
+    var url = `https://reportbase.com/image/HOPE.0000/blob`;
+    fetch(url)
+    .then(response => response.blob())
+    .then(blob =>
+    {
+      const anchor = document.createElement('a');
+      anchor.href = URL.createObjectURL(blob);
+      anchor.download = 'image.jpg';
+      anchor.click();
+      URL.revokeObjectURL(anchor.href);
+      anchor.remove();
+    })
+    .catch(error =>
+    {
+      console.error('Error downloading image:', error);
+    });
 }
 
 Math.berp = function (v0, v1, t) { return (t - v0) / (v1 - v0); };
@@ -3048,8 +3067,8 @@ var taplst =
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             _8cnvctx.scrollobj.set(0);
             _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-            var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-            _8cnvctx.timeobj.rotate(k);
+            //var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
+            //_8cnvctx.timeobj.rotate(k);
             menutoggle(_8cnvctx)
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
@@ -3099,8 +3118,8 @@ var taplst =
         if (context.home && context.home.hitest(x,y))
         {
             _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-            var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-            _8cnvctx.timeobj.rotate(k);
+            //var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
+            //_8cnvctx.timeobj.rotate(k);
             _8cnvctx.refresh();
             clearTimeout(globalobj.timetap)
             globalobj.timetap = setTimeout(function()
@@ -3130,8 +3149,8 @@ var taplst =
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             _8cnvctx.scrollobj.set(0);
             _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-            var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-            _8cnvctx.timeobj.rotate(k);
+            //var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
+            //_8cnvctx.timeobj.rotate(k);
             menutoggle(_8cnvctx)
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
@@ -3553,8 +3572,9 @@ var menulst =
         context.save();
         rect.height = context.buttonheight;
         context.translate(-rect.width/2, -rect.height/2);
+        var ex = 190;
         user.fitwidth = rect.width;
-        user.fitheight = rect.height+100;
+        user.fitheight = rect.height+ex;
 
         if (!user.lst)
         {
@@ -3602,6 +3622,11 @@ var menulst =
                 var a = this.width/this.height;
                 user.thumbcanvas.width = rect.width;
                 user.thumbcanvas.height = rect.width/a;
+                if (user.thumbcanvas.height < rect.height+ex)
+                {
+                    user.thumbcanvas.height = rect.height+ex;
+                    user.thumbcanvas.width = user.thumbcanvas.height*a;
+                }
                 ctx.drawImage(this, 0, 0, this.width, this.height, 0, 0, user.thumbcanvas.width,
                     user.thumbcanvas.height);
                 context.refresh();
@@ -3612,7 +3637,7 @@ var menulst =
         if (obj.current() == 0 && user.thumbcanvas.width)
         {
             obj = obj.getcurrent();
-            var h2 = rect.height+120;
+            var h2 = rect.height+ex;
             var w2 = rect.width;
             var a2 = w2/h2;
             if (user.thumbcanvas.width/user.thumbcanvas.height > a2)
@@ -3664,7 +3689,7 @@ var menulst =
                     0,
                 ]);
 
-            a.draw(context, new rectangle(0,-60,rect.width,rect.height+120),
+            a.draw(context, new rectangle(0,-60,rect.width,rect.height+ex),
             [
                 0,
                 `${time+1} of ${galleryobj.length()}`,
@@ -4029,9 +4054,14 @@ contextobj.reset = function (leftright)
 
             var j = "";
             if (url.searchParams.has(galleryobj.repos))
-                j = url.searchParams.get(galleryobj.repos).split(".")[0].proper();
+            {
+                var k = url.searchParams.get(galleryobj.repos).split(".")[0].proper();
+                j = `${k}.${galleryobj.current().pad(4)}`;
+            }
             else
+            {
                 j = `${url.path}.${galleryobj.current().pad(4)}`;
+            }
 
             document.title = `${j} (${photo.image.width}x${photo.image.height})`;
 
@@ -5011,8 +5041,8 @@ var headlst =
                 _4cnvctx.movepage(-1);
                 _8cnvctx.scrollobj.set(0);
                 _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-                var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-                _8cnvctx.timeobj.rotate(k);
+                //var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
+                //_8cnvctx.timeobj.rotate(k);
                 _8cnvctx.refresh();
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             }
@@ -5021,8 +5051,8 @@ var headlst =
                 _4cnvctx.movepage(1);
                 _8cnvctx.scrollobj.set(0);
                 _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-                var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-                _8cnvctx.timeobj.rotate(k);
+                //var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
+                //_8cnvctx.timeobj.rotate(k);
                 _8cnvctx.refresh();
                 headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             }
@@ -5442,7 +5472,6 @@ galleryobj.init = function(obj)
     var h = window.self !== window.top ? 0 : BEXTENT;
     headcnvctx.show(0,0,window.innerWidth,h);
     headham.panel = headobj.getcurrent();
-    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
     //_2cnv
     _2cnvctx.sliceobj.data =
@@ -5835,8 +5864,8 @@ function debug()
     {
         _8cnvctx.scrollobj.set(0);
         _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-        var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
-        _8cnvctx.timeobj.rotate(k);
+        //var k = Math.lerp(0,TIMEOBJ/_8cnvctx.sliceobj.length(),galleryobj.berp())
+        //_8cnvctx.timeobj.rotate(k);
         menutoggle(_8cnvctx)
     }
 }

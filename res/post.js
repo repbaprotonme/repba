@@ -6,11 +6,11 @@ async function upload(obj)
 {
     const res = await fetch('https://reportbase.com/image/',
     {
-      method: 'POST',
-      headers:
-      {
-        'Content-Type': 'application/json'
-      },
+        method: 'POST',
+        headers:
+        {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify(obj),
     });
 
@@ -26,7 +26,7 @@ async function load(json)
         json.data[n].id = id;
     }
 
-    console.log(json);
+    console.log(JSON.stringify(json));
 }
 
 fs.readFile(args[2], 'utf8', (error, str) =>
