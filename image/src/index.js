@@ -47,22 +47,20 @@ export default
       }
       case 'PATCH':
       {
-          const options =
-            {
-                method: 'PATCH',
-                headers:
-                {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${CLOUDFLARE_IMAGE_TOKEN}`,
-                    'X-Auth-Key': `${CLOUDFLARE_AUTH_KEY}`,
-                    'X-Auth-Email': `${CLOUDFLARE_AUTH_EMAIL}`,
-                    'Access-Control-Allow-Origin': '*',
-                },
-                body: '{"metadata":{},"requireSignedURLs":false}'
-            };
+            const obj = await request.json()
+            delete obj.url;
+            var meta = JSON.stringify(obj);
 
-            var id = request.url.split("/").slice(-1).join("/");
-            return fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1/${id}`, options);
+            return fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1/${obj.id}`,
+                {
+                    method: "PATCH",
+                    headers:
+                    {
+                        'Authorization': `Bearer ${CLOUDFLARE_IMAGE_TOKEN}`,
+                    },
+                    body: `{"metadata":${meta},"requireSignedURLs":false}`
+                }
+            );
       }
       case 'POST':
       {
@@ -75,7 +73,7 @@ export default
             delete obj.url;
             body.append("metadata", JSON.stringify(obj));
 
-            const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1`,
+            return fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1`,
                 {
                     method: "POST",
                     headers:
@@ -85,13 +83,6 @@ export default
                     body,
                 }
             );
-
-            var k = await res.json();
-            return new Response(JSON.stringify(k.result), {
-              headers: {
-                "content-type": "application/json",
-              },
-            });
       }
       case 'GET':
       {

@@ -1,13 +1,22 @@
 const fs = require('fs');
+const args = process.argv;
 
-async function savePhotoFromAPI()
+async function load(json)
 {
-    const response = await fetch(`https://reportbase.com/image/HOPE.0000/blob`);
-    const arrayBuffer = await response.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    const outputFileName = `image.webp`
-    fs.createWriteStream(outputFileName).write(buffer);
+    for (var n = 0; n < json.data.length; n++)
+    {
+        var id = json.data[n].id;
+        var response = await fetch(`https://reportbase.com/image/${id}`, {method: 'REPORT'});
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        fs.createWriteStream(id).write(buffer);
+        console.log(id)
+    }
 }
 
-savePhotoFromAPI()
+fs.readFile(args[2], 'utf8', (error, str) =>
+{
+    var json = JSON.parse(str);
+    load(json);
+})
 
