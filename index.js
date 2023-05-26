@@ -8,7 +8,6 @@ http://www.reportbase.com
 
 const FIREFOX = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 const SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-const SAFIROX = SAFARI || FIREFOX;
 const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*2;
 const SWIPETIME = 200;
@@ -296,9 +295,13 @@ function drawslices()
 
                 slice.visible = 1;
                 slice.strechwidth = stretchwidth;
+                var bx = Math.ceil(slice.bx);
                 var wid = factorobj.enabled ? context.colwidth : stretchwidth;
-                context.drawImage(slice.canvas, slice.x, 0, context.colwidth, rect.height,
-                Math.ceil(slice.bx), 0, Math.ceil(wid), rect.height);
+                wid = Math.ceil(wid)+1;
+
+                context.drawImage(slice.canvas,
+                    slice.x, 0, context.colwidth, rect.height,
+                   bx, 0, wid, rect.height);
                 bx = bx2;
             }
 
@@ -309,8 +312,11 @@ function drawslices()
                 var slice = slicelst[0];
                 slice.visible = 1;
                 slice.strechwidth = w;
+                x = Math.ceil(x);
                 var wid = factorobj.enabled ? context.colwidth : w;
-                context.drawImage(slice.canvas, 0, 0, context.colwidth, rect.height,
+                wid = Math.ceil(wid)+1;
+                context.drawImage(slice.canvas,
+                      0, 0, context.colwidth, rect.height,
                       x, 0, wid, rect.height);
             }
 
@@ -2604,7 +2610,7 @@ pressobj.set(3);
 
 function moveupdown(context, up)
 {
-    context.updowntime += 3.0;
+    context.updowntime += 6.0;
     context.updowntime = Math.min(context.updowntime,9);
     if (up)
     {
@@ -3741,7 +3747,7 @@ function resetcanvas(leftright=1)
         context.show(0,0,window.innerWidth,window.innerHeight);
     }
 
-    var zoomax = 92.50;
+    var zoomax = 95.00;
     var n = 0;
     for (; n < zoomax; ++n)
     {
@@ -3784,7 +3790,7 @@ function resetcanvas(leftright=1)
             break;
     }
 
-    var canvaslen = SAFIROX?Math.ceil(context.virtualwidth/MAXVIRTUAL):1;
+    var canvaslen = Math.ceil(context.virtualwidth/MAXVIRTUAL);
     var e = slicelst[j-1];
     var delay = e.delay;
     var slices = Math.ceil(e.slices/canvaslen);
@@ -3810,6 +3816,9 @@ function resetcanvas(leftright=1)
         ctx.drawImage(photo.image,
             n*gwidth, context.nuby, gwidth, context.imageheight,
             0, 0, bwidth, cnv.height);
+
+        var tb = new Array(slices).fill(0);
+        var jb = gridToGridB(tb, bwidth);
 
         for (var e = 0; e < slices; ++e)
         {
