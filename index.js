@@ -1,5 +1,4 @@
 //todo: https://obfuscator.io
-//todo: safari max size
 
 /* ++ += ==
 Copyright 2017 Tom Brinkman
@@ -14,7 +13,7 @@ const SWIPETIME = 200;
 const MENUBARWIDTH = 12;
 const MENUPANWIDTH = 25;
 const THUMBORDER = 5;
-const THUMBSELECT = 0;
+const THUMBSELECT = 10;
 const JULIETIME = 100;
 const DELAY = 10000000;
 const ALIEXTENT = 60;
@@ -234,11 +233,11 @@ function drawslices()
                 {
                     clearInterval(context.timemain);
                     context.timemain = 0;
-                    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-                    thumbobj.getcurrent().draw(context, rect, 0, 0);
                 }
             }
 
+            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+            thumbobj.getcurrent().draw(context, rect, 0, 0);
             var stretch = stretchobj.getcurrent();
             context.virtualpinch = context.virtualwidth*stretch.getcurrent()/100;
             var colwidth = context.colwidth;
@@ -325,8 +324,7 @@ function drawslices()
             delete context.selectrect;
             delete context.thumbrect;
 
-            if (!context.timemain)
-                thumbobj.getcurrent().draw(context, rect, 0, 0);
+            thumbobj.getcurrent().draw(context, rect, 0, 0);
         }
     }
 
@@ -2610,8 +2608,10 @@ pressobj.set(3);
 
 function moveupdown(context, up)
 {
-    context.updowntime += 6.0;
-    context.updowntime = Math.min(context.updowntime,9);
+    var zoom = zoomobj.getcurrent();
+    var h = 1-zoom.getcurrent()/100;
+    context.updowntime += 5*h;
+    context.updowntime = Math.min(context.updowntime,20*h);
     if (up)
     {
         clearInterval(context.moveupdowntime);
@@ -2831,7 +2831,6 @@ var keylst =
             globalobj.slideshow = 0;
             _4cnvctx.movepage(evt.shiftKey?-1:1);
             _8cnvctx.scrollobj.set(0);
-            _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
             setTimeout(function(){ _8cnvctx.refresh();}, 100);
         }
   	}
@@ -2878,7 +2877,6 @@ var keylst =
         }
         else if (key == "arrowleft" || key == "h")
         {
-
             context.autodirect = 1;
             context.tab();
         }
@@ -3837,96 +3835,6 @@ function resetcanvas(leftright=1)
     context.refresh();
 }
 
-var extentlst =
-[
-{
-    name: "DEFAULT",
-    init: function ()
-    {
-    },
-},
-{
-    name: "TALL",
-    init: function ()
-    {
-        galleryobj.template = "portrait";
-        positxpobj.set(50);
-        positypobj.set(90);
-        positxlobj.set(50);
-        positylobj.set(90);
-        traitobj.split(50, "0.1-1.0", traitobj.length());
-        scapeobj.split(50, "0.1-1.0", scapeobj.length());
-        poomobj.set(25);
-        loomobj.set(25);
-    },
-},
-{
-    name: "PORTRAIT",
-    init: function ()
-    {
-        galleryobj.template = "portrait";
-        positxpobj.set(50);
-        positypobj.set(90);
-        positxlobj.set(50);
-        positylobj.set(90);
-        traitobj.split(50, "0.1-1.0", traitobj.length());
-        scapeobj.split(50, "0.1-1.0", scapeobj.length());
-        poomobj.set(25);
-        loomobj.set(25);
-    },
-},
-{
-    name: "ULTRAWIDE",
-    init: function ()
-    {
-        galleryobj.template = "wide";
-        galleryobj.thumb = "widethumbnail";
-        positxpobj.set(50);
-        positypobj.set(95);
-        positxlobj.set(50);
-        positylobj.set(95);
-        traitobj.split(95, "0.1-1.0", traitobj.length());
-        scapeobj.split(95, "0.1-1.0", scapeobj.length());
-        poomobj.set(0);
-        loomobj.set(0);
-    },
-},
-{
-    name: "WIDE",
-    init: function ()
-    {
-        galleryobj.template = "landscape";
-        galleryobj.thumb = "landthumb";
-        positxpobj.set(50);
-        positypobj.set(95);
-        positxlobj.set(50);
-        positylobj.set(95);
-        traitobj.split(90, "0.1-1.0", traitobj.length());
-        scapeobj.split(50, "0.1-1.0", scapeobj.length());
-        poomobj.set(25);
-        loomobj.set(25);
-    },
-},
-{
-    name: "LANDSCAPE",
-    init: function ()
-    {
-        galleryobj.template = "landscape";
-        galleryobj.thumb = "landthumb";
-        positxpobj.set(50);
-        positypobj.set(95);
-        positxlobj.set(50);
-        positylobj.set(95);
-        traitobj.split(95, "0.1-1.0", traitobj.length());
-        scapeobj.split(50, "0.1-1.0", scapeobj.length());
-        poomobj.set(30);
-        loomobj.set(30);
-    },
-},
-];
-
-var extentobj = new circular_array("EXTENT", extentlst);
-
 url.path = "BOAT";
 url.project = 0;
 var leftmenu = 1;
@@ -4062,25 +3970,6 @@ contextobj.reset = function (leftright)
 
             document.title = `${j} (${photo.image.width}x${photo.image.height})`;
 
-            var k;
-            if (this.aspect < 0.5)
-                k = "TALL"
-            else if (this.aspect < 1.0)
-                k = "PORTRAIT"
-            else if (this.aspect < 2.0)
-                k = "LANDSCAPE"
-            else if (this.aspect < 5.0)
-                k = "WIDE"
-            else
-                k = "ULTRAWIDE"
-
-            var j = extentlst.findIndex(function(a){return a.name == k;})
-            if (j != extentobj.current())
-            {
-                extentobj.set(j);
-                extentobj.getcurrent().init();
-            }
-
             _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
 
             _4cnvctx.pinched = 0;
@@ -4104,7 +3993,8 @@ function masterload()
         if (galleryobj.getcurrent().loaded)
            return;
         var id = galleryobj.getcurrent().id;
-        var path = `https://reportbase.com/image/${id}/${galleryobj.template}`;
+        var template = galleryobj.template ? galleryobj.template : "medium";
+        var path = `https://reportbase.com/image/${id}/${template}`;
         if (galleryobj.getcurrent().full)
             path = galleryobj.getcurrent().full;
         lst[n].src = path;
@@ -5444,6 +5334,14 @@ galleryobj.init = function(obj)
     letchobj.split(60, "40-90", letchobj.length());
     speedyobj.split(1.25, "1-20", speedyobj.length());
     speedxobj.split(10.25, "1-20", speedxobj.length());
+    positxpobj.set(50);
+    positypobj.set(50);
+    positxlobj.set(50);
+    positylobj.set(50);
+    traitobj.split(50, "0.1-1.0", traitobj.length());
+    scapeobj.split(50, "0.1-1.0", scapeobj.length());
+    poomobj.set(50);
+    loomobj.set(50);
 
     if (!galleryobj.length())
     {
