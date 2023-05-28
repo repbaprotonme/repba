@@ -54,9 +54,8 @@ let url = new URL(window.location.href);
 url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 3;
 url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : 100;
-url.thumb = url.searchParams.has("t") ? Number(url.searchParams.get("t")) : 1;
 url.transparent = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0;
-url.hidefocus = url.searchParams.has("j") ? Number(url.searchParams.get("j")) : 0;
+url.hidefocus = 0;
 url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
 url.gallery = url.searchParams.has("b") ? Number(url.searchParams.get("b")) : 500;
 url.autotime = url.searchParams.has("f") ? Number(url.searchParams.get("f")) : 0;
@@ -236,8 +235,6 @@ function drawslices()
                 }
             }
 
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            thumbobj.getcurrent().draw(context, rect, 0, 0);
             var stretch = stretchobj.getcurrent();
             context.virtualpinch = context.virtualwidth*stretch.getcurrent()/100;
             var colwidth = context.colwidth;
@@ -294,9 +291,11 @@ function drawslices()
 
                 slice.visible = 1;
                 slice.strechwidth = stretchwidth;
-                var bx = Math.ceil(slice.bx);
+                var bx = slice.bx;
                 var wid = factorobj.enabled ? context.colwidth : stretchwidth;
-                wid = Math.ceil(wid)+1;
+
+                //if (FIREFOX || SAFARI)
+                    wid = Math.ceil(bx+wid)-bx;
 
                 context.drawImage(slice.canvas,
                     slice.x, 0, context.colwidth, rect.height,
@@ -311,9 +310,9 @@ function drawslices()
                 var slice = slicelst[0];
                 slice.visible = 1;
                 slice.strechwidth = w;
-                x = Math.ceil(x);
                 var wid = factorobj.enabled ? context.colwidth : w;
-                wid = Math.ceil(wid)+1;
+                //if (FIREFOX || SAFARI)
+                   wid = Math.ceil(x+wid)-x;
                 context.drawImage(slice.canvas,
                       0, 0, context.colwidth, rect.height,
                       x, 0, wid, rect.height);
@@ -323,8 +322,10 @@ function drawslices()
             delete context.thumbcylinder;
             delete context.selectrect;
             delete context.thumbrect;
+            //headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
-            thumbobj.getcurrent().draw(context, rect, 0, 0);
+            if (!ismenu())
+                thumbobj.getcurrent().draw(context, rect, 0, 0);
         }
     }
 
@@ -513,7 +514,7 @@ var SearchBar = function ()
         context.header = new rectangle();
         context.footer = new rectangle();
         context.slide = new rectangle();
-        var j = context.timemain;
+        var j = 0;//context.timemain;
         var a = new RowA([80,0,80],
         [
             j?0:new Layer(
@@ -1474,9 +1475,7 @@ addressobj.full = function (k)
         url.pathname +
         j +
         "&page="+url.page+
-        "&t="+thumbobj.current()+
         "&g="+url.transparent+
-        "&j="+url.hidefocus+
         "&f="+url.autotime+
         "&b="+url.gallery+
         "&o="+url.slidestop+
@@ -1546,7 +1545,6 @@ CanvasRenderingContext2D.prototype.tab = function ()
        slidereduce *= 2;
     }
 
-    headcnvctx.clear();
     context.slidestop += slidestop;
     context.slidestop = Math.clamp(url.slidestop, url.slidestop*6, context.slidestop);
     context.slidestop = (1500/context.virtualwidth)*context.slidestop;
@@ -2088,7 +2086,6 @@ function dropfiles(files)
     delete _4cnvctx.thumbcanvas;
     delete photo.image;
     url.transparent = 0;
-    url.hidefocus = 0;
     _4cnvctx.isthumbrect = 0;
     headobj.set(3);
     headham.panel = headobj.getcurrent();
@@ -2593,10 +2590,6 @@ var presslst =
                 context.pressedthumb = 1;
             }
         }
-        else
-        {
-            thumbobj.rotate(1);
-        }
 
         context.refresh();
     }
@@ -2612,6 +2605,7 @@ function moveupdown(context, up)
     var h = 1-zoom.getcurrent()/100;
     context.updowntime += 5*h;
     context.updowntime = Math.min(context.updowntime,20*h);
+    context.upcount = 5*h;
     if (up)
     {
         clearInterval(context.moveupdowntime);
@@ -2621,7 +2615,8 @@ function moveupdown(context, up)
                 rowobj.set(j-context.updowntime);
                 contextobj.reset();
                 context.updowntime -= 0.1;
-                if (context.updowntime < 0)
+                context.upcount -= 0.1;
+                if (context.upcount < 0)
                 {
                     context.updowntime = 0;
                     clearInterval(context.moveupdowntime);
@@ -2635,8 +2630,9 @@ function moveupdown(context, up)
                 var j = rowobj.current();
                 rowobj.set(j+context.updowntime);
                 contextobj.reset();
-                context.updowntime -= 0.1;
-                if (context.updowntime < 0)
+                context.updowntime += 0.1;
+                context.upcount -= 0.1;
+                if (context.upcount < 0)
                 {
                     context.updowntime = 0;
                     clearInterval(context.moveupdowntime);
@@ -2699,19 +2695,12 @@ var swipelst =
     name: "BOSS",
     swipeleftright: function (context, rect, x, y, evt)
     {
-        headobj.set(3);
-        headham.panel = headobj.getcurrent();
-        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         context.autodirect = evt.type == "swipeleft"?-1:1;
         context.tab();
     },
 
     swipeupdown: function (context, rect, x, y, evt)
     {
-        headobj.set(1);
-        headham.panel = headobj.getcurrent();
-        headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-        menuhide();
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
             return;
@@ -3046,6 +3035,7 @@ var taplst =
             headobj.set(obj.getcurrent());
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+            thumbobj.set(headobj.current()==1?0:1);
             url.transparent = 0;
             url.hidefocus = 0;
             context.refresh();
@@ -3444,7 +3434,7 @@ var thumblst =
  ];
 
 var thumbobj = new circular_array("THUMB", thumblst);
-thumbobj.set(url.thumb);
+thumbobj.set(1);
 
 var getbuttonfrompoint = function (context, x, y)
 {
@@ -3665,7 +3655,7 @@ var menulst =
             var s = user.externalink ? -1 : 1;
             var e = user.externalink ? "black" : "white";
             var b = time == galleryobj.current() || user.tap;
-            var j = context.timemain||context.hidebuttons;
+            var j = context.hidebuttons;
             var a = new RowA([20,20,20,0,20,20,20],
                 [
                     0,
@@ -5335,13 +5325,13 @@ galleryobj.init = function(obj)
     speedyobj.split(1.25, "1-20", speedyobj.length());
     speedxobj.split(10.25, "1-20", speedxobj.length());
     positxpobj.set(50);
-    positypobj.set(50);
+    positypobj.set(90);
     positxlobj.set(50);
-    positylobj.set(50);
-    traitobj.split(50, "0.1-1.0", traitobj.length());
-    scapeobj.split(50, "0.1-1.0", scapeobj.length());
-    poomobj.set(50);
-    loomobj.set(50);
+    positylobj.set(90);
+    traitobj.split(75, "0.1-1.0", traitobj.length());
+    scapeobj.split(75, "0.1-1.0", scapeobj.length());
+    poomobj.set(25);
+    loomobj.set(25);
 
     if (!galleryobj.length())
     {
@@ -5733,7 +5723,6 @@ function autotime()
     else
     {
         context.autotime = 1;
-        context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
         context.refresh()
         clearInterval(context.autotime);
         context.autotime = setInterval(function()
