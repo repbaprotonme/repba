@@ -35,7 +35,7 @@ const THUMBSTROKE = "rgba(255,255,255,0.5)";
 const SEARCHFRAME = "rgba(255,255,255,0.5)";
 const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
-const SCROLLBARWIDTH = 5;
+const SCROLLBARWIDTH = 7;
 const SLIDEDEFAULT = 2500;
 const MENUWIDTH = 640;
 const MENUMAX = 800;
@@ -322,7 +322,6 @@ function drawslices()
             delete context.thumbcylinder;
             delete context.selectrect;
             delete context.thumbrect;
-            //headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
             if (!ismenu())
                 thumbobj.getcurrent().draw(context, rect, 0, 0);
@@ -583,17 +582,24 @@ var DualPanel = function ()
     this.draw = function (context, rect, user, time)
     {
         context.save();
+        var k = rect.width < MENUWIDTH;
+        var j = k?"rgba(0,0,0,0)":"rgba(255,255,255,0.3)";
         var a = new LayerA(
         [
             new Row([0,SCROLLBARWIDTH],
             [
                 0,
-                new CurrentHPanel(new FillPanel("white"), 60, 1),
+                new CurrentHPanel(new FillPanel("white"), 90, 1),
             ]),
-            new Col([0,SCROLLBARWIDTH],
+            new Col([SCROLLBARWIDTH,0,SCROLLBARWIDTH],
             [
+                k?0:new FillPanel(j),
                 0,
-                new CurrentVPanel(new FillPanel("white"), 60, 1),
+                new Layer(
+                [
+                    new FillPanel(j),
+                    new CurrentVPanel(new FillPanel("white"), 90, 1),
+                ])
             ])
         ]);
 
@@ -636,7 +642,7 @@ var eventlst =
     {name: "_5cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Metadata"), scroll: new DualPanel(), buttonheight: 90},
     {name: "_6cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Share"), scroll: new ScrollBarPanel(), buttonheight: 50},
     {name: "_7cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Help"), scroll: new DualPanel(), buttonheight: 90},
-    {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SEARCH", pan: "MENU", swipe: "SEARCH", draw: "SEARCH", wheel: "MENU", drop: "GALLERY", key: "SEARCH", press: "SEARCH", pinch: "DEFAULT", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 320},
+    {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SEARCH", pan: "MENU", swipe: "SEARCH", draw: "SEARCH", wheel: "MENU", drop: "GALLERY", key: "SEARCH", press: "MENU", pinch: "GALLERY", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 320*0.75},
     {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Image Browser"), scroll: new ScrollBarPanel(), buttonheight: 50},
 ];
 
@@ -1938,6 +1944,21 @@ var pinchlst =
     pinchstart: function (context, rect, x, y) { },
 },
 {
+    name: "GALLERY",
+    pinch: function (context, x, y, scale)
+    {
+    },
+    pinchend: function (context)
+    {
+    },
+    pinchstart: function (context, rect, x, y)
+    {
+        context.savepinch = ginchobj.getcurrent()
+        clearInterval(context.autotime);
+        context.autotime = 0;
+    },
+},
+{
     name: "BOSS",
     pinch: function (context, x, y, scale)
     {
@@ -2014,16 +2035,16 @@ rowobj.set(Math.floor((url.row/100)*window.innerHeight));
 
 var pretchobj = new circular_array("PORTSTRETCH", 100);
 var letchobj = new circular_array("LANDSTRETCH", 100);
-var stretchobj = new circular_array("Stretch", [pretchobj,letchobj]);
+var stretchobj = new circular_array("STRETCH", [pretchobj,letchobj]);
 
 var poomobj = new circular_array("PORTZOOM", 100);
 var loomobj = new circular_array("LANDZOOM", 100);
-var zoomobj = new circular_array("Zoom", [poomobj,loomobj]);
+var zoomobj = new circular_array("ZOOM", [poomobj,loomobj]);
 
+var ginchobj = new circular_array("GINCH", 100);
 var traitobj = new circular_array("TRAIT", 100);
 var scapeobj = new circular_array("SCAPE", 100);
-var heightobj = new circular_array("Height", [traitobj,scapeobj]);
-
+var heightobj = new circular_array("HEIGHT", [traitobj,scapeobj]);
 var pinchobj = new circular_array("PINCH", [heightobj,zoomobj,stretchobj]);
 
 var factorobj = new circular_array("FACTOR", 100);
@@ -2148,7 +2169,7 @@ var panlst =
             if (context.type == "panup" || context.type == "pandown")
                 return;
             context.type = type;
-            var k = panhorz(obj, (rect.width-x)/obj.factor);
+            var k = panhorz(obj, (rect.width-x)/obj.factoradj);
             if (k == -1)
                 return;
             if (k == obj.anchor())
@@ -2602,42 +2623,19 @@ pressobj.set(3);
 function moveupdown(context, up)
 {
     var zoom = zoomobj.getcurrent();
-    var h = 1-zoom.getcurrent()/100;
-    context.updowntime += 5*h;
-    context.updowntime = Math.min(context.updowntime,20*h);
-    context.upcount = 5*h;
+    var h = 1-(zoom.getcurrent()/100);
+    context.updowntime += 10*h;
     if (up)
     {
-        clearInterval(context.moveupdowntime);
-        context.moveupdowntime = setInterval(function()
-            {
-                var j = rowobj.current();
-                rowobj.set(j-context.updowntime);
-                contextobj.reset();
-                context.updowntime -= 0.1;
-                context.upcount -= 0.1;
-                if (context.upcount < 0)
-                {
-                    context.updowntime = 0;
-                    clearInterval(context.moveupdowntime);
-                }
-            }, 4);
+        var j = rowobj.current();
+        rowobj.set(j-context.updowntime);
+        contextobj.reset();
     }
     else
     {
-        context.moveupdowntime = setInterval(function()
-            {
-                var j = rowobj.current();
-                rowobj.set(j+context.updowntime);
-                contextobj.reset();
-                context.updowntime += 0.1;
-                context.upcount -= 0.1;
-                if (context.upcount < 0)
-                {
-                    context.updowntime = 0;
-                    clearInterval(context.moveupdowntime);
-                }
-            }, 4);
+        var j = rowobj.current();
+        rowobj.set(j+context.updowntime);
+        contextobj.reset();
     }
 }
 
@@ -2707,7 +2705,6 @@ var swipelst =
         clearTimeout(context.swipeupdowntime)
         context.swipeupdowntime = setTimeout(function()
         {
-             moveupdown(context, evt.type == "swipedown")
         }, SWIPETIME);
     },
 },
@@ -3550,8 +3547,8 @@ var menulst =
     {
         context.save();
         rect.height = context.buttonheight;
+        var ex = 190*0.75;
         context.translate(-rect.width/2, -rect.height/2);
-        var ex = 190;
         user.fitwidth = rect.width;
         user.fitheight = rect.height+ex;
 
@@ -3735,7 +3732,7 @@ function resetcanvas(leftright=1)
         context.show(0,0,window.innerWidth,window.innerHeight);
     }
 
-    var zoomax = 95.00;
+    var zoomax = 92.00;
     var n = 0;
     for (; n < zoomax; ++n)
     {
@@ -3895,8 +3892,8 @@ for (var n = 0; n < contextlst.length; ++n)
     context.imagescrollobj = new circular_array("IMAGESCROLL", Math.floor(window.innerHeight/2));
     context.imagescrollobj.set(context.imagescrollobj.length()/5);
     context.textscrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
-    context.imagescrollobj.factor = 4;
-    context.textscrollobj.factor = 1;
+    context.imagescrollobj.factoradj = 3;
+    context.textscrollobj.factoradj = 1;
 }
 
 _8cnvctx.scrollobj = new circular_array("SCROLL", [_8cnvctx.imagescrollobj,_8cnvctx.textscrollobj]);

@@ -11,6 +11,12 @@ async function upload(obj)
         body: JSON.stringify(obj),
     });
 
+    if (!res.ok)
+    {
+        console.error(obj.url);
+        return;
+    }
+
     const json = await res.json()
     return json.id;
 }

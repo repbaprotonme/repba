@@ -33,12 +33,12 @@ dialog
   left: 50%; 
   top: 50%; 
   transform: translate(-50%, -50%); 
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(255,255,255,0.1);
   padding: 20px 20px 20px 20px; 
-  border-radius: 5px;
+  border-radius: 20px;
   max-height: 80vh;
-  border-width: 0px; 
-  border-color: white; 
+  border-width: 5px; 
+  border-color: rgba(255,255,255,0.4); 
   overflow-y: scroll;
 }
 
@@ -53,7 +53,7 @@ label
   font-family: sans-serif; 
   font-weight: bold; 
   text-align: center;
-  font-size: 2rem; 
+  font-size: 1.3em; 
   width: 100%; 
   color: white;
 }
@@ -73,7 +73,7 @@ input
   box-sizing: border-box; 
   width: 100%; 
   padding: 10px; 
-  font-size: 19px;
+  font-size: 1.3em; 
 }
 
 textarea 
@@ -89,7 +89,7 @@ textarea
   box-sizing: border-box; 
   width: 100%; 
   padding: 10px; 
-  font-size: 19px;
+  font-size: 1.3em; 
   color: white;
   text-align: center;
   font-weight: bold;
@@ -181,21 +181,15 @@ button
 <body ondragstart="return false;" ondrop="return false"; oncontextmenu='return false;'>
 
 <dialog id="search-overlay" style="max-width: 360px;">
-    <div>
-      <label id="search-label">Search</label>
-    </div>
     <div class="earth">
       <input id="search-value" autocapitalize="off" placeholder="search"></input>
     </div>
     <div class="footer">
-      <button class="fade" id="search-ok" style="" type="button">Submit</button>
+      <button class="fade" id="search-ok" style="" type="button">Search</button>
     </div>
 </dialog>
 
 <dialog id="prompt-overlay" style="width: 90%; max-width: 10000px;">
-    <div>
-      <label>Dalle 2.0</label>
-    </div>
     <div class="earth">
       <textarea id="prompt-value" autocapitalize="off" placeholder="Enter prompt" rows=8 style=""></textarea>
     </div>
@@ -205,9 +199,6 @@ button
 </dialog>
 
 <dialog id="upload-overlay" style="width: 90%; max-width: 10000px;">
-    <div>
-      <label>Upload</label>
-    </div>
     <form id="form1" name="form1" method="post" action="javascript:submit()" enctype="multipart/form-data">
       <input style="width: 100%; height: 30px; float: left; padding: 10px; font-size: 16px; border-radius: 4px;" type="file" id="myFile" name="file"/>
       <div class="footer">

@@ -73,7 +73,7 @@ export default
             delete obj.url;
             body.append("metadata", JSON.stringify(obj));
 
-            return fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1`,
+            const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ID}/images/v1`,
                 {
                     method: "POST",
                     headers:
@@ -83,6 +83,16 @@ export default
                     body,
                 }
             );
+
+            if (!res.ok)
+                return new Response('post failed', { status: 400 }, );
+
+            var k = await res.json();
+            return new Response(JSON.stringify(k.result), {
+              headers: {
+                "content-type": "application/json",
+              },
+            });
       }
       case 'GET':
       {
