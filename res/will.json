@@ -1,7 +1,7 @@
 {
   "title": "Gallery",
   "template": "portrait",
-  "thumb": "porthumb",
+  "thumb": "portrait",
   "data": [
     {
       "id": "WILL.0000"
@@ -194,9 +194,6 @@
     },
     {
       "id": "WILL.0062"
-    },
-    {
-      "id": "WILL.0063"
     }
   ]
 }

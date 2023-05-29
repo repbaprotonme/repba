@@ -2,6 +2,7 @@
   "title": "Repba Gallery",
   "template": "wide",
   "thumb": "wide",
+  "zoom": "0",
   "data": [
     {
       "id": "PINO.0000",

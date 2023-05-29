@@ -35,14 +35,14 @@ const THUMBSTROKE = "rgba(255,255,255,0.5)";
 const SEARCHFRAME = "rgba(255,255,255,0.5)";
 const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
-const SCROLLBARWIDTH = 7;
+const SCROLLBARWIDTH = 5;
 const SLIDEDEFAULT = 2500;
-const MENUWIDTH = 640;
+const MENUWIDTH = 720;
 const MENUMAX = 800;
 const MARGINBAR = 5;
 const SEARCHBOT = "rgb(200,200,200)";
 const DEFAULTFONT = "0.90rem Archivo Black";
-
+const GALLERYHEIGHT = 1.0
 globalobj = {};
 let photo = {};
 photo.image = 0;
@@ -51,7 +51,6 @@ function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) 
 function numberRange (start, end) {return new Array(end - start).fill().map((d, i) => i + start); }
 
 let url = new URL(window.location.href);
-url.row = url.searchParams.has("r") ? Number(url.searchParams.get("r")) : 50;
 url.slidestop = url.searchParams.has("o") ? Number(url.searchParams.get("o")) : 3;
 url.slidereduce = url.searchParams.has("e") ? Number(url.searchParams.get("e")) : 100;
 url.transparent = url.searchParams.has("g") ? Number(url.searchParams.get("g")) : 0;
@@ -378,7 +377,7 @@ function drawslices()
             let y = Math.berp(-1, 1, bos) * context.virtualheight;
             y -= e;
             var x = w/2;
-            var j = context.buttonheight*2;
+            var j = context.buttonheight*3;
             if (y < -j || y >= window.innerHeight+j)
                 continue;
             context.visibles.push({slice, x, y, m});
@@ -507,8 +506,6 @@ var SearchBar = function ()
 {
     this.draw = function (context, rect, user, time)
     {
-        if (context.hidebuttons)
-            return;
         context.save();
         context.header = new rectangle();
         context.footer = new rectangle();
@@ -642,7 +639,7 @@ var eventlst =
     {name: "_5cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Metadata"), scroll: new DualPanel(), buttonheight: 90},
     {name: "_6cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Share"), scroll: new ScrollBarPanel(), buttonheight: 50},
     {name: "_7cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Help"), scroll: new DualPanel(), buttonheight: 90},
-    {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SEARCH", pan: "MENU", swipe: "SEARCH", draw: "SEARCH", wheel: "MENU", drop: "GALLERY", key: "SEARCH", press: "MENU", pinch: "GALLERY", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 320*0.75},
+    {name: "_8cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "SEARCH", pan: "MENU", swipe: "SEARCH", draw: "SEARCH", wheel: "MENU", drop: "GALLERY", key: "SEARCH", press: "GALLERY", pinch: "GALLERY", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 320*GALLERYHEIGHT},
     {name: "_9cnvctx", mouse: "MENU", thumb: "DEFAULT", tap: "OPTION", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new BarPanel("Image Browser"), scroll: new ScrollBarPanel(), buttonheight: 50},
 ];
 
@@ -1485,8 +1482,7 @@ addressobj.full = function (k)
         "&f="+url.autotime+
         "&b="+url.gallery+
         "&o="+url.slidestop+
-        "&e="+url.slidereduce+
-        "&r="+(100*rowobj.berp()).toFixed();
+        "&e="+url.slidereduce;
 
     return out;
 };
@@ -2031,7 +2027,7 @@ var pinchlst =
 var promptobj = new circular_array("PROMPT", 2);
 
 var rowobj = new circular_array("ROW", window.innerHeight);
-rowobj.set(Math.floor((url.row/100)*window.innerHeight));
+rowobj.set(Math.floor((50/100)*window.innerHeight));
 
 var pretchobj = new circular_array("PORTSTRETCH", 100);
 var letchobj = new circular_array("LANDSTRETCH", 100);
@@ -2305,7 +2301,6 @@ var panlst =
                 url.transparent = 0;
             url.hidefocus = 0;
             context.panning = 0;
-            context.pressedthumb = 0;
             context.isthumbrect = 0;
             delete context.isthumbrect;
             delete context.startx;
@@ -2564,13 +2559,13 @@ var presslst =
     press: function (context, rect, x, y) { }
 },
 {
-    name: "SEARCH",
+    name: "GALLERY",
     pressup: function (context, rect, x, y)
     {
     },
     press: function (context, rect, x, y)
     {
-        context.hidebuttons = context.hidebuttons?0:1;
+        context.scrollobj.rotate(1);
         context.refresh();
     }
 },
@@ -2581,6 +2576,11 @@ var presslst =
     },
     press: function (context, rect, x, y)
     {
+        if (!url.autotime)
+            _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+        context.scrollobj.set(0);
+        menutoggle(context)
+        context.refresh();
     }
 },
 {
@@ -2589,27 +2589,24 @@ var presslst =
     {
         context.isthumbrect = 0;
         context.pressed = 0;
-        context.pressedthumb = 0;
         context.refresh();
     },
     press: function (context, rect, x, y)
     {
-        menuhide();
         clearInterval(globalobj.slideshow);
         globalobj.slideshow = 0;
         context.pressed = 1;
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
         {
-            if (context.selectrect && context.selectrect.hitest(x,y)>=0)
-            {
-                url.hidefocus = url.hidefocus?0:1;
-            }
-            else
-            {
-                url.transparent = url.transparent?0:1;
-                context.pressedthumb = 1;
-            }
+            url.hidefocus = url.hidefocus?0:1;
+        }
+        else
+        {
+            if (!url.autotime)
+                _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+            _8cnvctx.scrollobj.set(0);
+            menutoggle(_8cnvctx)
         }
 
         context.refresh();
@@ -2624,7 +2621,7 @@ function moveupdown(context, up)
 {
     var zoom = zoomobj.getcurrent();
     var h = 1-(zoom.getcurrent()/100);
-    context.updowntime += 10*h;
+    context.updowntime += 5*h;
     if (up)
     {
         var j = rowobj.current();
@@ -2875,7 +2872,6 @@ var keylst =
         {
             if (!url.autotime)
                 _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-            _8cnvctx.hidebuttons = 0;
             _8cnvctx.scrollobj.set(0);
             menutoggle(_8cnvctx)
         }
@@ -2993,7 +2989,6 @@ var taplst =
         clearInterval(globalobj.slideshow);
         globalobj.slideshow = 0;
         context.pressed = 0;
-        context.pressedthumb = 0;
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
         if (ismenu())
@@ -3547,7 +3542,7 @@ var menulst =
     {
         context.save();
         rect.height = context.buttonheight;
-        var ex = 190*0.75;
+        var ex = 190*GALLERYHEIGHT;
         context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
         user.fitheight = rect.height+ex;
@@ -3652,17 +3647,16 @@ var menulst =
             var s = user.externalink ? -1 : 1;
             var e = user.externalink ? "black" : "white";
             var b = time == galleryobj.current() || user.tap;
-            var j = context.hidebuttons;
             var a = new RowA([20,20,20,0,20,20,20],
                 [
                     0,
-                    j?0:new ShadowPanel(new Text(e, "center", "middle",0,0,0),s,s),
+                    new ShadowPanel(new Text(e, "center", "middle",0,0,0),s,s),
                     0,
 
                     0,
 
-                    j?0:new ShadowPanel(new Text(e, "center", "middle",0,0,0),s,s),
-                    j?0:new ShadowPanel(new Text(e, "center", "middle",0,0,0),s,s),
+                    new ShadowPanel(new Text(e, "center", "middle",0,0,0),s,s),
+                    new ShadowPanel(new Text(e, "center", "middle",0,0,0),s,s),
                     0,
                 ]);
 
@@ -3682,8 +3676,9 @@ var menulst =
             var e = _8cnvctx.textscrollobj.berp();
             var a = new Layer(
                 [
+                    new Rounded(TRANSPARENT, 3, "white", 10, 10),
                     user.tap?new FillPanel("rgba(255,125,0,0.4)"):0,
-                    new MultiText(e),
+                    new Shrink(new MultiText(e), 20, 40),
                 ]);
 
             a.draw(context, new rectangle(40,-40,rect.width-80,rect.height+80), user.lst, 0);
@@ -3958,6 +3953,7 @@ contextobj.reset = function (leftright)
             document.title = `${j} (${photo.image.width}x${photo.image.height})`;
 
             _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+            rowobj.set(Math.floor((50/100)*window.innerHeight));
 
             _4cnvctx.pinched = 0;
             contextobj.reset()
@@ -4583,6 +4579,7 @@ function menuhide()
             context.hide();
         });
 
+    _4cnvctx.refresh();
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
     return k;
 }
@@ -4799,7 +4796,6 @@ var headlst =
             {
                 if (!url.autotime)
                     _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-                _8cnvctx.hidebuttons = 0;
                 _8cnvctx.scrollobj.set(0);
                 menutoggle(_8cnvctx)
             }
@@ -5327,8 +5323,9 @@ galleryobj.init = function(obj)
     positylobj.set(90);
     traitobj.split(75, "0.1-1.0", traitobj.length());
     scapeobj.split(75, "0.1-1.0", scapeobj.length());
-    poomobj.set(25);
-    loomobj.set(25);
+    var zoom = galleryobj.zoom?galleryobj.zoom:25;
+    poomobj.set(zoom);
+    loomobj.set(zoom);
 
     if (!galleryobj.length())
     {

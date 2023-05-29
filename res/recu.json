@@ -1,4 +1,6 @@
 {
+  "template": "portrait",
+  "thumb": "porthumb",
   "data": [
     {
       "url": "http://reportbase.me/data/mind/angrysanta/505uyuqgbz0b1.webp",
@@ -61,6 +63,10 @@
       "id": "a5fd099c-ca7d-4e5f-243e-7012dc122e00"
     },
     {
+      "url": "http://reportbase.me/data/mind/animal/xj1znzwpy61b1.webp",
+      "id": "b7eb5b53-da75-4fd7-1992-9f4dd6977000"
+    },
+    {
       "url": "http://reportbase.me/data/mind/animal/gweb7y9py61b1.webp",
       "id": "295110c2-0037-46a3-c2af-e26753cae800"
     },
@@ -91,10 +97,6 @@
     {
       "url": "http://reportbase.me/data/mind/Animal Spec/w3zyhkisw9ya1.webp",
       "id": "0d3345a0-99b6-410b-2c4c-7ab38ef97600"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/animal/xj1znzwpy61b1.webp",
-      "id": "b7eb5b53-da75-4fd7-1992-9f4dd6977000"
     },
     {
       "url": "http://reportbase.me/data/mind/antionettehotel/37wefccbt80b1.webp",
@@ -428,98 +430,7 @@
       "url": "http://reportbase.me/data/mind/dogarmor/xs0a6atifl1b1.webp",
       "id": "5e8a08aa-ca30-4b03-6b88-3e799bf4ce00"
     },
-    {
-      "url": "http://reportbase.me/data/mind/earth/0qasvj6x9q0b1.jpg",
-      "id": "8ac3dddc-fa49-4ebb-aa2e-49406909b400"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/0r6bhdlqru0b1.jpg",
-      "id": "9f733bed-e5f2-4bf7-684e-929b20836d00"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/1klpos82kw0b1.jpg",
-      "id": "a82ec0ec-f73c-45b9-7df4-ab6490fd8c00"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/42caooexfq0b1.jpg",
-      "id": "bbc745d6-c99f-4ef8-47bb-06abffc61200"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/4im5k63jzn0b1.jpg",
-      "id": "533a42e1-1f9e-4626-5ae5-aa5c68b76000"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/61a75eqx0t0b1.jpg",
-      "id": "5bfa7106-b608-468d-c113-cdd6d9a07800"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/6s7a3mkj5s0b1.jpg",
-      "id": "6db4d9a5-6a9a-4d2d-07bb-c2663f0f5500"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/7BeHDTnjrFUUm_b83i9qKOwAlOJwfl6rJUn8wo3aqFc.webp",
-      "id": "3e7d5a72-0094-4e03-281d-2af9122cb700"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/d9wi6z62zu0b1.jpg",
-      "id": "1f79da34-7b94-41c0-0db9-ba6baea60300"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/fud0swvvsp0b1.jpg",
-      "id": "7a6e371d-3132-40cc-f710-291bbf192c00"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/hw9w4ug0nt0b1.jpg",
-      "id": "01cdf942-5a4a-46c2-c396-96f4eb7deb00"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/hzbwups9ju0b1.jpg",
-      "id": "31c1aa1a-96a8-404f-e266-0558cac76100"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/icscuv0vhb1b1.webp",
-      "id": "50c837bb-e3e1-43e0-736a-fa05ff2cf700"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/jd6wp9ao2p0b1.jpg",
-      "id": "66072edc-9c3c-4fc5-e089-007aacc21400"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/k6j3c1n8hv0b1.jpg",
-      "id": "ff9287b0-df92-4bd4-9312-4088a48faf00"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/mo1j6n0x8l0b1.jpg",
-      "id": "ed02ec12-3ad5-46aa-c2ec-db00a0b82b00"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/n5xkx5enfn0b1.jpg",
-      "id": "6a81c301-82d2-44ac-2740-1e6b9adf7300"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/ote7402ftt0b1.webp",
-      "id": "3e3a7276-31f8-4e46-7640-d421836b1900"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/R47SJ3x8kR6-4k4iefrFnQI7YPyWS_F1C4s0J8v7Ab0.webp",
-      "id": "86bac0a7-9d42-48a7-a1ae-cfcbfdff2000"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/r643uvaywn0b1.jpg",
-      "id": "240e11ef-b9e7-4c07-7e61-436133397a00"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/we3seq22zv0b1.jpg",
-      "id": "9b07de84-cf61-4692-5e50-236ae1291b00"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/wvr9ukiuin0b1.jpg",
-      "id": "0158c247-852e-49be-33a2-15c085f05700"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/earth/y79y446fhm0b1.jpg",
-      "id": "6022c1a1-933d-4c1e-48e2-e9bd60bfb700"
-    },
+
     {
       "url": "http://reportbase.me/data/mind/foundingfathers/5ybacxxbmj1b1.webp",
       "id": "25140871-3309-43e9-a242-b6f6aa12ec00"
@@ -704,87 +615,7 @@
       "url": "http://reportbase.me/data/mind/hindu/z67xa9ifbk1b1.webp",
       "id": "f145bfd6-8315-4f29-d0ee-a164ad227600"
     },
-    {
-      "url": "http://reportbase.me/data/mind/icons/360d.png",
-      "id": "44858bb0-6eea-4acb-b087-b84a97ace500"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/360e.png",
-      "id": "a85e4239-555d-49fd-d813-d10475913700"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/360f.png",
-      "id": "8b19afb9-038f-4fd9-d80e-522da055ff00"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/360g.png",
-      "id": "938184cb-18bb-4367-782d-977119f58600"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/360.png",
-      "id": "0a3407d7-2898-4281-e4d1-09671ab54600"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/arrow1.png",
-      "id": "7ad40291-5374-471b-59c6-190d61627000"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/device1.png",
-      "id": "92d82100-b12f-4d0b-2b16-2f2b2be72200"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/device2.png",
-      "id": "1aa6a7fa-b2d6-4074-a5ef-3b32b2d5fe00"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/devices.png",
-      "id": "0213a1ad-6fdc-4dce-979a-0aeefef65400"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/full.png",
-      "id": "30889155-cc08-478c-1c71-f48b80839f00"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/jil_panel.png",
-      "id": "fc83d013-a210-4b8c-e827-858c582d6900"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/logo.png",
-      "id": "afa016a9-c719-491e-7369-8de7aa9f0200"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/pano1.png",
-      "id": "30fd37ef-737d-4d75-3d60-650309757400"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/pano.png",
-      "id": "bd4ecb9d-c312-40ff-886c-74661080f400"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/phone2.png",
-      "id": "9a3cb24e-0580-42e6-cb22-9f9349480e00"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/phone.png",
-      "id": "c5cb6a8a-6a86-4efb-9b21-d8f182ece000"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/touch1.svg",
-      "id": "c2b82695-488e-4b89-9fde-3d8b64172700"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/touch.png",
-      "id": "3a1cb02b-938d-4ce5-52c4-ece121b51f00"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/world2.png",
-      "id": "cc9fbfc1-e5f5-40fb-2edf-0e5b1f9ee900"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/icons/world.png",
-      "id": "2848f303-78dd-424c-e72f-5c1109259900"
-    },
-    {
+   {
       "url": "http://reportbase.me/data/mind/King Charles as a Normal bloke/9axfzo92y6ya1.webp",
       "id": "80593d96-b5a6-40cd-07d5-e2e51358ce00"
     },
@@ -2711,14 +2542,6 @@
     {
       "url": "http://reportbase.me/data/mind/unsorted/zcbp9o6m9y0b1.webp",
       "id": "110d38a8-720e-44ee-ab71-88eba4183600"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/unsorted/zh7qvxp9421b1.webp",
-      "id": "d22b513e-ee09-4313-1ab2-559ec7be9f00"
-    },
-    {
-      "url": "http://reportbase.me/data/mind/unsorted/zhtbyytcvd1b1.webp",
-      "id": "63ad077c-f4ad-4024-eb5b-ffa02421d400"
     },
     {
       "url": "http://reportbase.me/data/mind/unsorted/zom3222.webp",

@@ -1,1 +1,1 @@
-node delete.js post.json 
+node delete.js delete.json 

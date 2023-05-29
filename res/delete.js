@@ -7,7 +7,16 @@ async function load(json)
     {
         var id = json.data[n].id;
         var response = await fetch(`https://reportbase.com/image/${id}`, {method: 'DELETE'});
-        console.log(await response.json());
+        if (!response.ok)
+        {
+            console.log(`Failed: ${id}`);
+        }
+        else
+        {
+            var json = await response.json();
+            json.id = id;
+            console.log(json);
+        }
     }
 }
 
