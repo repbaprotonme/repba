@@ -3582,7 +3582,7 @@ var menulst =
                 thumbimg.src = user.thumb;
             else if (user.full)
                 thumbimg.src = user.full;
-            else if (user.url)
+            else if (user.url && !user.id)
                 thumbimg.src = user.url
             else if (user.file)
                 thumbimg.src = URL.createObjectURL(user.file);
