@@ -7,7 +7,7 @@ json.data = []
 {
     var k = {};
     var name = args[n].split("/").pop();
-    k.url = `http://reportbase.me/data/${name}`;
+    k.url = `http://reportbase.me/data/max/${name}`;
     json.data.push(k);
 }
 

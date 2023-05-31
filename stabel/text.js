@@ -1,3 +1,5 @@
+const fs = require('fs');
+const args = process.argv;
 const DIFFUSION_KEY = process.env.DIFFUSION_KEY;
 
 var body =
@@ -37,12 +39,9 @@ fetch("https://stablediffusionapi.com/api/v3/text2img", init)
   })
   .then(function(text)
   {
-      console.log(text)
     var json = JSON.parse(text);
-      console.log(json);
     var output = json.output
     var j = {};
-  //  j.meta = ouput;
     j.data = [];
     for (var n = 0; n < output.length; ++n)
     {

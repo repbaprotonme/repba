@@ -13,7 +13,7 @@ async function upload(obj)
 
     if (!res.ok)
     {
-        console.error(obj.url);
+        console.error(`error: ${obj.url}`);
         return;
     }
 

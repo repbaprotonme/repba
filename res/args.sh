@@ -1,1 +1,1 @@
-node args.js ../data/A* | jq > args.json 
+node args.js ../data/max/* | jq > args.json 
