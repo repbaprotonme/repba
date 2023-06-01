@@ -1796,16 +1796,15 @@ var wheelst =
             obj.add(1);
             context.refresh();
         }
-        else if (ctrl)
+        else if (shift)
         {
-            pinchobj.set(1);
-            zoomobj.getcurrent().add(-1);
-            contextobj.reset()
+            stretchobj.getcurrent().add(-1);
+            context.refresh();
         }
         else
         {
-            _4cnvctx.timeobj.rotate(TIMEOBJ*0.01);
-            context.refresh();
+            zoomobj.getcurrent().add(-1);
+            contextobj.reset()
         }
 	},
  	down: function (context, x, y, ctrl, shift, alt)
@@ -1818,16 +1817,15 @@ var wheelst =
             obj.add(-1);
             context.refresh();
         }
-        else if (ctrl)
+        else if (shift)
         {
-            pinchobj.set(1);
-            zoomobj.getcurrent().add(1);
-            contextobj.reset()
+            stretchobj.getcurrent().add(1);
+            context.refresh();
         }
         else
         {
-            _4cnvctx.timeobj.rotate(-TIMEOBJ*0.01);
-            context.refresh();
+            zoomobj.getcurrent().add(1);
+            contextobj.reset()
         }
 	},
 },
@@ -1918,8 +1916,6 @@ var pinchlst =
 },
 ];
 
-var promptobj = new circular_array("PROMPT", 2);
-
 var rowobj = new circular_array("ROW", window.innerHeight);
 rowobj.set(Math.floor((50/100)*window.innerHeight));
 
@@ -1982,7 +1978,6 @@ function dropfiles(files)
     }
 
     galleryobj.data.splice(0,0,...lst);
-
     menuhide();
     _8cnvctx.sliceobj.data = galleryobj.data;
     var slices = _8cnvctx.sliceobj;
@@ -2482,17 +2477,7 @@ var presslst =
         context.pressed = 1;
         var isthumbrect = context.thumbrect && context.thumbrect.hitest(x,y);
         if (isthumbrect)
-        {
             url.hidefocus = url.hidefocus?0:1;
-        }
-        else
-        {
-            if (!url.autotime)
-                _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-            _8cnvctx.scrollobj.set(0);
-            menutoggle(_8cnvctx)
-        }
-
         context.refresh();
     }
 },
@@ -2546,7 +2531,7 @@ var swipelst =
         context.swipetype = evt.type;
         context.slidereduce = context.slideshow/25;
         clearInterval(context.timemain);
-        context.timemain = setInterval(function () { context.refresh(); }, globalobj.timemain);
+        context.timemain = setInterval(function () { context.refresh(); }, 10);
         context.refresh();
         clearTimeout(context.swipeupdown);
     },
@@ -2780,6 +2765,7 @@ var keylst =
             if (!galleryobj.length())
                 return;
             headobj.set(3);
+            thumbobj.set(1);
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             evt.preventDefault();
@@ -2856,16 +2842,6 @@ var taplst =
         globalobj.slideshow = 0;
         context.pressed = 0;
         headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-
-        if (ismenu())
-        {
-            headobj.set(1);
-            headham.panel = headobj.getcurrent();
-            headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-            menuhide();
-            context.refresh();
-            return;
-        }
 
         if (context.thumbrect && context.thumbrect.hitest(x,y))
         {
@@ -2995,6 +2971,8 @@ var taplst =
         else if (context.page && context.page.hitest(x,y))
         {
             _8cnvctx.scrollobj.rotate(1);
+            headobj.set(1);
+            thumbobj.set(0);
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             _8cnvctx.scrollobj.set(0);
@@ -3065,6 +3043,10 @@ var taplst =
             {
                 slice.tap = 1;
                 context.refresh();
+                headobj.set(3);
+                thumbobj.set(3);
+                headham.panel = headobj.getcurrent();
+                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
                 setTimeout(function ()
                 {
                     slice.tap = 0;
@@ -3482,7 +3464,7 @@ var menulst =
 
             var photographer = "";
             var datasource = "";
-            if (user.photographer && galleryobj.repos)
+            if (user.photographer)
             {
                 var k = user.photographer;
                 var j = galleryobj.repos;
@@ -3506,7 +3488,8 @@ var menulst =
                     0,
                 ]);
 
-            a.draw(context, new rectangle(0,0,rect.width,rect.height),
+            a.draw(context,
+                new rectangle(40,20,rect.width-80,context.buttonheight-40),
             [
                 0,
                 `${time+1} of ${galleryobj.length()}`,
@@ -3517,7 +3500,7 @@ var menulst =
                 0,
             ], 0);
         }
-        else if (obj.current() == 1)
+        else if (obj.current() == 1 || galleryobj.nothumb)
         {
             var e = _8cnvctx.textscrollobj.berp();
             var a = new Layer(
@@ -3607,7 +3590,7 @@ function resetcanvas(leftright=1)
     var y = Math.clamp(0,context.canvas.height-1,context.canvas.height*rowobj.berp());
     context.nuby = Math.nub(y, context.canvas.height, context.imageheight, photo.image.height);
 
-    var slicewidth = galleryobj.slicewidth?galleryobj.slicewidth:90;
+    var slicewidth = galleryobj.slicewidth?galleryobj.slicewidth:30;
 
     var j = 0;
     for (; j < slicelst.length; ++j)
@@ -4819,11 +4802,11 @@ var headlst =
 
             var st = [];
             var k = galleryobj.getcurrent();
-            if (k.prompt && promptobj.current() == 0)
+            if (k.prompt)
             {
                 st = k.prompt.split("\n");
             }
-            else if (k.description && promptobj.current() == 0)
+            else if (k.description)
             {
                 st = k.description.split("\n");
                 if (k.photographer)
@@ -5163,8 +5146,8 @@ galleryobj.init = function(obj)
     var zoom = galleryobj.zoom?galleryobj.zoom:25;
     poomobj.set(zoom);
     loomobj.set(zoom);
-    var pinch = galleryobj.gpinch?galleryobj.gpinch:1;
-    _8cnvctx.pinchobj = new circular_array("", [240,420,600]);
+    var pinch = galleryobj.gpinch?galleryobj.gpinch:0;
+    _8cnvctx.pinchobj = new circular_array("", [180,320,480]);
     _8cnvctx.pinchobj.set(Number(pinch));
 
     if (!galleryobj.length())
@@ -5248,6 +5231,48 @@ galleryobj.init = function(obj)
             enabled: function() { return globalobj.factorobj; }
         },
 
+        {title:"put", path: "", func: function()
+            {
+                var body = JSON.stringify({a:1})
+                fetch(`https://bucket.reportbase5836.workers.dev/admiral`, { method: 'POST', body: body } )
+                  .then(function(response)
+                    {
+                        if (!response.ok)
+                            throw new Error('Network error');
+                        return response.json();
+                    })
+                  .then(function(json)
+                      {
+                            console.log(json);
+                      })
+                  .catch(function(err)
+                      {
+                            console.log(err);
+                      });
+            }
+        },
+
+        {title:"get", path: "", func: function()
+            {
+                fetch(`https://bucket.reportbase5836.workers.dev/admiral`)
+                  .then(function(response)
+                      {
+                            if (!response.ok)
+                                throw new Error('Network error');
+                            return response.json();
+                      })
+                  .then(function(json)
+                      {
+                           console.log(json);
+                      })
+                  .catch(function(err)
+                      {
+                            console.log(err);
+                      });
+
+            }
+        },
+
         {title:"Login", path: "LOGIN", func: function() { authClient.redirectToLoginPage(); }},
         {title:"Logout", path: "LOGOUT", func: function() { authClient.logout(true) }},
         {title:"Account", path: "ACCOUNT", func: function() { authClient.redirectToAccountPage() }},
@@ -5256,9 +5281,6 @@ galleryobj.init = function(obj)
     //_3cnv
     _3cnvctx.sliceobj.data =
     [
-        {line:"Dalle\nPrompt to Image", path: "UNSPLASH", func: function()
-            {
-            }},
         {line:"Unsplash\nImage Search", path: "UNSPLASH", func: function()
             {
                 showsearch("unsplash");
@@ -5491,6 +5513,45 @@ function showprompt(obj)
         if (event.target.id == "prompt-ok")
         {
             globalobj.prompt = 0;
+
+            fetch(`https://dalle.reportbase5836.workers.dev`,
+            {
+                method: 'POST',
+                body: JSON.stringify({ 'prompt': textarea.value, 'n': 1, 'size': '1024x1024' })
+            })
+            .then(resp =>
+            {
+                if (resp.ok)
+                    return resp.json()
+                else
+                    throw Error(resp.statusText);
+            })
+            .then(data =>
+            {
+                galleryobj.data.splice(0,0,...data);
+                _8cnvctx.sliceobj.data = galleryobj.data;
+                var slices = _8cnvctx.sliceobj;
+                _8cnvctx.delayinterval = DELAYCENTER / slices.length();
+                _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
+                _8cnvctx.scrollobj.set(0);
+                galleryobj.set(0);
+                delete _4cnvctx.thumbcanvas;
+                delete photo.image;
+                url.transparent = 0;
+                _4cnvctx.isthumbrect = 0;
+                headobj.set(3);
+                headham.panel = headobj.getcurrent();
+                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+                contextobj.reset();
+                _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+                _8cnvctx.refresh();
+                menushow(_8cnvctx)
+            })
+            .catch((error) =>
+            {
+            });
+            dialog.close();
+            globalobj.prompt = 0;
         }
         else if (event.clientY < rect.top || event.clientY > rect.bottom ||
             event.clientX < rect.left || event.clientX > rect.right)
@@ -5614,39 +5675,6 @@ if (url.protocol == "https:")
           .then(function(json)
               {
                     console.log(json);
-              })
-          .catch(function(err)
-              {
-                    console.log(err);
-              });
-
-        fetch(`https://bucket.reportbase5836.workers.dev/gallery/${client.user.userId}`)
-          .then(function(response)
-              {
-                    if (!response.ok)
-                        throw new Error('Network error');
-                    return response.json();
-              })
-          .then(function(json)
-              {
-                   console.log(json);
-              })
-          .catch(function(err)
-              {
-                    console.log(err);
-              });
-
-        var body = JSON.stringify(client.user)
-        fetch(`https://bucket.reportbase5836.workers.dev/gallery/${client.user.userId}`, { method: 'Post', body: body } )
-          .then(function(response)
-            {
-                if (!response.ok)
-                    throw new Error('Network error');
-                return response.json();
-            })
-          .then(function(text)
-              {
-                    console.log(text);
               })
           .catch(function(err)
               {

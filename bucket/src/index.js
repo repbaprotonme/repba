@@ -11,7 +11,7 @@ export default
 		    'content-type': 'application/json;charset=UTF-8',
 	    });
 
-        switch (request.method)
+        switch (request.method.toUpperCase())
         {
             case 'PUT':
             case 'POST':
@@ -29,7 +29,7 @@ export default
                 return new Response(res, { headers });
 
             default:
-                return new Response("hello", { headers} );
+                return new Response('Method Not Allowed', { status: 405, headers: { Allow: 'PUT, POST, GET, DELETE', }, });
         }
     }
 }

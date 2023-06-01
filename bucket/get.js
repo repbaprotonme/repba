@@ -1,15 +1,13 @@
-var id = process.argv[2];
-
-return fetch("https://bucket.reportbase5836.workers.dev/gallery/efg")
+fetch("https://bucket.reportbase5836.workers.dev/put1.sh")
   .then(function(response)
       {
             if (!response.ok)
                 throw new Error('Network error');
-            return response.json();
+            return response.text();
       })
-  .then(function(json)
+  .then(function(text)
       {
-           console.log(json);
+           console.log(text);
       })
   .catch(function(err)
       {

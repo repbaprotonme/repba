@@ -1,7 +1,7 @@
 var mystring = "Hello World!";
 var blob = new Blob([mystring], { type: 'text/plain' });
 
-fetch(`https://bucket.reportbase5836.workers.dev/gallery/screen`,
+fetch(`https://bucket.reportbase5836.workers.dev/blob`,
 {
   method: 'POST',
   body: blob
