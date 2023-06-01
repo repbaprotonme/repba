@@ -1,0 +1,24 @@
+node run6.js | jq > ../res/dalle.json
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
