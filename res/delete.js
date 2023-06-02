@@ -13,9 +13,9 @@ async function load(json)
         }
         else
         {
-            var json = await response.json();
-            json.id = id;
-            console.log(json);
+            var k = await response.json();
+            k.id = id;
+            console.log(k);
         }
     }
 }

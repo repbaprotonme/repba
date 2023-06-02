@@ -1,2 +1,2 @@
 #node post.js post.input | jq > post.json
-node post.js args.json | jq > max.json
+node post.js post.json | jq > max.json

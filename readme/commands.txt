@@ -1,3 +1,4 @@
+ssh scott@207.246.108.73 #login
 find mind -type f > mind.txt  #recursive list files
 du -h *  #human readable disk usage
 scp test scott@207.246.108.73:/home/scott
@@ -39,4 +40,4 @@ sed -i 's/list/data/g' *
 for file in *.webp; do convert $file -resize '6000000@>' $file; done
 
 #animated gif
-convert -resize 50% -delay 100 -loop 0 001*.jpg anim.gif
+alias me='ssh scott@207.246.108.73'convert -resize 50% -delay 100 -loop 0 001*.jpg anim.gif

@@ -1,4 +1,0 @@
-https://wasmbyexample.dev/examples/exports/exports.rust.en-us.html
-
-wasm-pack build --target web  #build
-
