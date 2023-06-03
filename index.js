@@ -3964,7 +3964,7 @@ contextobj.reset = function (leftright)
 
             document.title = `${j} (${photo.image.width}x${photo.image.height})`;
             contextobj.reset()
-            if (!galleryobj.noautotab)
+            if (galleryobj.autotab)
                 context.tab()
             setTimeout(function() { masterload(); }, 500);
         }
