@@ -26,9 +26,11 @@ export default
             if (!response.ok)
                 break;
             var json = await response.json();
+            if (!json.media)
+                break;
             json.media.forEach(function(image)
             {
-                if (image.type.toLowerCase() != "photo")
+                if (!image.type || image.type.toLowerCase() != "photo")
                     return;
                 var j = {};
                 var width = image.width;

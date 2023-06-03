@@ -2817,8 +2817,6 @@ var keylst =
         }
         else if (key == " ")
         {
-            if (!url.autotime)
-                _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
             _8cnvctx.scrollobj.set(0);
             menutoggle(_8cnvctx)
         }
@@ -3008,7 +3006,7 @@ var taplst =
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             _8cnvctx.scrollobj.set(0);
-            _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+            //_8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
             menutoggle(_8cnvctx)
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
@@ -3105,7 +3103,7 @@ var taplst =
             headham.panel = headobj.getcurrent();
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
             _8cnvctx.scrollobj.set(0);
-            _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+            //_8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
             menutoggle(_8cnvctx)
             headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
         }
@@ -3365,7 +3363,9 @@ var thumblst =
             context.save();
             context.shadowOffsetX = 0;
             context.shadowOffsetY = 0;
-            if ((context.isthumb && jp) || url.transparent)
+            if ((context.panning && globalobj.shifthit) ||
+                (context.isthumb && jp) ||
+                url.transparent)
             {
                 var blackfill = new FillPanel(THUMBFILP);
                 blackfill.draw(context, context.thumbrect, 0, 0);
@@ -3417,6 +3417,8 @@ var thumblst =
                 blackfill.draw(context, r, 0, 0);
             }
 
+            if (globalobj.factorobj)
+            {
                 if (context.thumbrect.width > context.thumbrect.height)
                 {
                     var j = context.thumbrect.height*0.15;
@@ -3449,6 +3451,7 @@ var thumblst =
 
                     a.draw(context, context.thumbrect, 0, 0);
                 }
+            }
 
             if (!url.hidefocus)
             {
@@ -4792,8 +4795,8 @@ var headlst =
             }
             else if (context.page && context.page.hitest(x,y))
             {
-                if (!url.autotime)
-                    _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+//                if (!url.autotime)
+//                    _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
                 _8cnvctx.scrollobj.set(0);
                 menutoggle(_8cnvctx)
             }
@@ -5425,6 +5428,46 @@ galleryobj.init = function(obj)
                       });
             }
         },
+        {title:"dalle", path: "", func: function()
+            {
+                fetch(`https://dalle.reportbase5836.workers.dev`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({ 'prompt': 'lion cub', 'n': 1, 'size': '1024x1024' })
+                })
+                .then(resp =>
+                {
+                    if (resp.ok)
+                        return resp.json()
+                    else
+                        throw Error(resp.statusText);
+                })
+                .then(data =>
+                {
+                    galleryobj.data.splice(0,0,...data);
+                    _8cnvctx.sliceobj.data = galleryobj.data;
+                    var slices = _8cnvctx.sliceobj;
+                    _8cnvctx.delayinterval = DELAYCENTER / slices.length();
+                    _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
+                    _8cnvctx.scrollobj.set(0);
+                    galleryobj.set(0);
+                    delete _4cnvctx.thumbcanvas;
+                    delete photo.image;
+                    url.transparent = 0;
+                    _4cnvctx.isthumb = 0;
+                    headobj.set(3);
+                    headham.panel = headobj.getcurrent();
+                    headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
+                    contextobj.reset();
+                    _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+                    _8cnvctx.refresh();
+                    menushow(_8cnvctx)
+                })
+                .catch((error) =>
+                {
+                });
+            }
+        },
 
         {title:"get", path: "", func: function()
             {
@@ -5458,7 +5501,7 @@ galleryobj.init = function(obj)
         {line:"Unsplash\nImage Search", func: function() { showsearch("unsplash"); }, enabled: function() {return false;} },
         {line:"Pexels\nImage Search", func: function() { showsearch("pexels"); }, enabled: function() {return false;} },
         {line:"Pixabay\nImage Search",func: function() { showsearch("pixabay"); }, enabled: function() {return false;} },
-        {line:"Pexels Collection\nImage Search",func: function() { showsearch("pexels_collection"); }, enabled: function() {return false;} },
+//todo        {line:"Pexels Collection\nImage Search",func: function() { showsearch("pexels_collection"); }, enabled: function() {return false;} },
         {line:"Unsplash Collection\nImage Search",func: function() { showsearch("unsplash_collection"); }, enabled: function() {return false;} },
         {line:"Unsplash User Collection\nImage Search",func: function() { showsearch("unsplash_user"); }, enabled: function() {return false;} },
     ];
@@ -5672,45 +5715,8 @@ function showprompt(obj)
         if (event.target.id == "prompt-ok")
         {
             globalobj.prompt = 0;
-
-            fetch(`https://dalle.reportbase5836.workers.dev`,
-            {
-                method: 'POST',
-                body: JSON.stringify({ 'prompt': textarea.value, 'n': 1, 'size': '1024x1024' })
-            })
-            .then(resp =>
-            {
-                if (resp.ok)
-                    return resp.json()
-                else
-                    throw Error(resp.statusText);
-            })
-            .then(data =>
-            {
-                galleryobj.data.splice(0,0,...data);
-                _8cnvctx.sliceobj.data = galleryobj.data;
-                var slices = _8cnvctx.sliceobj;
-                _8cnvctx.delayinterval = DELAYCENTER / slices.length();
-                _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
-                _8cnvctx.scrollobj.set(0);
-                galleryobj.set(0);
-                delete _4cnvctx.thumbcanvas;
-                delete photo.image;
-                url.transparent = 0;
-                _4cnvctx.isthumb = 0;
-                headobj.set(3);
-                headham.panel = headobj.getcurrent();
-                headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
-                contextobj.reset();
-                _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-                _8cnvctx.refresh();
-                menushow(_8cnvctx)
-            })
-            .catch((error) =>
-            {
-            });
+            copytext(textarea.value);
             dialog.close();
-            globalobj.prompt = 0;
         }
         else if (event.clientY < rect.top || event.clientY > rect.bottom ||
             event.clientX < rect.left || event.clientX > rect.right)
