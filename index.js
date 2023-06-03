@@ -1493,15 +1493,8 @@ CanvasRenderingContext2D.prototype.tab = function ()
     var context = this;
     var slidestop = url.slidestop;
     var slidereduce = url.slidereduce;
-    if (globalobj.shifthit)
-    {
-       slidestop *= 2;
-       slidereduce *= 2;
-    }
-
     context.slidestop += slidestop;
-    context.slidestop = Math.clamp(url.slidestop, url.slidestop*6, context.slidestop);
-    context.slidestop = (1500/context.virtualwidth)*context.slidestop;
+    context.slidestop = (window.innerWidth/context.virtualwidth)*context.slidestop;
     context.slidereduce = context.slidestop/slidereduce;
     clearInterval(context.timemain);
     context.timemain = setInterval(function () { drawslices() }, timemain.getcurrent());
@@ -2772,6 +2765,7 @@ var keylst =
 		var context = _4cnvctx;
         globalobj.ctrlhit = 0;
         globalobj.shifthit = 0;
+        context.keyup = 0;
         context.refresh();
 	},
 	keydown: function (evt)
@@ -2831,7 +2825,9 @@ var keylst =
             clearTimeout(context.moveupdowntime);
             context.moveupdowntime = setTimeout(function()
             {
-                rowobj.addperc(-0.04);
+                var k = rowobj.length()/100;
+                context.keyup += 0.5;
+                rowobj.add(-k-context.keyup);
                 contextobj.reset();
             },10);
         }
@@ -2840,7 +2836,9 @@ var keylst =
             clearTimeout(context.moveupdowntime);
             context.moveupdowntime = setTimeout(function()
             {
-                rowobj.addperc(0.04);
+                var k = rowobj.length()/100;
+                context.keyup += 0.5;
+                rowobj.add(k+context.keyup);
                 contextobj.reset();
             },10);
         }
@@ -3782,7 +3780,7 @@ function resetcanvas(leftright=1)
     var y = Math.clamp(0,context.canvas.height-1,context.canvas.height*rowobj.berp());
     context.nuby = Math.nub(y, context.canvas.height, context.imageheight, photo.image.height);
 
-    var slicewidth = galleryobj.slicewidth?galleryobj.slicewidth:30;
+    var slicewidth = galleryobj.slicewidth?galleryobj.slicewidth:60;
 
     var j = 0;
     for (; j < slicelst.length; ++j)
@@ -3889,6 +3887,7 @@ for (var n = 0; n < contextlst.length; ++n)
     context.lastime = 0;
     context.buttonheight = 30;
     context.slidereduce = 0;
+    context.keyup = 0;
     context.updowntime = 0;
     context.slidestop = 0;
     setevents(context, eventlst[n]);
