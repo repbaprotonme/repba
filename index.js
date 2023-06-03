@@ -5714,9 +5714,7 @@ function showprompt(obj)
         const rect = textarea.getBoundingClientRect();
         if (event.target.id == "prompt-ok")
         {
-            globalobj.prompt = 0;
             copytext(textarea.value);
-            dialog.close();
         }
         else if (event.clientY < rect.top || event.clientY > rect.bottom ||
             event.clientX < rect.left || event.clientX > rect.right)
