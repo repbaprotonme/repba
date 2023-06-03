@@ -22,7 +22,7 @@ A:hover { COLOR: blue; TEXT-DECORATION: none; font-weight: none; cursor: pointer
 
 dialog
 {
-  width: 80%; 
+  width: 85%; 
   max-width: 640px; 
   position: absolute; 
   left: 50%; 
@@ -39,7 +39,7 @@ dialog
 
 dialog::backdrop 
 {
-  background-color: rgba(0,0,0,0.75);
+  background-color: rgba(0,0,0,0.8);
 }
 
 label
@@ -86,7 +86,7 @@ textarea
   padding: 10px; 
   font-size: 1.1em; 
   color: white;
-  text-align: center;
+  text-align: left;
   font-weight: bold;
 }
 
@@ -163,8 +163,8 @@ button
 <canvas id='_7' style='z-index: 9' width='0' height='0'></canvas>
 <canvas id='_8' style='z-index: 10' width='0' height='0'></canvas>
 <canvas id='_9' style='z-index: 11' width='0' height='0'></canvas>
-<script type="text/javascript" src="js/screenfull.min.js"></script>
-<script type="text/javascript" src="js/hammer.min.js"></script>
+<script type="text/javascript" src="screenfull.min.js"></script>
+<script type="text/javascript" src="hammer.min.js"></script>
 
 <script src="https://www.unpkg.com/@propelauth/javascript@2.0.0/dist/javascript.min.js" 
          integrity="sha384-CnMW/GT96q1vxl3xq1fIbUrmXpDIsXVtY+/FpJW+rMSCgjlOWpbVfs5G0dg2bMN5" 
@@ -177,7 +177,7 @@ button
 
 <dialog id="search-overlay" style="max-width: 360px;">
     <div class="earth">
-      <input id="search-value" autocapitalize="off" placeholder="search"></input>
+      <input id="search-value" autocapitalize="off" placeholder="Enter Search"></input>
     </div>
     <div class="footer">
       <button class="fade" id="search-ok" style="" type="button">Search</button>

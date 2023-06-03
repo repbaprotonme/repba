@@ -1982,9 +1982,6 @@ var searchlst =
 ];
 
 var searchobj = new circular_array("SEARCH", searchlst);
-searchobj.search = localStorage.getItem("search");
-if (!searchobj.search)
-    searchobj.search = "";
 
 var extentobj = new circular_array("EXTENT", []);
 
@@ -3840,10 +3837,10 @@ function resetcanvas(leftright=1)
     context.refresh();
 }
 
-url.path = "BOAT";
+url.path = "HOME";
 url.project = 0;
 var leftmenu = 1;
-var path = `res/boat.json`;
+var path = `res/home.json`;
 
 if (url.searchParams.has("p"))
 {
@@ -3964,7 +3961,8 @@ contextobj.reset = function (leftright)
 
             document.title = `${j} (${photo.image.width}x${photo.image.height})`;
             contextobj.reset()
-            if (galleryobj.autotab)
+            context.autodirect = globalobj.shifthit?1:-1;
+            if (globalobj.ctrlhit || galleryobj.autotab)
                 context.tab()
             setTimeout(function() { masterload(); }, 500);
         }
@@ -5371,11 +5369,17 @@ galleryobj.init = function(obj)
             }},
         {title:"Screenshot", path: "SCREENSHOT", func: function()
             {
-                var k = document.createElement('canvas');
-                var link = document.createElement("a");
-                link.href = _4cnvctx.canvas.toDataURL();
-                link.download = galleryobj.getcurrent()[0] + ".jpg";
-                link.click();
+                try
+                {
+                    var k = document.createElement('canvas');
+                    var link = document.createElement("a");
+                    link.href = _4cnvctx.canvas.toDataURL();
+                    link.download = galleryobj.getcurrent()[0] + ".jpg";
+                    link.click();
+                }
+                catch (_)
+                {
+                }
             }},
         {title:"Copy Link", path: "COPYLINK", func: function()
             {
@@ -5609,8 +5613,6 @@ function showsearch(repos)
         var search = document.getElementById('search-value').value.clean();
         if (!search)
           return;
-        localStorage.setItem("search", search);
-        searchobj.search = search;
         var s = `${url.origin}?${repos}=${search}&page=${url.page}`;
         window.open(s, "reportbase.com");
       }
@@ -5627,8 +5629,6 @@ function showsearch(repos)
             var search = document.getElementById('search-value').value.clean();
             if (!search)
                 return;
-            localStorage.setItem("search", search);
-            searchobj.search = search;
             globalobj.prompt = 0;
             var s = `${url.origin}?${repos}=${search}&page=${url.page}`;
             window.open(s, "reportbase.com");
@@ -5644,7 +5644,14 @@ function showsearch(repos)
         }
     });
 
-    document.getElementById('search-value').value = searchobj.search;
+    var search = "";
+    if (url.searchParams.has(galleryobj.repos))
+    {
+        var k = url.searchParams.get(galleryobj.repos);
+        search = k.split(".")[0];
+    }
+
+    document.getElementById('search-value').value = search;
     dialog.showModal();
     setTimeout(function() { globalobj.block = 0; }, 40);
     hiderefresh();
