@@ -10,7 +10,9 @@ fs.readFile(args[2], 'utf8', (error, str) =>
     {
         var k = {};
         var name = lst[n];
-        k.url = `http://reportbase.me/data/max/${name}`;
+        if (!name)
+            continue;
+        k.url = `http://reportbase.me/data/${name}`;
         json.data.push(k);
     }
 

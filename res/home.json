@@ -2,6 +2,7 @@
   "title": "Repba Gallery",
   "template": "landscape",
   "thumb": "landthumb",
+  "autopan": "1",
   "data": [
     {
       "id": "HOME.0000"
