@@ -2,6 +2,7 @@
   "title": "Suicide Squad",
   "template": "portrait",
   "thumb": "portrait",
+  "modelist": "160,320,480,540,700,960",
   "data": [
     {
       "id": "SUIC.0000",
