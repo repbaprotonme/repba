@@ -2221,6 +2221,7 @@ var panlst =
         delete context.starty;
         delete context.startt;
         delete context.timeobj.offset;
+        context.isright = 0;
         context.isode = 0;
         context.issearch = 0;
         var obj = context.scrollobj;
@@ -2709,7 +2710,18 @@ var keylst =
 },
 {
 	name: "GALLERY",
-	keyup: function (evt) { },
+	keyup: function (evt)
+    {
+   		var context =
+            _5cnvctx.enabled ? _5cnvctx :
+            _6cnvctx.enabled ? _6cnvctx :
+            _7cnvctx.enabled ? _7cnvctx :
+			_8cnvctx.enabled ? _8cnvctx :
+            _9cnvctx.enabled ? _9cnvctx :
+		    _4cnv.height ? _4cnvctx : _1cnvctx;
+        context.keyblock = 0;
+        globalobj.shifthit = 0;
+    },
 	keydown: function (evt)
 	{
         if (globalobj.prompt)
@@ -2727,9 +2739,15 @@ var keylst =
         var key = evt.key.toLowerCase();
         clearInterval(_8cnvctx.autogallerytime);
         _8cnvctx.autogallerytime = 0;
+        if (evt.shiftKey)
+            globalobj.shifthit = 1;
 
 		if (key == "pagedown" || key == "arrowdown" || key == "j" || key == "enter")
 		{
+            if (!globalobj.shifthit && context.keyblock)
+                return;
+            context.keyblock = 1;
+            setTimeout(function() { context.keyblock = 0; }, 200);
             var obj = context.scrollobj.getcurrent();
             obj.set(0);
             context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
@@ -2737,6 +2755,10 @@ var keylst =
         }
         else if (key == "pageup" || key == "arrowup" || key == "k")
 		{
+            if (!globalobj.shifthit && context.keyblock)
+                return;
+            context.keyblock = 1;
+            setTimeout(function() { context.keyblock = 0; }, 200);
             var obj = context.scrollobj.getcurrent();
             obj.set(0);
             context.timeobj.rotate(TIMEOBJ/context.sliceobj.length());
@@ -3663,7 +3685,7 @@ var drawlst =
             user.lst = lst;
         }
 
-        if (!user.thumbcanvas)
+        if (!context.isright && !user.thumbcanvas)
         {
             var thumbimg = new Image();
             user.thumbcanvas = document.createElement('canvas');
