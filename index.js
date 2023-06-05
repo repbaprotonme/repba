@@ -2115,7 +2115,7 @@ async function dropfiles(files)
     contextobj.reset();
     _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
     _8cnvctx.refresh();
-    menushow(_8cnvctx)
+    menushow(_8cnvctx);
 }
 
 var droplst =
@@ -2719,8 +2719,9 @@ var keylst =
 			_8cnvctx.enabled ? _8cnvctx :
             _9cnvctx.enabled ? _9cnvctx :
 		    _4cnv.height ? _4cnvctx : _1cnvctx;
+        context.keyblocktime = 200;
         context.keyblock = 0;
-        globalobj.shifthit = 0;
+        context.shifthit = 0;
     },
 	keydown: function (evt)
 	{
@@ -2740,14 +2741,15 @@ var keylst =
         clearInterval(_8cnvctx.autogallerytime);
         _8cnvctx.autogallerytime = 0;
         if (evt.shiftKey)
-            globalobj.shifthit = 1;
+            context.shifthit = 1;
 
 		if (key == "pagedown" || key == "arrowdown" || key == "j" || key == "enter")
 		{
-            if (!globalobj.shifthit && context.keyblock)
+            if (!context.shifthit && context.keyblock)
                 return;
             context.keyblock = 1;
-            setTimeout(function() { context.keyblock = 0; }, 200);
+            setTimeout(function() { context.keyblock = 0; }, context.keyblocktime);
+            context.keyblocktime = Math.clamp(50,200,context.keyblocktime-5);
             var obj = context.scrollobj.getcurrent();
             obj.set(0);
             context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
@@ -2755,10 +2757,11 @@ var keylst =
         }
         else if (key == "pageup" || key == "arrowup" || key == "k")
 		{
-            if (!globalobj.shifthit && context.keyblock)
+            if (!context.shifthit && context.keyblock)
                 return;
             context.keyblock = 1;
-            setTimeout(function() { context.keyblock = 0; }, 200);
+            setTimeout(function() { context.keyblock = 0; }, context.keyblocktime);
+            context.keyblocktime = Math.clamp(50,200,context.keyblocktime-5);
             var obj = context.scrollobj.getcurrent();
             obj.set(0);
             context.timeobj.rotate(TIMEOBJ/context.sliceobj.length());
@@ -2854,8 +2857,8 @@ var keylst =
 	keyup: function (evt)
 	{
 		var context = _4cnvctx;
-        globalobj.ctrlhit = 0;
-        globalobj.shifthit = 0;
+        context.ctrlhit = 0;
+        context.shifthit = 0;
         context.keyup = 0;
         context.refresh();
 	},
@@ -2866,9 +2869,9 @@ var keylst =
 		var context = _4cnvctx;
 		var rect = context.rect();
         if (evt.ctrlKey)
-            globalobj.ctrlhit = 1;
+            context.ctrlhit = 1;
         if (evt.shiftKey)
-            globalobj.shifthit = 1;
+            context.shifthit = 1;
 
         context.refresh();
         var key = evt.key.toLowerCase();
@@ -2898,6 +2901,7 @@ var keylst =
         }
         else if (key == " ")
         {
+            _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
             _8cnvctx.scrollobj.set(0);
             menutoggle(_8cnvctx)
         }
@@ -3444,7 +3448,7 @@ var thumblst =
             context.save();
             context.shadowOffsetX = 0;
             context.shadowOffsetY = 0;
-            if ((context.panning && globalobj.shifthit) ||
+            if ((context.panning && context.shifthit) ||
                 (context.isthumb && jp) ||
                 galleryobj.transparent)
             {
@@ -3769,8 +3773,8 @@ var drawlst =
             var a = new Row([0,60,0],
                 [
                     0,
-                    new ShadowPanel(new Text("white", "center", "middle",0,0,
-                        "1.5rem Archivo Black"),1,1),
+                    new ShadowPanel(new Text("rgba(255,255,255,0.7)", "center", "middle",0,0,
+                        "1.3rem Archivo Black"),1,1),
                     0,
                 ]);
             a.draw(context,
@@ -3784,7 +3788,7 @@ var drawlst =
                 [
                     new Rounded(TRANSPARENT, 3, "white", 10, 10),
                     user.tap?new FillPanel("rgba(255,125,0,0.4)"):0,
-                    new Shrink(new MultiText(e), 20, 40),
+                    new Shrink(new MultiText(e), 10, 10),
                 ]);
 
             a.draw(context,
@@ -3995,6 +3999,7 @@ contextlst.forEach(function(context, n)
     context.fillText("  ", 0, 0);
     context.slideshow = 0;
     context.lastime = 0;
+    context.keyblocktime = 200;
     context.buttonheight = 30;
     context.slidereduce = 0;
     context.keyup = 0;
@@ -4137,7 +4142,7 @@ contextobj.reset = function (leftright)
 
             document.title = `${j} (${photo.image.width}x${photo.image.height})`;
             contextobj.reset()
-            context.autodirect = globalobj.shifthit?1:-1;
+            context.autodirect = context.shifthit?1:-1;
             if (!getmenu() && galleryobj.autopan)
                 context.tab()
             setTimeout(function() { masterload(); }, 500);
@@ -5142,6 +5147,7 @@ function menushow(context)
         context.show(l, 0, w, window.innerHeight);
     }
 
+    context.enabled = 1;
     headobj.getcurrent().draw(headcnvctx, headcnvctx.rect(), 0);
 
     context.refresh();
@@ -5378,8 +5384,8 @@ galleryobj.init = function(obj)
     loomobj.set(zoom);
     slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:10);
 
-    var k = galleryobj.mode?galleryobj.mode:1;
-    var lst = galleryobj.modelist?galleryobj.modelist.split(","):[120,240,360,480,600,720];
+    var k = galleryobj.buttonstart?galleryobj.buttonstart:1;
+    var lst = galleryobj.buttonlist?galleryobj.buttonlist.split(","):[120,240,360,480,600,720];
     _8cnvctx.buttonobj = new circular_array("", lst);
     _8cnvctx.buttonobj.set(Number(k));
 

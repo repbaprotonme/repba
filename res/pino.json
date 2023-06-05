@@ -1,8 +1,9 @@
 {
   "title": "Repba Gallery",
   "template": "wide",
-  "thumb": "ultrathumb",
-  "gheight": "0.5",
+  "thumb": "widethumb",
+  "buttonlist": "80,160,240,320,400,480",
+  "buttonstart": "1",
   "zoom": "0",
   "autopan": "1",
   "data": [
