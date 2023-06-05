@@ -933,7 +933,7 @@ var DrawHeader = function (e)
             var str = lines[m].clean();
             if (!str.length)
                 continue;
-            var a = new Text("white", "center", "middle", 0, 0, 1);
+            var a = new Text("white", "center", "middle", 0, 0);
             a.draw(context, rect, str, 0);
             rect.y += 20;
         }
@@ -974,7 +974,7 @@ var MultiText = function (e)
                 var str = lines[m].clean();
                 if (!str.length)
                     continue;
-                var a = new Text("white", "center", "middle", 0, 0, 1);
+                var a = new Text("white", "center", "middle", 0, 0);
                 a.draw(context, rect, str, 0);
                 rect.y += rowheight;
             }
@@ -3277,7 +3277,7 @@ var thumblst =
                     [
                         new Shrink(new Rectangle(context.slicewidthrect),4,0),
                         new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 10, 10),
-                        new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0, 1),
+                        new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0),
                         new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1),4,0),
                     ]),
                      0,
@@ -3290,7 +3290,7 @@ var thumblst =
                     [
                         new Shrink(new Rectangle(context.zoomrect),4,0),
                         new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 10, 10),
-                        new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0, 1),
+                        new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0),
                         new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1),4,0),
                     ]),
                      0,
@@ -3303,7 +3303,7 @@ var thumblst =
                     [
                         new Shrink(new Rectangle(context.stretchrect),4,0),
                         new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 10, 10),
-                        new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0, 1),
+                        new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0),
                         new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1),4,0),
                     ]),
                      0,
@@ -3344,7 +3344,7 @@ var thumblst =
                     new Layer(
                     [
                         new Rectangle(context.extentrect),
-                        new Text("white", "center", "middle",0, 0, 1),
+                        new Text("white", "center", "middle",0, 0),
                     ])
                 ]);
 
@@ -3621,7 +3621,7 @@ var drawlst =
         var a = new Layer(
         [
             new Expand(new Rounded(clr, 3, SEARCHFRAME, 8, 8), 0, 10),
-            new Shrink(new Text("white", "center", "middle",0, 0, 1), 20, 0),
+            new Shrink(new Text("white", "center", "middle",0, 0), 20, 0),
         ]);
 
         a.draw(context, rect, user.title, time);
@@ -3727,8 +3727,8 @@ var drawlst =
                     new ShadowPanel(new Text("white", "center", "middle",0,0),1,1),
                     0,
                     0,
-                    0,//new ShadowPanel(new Text("white", "center", "middle",0,0,0),1,1),
-                    0,//new ShadowPanel(new Text("white", "center", "middle",0,0,0),1,1),
+                    0,
+                    0,
                     0,
                 ]);
             a.draw(context,
@@ -5758,9 +5758,9 @@ function showprompt(obj)
         }
     });
 
+    textarea.focus();
     textarea.value = (obj && obj.prompt)?obj.prompt:"";
     dialog.showModal();
-    textarea.focus();
     textarea.setSelectionRange(0, 0);
     setTimeout(function() { globalobj.block = 0; }, 40);
 }
