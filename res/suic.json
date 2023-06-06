@@ -1,9 +1,5 @@
 {
   "title": "Suicide Squad",
-  "variant": "portrait",
-  "variantlist": "portait,portrait,portrait,portrait,portrait",
-  "buttonlist": "120,240,360,480,540",
-  "buttonstart": 2,
   "data": [
     {
       "id": "SUIC.0000",

@@ -709,20 +709,24 @@ var GalleryBar = function ()
             [
                 0,
                 context.scrollobj.current() == 1 ? 0:
-                    new Row([0,150,0],
+                    new Row([0,30*9,0],
                 [
                     0,
                     new Layer(
                     [
                         new Rectangle(context.variantrect),
                         new Rounded("rgba(0,0,0,0.4)",4,THUMBSTROKE,10,10),
-                        new Row([0,0,0,0,0],
+                        new Row([0,0,0,0,0,0,0,0,0],
                         [
                             new Shrink(new CirclePanel(context.buttonobj.current()==0?ARROWFILL:THUMBSTROKE),7,7),
                             new Shrink(new CirclePanel(context.buttonobj.current()==1?ARROWFILL:THUMBSTROKE),7,7),
                             new Shrink(new CirclePanel(context.buttonobj.current()==2?ARROWFILL:THUMBSTROKE),7,7),
                             new Shrink(new CirclePanel(context.buttonobj.current()==3?ARROWFILL:THUMBSTROKE),7,7),
                             new Shrink(new CirclePanel(context.buttonobj.current()==4?ARROWFILL:THUMBSTROKE),7,7),
+                            new Shrink(new CirclePanel(context.buttonobj.current()==5?ARROWFILL:THUMBSTROKE),7,7),
+                            new Shrink(new CirclePanel(context.buttonobj.current()==6?ARROWFILL:THUMBSTROKE),7,7),
+                            new Shrink(new CirclePanel(context.buttonobj.current()==7?ARROWFILL:THUMBSTROKE),7,7),
+                            new Shrink(new CirclePanel(context.buttonobj.current()==8?ARROWFILL:THUMBSTROKE),7,7),
                         ]),
                     ]),
                     0,
@@ -2632,6 +2636,7 @@ var swipelst =
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
+        /*
         context.slideshow = (context.timeobj.length()/context.virtualheight)*4;
         context.swipetype = evt.type;
         context.slidereduce = context.slideshow/50;
@@ -2639,6 +2644,7 @@ var swipelst =
         context.timemain = setInterval(function () { context.refresh(); }, 4);
         context.refresh();
         clearTimeout(context.swipeupdown);
+        */
     },
 },
 {
@@ -5349,12 +5355,15 @@ galleryobj.init = function (obj)
 
     var k = galleryobj.buttonstart?galleryobj.buttonstart:2;
     var lst = galleryobj.buttonlist?
-        galleryobj.buttonlist.split(","):[120,240,360,480,600];
+        galleryobj.buttonlist.split(","):[120,240,360,480,600,720,840,960,1080];
     _8cnvctx.buttonobj = new circular_array("", lst);
     _8cnvctx.buttonobj.set(Number(k));
     var lst = galleryobj.variantlist?
         galleryobj.variantlist.split(","):
-            ["2160x2160","2160x2160","2160x2160","2160x2160","2160x2160"];
+            [
+                "2160x2160","2160x2160","2160x2160","2160x2160","2160x2160",
+                "2160x2160","2160x2160","2160x2160","2160x2160"
+            ];
     _8cnvctx.variantobj = new circular_array("", lst);
     _8cnvctx.variantobj.set(Number(k));
 
