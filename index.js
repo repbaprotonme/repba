@@ -723,19 +723,20 @@ var GalleryBar = function ()
         var a = new Col([15,40,0],
             [
                 0,
-                new Row([0,140,0],
+                new Row([0,180,0],
                 [
                     0,
                     new Layer(
                     [
                         new Rectangle(context.variantrect),
                         new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 10, 10),
-                        new Row([0,0,0,0],
+                        new Row([0,0,0,0,0],
                         [
                             new Shrink(new CirclePanel(context.buttonobj.current()==0?"white":"rgba(0,0,0,0.4)"),10,10),
                             new Shrink(new CirclePanel(context.buttonobj.current()==1?"white":"rgba(0,0,0,0.4)"),10,10),
                             new Shrink(new CirclePanel(context.buttonobj.current()==2?"white":"rgba(0,0,0,0.4)"),10,10),
                             new Shrink(new CirclePanel(context.buttonobj.current()==3?"white":"rgba(0,0,0,0.4)"),10,10),
+                            new Shrink(new CirclePanel(context.buttonobj.current()==4?"white":"rgba(0,0,0,0.4)"),10,10),
                         ]),
                     ]),
                     0,
@@ -3708,8 +3709,8 @@ var drawlst =
             {
                 const ctx = user.thumbcanvas.getContext("2d");
                 const a = this.width/this.height;
-                user.thumbcanvas.height = context.buttonheight;
-                user.thumbcanvas.width = context.buttonheight*a;
+                user.thumbcanvas.width = rect.width;
+                user.thumbcanvas.height = rect.width/a;
                 ctx.drawImage(this, 0, 0, this.width, this.height,
                     0, 0, user.thumbcanvas.width,
                     user.thumbcanvas.height);
@@ -5393,12 +5394,12 @@ fetch(path)
 
     var k = galleryobj.buttonstart?galleryobj.buttonstart:1;
     var lst = galleryobj.buttonlist?
-        galleryobj.buttonlist.split(","):[120,240,360,480];
+        galleryobj.buttonlist.split(","):[120,200,280,360,420];
     _8cnvctx.buttonobj = new circular_array("", lst);
     _8cnvctx.buttonobj.set(Number(k));
     var lst = galleryobj.variantlist?
         galleryobj.variantlist.split(","):
-            ["1000x1000","1000x1000","2000x2000","3000x3000"];
+            ["2000x2000","2000x2000","2000x2000","2000x2000","2000x2000"];
     _8cnvctx.variantobj = new circular_array("", lst);
     _8cnvctx.variantobj.set(Number(k));
 
