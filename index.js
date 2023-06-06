@@ -656,12 +656,13 @@ var GalleryBar = function ()
 {
     this.draw = function (context, rect, user, time)
     {
+        var w = Math.min(360,rect.width-100);
         var j = rect.width >= MENUWIDTH;
         context.save();
         context.headerect = new rectangle();
         context.footerect = new rectangle();
         context.variantrect = new rectangle();
-        var a = new RowA([80,0],
+        var a = new Row([80,0,40,60],
         [
             new Layer(
             [
@@ -684,58 +685,23 @@ var GalleryBar = function ()
                     0,
                 ]),
             ]),
-            0
+            0,
+             new Col([0,w,0],
+             [
+                 0,
+                new LayerA(
+                [
+                    new Shrink(new Rectangle(context.variantrect),4,0),
+                    new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 10, 10),
+                    new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0),
+                    new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1),4,0),
+                ]),
+                 0,
+            ]),
+            0,
         ]);
 
-        var repos = galleryobj.repos;
-        if (repos)
-            repos = repos.proper();
-        var e = Math.lerp(1,context.sliceobj.length(),1-context.timeobj.berp());
-        a.draw(context, rect,
-        [
-            [ 0, 0, 0, 0, 0, 0, 0, ], 0,
-            [
-                0,
-                e.toFixed(0),
-                0,
-                0,
-                0,
-                context.sliceobj.length().toFixed(0),
-                0,
-            ],
-        ])
-
-        var k = context.scrollobj.current() == 1 ||
-            rect.height < 30*9+ALIEXTENT*2;
-        var a = new Col([15,40,0],
-            [
-                0,
-                k ? 0: new Row([0,30*9,0],
-                [
-                    0,
-                    new Layer(
-                    [
-                        new Rectangle(context.variantrect),
-                        new Rounded("rgba(0,0,0,0.4)",4,THUMBSTROKE,10,10),
-                        new Row([0,0,0,0,0,0,0,0,0],
-                        [
-                            new Shrink(new CirclePanel(context.buttonobj.current()==0?ARROWFILL:THUMBSTROKE),7,7),
-                            new Shrink(new CirclePanel(context.buttonobj.current()==1?ARROWFILL:THUMBSTROKE),7,7),
-                            new Shrink(new CirclePanel(context.buttonobj.current()==2?ARROWFILL:THUMBSTROKE),7,7),
-                            new Shrink(new CirclePanel(context.buttonobj.current()==3?ARROWFILL:THUMBSTROKE),7,7),
-                            new Shrink(new CirclePanel(context.buttonobj.current()==4?ARROWFILL:THUMBSTROKE),7,7),
-                            new Shrink(new CirclePanel(context.buttonobj.current()==5?ARROWFILL:THUMBSTROKE),7,7),
-                            new Shrink(new CirclePanel(context.buttonobj.current()==6?ARROWFILL:THUMBSTROKE),7,7),
-                            new Shrink(new CirclePanel(context.buttonobj.current()==7?ARROWFILL:THUMBSTROKE),7,7),
-                            new Shrink(new CirclePanel(context.buttonobj.current()==8?ARROWFILL:THUMBSTROKE),7,7),
-                        ]),
-                    ]),
-                    0,
-                ]),
-                0,
-            ]);
-
-        a.draw(context, rect, 0, 0);
+        a.draw(context, rect, [0,0,"Height",context.buttonobj], 0);
         context.restore();
     }
 };
@@ -2162,7 +2128,7 @@ var panlst =
             context.modetimeout = setTimeout(function()
                 {
                     var j = context.buttonobj.current()
-                    var k = (y - context.variantrect.y) / context.variantrect.height;
+                    var k = (x - context.variantrect.x) / context.variantrect.width;
                     context.buttonobj.setperc(k);
                     if (j == context.buttonobj.current())
                        return;
@@ -2590,6 +2556,9 @@ var presslst =
     },
     press: function (context, rect, x, y)
     {
+        if (context.variantrect && context.variantrect.hitest(x,y))
+            return;
+
         context.scrollobj.rotate(1);
         context.refresh();
     }
@@ -2613,6 +2582,10 @@ var presslst =
     },
     press: function (context, rect, x, y)
     {
+        if (context.zoomrect && context.zoomrect.hitest(x,y))
+            return;
+        if (context.stretchrect && context.stretchrect.hitest(x,y))
+            return;
         if (thumbobj.current() == 1)
             url.hidefocus = url.hidefocus?0:1;
         context.refresh();
@@ -3158,7 +3131,7 @@ var taplst =
             clearTimeout(globalobj.timetap)
             globalobj.timetap = setTimeout(function()
                 {
-                    var k = (y-context.variantrect.y)/context.variantrect.height;
+                    var k = (x-context.variantrect.x)/context.variantrect.width;
                     context.buttonobj.setperc(k);
                     context.variantobj.setperc(k);
                     context.slideshow = (context.timeobj.length()/context.virtualheight);
