@@ -1,7 +1,9 @@
 {
   "title": "Repba Gallery",
-  "template": "portrait",
-  "thumb": "porthumb",
+  "variant": "portrait",
+  "variantlist": "portait,portrait,portrait,portrait,portrait",
+  "buttonlist": "120,240,480,600,720",
+  "buttonstart": 1,
   "data": [
     {
       "id": "HULK.0000",
