@@ -610,9 +610,9 @@ var MenuBar = function ()
                     0,
                    j?0:new PagePanel(),
                     0,
-                   0,//new ShiftPanel(new FullPanel(),-10,0),
+                   new ShiftPanel(new DropPanel(),-10,0),
                    new SearchPanel(),
-                   0,//new ShiftPanel(new ThumbPanel(),10,0),
+                   new ShiftPanel(new DropPanel(),10,0),
                     0,
                    j?0:new OptionPanel(),
                     0,
@@ -660,11 +660,12 @@ var GalleryBar = function ()
 {
     this.draw = function (context, rect, user, time)
     {
+        var j = rect.width >= MENUWIDTH;
         context.save();
         context.headerect = new rectangle();
         context.footerect = new rectangle();
         context.variantrect = new rectangle();
-        var a = new RowA([80,0,80],
+        var a = new RowA([80,0],
         [
             new Layer(
             [
@@ -677,32 +678,17 @@ var GalleryBar = function ()
                 new ColA([MARGINBAR,60,0,50,50,50,0,60,MARGINBAR],
                 [
                     0,
-                   new PagePanel(),
+                   j?0:new PagePanel(),
                     0,
                     new ShiftPanel(new ScrollPanel(),-10,0),
                     new HomePanel(),
                     new ShiftPanel(new AutoGalleryPanel(),10,0),
                     0,
-                   new OptionPanel(),
+                   j?0:new OptionPanel(),
                     0,
                 ]),
             ]),
-            0,
-            new Layer(
-            [
-                new Col([20,60,0],
-                [
-                    0,
-                    new Rectangle(context.footerect),
-                    0,
-                ]),
-                new Col([0,50,0],
-                [
-                    0,
-                    context.scrollobj.current() == 0 ? 0: new DropPanel(),
-                    0,
-                ]),
-            ]),
+            0
         ]);
 
         var repos = galleryobj.repos;
@@ -1071,7 +1057,7 @@ var DropPanel = function ()
     this.draw = function (context, rect, user, time)
     {
         context.save();
-        context.dropbutton = new rectangle();
+        context.droprect = new rectangle();
 
         var drop = function ()
         {
@@ -1093,7 +1079,7 @@ var DropPanel = function ()
 
         var a = new Layer(
         [
-            new Rectangle(context.dropbutton),
+            new Rectangle(context.droprect),
             new Shrink(new CirclePanel(1 ? SCROLLNAB:TRANSPARENT, SEARCHFRAME,4),15,15),
             new Shrink(new drop(),16,34),
         ]);
@@ -3103,6 +3089,10 @@ var taplst =
             menutoggle(_8cnvctx)
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         }
+        else if (context.droprect && context.droprect.hitest(x,y))
+        {
+            explore().then(function(files) { dropfiles(files); })
+        }
         else if (context.option && context.option.hitest(x,y))
         {
             headobj.set(1);
@@ -3180,10 +3170,6 @@ var taplst =
         else if (context.upload && context.upload.hitest(x,y))
         {
             showupload();
-        }
-        else if (context.dropbutton && context.dropbutton.hitest(x,y))
-        {
-            explore().then(function(files) { dropfiles(files); })
         }
         else if (context.search && context.search.hitest(x,y))
         {
@@ -5142,20 +5128,20 @@ function menushow(context)
 
 function menutoggle(context)
 {
-    _4cnvctx.slideshow = 0;
-    var enabled = context.enabled;
+    var menu = getmenu();
+    if (context == menu)
+    {
+        context.enabled = 0;
+        menuhide();
+        return;
+    }
+
     menuhide();
-    context.enabled = !enabled;
-    if (context == _8cnvctx)
-    {
-        context.show(0, 0, window.innerWidth, 0);
-    }
-    else
-    {
-        var w = Math.min(MENUWIDTH, window.innerWidth);
-        var l = Math.floor((window.innerWidth-w)/2);
-        context.show(l, 0, w, window.innerHeight);
-    }
+    _4cnvctx.slideshow = 0;
+    context.enabled = 1;
+    var w = Math.min(MENUWIDTH, window.innerWidth);
+    var l = Math.floor((window.innerWidth-w)/2);
+    context.show(l, 0, w, window.innerHeight);
 
     context.refresh();
     headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
