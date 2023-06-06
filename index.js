@@ -30,18 +30,14 @@ const BARFILL = "rgba(0,0,0,0.5)";
 const MENUCOLOR = "rgba(0,0,0,0.5)";
 const OPTIONFILL = "white";
 const THUMBFILP = "rgba(0,0,0,0.4)";
-const WHITE = "white";
 const THUMBFILL = "rgba(0,0,0,0.4)";
 const THUMBSTROKE = "rgba(255,255,255,0.4)";
 const SEARCHFRAME = "rgba(255,255,255,0.5)";
 const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
 const SCROLLBARWIDTH = 7;
-const SLIDEDEFAULT = 2500;
-const MENUWIDTH = 620;
-const MENUMAX = 800;
+const MENUWIDTH = 1080;
 const MARGINBAR = 5;
-const SEARCHBOT = "rgb(200,200,200)";
 const DEFAULTFONT = "0.90rem Archivo Black";
 globalobj = {};
 let photo = {};
@@ -712,7 +708,7 @@ var GalleryBar = function ()
         var a = new Col([15,40,0],
             [
                 0,
-                context.scrollobj.current() == 0 ? 0:
+                context.scrollobj.current() == 1 ? 0:
                     new Row([0,150,0],
                 [
                     0,
@@ -722,11 +718,11 @@ var GalleryBar = function ()
                         new Rounded("rgba(0,0,0,0.4)",4,THUMBSTROKE,10,10),
                         new Row([0,0,0,0,0],
                         [
-                            new Shrink(new CirclePanel(context.buttonobj.current()==0?WHITE:THUMBSTROKE),7,7),
-                            new Shrink(new CirclePanel(context.buttonobj.current()==1?WHITE:THUMBSTROKE),7,7),
-                            new Shrink(new CirclePanel(context.buttonobj.current()==2?WHITE:THUMBSTROKE),7,7),
-                            new Shrink(new CirclePanel(context.buttonobj.current()==3?WHITE:THUMBSTROKE),7,7),
-                            new Shrink(new CirclePanel(context.buttonobj.current()==4?WHITE:THUMBSTROKE),7,7),
+                            new Shrink(new CirclePanel(context.buttonobj.current()==0?ARROWFILL:THUMBSTROKE),7,7),
+                            new Shrink(new CirclePanel(context.buttonobj.current()==1?ARROWFILL:THUMBSTROKE),7,7),
+                            new Shrink(new CirclePanel(context.buttonobj.current()==2?ARROWFILL:THUMBSTROKE),7,7),
+                            new Shrink(new CirclePanel(context.buttonobj.current()==3?ARROWFILL:THUMBSTROKE),7,7),
+                            new Shrink(new CirclePanel(context.buttonobj.current()==4?ARROWFILL:THUMBSTROKE),7,7),
                         ]),
                     ]),
                     0,
@@ -2638,9 +2634,9 @@ var swipelst =
     {
         context.slideshow = (context.timeobj.length()/context.virtualheight)*4;
         context.swipetype = evt.type;
-        context.slidereduce = context.slideshow/100;
+        context.slidereduce = context.slideshow/50;
         clearInterval(context.timemain);
-        context.timemain = setInterval(function () { context.refresh(); }, 20);
+        context.timemain = setInterval(function () { context.refresh(); }, 4);
         context.refresh();
         clearTimeout(context.swipeupdown);
     },
@@ -2656,7 +2652,7 @@ var swipelst =
         context.swipetype = evt.type;
         context.slidereduce = context.slideshow/100;
         clearInterval(context.timemain);
-        context.timemain = setInterval(function () { context.refresh(); }, 20);
+        context.timemain = setInterval(function () { context.refresh(); }, 4);
         context.refresh();
         clearTimeout(context.swipeupdown);
     },
