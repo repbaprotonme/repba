@@ -5330,7 +5330,6 @@ galleryobj.init = function (obj)
     loomobj.set(zoom);
     slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:10);
 
-    var k = galleryobj.buttonstart?galleryobj.buttonstart:2;
     var lst = [];
     var lst1 = [];
     for (var n = 120; n < 1080; n += 1)
@@ -5340,6 +5339,7 @@ galleryobj.init = function (obj)
     }
     _8cnvctx.buttonobj = new circular_array("", lst);
     _8cnvctx.variantobj = new circular_array("", lst1);
+    var k = galleryobj.buttonstart?galleryobj.buttonstart:250;
     _8cnvctx.buttonobj.set(Number(k));
     _8cnvctx.variantobj.set(Number(k));
 
