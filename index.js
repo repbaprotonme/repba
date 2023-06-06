@@ -690,13 +690,13 @@ var GalleryBar = function ()
         var repos = galleryobj.repos;
         if (repos)
             repos = repos.proper();
-        var j = Math.lerp(1,context.sliceobj.length(),1-context.timeobj.berp());
+        var e = Math.lerp(1,context.sliceobj.length(),1-context.timeobj.berp());
         a.draw(context, rect,
         [
             [ 0, 0, 0, 0, 0, 0, 0, ], 0,
             [
                 0,
-                j.toFixed(0),
+                e.toFixed(0),
                 0,
                 0,
                 0,
@@ -705,11 +705,12 @@ var GalleryBar = function ()
             ],
         ])
 
+        var k = context.scrollobj.current() == 1 ||
+            rect.height < 30*9+ALIEXTENT*2;
         var a = new Col([15,40,0],
             [
                 0,
-                context.scrollobj.current() == 1 ? 0:
-                    new Row([0,30*9,0],
+                k ? 0: new Row([0,30*9,0],
                 [
                     0,
                     new Layer(
@@ -2636,15 +2637,13 @@ var swipelst =
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
-        /*
-        context.slideshow = (context.timeobj.length()/context.virtualheight)*4;
+        context.slideshow = (context.timeobj.length()/context.virtualheight)*5;
         context.swipetype = evt.type;
-        context.slidereduce = context.slideshow/50;
+        context.slidereduce = context.slideshow/100;
         clearInterval(context.timemain);
         context.timemain = setInterval(function () { context.refresh(); }, 4);
         context.refresh();
         clearTimeout(context.swipeupdown);
-        */
     },
 },
 {
