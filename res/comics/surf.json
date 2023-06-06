@@ -1,0 +1,711 @@
+{
+  "title": "Repba Gallery",
+  "variant": "portrait",
+  "variantlist": "portait,portrait,portrait,portrait,portrait",
+  "buttonlist": "120,240,480,600,720",
+  "buttonstart": 1,
+  "data": [
+    {
+      "id": "SURF.0000",
+      "index": "1 of 78",
+      "width": 833,
+      "height": 1127,
+      "extent": "833x1127 0.74",
+      "size": "0.9MP",
+      "quote": "Those who dance are considered mad by those who can't hear the music."
+    },
+    {
+      "id": "SURF.0001",
+      "index": "2 of 78",
+      "width": 759,
+      "height": 1097,
+      "extent": "759x1097 0.69",
+      "size": "0.8MP",
+      "quote": "May God have mercy on my enemies, cause I will not."
+    },
+    {
+      "id": "SURF.0002",
+      "index": "3 of 78",
+      "width": 819,
+      "height": 1079,
+      "extent": "819x1079 0.76",
+      "size": "0.9MP",
+      "quote": "The difference between genius and stupidity is that genius has its limits."
+    },
+    {
+      "id": "SURF.0003",
+      "index": "4 of 78",
+      "width": 801,
+      "height": 1079,
+      "extent": "801x1079 0.74",
+      "size": "0.9MP",
+      "quote": "The Harder You Work, The Luckier You Get"
+    },
+    {
+      "id": "SURF.0004",
+      "index": "5 of 78",
+      "width": 787,
+      "height": 1082,
+      "extent": "787x1082 0.73",
+      "size": "0.9MP",
+      "quote": "Teamwork Makes the Dream Work"
+    },
+    {
+      "id": "SURF.0005",
+      "index": "6 of 78",
+      "width": 784,
+      "height": 1082,
+      "extent": "784x1082 0.72",
+      "size": "0.8MP",
+      "quote": "OK Monday, Lets Do This"
+    },
+    {
+      "id": "SURF.0006",
+      "index": "7 of 78",
+      "width": 787,
+      "height": 1097,
+      "extent": "787x1097 0.72",
+      "size": "0.9MP",
+      "quote": "Do Not Decrease the Goal, Increase the Effort"
+    },
+    {
+      "id": "SURF.0007",
+      "index": "8 of 78",
+      "width": 836,
+      "height": 1156,
+      "extent": "836x1156 0.72",
+      "size": "1.0MP",
+      "quote": "We Didn't Lose the Game, We Just Ran Out of Time"
+    },
+    {
+      "id": "SURF.0008",
+      "index": "9 of 78",
+      "width": 773,
+      "height": 1086,
+      "extent": "773x1086 0.71",
+      "size": "0.8MP",
+      "quote": "The Seeds of Doubt Grow Bitter Fruit"
+    },
+    {
+      "id": "SURF.0009",
+      "index": "10 of 78",
+      "width": 777,
+      "height": 1089,
+      "extent": "777x1089 0.71",
+      "size": "0.8MP",
+      "quote": "Success Consists of Getting Up Just One More Time Than You Fail"
+    },
+    {
+      "id": "SURF.0010",
+      "index": "11 of 78",
+      "width": 1547,
+      "height": 2158,
+      "extent": "1547x2158 0.72",
+      "size": "3.3MP",
+      "quote": "Enjoy Life Today, Yesterday Is Gone Tomorrow"
+    },
+    {
+      "id": "SURF.0011",
+      "index": "12 of 78",
+      "width": 773,
+      "height": 1086,
+      "extent": "773x1086 0.71",
+      "size": "0.8MP",
+      "quote": "If Not Us Who? If Not Now When?"
+    },
+    {
+      "id": "SURF.0012",
+      "index": "13 of 78",
+      "width": 784,
+      "height": 1096,
+      "extent": "784x1096 0.72",
+      "size": "0.9MP",
+      "quote": "If Opportunity Does Not Knock, Build a Door"
+    },
+    {
+      "id": "SURF.0013",
+      "index": "14 of 78",
+      "width": 794,
+      "height": 1090,
+      "extent": "794x1090 0.73",
+      "size": "0.9MP",
+      "quote": "It Was Not Raining When Noah Built the Ark"
+    },
+    {
+      "id": "SURF.0014",
+      "index": "15 of 78",
+      "width": 770,
+      "height": 1086,
+      "extent": "770x1086 0.71",
+      "size": "0.8MP",
+      "quote": "What We Are is God's Gift, What We Become is Our Gift to God"
+    },
+    {
+      "id": "SURF.0015",
+      "index": "16 of 78",
+      "width": 766,
+      "height": 1082,
+      "extent": "766x1082 0.71",
+      "size": "0.8MP",
+      "quote": "The Best Way to Predict the Future is To Invent It"
+    },
+    {
+      "id": "SURF.0016",
+      "index": "17 of 78",
+      "width": 770,
+      "height": 1082,
+      "extent": "770x1082 0.71",
+      "size": "0.8MP",
+      "quote": "Failure is the Condiment Which Gives Success Its Flavor"
+    },
+    {
+      "id": "SURF.0017",
+      "index": "18 of 78",
+      "width": 777,
+      "height": 1086,
+      "extent": "777x1086 0.72",
+      "size": "0.8MP",
+      "quote": "I can Resist Everything Except Temptation"
+    },
+    {
+      "id": "SURF.0018",
+      "index": "19 of 78",
+      "width": 773,
+      "height": 1083,
+      "extent": "773x1083 0.71",
+      "size": "0.8MP",
+      "quote": "What's Another Word For Thesaurus"
+    },
+    {
+      "id": "SURF.0019",
+      "index": "20 of 78",
+      "width": 773,
+      "height": 1083,
+      "extent": "773x1083 0.71",
+      "size": "0.8MP",
+      "quote": "It Is During the Darkest Moments That We Must Focus To See the Light"
+    },
+    {
+      "id": "SURF.0020",
+      "index": "21 of 78",
+      "width": 773,
+      "height": 1082,
+      "extent": "773x1082 0.71",
+      "size": "0.8MP",
+      "quote": "Winners Never Quit, Quitters Never Win"
+    },
+    {
+      "id": "SURF.0021",
+      "index": "22 of 78",
+      "width": 784,
+      "height": 1082,
+      "extent": "784x1082 0.72",
+      "size": "0.8MP",
+      "quote": "If Two Wrongs Don't Make a Right, Try Three"
+    },
+    {
+      "id": "SURF.0022",
+      "index": "23 of 78",
+      "width": 780,
+      "height": 1104,
+      "extent": "780x1104 0.71",
+      "size": "0.9MP",
+      "quote": "Try Being Informed Instead of Being Opinionated"
+    },
+    {
+      "id": "SURF.0023",
+      "index": "24 of 78",
+      "width": 777,
+      "height": 1083,
+      "extent": "777x1083 0.72",
+      "size": "0.8MP",
+      "quote": "I Refuse to Join Any Club That Would Have Me As a Member"
+    },
+    {
+      "id": "SURF.0024",
+      "index": "25 of 78",
+      "width": 770,
+      "height": 1086,
+      "extent": "770x1086 0.71",
+      "size": "0.8MP",
+      "quote": "Life is A Series of Commas, Not Periods"
+    },
+    {
+      "id": "SURF.0025",
+      "index": "26 of 78",
+      "width": 773,
+      "height": 1079,
+      "extent": "773x1079 0.72",
+      "size": "0.8MP",
+      "quote": "My Fake Plants Died Because I Did Not Pretend to Water Them"
+    },
+    {
+      "id": "SURF.0026",
+      "index": "27 of 78",
+      "width": 780,
+      "height": 1083,
+      "extent": "780x1083 0.72",
+      "size": "0.8MP",
+      "quote": "Life is What Happens When You Are Busy Making Other Plans"
+    },
+    {
+      "id": "SURF.0027",
+      "index": "28 of 78",
+      "width": 763,
+      "height": 1075,
+      "extent": "763x1075 0.71",
+      "size": "0.8MP",
+      "quote": "We are a Conclave of Geniuses, Knows as the Intelligencia"
+    },
+    {
+      "id": "SURF.0028",
+      "index": "29 of 78",
+      "width": 777,
+      "height": 1093,
+      "extent": "777x1093 0.71",
+      "size": "0.8MP",
+      "quote": "Believe You Can and You are Half Way There"
+    },
+    {
+      "id": "SURF.0029",
+      "index": "30 of 78",
+      "width": 777,
+      "height": 1096,
+      "extent": "777x1096 0.71",
+      "size": "0.9MP",
+      "quote": "If you Think You Can Or Think You Can't, Either Way Your Right"
+    },
+    {
+      "id": "SURF.0030",
+      "index": "31 of 78",
+      "width": 780,
+      "height": 1093,
+      "extent": "780x1093 0.71",
+      "size": "0.9MP",
+      "quote": "The Road to Success and The Road To Failure Are Exactly the Same"
+    },
+    {
+      "id": "SURF.0031",
+      "index": "32 of 78",
+      "width": 784,
+      "height": 1079,
+      "extent": "784x1079 0.73",
+      "size": "0.8MP",
+      "quote": "The Secret of Getting Ahead Is Getting Started"
+    },
+    {
+      "id": "SURF.0032",
+      "index": "33 of 78",
+      "width": 759,
+      "height": 1090,
+      "extent": "759x1090 0.70",
+      "size": "0.8MP",
+      "quote": "What Does Not Kill You Makes You Stronger"
+    },
+    {
+      "id": "SURF.0033",
+      "index": "34 of 78",
+      "width": 773,
+      "height": 1076,
+      "extent": "773x1076 0.72",
+      "size": "0.8MP",
+      "quote": "The Harder the Conflict the More Glorious the Triumph"
+    },
+    {
+      "id": "SURF.0034",
+      "index": "35 of 78",
+      "width": 780,
+      "height": 1093,
+      "extent": "780x1093 0.71",
+      "size": "0.9MP",
+      "quote": "Don't Spend Time Beating On a Wall Hoping To Tranform It Into A Door"
+    },
+    {
+      "id": "SURF.0035",
+      "index": "36 of 78",
+      "width": 770,
+      "height": 1079,
+      "extent": "770x1079 0.71",
+      "size": "0.8MP",
+      "quote": "I May Not Be There Yet but I'm Closer Than I Was Yesterday"
+    },
+    {
+      "id": "SURF.0036",
+      "index": "37 of 78",
+      "width": 773,
+      "height": 1093,
+      "extent": "773x1093 0.71",
+      "size": "0.8MP",
+      "quote": "Do What You Love, Love What You Do"
+    },
+    {
+      "id": "SURF.0037",
+      "index": "38 of 78",
+      "width": 780,
+      "height": 1093,
+      "extent": "780x1093 0.71",
+      "size": "0.9MP",
+      "quote": "The Pessimist Sees Difficulty In Every Opportunity The Optimist Sees Opportunity In Every Difficulty"
+    },
+    {
+      "id": "SURF.0038",
+      "index": "39 of 78",
+      "width": 780,
+      "height": 1086,
+      "extent": "780x1086 0.72",
+      "size": "0.8MP",
+      "quote": "If Your Going Through Hell Keep Going"
+    },
+    {
+      "id": "SURF.0039",
+      "index": "40 of 78",
+      "width": 770,
+      "height": 1086,
+      "extent": "770x1086 0.71",
+      "size": "0.8MP",
+      "quote": "Open Your Mind Before Your Mouth"
+    },
+    {
+      "id": "SURF.0040",
+      "index": "41 of 78",
+      "width": 773,
+      "height": 1093,
+      "extent": "773x1093 0.71",
+      "size": "0.8MP",
+      "quote": "If You Can Dream It You Can Do It"
+    },
+    {
+      "id": "SURF.0041",
+      "index": "42 of 78",
+      "width": 777,
+      "height": 1086,
+      "extent": "777x1086 0.72",
+      "size": "0.8MP",
+      "quote": "Creativity Is Intelligence Having Fun"
+    },
+    {
+      "id": "SURF.0042",
+      "index": "43 of 78",
+      "width": 763,
+      "height": 1089,
+      "extent": "763x1089 0.70",
+      "size": "0.8MP",
+      "quote": "Fake It Until You Make It"
+    },
+    {
+      "id": "SURF.0043",
+      "index": "44 of 78",
+      "width": 770,
+      "height": 1090,
+      "extent": "770x1090 0.71",
+      "size": "0.8MP",
+      "quote": "The Secret of Getting Ahead is Getting Started"
+    },
+    {
+      "id": "SURF.0044",
+      "index": "45 of 78",
+      "width": 763,
+      "height": 1082,
+      "extent": "763x1082 0.71",
+      "size": "0.8MP",
+      "quote": "The Best Way to Keep One's Word is Not to Give It"
+    },
+    {
+      "id": "SURF.0045",
+      "index": "46 of 78",
+      "width": 770,
+      "height": 1082,
+      "extent": "770x1082 0.71",
+      "size": "0.8MP",
+      "quote": "Learn to Say 'No' to the Good so You can Say 'Yes' to the Best"
+    },
+    {
+      "id": "SURF.0046",
+      "index": "47 of 78",
+      "width": 766,
+      "height": 1079,
+      "extent": "766x1079 0.71",
+      "size": "0.8MP",
+      "quote": "The Best Way to Hold a Man is in Your Arms"
+    },
+    {
+      "id": "SURF.0047",
+      "index": "48 of 78",
+      "width": 770,
+      "height": 1090,
+      "extent": "770x1090 0.71",
+      "size": "0.8MP",
+      "quote": "The Best Question is Not What is Best, but Who Shall Decide What is Best"
+    },
+    {
+      "id": "SURF.0048",
+      "index": "49 of 78",
+      "width": 770,
+      "height": 1082,
+      "extent": "770x1082 0.71",
+      "size": "0.8MP",
+      "quote": "Only a Mediocre Person is Always at His Best"
+    },
+    {
+      "id": "SURF.0049",
+      "index": "50 of 78",
+      "width": 777,
+      "height": 1079,
+      "extent": "777x1079 0.72",
+      "size": "0.8MP",
+      "quote": "We've Been Gone Five Years and the Best they Could Come up With was Boy Bands?"
+    },
+    {
+      "id": "SURF.0050",
+      "index": "51 of 78",
+      "width": 766,
+      "height": 1083,
+      "extent": "766x1083 0.71",
+      "size": "0.8MP",
+      "quote": "No Man has a Good Enough Memory to be a Successful Liar"
+    },
+    {
+      "id": "SURF.0051",
+      "index": "52 of 78",
+      "width": 791,
+      "height": 1086,
+      "extent": "791x1086 0.73",
+      "size": "0.9MP",
+      "quote": "Get Your Facts First, then you can Distort Them as You Please"
+    },
+    {
+      "id": "SURF.0052",
+      "index": "53 of 78",
+      "width": 784,
+      "height": 1093,
+      "extent": "784x1093 0.72",
+      "size": "0.9MP",
+      "quote": "All Generalizations are False, Including This One"
+    },
+    {
+      "id": "SURF.0053",
+      "index": "54 of 78",
+      "width": 790,
+      "height": 1096,
+      "extent": "790x1096 0.72",
+      "size": "0.9MP",
+      "quote": "Between Two Evils, I Always Pick the One I Never Tried Before"
+    },
+    {
+      "id": "SURF.0054",
+      "index": "55 of 78",
+      "width": 777,
+      "height": 1083,
+      "extent": "777x1083 0.72",
+      "size": "0.8MP",
+      "quote": "I No Doubt Deserved my Enemies, but I don't Believe I Deserved My Friends"
+    },
+    {
+      "id": "SURF.0055",
+      "index": "56 of 78",
+      "width": 773,
+      "height": 1089,
+      "extent": "773x1089 0.71",
+      "size": "0.8MP",
+      "quote": "Food Is an Important Part of a Balanced Diet"
+    },
+    {
+      "id": "SURF.0056",
+      "index": "57 of 78",
+      "width": 763,
+      "height": 1086,
+      "extent": "763x1086 0.70",
+      "size": "0.8MP",
+      "quote": "Housework Can't Kill You, but Why Take a Chance?"
+    },
+    {
+      "id": "SURF.0057",
+      "index": "58 of 78",
+      "width": 777,
+      "height": 1086,
+      "extent": "777x1086 0.72",
+      "size": "0.8MP",
+      "quote": "There Are Lots of People who Mistake their Imagination for Their Memory"
+    },
+    {
+      "id": "SURF.0058",
+      "index": "59 of 78",
+      "width": 770,
+      "height": 1086,
+      "extent": "770x1086 0.71",
+      "size": "0.8MP",
+      "quote": "The Reports of My Death Have Been Greatly Exaggerated"
+    },
+    {
+      "id": "SURF.0059",
+      "index": "60 of 78",
+      "width": 784,
+      "height": 1093,
+      "extent": "784x1093 0.72",
+      "size": "0.9MP",
+      "quote": "Before I Refuse to Take Your Questions, I Have an Opening Statement"
+    },
+    {
+      "id": "SURF.0060",
+      "index": "61 of 78",
+      "width": 790,
+      "height": 1122,
+      "extent": "790x1122 0.70",
+      "size": "0.9MP",
+      "quote": "A Government That Robs Peter to Pay Paul Can Always Depend on the Support of Paul"
+    },
+    {
+      "id": "SURF.0061",
+      "index": "62 of 78",
+      "width": 791,
+      "height": 1086,
+      "extent": "791x1086 0.73",
+      "size": "0.9MP",
+      "quote": "I Have had a Perfectly Wonderful Evening, but this Wasn't It"
+    },
+    {
+      "id": "SURF.0062",
+      "index": "63 of 78",
+      "width": 790,
+      "height": 1113,
+      "extent": "790x1113 0.71",
+      "size": "0.9MP",
+      "quote": "As For Our Majority... One is Enough"
+    },
+    {
+      "id": "SURF.0063",
+      "index": "64 of 78",
+      "width": 787,
+      "height": 1082,
+      "extent": "787x1082 0.73",
+      "size": "0.9MP",
+      "quote": "I Failed to Make the Chess Team Because of My Height"
+    },
+    {
+      "id": "SURF.0064",
+      "index": "65 of 78",
+      "width": 756,
+      "height": 1089,
+      "extent": "756x1089 0.69",
+      "size": "0.8MP",
+      "quote": "You Can Always Tell When a Man's Well Informed - His Views are Pretty Much Like Your Own"
+    },
+    {
+      "id": "SURF.0065",
+      "index": "66 of 78",
+      "width": 780,
+      "height": 1086,
+      "extent": "780x1086 0.72",
+      "size": "0.8MP",
+      "quote": "It's Simple, If It Jiggles, It's Fat"
+    },
+    {
+      "id": "SURF.0066",
+      "index": "67 of 78",
+      "width": 777,
+      "height": 1090,
+      "extent": "777x1090 0.71",
+      "size": "0.8MP",
+      "quote": "Yield to Temptation - It May Not Pass Your Way Again"
+    },
+    {
+      "id": "SURF.0067",
+      "index": "68 of 78",
+      "width": 780,
+      "height": 1086,
+      "extent": "780x1086 0.72",
+      "size": "0.8MP",
+      "quote": "If I Want to Knock a Story Off the Front Page, I Just Change My Hairstyle"
+    },
+    {
+      "id": "SURF.0068",
+      "index": "69 of 78",
+      "width": 773,
+      "height": 1089,
+      "extent": "773x1089 0.71",
+      "size": "0.8MP",
+      "quote": "All Right Everyone, Line Up Alphabetically According to Your Height"
+    },
+    {
+      "id": "SURF.0069",
+      "index": "70 of 78",
+      "width": 784,
+      "height": 1100,
+      "extent": "784x1100 0.71",
+      "size": "0.9MP",
+      "quote": "Why Do You Have to be a Nonconformist Like Everybody Else?"
+    },
+    {
+      "id": "SURF.0070",
+      "index": "71 of 78",
+      "width": 777,
+      "height": 1089,
+      "extent": "777x1089 0.71",
+      "size": "0.8MP",
+      "quote": "I was the Kid Next Door's Imaginary Friend"
+    },
+    {
+      "id": "SURF.0071",
+      "index": "72 of 78",
+      "width": 784,
+      "height": 1089,
+      "extent": "784x1089 0.72",
+      "size": "0.9MP",
+      "quote": "I Don't Think Anyone Should Write Their Autobiography Until After They're Dead"
+    },
+    {
+      "id": "SURF.0072",
+      "index": "73 of 78",
+      "width": 777,
+      "height": 1089,
+      "extent": "777x1089 0.71",
+      "size": "0.8MP",
+      "quote": "I Read Part of it All the Way Through"
+    },
+    {
+      "id": "SURF.0073",
+      "index": "74 of 78",
+      "width": 780,
+      "height": 1086,
+      "extent": "780x1086 0.72",
+      "size": "0.8MP",
+      "quote": "There Cannot be a Crisis Next Week. My Schedule is Already Full."
+    },
+    {
+      "id": "SURF.0074",
+      "index": "75 of 78",
+      "width": 773,
+      "height": 1090,
+      "extent": "773x1090 0.71",
+      "size": "0.8MP",
+      "quote": "Everybody Talks About the Weather, but Nobody Does Anything About It."
+    },
+    {
+      "id": "SURF.0075",
+      "index": "76 of 78",
+      "width": 780,
+      "height": 1086,
+      "extent": "780x1086 0.72",
+      "size": "0.8MP",
+      "quote": "Originality is the Fine Art of Remembering What You Hear but Forgetting Where You Heard It."
+    },
+    {
+      "id": "SURF.0076",
+      "index": "77 of 78",
+      "width": 777,
+      "height": 1086,
+      "extent": "777x1086 0.72",
+      "size": "0.8MP",
+      "quote": "Work until your idols become your rivals."
+    },
+    {
+      "id": "SURF.0077",
+      "index": "78 of 78",
+      "width": 843,
+      "height": 1114,
+      "extent": "843x1114 0.76",
+      "size": "0.9MP",
+      "quote": "To Be or Not to be. That's Not Really a Question."
+    }
+  ]
+}

@@ -1507,12 +1507,12 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
         delete photo.image;
         headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         contextobj.reset();
+        _4cnvctx.movingpage = 0;
     }, 10);
 
     clearTimeout(context.timemoveb)
     context.timemoveb = setTimeout(function()
     {
-        _4cnvctx.movingpage = 0;
         _4cnvctx.refresh();
         _8cnvctx.refresh();
         headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -5148,7 +5148,7 @@ function menutoggle(context)
     context.enabled = !enabled;
     if (context == _8cnvctx)
     {
-        context.show(0, 0, window.innerWidth, window.innerHeight);
+        context.show(0, 0, window.innerWidth, 0);
     }
     else
     {
