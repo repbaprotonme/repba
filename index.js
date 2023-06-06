@@ -4089,8 +4089,20 @@ contextobj.reset = function (leftright)
             document.title = `${j} (${photo.image.width}x${photo.image.height})`;
             contextobj.reset()
             context.autodirect = context.shifthit?1:-1;
-            if (!getmenu() && galleryobj.autopan)
-                context.tab()
+            if (!getmenu())
+            {
+                if (galleryobj.autopan)
+                {
+                    context.tab()
+                }
+                else
+                {
+                    _4cnvctx.timeobj.set(TIMEOBJ/2);
+                    rowobj.set(rowobj.length()/2);
+                    context.tab()
+                }
+            }
+
             setTimeout(function() { masterload(); }, 500);
         }
     }
@@ -5493,22 +5505,6 @@ galleryobj.init = function (obj)
 
         {title:"get", path: "", func: function()
             {
-                fetch(`https://bucket.reportbase5836.workers.dev/admiral`)
-                  .then(function(response)
-                      {
-                            if (!response.ok)
-                                throw new Error('Network error');
-                            return response.json();
-                      })
-                  .then(function(json)
-                      {
-                           console.log(json);
-                      })
-                  .catch(function(err)
-                      {
-                            console.log(err);
-                      });
-
             }
         },
 
@@ -5613,8 +5609,8 @@ else if (url.searchParams.has("q"))
     if (k.length == 2)
         url.project = Number(k[1]);
     var path = url.path.toLowerCase();
-    path = `res/${path}.json`;
-    fetch(path)
+
+    fetch(`https://bucket.reportbase5836.workers.dev/${path}.json`)
     .then(function (response)
     {
         if (!response.ok)
