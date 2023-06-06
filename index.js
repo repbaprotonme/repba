@@ -364,6 +364,14 @@ function drawslices()
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
         context.visibles = [];
 
+        if (context == _8cnvctx)
+        {
+           var k = 0.65;
+            var len = context.sliceobj.length()
+           context.buttonheight = context.buttonobj.value();
+           context.virtualheight = len*context.buttonheight*k;
+        }
+
         var k;
         for (var m = 0; m < slices.length; ++m)
         {
@@ -371,7 +379,8 @@ function drawslices()
             slice.fitwidth = 0;
             slice.fitheight = 0;
             slice.time = time + (m*context.delayinterval);
-            var e = (context.virtualheight-r.height)/2;
+
+            var e = (context.virtualheight-r.height)/2;//todo
             var bos = Math.tan(slice.time *VIRTCONST);
             let y = Math.berp(-1, 1, bos) * context.virtualheight;
             y -= e;
@@ -701,7 +710,7 @@ var GalleryBar = function ()
             0,
         ]);
 
-        a.draw(context, rect, [0,0,"Height",context.buttonobj], 0);
+        a.draw(context, rect, [0,0,"Width",context.buttonobj], 0);
         context.restore();
     }
 };
@@ -3632,10 +3641,6 @@ var drawlst =
         context.save();
         var len = context.sliceobj.length()
         context.delayinterval = DELAYCENTER / len;
-        context.buttonheight = context.buttonobj.value();
-
-        var k = 0.65;
-        context.virtualheight = len*context.buttonheight*k;
         context.translate(-rect.width/2, -context.buttonheight/2);
         user.fitwidth = rect.width;
         user.fitheight = Number(context.buttonheight);
@@ -5326,17 +5331,16 @@ galleryobj.init = function (obj)
     slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:10);
 
     var k = galleryobj.buttonstart?galleryobj.buttonstart:2;
-    var lst = galleryobj.buttonlist?
-        galleryobj.buttonlist.split(","):[120,240,360,480,600,720,840,960,1080];
+    var lst = [];
+    var lst1 = [];
+    for (var n = 120; n < 1080; n += 1)
+    {
+        lst.push(n);
+        lst1.push("2160x2160");
+    }
     _8cnvctx.buttonobj = new circular_array("", lst);
+    _8cnvctx.variantobj = new circular_array("", lst1);
     _8cnvctx.buttonobj.set(Number(k));
-    var lst = galleryobj.variantlist?
-        galleryobj.variantlist.split(","):
-            [
-                "2160x2160","2160x2160","2160x2160","2160x2160","2160x2160",
-                "2160x2160","2160x2160","2160x2160","2160x2160"
-            ];
-    _8cnvctx.variantobj = new circular_array("", lst);
     _8cnvctx.variantobj.set(Number(k));
 
     if (!galleryobj.length())
