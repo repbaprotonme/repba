@@ -4,7 +4,7 @@
   "variantlist": "3840x3840,3840x3840,3840x3840,3840x3840,3840x3840,3840x3840,3840x3840,3840x3840,3840x3840",
   "buttonlist": "80,120,180,220,260,300,340,380,420",
   "buttonstart": 2,
-  "autopan": 1,
+  "tabload": 1,
   "data": [
     {
       "id": "HOME.0000"
@@ -1521,15 +1521,6 @@
       "extent": "5826x2059 2.83",
       "size": "12.0MP",
       "quote": "The Harder the Conflict the More Glorious the Triumph"
-    },
-    {
-      "id": "PANO.0034",
-      "index": "35 of 67",
-      "width": 5575,
-      "height": 2152,
-      "extent": "5575x2152 2.59",
-      "size": "12.0MP",
-      "quote": "Don't Spend Time Beating On a Wall Hoping To Tranform It Into A Door"
     },
     {
       "id": "PANO.0035",

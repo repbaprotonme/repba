@@ -249,69 +249,57 @@ https://www.dancarlin.com/
 https://www.npr.org/programs/ted-radio-hour/
 https://www.pbs.org/show/newshour/
 https://podbay.fm/show/81210923
-https://www.youtube.com/channel/UCu5jfQcpRLm9xhmlSd5S8xw
-https://www.youtube.com/watch?v=1sl5KJ69qiA 
 https://dailygalaxy.com/
 https://www.bbcearth.com
 https://www.smashingmagazine.com/
 
 []
-https://www.youtube.com/channel/UCdJa8L2rQJ6vPzgSDc_xQqA
-
-[]
+News
 https://news.ycombinator.com/
 https://www.axios.com
-News
 
 []
-https://www.dwitter.net
 canvas javascript snippits
+https://www.dwitter.net
 
 []
+title = Affinity 
 path = https://affinity.serif.com/en-us/
 help = https://affinity.help
 forum = https://forum.affinity.serif.com/
-title = Affinity 
-color = #31819d
-describe = svg editor
 
 []
-https://dash.cloudflare.com
 Cloudflare
+https://dash.cloudflare.com
 https://developers.cloudflare.com/workers/tutorials
-https://egghead.io/courses/build-a-serverless-api-with-cloudflare-workers-d67ca551
 
 []
-path = https://digital.darkhorse.com/bookshelf
 title = Comics
+path = https://digital.darkhorse.com/bookshelf
 
 []
-https://github.com
 Github
-
-[]
-path = https://dcc.godaddy.com/domains/?ci=
-title = Godaddy
+https://github.com
 
 []
 htps://lichess.org/
 Chess
 
 []
-https://twitter.com/
 Twitter
+https://twitter.com/
 reportbase@gmail.com
 
 []
+Tumbler
 https://www.tumblr.com/dashboard
 https://repba.tumblr.com
 https://repba.tumblr.com/archive
-Tumbler
 tom@repba.com
 
 []
-https://www.epicgames.com/store/en-US/
 Epic 
+https://www.epicgames.com/store/en-US/
 
 
 

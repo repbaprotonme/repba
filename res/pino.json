@@ -5,7 +5,7 @@
   "buttonlist": "80,120,180,220,260",
   "buttonstart": 1,
   "zoom": 0,
-  "autopan": 1,
+  "tabload": 1,
   "data": [
     {
       "id": "PINO.0000",

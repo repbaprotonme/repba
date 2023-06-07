@@ -1,3 +1,4 @@
+//node delete.js delete.json
 const fs = require('fs');
 const args = process.argv;
 
