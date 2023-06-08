@@ -219,8 +219,7 @@ function drawslices()
 
             if (context.timemain)
             {
-                if (!context.shifthit && !context.keydown)
-                    context.slidestop -= context.slidereduce;
+                context.slidestop -= context.slidereduce;
                 if (context.slidestop > 0)
                 {
                     var j = context.autodirect*(TIMEOBJ/1000)
@@ -1828,31 +1827,84 @@ var wheelst =
 [
 {
     name: "DEFAULT",
-    up: function (context, ctrl, shift, alt) { },
- 	down: function (context, ctrl, shift, alt) { },
+    up: function (context, x, y, ctrl, shift, alt) { },
+ 	down: function (context, x, y, ctrl, shift, alt) { },
+},
+{
+    name: "GALLERY",
+    up: function (context, x, y, ctrl, shift, alt)
+    {
+        if (ctrl)
+        {
+            context.heightbarobj.add(1.5);
+            context.refresh();
+        }
+        else if (shift)
+        {
+            var k = 90*(window.innerHeight/context.virtualheight);
+            context.timeobj.rotate(-k);
+            context.refresh()
+        }
+        else
+        {
+            var k = 30*(window.innerHeight/context.virtualheight);
+            context.timeobj.rotate(-k);
+            context.refresh()
+        }
+    },
+ 	down: function (context, x, y, ctrl, shift, alt)
+    {
+        if (ctrl)
+        {
+            context.heightbarobj.add(-1.5);
+            context.refresh();
+        }
+        else if (shift)
+        {
+            var k = 90*(window.innerHeight/context.virtualheight);
+            context.timeobj.rotate(k);
+            context.refresh()
+        }
+        else
+        {
+            var k = 30*(window.innerHeight/context.virtualheight);
+            context.timeobj.rotate(k);
+            context.refresh()
+        }
+    },
 },
 {
     name: "MENU",
-    up: function (context, ctrl, shift, alt)
+    up: function (context, x, y, ctrl, shift, alt)
     {
-        var k = (16/context.virtualheight)*context.timeobj.length();
-        context.timeobj.rotate(-k);
-        context.refresh()
+        if (ctrl)
+        {
+        }
+        else
+        {
+            var k = 20*(window.innerHeight/context.virtualheight);
+            context.timeobj.rotate(-k);
+            context.refresh()
+        }
     },
- 	down: function (context, ctrl, shift, alt)
+ 	down: function (context, x, y, ctrl, shift, alt)
     {
-        var k = (16/context.virtualheight)*context.timeobj.length();
-        context.timeobj.rotate(k);
-        context.refresh()
+        if (ctrl)
+        {
+        }
+        else
+        {
+            var k = 20*(window.innerHeight/context.virtualheight);
+            context.timeobj.rotate(k);
+            context.refresh()
+        }
     },
 },
 {
     name: "BOSS",
     up: function (context, x, y, ctrl, shift, alt)
     {
-        var isthumb = context.thumbrect && context.thumbrect.expand &&
-            context.thumbrect.expand(40,40).hitest(x,y);
-        if (isthumb)
+        if (ctrl && shift)
         {
             pinchobj.set(0);
             var obj = heightobj.value();
@@ -1860,17 +1912,28 @@ var wheelst =
             obj.add(1);
             context.refresh();
         }
-        else
+        else if (ctrl)
         {
             zoomobj.value().add(-1);
+            contextobj.reset()
+        }
+        else if (shift)
+        {
+            stretchobj.value().add(1);
+            context.refresh();
+        }
+        else
+        {
+            var zoom = zoomobj.value();
+            var j = (100-zoom.value())/100;
+            var k = rowobj.length()/30;
+            rowobj.add(-j*k);//todo
             contextobj.reset()
         }
 	},
  	down: function (context, x, y, ctrl, shift, alt)
     {
-        var isthumb = context.thumbrect && context.thumbrect.expand &&
-            context.thumbrect.expand(40,40).hitest(x,y);
-        if (isthumb)
+        if (ctrl && shift)
         {
             pinchobj.set(0);
             var obj = heightobj.value();
@@ -1878,9 +1941,22 @@ var wheelst =
             obj.add(-1);
             context.refresh();
         }
-        else
+        else if (ctrl)
         {
             zoomobj.value().add(1);
+            contextobj.reset()
+        }
+        else if (shift)
+        {
+            stretchobj.value().add(-1);
+            context.refresh();
+        }
+        else
+        {
+            var zoom = zoomobj.value();
+            var j = (100-zoom.value())/100;
+            var k = rowobj.length()/30;
+            rowobj.add(j*k);//todo
             contextobj.reset()
         }
 	},
@@ -2109,48 +2185,20 @@ async function dropfiles(files)
         }
     }
 
-    galleryobj.data.splice(0,0,...lst);
-
     fetch("https://uuid.rocks/ulid")
-    .then(function (response)
-    {
-        if (!response.ok)
-            throw new Error('Network error');
-        return response.text()
-    })
+    .then((response) => texthandler(response))
     .then(uuid =>
     {
         var body = JSON.stringify(lst);
         fetch(`https://bucket.reportbase5836.workers.dev/${uuid}`, { method: 'POST', body: body } )
-          .then(function(response)
-            {
-                if (!response.ok)
-                    throw new Error('Network error');
-                return response.json();
-            })
+          .then((response) => jsonhandler(response))
           .then(function(json) { console.log(json); })
           .catch(function(err) { console.log(err); });
 
     })
     .catch((error) => { console.log("Error:", error); });
 
-    menuhide();
-    _8cnvctx.sliceobj.data = galleryobj.data;
-    var slices = _8cnvctx.sliceobj;
-    _8cnvctx.delayinterval = DELAYCENTER / slices.length();
-    _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
-    _8cnvctx.scrollobj.set(0);
-    galleryobj.set(0);
-    delete _4cnvctx.thumbcanvas;
-    delete photo.image;
-    _4cnvctx.isthumb = 0;
-    headobj.set(3);
-    headham.panel = headobj.value();
-    headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-    contextobj.reset();
-    _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-    _8cnvctx.refresh();
-    menushow(_8cnvctx);
+    showdata(lst)
 }
 
 var droplst =
@@ -4044,7 +4092,7 @@ var eventlst =
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new DualPanel(), buttonheight: 90, width: 640, keyblock: 100, backcolor: MENUCOLOR},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640, keyblock: 100, backcolor: MENUCOLOR},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new DualPanel(), buttonheight: 90, width: 640, keyblock: 100, backcolor: MENUCOLOR},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "GALLERY", pan: "MENU", swipe: "GALLERY", draw: "GALLERY", wheel: "MENU", drop: "GALLERY", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new GalleryBar(), scroll: new DualPanel(), buttonheight: 320, width: 1080, keyblock: 100, backcolor: "black"},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "GALLERY", pan: "MENU", swipe: "GALLERY", draw: "GALLERY", wheel: "GALLERY", drop: "GALLERY", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new GalleryBar(), scroll: new DualPanel(), buttonheight: 320, width: 1080, keyblock: 100, backcolor: "black"},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar("Image Browser"), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640, keyblock: 100, backcolor: MENUCOLOR},
 ];
 
@@ -5021,9 +5069,11 @@ var headlst =
         this.swipeleftright = function (context, rect, x, y, evt)
         {
         }
+
         this.swipeupdown = function (context, rect, x, y, evt)
         {
         }
+
     	this.press = function (context, rect, x, y)
         {
         }
@@ -5059,7 +5109,7 @@ var headlst =
                     var k = galleryobj.value();
                     if (k.prompt)
                         showprompt(k.prompt);
-                    else (k.description)
+                    else if (k.description)
                         showdescribe(k.description);
                 }
             }
@@ -5547,14 +5597,6 @@ galleryobj.init = function (obj)
              },
             enabled: function() { return slicewidthobj.debug; }
         },
-        {title:"Dalle Prompt", path: "", func: function()
-            {
-                menuhide();
-                var k = galleryobj.value();
-                showprompt(k.prompt?k.prompt:"");
-             },
-            enabled: function() { return slicewidthobj.debug; }
-        },
        {title:"dalle.json", path: "", func: function()
             {
                 fetch(`https://bucket.reportbase5836.workers.dev/dalle.json`)
@@ -5588,6 +5630,14 @@ galleryobj.init = function (obj)
         {line:"Pexels Collection\nImage Search",func: function() { searchshow("pexels_collection"); }, enabled: function() {return false;} },
         {line:"Unsplash Collection\nImage Search",func: function() { searchshow("unsplash_collection"); }, enabled: function() {return false;} },
         {line:"Unsplash User Collection\nImage Search",func: function() { searchshow("unsplash_user"); }, enabled: function() {return false;} },
+        {line:"Dalle Prompt", func: function()
+            {
+                menuhide();
+                var k = galleryobj.value();
+                showprompt(k.prompt?k.prompt:"");
+             },
+            enabled: function() { return false }
+        },
     ];
 
     _6cnvctx.sliceobj.data =
@@ -5842,6 +5892,7 @@ function showprompt(str)
     var textarea = document.getElementById ("prompt-value");
     var rows = (window.innerHeight*0.50)/25;
     textarea.rows = rows;
+    textarea.readOnly = false;
 
     globalobj.block = 1;
     const dialog = document.getElementById("prompt-overlay");
@@ -5884,6 +5935,7 @@ function showdescribe(str)
     var textarea = document.getElementById ("prompt-value");
     var rows = (window.innerHeight*0.50)/25;
     textarea.rows = rows;
+    textarea.value = str?str:"";
     textarea.readOnly = true;
 
     globalobj.block = 1;
@@ -5907,7 +5959,6 @@ function showdescribe(str)
         }
     });
 
-    textarea.value = str;
     dialog.showModal();
     textarea.setSelectionRange(0, 0);
     setTimeout(function() { globalobj.block = 0; }, 40);
@@ -5979,6 +6030,13 @@ function jsonhandler(response)
 {
     if (response.ok)
         return response.json()
+    throw Error(response.statusText);
+}
+
+function texthandler(response)
+{
+    if (response.ok)
+        return response.text()
     throw Error(response.statusText);
 }
 
