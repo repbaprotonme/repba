@@ -1,10 +1,6 @@
 {
   "title": "Repba Gallery",
   "variant": "4800x4800",
-  "variantlist": "3840x3840,3840x3840,3840x3840,3840x3840,3840x3840,3840x3840,3840x3840,3840x3840,3840x3840",
-  "buttonlist": "80,120,180,220,260,300,340,380,420",
-  "buttonstart": 2,
-  "tabload": 1,
   "data": [
     {
       "id": "HOME.0000"

@@ -219,7 +219,8 @@ function drawslices()
 
             if (context.timemain)
             {
-                context.slidestop -= context.slidereduce;
+                if (!context.shifthit && !context.keydown)
+                    context.slidestop -= context.slidereduce;
                 if (context.slidestop > 0)
                 {
                     var j = context.autodirect*(TIMEOBJ/1000)
@@ -1503,7 +1504,7 @@ CanvasRenderingContext2D.prototype.swipe = function ()
 CanvasRenderingContext2D.prototype.tab = function ()
 {
     var context = this;
-    var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:6);
+    var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:4);
     var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:100);
     context.slidestop += slidestop;
     context.slidestop = (window.innerWidth/context.virtualwidth)*context.slidestop;
@@ -5055,7 +5056,11 @@ var headlst =
                 }
                 else
                 {
-                    tapobj.value().tap(_4cnvctx, rect, x, y);
+                    var k = galleryobj.value();
+                    if (k.prompt)
+                        showprompt(k.prompt);
+                    else
+                        showdescribe(k.description);
                 }
             }
             else
@@ -5101,7 +5106,11 @@ var headlst =
 
             var st = [];
             var k = galleryobj.value();
-            if (k.description)
+            if (k.prompt)
+            {
+                st = k.prompt.split("\n");
+            }
+            else if (k.description)
             {
                 st = k.description.split("\n");
                 if (k.photographer)
@@ -5538,61 +5547,33 @@ galleryobj.init = function (obj)
              },
             enabled: function() { return slicewidthobj.debug; }
         },
-        {title:"Prompt", path: "", func: function()
+        {title:"Dalle Prompt", path: "", func: function()
             {
                 menuhide();
-                    showprompt(galleryobj.value());
+                    var k = galleryobj.value();
+                    if (k.prompt)
+                        showprompt(k.prompt);
+                    else
+                        showdescribe(k.description);
              },
             enabled: function() { return slicewidthobj.debug; }
         },
-        {title:"dalle", path: "", func: function()
+       {title:"dalle.json", path: "", func: function()
             {
                 fetch(`https://bucket.reportbase5836.workers.dev/dalle.json`)
-                .then(function (response)
-                {
-                    if (!response.ok)
-                        throw new Error('Network error');
-                    return response.json()
-                })
+                .then((response) => jsonhandler(response))
                 .then(function (json)
-                 {
+                {
                     fetch(`https://dalle.reportbase5836.workers.dev`,
                     {
                         method: 'POST',
                         body: JSON.stringify(json)
                     })
-                    .then(response =>
-                    {
-                        if (response.ok)
-                            return response.json()
-                        throw Error(response.statusText);
-                    })
-                    .then(data =>
-                    {
-                        //todo: load json file lst, add data to it
-                        galleryobj.data.splice(0,0,...data);
-                        _8cnvctx.sliceobj.data = galleryobj.data;
-                        var slices = _8cnvctx.sliceobj;
-                        _8cnvctx.delayinterval = DELAYCENTER / slices.length();
-                        _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
-                        _8cnvctx.scrollobj.set(0);
-                        galleryobj.set(0);
-                        delete _4cnvctx.thumbcanvas;
-                        delete photo.image;
-                        galleryobj.transparent = 0;
-                        _4cnvctx.isthumb = 0;
-                        headobj.set(3);
-                        headham.panel = headobj.value();
-                        headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-                        contextobj.reset();
-                        _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-                        _8cnvctx.refresh();
-                        menushow(_8cnvctx)
-                    })
-                    .catch((error) => { });
-                 })
-                .catch((error) => {  });
-
+                    .then((response) => jsonhandler(response))
+                    .then((json) => showdata(json))
+                    .catch((error) => {});
+                })
+                .catch((error) => {});
             }
         },
 
@@ -5857,8 +5838,10 @@ function searchshow(repos)
     hiderefresh();
 }
 
-function showprompt(obj)
+function showprompt(str)
 {
+    var button = document.getElementById ("prompt-ok");
+    button.innerHTML = "Submiit";
     var textarea = document.getElementById ("prompt-value");
     var rows = (window.innerHeight*0.50)/25;
     textarea.rows = rows;
@@ -5871,7 +5854,15 @@ function showprompt(obj)
         const rect = textarea.getBoundingClientRect();
         if (event.target.id == "prompt-ok")
         {
-            copytext(textarea.value);
+            fetch(`https://dalle.reportbase5836.workers.dev`,
+            {
+                method: 'POST',
+                body: JSON.stringify({ 'prompt': textarea.value, 'n': 1, 'size': '1024x1024' })
+            })
+            .then((response) => jsonhandler(response))
+            .then((json) => showdata(json))
+            .catch((error) => {});
+            dialog.close();
         }
         else if (event.clientY < rect.top || event.clientY > rect.bottom ||
             event.clientX < rect.left || event.clientX > rect.right)
@@ -5883,7 +5874,43 @@ function showprompt(obj)
         }
     });
 
-    textarea.value = (obj && obj.prompt)?obj.prompt:"";
+    textarea.value = str;
+    dialog.showModal();
+    textarea.setSelectionRange(0, 0);
+    setTimeout(function() { globalobj.block = 0; }, 40);
+}
+
+function showdescribe(str)
+{
+    var button = document.getElementById ("prompt-ok");
+    button.innerHTML = "Copy";
+    var textarea = document.getElementById ("prompt-value");
+    var rows = (window.innerHeight*0.50)/25;
+    textarea.rows = rows;
+    textarea.readOnly = true;
+
+    globalobj.block = 1;
+    const dialog = document.getElementById("prompt-overlay");
+    globalobj.prompt = dialog;
+    dialog.addEventListener("click", function()
+    {
+        const rect = textarea.getBoundingClientRect();
+        if (event.target.id == "prompt-ok")
+        {
+            copytext(textarea.value);
+            dialog.close();
+        }
+        else if (event.clientY < rect.top || event.clientY > rect.bottom ||
+            event.clientX < rect.left || event.clientX > rect.right)
+        {
+            if (globalobj.block)
+                return;
+            dialog.close();
+            globalobj.prompt = 0;
+        }
+    });
+
+    textarea.value = str;
     dialog.showModal();
     textarea.setSelectionRange(0, 0);
     setTimeout(function() { globalobj.block = 0; }, 40);
@@ -5914,19 +5941,10 @@ function hiderefresh()
 
 async function copytext(text)
 {
-    try
-    {
-        await navigator.clipboard.writeText(text);
-    }
-    catch (_)
-    {
-        const el = document.createElement('textarea')
-        el.value = text
-        document.body.appendChild(el)
-        el.select()
-        const result = document.execCommand('copy')
-        document.body.removeChild(el)
-    }
+    if (navigatory.clipboard)
+        navigator.clipboard.writeText(text)
+          .then(() => { })
+          .catch(() => { });
 }
 
 if (url.protocol == "https:")
@@ -5960,3 +5978,31 @@ if (url.protocol == "https:")
     })
 }
 
+function jsonhandler(response)
+{
+    if (response.ok)
+        return response.json()
+    throw Error(response.statusText);
+}
+
+function showdata(data)
+{
+    galleryobj.data.splice(0,0,...data);
+    _8cnvctx.sliceobj.data = galleryobj.data;
+    var slices = _8cnvctx.sliceobj;
+    _8cnvctx.delayinterval = DELAYCENTER / slices.length();
+    _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
+    _8cnvctx.scrollobj.set(0);
+    galleryobj.set(0);
+    delete _4cnvctx.thumbcanvas;
+    delete photo.image;
+    galleryobj.transparent = 0;
+    _4cnvctx.isthumb = 0;
+    headobj.set(3);
+    headham.panel = headobj.value();
+    headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+    contextobj.reset();
+    _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+    _8cnvctx.refresh();
+    menushow(_8cnvctx)
+}
