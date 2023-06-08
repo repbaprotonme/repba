@@ -5059,7 +5059,7 @@ var headlst =
                     var k = galleryobj.value();
                     if (k.prompt)
                         showprompt(k.prompt);
-                    else
+                    else (k.description)
                         showdescribe(k.description);
                 }
             }
@@ -5550,11 +5550,8 @@ galleryobj.init = function (obj)
         {title:"Dalle Prompt", path: "", func: function()
             {
                 menuhide();
-                    var k = galleryobj.value();
-                    if (k.prompt)
-                        showprompt(k.prompt);
-                    else
-                        showdescribe(k.description);
+                var k = galleryobj.value();
+                showprompt(k.prompt?k.prompt:"");
              },
             enabled: function() { return slicewidthobj.debug; }
         },
