@@ -2224,11 +2224,11 @@ async function dropfiles(files)
         var body = JSON.stringify(lst);
         fetch(`https://bucket.reportbase5836.workers.dev/${uuid}`, { method: 'POST', body: body } )
           .then((response) => jsonhandler(response))
-          .then((json) => console.log(json); )
-          .catch((error) => console.log(error); );
+          .then((json) => console.log(json) )
+          .catch((error) => console.log(error) );
 
     })
-    .catch((error) => { console.log(error); });
+    .catch((error) => console.log(error) );
 
     showdata(lst)
 }
