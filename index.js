@@ -169,10 +169,7 @@ let circular_array = function (title, data)
 
     this.addperc = function (g)
     {
-        if (g < 1)
-            this.set(this.current()*(1-g));
-        else
-            this.set(this.current()*(1+g));
+        this.add(this.length()*g);
     };
 
     this.rotateperc = function (perc)
@@ -423,6 +420,18 @@ var YollPanel = function ()
         if (context.tap_)
     		context.tap_(context, rect, x, y, shift, ctrl);
 	};
+
+    this.wheelright = function (context, x, y, ctrl, shift, alt)
+    {
+		if (context.wheelright_)
+      		context.wheelright_(context, x, y, ctrl, shift, alt);
+   	};
+
+    this.wheeleft = function (context, x, y, ctrl, shift, alt)
+    {
+		if (context.wheeleft_)
+      		context.wheeleft_(context, x, y, ctrl, shift, alt);
+   	};
 
     this.wheeldown = function (context, x, y, ctrl, shift, alt)
     {
@@ -1453,7 +1462,7 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     galleryobj.rotate(j);
     var k = galleryobj.value();
     galleryobj.set(e);
-    if (!k.file && (_4cnvctx.movingpage || !k.loaded || galleryobj.length() == 1))
+    if (_4cnvctx.movingpage || !k.loaded || galleryobj.length() == 1)
     {
         masterload();
         _4cnvctx.movingpage = 0;
@@ -1461,17 +1470,8 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
         return;
     }
 
-    clearTimeout(context.timemoveb)
-    context.timemoveb = setTimeout(function()
-    {
-        _4cnvctx.movingpage = 0;
-        _4cnvctx.refresh();
-        _8cnvctx.refresh();
-        headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-    }, 400);
-
-    galleryobj.rotate(j);
     _4cnvctx.movingpage = j;
+    galleryobj.rotate(j);
     _4cnvctx.refresh();
     _8cnvctx.refresh();
     headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -1492,18 +1492,18 @@ CanvasRenderingContext2D.prototype.hide = function ()
 CanvasRenderingContext2D.prototype.swipe = function ()
 {
     var context = this;
-    context.slideshow = (context.timeobj.length()/context.virtualheight)*20;
-    context.slidereduce = context.slideshow/10;
+    var slidestop = 4;
+    var slidereduce = 100;
+    context.slideshow = (context.timeobj.length()/context.virtualheight)*slidestop;
+    context.slidereduce = context.slideshow/slidereduce;
     clearInterval(context.timemain);
-    context.timemain = setInterval(function () { context.refresh(); }, 10);
-    context.refresh();
-    clearTimeout(context.swipeupdown);
+    context.timemain = setInterval(function () { context.refresh(); }, timemain.value());
 }
 
 CanvasRenderingContext2D.prototype.tab = function ()
 {
     var context = this;
-    var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:4);
+    var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:8);
     var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:100);
     context.slidestop += slidestop;
     context.slidestop = (window.innerWidth/context.virtualwidth)*context.slidestop;
@@ -1609,6 +1609,14 @@ var makehammer = function (context, v, t)
             ham.panel.swipeupdown(context, new rectangle(0, 0, ham.element.width, ham.element.height), x, y, evt);
     });
 
+    ham.element.addEventListener("touchstart", function (evt)
+    {
+    }, false);
+
+    ham.element.addEventListener("touchend", function (evt)
+    {
+    }, false);
+
     ham.element.addEventListener("dragleave", function (evt)
     {
    	    evt.preventDefault();
@@ -1666,6 +1674,9 @@ var makehammer = function (context, v, t)
 
     ham.element.addEventListener("wheel", function (evt)
     {
+        const { deltaY } = evt;
+        var trackpad = deltaY && !Number.isInteger(deltaY);
+
         var x = evt.offsetX;
         var y = evt.offsetY;
         evt.preventDefault();
@@ -1678,6 +1689,17 @@ var makehammer = function (context, v, t)
         {
             if (typeof (ham.panel.wheeldown) == "function")
                 ham.panel.wheeldown(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey);
+        }
+
+        if (evt.deltaX < 0)
+        {
+            if (typeof (ham.panel.wheeleft) == "function")
+                ham.panel.wheeleft(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey);
+        }
+        else
+        {
+            if (typeof (ham.panel.wheelright) == "function")
+                ham.panel.wheelright(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey);
         }
     });
 
@@ -1829,6 +1851,8 @@ var wheelst =
     name: "DEFAULT",
     up: function (context, x, y, ctrl, shift, alt) { },
  	down: function (context, x, y, ctrl, shift, alt) { },
+ 	left: function (context, x, y, ctrl, shift, alt) { },
+ 	right: function (context, x, y, ctrl, shift, alt) { },
 },
 {
     name: "GALLERY",
@@ -1836,19 +1860,13 @@ var wheelst =
     {
         if (ctrl)
         {
-            context.heightbarobj.add(1.5);
+            context.heightbarobj.addperc(1.5/100);
             context.refresh();
-        }
-        else if (shift)
-        {
-            var k = 90*(window.innerHeight/context.virtualheight);
-            context.timeobj.rotate(-k);
-            context.refresh()
         }
         else
         {
-            var k = 30*(window.innerHeight/context.virtualheight);
-            context.timeobj.rotate(-k);
+            var k = 20*(window.innerHeight/context.virtualheight);
+            context.timeobj.rotate(k);
             context.refresh()
         }
     },
@@ -1856,21 +1874,21 @@ var wheelst =
     {
         if (ctrl)
         {
-            context.heightbarobj.add(-1.5);
+            context.heightbarobj.addperc(-1.5/100);
             context.refresh();
-        }
-        else if (shift)
-        {
-            var k = 90*(window.innerHeight/context.virtualheight);
-            context.timeobj.rotate(k);
-            context.refresh()
         }
         else
         {
-            var k = 30*(window.innerHeight/context.virtualheight);
-            context.timeobj.rotate(k);
+            var k = 20*(window.innerHeight/context.virtualheight);
+            context.timeobj.rotate(-k);
             context.refresh()
         }
+    },
+ 	left: function (context, x, y, ctrl, shift, alt)
+    {
+    },
+ 	right: function (context, x, y, ctrl, shift, alt)
+    {
     },
 },
 {
@@ -1883,7 +1901,7 @@ var wheelst =
         else
         {
             var k = 20*(window.innerHeight/context.virtualheight);
-            context.timeobj.rotate(-k);
+            context.timeobj.rotate(k);
             context.refresh()
         }
     },
@@ -1895,9 +1913,15 @@ var wheelst =
         else
         {
             var k = 20*(window.innerHeight/context.virtualheight);
-            context.timeobj.rotate(k);
+            context.timeobj.rotate(-k);
             context.refresh()
         }
+    },
+ 	left: function (context, x, y, ctrl, shift, alt)
+    {
+    },
+ 	right: function (context, x, y, ctrl, shift, alt)
+    {
     },
 },
 {
@@ -1927,7 +1951,7 @@ var wheelst =
             var zoom = zoomobj.value();
             var j = (100-zoom.value())/100;
             var k = rowobj.length()/30;
-            rowobj.add(-j*k);//todo
+            rowobj.add(j*k);
             contextobj.reset()
         }
 	},
@@ -1956,10 +1980,16 @@ var wheelst =
             var zoom = zoomobj.value();
             var j = (100-zoom.value())/100;
             var k = rowobj.length()/30;
-            rowobj.add(j*k);//todo
+            rowobj.add(-j*k);
             contextobj.reset()
         }
 	},
+ 	left: function (context, x, y, ctrl, shift, alt)
+    {
+    },
+ 	right: function (context, x, y, ctrl, shift, alt)
+    {
+    },
 },
 ];
 
@@ -2014,7 +2044,6 @@ var pinchlst =
         {
             obj.set(f);
         }
-
         context.refresh();
     },
     pinchstart: function (context, rect, x, y)
@@ -2128,6 +2157,9 @@ var traitobj = new circular_array("TRAIT", 100);
 var scapeobj = new circular_array("SCAPE", 100);
 var heightobj = new circular_array("HEIGHT", [traitobj,scapeobj]);
 var pinchobj = new circular_array("PINCH", [heightobj,zoomobj]);
+
+var userlst = []
+var userobj = new circular_array("ZOOM", userlst);
 
 function explore()
 {
@@ -2775,7 +2807,6 @@ var keylst =
             _9cnvctx.enabled ? _9cnvctx :
 		    _4cnv.height ? _4cnvctx : _1cnvctx;
         context.keyblock = 100;
-        context.shifthit = 0;
     },
 	keydown: function (evt)
 	{
@@ -2794,42 +2825,60 @@ var keylst =
         var key = evt.key.toLowerCase();
         clearInterval(_8cnvctx.timeauto);
         _8cnvctx.timeauto = 0;
-        if (evt.shiftKey)
-            context.shifthit = 1;
-		if (evt.key == "1")
+        context.shiftKey = evt.shiftKey;
+        context.ctrlKey = evt.ctrlKey;
+        if (key == "pagedown" || key == "arrowdown" || key == "j" || key == "enter")
 		{
-            context.swipetype = "swipeup";
-            context.swipe()
-        }
-        else if (evt.key == "2")
-		{
-            context.swipetype = "swipedown";
-            context.swipe()
-        }
-        else if (key == "pagedown" || key == "arrowdown" || key == "j" || key == "enter")
-		{
-            if (!context.shifthit && context.block)
+            if (context.block)
                 return;
             context.block = 1;
             setTimeout(function() { context.block = 0; }, context.keyblock);
             context.keyblock = Math.clamp(25,100,context.keyblock-5);
-
             var obj = context.scrollobj.value();
             obj.set(0);
-            context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
-            context.refresh()
+            evt.preventDefault();
+
+            if (context.ctrlKey)
+            {
+                context.swipetype = "swipedown";
+                context.swipe()
+            }
+            else
+            {
+                context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
+                context.refresh()
+            }
         }
         else if (key == "pageup" || key == "arrowup" || key == "k")
 		{
-            if (!context.shifthit && context.block)
+            if (context.block)
                 return;
             context.block = 1;
             setTimeout(function() { context.block = 0; }, context.keyblock);
             context.keyblock = Math.clamp(25,100,context.keyblock-5);
-
+            evt.preventDefault();
             var obj = context.scrollobj.value();
             obj.set(0);
-            context.timeobj.rotate(TIMEOBJ/context.sliceobj.length());
+
+            if (context.ctrlKey)
+            {
+                context.swipetype = "swipeup";
+                context.swipe()
+            }
+            else
+            {
+                context.timeobj.rotate(TIMEOBJ/context.sliceobj.length());
+                context.refresh()
+            }
+        }
+        else if (key == "-" || key == "[")
+        {
+            context.heightbarobj.addperc(-1.5/100);
+            context.refresh()
+        }
+        else if (key == "+" || key == "]" || key == "=")
+        {
+            context.heightbarobj.addperc(1.5/100);
             context.refresh()
         }
         else if (obj && (key == "arrowleft" || key == "h"))
@@ -2873,7 +2922,6 @@ var keylst =
             _9cnvctx.enabled ? _9cnvctx :
 		    _4cnv.height ? _4cnvctx : _1cnvctx;
         context.keyblock = 100;
-        context.shifthit = 0;
     },
 	keydown: function (evt)
 	{
@@ -2888,41 +2936,50 @@ var keylst =
 			_8cnvctx.enabled ? _8cnvctx :
             _9cnvctx.enabled ? _9cnvctx :
             _4cnvctx;
-        if (evt.shiftKey)
-            context.shifthit = 1;
+        context.shiftKey = evt.shiftKey;
+        context.ctrlKey = evt.ctrlKey;
 
         var key = evt.key.toLowerCase();
-		if (evt.key == "1")
+        if (key == "pageup" || key == "arrowup" || evt.key == "j")
 		{
-            context.swipetype = "swipeup";
-            context.swipe()
-        }
-        else if (evt.key == "2")
-		{
-            context.swipetype = "swipedown";
-            context.swipe()
-        }
-        else if (key == "pageup" || key == "arrowup" || evt.key == "j")
-		{
-            if (!context.shifthit && context.block)
+            if (!context.shiftKey && context.block)
                 return;
             context.block = 1;
             setTimeout(function() { context.block = 0; }, context.keyblock);
             context.keyblock = Math.clamp(25,100,context.keyblock-5);
-            var k = (20/context.virtualheight)*context.timeobj.length();
-            context.timeobj.rotate(k);
-            context.refresh()
+            evt.preventDefault();
+            if (context.ctrlKey)
+            {
+                context.swipetype = "swipeup";
+                context.swipe()
+            }
+            else
+            {
+                var k = (20/context.virtualheight)*context.timeobj.length();
+                context.timeobj.rotate(-k);
+                context.refresh()
+            }
         }
         else if (key == "pagedown" || key == "arrowdown" || evt.key == "k")
 		{
-            if (!context.shifthit && context.block)
+            if (!context.shiftKey && context.block)
                 return;
             context.block = 1;
             setTimeout(function() { context.block = 0; }, context.keyblock);
             context.keyblock = Math.clamp(25,100,context.keyblock-5);
-            var k = (20/context.virtualheight)*context.timeobj.length();
-            context.timeobj.rotate(-k);
-            context.refresh()
+            evt.preventDefault();
+
+            if (context.ctrlKey)
+            {
+                context.swipetype = "swipedown";
+                context.swipe()
+            }
+            else
+            {
+                var k = (20/context.virtualheight)*context.timeobj.length();
+                context.timeobj.rotate(k);
+                context.refresh()
+            }
         }
         else if (key == " " || key == "\\" || key == "/")
         {
@@ -2955,8 +3012,6 @@ var keylst =
 	keyup: function (evt)
 	{
 		var context = _4cnvctx;
-        context.ctrlhit = 0;
-        context.shifthit = 0;
         context.keyup = 0;
         context.keyblock = 100;
         context.keydown = 0;
@@ -2969,15 +3024,13 @@ var keylst =
 		var context = _4cnvctx;
 		var rect = context.rect();
         context.keydown = 1;
-        if (evt.ctrlKey)
-            context.ctrlhit = 1;
-        if (evt.shiftKey)
-            context.shifthit = 1;
+        context.ctrlKey = evt.ctrlKey;
+        context.shiftKey = evt.shiftKey;
 
         context.refresh();
         var key = evt.key.toLowerCase();
 
-        if (!context.shifthit && context.block)
+        if (!context.shiftKey && context.block)
         {
             evt.preventDefault();
             return;
@@ -3044,7 +3097,7 @@ var keylst =
             zoomobj.value().add(-1);
             contextobj.reset()
         }
-        else if (key == "+" || key == "}")
+        else if (key == "+" || key == "}" || key == "=")
         {
             zoomobj.value().add(1);
             contextobj.reset()
@@ -3590,7 +3643,7 @@ var thumblst =
             context.save();
             context.shadowOffsetX = 0;
             context.shadowOffsetY = 0;
-            if ((context.panning && context.shifthit) ||
+            if ((context.panning && context.shiftKey) ||
                 (context.isthumb && jp) ||
                 galleryobj.transparent)
             {
@@ -4153,6 +4206,8 @@ contextlst.forEach(function(context, n)
     k = wheelst[k];
     context.wheelup_ = k.up;
     context.wheeldown_ = k.down;
+    context.wheeleft_ = k.left;
+    context.wheelright_ = k.right;
 
     var k = mouselst.findIndex(function (a) {return a.name == obj.mouse});
     k = mouselst[k];
@@ -4255,9 +4310,11 @@ contextobj.reset = function (leftright)
             document.title = `${j} (${photo.image.width}x${photo.image.height})`;
             _4cnvctx.timeobj.set(TIMEOBJ/2);
             rowobj.set(rowobj.length()/2);
+            _4cnvctx.movingpage = 0;
+            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             contextobj.reset()
-
-            setTimeout(function() { masterload(); }, 500);
+            clearTimeout(context.mastertime);
+            context.mastertime = setTimeout(function() { masterload(); }, 500);
         }
     }
 }
@@ -5422,9 +5479,6 @@ window.onerror = function(message, source, lineno, colno, error)
     //window.alert( error+","+lineno+","+console.trace());
 };
 
-document.addEventListener("touchstart", function(evt) { }, {passive: false});
-document.addEventListener('touchmove', function (evt) { }, { passive: false });
-window.addEventListener("touchend", function (evt) { });
 window.addEventListener("beforeunload", (evt) => { });
 window.addEventListener("pagehide", (evt) => { });
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() { setfavicon(); });
@@ -5690,6 +5744,14 @@ galleryobj.init = function (obj)
     slices.data = [];
     contextobj.reset();
     _4cnvctx.refresh();
+
+    fetch(`https://bucket.reportbase5836.workers.dev/user.json`)
+    .then((response) => jsonhandler(response))
+    .then(function (json)
+    {
+        userobj = Object.assign(userobj,json);
+    })
+    .catch((error) => {});
 }
 
 url.path = "HOME";
