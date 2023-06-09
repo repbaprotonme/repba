@@ -46,8 +46,6 @@ function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) 
 function numberRange (start, end) {return new Array(end - start).fill().map((d, i) => i + start); }
 
 let url = new URL(window.location.href);
-url.hidefocus = 0;
-url.hidebars = 0;
 url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
 
 Math.clamp = function (min, max, val)
@@ -381,8 +379,8 @@ function drawslices()
             let y = Math.berp(-1, 1, bos) * context.virtualheight;
             y -= e;
             var x = w/2;
-            if (y < -context.buttonheight*2 ||
-                y >= window.innerHeight+context.buttonheight*2)
+            if (y < -context.buttonheight ||
+                y >= window.innerHeight+context.buttonheight)
             {
                 delete slice.thumbcanvas;
                 continue;
@@ -672,6 +670,8 @@ var GalleryBar = function ()
 {
     this.draw = function (context, rect, user, time)
     {
+        if (context.panning)
+            return;
         var w = Math.min(360,rect.width-100);
         var j = rect.width >= context.width;
         context.save();
@@ -1203,8 +1203,8 @@ var ThumbPanel = function ()
         var a = new Layer(
         [
             new Rectangle(context.thumbpanel),
-            url.hidebars ? 0 : new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),19,19),
-            new Shrink(new CirclePanel(url.hidebars?SCROLLNAB:TRANSPARENT,SEARCHFRAME,4),15,15),
+            galleryobj.hidebars ? 0 : new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),19,19),
+            new Shrink(new CirclePanel(galleryobj.hidebars?SCROLLNAB:TRANSPARENT,SEARCHFRAME,4),15,15),
             new Shrink(new Rounded(TRANSPARENT, 3, "white", 4, 4),16,30),
         ]);
 
@@ -2224,11 +2224,11 @@ async function dropfiles(files)
         var body = JSON.stringify(lst);
         fetch(`https://bucket.reportbase5836.workers.dev/${uuid}`, { method: 'POST', body: body } )
           .then((response) => jsonhandler(response))
-          .then(function(json) { console.log(json); })
-          .catch(function(err) { console.log(err); });
+          .then((json) => console.log(json); )
+          .catch((error) => console.log(error); );
 
     })
-    .catch((error) => { console.log("Error:", error); });
+    .catch((error) => { console.log(error); });
 
     showdata(lst)
 }
@@ -2319,6 +2319,7 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
     {
+        context.panning = 1;
         clearInterval(context.timeauto);
         context.timeauto = 0;
         context.type = 0;
@@ -2332,6 +2333,12 @@ var panlst =
         delete context.starty;
         delete context.startt;
         delete context.timeobj.offset;
+        clearTimeout(context.timepan)
+        context.timepan = setTimeout(function()
+            {
+                context.panning = 0;
+                context.refresh();
+            }, 1000);
         context.isright = 0;
         context.isode = 0;
         context.issearch = 0;
@@ -2352,7 +2359,7 @@ var panlst =
         if (context.pinching)
             return;
 
-        if (url.hidefocus)
+        if (galleryobj.hidefocus)
         {
             var positx = positxobj.value();
             var posity = posityobj.value();
@@ -2443,10 +2450,16 @@ var panlst =
     },
     panend: function (context, rect, x, y)
 	{
-        if (url.hidefocus)
+        if (galleryobj.hidefocus)
             galleryobj.transparent = 0;
-        url.hidefocus = 0;
-        context.panning = 0;
+        galleryobj.hidefocus = 0;
+        clearTimeout(context.timepan)
+        context.timepan = setTimeout(function()
+            {
+                context.panning = 0;
+                context.refresh();
+                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            }, 1000);
         context.isthumb = 0;
         context.iszoomr = 0;
         context.istretch = 0;
@@ -2731,7 +2744,7 @@ var presslst =
         if (context.stretchrect && context.stretchrect.hitest(x,y))
             return;
         if (thumbobj.current() == 1)
-            url.hidefocus = url.hidefocus?0:1;
+            galleryobj.hidefocus = galleryobj.hidefocus?0:1;
         context.refresh();
     }
 },
@@ -2779,8 +2792,6 @@ var swipelst =
 
     swipeupdown: function (context, rect, x, y, evt)
     {
-        context.autodirect = evt.type == "swipeup"?-1:1;
-        context.tab();
     },
 },
 ];
@@ -3229,7 +3240,7 @@ var taplst =
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             thumbobj.set(headobj.current()==1?0:1);
             galleryobj.transparent = 0;
-            url.hidefocus = 0;
+            galleryobj.hidefocus = 0;
             context.refresh();
             menuhide();
         }
@@ -3242,7 +3253,7 @@ var taplst =
         var obj = context.scrollobj;
         if (context.thumbpanel && context.thumbpanel.hitest(x,y))
         {
-            url.hidebars = url.hidebars?0:1;
+            galleryobj.hidebars = galleryobj.hidebars?0:1;
             _8cnvctx.refresh();
         }
         else if (context.searchrect && context.searchrect.hitest(x,y))
@@ -3479,7 +3490,11 @@ var thumblst =
 	{
     	this.draw = function (context, rect, user, time)
         {
-            if (url.hidebars || getmenu())
+            if (galleryobj.hidebars)
+                return;
+            if (getmenu())
+                return;
+            if (_4cnvctx.panning)
                 return;
             context.zoomrect = new rectangle();
             context.slicewidthrect = new rectangle();
@@ -3643,8 +3658,7 @@ var thumblst =
             context.save();
             context.shadowOffsetX = 0;
             context.shadowOffsetY = 0;
-            if ((context.panning && context.shiftKey) ||
-                (context.isthumb && jp) ||
+            if ( (context.isthumb && jp) ||
                 galleryobj.transparent)
             {
                 var blackfill = new FillPanel(THUMBFILP);
@@ -3691,7 +3705,7 @@ var thumblst =
             var r = new rectangle(xx,yy,ww,hh);
             context.selectrect = []
             context.selectrect.push(r);
-            if (!url.hidefocus)
+            if (!galleryobj.hidefocus)
             {
                 var blackfill = new FillPanel(THUMBFILL);
                 blackfill.draw(context, r, 0, 0);
@@ -3733,7 +3747,7 @@ var thumblst =
                 }
             }
 
-            if (!url.hidefocus)
+            if (!galleryobj.hidefocus)
             {
                 whitestroke.draw(context, r, 0, 0);
                 if (xx > x)//leftside
@@ -3942,12 +3956,12 @@ var drawlst =
 
             var a = new RowA([20,20,0,20,20,20],
                 [
-                    new ShadowPanel(new Text("white", "center", "middle",0,0),1,1),
+                    0,//new ShadowPanel(new Text("white", "center", "middle",0,0),1,1),
                     0,
                     0,
                     0,
                     0,
-                    0,
+                    0,//new ShadowPanel(new Text("white", "center", "middle",0,0),1,1),
                 ]);
             a.draw(context,
                 new rectangle(20,10,rect.width-40,context.buttonheight-20),
@@ -3955,9 +3969,9 @@ var drawlst =
                 `${time+1} of ${galleryobj.length()}`,
                 0,
                 0,
-                b.toFixed(2),
-                b2.toFixed(2),
                 0,
+                0,
+                context.visibles.length.toFixed(0),
             ], 0);
         }
         else if (context.scrollobj.current() == 0)
@@ -5021,7 +5035,7 @@ var headlst =
 		{
             if (context.thumbpanel && context.thumbpanel.hitest(x,y))
             {
-                url.hidebars = url.hidebars?0:1;
+                galleryobj.hidebars = galleryobj.hidebars?0:1;
                 _8cnvctx.refresh();
             }
             else if (context.searchrect && context.searchrect.hitest(x,y))
@@ -5063,6 +5077,8 @@ var headlst =
         {
             context.clear();
             if (getmenu())
+                return;
+            if (_4cnvctx.panning)
                 return;
             context.save();
             var a = new Row([BEXTENT,0],
@@ -5179,6 +5195,10 @@ var headlst =
 		this.draw = function (context, rect, user, time)
 		{
             context.clear();
+            if (getmenu())
+                return;
+            if (_4cnvctx.panning)
+                return;
             context.save();
             context.shadowColor = "black";
             context.prompt = new rectangle()
@@ -5669,6 +5689,10 @@ galleryobj.init = function (obj)
                 .catch((error) => {});
             }
         },
+       {title:"user.json", path: "", func: function()
+            {
+            }
+        },
 
         {title:"Login", path: "LOGIN", func: function() { authClient.redirectToLoginPage(); }},
         {title:"Logout", path: "LOGOUT", func: function() { authClient.logout(true) }},
@@ -5726,11 +5750,6 @@ galleryobj.init = function (obj)
         {
             this.exec = function()
             {
-                var target = galleryobj.repos;
-                if (url.searchParams.has("sidney"))
-                    target = "sidney";
-                else if (!target)
-                    target = url.path;
                 window.open(addressobj.full(), "_html");
             }
         }
@@ -5754,7 +5773,7 @@ galleryobj.init = function (obj)
     .catch((error) => {});
 }
 
-url.path = "HOME";
+url.path = "reci";
 url.project = 0;
 var leftmenu = 1;
 
