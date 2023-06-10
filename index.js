@@ -323,7 +323,9 @@ function drawslices()
     for (var n = 0; n < lst.length; n++)
     {
         var context = lst[n];
-         if (!context.enabled)
+        var r = context.rect();
+
+        if (!context.enabled)
             continue;
         if (!context.canvas.height)
             continue;
@@ -349,7 +351,6 @@ function drawslices()
         context.imageSmoothingEnabled = true;
         context.imageSmoothingQuality = "high";
         var slices =  context.sliceobj.data;
-        var r = context.rect();
         var w = r.width;
         var h = r.height;
         context.fillStyle = MENUCOLOR;
@@ -390,6 +391,7 @@ function drawslices()
             context.visibles.push({slice, x, y, m});
         }
 
+        var offscreen = new OffscreenCanvas(rect.width, rect.height).getContext("2d");
         for (var m = 0; m < context.visibles.length; ++m)
         {
             var j = context.visibles[m];
@@ -405,7 +407,6 @@ function drawslices()
                 {
                     var j2 = context.visibles[0];
                     height = j2.y-j.y;
-                    continue
                 }
             }
 
@@ -414,15 +415,29 @@ function drawslices()
                 j.y<(window.innerHeight+height)
             context.save();
             context.translate(0, j.y-height/2);
-            var rect = new rectangle(0,0,context.rect().width,height);
-            context.draw(context, rect, j.slice, j.m);
+            var r = new rectangle(0,0,context.rect().width,height);
+            context.draw(context, r, j.slice, j.m);
             context.restore();
         }
 
         var rect = context.rect();
         context.bar.draw(context, rect, 0, 0);
         context.scroll.draw(context, rect, 0, 0);
+
+        var offscreen = new OffscreenCanvas(rect.width, rect.height).getContext("2d");
+        var panel = new WorkerPanel()
+        panel.draw(offscreen, rect, 0, 0);
+        context.drawImage(offscreen.canvas, 0, 0);
         break;
+    }
+}
+
+var WorkerPanel = function ()
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.fillStyle = '#fec';
+        context.fillRect(100, 100, 100, 100);
     }
 }
 
@@ -745,7 +760,6 @@ var DualPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
-        context.save();
         var k = rect.width < rect.width;
         var j = k?"rgba(0,0,0,0.3)":"rgba(0,0,0,0.4)";
         var a = new LayerA(
@@ -778,8 +792,6 @@ var DualPanel = function ()
             context.timeobj
         ],
         0);
-
-        context.restore();
     }
 };
 
@@ -3779,7 +3791,6 @@ var buttonlst =
     name: "OPTION",
     draw: function (context, rect, user, time)
     {
-        context.save();
         user.fitwidth = rect.width;
         user.fitheight = rect.height;
         var clr = SCROLLNAB;
@@ -3798,14 +3809,12 @@ var buttonlst =
         ]);
 
         a.draw(context, rect, user.line.split("\n"), time);
-        context.restore();
     }
 },
 {
     name: "MENU",
     draw: function (context, rect, user, time)
     {
-        context.save();
         user.fitwidth = rect.width;
         user.fitheight = rect.height;
         var clr = SCROLLNAB;
@@ -3831,14 +3840,12 @@ var buttonlst =
         ]);
 
         a.draw(context, rect, user.title, time);
-        context.restore();
     }
 },
 {
     name: "GALLERY",
     draw: function (context, rect, user, time)
     {
-        context.save();
         var len = context.sliceobj.length()
         user.fitwidth = rect.width;
         user.fitheight = rect.height;
@@ -3987,8 +3994,6 @@ var buttonlst =
             var r = new rectangle(20,10,rect.width-40,rect.height-20);
             a.draw(context, r, user.lst, 0);
         }
-
-        context.restore();
     }
 },
 {
