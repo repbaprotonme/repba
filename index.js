@@ -188,7 +188,7 @@ let circular_array = function (title, data)
 };
 
 var timemain = new circular_array("TIMEMAIN", 30);
-timemain.set(30);
+timemain.set(0);
 var speedyobj = new circular_array("SPEEDY", 100);
 var colobj = new circular_array("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new circular_array("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
@@ -287,7 +287,7 @@ function drawslices()
                 wid = Math.ceil(bx+wid)-bx;
                 context.drawImage(slice.canvas,
                     slice.x, 0, context.colwidth, rect.height,
-                   bx, 0, wid, rect.height);
+                    bx, 0, wid, rect.height);
                 bx = bx2;
             }
 
@@ -301,8 +301,8 @@ function drawslices()
                 var wid = slicewidthobj.debug ? context.colwidth : w;
                 wid = Math.ceil(x+wid)-x;
                 context.drawImage(slice.canvas,
-                      0, 0, context.colwidth, rect.height,
-                      x, 0, wid, rect.height);
+                    0, 0, context.colwidth, rect.height,
+                    x, 0, wid, rect.height);
             }
 
             context.restore();
@@ -361,40 +361,61 @@ function drawslices()
         {
            var len = context.sliceobj.length()
            context.buttonheight = context.heightbarobj.value();
-           context.virtualheight = len*context.buttonheight*0.63;
+            context.delayinterval = DELAYCENTER / len / 1000;
+            context.virtualheight = len*context.buttonheight * 0.65;
+        }
+        else
+        {
+            var len = context.sliceobj.length()
+            context.delayinterval = DELAYCENTER / len / 1000;
+            context.virtualheight = len*context.buttonheight;
         }
 
-        var k;
+        context.lastrect = 0;
         for (var m = 0; m < slices.length; ++m)
         {
             var slice = slices[m];
-            slice.fitwidth = 0;
-            slice.fitheight = 0;
-            slice.time = time + (m*context.delayinterval);
-
-            var e = (context.virtualheight-r.height)/2;
-            var bos = Math.tan(slice.time *VIRTCONST);
+            var t = time + m*context.delayinterval;
+            var bos = Math.tan(t*VIRTCONST);
             let y = Math.berp(-1, 1, bos) * context.virtualheight;
+            var e = (context.virtualheight-r.height)/2;
             y -= e;
             var x = w/2;
-            if (y < -context.buttonheight*2 ||
-                y >= window.innerHeight+context.buttonheight*2)
+            if (y < -window.innerHeight || y >= window.innerHeight*2)
             {
                 delete slice.thumbcanvas;
                 continue;
             }
+
             context.visibles.push({slice, x, y, m});
         }
 
         for (var m = 0; m < context.visibles.length; ++m)
         {
             var j = context.visibles[m];
+            var height = context.buttonheight;
+            if (context == _8cnvctx)
+            {
+                if (m < context.visibles.length-1)
+                {
+                    var j2 = context.visibles[m+1];
+                    height = j2.y-j.y;
+                }
+                else
+                {
+                    var j2 = context.visibles[0];
+                    height = j2.y-j.y;
+                    continue
+                }
+            }
+
             j.slice.center = {x: j.x, y: j.y};
-            j.slice.isvisible = j.y > -context.buttonheight &&
-                j.y<(window.innerHeight+context.buttonheight)
+            j.slice.isvisible = j.y > -height &&
+                j.y<(window.innerHeight+height)
             context.save();
-            context.translate(j.x, j.y);
-            context.draw(context, context.rect(), j.slice, j.m);
+            context.translate(0, j.y-height/2);
+            var rect = new rectangle(0,0,context.rect().width,height);
+            context.draw(context, rect, j.slice, j.m);
             context.restore();
         }
 
@@ -668,13 +689,16 @@ var GalleryBar = function ()
 {
     this.draw = function (context, rect, user, time)
     {
+        if (context.swipetype == "swipeup")
+            return;
+
         var w = Math.min(360,rect.width-100);
         var j = rect.width >= context.width;
         context.save();
         context.headerect = new rectangle();
         context.footerect = new rectangle();
         context.heightrect = new rectangle();
-        var a = new Row([80,0,40,40],
+        var a = new Row([80,0,35,30],
         [
             new Layer(
             [
@@ -701,19 +725,18 @@ var GalleryBar = function ()
              context.timeauto?0:new Col([0,w,0],
              [
                  0,
-                new LayerA(
+                new Layer(
                 [
                     new Shrink(new Rectangle(context.heightrect),4,0),
-                    new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 18, 18),
-                    0,//new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0),
-                    new CurrentHPanel(new Shrink(new CirclePanel("white"),10,10), 30, 1)
+                    new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 16, 16),
+                    new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1)
                 ]),
                  0,
             ]),
             0,
         ]);
 
-        a.draw(context, rect, [0,0,"Height",context.heightbarobj], 0);
+        a.draw(context, rect, context.heightbarobj, 0);
         context.restore();
     }
 };
@@ -1488,7 +1511,7 @@ CanvasRenderingContext2D.prototype.hide = function ()
 CanvasRenderingContext2D.prototype.swipe = function ()
 {
     var context = this;
-    var slidestop = 4;
+    var slidestop = 2.5;
     var slidereduce = 100;
     context.slideshow = (context.timeobj.length()/context.virtualheight)*slidestop;
     context.slidereduce = context.slideshow/slidereduce;
@@ -1499,8 +1522,8 @@ CanvasRenderingContext2D.prototype.swipe = function ()
 CanvasRenderingContext2D.prototype.tab = function ()
 {
     var context = this;
-    var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:5);
-    var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:50);
+    var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:2.5);
+    var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:100);
     context.slidestop += slidestop;
     context.slidestop = (window.innerWidth/context.virtualwidth)*context.slidestop;
     context.slidereduce = context.slidestop/slidereduce;
@@ -2702,6 +2725,8 @@ var presslst =
     name: "GALLERY",
     pressup: function (context, rect, x, y)
     {
+        context.swipetype = (context.swipetype == "swipeup") ? "swipedown" : "swipeup";
+        context.refresh();
     },
     press: function (context, rect, x, y)
     {
@@ -2832,17 +2857,8 @@ var keylst =
             var obj = context.scrollobj.value();
             obj.set(0);
             evt.preventDefault();
-
-            if (context.ctrlKey)
-            {
-                context.swipetype = "swipedown";
-                context.swipe()
-            }
-            else
-            {
-                context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
-                context.refresh()
-            }
+            context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
+            context.refresh()
         }
         else if (key == "pageup" || key == "arrowup" || key == "k")
 		{
@@ -2854,17 +2870,8 @@ var keylst =
             evt.preventDefault();
             var obj = context.scrollobj.value();
             obj.set(0);
-
-            if (context.ctrlKey)
-            {
-                context.swipetype = "swipeup";
-                context.swipe()
-            }
-            else
-            {
-                context.timeobj.rotate(TIMEOBJ/context.sliceobj.length());
-                context.refresh()
-            }
+            context.timeobj.rotate(TIMEOBJ/context.sliceobj.length());
+            context.refresh()
         }
         else if (key == "-" || key == "[")
         {
@@ -3483,19 +3490,18 @@ var thumblst =
             context.stretchrect = new rectangle();
             context.extentrect = new rectangle();
             var w = Math.min(360,rect.width-100);
-             var a = new RowA([60,0,40,10,40,10,40,60],
+             var a = new RowA([60,0,35,8,35,8,35,50],
              [
                  0,
                  0,
                  slicewidthobj.debug?new Col([0,w,0],
                  [
                      0,
-                    new LayerA(
+                    new Layer(
                     [
                         new Shrink(new Rectangle(context.slicewidthrect),4,0),
-                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 18, 18),
-                        0,///new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0),
-                        new CurrentHPanel(new Shrink(new CirclePanel("white"),10,10), 30, 1),
+                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 16, 16),
+                        new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1)
                     ]),
                      0,
                 ]):0,
@@ -3503,27 +3509,25 @@ var thumblst =
                  new Col([0,w,0],
                  [
                      0,
-                    new LayerA(
+                    new Layer(
                     [
                         new Shrink(new Rectangle(context.zoomrect),4,0),
-                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 18, 18),
-                        0,//new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0),
-                        new CurrentHPanel(new Shrink(new CirclePanel("white"),10,10), 30, 1)
+                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 16, 16),
+                        new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1)
                     ]),
                      0,
                 ]),
                  0,
                  new Col([0,w,0],
                  [
-                     0,
-                    new LayerA(
+                    0,
+                    new Layer(
                     [
                         new Shrink(new Rectangle(context.stretchrect),4,0),
-                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 18, 18),
-                        0,//new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0),
-                        new CurrentHPanel(new Shrink(new CirclePanel("white"),10,10), 30, 1)
+                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 16, 16),
+                        new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1)
                     ]),
-                     0,
+                    0,
                 ]),
                 0,
             ]);
@@ -3532,26 +3536,11 @@ var thumblst =
                 [
                     0,
                     0,
-                    [
-                        0,
-                        0,
-                        "Slice Width",
-                        slicewidthobj,
-                    ],
+                    slicewidthobj,
                     0,
-                    [
-                        0,
-                        0,
-                        "Zoom",
-                        zoomobj.value(),
-                    ],
+                    zoomobj.value(),
                     0,
-                    [
-                        0,
-                        0,
-                        "Stretch",
-                        stretchobj.value(),
-                    ],
+                    stretchobj.value(),
                     0,
                 ], 0);
 
@@ -3780,7 +3769,7 @@ var getfrompoint = function (context, x, y)
 	return k;
 }
 
-var drawlst =
+var buttonlst =
 [
 {
     name: "DEFAULT",
@@ -3791,20 +3780,21 @@ var drawlst =
     draw: function (context, rect, user, time)
     {
         context.save();
-        rect.height = context.buttonheight ;
-        rect.width -= 40;
-        context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
-        user.fitheight = rect.height+40;
+        user.fitheight = rect.height;
         var clr = SCROLLNAB;
-        var str = user.title;
         if (user.tap)
             clr = MENUTAP;
         var e = context.scrollobj.berp();
-        var a = new Layer(
+        var a = new Col([20,0,20],
         [
-            new Expand(new Rounded(clr, 3, SEARCHFRAME, 8, 8), 0, 20),
-            new Col([20,0,20], [0,new MultiText(e),0])
+            0,
+            new Layer(
+            [
+                new Expand(new Rounded(clr, 3, SEARCHFRAME, 8, 8), 0, 20),
+                new Shrink(new MultiText(e), 20, 0),
+            ]),
+            0,
         ]);
 
         a.draw(context, rect, user.line.split("\n"), time);
@@ -3816,14 +3806,9 @@ var drawlst =
     draw: function (context, rect, user, time)
     {
         context.save();
-        rect.height = context.buttonheight;
-        rect.width -= 40;
-        context.translate(-rect.width/2, -rect.height/2);
         user.fitwidth = rect.width;
-        user.fitheight = rect.height+20;
+        user.fitheight = rect.height;
         var clr = SCROLLNAB;
-        var str = user.title;
-
         if (user.tap)
         {
             clr = MENUTAP;
@@ -3834,10 +3819,15 @@ var drawlst =
               clr = MENUSELECT;
         }
 
-        var a = new Layer(
+        var a = new Col([20,0,20],
         [
-            new Expand(new Rounded(clr, 3, SEARCHFRAME, 8, 8), 0, 10),
-            new Shrink(new Text("white", "center", "middle",0, 0), 20, 0),
+            0,
+            new Layer(
+            [
+                new Expand(new Rounded(clr, 3, SEARCHFRAME, 8, 8), 0, 10),
+                new Shrink(new Text("white", "center", "middle",0, 0), 20, 0),
+            ]),
+            0,
         ]);
 
         a.draw(context, rect, user.title, time);
@@ -3850,10 +3840,8 @@ var drawlst =
     {
         context.save();
         var len = context.sliceobj.length()
-        context.delayinterval =  (DELAYCENTER/1000 / len );
-        context.translate(-rect.width/2, -context.buttonheight/2);
         user.fitwidth = rect.width;
-        user.fitheight = Number(context.buttonheight);
+        user.fitheight = rect.height;
 
         if (!user.lst)
         {
@@ -3923,7 +3911,7 @@ var drawlst =
             user.thumbcanvas && user.thumbcanvas.width)
         {
             var obj = context.scrollobj.value();
-            var h2 = context.buttonheight;
+            var h2 = rect.height;
             var w2 = rect.width;
             var b2 = w2/h2;
             var b = user.thumbcanvas.width/user.thumbcanvas.height;
@@ -3959,7 +3947,7 @@ var drawlst =
                     0,//new ShadowPanel(new Text("white", "center", "middle",0,0),1,1),
                 ]);
             a.draw(context,
-                new rectangle(20,10,rect.width-40,context.buttonheight-20),
+                new rectangle(20,10,rect.width-40,rect.height-20),
             [
                 `${time+1} of ${galleryobj.length()}`,
                 0,
@@ -3971,10 +3959,10 @@ var drawlst =
         }
         else if (context.scrollobj.current() == 0)
         {
-            var h2 = context.buttonheight;
+            var h2 = rect.height;
             var w2 = rect.width;
             var b2 = w2/h2;
-            var r = new rectangle(20,10,rect.width-40,context.buttonheight-20);
+            var r = new rectangle(20,10,rect.width-40,rect.height-20);
 
              var a =
                 new Layer(
@@ -3996,7 +3984,7 @@ var drawlst =
                     new Shrink(new MultiText(e), 15, 15),
                 ]);
 
-            var r = new rectangle(20,10,rect.width-40,context.buttonheight-20);
+            var r = new rectangle(20,10,rect.width-40,rect.height-20);
             a.draw(context, r, user.lst, 0);
         }
 
@@ -4090,7 +4078,7 @@ function resetcanvas(leftright=1)
     var e = slicelst[j-1];
     var delay = e.delay;
     var slices = Math.ceil(e.slices/canvaslen);
-    context.delayinterval = delay/100000;
+    var delayinterval = delay/100000;
     context.delay = e;
     var gwidth = photo.image.width/canvaslen;
     var bwidth = context.virtualwidth/canvaslen;
@@ -4126,7 +4114,7 @@ function resetcanvas(leftright=1)
             k.canvas = cnv;
             slice++;
             context.sliceobj.data.push(k);
-            j += context.delayinterval;
+            j += delayinterval;
         }
     }
 
@@ -4147,15 +4135,15 @@ _9ham.panel = new YollPanel();
 
 var eventlst =
 [
-    {dblclick: "DEFAULT", mouse: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", draw: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollMenuBar(), buttonheight: 0, width: 640, keyblock: 100, backcolor: MENUCOLOR},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU",  drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640, keyblock: 100, backcolor: MENUCOLOR},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 90, width: 640, keyblock: 100, backcolor: MENUCOLOR},
-    {dblclick: "BOSS", mouse: "DEFAULT", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", draw: "BOSS", wheel: "BOSS", drop: "GALLERY", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new Empty(), scroll: new DualPanel(), buttonheight: 30, width: 640, keyblock: 100, backcolor: MENUCOLOR},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new DualPanel(), buttonheight: 90, width: 640, keyblock: 100, backcolor: MENUCOLOR},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640, keyblock: 100, backcolor: MENUCOLOR},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new DualPanel(), buttonheight: 90, width: 640, keyblock: 100, backcolor: MENUCOLOR},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "GALLERY", pan: "MENU", swipe: "GALLERY", draw: "GALLERY", wheel: "GALLERY", drop: "GALLERY", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new GalleryBar(), scroll: new DualPanel(), buttonheight: 320, width: 1080, keyblock: 100, backcolor: "black"},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", draw: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar("Image Browser"), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640, keyblock: 100, backcolor: MENUCOLOR},
+    {dblclick: "DEFAULT", mouse: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", button: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollMenuBar(), buttonheight: 0, width: 640, keyblock: 100, backcolor: MENUCOLOR},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU",  drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640, keyblock: 100, backcolor: MENUCOLOR},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 90, width: 640, keyblock: 100, backcolor: MENUCOLOR},
+    {dblclick: "BOSS", mouse: "DEFAULT", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "GALLERY", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new Empty(), scroll: new DualPanel(), buttonheight: 30, width: 640, keyblock: 100, backcolor: MENUCOLOR},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new DualPanel(), buttonheight: 90, width: 640, keyblock: 100, backcolor: MENUCOLOR},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640, keyblock: 100, backcolor: MENUCOLOR},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new DualPanel(), buttonheight: 90, width: 640, keyblock: 100, backcolor: MENUCOLOR},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "GALLERY", pan: "MENU", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "GALLERY", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new GalleryBar(), scroll: new DualPanel(), buttonheight: 320, width: 1080, keyblock: 100, backcolor: "black"},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar("Image Browser"), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640, keyblock: 100, backcolor: MENUCOLOR},
 ];
 
 let contextlst = [_1cnvctx,_2cnvctx,_3cnvctx,_4cnvctx,_5cnvctx,_6cnvctx,_7cnvctx,_8cnvctx,_9cnvctx];
@@ -4180,7 +4168,7 @@ contextlst.forEach(function(context, n)
     context.timeobj.set(TIMEOBJ/2);
     context.scrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
     context.imagescrollobj = new circular_array("IMAGESCROLL", Math.floor(window.innerHeight/2));
-    context.imagescrollobj.set(0);
+    context.imagescrollobj.set(context.imagescrollobj.length()/2);
     context.textscrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
 
     var obj = eventlst[n];
@@ -4231,8 +4219,8 @@ contextlst.forEach(function(context, n)
     context.swipeleftright_ = k.swipeleftright;
     context.swipeupdown_ = k.swipeupdown;
 
-    var k = drawlst.findIndex(function (a) {return a.name == obj.draw});
-    k = drawlst[k];
+    var k = buttonlst.findIndex(function (a) {return a.name == obj.button});
+    k = buttonlst[k];
     context.draw = k.draw;
 
     var k = taplst.findIndex(function (a) {return a.name == obj.tap});
@@ -4252,13 +4240,6 @@ _8cnvctx.scrollobj = new circular_array("SCROLL", [_8cnvctx.imagescrollobj,_8cnv
 
 contextobj.reset = function (leftright)
 {
-    this.data.forEach(function(context)
-    {
-        var len = context.sliceobj.length()
-        context.delayinterval = DELAYCENTER / 1000 / len;
-        context.virtualheight = len*context.buttonheight;
-    });
-
     var context = _4cnvctx;
     if (photo.image &&
         photo.image.complete &&
@@ -6136,7 +6117,6 @@ function showdata(data)
     galleryobj.data.splice(0,0,...data);
     _8cnvctx.sliceobj.data = galleryobj.data;
     var slices = _8cnvctx.sliceobj;
-    _8cnvctx.delayinterval = DELAYCENTER / slices.length();
     _8cnvctx.virtualheight = slices.length()*_8cnvctx.buttonheight;
     _8cnvctx.scrollobj.set(0);
     galleryobj.set(0);
