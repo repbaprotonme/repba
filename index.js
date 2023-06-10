@@ -19,8 +19,7 @@ const DELAY = 10000000;
 const ALIEXTENT = 60;
 const BEXTENT = 80;
 const TIMEOBJ = 3927;
-const DELAYCENTER = TIMEOBJ/1000;
-const TIMEMID = TIMEOBJ/2;
+const DELAYCENTER = TIMEOBJ;
 const MENUSELECT = "rgba(255,175,0,0.7)";
 const MENUTAP = "rgba(255,125,0,0.7)";
 const MENUTAG = "rgba(200,0,0,0.9)";
@@ -189,7 +188,7 @@ let circular_array = function (title, data)
 };
 
 var timemain = new circular_array("TIMEMAIN", 30);
-timemain.set(10);
+timemain.set(30);
 var speedyobj = new circular_array("SPEEDY", 100);
 var colobj = new circular_array("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new circular_array("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
@@ -360,10 +359,9 @@ function drawslices()
 
         if (context == _8cnvctx)
         {
-           var k = 0.64;
-            var len = context.sliceobj.length()
+           var len = context.sliceobj.length()
            context.buttonheight = context.heightbarobj.value();
-           context.virtualheight = len*context.buttonheight*k;
+           context.virtualheight = len*context.buttonheight*0.63;
         }
 
         var k;
@@ -379,8 +377,8 @@ function drawslices()
             let y = Math.berp(-1, 1, bos) * context.virtualheight;
             y -= e;
             var x = w/2;
-            if (y < -context.buttonheight ||
-                y >= window.innerHeight+context.buttonheight)
+            if (y < -context.buttonheight*2 ||
+                y >= window.innerHeight+context.buttonheight*2)
             {
                 delete slice.thumbcanvas;
                 continue;
@@ -670,8 +668,6 @@ var GalleryBar = function ()
 {
     this.draw = function (context, rect, user, time)
     {
-        if (context.panning)
-            return;
         var w = Math.min(360,rect.width-100);
         var j = rect.width >= context.width;
         context.save();
@@ -708,9 +704,9 @@ var GalleryBar = function ()
                 new LayerA(
                 [
                     new Shrink(new Rectangle(context.heightrect),4,0),
-                    new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 10, 10),
-                    new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0),
-                    new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1),4,0),
+                    new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 18, 18),
+                    0,//new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0),
+                    new CurrentHPanel(new Shrink(new CirclePanel("white"),10,10), 30, 1)
                 ]),
                  0,
             ]),
@@ -1503,8 +1499,8 @@ CanvasRenderingContext2D.prototype.swipe = function ()
 CanvasRenderingContext2D.prototype.tab = function ()
 {
     var context = this;
-    var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:8);
-    var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:100);
+    var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:5);
+    var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:50);
     context.slidestop += slidestop;
     context.slidestop = (window.innerWidth/context.virtualwidth)*context.slidestop;
     context.slidereduce = context.slidestop/slidereduce;
@@ -2159,7 +2155,18 @@ var heightobj = new circular_array("HEIGHT", [traitobj,scapeobj]);
 var pinchobj = new circular_array("PINCH", [heightobj,zoomobj]);
 
 var userlst = []
-var userobj = new circular_array("ZOOM", userlst);
+var userobj = new circular_array("USer", userlst);
+userobj.save = function()
+{
+    fetch(`https://bucket.reportbase5836.workers.dev/user.json`,
+        {
+            method: 'POST',
+            body: JSON.stringify(userobj)
+        })
+      .then(response => jsonhandler(response))
+      .then(json => console.log(json) )
+      .catch(error => console.log(error) );
+}
 
 function explore()
 {
@@ -2217,19 +2224,8 @@ async function dropfiles(files)
         }
     }
 
-    fetch("https://uuid.rocks/ulid")
-    .then((response) => texthandler(response))
-    .then(uuid =>
-    {
-        var body = JSON.stringify(lst);
-        fetch(`https://bucket.reportbase5836.workers.dev/${uuid}`, { method: 'POST', body: body } )
-          .then((response) => jsonhandler(response))
-          .then((json) => console.log(json) )
-          .catch((error) => console.log(error) );
-
-    })
-    .catch((error) => console.log(error) );
-
+    userobj.data = userobj.data.concat(lst);
+    userobj.save();
     showdata(lst)
 }
 
@@ -2281,7 +2277,7 @@ var panlst =
             obj.set(m);
             context.refresh()
         }
-        else if (context.isheight)
+        else if (context.isheightbar)
         {
             clearTimeout(context.modetimeout)
             context.modetimeout = setTimeout(function()
@@ -2305,7 +2301,8 @@ var panlst =
         }
         else if (type == "panup" || type == "pandown")
         {
-            var jvalue = ((context.timeobj.length()/context.virtualheight)*(context.starty-y));
+            var k = context.timeobj.length();
+            var jvalue = (k/(context.virtualheight)*(context.starty-y));
             var j = context.startt - jvalue;
             var len = context.timeobj.length();
             if (j < 0)
@@ -2319,26 +2316,20 @@ var panlst =
     },
 	panstart: function (context, rect, x, y)
     {
-        context.panning = 1;
+        clearInterval(context.timemain);
         clearInterval(context.timeauto);
         context.timeauto = 0;
         context.type = 0;
         context.isright = x > rect.width-MENUPANWIDTH;
         context.starty = y;
         context.startt = context.timeobj.current();
-        context.isheight = context.heightrect && context.heightrect.hitest(x,y);
+        context.isheightbar = context.heightrect && context.heightrect.hitest(x,y);
     },
 	panend: function (context, rect, x, y)
     {
         delete context.starty;
         delete context.startt;
         delete context.timeobj.offset;
-        clearTimeout(context.timepan)
-        context.timepan = setTimeout(function()
-            {
-                context.panning = 0;
-                context.refresh();
-            }, 1000);
         context.isright = 0;
         context.isode = 0;
         context.issearch = 0;
@@ -2435,7 +2426,6 @@ var panlst =
 	panstart: function (context, rect, x, y)
 	{
         clearInterval(context.timemain);
-        context.panning = 1;
         context.timemain = 0;
         context.startx = x;
         context.starty = y;
@@ -2454,12 +2444,6 @@ var panlst =
             galleryobj.transparent = 0;
         galleryobj.hidefocus = 0;
         clearTimeout(context.timepan)
-        context.timepan = setTimeout(function()
-            {
-                context.panning = 0;
-                context.refresh();
-                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            }, 1000);
         context.isthumb = 0;
         context.iszoomr = 0;
         context.istretch = 0;
@@ -3494,8 +3478,6 @@ var thumblst =
                 return;
             if (getmenu())
                 return;
-            if (_4cnvctx.panning)
-                return;
             context.zoomrect = new rectangle();
             context.slicewidthrect = new rectangle();
             context.stretchrect = new rectangle();
@@ -3511,9 +3493,9 @@ var thumblst =
                     new LayerA(
                     [
                         new Shrink(new Rectangle(context.slicewidthrect),4,0),
-                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 10, 10),
-                        new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0),
-                        new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1),4,0),
+                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 18, 18),
+                        0,///new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0),
+                        new CurrentHPanel(new Shrink(new CirclePanel("white"),10,10), 30, 1),
                     ]),
                      0,
                 ]):0,
@@ -3524,9 +3506,9 @@ var thumblst =
                     new LayerA(
                     [
                         new Shrink(new Rectangle(context.zoomrect),4,0),
-                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 10, 10),
-                        new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0),
-                        new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1),4,0),
+                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 18, 18),
+                        0,//new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0),
+                        new CurrentHPanel(new Shrink(new CirclePanel("white"),10,10), 30, 1)
                     ]),
                      0,
                 ]),
@@ -3537,9 +3519,9 @@ var thumblst =
                     new LayerA(
                     [
                         new Shrink(new Rectangle(context.stretchrect),4,0),
-                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 10, 10),
-                        new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0),
-                        new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1),4,0),
+                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 18, 18),
+                        0,//new Text("rgba(255,255,255,0.5)", "center", "middle", 0, 0),
+                        new CurrentHPanel(new Shrink(new CirclePanel("white"),10,10), 30, 1)
                     ]),
                      0,
                 ]),
@@ -3868,7 +3850,7 @@ var drawlst =
     {
         context.save();
         var len = context.sliceobj.length()
-        context.delayinterval = DELAYCENTER / len;
+        context.delayinterval =  (DELAYCENTER/1000 / len );
         context.translate(-rect.width/2, -context.buttonheight/2);
         user.fitwidth = rect.width;
         user.fitheight = Number(context.buttonheight);
@@ -3895,32 +3877,45 @@ var drawlst =
 
         if (!context.isright && !user.thumbcanvas)
         {
-            const thumbimg = new Image();
-            user.thumbcanvas = document.createElement('canvas');
-            user.thumbcanvas.width = 0;
-            user.thumbcanvas.height = 0;
-            if (user.full)
-                thumbimg.src = user.full;
-            else if (user.file)
-                thumbimg.src = URL.createObjectURL(user.file);
-            else
+            try
             {
-                const variant = _8cnvctx.variantobj.value();
-                thumbimg.src = `https://reportbase.com/image/${user.id}/${variant}`;
-            }
+                const thumbimg = new Image();
+                user.thumbcanvas = document.createElement('canvas');
+                user.thumbcanvas.width = 0;
+                user.thumbcanvas.height = 0;
+                if (user.full)
+                    thumbimg.src = user.full;
+                else if (user.file)
+                    thumbimg.src = URL.createObjectURL(user.file);
+                else
+                {
+                    const variant = _8cnvctx.variantobj.value();
+                    thumbimg.src = `https://reportbase.com/image/${user.id}/${variant}`;
+                }
 
-            thumbimg.onload = function()
+                thumbimg.onload = function()
+                {
+                    if (!user.thumbcanvas)
+                        return;
+                    const ctx = user.thumbcanvas.getContext("2d");
+                    const a = this.width/this.height;
+                    user.thumbcanvas.width = rect.width;
+                    user.thumbcanvas.height = rect.width/a;
+                    ctx.drawImage(this, 0, 0, this.width, this.height,
+                        0, 0, user.thumbcanvas.width,
+                        user.thumbcanvas.height);
+                    context.refresh();
+                }
+
+                thumbimg.onerror =
+                    thumbimg.onabort = function(error)
+                {
+                    console.log(error);
+                }
+            }
+            catch (error)
             {
-                if (!user.thumbcanvas)
-                    return;
-                const ctx = user.thumbcanvas.getContext("2d");
-                const a = this.width/this.height;
-                user.thumbcanvas.width = rect.width;
-                user.thumbcanvas.height = rect.width/a;
-                ctx.drawImage(this, 0, 0, this.width, this.height,
-                    0, 0, user.thumbcanvas.width,
-                    user.thumbcanvas.height);
-                context.refresh();
+                console.log(error);
             }
         }
 
@@ -4176,7 +4171,6 @@ contextlst.forEach(function(context, n)
     context.fillText("  ", 0, 0);
     context.slideshow = 0;
     context.lastime = 0;
-    context.buttonheight = 30;
     context.slidereduce = 0;
     context.keyup = 0;
     context.updowntime = 0;
@@ -4261,7 +4255,7 @@ contextobj.reset = function (leftright)
     this.data.forEach(function(context)
     {
         var len = context.sliceobj.length()
-        context.delayinterval = DELAYCENTER / len;
+        context.delayinterval = DELAYCENTER / 1000 / len;
         context.virtualheight = len*context.buttonheight;
     });
 
@@ -4327,6 +4321,7 @@ contextobj.reset = function (leftright)
             _4cnvctx.movingpage = 0;
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             contextobj.reset()
+            context.tab();
             clearTimeout(context.mastertime);
             context.mastertime = setTimeout(function() { masterload(); }, 500);
         }
@@ -5078,8 +5073,6 @@ var headlst =
             context.clear();
             if (getmenu())
                 return;
-            if (_4cnvctx.panning)
-                return;
             context.save();
             var a = new Row([BEXTENT,0],
             [
@@ -5196,8 +5189,6 @@ var headlst =
 		{
             context.clear();
             if (getmenu())
-                return;
-            if (_4cnvctx.panning)
                 return;
             context.save();
             context.shadowColor = "black";
@@ -5689,10 +5680,29 @@ galleryobj.init = function (obj)
                 .catch((error) => {});
             }
         },
-       {title:"user.json", path: "", func: function()
+       {title:"ulid", path: "", func: function()
             {
+                fetch("https://uuid.rocks/ulid")
+                .then(response => texthandler(response))
+                .then(uuid =>
+                {
+                    var body = JSON.stringify(lst);
+                    fetch(`https://bucket.reportbase5836.workers.dev/${uuid}`, { method: 'POST', body: body } )
+                      .then(response => jsonhandler(response))
+                      .then(json => console.log(json) )
+                      .catch(error => console.log(error) );
+
+                })
+                .catch((error) => console.log(error) );
+
             }
         },
+       {title:"user.json", path: "", func: function()
+            {
+                userobj.save();
+            }
+        },
+
 
         {title:"Login", path: "LOGIN", func: function() { authClient.redirectToLoginPage(); }},
         {title:"Logout", path: "LOGOUT", func: function() { authClient.logout(true) }},
