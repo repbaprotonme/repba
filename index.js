@@ -221,10 +221,10 @@ function drawslices()
             context.imageSmoothingEnabled = true;
             context.imageSmoothingQuality = "high";
 
-            if (!context.timemain && context.lastime == context.timeobj.current())
+            if (!context.timemain && offbossctx.lastime == context.timeobj.current())
                 continue;
             else
-                context.lastime = context.timeobj.current();
+                offbossctx.lastime = context.timeobj.current();
 
             if (context.timemain)
             {
@@ -268,7 +268,10 @@ function drawslices()
                 slicelst[m].visible = 0;
                 slicelst[m].stretchwidth = 0;
             }
-//todo
+
+            offbosscnv.width = width;
+            offbosscnv.height = rect.height;
+
             for (var m = 1; m < slicelst.length; ++m)
             {
                 var slice = slicelst[m];
@@ -300,7 +303,7 @@ function drawslices()
                 var bx = slice.bx;
                 var wid = slicewidthobj.debug ? context.colwidth : stretchwidth;
                 wid = Math.ceil(bx+wid)-bx;
-                context.drawImage(slice.canvas,
+                offbossctx.drawImage(slice.canvas,
                     slice.x, 0, context.colwidth, rect.height,
                     bx, 0, wid, rect.height);
                 bx = bx2;
@@ -315,10 +318,13 @@ function drawslices()
                 slice.strechwidth = w;
                 var wid = slicewidthobj.debug ? context.colwidth : w;
                 wid = Math.ceil(x+wid)-x;
-                context.drawImage(slice.canvas,
+                offbossctx.drawImage(slice.canvas,
                     0, 0, context.colwidth, rect.height,
                     x, 0, wid, rect.height);
             }
+
+            context.drawImage(offbosscnv,0,0)
+
 
             context.restore();
             delete context.selectrect;
@@ -331,6 +337,7 @@ function drawslices()
 
             if (!getmenu())
                 thumbobj.value().draw(context, rect, 0, 0);
+            //bossworker.postMessage({msg: 'init', canvas: offbosscnv}, [offbosscnv]);
          }
     }
 
@@ -344,10 +351,10 @@ function drawslices()
         if (!context.canvas.height)
             continue;
         var time = context.timeobj.value()/1000;
-        if ((offctx.lastime && offctx.lastime.toFixed(8) == time.toFixed(8)))
+        if ((offmenuctx.lastime && offmenuctx.lastime.toFixed(8) == time.toFixed(8)))
             continue;
         else
-            offctx.lastime = Number(time.toFixed(8));
+            offmenuctx.lastime = Number(time.toFixed(8));
 
         if (context.slideshow > 0)
         {
@@ -404,8 +411,8 @@ function drawslices()
             visibles.push({slice, x, y, m});
         }
 
-        offcnv.width = rect.width;
-        offcnv.height = rect.height;
+        offmenucnv.width = rect.width;
+        offmenucnv.height = rect.height;
 
         for (var m = 0; m < visibles.length; ++m)
         {
@@ -428,16 +435,16 @@ function drawslices()
             j.slice.center = {x: j.x, y: j.y};
             j.slice.isvisible = j.y > -height &&
                 j.y<(window.innerHeight+height)
-            offctx.isright = context.isright;
-            offctx.scrollobj = context.scrollobj;
-            offctx.save();
-            offctx.translate(0, j.y-height/2);
+            offmenuctx.ispanningright = context.ispanningright;
+            offmenuctx.scrollobj = context.scrollobj;
+            offmenuctx.save();
+            offmenuctx.translate(0, j.y-height/2);
             var r = new rectangle(0,0,rect.width,height);
-            context.draw(offctx, r, j.slice, j.m);
-            offctx.restore();
+            context.draw(offmenuctx, r, j.slice, j.m);
+            offmenuctx.restore();
         }
 
-        context.drawImage(offcnv, 0, 0);
+        context.drawImage(offmenucnv, 0, 0);
         context.bar.draw(context, rect, 0, 0);
         context.scroll.draw(context, rect, 0, 0);
         break;
@@ -619,10 +626,15 @@ headcnvctx.scrollobj = new circular_array("TEXTSCROLL", window.innerWidth/4);
 headcnvctx.font = DEFAULTFONT;
 headcnvctx.fillText("  ", 0, 0);
 
-var offcnv = new OffscreenCanvas(1, 1);
-var offctx = offcnv.getContext("2d");
-offctx.font = DEFAULTFONT;
-offctx.fillText("  ", 0, 0);
+var offmenucnv = new OffscreenCanvas(1, 1);
+var offmenuctx = offmenucnv.getContext("2d");
+offmenuctx.font = DEFAULTFONT;
+offmenuctx.fillText("  ", 0, 0);
+
+var offbosscnv = new OffscreenCanvas(1, 1);
+var offbossctx = offbosscnv.getContext("2d");
+offbossctx.font = DEFAULTFONT;
+offbossctx.fillText("  ", 0, 0);
 
 let canvaslst = [];
 canvaslst[0] = document.createElement("canvas");
@@ -1539,7 +1551,8 @@ CanvasRenderingContext2D.prototype.tab = function ()
 CanvasRenderingContext2D.prototype.refresh = function ()
 {
     this.lastime = -0.0000000000101010101;
-    offctx.lastime = -0.0000000000101010101;
+    offbossctx.lastime = -0.0000000000101010101;
+    offmenuctx.lastime = -0.0000000000101010101;
     drawslices()
 };
 
@@ -2297,7 +2310,7 @@ var panlst =
         var obj = context.scrollobj;
         if (context == _8cnvctx)
             obj = context.scrollobj.value();
-        if (context.isright)
+        if (context.ispanningright)
         {
             clearInterval(context.timemain);
             var obj = context.timeobj;
@@ -2345,7 +2358,7 @@ var panlst =
         clearInterval(context.timeauto);
         context.timeauto = 0;
         context.type = 0;
-        context.isright = x > rect.width-MENUPANWIDTH;
+        context.ispanningright = x > rect.width-MENUPANWIDTH;
         context.starty = y;
         context.startt = context.timeobj.current();
         context.isbuttonbar = context.buttonrect && context.buttonrect.hitest(x,y);
@@ -2355,7 +2368,7 @@ var panlst =
         delete context.starty;
         delete context.startt;
         delete context.timeobj.offset;
-        context.isright = 0;
+        context.ispanningright = 0;
         context.isode = 0;
         context.issearch = 0;
         var obj = context.scrollobj;
@@ -3868,7 +3881,7 @@ var buttonlst =
             user.lst = lst;
         }
 
-        if (!context.isright && !user.thumbcanvas)
+        if (!context.ispanningright && !user.thumbcanvas)
         {
             try
             {
@@ -3897,7 +3910,7 @@ var buttonlst =
                     ctx.drawImage(this, 0, 0, this.width, this.height,
                         0, 0, user.thumbcanvas.width,
                         user.thumbcanvas.height);
-                    offctx.lastime = -0.0000000000101010101;
+                    offmenuctx.lastime = -0.0000000000101010101;
                     drawslices()
                 }
 
@@ -6111,4 +6124,10 @@ function galleryshow(data, home)
     menutoggle(_8cnvctx)
 }
 
+const bossworker = new Worker('boss.js');
+bssworker.addEventListener('message', function(ev)
+{
+    if (ev.data.msg === 'render')
+        _4cnvctx.transferFromImageBitmap(ev.data.bitmap);
+});
 
