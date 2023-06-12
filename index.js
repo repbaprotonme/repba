@@ -36,7 +36,8 @@ const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
 const SCROLLBARWIDTH = 7;
 const MARGINBAR = 5;
-const DEFAULTFONT = "bold 18px arial";
+const DEFAULTFONT = "bold 17px archivo black";
+const LARGEFONT = "bold 20px archivo black";
 globalobj = {};
 let photo = {};
 photo.image = 0;
@@ -759,37 +760,6 @@ function calculateAspectRatioFit(imgwidth, imgheight, rectwidth, rectheight)
 	return new rectangle(xstart, ystart, width, height);
 }
 
-function downloadtext(name, text)
-{
-	var element = document.createElement('a');
-	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-	element.setAttribute('download', name);
-	element.style.display = 'none';
-	document.body.appendChild(element);
-	element.click();
-	document.body.removeChild(element);
-}
-
-function downloadimage()
-{
-    var url = `https://reportbase.com/image/HOPE.0000/blob`;
-    fetch(url)
-    .then(response => response.blob())
-    .then(blob =>
-    {
-      const anchor = document.createElement('a');
-      anchor.href = URL.createObjectURL(blob);
-      anchor.download = 'image.jpg';
-      anchor.click();
-      URL.revokeObjectURL(anchor.href);
-      anchor.remove();
-    })
-    .catch(error =>
-    {
-      console.error('Error downloading image:', error);
-    });
-}
-
 Math.berp = function (v0, v1, t) { return (t - v0) / (v1 - v0); };
 Math.lerp = function (v0, v1, t) { return (1 - t) * v0 + t * v1; };
 
@@ -1428,30 +1398,6 @@ CanvasRenderingContext2D.prototype.hide = function ()
     this.canvas.height = 0;
     this.enabled = 0;
 };
-
-CanvasRenderingContext2D.prototype.swipe = function ()
-{
-    var context = this;
-    var slidestop = 10;
-    var slidereduce = 50;
-    context.slideshow = (context.timeobj.length()/context.virtualheight)*slidestop;
-    context.slidereduce = context.slideshow/slidereduce;
-    clearInterval(context.timemain);
-    context.timemain = setInterval(function () { context.refresh(); }, timemain.value());
-}
-
-//todo: tabs for each menu
-CanvasRenderingContext2D.prototype.tab = function ()
-{
-    var context = this;
-    var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:2.5);
-    var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:100);
-    context.slidestop += slidestop;
-    context.slidestop = (window.innerWidth/context.virtualwidth)*context.slidestop;
-    context.slidereduce = context.slidestop/slidereduce;
-    clearInterval(context.timemain);
-    context.timemain = setInterval(function () { drawslices() }, timemain.value());
-}
 
 CanvasRenderingContext2D.prototype.refresh = function ()
 {
@@ -2174,7 +2120,7 @@ async function dropfiles(files)
     userobj.data = userobj.data.concat(lst);
     userobj.save();
     galleryobj.data.splice(0,0,...lst);
-    _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+    _8cnvctx.timeobj.set(0);
     _8cnvctx.refresh();
     menuobj.hide();
     menuobj.setindex(_8cnvctx);
@@ -2694,32 +2640,45 @@ var swipelst =
 },
 {
     name: "GALLERY",
-    swipeleftright: function (context, rect, x, y, evt)
-    {
-    },
+    swipeleftright: function (context, rect, x, y, evt) { },
     swipeupdown: function (context, rect, x, y, evt)
     {
         context.swipetype = evt.type;
-        context.swipe();
+        var slidestop = 10;
+        var slidereduce = 50;
+        context.slideshow = (context.timeobj.length()/context.virtualheight)*slidestop;
+        context.slidereduce = context.slideshow/slidereduce;
+        clearInterval(context.timemain);
+        context.timemain = setInterval(function () { context.refresh(); }, timemain.value());
     },
 },
 {
     name: "MENU",
-    swipeleftright: function (context, rect, x, y, evt)
-    {
-    },
+    swipeleftright: function (context, rect, x, y, evt) { },
     swipeupdown: function (context, rect, x, y, evt)
     {
         context.swipetype = evt.type;
-        context.swipe();
+        var slidestop = 4;
+        var slidereduce = 50;
+        context.slideshow = (context.timeobj.length()/context.virtualheight)*slidestop;
+        context.slidereduce = context.slideshow/slidereduce;
+        clearInterval(context.timemain);
+        context.timemain = setInterval(function () { context.refresh(); }, timemain.value());
     },
 },
 {
     name: "BOSS",
     swipeleftright: function (context, rect, x, y, evt)
     {
-        context.autodirect = evt.type == "swipeleft"?-1:1;
-        context.tab();
+        if (evt)
+            context.autodirect = evt.type == "swipeleft"?-1:1;
+        var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:2.5);
+        var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:100);
+        context.slidestop += slidestop;
+        context.slidestop = (window.innerWidth/context.virtualwidth)*context.slidestop;
+        context.slidereduce = context.slidestop/slidereduce;
+        clearInterval(context.timemain);
+        context.timemain = setInterval(function () { drawslices() }, timemain.value());
     },
 
     swipeupdown: function (context, rect, x, y, evt)
@@ -2755,6 +2714,7 @@ var keylst =
         _8cnvctx.timeauto = 0;
         context.shiftKey = evt.shiftKey;
         context.ctrlKey = evt.ctrlKey;
+        var obj = context.scrollobj.value();
         if (key == "pagedown" || key == "arrowdown" || key == "j" || key == "enter")
 		{
             if (context.block)
@@ -2762,20 +2722,9 @@ var keylst =
             context.block = 1;
             setTimeout(function() { context.block = 0; }, context.keyblock);
             context.keyblock = Math.clamp(25,100,context.keyblock-5);
-            var obj = context.scrollobj.value();
             obj.set(0);
             evt.preventDefault();
-
-            if (context.ctrlKey)
-            {
-                context.swipetype = "swipeup";
-                context.swipe();
-            }
-            else
-            {
-                context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
-            }
-
+            context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
             context.refresh()
         }
         else if (key == "pageup" || key == "arrowup" || key == "k")
@@ -2785,19 +2734,9 @@ var keylst =
             context.block = 1;
             setTimeout(function() { context.block = 0; }, context.keyblock);
             context.keyblock = Math.clamp(25,100,context.keyblock-5);
-            var obj = context.scrollobj.value();
             obj.set(0);
             evt.preventDefault();
-            if (context.ctrlKey)
-            {
-                context.swipetype = "swipedown";
-                context.swipe();
-            }
-            else
-            {
-                context.timeobj.rotate(TIMEOBJ/context.sliceobj.length());
-            }
-
+            context.timeobj.rotate(TIMEOBJ/context.sliceobj.length());
             context.refresh()
         }
         else if (key == "-" || key == "[")
@@ -2810,12 +2749,12 @@ var keylst =
             context.buttonobj.addperc(1.5/100);
             context.refresh()
         }
-        else if (obj && (key == "arrowleft" || key == "h"))
+        else if (key == "arrowleft" || key == "h")
 		{
             obj.rotateperc(-2.5);
             context.refresh()
         }
-        else if (obj && (key == "arrowright" || key == "l"))
+        else if (key == "arrowright" || key == "l")
 		{
             obj.rotateperc(2.5);
             context.refresh()
@@ -2871,17 +2810,9 @@ var keylst =
             setTimeout(function() { context.block = 0; }, context.keyblock);
             context.keyblock = Math.clamp(25,100,context.keyblock-5);
             evt.preventDefault();
-            if (context.ctrlKey)
-            {
-                context.swipetype = "swipeup";
-                context.swipe()
-            }
-            else
-            {
-                var k = (20/context.virtualheight)*context.timeobj.length();
-                context.timeobj.rotate(-k);
-                context.refresh()
-            }
+            var k = (20/context.virtualheight)*context.timeobj.length();
+            context.timeobj.rotate(-k);
+            context.refresh()
         }
         else if (key == "pagedown" || key == "arrowdown" || evt.key == "k")
 		{
@@ -2891,18 +2822,9 @@ var keylst =
             setTimeout(function() { context.block = 0; }, context.keyblock);
             context.keyblock = Math.clamp(25,100,context.keyblock-5);
             evt.preventDefault();
-
-            if (context.ctrlKey)
-            {
-                context.swipetype = "swipedown";
-                context.swipe()
-            }
-            else
-            {
-                var k = (20/context.virtualheight)*context.timeobj.length();
-                context.timeobj.rotate(k);
-                context.refresh()
-            }
+            var k = (20/context.virtualheight)*context.timeobj.length();
+            context.timeobj.rotate(k);
+            context.refresh()
         }
         else if (key == " " || key == "\\" || key == "/")
         {
@@ -2983,7 +2905,7 @@ var keylst =
             setTimeout(function() { context.block = 0; }, context.keyblock);
             context.keyblock = Math.clamp(50,200,context.keyblock-5);
             context.autodirect = 1;
-            context.tab();
+            swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
         }
         else if (key == "arrowright" || key == "l")
         {
@@ -2991,7 +2913,7 @@ var keylst =
             setTimeout(function() { context.block = 0; }, context.keyblock);
             context.keyblock = Math.clamp(50,200,context.keyblock-5);
             context.autodirect = -1;
-            context.tab();
+            swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
         }
         else if (key == " ")
         {
@@ -3002,7 +2924,7 @@ var keylst =
         {
             evt.preventDefault();
             context.autodirect = evt.shiftKey?1:-1;
-            context.tab();
+            swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
         }
         else if (key == "arrowup" || key == "k")
         {
@@ -3889,7 +3811,7 @@ var buttonlst =
                         user.tap ? new FillPanel("rgba(255,125,0,0.4)") : 0,
                         new ShadowPanel(
                             new Text("rgba(255,255,255,0.7)", "center", "middle",0,0,
-                                "bold 24px arial"),1,1),
+                                LARGEFONT),1,1),
                     ])
             a.draw(context, r,  `${time+1}`, 0);
         }
@@ -4123,15 +4045,13 @@ menuobj.show = function()
         context.show(l, 0, w, window.innerHeight);
     }
 
-    context.enabled = 1;
+    delete context.swipetype;
     headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
     context.refresh();
     function f() { context.refresh(); }
     setTimeout(function() { f(); }, 100);
     setTimeout(function() { f(); }, 500);
     setTimeout(function() { f(); }, 1000);
-    setTimeout(function() { f(); }, 1500);
-    setTimeout(function() { f(); }, 2000);
 }
 
 menuobj.draw = function()
@@ -4184,6 +4104,8 @@ menuobj.draw = function()
     for (var m = 0; m < slices.length; ++m)
     {
         var slice = slices[m];
+        slice.fitwidth = 0;
+        slice.fitheight = 0;
         var t = time + m*context.delayinterval;
         var bos = Math.tan(t*VIRTCONST);
         let y = Math.berp(-1, 1, bos) * context.virtualheight;
@@ -4233,8 +4155,12 @@ menuobj.draw = function()
     }
 
     context.drawImage(offmenucnv, 0, 0);
-    context.bar.draw(context, rect, 0, 0);
-    context.scroll.draw(context, rect, 0, 0);
+
+    if (context.swipetype != "swipedown")
+    {
+        context.bar.draw(context, rect, 0, 0);
+        context.scroll.draw(context, rect, 0, 0);
+    }
 }
 
 var contextobj = new circular_array("CTX", contextlst);
@@ -4249,9 +4175,9 @@ contextlst.forEach(function(context, n)
     context.slideshow = 0;
     context.lastime = 0;
     context.slidereduce = 0;
+    context.slidestop = 0;
     context.keyup = 0;
     context.updowntime = 0;
-    context.slidestop = 0;
     context.sliceobj = new circular_array("", []);
     context.timeobj = new circular_array("", TIMEOBJ);
     context.timeobj.set(TIMEOBJ/2);
@@ -4350,7 +4276,9 @@ contextobj.reset = function (leftright)
             var id = galleryobj.value().id;
             var template = galleryobj.variant ? galleryobj.variant : "3840x3840";
             var path = `https://reportbase.com/image/${id}/${template}`;
-            if (galleryobj.value().full)
+            if (galleryobj.raw)
+                path = `https://reportbase.com/image/${id}/blob`;
+            else if (galleryobj.value().full)
                 path = galleryobj.value().full;
             photo.image = new Image();
             photo.image.src = path;
@@ -4391,7 +4319,7 @@ contextobj.reset = function (leftright)
             _4cnvctx.movingpage = 0;
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             contextobj.reset()
-            context.tab();
+            swipeobj.value().swipeleftright(_4cnvctx, _4cnvctx.rect(), 0, 0, 0)
             clearTimeout(context.mastertime);
             context.mastertime = setTimeout(function() { masterload(); }, 500);
         }
@@ -5524,14 +5452,17 @@ galleryobj.init = function (obj)
 
     var lst = [];
     var lst1 = [];
-    for (var n = 180; n < 720; n += 1)
+    var min = typeof galleryobj.buttonmin === "undefined" ?90:galleryobj.buttonmin;
+    var max = typeof galleryobj.buttonmax === "undefined" ?840:galleryobj.buttonmax;
+    for (var n = min; n < max; n += 1)
     {
         lst.push(n);
         lst1.push("2160x2160");
     }
+
     _8cnvctx.buttonobj = new circular_array("", lst);
     _8cnvctx.variantobj = new circular_array("", lst1);
-    var k = galleryobj.buttonstart?galleryobj.buttonstart:100;
+    var k = typeof galleryobj.buttonstart === "undefined" ?100:galleryobj.buttonstart;
     _8cnvctx.buttonobj.set(Number(k));
     _8cnvctx.variantobj.set(Number(k));
 
@@ -5838,6 +5769,37 @@ else
     .catch((error) => { galleryobj.init([]) });
 }
 
+function downloadtext(name, text)
+{
+	var element = document.createElement('a');
+	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+	element.setAttribute('download', name);
+	element.style.display = 'none';
+	document.body.appendChild(element);
+	element.click();
+	document.body.removeChild(element);
+}
+
+function downloadimage()
+{
+    var url = `https://reportbase.com/image/HOPE.0000/blob`;
+    fetch(url)
+    .then(response => response.blob())
+    .then(blob =>
+    {
+      const anchor = document.createElement('a');
+      anchor.href = URL.createObjectURL(blob);
+      anchor.download = 'image.jpg';
+      anchor.click();
+      URL.revokeObjectURL(anchor.href);
+      anchor.remove();
+    })
+    .catch(error =>
+    {
+      console.error('Error downloading image:', error);
+    });
+}
+
 function download()
 {
     if (galleryobj.value().image_url)
@@ -5869,10 +5831,7 @@ function deleteimage()
             return res.json()
         })
     .then(data => console.log(data))
-    .catch((error) =>
-    {
-        console.log("Error:", error);
-    });
+    .catch(error => { console.log("Error:", error); });
 }
 
 function searchshow(repos)

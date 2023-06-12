@@ -1,11 +1,13 @@
 {
   "title": "Repba Gallery",
-  "template": "12000x1080",
-  "variantlist": "12080x1080,12000x1080,12000x1080,12000x1080,1200x1080",
-  "buttonlist": "80,120,180,220,260",
-  "buttonstart": 1,
+  "slidestop": 3,
+  "slidereduce": 100,
+  "slicewidth": 10,
+  "buttonmin": 90,
+  "buttonmax": 240,
+  "buttonstart": 0,
+  "raw": 1,
   "zoom": 0,
-  "tabload": 1,
   "data": [
     {
       "id": "PINO.0000",
