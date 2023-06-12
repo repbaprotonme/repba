@@ -658,7 +658,7 @@ var GalleryBar = function ()
                 new Layer(
                 [
                     new Shrink(new Rectangle(context.buttonrect),4,0),
-                    new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 16, 16),
+                    new Rounded("rgba(0,0,0,0.25)", 4, "rgba(255,255,255,0)", 16, 16),
                     new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1)
                 ]),
                  0,
@@ -1431,6 +1431,7 @@ CanvasRenderingContext2D.prototype.swipe = function ()
     context.timemain = setInterval(function () { context.refresh(); }, timemain.value());
 }
 
+//todo: tabs for each menu
 CanvasRenderingContext2D.prototype.tab = function ()
 {
     var context = this;
@@ -3415,7 +3416,7 @@ var thumblst =
                     new Layer(
                     [
                         new Shrink(new Rectangle(context.slicewidthrect),4,0),
-                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 16, 16),
+                        new Rounded("rgba(0,0,0,0.25)", 4, "rgba(255,255,255,0)", 16, 16),
                         new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1)
                     ]),
                      0,
@@ -3427,7 +3428,7 @@ var thumblst =
                     new Layer(
                     [
                         new Shrink(new Rectangle(context.zoomrect),4,0),
-                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 16, 16),
+                        new Rounded("rgba(0,0,0,0.25)", 4, "rgba(255,255,255,0)", 16, 16),
                         new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1)
                     ]),
                      0,
@@ -3439,7 +3440,7 @@ var thumblst =
                     new Layer(
                     [
                         new Shrink(new Rectangle(context.stretchrect),4,0),
-                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 16, 16),
+                        new Rounded("rgba(0,0,0,0.25)", 4, "rgba(255,255,255,0)", 16, 16),
                         new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1)
                     ]),
                     0,
@@ -5363,7 +5364,7 @@ var GalleryPanel = function (size)
         var j = 5;
         var k = j/2;
         var e = new FillPanel(OPTIONFILL);
-        var s = context.tapped == 1 || _8cnvctx.enabled;
+        var s = _8cnvctx.enabled;
         var a = new Layer(
         [
             new Rectangle(context.galleryrect),
@@ -5391,7 +5392,9 @@ var OptionsPanel = function ()
         var j = 5;
         var k = j/2;
         var e = new FillPanel(OPTIONFILL);
-        var s = context.tapped == 2 || menuobj.value();
+        var s = menuobj.value();
+        if (s == _8cnvctx)
+            s = 0;
         var a = new Layer(
         [
             new Rectangle(context.optionsrect),
