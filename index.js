@@ -1260,11 +1260,12 @@ var SearchPanel = function ()
             }
         };
 
+        var s = menuobj.value() == _3cnvctx;
         var a = new Layer(
         [
             new Rectangle(context.searchrect),
-            _3cnvctx.enabled ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),17,17) : 0,
-            new Shrink(new CirclePanel(_3cnvctx.enabled?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),13,13),
+            s ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),17,17) : 0,
+            new Shrink(new CirclePanel(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),13,13),
             new Shrink(new Panel(),15,20),
         ]);
 
@@ -3177,7 +3178,7 @@ var taplst =
         }
         else if (context.searchrect && context.searchrect.hitest(x,y))
         {
-            menuobj.hide();
+            menuobj.showindex(_3cnvctx);
         }
         else if (context.fullpanel && context.fullpanel.hitest(x,y))
         {
@@ -3193,18 +3194,9 @@ var taplst =
         {
             headobj.set(1);
             headham.panel = headobj.value();
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             _8cnvctx.scrollobj.set(0);
-            if (menuobj.value() != _8cnvctx)
-            {
-                menuobj.hide();
-                menuobj.setindex(_8cnvctx);
-                menuobj.show();
-            }
-            else
-            {
-                menuobj.toggle(_8cnvctx);
-            }
+            menuobj.showindex(_8cnvctx);
+            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         }
         else if (context.openrect && context.openrect.hitest(x,y))
         {
@@ -3217,15 +3209,12 @@ var taplst =
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             clearTimeout(context.menutime);
             context.refresh();
-            menuobj.hide();
-            menuobj.setindex(_2cnvctx)
-            menuobj.show();
+            menuobj.showindex(_2cnvctx);
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         }
         else if ( context.searchrect && context.searchrect.hitest(x,y) )
         {
-            menuobj.setindex(_3cnvctx);
-            menuobj.show();
+            menuobj.showindex(_3cnvctx);
         }
         else if (x > rect.width - (MENUBARWIDTH*2) )
         {
@@ -3280,8 +3269,7 @@ var taplst =
         }
         else if (context.searchrect && context.searchrect.hitest(x,y))
         {
-            menuob.setindex(_3cnvctx)
-            menuobj.show();
+            menuobj.showindex(_3cnvctx);
         }
         else if (context.galleryrect && context.galleryrect.hitest(x,y))
         {
@@ -3289,16 +3277,7 @@ var taplst =
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             _8cnvctx.scrollobj.set(0);
-            if (menuobj.value() != _8cnvctx)
-            {
-                menuobj.hide();
-                menuobj.setindex(_8cnvctx);
-                menuobj.show();
-            }
-            else
-            {
-                menuobj.toggle(_8cnvctx);
-            }
+            menuobj.showindex(_8cnvctx);
         }
         else if (context.optionsrect && context.optionsrect.hitest(x,y))
         {
@@ -3307,9 +3286,7 @@ var taplst =
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             clearTimeout(context.menutime);
             context.refresh();
-            menuobj.hide();
-            menuobj.setindex(_2cnvctx)
-            menuobj.show();
+            menuobj.showindex(_2cnvctx);
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         }
         else if (context.scrollrect && context.scrollrect.hitest(x,y))
@@ -4087,7 +4064,22 @@ var eventlst =
 
 let contextlst = [_1cnvctx,_2cnvctx,_3cnvctx,_4cnvctx,_5cnvctx,_6cnvctx,_7cnvctx,_8cnvctx,_9cnvctx];
 let menulst = [0, _1cnvctx, _2cnvctx,_3cnvctx,_5cnvctx,_6cnvctx,_7cnvctx,_8cnvctx,_9cnvctx];
-var menuobj = new circular_array("CTX", menulst);
+var menuobj = new circular_array("MENU", menulst);
+
+menuobj.showindex = function(context)
+{
+    if (menuobj.value() != context)
+    {
+        menuobj.hide();
+        menuobj.setindex(context);
+        menuobj.show();
+    }
+    else
+    {
+        menuobj.toggle(context);
+    }
+}
+
 menuobj.toggle = function(context)
 {
     if (menuobj.value())
@@ -5078,8 +5070,7 @@ var headlst =
             }
             else if (context.searchrect && context.searchrect.hitest(x,y))
             {
-                menuobj.setindex(_3cnvctx);
-                menuobj.show();
+                menuobj.showindex(_3cnvctx);
             }
             else if (context.fullpanel && context.fullpanel.hitest(x,y))
             {
@@ -5097,16 +5088,7 @@ var headlst =
                 headham.panel = headobj.value();
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
                 _8cnvctx.scrollobj.set(0);
-                if (menuobj.value() != _8cnvctx)
-                {
-                    menuobj.hide();
-                    menuobj.setindex(_8cnvctx);
-                    menuobj.show();
-                }
-                else
-                {
-                    menuobj.toggle(_8cnvctx);
-                }
+                menuobj.showindex(_8cnvctx);
             }
             else if (context.optionsrect && context.optionsrect.hitest(x,y))
             {
@@ -5431,9 +5413,7 @@ var OptionsPanel = function ()
         var j = 5;
         var k = j/2;
         var e = new FillPanel(OPTIONFILL);
-        var s = menuobj.value();
-        if (s == _8cnvctx)
-            s = 0;
+        var s = menuobj.value() == _2cnvctx;
         var a = new Layer(
         [
             new Rectangle(context.optionsrect),
