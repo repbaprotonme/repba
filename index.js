@@ -1385,7 +1385,6 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     _4cnvctx.refresh();
     _8cnvctx.refresh();
     headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-    headcnvctx.scrollobj.set(0);
     delete _4cnvctx.thumbcanvas;
     delete photo.image;
     contextobj.reset();
@@ -1895,7 +1894,6 @@ var dblclicklst =
         headobj.set(1);
         headham.panel = headobj.value();
         headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-        _8cnvctx.scrollobj.set(0);
         menuobj.toggle(_8cnvctx);
     },
 }
@@ -2722,7 +2720,6 @@ var keylst =
             context.block = 1;
             setTimeout(function() { context.block = 0; }, context.keyblock);
             context.keyblock = Math.clamp(25,100,context.keyblock-5);
-            obj.set(0);
             evt.preventDefault();
             context.timeobj.rotate(-TIMEOBJ/context.sliceobj.length());
             context.refresh()
@@ -2734,7 +2731,6 @@ var keylst =
             context.block = 1;
             setTimeout(function() { context.block = 0; }, context.keyblock);
             context.keyblock = Math.clamp(25,100,context.keyblock-5);
-            obj.set(0);
             evt.preventDefault();
             context.timeobj.rotate(TIMEOBJ/context.sliceobj.length());
             context.refresh()
@@ -2834,7 +2830,6 @@ var keylst =
         {
             evt.preventDefault();
             _4cnvctx.movepage(evt.shiftKey?-1:1);
-            _8cnvctx.scrollobj.set(0);
             setTimeout(function(){ _8cnvctx.refresh();}, 100);
         }
         else if (key == "f")
@@ -2917,7 +2912,6 @@ var keylst =
         }
         else if (key == " ")
         {
-            _8cnvctx.scrollobj.set(0);
             menuobj.toggle(_8cnvctx);
         }
         else if (key == "tab")
@@ -3116,7 +3110,6 @@ var taplst =
         {
             headobj.set(1);
             headham.panel = headobj.value();
-            _8cnvctx.scrollobj.set(0);
             menuobj.showindex(_8cnvctx);
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         }
@@ -3198,7 +3191,6 @@ var taplst =
             headobj.set(1);
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            _8cnvctx.scrollobj.set(0);
             menuobj.showindex(_8cnvctx);
         }
         else if (context.optionsrect && context.optionsrect.hitest(x,y))
@@ -5015,7 +5007,6 @@ var headlst =
                 headobj.set(1);
                 headham.panel = headobj.value();
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-                _8cnvctx.scrollobj.set(0);
                 menuobj.showindex(_8cnvctx);
             }
             else if (context.optionsrect && context.optionsrect.hitest(x,y))
@@ -5114,7 +5105,6 @@ var headlst =
             if (context.moveprev && context.moveprev.hitest(x,y))
             {
                 _4cnvctx.movepage(-1);
-                _8cnvctx.scrollobj.set(0);
                 _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
                 _8cnvctx.refresh();
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -5122,7 +5112,6 @@ var headlst =
             else if (context.movenext && context.movenext.hitest(x,y))
             {
                 _4cnvctx.movepage(1);
-                _8cnvctx.scrollobj.set(0);
                 _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
                 _8cnvctx.refresh();
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
