@@ -36,7 +36,7 @@ const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
 const SCROLLBARWIDTH = 7;
 const MARGINBAR = 5;
-const DEFAULTFONT = "bold 16px helvetica";
+const DEFAULTFONT = "bold 18px arial";
 globalobj = {};
 let photo = {};
 photo.image = 0;
@@ -65,6 +65,14 @@ Math.clamp = function (min, max, val)
         return min;
     return (val < min) ? min : (val > max) ? max : val;
 };
+
+function windowopen(url)
+{
+    if (SAFARI || FIREFOX)
+        window.open(url,"_self");
+    else
+        window.open(url);
+}
 
 let circular_array = function (title, data)
 {
@@ -2166,6 +2174,8 @@ async function dropfiles(files)
     userobj.save();
     galleryobj.data.splice(0,0,...lst);
     _8cnvctx.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+    _8cnvctx.refresh();
+    menuobj.hide();
     menuobj.setindex(_8cnvctx);
     menuobj.show()
 }
@@ -3185,7 +3195,16 @@ var taplst =
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             _8cnvctx.scrollobj.set(0);
-            menuobj.toggle(_8cnvctx);
+            if (menuobj.value() != _8cnvctx)
+            {
+                menuobj.hide();
+                menuobj.setindex(_8cnvctx);
+                menuobj.show();
+            }
+            else
+            {
+                menuobj.toggle(_8cnvctx);
+            }
         }
         else if (context.openrect && context.openrect.hitest(x,y))
         {
@@ -3266,13 +3285,20 @@ var taplst =
         }
         else if (context.galleryrect && context.galleryrect.hitest(x,y))
         {
-            _8cnvctx.scrollobj.rotate(1);
             headobj.set(1);
-            thumbobj.set(0);
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             _8cnvctx.scrollobj.set(0);
-            menuobj.toggle(_8cnvctx);
+            if (menuobj.value() != _8cnvctx)
+            {
+                menuobj.hide();
+                menuobj.setindex(_8cnvctx);
+                menuobj.show();
+            }
+            else
+            {
+                menuobj.toggle(_8cnvctx);
+            }
         }
         else if (context.optionsrect && context.optionsrect.hitest(x,y))
         {
@@ -3886,7 +3912,7 @@ var buttonlst =
                         user.tap ? new FillPanel("rgba(255,125,0,0.4)") : 0,
                         new ShadowPanel(
                             new Text("rgba(255,255,255,0.7)", "center", "middle",0,0,
-                                "bold 30px arial"),1,1),
+                                "bold 24px arial"),1,1),
                     ])
             a.draw(context, r,  `${time+1}`, 0);
         }
@@ -5067,7 +5093,20 @@ var headlst =
             }
             else if (context.galleryrect && context.galleryrect.hitest(x,y))
             {
-                menuobj.toggle(_8cnvctx);
+                headobj.set(1);
+                headham.panel = headobj.value();
+                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+                _8cnvctx.scrollobj.set(0);
+                if (menuobj.value() != _8cnvctx)
+                {
+                    menuobj.hide();
+                    menuobj.setindex(_8cnvctx);
+                    menuobj.show();
+                }
+                else
+                {
+                    menuobj.toggle(_8cnvctx);
+                }
             }
             else if (context.optionsrect && context.optionsrect.hitest(x,y))
             {
@@ -5643,7 +5682,6 @@ galleryobj.init = function (obj)
 
                 })
                 .catch((error) => console.log(error) );
-
             }
         },
        {title:"user.json", path: "", func: function()
@@ -5651,7 +5689,22 @@ galleryobj.init = function (obj)
                 userobj.save();
             }
         },
-
+       {title:"worker.js", path: "", func: function()
+            {
+                var offcnv = new OffscreenCanvas(200, 200);
+                const offworker = new Worker('worker.js');
+                offworker.postMessage({msg: 'offscreen', canvas: offcnv}, [offcnv]);
+                offworker.addEventListener('message', function(ev)
+                {
+                    if (ev.data.msg === 'render')
+                    {
+                        var canvas = document.createElement("canvas");
+                        let context = canvas.getContext("bitmaprenderer");
+                        context.transferFromImageBitmap(ev.data.bitmap);
+                    }
+                });
+            }
+        },
 
         {title:"Login", path: "LOGIN", func: function() { authClient.redirectToLoginPage(); }},
         {title:"Logout", path: "LOGOUT", func: function() { authClient.logout(true) }},
@@ -5709,7 +5762,7 @@ galleryobj.init = function (obj)
         {
             this.exec = function()
             {
-                window.open(addressobj.full());
+                windowopen(addressobj.full());
             }
         }
     }
@@ -5809,21 +5862,20 @@ function download()
 {
     if (galleryobj.value().image_url)
     {
-        window.open(galleryobj.value().image_url);
+        windowopen(galleryobj.value().image_url);
     }
     else if (galleryobj.value().original)
     {
-        window.open(galleryobj.value().original);
+        windowopen(galleryobj.value().original);
     }
     else if (galleryobj.value().full)
     {
-        window.open(galleryobj.value().full);
+        windowopen(galleryobj.value().full);
     }
     else
     {
         var id = galleryobj.value().id;
-        var path = `https://reportbase.com/image/${id}/blob`;
-        window.open(path);
+        windowopen(`https://reportbase.com/image/${id}/blob`);
     }
 }
 
@@ -5854,8 +5906,7 @@ function searchshow(repos)
         var search = document.getElementById('search-value').value.clean();
         if (!search)
           return;
-        var s = `${url.origin}?${repos}=${search}&page=${url.page}`;
-        window.open(s);
+        windowopen(`${url.origin}?${repos}=${search}&page=${url.page}`);
       }
     });
 
@@ -5871,8 +5922,7 @@ function searchshow(repos)
             if (!search)
                 return;
             globalobj.prompt = 0;
-            var s = `${url.origin}?${repos}=${search}&page=${url.page}`;
-            window.open(s);
+            windowopen(`${url.origin}?${repos}=${search}&page=${url.page}`);
         }
         else if (event.clientY < rect.top || event.clientY > rect.bottom ||
             event.clientX < rect.left || event.clientX > rect.right)
@@ -6022,26 +6072,4 @@ function texthandler(response)
     throw Error(response.statusText);
 }
 
-/*
-const bossworker = new Worker('boss.js');
-bossworker.addEventListener('message', function(ev)
-{
-    if (ev.data.msg === 'render')
-        _4cnvctx.transferFromImageBitmap(ev.data.bitmap);
-});
-
-let cnv = document.getElementById("_8");
-let ctx = canvas.getContext('bitmaprenderer');
-var offcnv = new OffscreenCanvas(200, 200);
-const offworker = new Worker('menu.js');
-offworker.postMessage({msg: 'offscreen', canvas: offcnv}, [offcnv]);
-offworker.addEventListener('message', function(ev)
-{
-    if (ev.data.msg === 'render')
-    {
-        let context = _8cnv.getContext("bitmaprenderer");
-        context.transferFromImageBitmap(ev.data.bitmap);
-    }
-});
-*/
 
