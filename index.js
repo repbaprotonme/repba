@@ -354,7 +354,10 @@ function drawslices()
          }
     }
 
-    menuobj.draw();
+    if (menuobj.value() == _6cnvctx)
+        menuobj.draw6();
+    else
+        menuobj.draw();
 }
 
 var YollPanel = function ()
@@ -3621,6 +3624,16 @@ var buttonlst =
     draw: function (context, rect, user, time){}
 },
 {
+    name: "XXX",
+    draw: function (context, rect, user, time)
+    {
+        user.fitwidth = rect.width;
+        user.fitheight = rect.height;
+        var a = new FillPanel("red");
+        a.draw(context, rect, user, time);
+    }
+},
+{
     name: "OPTION",
     draw: function (context, rect, user, time)
     {
@@ -3981,8 +3994,8 @@ var eventlst =
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU",  drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640, keyblock: 100, backcolor: MENUCOLOR},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 90, width: 640, keyblock: 100, backcolor: MENUCOLOR},
     {dblclick: "BOSS", mouse: "DEFAULT", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "GALLERY", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new Empty(), scroll: new DualPanel(), buttonheight: 30, width: 640, keyblock: 100, backcolor: MENUCOLOR},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new DualPanel(), buttonheight: 90, width: 640, keyblock: 100, backcolor: MENUCOLOR},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640, keyblock: 100, backcolor: MENUCOLOR},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "XXX", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new DualPanel(), buttonheight: 90, width: 640, keyblock: 100, backcolor: MENUCOLOR},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "XXX", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640, keyblock: 100, backcolor: MENUCOLOR},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new DualPanel(), buttonheight: 90, width: 640, keyblock: 100, backcolor: MENUCOLOR},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "GALLERY", pan: "MENU", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "GALLERY", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new GalleryBar(), scroll: new DualPanel(), buttonheight: 320, width: 1080, keyblock: 100, backcolor: "black"},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar("Image Browser"), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640, keyblock: 100, backcolor: MENUCOLOR},
@@ -4104,7 +4117,6 @@ menuobj.draw = function()
         context.virtualheight = len*context.buttonheight;
     }
 
-    context.lastrect = 0;
     for (var m = 0; m < slices.length; ++m)
     {
         var slice = slices[m];
@@ -4165,6 +4177,66 @@ menuobj.draw = function()
         context.bar.draw(context, rect, 0, 0);
         context.scroll.draw(context, rect, 0, 0);
     }
+}
+
+menuobj.draw6 = function()
+{
+    var context = this.value();
+    var time = context.timeobj.value()/1000;
+
+    if (context.slideshow > 0)
+    {
+        var k = (context.swipetype == "swipeup")?-1:1;
+        context.timeobj.rotate(k*context.slideshow);
+        context.slideshow -= context.slidereduce
+    }
+    else
+    {
+        context.slideshow = 0;
+        clearInterval(context.timemain);
+        context.timemain = 0;
+    }
+
+    var slices = context.sliceobj.data;
+    const rect = context.rect();
+    context.fillStyle = MENUCOLOR;
+    context.clear();
+    context.fillRect(0, 0, rect.width, rect.height);
+    var visibles = [];
+
+    var len = context.sliceobj.length()
+    context.delayinterval = DELAYCENTER / len / 1000;
+    context.virtualheight = len*context.buttonheight;
+    offmenucnv.width = rect.width;
+    offmenucnv.height = rect.height;
+    var buttonheight = context.buttonheight;
+
+    for (var m = 0; m < slices.length; ++m)
+    {
+        var slice = slices[m];
+        slice.fitwidth = 0;
+        slice.fitheight = 0;
+        var t = time + m*context.delayinterval;
+        var bos = Math.tan(t*VIRTCONST);
+        var y = Math.berp(-1, 1, bos) * context.virtualheight;
+        var e = (context.virtualheight-rect.height)/2;
+        y -= e;
+        var x = rect.width/2;
+        slice.fitwidth = rect.width;
+        slice.fitheight = buttonheight;
+        slice.center = {x: x, y: y};
+        slice.isvisible = y > -buttonheight &&
+            y<(rect.height+buttonheight)
+        var x = slice.center.x;
+        var y = slice.center.y;
+        offmenuctx.save();
+        offmenuctx.translate(0, y-buttonheight/2);
+        var r = new rectangle(0,0,rect.width,buttonheight);
+        context.draw(offmenuctx, r, slice, 0);
+        offmenuctx.restore();
+    }
+
+    context.drawImage(offmenucnv, 0, 0);
 }
 
 var contextobj = new circular_array("CTX", contextlst);
@@ -5613,14 +5685,31 @@ galleryobj.init = function (obj)
                         var canvas = document.createElement("canvas");
                         let context = canvas.getContext("bitmaprenderer");
                         context.transferFromImageBitmap(ev.data.bitmap);
+                        headcnvctx.drawImage(canvas, 0, 0);
                     }
                 });
             }
         },
-
-        {title:"Login", path: "LOGIN", func: function() { authClient.redirectToLoginPage(); }},
-        {title:"Logout", path: "LOGOUT", func: function() { authClient.logout(true) }},
-        {title:"Account", path: "ACCOUNT", func: function() { authClient.redirectToAccountPage() }},
+       {title:"_6cnvctx", path: "", func: function()
+            {
+                menuobj.showindex(_6cnvctx);
+            }
+        },
+        {title:"Login", path: "LOGIN", func: function()
+            {
+                authClient.redirectToLoginPage();
+            }
+        },
+        {title:"Logout", path: "LOGOUT", func: function()
+            {
+                authClient.logout(true)
+            }
+        },
+        {title:"Account", path: "ACCOUNT", func: function()
+            {
+                authClient.redirectToAccountPage()
+            }
+        },
     ];
 
     //_3cnv
@@ -5642,11 +5731,41 @@ galleryobj.init = function (obj)
         },
     ];
 
-    _6cnvctx.sliceobj.data =
+    //_5cnvctx
+    _5cnvctx.sliceobj.data =
     [
+        {
+            title: "xxxxxxx",
+            func: function() {}
+        },
+        {
+            title: "yyyyyyy",
+            func: function() {}
+        },
+        {
+            title: "zzzzzzz",
+            func: function() {}
+        }
     ];
 
-    //7
+    //_6cnvctx
+    _6cnvctx.sliceobj.data =
+    [
+        {
+            title: "xxxxxxx",
+            func: function() {}
+        },
+        {
+            title: "yyyyyyy",
+            func: function() {}
+        },
+        {
+            title: "zzzzzzz",
+            func: function() {}
+        }
+    ];
+
+    //_7cnvctx
     _7cnvctx.sliceobj.data =
     [
         {
@@ -5667,6 +5786,7 @@ galleryobj.init = function (obj)
         },
     ];
 
+    //_8cnvctx
     for (var n = 0; n < galleryobj.data.length; ++n)
     {
         var k = galleryobj.data[n];
@@ -5688,6 +5808,7 @@ galleryobj.init = function (obj)
     contextobj.reset();
     _4cnvctx.refresh();
 
+    //user.json
     fetch(`https://bucket.reportbase5836.workers.dev/user.json`)
     .then((response) => jsonhandler(response))
     .then(function (json)
