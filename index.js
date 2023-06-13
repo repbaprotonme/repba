@@ -579,11 +579,11 @@ var MenuBar = function ()
                 new ColA([MARGINBAR,60,0,50,50,50,0,60,MARGINBAR],
                 [
                     0,
-                   j?0:new GalleryPanel(),
+                    j?0:new GalleryPanel(),
                     0,
-                   new ShiftPanel(new OpenPanel(),-10,0),
-                   new SearchPanel(),
-                   new ShiftPanel(new UploadPanel(),10,0),
+                    new ShiftPanel(new OpenPanel(),-10,0),
+                    new SearchPanel(),
+                    new ShiftPanel(new UploadPanel(),10,0),
                     0,
                    j?0:new OptionsPanel(),
                     0,
@@ -631,13 +631,13 @@ var GalleryBar = function ()
 {
     this.draw = function (context, rect, user, time)
     {
-        var w = Math.min(240,rect.width-100);
+        var w = Math.min(320,rect.width-100);
         var j = window.innerWidth - rect.width >= 180;
         context.save();
         context.headerect = new rectangle();
         context.footerect = new rectangle();
         context.buttonrect = new rectangle();
-        var a = new Row([80,0,35,30],
+        var a = new Row([80,0,40,30],
         [
             new Layer(
             [
@@ -650,26 +650,26 @@ var GalleryBar = function ()
                 new ColA([MARGINBAR,60,0,50,50,50,0,60,MARGINBAR],
                 [
                     0,
-                   j?0:new GalleryPanel(),
+                    j?0:new GalleryPanel(),
                     0,
                     new ShiftPanel(new ScrollPanel(),-10,0),
                     new HomePanel(),
                     new ShiftPanel(new AutoPanel(),10,0),
                     0,
-                   j?0:new OptionsPanel(),
+                    j?0:new OptionsPanel(),
                     0,
                 ]),
-            ]),
-            0,
+             ]),
+             0,
              context.timeauto?0:new Col([0,w,0],
              [
                  0,
-                new Layer(
-                [
+                 new Layer(
+                 [
                     new Shrink(new Rectangle(context.buttonrect),4,0),
                     new Rounded("rgba(0,0,0,0.25)", 4, "rgba(255,255,255,0)", 16, 16),
                     new CurrentHPanel(new Shrink(new CirclePanel("white"),8,8), 30, 1)
-                ]),
+                 ]),
                  0,
             ]),
             0,
@@ -2648,6 +2648,12 @@ var swipelst =
         context.slidereduce = context.slideshow/slidereduce;
         clearInterval(context.timemain);
         context.timemain = setInterval(function () { context.refresh(); }, timemain.value());
+        clearTimeout(context.swipetypetime);
+        context.swipetypetime = setTimeout(function()
+            {
+                delete context.swipetype;
+                context.refresh();
+            }, 5000);
     },
 },
 {
@@ -2662,6 +2668,12 @@ var swipelst =
         context.slidereduce = context.slideshow/slidereduce;
         clearInterval(context.timemain);
         context.timemain = setInterval(function () { context.refresh(); }, timemain.value());
+        clearTimeout(context.swipetypetime);
+        context.swipetypetime = setTimeout(function()
+            {
+                delete context.swipetype;
+                context.refresh();
+            }, 5000);
     },
 },
 {
@@ -3322,8 +3334,8 @@ var thumblst =
             context.slicewidthrect = new rectangle();
             context.stretchrect = new rectangle();
             context.extentrect = new rectangle();
-            var w = Math.min(240,rect.width-100);
-             var a = new RowA([60,0,35,8,35,8,35,50],
+            var w = Math.min(320,rect.width-100);
+             var a = new RowA([60,0,40,8,40,8,40,50],
              [
                  0,
                  0,
@@ -4148,7 +4160,7 @@ menuobj.draw = function()
 
     context.drawImage(offmenucnv, 0, 0);
 
-    if (context.swipetype != "swipedown")
+    if (context.swipetype != "swipeup")
     {
         context.bar.draw(context, rect, 0, 0);
         context.scroll.draw(context, rect, 0, 0);
@@ -5302,7 +5314,7 @@ var GalleryPanel = function (size)
         var j = 5;
         var k = j/2;
         var e = new FillPanel(OPTIONFILL);
-        var s = _8cnvctx.enabled;
+        var s = menuobj.value() == context;
         var a = new Layer(
         [
             new Rectangle(context.galleryrect),
