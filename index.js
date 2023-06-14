@@ -59,7 +59,7 @@ Math.clamp = function (min, max, val)
 
 function windowopen(url)
 {
-    if (SAFARI || FIREFOX)
+    if (1)//SAFARI || FIREFOX)
         window.open(url,"_self");
     else
         window.open(url);
@@ -2720,28 +2720,19 @@ var keylst =
         canvas.ctrlKey = evt.ctrlKey;
         canvas.slideshow = 0;
         var obj = context.canvas.scrollobj.value();
-        if (canvas.ctrlKey && key == "arrowup")
+        if (canvas.ctrlKey && key == "arrowup" ||
+            canvas.shiftKey && key == "enter")
         {
             var e = {type:"swipedown"}
             swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
             evt.preventDefault();
         }
-        else if (canvas.ctrlKey && key == "arrowdown")
+        else if (canvas.ctrlKey && key == "arrowdown" ||
+            key == "enter")
         {
             var e = {type:"swipeup"}
             swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
             evt.preventDefault();
-        }
-        else if (key == "pagedown" || key == "arrowdown" || key == "j" || key == " ")
-		{
-            if (canvas.block)
-                return;
-            canvas.block = 1;
-            setTimeout(function() { canvas.block = 0; }, canvas.keyblock);
-            canvas.keyblock = Math.clamp(25,100,canvas.keyblock-5);
-            evt.preventDefault();
-            context.canvas.timeobj.rotate(-TIMEOBJ/context.canvas.sliceobj.length());
-            context.refresh()
         }
         else if (key == "pageup" || key == "arrowup" || key == "k" || (canvas.shiftKey && key == " "))
 		{
@@ -2752,6 +2743,17 @@ var keylst =
             canvas.keyblock = Math.clamp(25,100,canvas.keyblock-5);
             evt.preventDefault();
             context.canvas.timeobj.rotate(TIMEOBJ/context.canvas.sliceobj.length());
+            context.refresh()
+        }
+        else if (key == "pagedown" || key == "arrowdown" || key == "j" || key == " ")
+		{
+            if (canvas.block)
+                return;
+            canvas.block = 1;
+            setTimeout(function() { canvas.block = 0; }, canvas.keyblock);
+            canvas.keyblock = Math.clamp(25,100,canvas.keyblock-5);
+            evt.preventDefault();
+            context.canvas.timeobj.rotate(-TIMEOBJ/context.canvas.sliceobj.length());
             context.refresh()
         }
         else if (key == "-" || key == "[")
@@ -3705,39 +3707,30 @@ var buttonlst =
     name: "GALLERY",
     draw: function (context, rect, user, time)
     {
-        if (!context.canvas.ispanningright && !user.thumbcanvas)
+        if (!context.canvas.ispanningright && !user.thumbimg)
         {
             try
             {
-                const thumbimg = new Image();
-                user.thumbcanvas = document.createElement('canvas');
-                user.thumbcanvas.width = 0;
-                user.thumbcanvas.height = 0;
+                user.thumbimg = new Image();
                 if (user.full)
-                    thumbimg.src = user.full;
+                    user.thumbimg.src = user.full;
                 else if (user.file)
-                    thumbimg.src = URL.createObjectURL(user.file);
+                    user.thumbimg.src = URL.createObjectURL(user.file);
                 else
                 {
                     const variant = _8cnvctx.canvas.variantobj.value();
-                    thumbimg.src = `https://reportbase.com/image/${user.id}/${variant}`;
+                    user.thumbimg.src = `https://reportbase.com/image/${user.id}/${variant}`;
                 }
 
-                thumbimg.onload = function()
+                user.thumbimg.onload = function()
                 {
-                    const ctx = user.thumbcanvas.getContext("2d");
-                    const a = this.width/this.height;
-                    user.thumbcanvas.width = rect.width;
-                    user.thumbcanvas.height = rect.width/a;
-                    ctx.drawImage(this, 0, 0, this.width, this.height,
-                        0, 0, user.thumbcanvas.width,
-                        user.thumbcanvas.height);
+                    user.thumbimg.count = 0;
                     menuobj.value().canvas.lastime = -0.0000000000101010101;
                     menuobj.draw()
                 }
 
-                thumbimg.onerror =
-                    thumbimg.onabort = function(error)
+                user.thumbimg.onerror =
+                    user.thumbimg.onabort = function(error)
                 {
                     console.log(error);
                 }
@@ -3749,56 +3742,64 @@ var buttonlst =
         }
 
         if (user.isvisible && context.canvas.scrollobj.current() == 0 &&
-            user.thumbcanvas && user.thumbcanvas.width)
+            user.thumbimg && user.thumbimg.width)
         {
             var obj = context.canvas.scrollobj.value();
-            var h2 = rect.height;
-            var w2 = rect.width;
-            var b2 = w2/h2;
-            var b = user.thumbcanvas.width/user.thumbcanvas.height;
+            var b = user.thumbimg.width/user.thumbimg.height;
+            var b2 = rect.width/rect.height;
             if (b > b2)
             {
-                var h1 = user.thumbcanvas.height;
-                var w1 = h1*b2;
-                var x1 = Math.nub(obj.value(), obj.length(), w1, user.thumbcanvas.width);
-                //todo resize
-                context.drawImage(user.thumbcanvas, x1, 0, w1, h1, 0, 0, w2, h2);
+                if (!user.thumbfitted ||
+                    user.thumbfitted.height != rect.height ||
+                    user.thumbimg.count < 2)
+                {
+                    user.thumbfitted = document.createElement('canvas');
+                    var thumbfittedctx = user.thumbfitted.getContext("2d");
+                    user.thumbfitted.height = rect.height;
+                    user.thumbfitted.width = rect.height*b;
+                    thumbfittedctx.drawImage(
+                        user.thumbimg,0,0,user.thumbimg.width,user.thumbimg.height,
+                        0,0,user.thumbfitted.width,user.thumbfitted.height);
+                    user.thumbimg.count += 1;
+                }
+
+                var x = Math.nub(obj.value(), obj.length(),
+                    rect.width, user.thumbfitted.width);
+
+                context.drawImage(user.thumbfitted,
+                    x, 0, rect.width, rect.height,
+                    0, 0, rect.width, rect.height);
             }
             else
             {
-                var w1 = user.thumbcanvas.width;
-                var h1 = w1/b2;
-                var y1 = Math.nub(obj.value(), obj.length(), h1, user.thumbcanvas.height);
-                //todo: resize
-                context.drawImage(user.thumbcanvas, 0, y1, w1, h1, 0, 0, w2, h2);
+                if (!user.thumbfitted ||
+                    user.thumbfitted.width != rect.width ||
+                    user.thumbimg.count < 2)
+                {
+                    user.thumbfitted = document.createElement('canvas');
+                    var thumbfittedctx = user.thumbfitted.getContext("2d");
+                    user.thumbfitted.width = rect.width;
+                    user.thumbfitted.height = rect.width/b;
+                    thumbfittedctx.drawImage(
+                        user.thumbimg,0,0,user.thumbimg.width,user.thumbimg.height,
+                        0,0,user.thumbfitted.width,user.thumbfitted.height);
+                    user.thumbimg.count += 1;
+                }
+
+                var y = Math.nub(obj.value(), obj.length(),
+                    rect.height, user.thumbfitted.height);
+
+                context.drawImage(user.thumbfitted,
+                    0, y, rect.width, rect.height,
+                    0, 0, rect.width, rect.height);
             }
 
-            var r = new rectangle(0,0,w2,h2);
+            var r = new rectangle(0,0,rect.width,rect.height);
             if (user.tap)
             {
                 var a = new FillPanel("rgba(255,125,0,0.4)");
                 a.draw(context, r, 0, 0);
             }
-
-            var a = new RowA([20,20,0,20,20,20],
-                [
-                    0,//new ShadowPanel(new Text("white", "center", "middle",0,0),1,1),
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,//new ShadowPanel(new Text("white", "center", "middle",0,0),1,1),
-                ]);
-            a.draw(context,
-                new rectangle(20,10,rect.width-40,rect.height-20),
-            [
-                `${time+1} of ${galleryobj.length()}`,
-                0,
-                0,
-                0,
-                0,
-                0,
-            ], 0);
         }
         else if (context.canvas.scrollobj.current() == 0)
         {
@@ -4115,10 +4116,11 @@ menuobj.draw = function()
         var e = (context.canvas.virtualheight-rect.height)/2;
         y -= e;
         var x = rect.width/2;
-        if (y < -window.innerHeight ||
-            y >= window.innerHeight*2)
+        if (y < -canvas.buttonheight*3 ||
+            y >= window.innerHeight+canvas.buttonheight*3)
         {
-            delete slice.thumbcanvas;
+            delete slice.thumbimg;
+            delete slice.thumbfitted;
             continue;
         }
 
@@ -4199,7 +4201,7 @@ contextlst.forEach(function(context, n)
     canvas.timeobj.set(TIMEOBJ/2);
     canvas.scrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
     canvas.imagescrollobj = new circular_array("IMAGESCROLL", Math.floor(window.innerHeight/2));
-    canvas.imagescrollobj.set(canvas.imagescrollobj.length()/2);
+    canvas.imagescrollobj.set(0.1*canvas.imagescrollobj.length());
     canvas.textscrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
 
     var obj = eventlst[n];
@@ -4943,6 +4945,7 @@ function resize()
     _8cnvctx.canvas.sliceobj.data.forEach(function(slice)
     {
         delete slice.thumbcanvas;
+        delete slice.thumbfitted;
     });
 
     delete _4cnvctx.canvas.thumbcanvas;
@@ -5052,8 +5055,9 @@ var headlst =
         {
             context.clear();
             var k = menuobj.value();
-            var e = window.innerWidth - rect.width < 180;
-            var j = menuobj.value()&&e;
+            var w = k?k.canvas.width:0;
+            var b = window.innerWidth == w;
+            var j = menuobj.value()&&b;
             context.save();
             var a = new Row([BEXTENT,0],
             [
@@ -5476,7 +5480,8 @@ galleryobj.init = function (obj)
 
     _8cnvctx.canvas.buttonobj = new circular_array("", lst);
     _8cnvctx.canvas.variantobj = new circular_array("", lst1);
-    var k = typeof galleryobj.buttonstart === "undefined" ?100:galleryobj.buttonstart;
+    var k = typeof galleryobj.buttonstart === "undefined" ?
+        Math.floor(_8cnvctx.canvas.buttonobj.length()/2):galleryobj.buttonstart;
     _8cnvctx.canvas.buttonobj.set(Number(k));
     _8cnvctx.canvas.variantobj.set(Number(k));
 
