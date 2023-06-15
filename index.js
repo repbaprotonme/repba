@@ -59,7 +59,7 @@ Math.clamp = function (min, max, val)
 
 function windowopen(url)
 {
-    if (1)//SAFARI || FIREFOX)
+    if (SAFARI || FIREFOX)
         window.open(url,"_self");
     else
         window.open(url);
@@ -685,23 +685,14 @@ var DualPanel = function ()
             new Row([0,SCROLLBARWIDTH],
             [
                 0,
-                new Layer(
-                [
-                    new FillPanel(j),
-                    new CurrentHPanel(new FillPanel("white"), 90, 1),
-                ])
+                new CurrentHPanel(new FillPanel("white"), 90, 1),
             ]),
             new Col([0,SCROLLBARWIDTH],
             [
                 0,
-                new Layer(
-                [
-                    new FillPanel(j),
-                    new CurrentVPanel(new FillPanel("white"), 90, 1),
-                ])
+                new CurrentVPanel(new FillPanel("white"), 90, 1),
             ])
         ]);
-
 
         a.draw(context, rect,
         [
@@ -1742,7 +1733,7 @@ var wheelst =
         }
         else
         {
-            var k = 20*(window.innerHeight/context.canvas.virtualheight);
+            var k = 50*(window.innerHeight/context.canvas.virtualheight);
             context.canvas.timeobj.rotate(k);
             context.refresh()
         }
@@ -1756,7 +1747,7 @@ var wheelst =
         }
         else
         {
-            var k = 20*(window.innerHeight/context.canvas.virtualheight);
+            var k = 50*(window.innerHeight/context.canvas.virtualheight);
             context.canvas.timeobj.rotate(-k);
             context.refresh()
         }
@@ -3269,6 +3260,12 @@ var taplst =
                     context.canvas.timeobj.rotate(-TIMEOBJ/context.canvas.sliceobj.length());
                     context.refresh()
                 }, 500);
+
+
+                setTimeout(function()
+                    {
+                        context.swipetype = "swipeup";
+                    }, 5000)
             }
         }
         else if (x < MENUBARWIDTH*2)
@@ -3641,16 +3638,6 @@ var buttonlst =
     draw: function (context, rect, user, time){}
 },
 {
-    name: "XXX",
-    draw: function (context, rect, user, time)
-    {
-        user.fitwidth = rect.width;
-        user.fitheight = rect.height;
-        var a = new FillPanel("red");
-        a.draw(context, rect, user, time);
-    }
-},
-{
     name: "OPTION",
     draw: function (context, rect, user, time)
     {
@@ -3741,7 +3728,7 @@ var buttonlst =
             }
         }
 
-        if (user.isvisible && context.canvas.scrollobj.current() == 0 &&
+        if (context.canvas.scrollobj.current() == 0 &&
             user.thumbimg && user.thumbimg.width)
         {
             var obj = context.canvas.scrollobj.value();
@@ -3763,12 +3750,14 @@ var buttonlst =
                     user.thumbimg.count += 1;
                 }
 
-                var x = Math.nub(obj.value(), obj.length(),
-                    rect.width, user.thumbfitted.width);
-
-                context.drawImage(user.thumbfitted,
-                    x, 0, rect.width, rect.height,
-                    0, 0, rect.width, rect.height);
+                if (user.isvisible)
+                {
+                    var x = Math.nub(obj.value(), obj.length(),
+                        rect.width, user.thumbfitted.width);
+                    context.drawImage(user.thumbfitted,
+                        x, 0, rect.width, rect.height,
+                        0, 0, rect.width, rect.height);
+                }
             }
             else
             {
@@ -3786,12 +3775,14 @@ var buttonlst =
                     user.thumbimg.count += 1;
                 }
 
-                var y = Math.nub(obj.value(), obj.length(),
-                    rect.height, user.thumbfitted.height);
-
-                context.drawImage(user.thumbfitted,
-                    0, y, rect.width, rect.height,
-                    0, 0, rect.width, rect.height);
+                if (user.isvisible)
+                {
+                    var y = Math.nub(obj.value(), obj.length(),
+                        rect.height, user.thumbfitted.height);
+                    context.drawImage(user.thumbfitted,
+                        0, y, rect.width, rect.height,
+                        0, 0, rect.width, rect.height);
+                }
             }
 
             var r = new rectangle(0,0,rect.width,rect.height);
@@ -3811,12 +3802,13 @@ var buttonlst =
              var a =
                 new Layer(
                     [
+                        time%2?new FillPanel("rgba(0,0,0,0.4)"):0,
                         user.tap ? new FillPanel("rgba(255,125,0,0.4)") : 0,
                         new ShadowPanel(
                             new Text("rgba(255,255,255,0.7)", "center", "middle",0,0,
                                 LARGEFONT),1,1),
                     ])
-            a.draw(context, r,  `${time+1}`, 0);
+            a.draw(context, r, `${time+1}`, 0);
         }
         else if (context.canvas.scrollobj.current() == 1)
         {
@@ -3839,9 +3831,10 @@ var buttonlst =
                 user.lst = lst;
             }
 
-                var e = _8cnvctx.canvas.textscrollobj.berp();
+            var e = _8cnvctx.canvas.textscrollobj.berp();
             var a = new Layer(
                 [
+                    time%2?new FillPanel("rgba(0,0,0,0.4)"):0,
                     user.tap?new FillPanel("rgba(255,125,0,0.4)"):0,
                     new Shrink(new MultiText(e), 15, 15),
                 ]);
@@ -4175,8 +4168,8 @@ var eventlst =
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU",  drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 90, width: 640},
     {dblclick: "BOSS", mouse: "DEFAULT", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "GALLERY", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new Empty(), scroll: new DualPanel(), buttonheight: 30, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "XXX", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new DualPanel(), buttonheight: 90, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "XXX", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new DualPanel(), buttonheight: 90, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new DualPanel(), buttonheight: 90, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "GALLERY", pan: "MENU", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "GALLERY", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new GalleryBar(), scroll: new DualPanel(), buttonheight: 320, width: 1080},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar("Image Browser"), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640},
@@ -5471,7 +5464,7 @@ galleryobj.init = function (obj)
     var lst = [];
     var lst1 = [];
     var min = typeof galleryobj.buttonmin === "undefined" ?90:galleryobj.buttonmin;
-    var max = typeof galleryobj.buttonmax === "undefined" ?840:galleryobj.buttonmax;
+    var max = typeof galleryobj.buttonmax === "undefined" ?1080:galleryobj.buttonmax;
     for (var n = min; n < max; n += 1)
     {
         lst.push(n);
@@ -5481,7 +5474,7 @@ galleryobj.init = function (obj)
     _8cnvctx.canvas.buttonobj = new circular_array("", lst);
     _8cnvctx.canvas.variantobj = new circular_array("", lst1);
     var k = typeof galleryobj.buttonstart === "undefined" ?
-        Math.floor(_8cnvctx.canvas.buttonobj.length()/2):galleryobj.buttonstart;
+        Math.floor(_8cnvctx.canvas.buttonobj.length()/3):galleryobj.buttonstart;
     _8cnvctx.canvas.buttonobj.set(Number(k));
     _8cnvctx.canvas.variantobj.set(Number(k));
 
