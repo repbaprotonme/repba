@@ -216,7 +216,7 @@ function random_color()
 }
 
 var timemain = new circular_array("TIMEMAIN", 30);
-timemain.set(0);
+timemain.set(20);
 var colobj = new circular_array("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new circular_array("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
 
@@ -633,34 +633,26 @@ var GalleryBar = function ()
 {
     this.draw = function (context, rect, user, time)
     {
+//        if (context.canvas.hide)
+ //           return;
         var w = Math.min(320,rect.width-100);
         var j = window.innerWidth - rect.width >= 180;
         context.save();
-        context.canvas.headerect = new rectangle();
         context.canvas.buttonrect = new rectangle();
-        var a = new RowA([80,0,40,70],
+        var a = new RowA([80,0,40,60,SCROLLBARWIDTH,5],
         [
-             new Layer(
-             [
-                new Col([20,60,0],
-                [
-                    0,
-                    new Rectangle(context.canvas.headerect),
-                    0,
-                ]),
-                new ColA([MARGINBAR,60,0,50,50,50,0,60,MARGINBAR],
-                [
-                    0,
-                    j?0:new OptionPanel(),
-                    0,
-                    new ShiftPanel(new ScrollPanel(),-10,0),
-                    new HomePanel(),
-                    new ShiftPanel(new AutoPanel(),10,0),
-                    0,
-                    j?0:new HelpPanel(),
-                    0,
-                ]),
-             ]),
+            new Col([MARGINBAR,60,0,50,50,50,0,60,MARGINBAR],
+            [
+                0,
+                j?0:new OptionPanel(),
+                0,
+                new ShiftPanel(new ScrollPanel(),-10,0),
+                new HomePanel(),
+                new ShiftPanel(new AutoPanel(),10,0),
+                0,
+                j?0:new HelpPanel(),
+                0,
+            ]),
              0,
              new Col([0,w,0],
              [
@@ -674,6 +666,13 @@ var GalleryBar = function ()
                  0,
              ]),
              new Text("rgb(255,255,255)", "center", "middle",0, 0),
+            new Col([5,0,5],
+            [
+                0,
+                new CurrentHPanel(new Rounded("white", 0, "rgba(255,255,255,0)",4,4), 40, 1),
+                0,
+            ]),
+            0
         ]);
 
         var buttonobj = context.canvas.scrollobj.current() == 0 ?
@@ -687,7 +686,9 @@ var GalleryBar = function ()
                 0,
                 buttonobj,
                 `${j.toFixed(0)} of ${context.canvas.sliceobj.length()}`,
-            ], 0);
+                context.canvas.scrollobj.value(),
+                0,
+            ], 0, 0);
         context.restore();
     }
 };
@@ -696,55 +697,6 @@ var DualPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
-        context.save();
-		context.strokeStyle = "white";
-		context.shadowColor = "black";
-        context.shadowOffsetX = 1;
-        context.shadowOffsetY = 1;
-        context.canvas.imagerect = new rectangle();
-        context.canvas.positrect = new rectangle();
-        var a = new LayerA(
-        [
-            new Row([0,SCROLLBARWIDTH,5],
-            [
-                0,
-                new Col([5,0,5],
-                [
-                    0,
-                    new Layer(
-                    [
-                        new Rectangle(context.canvas.positrect),
-                        new CurrentHPanel(new Rounded("white", 0, "rgba(255,255,255,0)",4,4), 40, 1),
-                    ]),
-                    0,
-                ]),
-                0
-            ]),
-            new Col([0,SCROLLBARWIDTH,5],
-            [
-                0,
-                new Row([90,0,90],
-                [
-                    0,
-                    new Layer(
-                    [
-                        0,//new Rectangle(context.canvas.imagerect),
-                        0,//new CurrentVPanel(new Rounded("white", 0, "rgba(255,255,255,0)",4,4), 40, 1),
-                    ]),
-                    0,
-                ]),
-                0,
-            ]),
-        ])
-
-        a.draw(context, rect,
-        [
-            context.canvas.scrollobj.value(),
-            context.canvas.timeobj
-        ],
-        0);
-
-        context.restore();
     }
 };
 
@@ -2240,6 +2192,8 @@ var panlst =
         else if (type == "panup" || type == "pandown")
         {
             var k = context.canvas.timeobj.length();
+            if (!context.canvas.starty)
+                context.canvas.starty = rect.height/2;
             var e = context.canvas.starty-y;
             var jvalue = (k/(context.canvas.virtualheight)*(e));
             var j = context.canvas.startt - jvalue;
@@ -2741,8 +2695,8 @@ var swipelst =
     swipeupdown: function (context, rect, x, y, evt)
     {
         context.swipetype = evt.type;
-        var slidestop = 5;
-        var slidereduce = 200;
+        var slidestop = 20;
+        var slidereduce = 50;
         context.canvas.slideshow = (context.canvas.timeobj.length()/context.canvas.virtualheight)*slidestop;
         context.canvas.slidereduce = context.canvas.slideshow/slidereduce;
         clearInterval(globalobj.timeout2);
@@ -3417,16 +3371,10 @@ var taplst =
                     }, 5000)
             }
         }
-        else if (context.canvas.positrect && context.canvas.positrect.hitest(x,y))
+        else
         {
-            //todo image dialog
-        }
-        else if (context.canvas.imagerect && context.canvas.imagerect.hitest(x,y))
-        {
-            var r = context.canvas.imagerect;
-            var j = (y-r.y)/r.height;
-            var k = TIMEOBJ*(1-j);
-            context.canvas.timeobj.set(k);
+            //todo
+            context.canvas.hide = context.canvas.hide?0:1;
             context.refresh();
         }
     },
@@ -3465,7 +3413,7 @@ var thumblst =
             context.stretchrect = new rectangle();
             context.extentrect = new rectangle();
             var w = Math.min(320,rect.width-100);
-            var a = new RowA([60,0,40,8,40,8,40,70],
+            var a = new RowA([60,0,40,8,40,8,40,60,SCROLLBARWIDTH,5],
              [
                  0,
                  0,
@@ -3508,7 +3456,14 @@ var thumblst =
                 [
                     new Rectangle(context.extentrect),
                     new Text("rgb(255,255,255)", "center", "middle",0, 0),
-                ])
+                ]),
+                new Col([5,0,5],
+                [
+                    0,
+                    new CurrentHPanel(new Rounded("white", 0, "rgba(255,255,255,0)",4,4), 40, 1),
+                    0,
+                ]),
+                0
             ]);
 
             a.draw(context, rect,
@@ -3520,7 +3475,9 @@ var thumblst =
                     zoomobj.value(),
                     0,
                     stretchobj.value(),
-                    extentobj.value()
+                    extentobj.value(),
+                    context.canvas.timeobj,
+                    0,
                 ], 0);
         }
     },
@@ -3537,19 +3494,31 @@ var thumblst =
             var rect = new rectangle(r.x, r.y, r.width, r.height);
 
             context.extentrect = new rectangle();
-            var a = new Row([0,70],
+            var a = new RowA([0,60,SCROLLBARWIDTH,5],
             [
                 0,
                 new Layer(
                 [
                     new Rectangle(context.extentrect),
                     new Text("rgb(255,255,255)", "center", "middle",0, 0),
-                ])
+                ]),
+                new Col([5,0,5],
+                [
+                    0,
+                    new CurrentHPanel(new Rounded("white", 0, "rgba(255,255,255,0)",4,4), 40, 1),
+                    0,
+                ]),
             ]);
 
-            a.draw(context, rect, extentobj.value(), 0);
-            rect.shrink(THUMBSELECT, THUMBSELECT);
+            a.draw(context, rect,
+                [
+                    0,
+                    extentobj.value(),
+                    context.canvas.timeobj,
+                    0,
+                ], user, time);
 
+            rect.shrink(THUMBSELECT, THUMBSELECT);
             var canvas = context.canvas;
             var he = heightobj.value();
             var b = Math.berp(0,he.length()-1,he.current());
@@ -4138,8 +4107,8 @@ menuobj.draw = function()
         var e = (context.canvas.virtualheight-rect.height)/2;
         y -= e;
         var x = rect.width/2;
-        if (y < -canvas.buttonheight ||
-            y >= window.innerHeight+canvas.buttonheight)
+        if (y < -canvas.buttonheight*1.5 ||
+            y >= window.innerHeight+canvas.buttonheight*1.5)
         {
             delete slice.thumbimg;
             delete slice.thumbfitted;
@@ -5486,7 +5455,7 @@ galleryobj.init = function (obj)
     var lst = [];
     var lst1 = [];
     var min = 120;
-    var max = window.innerHeight;
+    var max = window.innerHeight*2;
     for (var n = min; n < max; n += 1)
     {
         lst.push(n);
@@ -5504,7 +5473,7 @@ galleryobj.init = function (obj)
     _8cnvctx.canvas.buttonobj = new circular_array("", lst);
     _8cnvctx.canvas.buttoninfoobj = new circular_array("", lst2);
     _8cnvctx.canvas.variantobj = new circular_array("", lst1);
-    var k = typeof galleryobj.buttonstart === "undefined" ? 0.67:galleryobj.buttonstart;
+    var k = typeof galleryobj.buttonstart === "undefined" ? 0.4:galleryobj.buttonstart;
     var j = Math.floor(_8cnvctx.canvas.buttonobj.length()*k);
     _8cnvctx.canvas.buttonobj.set(Number(j));
     _8cnvctx.canvas.buttoninfoobj.set(150);
