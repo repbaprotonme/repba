@@ -34,6 +34,7 @@ const THUMBSTROKE = "rgba(255,255,255,0.4)";
 const SEARCHFRAME = "rgba(255,255,255,0.5)";
 const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
+const SCROLLMARG = 30;
 const SCROLLBARWIDTH = 12;
 const MARGINBAR = 5;
 const DEFAULTFONT = "17px archivo black";
@@ -216,7 +217,6 @@ function random_color()
 
 var timemain = new circular_array("TIMEMAIN", 30);
 timemain.set(0);
-var speedyobj = new circular_array("SPEEDY", 100);
 var colobj = new circular_array("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new circular_array("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
 
@@ -581,13 +581,13 @@ var MenuBar = function ()
                 new ColA([MARGINBAR,60,0,50,50,50,0,60,MARGINBAR],
                 [
                     0,
-                    j?0:new GalleryPanel(),
+                    j?0:new OptionPanel(),
                     0,
                     new ShiftPanel(new OpenPanel(),-10,0),
                     new SearchPanel(),
                     new ShiftPanel(new UploadPanel(),10,0),
                     0,
-                   j?0:new OptionsPanel(),
+                   j?0:new HelpPanel(),
                     0,
                 ]),
 
@@ -638,7 +638,7 @@ var GalleryBar = function ()
         context.save();
         context.canvas.headerect = new rectangle();
         context.canvas.buttonrect = new rectangle();
-        var a = new RowA([80,0,40,60],
+        var a = new RowA([80,0,40,70],
         [
              new Layer(
              [
@@ -651,13 +651,13 @@ var GalleryBar = function ()
                 new ColA([MARGINBAR,60,0,50,50,50,0,60,MARGINBAR],
                 [
                     0,
-                    j?0:new GalleryPanel(),
+                    j?0:new OptionPanel(),
                     0,
                     new ShiftPanel(new ScrollPanel(),-10,0),
                     new HomePanel(),
                     new ShiftPanel(new AutoPanel(),10,0),
                     0,
-                    j?0:new OptionsPanel(),
+                    j?0:new HelpPanel(),
                     0,
                 ]),
              ]),
@@ -668,7 +668,7 @@ var GalleryBar = function ()
                   new Layer(
                  [
                     new Shrink(new Rectangle(context.canvas.buttonrect),4,0),
-                    new Rounded("rgba(0,0,0,0.25)", 4, "rgba(255,255,255,0)", 16, 16),
+                    new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 16, 16),
                     new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
                  ]),
                  0,
@@ -676,13 +676,16 @@ var GalleryBar = function ()
              new Text("rgb(255,255,255)", "center", "middle",0, 0),
         ]);
 
+        var buttonobj = context.canvas.scrollobj.current() == 0 ?
+            context.canvas.buttonobj : context.canvas.buttoninfoobj ;
+
         var j = Math.lerp(1,context.canvas.sliceobj.length(),
             1-context.canvas.timeobj.berp());
         a.draw(context, rect,
             [
                 0,
                 0,
-                context.canvas.buttonobj,
+                buttonobj,
                 `${j.toFixed(0)} of ${context.canvas.sliceobj.length()}`,
             ], 0);
         context.restore();
@@ -698,35 +701,45 @@ var DualPanel = function ()
 		context.shadowColor = "black";
         context.shadowOffsetX = 1;
         context.shadowOffsetY = 1;
-
+        context.canvas.imagerect = new rectangle();
+        context.canvas.positrect = new rectangle();
         var a = new LayerA(
         [
             new Row([0,SCROLLBARWIDTH,5],
             [
                 0,
-                new Col([SCROLLBARWIDTH+4,0,SCROLLBARWIDTH+4],
+                new Col([5,0,5],
                 [
                     0,
-                    new CurrentHPanel(new Rounded("white", 0, "rgba(255,255,255,0)",4,4), 40, 1),
+                    new Layer(
+                    [
+                        new Rectangle(context.canvas.positrect),
+                        new CurrentHPanel(new Rounded("white", 0, "rgba(255,255,255,0)",4,4), 40, 1),
+                    ]),
                     0,
-                ])
+                ]),
+                0
             ]),
             new Col([0,SCROLLBARWIDTH,5],
             [
                 0,
-                new Row([SCROLLBARWIDTH+4,0,SCROLLBARWIDTH+4],
+                new Row([90,0,90],
                 [
                     0,
-                    new CurrentVPanel(new Rounded("white", 0, "rgba(255,255,255,0)",4,4), 40, 1),
+                    new Layer(
+                    [
+                        0,//new Rectangle(context.canvas.imagerect),
+                        0,//new CurrentVPanel(new Rounded("white", 0, "rgba(255,255,255,0)",4,4), 40, 1),
+                    ]),
                     0,
-                ])
+                ]),
+                0,
             ]),
-        ]);
+        ])
 
         a.draw(context, rect,
         [
-            context == _8cnvctx ?
-                context.canvas.scrollobj.value(): context.canvas.scrollobj,
+            context.canvas.scrollobj.value(),
             context.canvas.timeobj
         ],
         0);
@@ -1470,10 +1483,6 @@ var makehammer = function (context, v, t)
         var y = evt.center.y - evt.target.offsetTop;
 		if (typeof (ham.panel.pinch) == "function")
 			ham.panel.pinch(context, x, y, evt.scale);
-
-		ham.pinchblock = 1;
-		clearTimeout(globalobj.pinch);
-		globalobj.pinch = setTimeout(function() { ham.pinchblock = 0; }, 400);
 	});
 
 	ham.on("pinchend", function (evt)
@@ -1485,7 +1494,6 @@ var makehammer = function (context, v, t)
 
 	ham.on("pinchstart", function (evt)
 	{
-		ham.pinchblock = 1;
 		evt.preventDefault();
 		var x = evt.center.x;
 		var y = evt.center.y;
@@ -1636,8 +1644,6 @@ var makehammer = function (context, v, t)
 
     ham.on("panmove", function (evt)
     {
-   		if (ham.pinchblock || evt.pointers.length >= 2)
-			return;
         evt.preventDefault();
         var rect = new rectangle(0, 0, ham.element.width, ham.element.height);
         var x = Math.clamp(0, context.canvas.width - 1, evt.center.x - evt.target.offsetLeft);
@@ -1648,8 +1654,6 @@ var makehammer = function (context, v, t)
 
     ham.on("panend", function (evt)
     {
-   		if (ham.pinchblock || evt.pointers.length >= 2)
-			return;
         evt.preventDefault();
         var rect = new rectangle(0, 0, ham.element.width, ham.element.height);
         var x = Math.clamp(0, context.canvas.width - 1, evt.center.x - evt.target.offsetLeft);
@@ -1660,8 +1664,6 @@ var makehammer = function (context, v, t)
 
 	ham.on("panstart", function (evt)
     {
-   		if (ham.pinchblock || evt.pointers.length >= 2)
-			return;
         evt.preventDefault();
         ham.x = evt.center.x;
         ham.y = evt.center.y;
@@ -1674,8 +1676,6 @@ var makehammer = function (context, v, t)
 
     ham.on("panleft panright", function (evt)
     {
-   		if (ham.pinchblock || evt.pointers.length >= 2)
-			return;
         evt.preventDefault();
         var rect = new rectangle(0, 0, ham.element.width, ham.element.height);
         var x = Math.clamp(0, context.canvas.width - 1, evt.center.x - evt.target.offsetLeft);
@@ -1690,8 +1690,6 @@ var makehammer = function (context, v, t)
 
     ham.on("pandown panup", function (evt)
     {
-   		if (ham.pinchblock || evt.pointers.length >= 2)
-			return;
     	evt.preventDefault();
         var rect = new rectangle(0, 0, ham.element.width, ham.element.height);
         var x = Math.clamp(0, ham.element.width - 1, evt.center.x - evt.target.offsetLeft);
@@ -1706,8 +1704,6 @@ var makehammer = function (context, v, t)
 
     ham.on("pan", function (evt)
     {
-   		if (ham.pinchblock || evt.pointers.length >= 2)
-			return;
         evt.preventDefault();
 		var x = evt.center.x - evt.target.offsetLeft;
 		var y = evt.center.y - evt.target.offsetTop;
@@ -1766,7 +1762,9 @@ var wheelst =
     {
         if (ctrl)
         {
-            context.canvas.buttonobj.addperc(1.5/100);
+            var buttonobj = context.canvas.scrollobj.current() == 0 ?
+                context.canvas.buttonobj : context.canvas.buttoninfoobj ;
+            buttonobj.addperc(1.5/100);
             context.refresh();
         }
         else
@@ -1780,7 +1778,9 @@ var wheelst =
     {
         if (ctrl)
         {
-            context.canvas.buttonobj.addperc(-1.5/100);
+            var buttonobj = context.canvas.scrollobj.current() == 0 ?
+                context.canvas.buttonobj : context.canvas.buttoninfoobj ;
+            buttonobj.addperc(-1.5/100);
             context.refresh();
         }
         else
@@ -1965,7 +1965,8 @@ var pinchlst =
     name: "GALLERY",
     pinch: function (context, x, y, scale)
     {
-        var obj = context.canvas.buttonobj;
+        var obj = context.canvas.scrollobj.current() == 0 ?
+            context.canvas.buttonobj : context.canvas.buttoninfoobj ;
         var data = obj.data;
         var k = Math.clamp(data[0], data[data.length-1], scale*context.canvas.savepinch);
         var j = Math.berp(data[0], data[data.length-1], k);
@@ -1989,9 +1990,11 @@ var pinchlst =
     },
     pinchstart: function (context, rect, x, y)
     {
+        var obj = context.canvas.scrollobj.current() == 0 ?
+            context.canvas.buttonobj : context.canvas.buttoninfoobj ;
         context.canvas.slideshow = 0;
         context.canvas.pinching = 1;
-        context.canvas.savepinch = context.canvas.buttonobj.value()
+        context.canvas.savepinch = obj.value()
     },
     pinchend: function (context)
     {
@@ -2207,31 +2210,21 @@ var panlst =
 	panend: function (context, rect, x, y) { }
 },
 {
-    name: "MENU",
+    name: "GALLERY",
     updown: function (context, rect, x, y, type) { },
  	leftright: function (context, rect, x, y, type) {},
 
 	pan: function (context, rect, x, y, type)
     {
-        var obj = context.canvas.scrollobj;
-        if (context == _8cnvctx)
-            obj = context.canvas.scrollobj.value();
-        if (context.canvas.ispanningright)
+        var obj = context.canvas.scrollobj.value();
+        if (context.canvas.isbuttonbar)
         {
-            delete context.swipetype;
-            clearInterval(globalobj.timeout);
-            var obj = context.canvas.timeobj;
-            var m = y/rect.height;
-            m = Math.floor((1-m)*obj.length());
-            obj.set(m);
-            context.refresh()
-        }
-        else if (context.canvas.isbuttonbar)
-        {
-            var j = context.canvas.buttonobj.current()
+            var obj = context.canvas.scrollobj.current() == 0 ?
+                context.canvas.buttonobj : context.canvas.buttoninfoobj ;
+            var j = obj.current()
             var k = (x - context.canvas.buttonrect.x) / context.canvas.buttonrect.width;
             context.canvas.variantobj.setperc(k);
-            context.canvas.buttonobj.setperc(k);
+            obj.setperc(k);
             context.refresh();
         }
         else if (obj && (type == "panleft" || type == "panright"))
@@ -2246,11 +2239,9 @@ var panlst =
         }
         else if (type == "panup" || type == "pandown")
         {
-            if (type != "panup")
-                delete context.swipetype;
-
             var k = context.canvas.timeobj.length();
-            var jvalue = (k/(context.canvas.virtualheight)*(context.canvas.starty-y));
+            var e = context.canvas.starty-y;
+            var jvalue = (k/(context.canvas.virtualheight)*(e));
             var j = context.canvas.startt - jvalue;
             var len = context.canvas.timeobj.length();
             if (j < 0)
@@ -2283,6 +2274,58 @@ var panlst =
             obj = context.canvas.scrollobj.value();
         if (obj)
             delete obj.offset;
+        context.refresh();
+    }
+},
+{
+    name: "MENU",
+    updown: function (context, rect, x, y, type) { },
+ 	leftright: function (context, rect, x, y, type) {},
+
+	pan: function (context, rect, x, y, type)
+    {
+        var obj = context.canvas.scrollobj;
+        if (obj && (type == "panleft" || type == "panright"))
+        {
+            var k = panhorz(obj, rect.width-x);
+            if (k == -1)
+                return;
+            if (k == obj.anchor())
+                return;
+            obj.set(k);
+            context.refresh()
+        }
+        else if (type == "panup" || type == "pandown")
+        {
+            var k = context.canvas.timeobj.length();
+            var jvalue = (k/(context.canvas.virtualheight)*(context.canvas.starty-y));
+            var j = context.canvas.startt - jvalue;
+            var len = context.canvas.timeobj.length();
+            if (j < 0)
+                 j = len+j-1;
+            else if (j >= len)
+                 j = j-len-1;
+            j = j % context.canvas.timeobj.length();
+            context.canvas.timeobj.set(j);
+            context.refresh()
+        }
+    },
+	panstart: function (context, rect, x, y)
+    {
+        delete context.canvas.slideshow;
+        clearInterval(globalobj.timeauto);
+        globalobj.timeauto = 0;
+        context.canvas.starty = y;
+        context.canvas.startt = context.canvas.timeobj.current();
+    },
+	panend: function (context, rect, x, y)
+    {
+        delete context.canvas.starty;
+        delete context.startt;
+        delete context.canvas.timeobj.offset;
+        delete context.canvas.ispanningright;
+        var obj = context.canvas.scrollobj;
+        delete obj.offset;
         context.refresh();
     }
 },
@@ -2357,7 +2400,8 @@ var panlst =
             if (Number(zoom.value()))
             {
                 var h = (rect.height*(1-zoom.value()/100))*2;
-                y = ((y/rect.height)*speedyobj.value())*h;
+                //y = ((y/rect.height)*speedyobj.value())*h;
+                y = (y/rect.height)*h;
                 var k = panvert(rowobj, h-y);
                 if (k == -1)
                     return;
@@ -2844,12 +2888,16 @@ var keylst =
         }
         else if (key == "-" || key == "[")
         {
-            context.canvas.buttonobj.addperc(-1.5/100);
+            var obj = context.canvas.scrollobj.current() == 0 ?
+                context.canvas.buttonobj : context.canvas.buttoninfoobj ;
+            obj.addperc(-1.5/100);
             context.refresh()
         }
         else if (key == "+" || key == "]" || key == "=")
         {
-            context.canvas.buttonobj.addperc(1.5/100);
+            var obj = context.canvas.scrollobj.current() == 0 ?
+                context.canvas.buttonobj : context.canvas.buttoninfoobj ;
+            obj.addperc(1.5/100);
             context.refresh()
         }
         else if (key == "arrowleft" || key == "h")
@@ -3179,6 +3227,12 @@ var taplst =
             stretchobj.value().setperc(k);
             context.refresh();
         }
+        else if (menuobj.value())
+        {
+            menuobj.hide();
+            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            _4cnvctx.refresh();
+        }
         else
         {
             var obj = new circular_array("", [1,3]);
@@ -3219,12 +3273,12 @@ var taplst =
                     screenfull.request();
             }
         }
-        else if (context.canvas.galleryrect && context.canvas.galleryrect.hitest(x,y))
+        else if (context.canvas.optionrect && context.canvas.optionrect.hitest(x,y))
         {
             headobj.set(1);
             thumbobj.set(0);
             headham.panel = headobj.value();
-            menuobj.showindex(_8cnvctx);
+            menuobj.showindex(_2cnvctx);
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             context.refresh();
         }
@@ -3232,15 +3286,14 @@ var taplst =
         {
             explore().then(function(files) { dropfiles(files); })
         }
-        else if (context.canvas.optionsrect && context.canvas.optionsrect.hitest(x,y))
+        else if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
         {
             headobj.set(1);
+            thumbobj.set(0);
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            clearTimeout(context.menutime);
-            context.refresh();
-            menuobj.showindex(_2cnvctx);
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            menuobj.showindex(_7cnvctx);
+            _4cnvctx.refresh()
         }
         else if ( context.canvas.searchrect && context.canvas.searchrect.hitest(x,y) )
         {
@@ -3292,8 +3345,10 @@ var taplst =
         }
         else if (context.canvas.buttonrect && context.canvas.buttonrect.hitest(x,y))
         {
+            var obj = context.canvas.scrollobj.current() == 0 ?
+                context.canvas.buttonobj : context.canvas.buttoninfoobj ;
             var k = (x-context.canvas.buttonrect.x)/context.canvas.buttonrect.width;
-            context.canvas.buttonobj.setperc(k);
+            obj.setperc(k);
             context.canvas.variantobj.setperc(k);
             context.refresh();
         }
@@ -3301,24 +3356,23 @@ var taplst =
         {
             menuobj.showindex(_3cnvctx);
         }
-        else if (context.canvas.galleryrect && context.canvas.galleryrect.hitest(x,y))
+        else if (context.canvas.optionrect && context.canvas.optionrect.hitest(x,y))
         {
             headobj.set(1);
             thumbobj.set(0);
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            menuobj.showindex(_8cnvctx);
+            menuobj.showindex(_2cnvctx);
             _4cnvctx.refresh();
         }
-        else if (context.canvas.optionsrect && context.canvas.optionsrect.hitest(x,y))
+        else if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
         {
             headobj.set(1);
+            thumbobj.set(0);
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            clearTimeout(context.menutime);
-            context.refresh();
-            menuobj.showindex(_2cnvctx);
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            menuobj.showindex(_7cnvctx);
+            _4cnvctx.refresh()
         }
         else if (context.canvas.scrollrect && context.canvas.scrollrect.hitest(x,y))
         {
@@ -3363,16 +3417,14 @@ var taplst =
                     }, 5000)
             }
         }
-        else if (x < MENUBARWIDTH*2)
+        else if (context.canvas.positrect && context.canvas.positrect.hitest(x,y))
         {
-            var j = y/rect.height;
-            var k = obj.length()*j;
-            obj.set(k);
-            context.refresh();
+            //todo image dialog
         }
-        else if (x > rect.width - (MENUBARWIDTH*2) )
+        else if (context.canvas.imagerect && context.canvas.imagerect.hitest(x,y))
         {
-            var j = y/rect.height;
+            var r = context.canvas.imagerect;
+            var j = (y-r.y)/r.height;
             var k = TIMEOBJ*(1-j);
             context.canvas.timeobj.set(k);
             context.refresh();
@@ -3413,7 +3465,7 @@ var thumblst =
             context.stretchrect = new rectangle();
             context.extentrect = new rectangle();
             var w = Math.min(320,rect.width-100);
-            var a = new RowA([60,0,40,8,40,8,40,60],
+            var a = new RowA([60,0,40,8,40,8,40,70],
              [
                  0,
                  0,
@@ -3423,7 +3475,7 @@ var thumblst =
                     new Layer(
                     [
                         new Shrink(new Rectangle(context.slicewidthrect),4,0),
-                        new Rounded("rgba(0,0,0,0.25)", 4, "rgba(255,255,255,0)", 16, 16),
+                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 16, 16),
                          new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
                     ]),
                      0,
@@ -3435,7 +3487,7 @@ var thumblst =
                     new Layer(
                     [
                         new Shrink(new Rectangle(context.zoomrect),4,0),
-                        new Rounded("rgba(0,0,0,0.25)", 4, "rgba(255,255,255,0)", 16, 16),
+                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 16, 16),
                          new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
                     ]),
                      0,
@@ -3447,7 +3499,7 @@ var thumblst =
                     new Layer(
                     [
                         new Shrink(new Rectangle(context.stretchrect),4,0),
-                        new Rounded("rgba(0,0,0,0.25)", 4, "rgba(255,255,255,0)", 16, 16),
+                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0)", 16, 16),
                          new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
                     ]),
                     0,
@@ -3482,44 +3534,10 @@ var thumblst =
                 !photo.image.naturalHeight)
                 return;
 
-            var panel = function ()
-            {
-                this.draw = function (context, rect, user, time)
-                {
-                    var x = context.canvas.thumbrect.x;
-                    var y = context.canvas.thumbrect.y;
-                    var w = context.canvas.thumbrect.width;
-                    var h = context.canvas.thumbrect.height;
-                    var hh = context.canvas.selectrect[0].height;
-                    var ww = context.canvas.selectrect[0].width;
-                    context.lineWidth = THUMBORDER;
-                    user = _4cnvctx.canvas.timeobj;
-                    var percent = (ww/w)*100;
-                    context.percentrect = percent;
-                    let centerX = rect.x + rect.width / 2;
-                    let centerY = rect.y + rect.height / 2;
-                    let radius = rect.height/2;
-
-                    let startAngle = 1.5 * Math.PI;
-                    let unitValue = (Math.PI - 0.5 * Math.PI) / 25;
-                    var f = (1-user.berp())*100;
-                    let endAngle = startAngle + (f * unitValue);
-                    var a = endAngle - (percent/2 * unitValue);
-                    var b = endAngle + (percent/2 * unitValue);
-
-                    context.beginPath();
-                    context.moveTo(centerX, centerY);
-                    context.arc(centerX, centerY, radius, a, b, false);
-                    context.closePath();
-                    context.fillStyle = "rgba(255,0,0,0.33)";
-                    context.fill();
-                }
-            }
-
             var rect = new rectangle(r.x, r.y, r.width, r.height);
 
             context.extentrect = new rectangle();
-            var a = new Row([0,60],
+            var a = new Row([0,70],
             [
                 0,
                 new Layer(
@@ -3608,42 +3626,6 @@ var thumblst =
             {
                 var blackfill = new FillPanel(THUMBFILL);
                 blackfill.draw(context, r, 0, 0);
-            }
-
-            if (slicewidthobj.debug)
-            {
-                if (context.canvas.thumbrect.width > context.canvas.thumbrect.height)
-                {
-                    var j = context.canvas.thumbrect.height*0.15;
-                    var a = new Row([j,0,j],
-                        [
-                            0,
-                            new Layer(
-                            [
-                                new CirclePanel("rgba(255,255,255,0.25)", 0, 0),
-                                new panel(),
-                            ]),
-                            0,
-                        ]);
-
-                    a.draw(context, context.canvas.thumbrect, 0, 0);
-                }
-                else
-                {
-                    var j = context.canvas.thumbrect.width*0.70;
-                    var a = new Row([0,j,0],
-                        [
-                            0,
-                            new Layer(
-                            [
-                                new CirclePanel("rgba(255,255,255,0.25)", 0, 0),
-                                new panel(),
-                            ]),
-                            0,
-                        ]);
-
-                    a.draw(context, context.canvas.thumbrect, 0, 0);
-                }
             }
 
             if (!galleryobj.hidefocus)
@@ -3760,7 +3742,7 @@ var buttonlst =
     name: "GALLERY",
     draw: function (context, rect, user, time)
     {
-        if (!context.canvas.ispanningright && !user.thumbimg)
+        if (context.canvas.scrollobj.current() == 0 && !user.thumbimg)
         {
             try
             {
@@ -3793,8 +3775,7 @@ var buttonlst =
                 console.log(error);
             }
         }
-
-        if (context.canvas.scrollobj.current() == 0 &&
+        else if (context.canvas.scrollobj.current() == 0 &&
             user.thumbimg && user.thumbimg.width)
         {
             var obj = context.canvas.scrollobj.value();
@@ -3815,8 +3796,7 @@ var buttonlst =
                         0,0,user.thumbfitted.width,user.thumbfitted.height);
                     user.thumbimg.count += 1;
                 }
-
-                if (user.isvisible)
+                if  (user.isvisible)
                 {
                     var x = Math.nub(obj.value(), obj.length(),
                         rect.width, user.thumbfitted.width);
@@ -3840,7 +3820,6 @@ var buttonlst =
                         0,0,user.thumbfitted.width,user.thumbfitted.height);
                     user.thumbimg.count += 1;
                 }
-
                 if (user.isvisible)
                 {
                     var y = Math.nub(obj.value(), obj.length(),
@@ -4128,12 +4107,15 @@ menuobj.draw = function()
     var slices = context.canvas.sliceobj.data;
     const rect = context.rect();
 
+    var buttonobj = context.canvas.scrollobj.current() == 0 ?
+        context.canvas.buttonobj : context.canvas.buttoninfoobj ;
+
     var visibles = [];
     var delayinterval = 0;
     if (context == _8cnvctx)
     {
         var len = context.canvas.sliceobj.length()
-        canvas.buttonheight = context.canvas.buttonobj.value();
+        canvas.buttonheight = buttonobj.value();
         delayinterval = DELAYCENTER / len / 1000;
         context.canvas.virtualheight = len*canvas.buttonheight * 0.63;
     }
@@ -4211,9 +4193,7 @@ menuobj.draw = function()
     }
 
     context.drawImage(offmenucnv, 0, 0);
-
-    if (context.swipetype != "swipeup")
-        context.canvas.bar.draw(context, rect, 0, 0);
+    context.canvas.bar.draw(context, rect, 0, 0);
     context.canvas.scroll.draw(context, rect, 0, 0);
 }
 
@@ -4221,15 +4201,14 @@ var eventlst =
 [
     {dblclick: "DEFAULT", mouse: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", button: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new Empty(), scroll: new ScrollMenuBar(), buttonheight: 0, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU",  drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new SearchBar(), scroll: new DualPanel(), buttonheight: 90, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new SearchBar(), scroll: new ScrollMenuBar(), buttonheight: 90, width: 640},
     {dblclick: "BOSS", mouse: "DEFAULT", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "GALLERY", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new Empty(), scroll: new DualPanel(), buttonheight: 30, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new DualPanel(), buttonheight: 90, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new DualPanel(), buttonheight: 90, width: 640},
-    {dblclick: "GALLERY", mouse: "MENU", thumb: "DEFAULT", tap: "GALLERY", pan: "MENU", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "GALLERY", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new GalleryBar(), scroll: new DualPanel(), buttonheight: 320, width: 2160},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 90, width: 640},
+    {dblclick: "GALLERY", mouse: "MENU", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "GALLERY", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new GalleryBar(), scroll: new DualPanel(), buttonheight: 320, width: 2160},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar("Image Browser"), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640},
 ];
-
 
 var contextobj = new circular_array("CTX", contextlst);
 contextlst.forEach(function(context, n)
@@ -5036,9 +5015,6 @@ var headlst =
 [
 	new function ()
 	{
-        this.pan = function (context, rect, x, y, type) { panobj.value().pan(_4cnvctx, rect, x, y, type); }
-        this.panend = function (context, rect, x, y) { panobj.value().panend(_4cnvctx, rect, x, y); }
-        this.panstart = function (context, rect, x, y) { panobj.value().panstart(_4cnvctx, rect, x, y); }
         this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.value().swipeleftright(_4cnvctx, rect, x, y, evt); }
         this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.value().swipeupdown(_4cnvctx, rect, x, y, evt); }
     	this.press = function (context, rect, x, y) {pressobj.geturrent().press(_4cnvctx, rect, x, y)}
@@ -5050,9 +5026,6 @@ var headlst =
 	},
 	new function ()
 	{
-        this.pan = function (context, rect, x, y, type) { panobj.value().pan(_4cnvctx, rect, x, y, type); }
-        this.panend = function (context, rect, x, y) { panobj.value().panend(_4cnvctx, rect, x, y); }
-        this.panstart = function (context, rect, x, y) { panobj.value().panstart(_4cnvctx, rect, x, y); }
         this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.value().swipeleftright(_4cnvctx, rect, x, y, evt); }
         this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.value().swipeupdown(_4cnvctx, rect, x, y, evt); }
     	this.press = function (context, rect, x, y) {pressobj.value().press(_4cnvctx, rect, x, y)}
@@ -5078,18 +5051,23 @@ var headlst =
                         screenfull.request();
                 }
             }
-            else if (context.canvas.galleryrect && context.canvas.galleryrect.hitest(x,y))
+            else if (context.canvas.optionrect && context.canvas.optionrect.hitest(x,y))
             {
                 headobj.set(1);
                 thumbobj.set(0);
                 headham.panel = headobj.value();
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-                menuobj.showindex(_8cnvctx);
+                menuobj.showindex(_2cnvctx);
                 _4cnvctx.refresh()
             }
-            else if (context.canvas.optionsrect && context.canvas.optionsrect.hitest(x,y))
+            else if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
             {
-                menuobj.toggle(_2cnvctx);
+                headobj.set(1);
+                thumbobj.set(0);
+                headham.panel = headobj.value();
+                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+                menuobj.showindex(_7cnvctx);
+                _4cnvctx.refresh()
             }
             else
             {
@@ -5116,13 +5094,13 @@ var headlst =
                new Col( [MARGINBAR, ALIEXTENT,0, 50,50,50, 0,ALIEXTENT, MARGINBAR],
                [
                    0,
-                   j?0:new GalleryPanel(),
+                   j?0:new OptionPanel(),
                    0,
                    k?0:new ShiftPanel(new FullPanel(),-10,0),
                    k?0:new SearchPanel(),
                    k?0:new ShiftPanel(new ThumbPanel(),10,0),
                    0,
-                   j?0:new OptionsPanel(),
+                   j?0:new HelpPanel(),
                    0,
                 ]),
                0,
@@ -5134,9 +5112,6 @@ var headlst =
     },
 	new function ()
 	{
-        this.pan = function (context, rect, x, y, type) { panobj.value().pan(_4cnvctx, rect, x, y, type); }
-        this.panend = function (context, rect, x, y) { panobj.value().panend(_4cnvctx, rect, x, y); }
-        this.panstart = function (context, rect, x, y) { panobj.value().panstart(_4cnvctx, rect, x, y); }
         this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.value().swipeleftright(_4cnvctx, rect, x, y, evt); }
         this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.value().swipeupdown(_4cnvctx, rect, x, y, evt); }
     	this.press = function (context, rect, x, y) {pressobj.value().press(_4cnvctx, rect, x, y)}
@@ -5227,8 +5202,6 @@ var headlst =
             context.save();
             context.shadowColor = "black";
             context.prompt = new rectangle()
-            delete context.pagepanel;
-            delete context.optionpanel;
            var w = rect.width;
             if (w > rect.width-BEXTENT*2)
                 w = rect.width-BEXTENT*2;
@@ -5275,9 +5248,6 @@ var headlst =
 	},
 	new function ()
 	{
-        this.pan = function (context, rect, x, y, type) { panobj.value().pan(_4cnvctx, rect, x, y, type); }
-        this.panend = function (context, rect, x, y) { panobj.value().panend(_4cnvctx, rect, x, y); }
-        this.panstart = function (context, rect, x, y) { panobj.value().panstart(_4cnvctx, rect, x, y); }
         this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.value().swipeleftright(_4cnvctx, rect, x, y, evt); }
         this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.value().swipeupdown(_4cnvctx, rect, x, y, evt); }
     	this.press = function (context, rect, x, y) {pressobj.value().press(_4cnvctx, rect, x, y)}
@@ -5309,9 +5279,6 @@ var headlst =
 	},
 	new function ()
 	{
-        this.pan = function (context, rect, x, y, type) { panobj.value().pan(_4cnvctx, rect, x, y, type); }
-        this.panend = function (context, rect, x, y) { panobj.value().panend(_4cnvctx, rect, x, y); }
-        this.panstart = function (context, rect, x, y) { panobj.value().panstart(_4cnvctx, rect, x, y); }
         this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.value().swipeleftright(_4cnvctx, rect, x, y, evt); }
         this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.value().swipeupdown(_4cnvctx, rect, x, y, evt); }
         this.tap = function (context, rect, x, y){ tapobj.value().tap(_4cnvctx, rect, x, y); }
@@ -5331,9 +5298,6 @@ var headlst =
 	},
 	new function ()
 	{
-        this.pan = function (context, rect, x, y, type) { panobj.value().pan(_4cnvctx, rect, x, y, type); }
-        this.panend = function (context, rect, x, y) { panobj.value().panend(_4cnvctx, rect, x, y); }
-        this.panstart = function (context, rect, x, y) { panobj.value().panstart(_4cnvctx, rect, x, y); }
         this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.value().swipeleftright(_4cnvctx, rect, x, y, evt); }
         this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.value().swipeupdown(_4cnvctx, rect, x, y, evt); }
     	this.press = function (context, rect, x, y) {pressobj.value().press(_4cnvctx, rect, x, y)}
@@ -5374,19 +5338,19 @@ var ClosePanel = function (size)
     }
 };
 
-var GalleryPanel = function (size)
+var OptionPanel = function (size)
 {
     this.draw = function (context, rect, user, time)
     {
         context.save()
-        context.canvas.galleryrect = new rectangle()
+        context.canvas.optionrect = new rectangle()
         var j = 5;
         var k = j/2;
         var e = new FillPanel(OPTIONFILL);
-        var s = menuobj.value() == _8cnvctx;
+        var s = menuobj.value() == _2cnvctx;
         var a = new Layer(
         [
-            new Rectangle(context.canvas.galleryrect),
+            new Rectangle(context.canvas.optionrect),
             s ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),22,22) : 0,
             new Shrink(new CirclePanel(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
             new Row( [0, rect.height*0.20, 0],
@@ -5402,19 +5366,19 @@ var GalleryPanel = function (size)
     }
 };
 
-var OptionsPanel = function ()
+var HelpPanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
         context.save()
-        context.canvas.optionsrect = new rectangle()
+        context.canvas.helprect = new rectangle()
         var j = 5;
         var k = j/2;
         var e = new FillPanel(OPTIONFILL);
-        var s = menuobj.value() == _2cnvctx;
+        var s = menuobj.value() == _7cnvctx;
         var a = new Layer(
         [
-            new Rectangle(context.canvas.optionsrect),
+            new Rectangle(context.canvas.helprect),
             s ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),22,22) : 0,
             new Shrink(new CirclePanel(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
             new Col( [0,rect.height*0.20,0],
@@ -5508,7 +5472,6 @@ galleryobj.init = function (obj)
     setfavicon();
     pretchobj.split(60, "40-90", pretchobj.length());
     letchobj.split(60, "40-90", letchobj.length());
-    speedyobj.split(1.25, "1-20", speedyobj.length());
     positxpobj.set(50);
     positypobj.set(70);
     positxlobj.set(50);
@@ -5522,19 +5485,29 @@ galleryobj.init = function (obj)
 
     var lst = [];
     var lst1 = [];
-    var min = typeof galleryobj.buttonmin === "undefined" ?120:galleryobj.buttonmin;
-    var max = typeof galleryobj.buttonmax === "undefined" ?window.innerHeight:galleryobj.buttonmax;
+    var min = 120;
+    var max = window.innerHeight;
     for (var n = min; n < max; n += 1)
     {
         lst.push(n);
         lst1.push("2160x2160");
     }
 
+    var lst2 = [];
+    var min = 180;
+    var max = window.innerHeight;
+    for (var n = min; n < max; n += 1)
+    {
+        lst2.push(n);
+    }
+
     _8cnvctx.canvas.buttonobj = new circular_array("", lst);
+    _8cnvctx.canvas.buttoninfoobj = new circular_array("", lst2);
     _8cnvctx.canvas.variantobj = new circular_array("", lst1);
     var k = typeof galleryobj.buttonstart === "undefined" ? 0.67:galleryobj.buttonstart;
     var j = Math.floor(_8cnvctx.canvas.buttonobj.length()*k);
     _8cnvctx.canvas.buttonobj.set(Number(j));
+    _8cnvctx.canvas.buttoninfoobj.set(150);
     _8cnvctx.canvas.variantobj.set(Number(j));
 
     if (!galleryobj.length())
@@ -5565,13 +5538,6 @@ galleryobj.init = function (obj)
     //_2cnv
     _2cnvctx.canvas.sliceobj.data =
     [
-        {title:"About", path: "ABOUT", func: function()
-        {
-            menuobj.hide();
-            menuobj.setindex(_7cnvctx);
-            menuobj.show();
-        }},
-
         {title:"Open", path: "OPEN", func: function()
         {
             menuobj.hide();
