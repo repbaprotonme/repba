@@ -2179,7 +2179,6 @@ var panlst =
             if (k == obj.anchor())
                 return;
             obj.set(k);
-            context.canvas.variantobj.set(k);
             context.refresh()
         }
         else if (obj && (type == "panleft" || type == "panright"))
@@ -2668,8 +2667,8 @@ var swipelst =
     swipeupdown: function (context, rect, x, y, evt)
     {
         context.swipetype = evt.type;
-        var slidestop = 18;
-        var slidereduce = 54;
+        var slidestop = 12;
+        var slidereduce = 36;
         context.canvas.slideshow = (context.canvas.timeobj.length()/context.canvas.virtualheight)*slidestop;
         context.canvas.slidereduce = context.canvas.slideshow/slidereduce;
         clearInterval(globalobj.swipetimeout);
@@ -2758,15 +2757,17 @@ var keylst =
             swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
             evt.preventDefault();
         }
-        else if (canvas.ctrlKey && key == "arrowdown" ||
+        else if (
+            canvas.ctrlKey && key == "arrowdown" ||
             key == "enter")
         {
             var e = {type:"swipeup"}
             swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
             evt.preventDefault();
         }
-        else if (canvas.ctrlKey && key == "arrowleft" ||
-           canvas.ctrlKey && key == "h")
+        else if (
+            canvas.ctrlKey && key == "arrowleft" ||
+            canvas.ctrlKey && key == "h")
         {
             canvas.imagescrollobj.set(0);
             context.refresh();
@@ -2781,25 +2782,15 @@ var keylst =
         }
         else if (key == "pageup" || key == "arrowup" || key == "k" || (canvas.shiftKey && key == " "))
 		{
-            if (canvas.block)
-                return;
-            canvas.block = 1;
-            setTimeout(function() { canvas.block = 0; }, canvas.keyblock);
-            canvas.keyblock = Math.clamp(25,100,canvas.keyblock-5);
+            var e = {type:"swipedown"}
+            swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
             evt.preventDefault();
-            context.canvas.timeobj.rotate(TIMEOBJ/context.canvas.sliceobj.length());
-            context.refresh()
         }
         else if (key == "pagedown" || key == "arrowdown" || key == "j" || key == " ")
 		{
-            if (canvas.block)
-                return;
-            canvas.block = 1;
-            setTimeout(function() { canvas.block = 0; }, canvas.keyblock);
-            canvas.keyblock = Math.clamp(25,100,canvas.keyblock-5);
+            var e = {type:"swipeup"}
+            swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
             evt.preventDefault();
-            context.canvas.timeobj.rotate(-TIMEOBJ/context.canvas.sliceobj.length());
-            context.refresh()
         }
         else if (key == "-" || key == "[")
         {
@@ -3264,7 +3255,6 @@ var taplst =
                 context.canvas.buttonobj : context.canvas.buttoninfoobj ;
             var k = (x-context.canvas.buttonrect.x)/context.canvas.buttonrect.width;
             obj.setperc(k);
-            context.canvas.variantobj.setperc(k);
             context.refresh();
         }
         else if (context.canvas.searchrect && context.canvas.searchrect.hitest(x,y))
@@ -3682,7 +3672,7 @@ var buttonlst =
                     user.thumbimg.src = URL.createObjectURL(user.file);
                 else
                 {
-                    const variant = _8cnvctx.canvas.variantobj.value();
+                    const variant = "2160x2160";
                     user.thumbimg.src = `https://reportbase.com/image/${user.id}/${variant}`;
                 }
 
@@ -4004,7 +3994,7 @@ menuobj.show = function()
     setTimeout(function() { f(); }, 500);
     setTimeout(function() { f(); }, 1000);
 }
-
+globalobj.lst = []
 menuobj.draw = function()
 {
     var context = this.value();
@@ -4016,6 +4006,7 @@ menuobj.draw = function()
         return;
     var pt = context.getweightedxy(0,time);
     time = pt.y;
+    globalobj.lst.push(time);
     canvas.lastime = Number(time.toFixed(8));
 
     if (context.canvas.slideshow > 0)
@@ -4055,7 +4046,7 @@ menuobj.draw = function()
         context.canvas.virtualheight = len*canvas.buttonheight;
         context.clear();
     }
-slices.length = 600;//todo
+
     var m = 0;
     for (; m < slices.length; ++m)
     {
@@ -4069,8 +4060,8 @@ slices.length = 600;//todo
         var e = (context.canvas.virtualheight-rect.height)/2;
         y -= e;
         var x = rect.width/2;
-        if (y < -canvas.buttonheight*2 ||
-            y >= window.innerHeight+canvas.buttonheight*2)
+        if (y < -canvas.buttonheight*1.5 ||
+            y >= window.innerHeight+canvas.buttonheight*1.5)
         {
             delete slice.thumbimg;
             delete slice.thumbfitted;
@@ -4082,9 +4073,6 @@ slices.length = 600;//todo
         visibles.push({slice, x, y, m});
         slice.lasty = y;
     }
-
-    if (m < slices.length)
-        return;
 
     offmenucnv.width = rect.width;
     offmenucnv.height = rect.height;
@@ -5404,31 +5392,23 @@ galleryobj.init = function (obj)
     slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:10);
 
     var lst = [];
-    var lst1 = [];
-    var min = window.innerHeight/3;
-    var max = window.innerHeight*2;
+    var min = window.innerHeight/2;
+    var max = window.innerHeight*4;
     for (var n = min; n < max; n += 1)
-    {
         lst.push(n);
-        lst1.push("2160x2160");
-    }
 
     var lst2 = [];
     var min = window.innerHeight/3;
     var max = window.innerHeight;
     for (var n = min; n < max; n += 1)
-    {
         lst2.push(n);
-    }
 
     _8cnvctx.canvas.buttonobj = new circular_array("", lst);
     _8cnvctx.canvas.buttoninfoobj = new circular_array("", lst2);
-    _8cnvctx.canvas.variantobj = new circular_array("", lst1);
-    var k = typeof galleryobj.buttonstart === "undefined" ? 0.25:galleryobj.buttonstart;
+    var k = typeof galleryobj.buttonstart === "undefined" ? 0.20:galleryobj.buttonstart;
     var j = Math.floor(_8cnvctx.canvas.buttonobj.length()*k);
     _8cnvctx.canvas.buttonobj.set(Number(j));
     _8cnvctx.canvas.buttoninfoobj.set(150);
-    _8cnvctx.canvas.variantobj.set(Number(j));
 
     if (!galleryobj.length())
     {
@@ -5441,6 +5421,7 @@ galleryobj.init = function (obj)
         if (leftmenu && galleryobj.length())
         {
             headobj.set(1);
+            thumbobj.set(0);
             _8cnvctx.canvas.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
             menuobj.toggle(_8cnvctx);
             _4cnvctx.refresh();
