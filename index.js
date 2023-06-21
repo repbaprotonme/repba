@@ -4081,7 +4081,7 @@ menuobj.draw = function()
         var e = (context.canvas.virtualheight-rect.height)/2;
         y -= e;
         var x = rect.width/2;
-        visibles.p
+        visibles.push({slice, x, y, n});
     }
 
     offmenucnv.width = rect.width;
