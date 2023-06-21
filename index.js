@@ -4081,34 +4081,7 @@ menuobj.draw = function()
         var e = (context.canvas.virtualheight-rect.height)/2;
         y -= e;
         var x = rect.width/2;
-        if (y < -canvas.buttonheight ||
-            y >= window.innerHeight+canvas.buttonheight)
-        {
-            if (!slice.thumbimg)
-            {
-                try
-                {
-                    slice.thumbimg = new Image();
-                    if (slice.full)
-                        slice.thumbimg.src = slice.full;
-                    else if (slice.file)
-                        slice.thumbimg.src = URL.createObjectURL(slice.file);
-                    else
-                    {
-                        const variant = "2160x2160";
-                        slice.thumbimg.src = `https://reportbase.com/image/${slice.id}/${variant}`;
-                    }
-                }
-                catch (error)
-                {
-                    console.log(error);
-                }
-            }
-
-            continue;
-        }
-
-        visibles.push({slice, x, y, n});
+        visibles.p
     }
 
     offmenucnv.width = rect.width;
@@ -4121,7 +4094,7 @@ menuobj.draw = function()
         j.slice.center = {x: j.x, y: j.y};
         j.slice.fitwidth = rect.width;
         j.slice.fitheight = canvas.buttonheight;
-        var y = j.y-height/2;
+        var y = j.y;
         j.slice.isvisible = y > -height && y<window.innerHeight;
         isvisiblecount += j.slice.isvisible?1:0;
         offmenuctx.canvas.scrollobj = context.canvas.scrollobj;
