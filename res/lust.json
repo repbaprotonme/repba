@@ -1,9 +1,5 @@
 {
   "title": "Repba Gallery",
-  "variant": "portrait",
-  "variantlist": "portait,portrait,portrait,portrait,portrait",
-  "buttonlist": "120,240,480,600,720",
-  "buttonstart": 1,
   "data": [
     {
       "id": "LUST.0000",

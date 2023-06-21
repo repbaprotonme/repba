@@ -51,6 +51,11 @@ https://developers.artsy.net/v2/docs/images
 https://api.artic.edu/docs/#conventions
 
 []
+advanced image processing
+https://sod.pixlab.io/articles/modern-image-processing-algorithms-implementation.html
+https://silvia-odwyer.github.io/photon/
+
+[]
 https://zavant.ai/
 https://lexica.art/
 https://chat.forefront.ai/
