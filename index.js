@@ -702,6 +702,8 @@ var GalleryBar = function ()
     this.draw = function (context, rect, user, time)
     {
         context.canvas.buttonrect = new rectangle();
+        context.canvas.hscrollrect = new rectangle();
+        context.canvas.vscrollrect = new rectangle();
         var w = Math.min(320,rect.width-100);
         var j = window.innerWidth - rect.width >= 180;
         context.save();
@@ -713,8 +715,12 @@ var GalleryBar = function ()
                 new Row([20,0,20],
                 [
                     0,
-                    new CurrentVPanel(
-                        new ShadowPanel(new FillPanel("white"),1,1), 90, 1),
+                    new Layer(
+                    [
+                        new Expand(new Rectangle(context.canvas.vscrollrect),10,0),
+                        new CurrentVPanel(
+                            new ShadowPanel(new FillPanel("white"),1,1), 90, 1),
+                    ]),
                     0,
                 ]),
                 0,
@@ -740,7 +746,7 @@ var GalleryBar = function ()
                      0,
                       new Layer(
                      [
-                        new Shrink(new Rectangle(context.canvas.buttonrect),4,0),
+                        new Rectangle(context.canvas.buttonrect),
                         new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
                         new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
                      ]),
@@ -750,8 +756,12 @@ var GalleryBar = function ()
                 new Col([20,0,20],
                 [
                     0,
-                    new CurrentHPanel(
-                        new ShadowPanel(new FillPanel("white"),1,1), 90, 1),
+                    new Layer(
+                    [
+                        new Expand(new Rectangle(context.canvas.hscrollrect),0,10),
+                        new CurrentHPanel(
+                            new ShadowPanel(new FillPanel("white"),1,1), 90, 1),
+                    ]),
                     0,
                 ]),
                 0
@@ -1957,6 +1967,10 @@ var dblclicklst =
             return;
         if (context.canvas.buttonrect && context.canvas.buttonrect.hitest(x,y))
             return;
+        if (context.canvas.hscrollrect && context.canvas.hscrollrect.hitest(x,y))
+            return;
+        if (context.canvas.vscrollrect && context.canvas.vscrollrect.hitest(x,y))
+            return;
         var image = slice.image_url;
         slice.tap = 1;
         context.refresh();
@@ -2040,7 +2054,10 @@ var pinchlst =
         context.canvas.slideshow = 0;
         context.canvas.pinching = 1;
         context.canvas.savepinch = obj.value()
-    },
+        context.canvas.slideshow = 0;
+        clearInterval(globalobj.swipetimeout);
+        globalobj.swipetimeout = 0;
+     },
     pinchend: function (context)
     {
         clearTimeout(globalobj.pinchtime);
@@ -3182,6 +3199,20 @@ var taplst =
             context.canvas.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
             context.refresh();
         }
+        else if (context.canvas.hscrollrect && context.canvas.hscrollrect.hitest(x,y))
+        {
+            var obj = context.canvas.scrollobj.value();
+            var k = (x-context.canvas.hscrollrect.x)/context.canvas.hscrollrect.width;
+            obj.setperc(k);
+            context.refresh();
+        }
+        else if (context.canvas.vscrollrect && context.canvas.vscrollrect.hitest(x,y))
+        {
+            var obj = context.canvas.timeobj;
+            var k = (y-context.canvas.vscrollrect.y)/context.canvas.vscrollrect.height;
+            obj.setperc(1-k);
+            contextobj.reset();
+        }
         else if (context.fullrect && context.fullrect.hitest(x,y))
         {
             if (screenfull.isEnabled)
@@ -4008,7 +4039,6 @@ menuobj.draw = function()
         context.canvas.slideshow = 0;
         clearInterval(globalobj.swipetimeout);
         globalobj.swipetimeout = 0;
-
     }
 
     var len = context.canvas.sliceobj.length()
@@ -4030,14 +4060,14 @@ menuobj.draw = function()
         context.canvas.rotated = [...a,...a,...a];
     }
 
-    var size = Math.ceil(rect.height/canvas.buttonheight)+2;
+    var size = Math.ceil(rect.height/canvas.buttonheight)+1;
     var current = Math.floor(
         Math.lerp(0,slices.length-1,1-context.canvas.timeobj.berp()));
-    var lst = getrotatedlist(context.canvas.rotated,slices.length,current,size);
+    var slicegroup = getrotatedlist(context.canvas.rotated,slices.length,current,size);
     var visibles = [];
-    for (var m = 0; m < lst.length; ++m)
+    for (var m = 0; m < slicegroup.length; ++m)
     {
-        var n = lst[m];
+        var n = slicegroup[m];
         var slice = slices[n];
         slice.fitwidth = 0;
         slice.fitheight = 0;
@@ -4050,10 +4080,29 @@ menuobj.draw = function()
         var x = rect.width/2;
         if (y < -canvas.buttonheight ||
             y >= window.innerHeight+canvas.buttonheight)
-            continue;
+        {
+            if (!slice.thumbimg)
+            {
+                try
+                {
+                    slice.thumbimg = new Image();
+                    if (slice.full)
+                        slice.thumbimg.src = slice.full;
+                    else if (slice.file)
+                        slice.thumbimg.src = URL.createObjectURL(slice.file);
+                    else
+                    {
+                        const variant = "2160x2160";
+                        slice.thumbimg.src = `https://reportbase.com/image/${slice.id}/${variant}`;
+                    }
+                }
+                catch (error)
+                {
+                    console.log(error);
+                }
+            }
+        }
 
-        slice.fitwidth = rect.width;
-        slice.fitheight = canvas.buttonheight;
         visibles.push({slice, x, y, n});
     }
 
@@ -4065,6 +4114,8 @@ menuobj.draw = function()
         var j = visibles[m];
         var height = canvas.buttonheight;
         j.slice.center = {x: j.x, y: j.y};
+        j.slice.fitwidth = rect.width;
+        j.slice.fitheight = canvas.buttonheight;
         var y = j.y-height/2;
         j.slice.isvisible = y > -height && y<window.innerHeight;
         isvisiblecount += j.slice.isvisible?1:0;
@@ -5776,6 +5827,59 @@ function deleteimage()
     .then(data => console.log(data))
     .catch(error => { console.log("Error:", error); });
 }
+
+//todo
+function imagegotoshow()
+{
+    var input = document.getElementById("search-value");
+    input.addEventListener("keyup", function(event)
+    {
+      if (event.keyCode === 13)
+      {
+        event.preventDefault();
+        var search = document.getElementById('search-value').value.clean();
+        if (!search)
+          return;
+        windowopen(`${url.origin}?${repos}=${search}&page=${url.page}`);
+      }
+    });
+
+    globalobj.block = 1;
+    const dialog = document.getElementById("search-overlay");
+    globalobj.prompt = dialog;
+    dialog.addEventListener("click", function()
+    {
+        var rect = input.getBoundingClientRect();
+        if (event.target.id == "search-ok")
+        {
+            var search = document.getElementById('search-value').value.clean();
+            if (!search)
+                return;
+            globalobj.prompt = 0;
+            windowopen(`${url.origin}?${repos}=${search}&page=${url.page}`);
+        }
+        else if (event.clientY < rect.top || event.clientY > rect.bottom ||
+            event.clientX < rect.left || event.clientX > rect.right)
+        {
+            if (globalobj.block)
+                return;
+            dialog.close();
+            globalobj.prompt = 0;
+        }
+    });
+
+    var search = "";
+    if (url.searchParams.has(galleryobj.repos))
+    {
+        var k = url.searchParams.get(galleryobj.repos);
+        search = k.split(".")[0];
+    }
+
+    document.getElementById('search-value').value = search;
+    dialog.showModal();
+    setTimeout(function() { globalobj.block = 0; }, 40);
+}
+
 
 function searchshow(repos)
 {
