@@ -2057,7 +2057,9 @@ var pinchlst =
         context.canvas.slideshow = 0;
         clearInterval(globalobj.swipetimeout);
         globalobj.swipetimeout = 0;
-     },
+        clearInterval(globalobj.timeauto);
+        globalobj.timeauto = 0;
+    },
     pinchend: function (context)
     {
         clearTimeout(globalobj.pinchtime);
@@ -2067,6 +2069,7 @@ var pinchlst =
             savelocal("button.height", obj.current());
             context.canvas.pinching = 0;
             context.refresh();
+            menuobj.draw();
         }, 40);
     },
 },
@@ -4101,6 +4104,8 @@ menuobj.draw = function()
                     console.log(error);
                 }
             }
+
+            continue;
         }
 
         visibles.push({slice, x, y, n});
