@@ -24,7 +24,7 @@ const MENUSELECT = "rgba(255,175,0,0.7)";
 const MENUTAP = "rgba(255,125,0,0.7)";
 const MENUTAG = "rgba(200,0,0,0.9)";
 const SELECTAP = "rgba(255,0,0.75,0.7)";
-const SCROLLNAB = "rgba(0,0,0,0.5)";
+const SCROLLNAB = "rgba(0,0,0,0.3)";
 const BARFILL = "rgba(0,0,0,0.5)";
 const MENUCOLOR = "rgba(0,0,0,0.5)";
 const OPTIONFILL = "white";
@@ -616,12 +616,17 @@ offbossctx.font = DEFAULTFONT;
 offbossctx.fillText("  ", 0, 0);
 
 let canvaslst = [];
-canvaslst[0] = document.createElement("canvas");
-canvaslst[1] = document.createElement("canvas");
-canvaslst[2] = document.createElement("canvas");
-canvaslst[3] = document.createElement("canvas");
-canvaslst[4] = document.createElement("canvas");
-canvaslst[5] = document.createElement("canvas");
+for (var n = 0; n < 6; ++n)
+    canvaslst[n] = document.createElement("canvas");
+
+let ganvaslst = [];
+for (var n = 0; n < 20; ++n)
+    ganvaslst[n] = document.createElement("canvas");
+
+let imagelst = [];
+for (var n = 0; n < 20; ++n)
+    imagelst[n] = new Image();
+
 
 var Empty = function()
 {
@@ -2630,8 +2635,6 @@ var swipelst =
             {
                 context.refresh();
             }, timemain.value());
-
-        menuobj.clear()
    },
 },
 {
@@ -2712,7 +2715,6 @@ var keylst =
             var e = {type:"swipedown"}
             swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
             evt.preventDefault();
-            menuobj.clear();
         }
         else if (
             canvas.ctrlKey && key == "arrowdown" ||
@@ -2721,7 +2723,6 @@ var keylst =
             var e = {type:"swipeup"}
             swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
             evt.preventDefault();
-            menuobj.clear();
         }
         else if (
             canvas.ctrlKey && key == "arrowleft" ||
@@ -2743,13 +2744,11 @@ var keylst =
             var e = {type:"swipedown"}
             swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
             evt.preventDefault();
-            menuobj.clear();
         }
         else if (key == "pagedown" || key == "arrowdown" || key == "j" || key == " ")
 		{
             var e = {type:"swipeup"}
             swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
-            menuobj.clear();
             evt.preventDefault();
         }
         else if (key == "-" || key == "[")
@@ -3230,7 +3229,6 @@ var taplst =
             var k = (y-context.canvas.vscrollrect.y)/context.canvas.vscrollrect.height;
             obj.setperc(1-k);
             contextobj.reset();
-            menuobj.clear();
         }
         else if (context.fullrect && context.fullrect.hitest(x,y))
         {
@@ -3597,6 +3595,7 @@ var buttonlst =
     name: "OPTION",
     draw: function (context, rect, user, time)
     {
+        context.save()
         var clr = SCROLLNAB;
         if (user.tap)
             clr = MENUTAP;
@@ -3613,6 +3612,7 @@ var buttonlst =
         ]);
 
         a.draw(context, rect, user.line.split("\n"), time);
+        context.restore();
     }
 },
 {
@@ -3650,11 +3650,15 @@ var buttonlst =
     name: "GALLERY",
     draw: function (context, rect, user, time)
     {
-        if (context.canvas.scrollobj.current() == 0 && !user.thumbimg)
+        var index = time%ganvaslst.length;
+        var view = Math.floor(time/ganvaslst.length)
+        user.thumbimg = imagelst[index]
+        if (context.canvas.scrollobj.current() == 0 &&
+            user.thumbimg.view != view)
         {
+            user.thumbimg.view = view;
             try
             {
-                user.thumbimg = new Image();
                 if (user.full)
                     user.thumbimg.src = user.full;
                 else if (user.file)
@@ -3688,53 +3692,63 @@ var buttonlst =
             var obj = context.canvas.scrollobj.value();
             var b = user.thumbimg.width/user.thumbimg.height;
             var b2 = rect.width/rect.height;
-            if (b > b2)
+            user.thumbfitted = ganvaslst[index];
+            if (user.thumbfitted.view != view)
             {
-                if (!user.thumbfitted ||
-                    user.thumbfitted.height != rect.height ||
-                    user.thumbimg.count < 1)
-                {
-                    user.thumbfitted = document.createElement('canvas');
-                    var thumbfittedctx = user.thumbfitted.getContext("2d");
-                    user.thumbfitted.height = rect.height;
-                    user.thumbfitted.width = rect.height*b;
-                    thumbfittedctx.drawImage(
-                        user.thumbimg,0,0,user.thumbimg.width,user.thumbimg.height,
-                        0,0,user.thumbfitted.width,user.thumbfitted.height);
-                    user.thumbimg.count += 1;
-                }
-
-                if  (user.isvisible)
-                {
-                    var x = Math.nub(obj.value(), obj.length(),
-                        rect.width, user.thumbfitted.width);
-                    context.drawImage(user.thumbfitted,
-                        x, 0, rect.width, rect.height,
-                        0, 0, rect.width, rect.height);
-                }
+                user.thumbfitted.view = view;
+                delete user.thumbimg;
             }
             else
             {
-                if (!user.thumbfitted ||
-                    user.thumbfitted.width != rect.width ||
-                    user.thumbimg.count < 1)
+                if (b > b2)
                 {
-                    user.thumbfitted = document.createElement('canvas');
-                    var thumbfittedctx = user.thumbfitted.getContext("2d");
-                    user.thumbfitted.width = rect.width;
-                    user.thumbfitted.height = rect.width/b;
-                    thumbfittedctx.drawImage(
-                        user.thumbimg,0,0,user.thumbimg.width,user.thumbimg.height,
-                        0,0,user.thumbfitted.width,user.thumbfitted.height);
-                    user.thumbimg.count += 1;
+                    if (user.thumbfitted.height != rect.height ||
+                        user.thumbimg.count < 1)
+                    {
+                        var thumbfittedctx = user.thumbfitted.getContext("2d");
+                        user.thumbfitted.height = rect.height;
+                        user.thumbfitted.width = rect.height*b;
+                        thumbfittedctx.drawImage(
+                            user.thumbimg,0,0,user.thumbimg.width,user.thumbimg.height,
+                            0,0,user.thumbfitted.width,user.thumbfitted.height);
+                        user.thumbimg.count += 1;
+                    }
+                    else
+                    {
+                        delete user.thumbimg;
+                    }
+
+                    if  (user.isvisible)
+                    {
+                        var x = Math.nub(obj.value(), obj.length(),
+                            rect.width, user.thumbfitted.width);
+                        context.drawImage(user.thumbfitted,
+                            x, 0, rect.width, rect.height,
+                            0, 0, rect.width, rect.height);
+                    }
                 }
-                if (user.isvisible)
+                else
                 {
-                    var y = Math.nub(obj.value(), obj.length(),
-                        rect.height, user.thumbfitted.height);
-                    context.drawImage(user.thumbfitted,
-                        0, y, rect.width, rect.height,
-                        0, 0, rect.width, rect.height);
+                    if (user.thumbfitted.width != rect.width ||
+                        user.thumbimg.count < 1)
+                    {
+                        var thumbfittedctx = user.thumbfitted.getContext("2d");
+                        user.thumbfitted.width = rect.width;
+                        user.thumbfitted.height = rect.width/b;
+                        thumbfittedctx.drawImage(
+                            user.thumbimg,0,0,user.thumbimg.width,user.thumbimg.height,
+                            0,0,user.thumbfitted.width,user.thumbfitted.height);
+                        user.thumbimg.count += 1;
+                    }
+
+                    if (user.isvisible)
+                    {
+                        var y = Math.nub(obj.value(), obj.length(),
+                            rect.height, user.thumbfitted.height);
+                        context.drawImage(user.thumbfitted,
+                            0, y, rect.width, rect.height,
+                            0, 0, rect.width, rect.height);
+                    }
                 }
             }
 
@@ -3746,23 +3760,19 @@ var buttonlst =
         }
         else if (context.canvas.scrollobj.current() == 1)
         {
-            //if (!user.lst)
+            var lst = [];
+            lst[0] = `${time+1} of ${galleryobj.length()}`;
+            lst[1] = `y: ${user.center.y.toFixed(2)}`;
+            let keys = Object.keys(user);
+            for (var n = 0; n < keys.length; ++n)
             {
-                var lst = [];
-                lst[0] = `${time+1} of ${galleryobj.length()}`;
-                lst[1] = `y: ${user.center.y.toFixed(2)}`;
-                let keys = Object.keys(user);
-                for (var n = 0; n < keys.length; ++n)
+                var key = keys[n];
+                var value = user[key]
+                if (value && value.length && typeof value === 'string')
                 {
-                    var key = keys[n];
-                    var value = user[key]
-                    if (value && value.length && typeof value === 'string')
-                    {
-                        if (value.substr(0,4) != "http")
-                            lst.push(value);
-                    }
+                    if (value.substr(0,4) != "http")
+                        lst.push(value);
                 }
-                user.lst = lst;
             }
 
             var e = _8cnvctx.canvas.textscrollobj.berp();
@@ -3783,7 +3793,7 @@ var buttonlst =
                 0,
             ]);
 
-            a.draw(context, rect, user.lst, 0);
+            a.draw(context, rect, lst, 0);
         }
     }
 },
@@ -3998,6 +4008,8 @@ menuobj.show = function()
 
 menuobj.clear = function()
 {
+    return;
+
     var context = this.value();
     if (!context)
         return;
@@ -5844,7 +5856,12 @@ function imagegoto()
         var image = document.getElementById('image-goto-value').value.clean();
         if (!image)
           return;
-          //todo
+            globalobj.prompt = 0;
+            var obj = _8cnvctx.canvas.timeobj;
+            var k = Number(image)/galleryobj.length();
+            obj.setperc(1-k);
+            contextobj.reset();
+            dialog.close();
       }
     });
 
@@ -5864,7 +5881,6 @@ function imagegoto()
             var k = Number(image)/galleryobj.length();
             obj.setperc(1-k);
             contextobj.reset();
-            menuobj.clear();
             dialog.close();
         }
         else if (event.clientY < rect.top || event.clientY > rect.bottom ||
