@@ -5440,7 +5440,7 @@ galleryobj.init = function (obj)
         lst.push(n);
 
     _8cnvctx.canvas.buttonobj = new circular_array("", lst);
-    var k = loadlocalnumber("button.height",Math.floor(lst.length*0.30));
+    var k = loadlocalnumber("button.height",Math.floor(lst.length*0.15));
     _8cnvctx.canvas.buttonobj.set(k);
 
     if (!galleryobj.length())
