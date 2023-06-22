@@ -4300,6 +4300,7 @@ contextobj.reset = function (leftright)
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             contextobj.reset()
             _4cnvctx.canvas.movingpage = 0;
+            swipeobj.value().swipeleftright(_4cnvctx, 0, 0, 0, 0)
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             setTimeout(function() { masterload(); }, 500);
         }
