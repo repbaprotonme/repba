@@ -93,6 +93,7 @@ Math.clamp = function (min, max, val)
 
 function windowopen(url)
 {
+    //todo
     if (1)//SAFARI || FIREFOX )
         window.open(url,"_self");
     else
@@ -704,6 +705,7 @@ var GalleryBar = function ()
         context.canvas.buttonrect = new rectangle();
         context.canvas.hscrollrect = new rectangle();
         context.canvas.vscrollrect = new rectangle();
+        context.canvas.imagegotorect = new rectangle();
         var w = Math.min(320,rect.width-100);
         var j = window.innerWidth - rect.width >= 180;
         context.save();
@@ -752,7 +754,11 @@ var GalleryBar = function ()
                      ]),
                      0,
                  ]):0,
-                 new ShadowPanel(new Text("rgb(255,255,255)", "center", "middle",0, 0),1,1),
+                new Layer(
+                [
+                    new Rectangle(context.canvas.imagegotorect),
+                    new ShadowPanel(new Text("rgb(255,255,255)", "center", "middle",0, 0),1,1),
+                ]),
                 new Col([20,0,20],
                 [
                     0,
@@ -3064,10 +3070,18 @@ var taplst =
         }
         else if (context.extentrect && context.extentrect.hitest(x,y))
         {
-            if (galleryobj.value().id)
-                copytext(galleryobj.value().id);
-            extentobj.rotate(1);
-            context.refresh();
+            if (context.canvas.shiftlKey)
+            {
+                if (galleryobj.value().id)
+                    copytext(galleryobj.value().id);
+                extentobj.rotate(1);
+                context.refresh();
+            }
+            else
+            {
+                //todo context.canvas.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+                menuobj.toggle(_8cnvctx);
+            }
         }
         else if (context.zoomrect && context.zoomrect.hitest(x,y))
         {
@@ -3235,6 +3249,10 @@ var taplst =
             obj.setperc(k);
             context.refresh();
             savelocal("button.height", obj.current());
+        }
+        else if (context.canvas.imagegotorect && context.canvas.imagegotorect.hitest(x,y))
+        {
+            imagegoto();
         }
         else if (context.canvas.searchrect && context.canvas.searchrect.hitest(x,y))
         {
@@ -5815,35 +5833,39 @@ function deleteimage()
     .catch(error => { console.log("Error:", error); });
 }
 
-//todo
-function imagegotoshow()
+function imagegoto()
 {
-    var input = document.getElementById("search-value");
+    var input = document.getElementById("image-goto-value");
     input.addEventListener("keyup", function(event)
     {
       if (event.keyCode === 13)
       {
         event.preventDefault();
-        var search = document.getElementById('search-value').value.clean();
-        if (!search)
+        var image = document.getElementById('image-goto-value').value.clean();
+        if (!image)
           return;
-        windowopen(`${url.origin}?${repos}=${search}&page=${url.page}`);
+          //todo
       }
     });
 
     globalobj.block = 1;
-    const dialog = document.getElementById("search-overlay");
+    const dialog = document.getElementById("image-goto");
     globalobj.prompt = dialog;
     dialog.addEventListener("click", function()
     {
         var rect = input.getBoundingClientRect();
-        if (event.target.id == "search-ok")
+        if (event.target.id == "image-ok")
         {
-            var search = document.getElementById('search-value').value.clean();
-            if (!search)
-                return;
+            var image = document.getElementById('image-goto-value').value.clean();
+            if (!image)
+              return;
             globalobj.prompt = 0;
-            windowopen(`${url.origin}?${repos}=${search}&page=${url.page}`);
+            var obj = _8cnvctx.canvas.timeobj;
+            var k = Number(image)/galleryobj.length();
+            obj.setperc(1-k);
+            contextobj.reset();
+            menuobj.clear();
+            dialog.close();
         }
         else if (event.clientY < rect.top || event.clientY > rect.bottom ||
             event.clientX < rect.left || event.clientX > rect.right)
@@ -5855,14 +5877,10 @@ function imagegotoshow()
         }
     });
 
-    var search = "";
-    if (url.searchParams.has(galleryobj.repos))
-    {
-        var k = url.searchParams.get(galleryobj.repos);
-        search = k.split(".")[0];
-    }
+    var current = Math.floor(
+        Math.lerp(0,galleryobj.length()-1,1-_8cnvctx.canvas.timeobj.berp()));
 
-    document.getElementById('search-value').value = search;
+   document.getElementById('image-goto-value').value = current+1;
     dialog.showModal();
     setTimeout(function() { globalobj.block = 0; }, 40);
 }
