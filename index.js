@@ -546,10 +546,10 @@ var YollPanel = function ()
         	context.canvas.pinchstart_(context, rect, x, y);
 	}
 
-	this.pressup = function(context)
+	this.pressup = function(context, rect, x, y, shift, ctrl)
 	{
-   		if (context.canvas.pressup_)
-        	context.canvas.pressup_(context);
+		if (context.canvas.pressup_)
+        	context.canvas.pressup_(context, rect, x, y, shift, ctrl);
 	}
 
 	this.press = function(context, rect, x, y, shift, ctrl)
@@ -2542,6 +2542,7 @@ var presslst =
     name: "BOSS",
     pressup: function (context, rect, x, y)
     {
+        galleryobj.hidefocus = 0;
     },
     press: function (context, rect, x, y)
     {
@@ -2549,8 +2550,18 @@ var presslst =
             return;
         if (context.stretchrect && context.stretchrect.hitest(x,y))
             return;
-        if (thumbobj.current() == 1)
-            galleryobj.hidefocus = galleryobj.hidefocus?0:1;
+        if (thumbobj.current() == 0)
+        {
+        }
+        else if (thumbobj.current() == 1)
+        {
+            galleryobj.hidefocus = 1;
+            var positx = positxobj.value();
+            var posity = posityobj.value();
+            positx.set((x/rect.width)*100);
+            posity.set((y/rect.height)*100);
+            context.refresh();
+        }
         context.refresh();
     }
 },
