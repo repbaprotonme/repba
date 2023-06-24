@@ -324,7 +324,7 @@ function drawboss()
     var stretch = stretchobj.value();
     var virtualpinch = _4cnv.virtualwidth*(stretch.value()/100);
     var colwidth = _4cnv.colwidth;
-    var virtualeft = (virtualpinch-rect.width)/2;
+    var virtualeft = (virtualpinch-rect.width)/2+colwidth;
     var j = (colwidth/(colwidth+_4cnv.virtualwidth))*TIMEOBJ;
     var time = (canvas.timeobj.value()+j)/1000;
 
@@ -367,9 +367,7 @@ function drawboss()
         offbossctx.drawImage(slice.canvas,
             slice.x, 0, colwidth, rect.height,
             x, 0, w, rect.height);
-//        var a = new Text("black", "center", "middle", 0, 0, HUGEFONT);
-//        a.draw(offbossctx, new rectangle(x, 0, w, rect.height),
-//            `${n+1} of ${slicelst.length}`, 0)
+        //todo: overlaylst
     }
 
     context.drawImage(offbosscnv,0,0)
@@ -3407,11 +3405,11 @@ var thumblst =
             var b = Math.berp(0,photo.image.height,context.canvas.imageheight);
             var hh = Math.lerp(0,h,b);
             var b = Math.berp(0,photo.image.height,_4cnv.nuby);
-            //todo
             var yy = y+Math.lerp(0,h,b);
             var jj = context.canvas.timeobj.berp();
             var bb = w*(1-jj);
-            var xx = x+bb-ww;
+//todo
+            var xx = x+bb-ww/2;
             context.lineWidth = THUMBORDER;
             var r = new rectangle(xx,yy,ww,hh);
             context.canvas.selectrect = []
