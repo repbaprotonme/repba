@@ -40,6 +40,7 @@ const MARGINBAR = 5;
 const SMALLFONT = "15px archivo black";
 const DEFAULTFONT = "17px archivo black";
 const LARGEFONT = "20px archivo black";
+const HUGEFONT = "24px archivo black";
 globalobj = {};
 let photo = {};
 photo.image = 0;
@@ -76,10 +77,10 @@ Math.randomvalue = function (min, max)
 
 Math.clamp2 = function (min, max)
 {
-  return function(value)
-  {
-    return Math.max(min, Math.min(max, value));
-  };
+    return function(value)
+    {
+        return Math.max(min, Math.min(max, value));
+    };
 }
 
 Math.clamp = function (min, max, val)
@@ -323,7 +324,7 @@ function drawboss()
     var stretch = stretchobj.value();
     var virtualpinch = _4cnv.virtualwidth*(stretch.value()/100);
     var colwidth = _4cnv.colwidth;
-    var virtualeft = (virtualpinch-rect.width)/2;//-colwidth;
+    var virtualeft = (virtualpinch-rect.width)/2;
     var j = (colwidth/(colwidth+_4cnv.virtualwidth))*TIMEOBJ;
     var time = (canvas.timeobj.value()+j)/1000;
 
@@ -332,7 +333,7 @@ function drawboss()
     if (!slice)
         return;
     context.save();
-//    if (galleryobj.value().ispng || slicewidthobj.debug)
+    if (galleryobj.value().ispng || slicewidthobj.debug)
         context.clear();
     context.shadowOffsetX = 0;
     context.shadowOffsetY = 0;
@@ -341,48 +342,34 @@ function drawboss()
         slicelst[m].stretchwidth = 0;
     }
 
-    var size = Math.ceil(rect.width/colwidth);
-    var current = Math.floor(
-        Math.lerp(0,slicelst.length-1,1-_4cnv.timeobj.berp()));
-    var slicegroup = getrotatedlist(_4cnv.rotated,slicelst.length,current,size);
-
-    var xgroup = []
-    for (var n = 0; n < slicegroup.length; ++n)
+    offbosscnv.width = rect.width;
+    offbosscnv.height = rect.height;
+    for (var m = slicelst.length; m < slicelst.length*2; ++m)
     {
-        var m = slicegroup[n];
-        var slice = slicelst[m];
+        var n = _4cnv.rotated[m];
+        var slice = slicelst[n];
         var j = time + slice.time;
         var b = Math.tan(j*VIRTCONST);
         var x = Math.berp(-1, 1, b) * virtualpinch - virtualeft;
-        xgroup.push({slice,x});
-    }
 
-    var visiblegroup = []
-    for (var n = 0; n < xgroup.length; ++n)
-    {
-        var j = xgroup[n];
-        if (n < xgroup.length-1)
-        {
-            var j2 = xgroup[n+1];
-            j.w = j2.x-j.x;
-        }
-        else
-        {
-            var j2 = xgroup[0];
-            j.w = j.x-j2.x;
-        }
+        var n2 = _4cnv.rotated[m+1];
+        var slice2 = slicelst[n2];
+        var j2 = time + slice2.time;
+        var b2 = Math.tan(j2*VIRTCONST);
+        var x2 = Math.berp(-1, 1, b2) * virtualpinch - virtualeft;
 
-        visiblegroup.push(j);
-    }
+        var g = x2 > x ? x2-x : x-x2;
+        var w = slicewidthobj.debug ? colwidth : g;
+        w = Math.ceil(x+w)-x;
 
-    offbosscnv.width = rect.width;
-    offbosscnv.height = rect.height;
-    for (var n = 0; n < visiblegroup.length; ++n)
-    {
-        var j = visiblegroup[n];
-        offbossctx.drawImage(j.slice.canvas,
-            j.slice.x, 0, colwidth, rect.height,
-            j.x, 0, j.w, rect.height);
+        if (x < -w || x >= rect.width)
+            continue;
+        offbossctx.drawImage(slice.canvas,
+            slice.x, 0, colwidth, rect.height,
+            x, 0, w, rect.height);
+//        var a = new Text("black", "center", "middle", 0, 0, HUGEFONT);
+//        a.draw(offbossctx, new rectangle(x, 0, w, rect.height),
+//            `${n+1} of ${slicelst.length}`, 0)
     }
 
     context.drawImage(offbosscnv,0,0)
@@ -2084,6 +2071,8 @@ var extentobj = new circular_array("EXTENT", []);
 var infobj = new circular_array("INFO", []);
 
 var slicewidthobj = new circular_array("SLICEWIDTH", 640);
+slicewidthobj.debug = 0;
+
 var poomobj = new circular_array("PORTZOOM", 100);
 var loomobj = new circular_array("LANDZOOM", 100);
 var zoomobj = new circular_array("ZOOM", [poomobj,loomobj]);
@@ -3212,12 +3201,13 @@ var taplst =
             if (!timeauto)
             {
                 globalobj.timeauto = 1;
+                swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipeup"})
                 context.refresh()
                 clearInterval(globalobj.timeauto);
                 globalobj.timeauto = setInterval(function()
                 {
                     swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipeup"})
-                }, 1000);
+                }, 3000);
             }
         }
         else
@@ -3342,7 +3332,7 @@ var thumblst =
             var rect = new rectangle(r.x, r.y, r.width, r.height);
 
             context.extentrect = new rectangle();
-            var a = new RowA([0,60,SCROLLBARWIDTH,5],
+            var a = new RowA([0,60,20],
             [
                 0,
                 new Layer(
@@ -3350,19 +3340,13 @@ var thumblst =
                     new Rectangle(context.extentrect),
                     new ShadowPanel(new Text("rgb(255,255,255)", "center", "middle",0, 0),1,1),
                 ]),
-                new Col([5,0,5],
-                [
-                    0,
-                    0,//new CurrentHPanel(new CirclePanel(MENUTAP,"rgba(255,255,255,0.5)",4), 40, 1),
-                    0,
-                ]),
+                0,
             ]);
 
             a.draw(context, rect,
                 [
                     0,
                     extentobj.value(),
-                    context.canvas.timeobj,
                     0,
                 ], user, time);
 
@@ -3423,10 +3407,11 @@ var thumblst =
             var b = Math.berp(0,photo.image.height,context.canvas.imageheight);
             var hh = Math.lerp(0,h,b);
             var b = Math.berp(0,photo.image.height,_4cnv.nuby);
+            //todo
             var yy = y+Math.lerp(0,h,b);
             var jj = context.canvas.timeobj.berp();
             var bb = w*(1-jj);
-            var xx = x+bb-ww/2;
+            var xx = x+bb-ww;
             context.lineWidth = THUMBORDER;
             var r = new rectangle(xx,yy,ww,hh);
             context.canvas.selectrect = []
@@ -5276,10 +5261,10 @@ galleryobj.init = function (obj)
     positylobj.set(70);
     traitobj.split(60, "0.1-1.0", traitobj.length());
     scapeobj.split(60, "0.1-1.0", scapeobj.length());
-    var zoom = galleryobj.zoom?galleryobj.zoom:25;
+    var zoom = (typeof galleryobj.zoom === "undefined") ?25:galleryobj.zoom;
     poomobj.set(zoom);
     loomobj.set(zoom);
-    slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:90);
+    slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:180);
 
     var min = galleryobj.min?galleryobj.min:0;
     var max = galleryobj.max?galleryobj.max:0;
