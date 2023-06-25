@@ -385,10 +385,10 @@ function drawboss()
 
     if (!menuobj.value())
     {
-        var a = new Shrink(new Layer(
+        var a = new Layer(
             [
-                thumbobj.value()
-            ]), THUMBSELECT, THUMBSELECT);
+                bossobj.value()
+            ]);
         a.draw(context, rect, 0, 0);
     }
 }
@@ -694,7 +694,7 @@ var GalleryBar = function ()
                     [
                         new Expand(new Rectangle(context.canvas.vscrollrect),10,0),
                         new CurrentVPanel(
-                            new ShadowPanel(new FillPanel("white"),1,1), 90, 1),
+                            new ShadowPanel(new FillPanel("white")), 90, 1),
                     ]),
                     0,
                 ]),
@@ -710,7 +710,7 @@ var GalleryBar = function ()
                     0,
                     new ShiftPanel(new FullPanel(),-10,0),
                     new ScrollPanel(),
-                    new ShiftPanel(new AutoPanel(),10,0),
+                    new ShiftPanel(new HomePanel(),10,0),
                     0,
                     0,
                     0,
@@ -730,7 +730,7 @@ var GalleryBar = function ()
                 new Layer(
                 [
                     new Rectangle(context.canvas.imagegotorect),
-                    new ShadowPanel(new Text("rgb(255,255,255)", "center", "middle",0, 0),1,1),
+                    new ShadowPanel(new Text("rgb(255,255,255)", "center", "middle",0, 0)),
                 ]),
                 new Col([20,0,20],
                 [
@@ -739,7 +739,7 @@ var GalleryBar = function ()
                     [
                         new Expand(new Rectangle(context.canvas.hscrollrect),0,10),
                         new CurrentHPanel(
-                            new ShadowPanel(new FillPanel("white"),1,1), 90, 1),
+                            new ShadowPanel(new FillPanel("white")), 90, 1),
                     ]),
                     0,
                 ]),
@@ -1136,17 +1136,17 @@ var ThumbPanel = function ()
     }
 };
 
-var AutoPanel = function ()
+var HomePanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
         context.save();
-        context.canvas.autorect = new rectangle();
+        context.canvas.homerect = new rectangle();
         var a = new Layer(
         [
-            new Rectangle(context.canvas.autorect),
-            globalobj.timeauto ? new Shrink(new CirclePanel( MENUTAP,TRANSPARENT,4),19,19) : 0,
-            new Shrink(new CirclePanel(globalobj.timeauto?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),15,15),
+            new Rectangle(context.canvas.homerect),
+            globalobj.hometap ? new Shrink(new CirclePanel( MENUTAP,TRANSPARENT,4),19,19) : 0,
+            new Shrink(new CirclePanel(globalobj.hometap?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),15,15),
             new Shrink(new Row([0,0],
             [
                 new ArrowPanel(ARROWFILL,0),
@@ -1378,6 +1378,8 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
         return;
     }
 
+    clearInterval(globalobj.swipetimeout);
+    globalobj.swipetimeout = 0;
     _4cnv.movingpage = j;
     galleryobj.rotate(j);
     _4cnvctx.refresh();
@@ -1542,6 +1544,7 @@ var makehammer = function (context, v, t)
 
     ham.element.addEventListener("dblclick", function (evt)
     {
+        //todo firefox
         var x = evt.offsetX;
         var y = evt.offsetY;
         if (typeof (ham.panel.dblclick) !== "function")
@@ -1896,11 +1899,19 @@ var dblclicklst =
         var slice = galleryobj.data[n];
         if (!slice.thumbfitted || !slice.thumbfitted.width)
             return;
+        if (context.canvas.imagegotorect && context.canvas.imagegotorect.hitest(x,y))
+            return;
         if (context.canvas.buttonrect && context.canvas.buttonrect.hitest(x,y))
             return;
         if (context.canvas.hscrollrect && context.canvas.hscrollrect.hitest(x,y))
             return;
         if (context.canvas.vscrollrect && context.canvas.vscrollrect.hitest(x,y))
+            return;
+        if (context.canvas.homerect && context.canvas.homerect.hitest(x,y))
+            return;
+        if (context.canvas.fullrect && context.canvas.fullrect.hitest(x,y))
+            return;
+        if (context.canvas.searchrect && context.canvas.searchrect.hitest(x,y))
             return;
         slice.tap = 1;
         context.refresh();
@@ -2490,7 +2501,7 @@ var overlaylst =
         var a = new Row([0,60,0],
         [
             0,
-            new ShadowPanel(new Text("white", "center", "middle",0, 0),1,1),
+            new ShadowPanel(new Text("white", "center", "middle",0, 0)),
             0,
         ]);
 
@@ -2512,11 +2523,26 @@ var presslst =
     name: "GALLERY",
     pressup: function (context, rect, x, y)
     {
+        if (context.canvas.imagegotorect && context.canvas.imagegotorect.hitest(x,y))
+            return;
+        if (context.canvas.buttonrect && context.canvas.buttonrect.hitest(x,y))
+            return;
+        if (context.canvas.hscrollrect && context.canvas.hscrollrect.hitest(x,y))
+            return;
+        if (context.canvas.vscrollrect && context.canvas.vscrollrect.hitest(x,y))
+            return;
+        if (context.canvas.homerect && context.canvas.homerect.hitest(x,y))
+            return;
+        if (context.canvas.fullrect && context.canvas.fullrect.hitest(x,y))
+            return;
+        if (context.canvas.searchrect && context.canvas.searchrect.hitest(x,y))
+            return;
+
         clearInterval(globalobj.timeout);
         clearInterval(globalobj.timeauto);
         globalobj.timeauto = 0;
         globalobj.timeout = 0;
-        headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+         headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         context.canvas.scrollobj.rotate(1);
         context.refresh();
     },
@@ -2545,18 +2571,19 @@ var presslst =
             return;
         if (context.stretchrect && context.stretchrect.hitest(x,y))
             return;
-        if (thumbobj.current() == 0)
-        {
-        }
-        else if (thumbobj.current() == 1)
-        {
+            headobj.set(3);
+            headham.panel = headobj.value();
+            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            bossobj.set(1);
+            galleryobj.transparent = 0;
+            galleryobj.hidefocus = 0;
+            menuobj.hide();
             galleryobj.hidefocus = 1;
             var positx = positxobj.value();
             var posity = posityobj.value();
             positx.set((x/rect.width)*100);
             posity.set((y/rect.height)*100);
             context.refresh();
-        }
         context.refresh();
     }
 },
@@ -2617,7 +2644,7 @@ var swipelst =
         var canvas = context.canvas;
         if (evt)
             canvas.autodirect = evt.type == "swipeleft"?-1:1;
-        var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:4);
+        var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:6);
         var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:100);
         canvas.slidestop += slidestop;
         canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
@@ -3070,7 +3097,7 @@ var taplst =
             headobj.set(obj.value());
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            thumbobj.set(headobj.current()==1?0:1);
+            bossobj.set(headobj.current()==1?0:1);
             galleryobj.transparent = 0;
             galleryobj.hidefocus = 0;
             context.refresh();
@@ -3105,7 +3132,7 @@ var taplst =
         else if (context.canvas.optionrect && context.canvas.optionrect.hitest(x,y))
         {
             headobj.set(1);
-            thumbobj.set(0);
+            bossobj.set(0);
             headham.panel = headobj.value();
             menuobj.showindex(_2cnvctx);
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -3118,7 +3145,7 @@ var taplst =
         else if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
         {
             headobj.set(1);
-            thumbobj.set(0);
+            bossobj.set(0);
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             menuobj.showindex(_7cnvctx);
@@ -3208,7 +3235,7 @@ var taplst =
         else if (context.canvas.optionrect && context.canvas.optionrect.hitest(x,y))
         {
             headobj.set(1);
-            thumbobj.set(0);
+            bossobj.set(0);
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             menuobj.showindex(_2cnvctx);
@@ -3217,7 +3244,7 @@ var taplst =
         else if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
         {
             headobj.set(1);
-            thumbobj.set(0);
+            bossobj.set(0);
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             menuobj.showindex(_7cnvctx);
@@ -3233,19 +3260,16 @@ var taplst =
             context.canvas.scrollobj.rotate(1);
             context.refresh();
         }
-        else if (context.canvas.autorect && context.canvas.autorect.hitest(x,y))
+        else if (context.canvas.homerect && context.canvas.homerect.hitest(x,y))
         {
-            if (!timeauto)
-            {
-                globalobj.timeauto = 1;
-                swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipeup"})
-                context.refresh()
-                clearInterval(globalobj.timeauto);
-                globalobj.timeauto = setInterval(function()
+            clearTimeout(globalobj.hometap)
+            globalobj.hometap = setTimeout(function()
                 {
-                    swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipeup"})
-                }, 2000);
-            }
+                    globalobj.hometap = 0;
+                    context.refresh();
+                }, 400);
+            context.canvas.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+            context.refresh();
         }
         else
         {
@@ -3273,7 +3297,7 @@ Number.prototype.pad = function(size)
 	    return s;
 }
 
-var thumblst =
+var bosslst =
 [
     new function ()
 	{
@@ -3288,7 +3312,7 @@ var thumblst =
             context.stretchrect = new rectangle();
             context.extentrect = new rectangle();
             var w = Math.min(320,rect.width-100);
-            var a = new RowA([60,0,40,8,40,8,40,60,SCROLLBARWIDTH,5],
+            var a = new RowA([60,0,40,8,40,8,40,ALIEXTENT,SCROLLBARWIDTH,MARGINBAR],
              [
                  0,
                  0,
@@ -3330,10 +3354,10 @@ var thumblst =
                 new Layer(
                 [
                     new Rectangle(context.extentrect),
-                    new ShadowPanel(new Text("rgb(255,255,255)", "center", "middle",0, 0),1,1),
+                    new ShadowPanel(new Text("rgb(255,255,255)", "center", "middle",0, 0)),
                 ]),
                 0,
-                 0
+                0
             ]);
 
             a.draw(context, rect,
@@ -3346,7 +3370,7 @@ var thumblst =
                     0,
                     stretchobj.value(),
                     extentobj.value(),
-                    context.canvas.timeobj,
+                    0,
                     0,
                 ], 0);
         }
@@ -3362,16 +3386,16 @@ var thumblst =
                 return;
 
             var canvas = context.canvas;
-
             context.extentrect = new rectangle();
-            var a = new RowA([0,60,20],
+            var a = new RowA([0,ALIEXTENT,SCROLLBARWIDTH,MARGINBAR],
             [
                 0,
                 new Layer(
                 [
                     new Rectangle(context.extentrect),
-                    new ShadowPanel(new Text("rgb(255,255,255)", "center", "middle",0, 0),1,1),
+                    new ShadowPanel(new Text("rgb(255,255,255)", "center", "middle",0, 0)),
                 ]),
+                0,
                 0,
             ]);
 
@@ -3380,7 +3404,9 @@ var thumblst =
                     0,
                     extentobj.value(),
                     0,
+                    0,
                 ], user, time);
+
             var he = heightobj.value();
             var b = Math.berp(0,he.length()-1,he.current());
             var height = Math.max(60,Math.lerp(0, rect.height, b));
@@ -3469,8 +3495,8 @@ var thumblst =
     },
  ];
 
-var thumbobj = new circular_array("THUMB", thumblst);
-thumbobj.set(1);
+var bossobj = new circular_array("THUMB", bosslst);
+bossobj.set(1);
 
 var getfrompoint = function (context, x, y)
 {
@@ -4595,7 +4621,7 @@ var Expand = function (panel, extentw, extenth)
     };
 };
 
-var ShadowPanel  = function (panel, x, y)
+var ShadowPanel  = function (panel, x=1, y=1)
 {
     this.draw = function (context, rect, user, time)
     {
@@ -4806,7 +4832,7 @@ function escape()
     overlayobj.set(0);
     slicewidthobj.debug = 0;
     headobj.set(3);
-    thumbobj.set(1);
+    bossobj.set(1);
     headham.panel = headobj.value();
     headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
     delete _4cnv.thumbcanvas;
@@ -4863,7 +4889,7 @@ var headlst =
             else if (context.canvas.optionrect && context.canvas.optionrect.hitest(x,y))
             {
                 headobj.set(1);
-                thumbobj.set(0);
+                bossobj.set(0);
                 headham.panel = headobj.value();
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
                 menuobj.showindex(_2cnvctx);
@@ -4872,7 +4898,7 @@ var headlst =
             else if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
             {
                 headobj.set(1);
-                thumbobj.set(0);
+                bossobj.set(0);
                 headham.panel = headobj.value();
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
                 menuobj.showindex(_7cnvctx);
@@ -5022,7 +5048,7 @@ var headlst =
                                 new Layer(
                                 [
                                     new Rectangle(context.prompt),
-                                    new ShadowPanel(new MultiText(e),1,1),
+                                    new ShadowPanel(new MultiText(e)),
                                 ]),
                                 0,
                             ]),
@@ -5087,7 +5113,7 @@ var headlst =
         this.tap = function (context, rect, x, y){ tapobj.value().tap(_4cnvctx, rect, x, y); }
     	this.press = function (context, rect, x, y)
         {
-            headobj.set(thumbobj.current() == 0?1:3);
+            headobj.set(bossobj.current() == 0?1:3);
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         }
@@ -5291,7 +5317,7 @@ galleryobj.init = function (obj)
     var zoom = (typeof galleryobj.zoom === "undefined") ?25:galleryobj.zoom;
     poomobj.set(zoom);
     loomobj.set(zoom);
-    slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:180);
+    slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:90);
 
     var min = galleryobj.min?galleryobj.min:0;
     var max = galleryobj.max?galleryobj.max:0;
@@ -5309,7 +5335,7 @@ galleryobj.init = function (obj)
         var a = width / height;
         height = Math.floor(window.innerWidth/a);
         var lst = [];
-        for (var n = Math.floor(height/4); n < Math.floor(height*4); ++n)
+        for (var n = Math.floor(height/4); n < Math.floor(height*5); ++n)
             lst.push(n);
         var k = lst.findIndex(function(a){return a == height});
         _8cnv.buttonobj = new circular_array("", lst);
@@ -5327,7 +5353,7 @@ galleryobj.init = function (obj)
         if (leftmenu && galleryobj.length())
         {
             headobj.set(1);
-            thumbobj.set(0);
+            bossobj.set(0);
             _8cnv.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
             menuobj.toggle(_8cnvctx);
             _4cnvctx.refresh();
@@ -5627,9 +5653,22 @@ else if (url.searchParams.has("q"))
     .then((obj) => galleryobj.init(obj))
     .catch((error) => { galleryobj.init([]) });
 }
+else if (url.searchParams.has("s"))
+{
+    var path = url.searchParams.get("s");
+    fetch(path)
+    .then(function (response)
+    {
+        if (!response.ok)
+            throw new Error('Network error');
+        return response.json()
+    })
+    .then((obj) => galleryobj.init(obj))
+    .catch((error) => { galleryobj.init([]) });
+}
 else
 {
-    var path = `https://bucket.reportbase5836.workers.dev/reci.json`;
+    var path = `https://bucket.reportbase5836.workers.dev/home.json`;
     for (var n = 0; n < searchobj.length(); ++n)
     {
         var j = searchobj.data[n];
