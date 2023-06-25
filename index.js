@@ -15,7 +15,6 @@ const MENUPANWIDTH = 25;
 const THUMBORDER = 5;
 const THUMBSELECT = 10;
 const JULIETIME = 100;
-const DELAY = 10000000;
 const ALIEXTENT = 60;
 const BEXTENT = 80;
 const TIMEOBJ = 3927;
@@ -150,14 +149,14 @@ function getrotatedlist (lst, size, start, width)
     return lst.slice(start,start+width*2);
 }
 
- let circular_array = function (title, data)
+let circular_array = function (title, data)
 {
     this.title = title;
     this.ANCHOR = 0;
     this.CURRENT = 0;
     this.data = data;
 
-   this.length = function ()
+    this.length = function ()
     {
         return Array.isArray(this.data) ? this.data.length : Number(this.data);
     };
@@ -285,6 +284,8 @@ function getrotatedlist (lst, size, start, width)
 };
 
 var timemain = new circular_array("TIMEMAIN", 30);
+timemain.set(8);
+
 var colobj = new circular_array("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new circular_array("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
 
@@ -324,7 +325,7 @@ function drawboss()
     var stretch = stretchobj.value();
     var virtualpinch = _4cnv.virtualwidth*(stretch.value()/100);
     var colwidth = _4cnv.colwidth;
-    var virtualeft = (virtualpinch-rect.width)/2+colwidth;
+    var virtualeft = (virtualpinch-rect.width)/2;
     var j = (colwidth/(colwidth+_4cnv.virtualwidth))*TIMEOBJ;
     var time = (canvas.timeobj.value()+j)/1000;
 
@@ -367,7 +368,8 @@ function drawboss()
         offbossctx.drawImage(slice.canvas,
             slice.x, 0, colwidth, rect.height,
             x, 0, w, rect.height);
-        //todo: overlaylst
+        overlayobj.value().draw(offbossctx,
+            new rectangle(x,0,w,rect.height), `${n+1}of${slicelst.length}`, 0);
     }
 
     context.drawImage(offbosscnv,0,0)
@@ -382,7 +384,13 @@ function drawboss()
     delete context.zoomrect;
 
     if (!menuobj.value())
-        thumbobj.value().draw(context, rect, 0, 0);
+    {
+        var a = new Shrink(new Layer(
+            [
+                thumbobj.value()
+            ]), THUMBSELECT, THUMBSELECT);
+        a.draw(context, rect, 0, 0);
+    }
 }
 
 var YollPanel = function ()
@@ -2026,7 +2034,6 @@ var pinchlst =
         menuobj.hide();
         movingx = new MovingAverage();
         movingy = new MovingAverage();
-        movingtime = new MovingAverage();
         context.canvas.isthumb = context.canvas.thumbrect && context.canvas.thumbrect.expand &&
             context.canvas.thumbrect.expand(40,40).hitest(x,y);
         pinchobj.set(context.canvas.isthumb?0:1)
@@ -2207,6 +2214,10 @@ var panlst =
         var obj = context.canvas.scrollobj.value();
         if (type == "panleft" || type == "panright")
         {
+            if (context.canvas.type == "panup" ||
+                context.canvas.type == "pandown")
+               return;
+            context.canvas.type = type;
             if (context.canvas.isbuttonbar)
             {
                    var obj = context.canvas.buttonobj
@@ -2231,6 +2242,10 @@ var panlst =
         }
         else if (type == "panup" || type == "pandown")
         {
+            if (context.canvas.type == "panleft" ||
+                context.canvas.type == "panright")
+               return;
+            context.canvas.type = type;
             var k = context.canvas.timeobj.length();
             if (!context.canvas.starty)
                 context.canvas.starty = rect.height/2;
@@ -2252,7 +2267,6 @@ var panlst =
         context.canvas.panning = 0;
         movingx = new MovingAverage();
         movingy = new MovingAverage();
-        movingtime = new MovingAverage();
         delete context.canvas.slideshow;
         clearInterval(globalobj.timeauto);
         globalobj.timeauto = 0;
@@ -2262,6 +2276,7 @@ var panlst =
     },
 	panend: function (context, rect, x, y)
     {
+        delete context.canvas.type;
         delete context.canvas.panning;
         delete context.canvas.starty;
         delete context.startt;
@@ -2426,7 +2441,6 @@ var panlst =
         context.canvas.iszoom = context.zoomrect && context.zoomrect.hitest(x,y);
         movingx = new MovingAverage();
         movingy = new MovingAverage();
-        movingtime = new MovingAverage();
         headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
     },
     panend: function (context, rect, x, y)
@@ -2462,6 +2476,30 @@ var mouselst =
 ];
 
 var mouseobj = new circular_array("MOUSE", mouselst);
+
+var overlaylst =
+[
+{
+    name: "DEFAULT",
+    draw: function (context, rect, x, y) { }
+},
+{
+    name: "DEBUG",
+    draw: function (context, rect, user, time)
+    {
+        var a = new Row([0,60,0],
+        [
+            0,
+            new ShadowPanel(new Text("white", "center", "middle",0, 0),1,1),
+            0,
+        ]);
+
+        a.draw(context, rect, user, time);
+    }
+}
+]
+
+var overlayobj = new circular_array("OVERLAY", overlaylst);
 
 var presslst =
 [
@@ -2539,14 +2577,14 @@ var swipelst =
     swipeleftright: function (context, rect, x, y, evt) { },
     swipeupdown: function (context, rect, x, y, evt)
     {
+        var canvas = context.canvas;
         context.swipetype = evt.type;
         var slidestop = 12;
-        var slidereduce = 96;
+        var slidereduce = 48;
         movingx = new MovingAverage();
         movingy = new MovingAverage();
-        movingtime = new MovingAverage();
-        context.canvas.slideshow = (context.canvas.timeobj.length()/context.canvas.virtualheight)*slidestop;
-        context.canvas.slidereduce = context.canvas.slideshow/slidereduce;
+        canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
+        canvas.slidereduce = canvas.slideshow/slidereduce;
         clearInterval(globalobj.swipetimeout);
         globalobj.swipetimeout = setInterval(function ()
             {
@@ -2580,7 +2618,7 @@ var swipelst =
         if (evt)
             canvas.autodirect = evt.type == "swipeleft"?-1:1;
         var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:4);
-        var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:300);
+        var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:100);
         canvas.slidestop += slidestop;
         canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
         canvas.slidereduce = canvas.slidestop/slidereduce;
@@ -2840,7 +2878,7 @@ var keylst =
             canvas.block = 1;
             setTimeout(function() { canvas.block = 0; }, canvas.keyblock);
             canvas.keyblock = Math.clamp(50,200,canvas.keyblock-5);
-            context.canvas.autodirect = 1;
+            canvas.autodirect = 1;
             swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
         }
         else if (key == "arrowright" || key == "l")
@@ -3126,6 +3164,7 @@ var taplst =
         globalobj.timeauto = 0;
         globalobj.timeout = 0;
         var obj = context.canvas.scrollobj.value();
+        context.refresh();
 
         if (context.canvas.hscrollrect && context.canvas.hscrollrect.hitest(x,y))
         {
@@ -3205,7 +3244,7 @@ var taplst =
                 globalobj.timeauto = setInterval(function()
                 {
                     swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipeup"})
-                }, 3000);
+                }, 2000);
             }
         }
         else
@@ -3293,13 +3332,8 @@ var thumblst =
                     new Rectangle(context.extentrect),
                     new ShadowPanel(new Text("rgb(255,255,255)", "center", "middle",0, 0),1,1),
                 ]),
-                new Col([5,0,5],
-                [
-                    0,
-                    0,//new CurrentHPanel(new CirclePanel(MENUTAP,"rgba(255,255,255,0.5)",4), 40, 1),
-                    0,
-                ]),
-                0
+                0,
+                 0
             ]);
 
             a.draw(context, rect,
@@ -3327,7 +3361,7 @@ var thumblst =
                 !photo.image.naturalHeight)
                 return;
 
-            var rect = new rectangle(r.x, r.y, r.width, r.height);
+            var canvas = context.canvas;
 
             context.extentrect = new rectangle();
             var a = new RowA([0,60,20],
@@ -3347,22 +3381,19 @@ var thumblst =
                     extentobj.value(),
                     0,
                 ], user, time);
-
-            rect.shrink(THUMBSELECT, THUMBSELECT);
-            var canvas = context.canvas;
             var he = heightobj.value();
             var b = Math.berp(0,he.length()-1,he.current());
             var height = Math.max(60,Math.lerp(0, rect.height, b));
             var width = Math.max(60,Math.lerp(0, rect.width, b));
             var r = calculateAspectRatioFit(photo.image.width, photo.image.height, width, height);
-            var h = Math.clamp(20,r.height,r.height);
-            var w = Math.clamp(20,r.width,r.width);
-
+            var h = r.height;
+            var w = r.width;
             var positx = positxobj.value();
             var posity = posityobj.value();
             var x = Math.floor(Math.nub(positx.value(), positx.length(), w, rect.width))+THUMBSELECT;
             var y = Math.floor(Math.nub(posity.value(), posity.length(), h, rect.height))+THUMBSELECT;
             context.canvas.thumbrect = new rectangle(x,y,w,h);
+            var r = context.canvas.thumbrect;
 
             context.save();
             context.shadowOffsetX = 0;
@@ -3386,7 +3417,6 @@ var thumblst =
                 context.drawImage(context.canvas.thumbcanvas, x, y, w, h);
             }
 
-            var r = new rectangle(x,y,w,h);
             var whitestroke = new StrokePanel(THUMBSTROKE,THUMBORDER);
             whitestroke.draw(context, r, 0, 0);
             var region = new Path2D();
@@ -3408,7 +3438,6 @@ var thumblst =
             var yy = y+Math.lerp(0,h,b);
             var jj = context.canvas.timeobj.berp();
             var bb = w*(1-jj);
-//todo
             var xx = x+bb-ww/2;
             context.lineWidth = THUMBORDER;
             var r = new rectangle(xx,yy,ww,hh);
@@ -3418,10 +3447,6 @@ var thumblst =
             {
                 var blackfill = new FillPanel(THUMBFILL);
                 blackfill.draw(context, r, 0, 0);
-            }
-
-            if (!galleryobj.hidefocus)
-            {
                 whitestroke.draw(context, r, 0, 0);
                 if (xx > x)//leftside
                 {
@@ -3933,7 +3958,7 @@ menuobj.draw = function()
         a.draw(context, rect, 0, 0);
     }
 
-    var size = Math.ceil(rect.height/canvas.buttonheight)+1;
+    var size = Math.ceil(rect.height/canvas.buttonheight)+4;
     var current = Math.floor(
         Math.lerp(0,slices.length-1,1-context.canvas.timeobj.berp()));
     var slicegroup = getrotatedlist(context.canvas.rotated,slices.length,current,size);
@@ -4145,11 +4170,13 @@ contextobj.reset = function ()
             }
 
             document.title = `${j} (${photo.image.width}x${photo.image.height})`;
-            _4cnv.timeobj.set(TIMEOBJ/2);
             rowobj.set(rowobj.length()/2);
+            _4cnv.timeobj.set(_4cnv.timeobj.value());//TIMEOBJ/2);
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            _4cnv.autodirect = -_4cnv.movingpage;
             _4cnv.movingpage = 0;
             contextobj.reset()
+           // swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             setTimeout(function() { masterload(); }, 500);
         }
@@ -4776,6 +4803,8 @@ function escape()
         return;
     }
 
+    overlayobj.set(0);
+    slicewidthobj.debug = 0;
     headobj.set(3);
     thumbobj.set(1);
     headham.panel = headobj.value();
@@ -5280,7 +5309,7 @@ galleryobj.init = function (obj)
         var a = width / height;
         height = Math.floor(window.innerWidth/a);
         var lst = [];
-        for (var n = Math.floor(height/2); n < Math.floor(height*3); ++n)
+        for (var n = Math.floor(height/4); n < Math.floor(height*4); ++n)
             lst.push(n);
         var k = lst.findIndex(function(a){return a == height});
         _8cnv.buttonobj = new circular_array("", lst);
@@ -5365,6 +5394,7 @@ galleryobj.init = function (obj)
             {
                 menuobj.hide();
                 slicewidthobj.debug = slicewidthobj.debug ? 0 : 1;
+                overlayobj.set(overlayobj.current() == 0?1:0);
                 _4cnvctx.refresh();
              },
             enabled: function() { return slicewidthobj.debug; }
@@ -5944,6 +5974,5 @@ function MovingAverage()
 
 movingx = new MovingAverage();
 movingy = new MovingAverage();
-movingtime = new MovingAverage();
 
 

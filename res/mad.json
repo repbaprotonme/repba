@@ -1,106 +1,28 @@
 {
   "title": "Repba Gallery",
-  "template": "portrait",
-  "thumb": "porthumb",
-  "data": [
-    {
-      "id": "MAD.0000",
-      "index": "1 of 84",
       "width": 1280,
       "height": 1646,
-      "extent": "1280x1646 0.78",
-      "size": "2.1MP",
-      "quote": "Those who dance are considered mad by those who can't hear the music."
+  "data": [
+    {
+      "id": "MAD.0004"
     },
     {
-      "id": "MAD.0001",
-      "index": "2 of 84",
-      "width": 1280,
-      "height": 1630,
-      "extent": "1280x1630 0.79",
-      "size": "2.1MP",
-      "quote": "May God have mercy on my enemies, cause I will not."
+      "id": "MAD.0005"
     },
     {
-      "id": "MAD.0002",
-      "index": "3 of 84",
-      "width": 1280,
-      "height": 1660,
-      "extent": "1280x1660 0.77",
-      "size": "2.1MP",
-      "quote": "The difference between genius and stupidity is that genius has its limits."
+      "id": "MAD.0006"
     },
     {
-      "id": "MAD.0003",
-      "index": "4 of 84",
-      "width": 1280,
-      "height": 1656,
-      "extent": "1280x1656 0.77",
-      "size": "2.1MP",
-      "quote": "The Harder You Work, The Luckier You Get"
+      "id": "MAD.0007"
     },
     {
-      "id": "MAD.0004",
-      "index": "5 of 84",
-      "width": 1280,
-      "height": 1654,
-      "extent": "1280x1654 0.77",
-      "size": "2.1MP",
-      "quote": "Teamwork Makes the Dream Work"
+      "id": "MAD.0008"
     },
     {
-      "id": "MAD.0005",
-      "index": "6 of 84",
-      "width": 1280,
-      "height": 1652,
-      "extent": "1280x1652 0.77",
-      "size": "2.1MP",
-      "quote": "OK Monday, Lets Do This"
+      "id": "MAD.0009"
     },
     {
-      "id": "MAD.0006",
-      "index": "7 of 84",
-      "width": 1280,
-      "height": 1663,
-      "extent": "1280x1663 0.77",
-      "size": "2.1MP",
-      "quote": "Do Not Decrease the Goal, Increase the Effort"
-    },
-    {
-      "id": "MAD.0007",
-      "index": "8 of 84",
-      "width": 2560,
-      "height": 1645,
-      "extent": "2560x1645 1.56",
-      "size": "4.2MP",
-      "quote": "We Didn't Lose the Game, We Just Ran Out of Time"
-    },
-    {
-      "id": "MAD.0008",
-      "index": "9 of 84",
-      "width": 1280,
-      "height": 1660,
-      "extent": "1280x1660 0.77",
-      "size": "2.1MP",
-      "quote": "The Seeds of Doubt Grow Bitter Fruit"
-    },
-    {
-      "id": "MAD.0009",
-      "index": "10 of 84",
-      "width": 1280,
-      "height": 1643,
-      "extent": "1280x1643 0.78",
-      "size": "2.1MP",
-      "quote": "Success Consists of Getting Up Just One More Time Than You Fail"
-    },
-    {
-      "id": "MAD.0010",
-      "index": "11 of 84",
-      "width": 2560,
-      "height": 1650,
-      "extent": "2560x1650 1.55",
-      "size": "4.2MP",
-      "quote": "Enjoy Life Today, Yesterday Is Gone Tomorrow"
+      "id": "MAD.0010"
     },
     {
       "id": "MAD.0011",

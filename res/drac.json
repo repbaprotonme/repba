@@ -1,24 +1,8 @@
 {
   "title": "Repba Gallery",
-  "template": "portrait",
-  "thumb": "porthumb",
-  "data": [
-    {
-      "id": "DRAC.0000",
       "width": 1225,
       "height": 1620,
-      "extent": "1225x1620 0.76",
-      "size": "2.0MP",
-      "quote": "Those who dance are considered mad by those who can't hear the music."
-    },
-    {
-      "id": "DRAC.0001",
-      "width": 1224,
-      "height": 1619,
-      "extent": "1224x1619 0.76",
-      "size": "2.0MP",
-      "quote": "May God have mercy on my enemies, cause I will not."
-    },
+  "data": [
     {
       "id": "DRAC.0002",
       "width": 1231,

@@ -1,8 +1,9 @@
 {
   "title": "Repba Gallery",
-  "slidestop": 2.6,
-  "slidereduce": 100,
-  "variant": "4800x4800",
+  "slidestop": 4,
+  "slidereduce": 400,
+  "width": 3840,
+  "height": 1080,
   "data": [
     {
       "id": "HOME.0000"

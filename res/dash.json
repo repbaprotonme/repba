@@ -1,12 +1,10 @@
 {
   "title": "Dash Gallery",
-  "template": "landscape",
-  "thumb": "landthumb",
+      "width": 3507,
+      "height": 2565,
   "data": [
     {
       "id": "DASH.0000",
-      "width": 3507,
-      "height": 2565,
       "extent": "3507x2565 1.37",
       "size": "9.0MP",
       "quote": "Those who dance are considered mad by those who can't hear the music."

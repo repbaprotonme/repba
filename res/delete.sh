@@ -1,1 +1,1 @@
-node delete.js delete.json 
+node delete.js max.json 

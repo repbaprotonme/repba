@@ -1,1 +1,1 @@
-node post.js recu.input | jq > recu.json
+node post.js args.json | jq > args.out

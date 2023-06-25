@@ -1,9 +1,7 @@
 {
   "title": "Hush Comicbook",
-  "variant": "portrait",
-  "variantlist": "portait,portrait,portrait,portrait,portrait",
-  "buttonlist": "120,240,480,600,720",
-  "buttonstart": 1,
+  "width": 1920,
+  "height": 2947,
   "data": [
     {
       "id": "HUSH.0000",

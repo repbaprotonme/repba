@@ -2,6 +2,8 @@
   "title": "Repba Gallery",
   "template": "portrait",
   "thumb": "porthumb",
+      "width": 2000,
+      "height": 3000,
   "data": [
     {
       "id": "BIRD.0000",
@@ -13,8 +15,6 @@
     },
     {
       "id": "BIRD.0001",
-      "width": 2000,
-      "height": 3000,
       "extent": "2000x3000 0.67",
       "size": "6.0MP",
       "quote": "May God have mercy on my enemies, cause I will not."

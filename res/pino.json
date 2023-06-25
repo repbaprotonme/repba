@@ -1,12 +1,10 @@
 {
   "title": "Repba Gallery",
-  "slidestop": 4,
-  "slidereduce": 200,
+  "slidestop": 6,
+  "slidereduce": 800,
   "slicewidth": 640,
   "min": 160,
   "max": 240,
-  "width": 500,
-  "height": 500,
   "raw": 1,
   "zoom": 0,
   "data": [

@@ -1,40 +1,8 @@
 {
   "title": "Repba Gallery",
-  "template": "portait",
-  "thumb": "porthumb",
-  "data": [
-    {
-      "id": "DAGG.0000",
       "width": 1212,
       "height": 1629,
-      "extent": "1212x1629 0.74",
-      "size": "2.0MP",
-      "quote": "Those who dance are considered mad by those who can't hear the music."
-    },
-    {
-      "id": "DAGG.0001",
-      "width": 1191,
-      "height": 1617,
-      "extent": "1191x1617 0.74",
-      "size": "1.9MP",
-      "quote": "May God have mercy on my enemies, cause I will not."
-    },
-    {
-      "id": "DAGG.0002",
-      "width": 1093,
-      "height": 1561,
-      "extent": "1093x1561 0.70",
-      "size": "1.7MP",
-      "quote": "The difference between genius and stupidity is that genius has its limits."
-    },
-    {
-      "id": "DAGG.0003",
-      "width": 1141,
-      "height": 1613,
-      "extent": "1141x1613 0.71",
-      "size": "1.8MP",
-      "quote": "The Harder You Work, The Luckier You Get"
-    },
+  "data": [
     {
       "id": "DAGG.0004",
       "width": 1121,

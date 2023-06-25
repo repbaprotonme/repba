@@ -1,2 +1,2 @@
 #node args.js ../data/max/* | jq > args.json 
-node args.js ../data/fowl.txt | jq > args.json
+node args.js ../data/res.txt | jq > args.json
