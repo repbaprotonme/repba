@@ -91,53 +91,6 @@ Math.clamp = function (min, max, val)
     return (val < min) ? min : (val > max) ? max : val;
 };
 
-function windowopen(url)
-{
-    setTimeout(function()
-        {
-            window.open(url);//todo ,"_self");
-        },1000);
-}
-
-function savelocal(key, value)
-{
-    try
-    {
-        localStorage.setItem(`${url.path}.${key}`,value);
-    }
-    catch(_)
-    {
-    }
-}
-
-function loadlocalstring(key, def)
-{
-    try
-    {
-        var str = localStorage.getItem(`${url.path}.${key}`);
-        if (typeof str == "undefined")
-            return def;
-        return str;
-    }
-    catch(_)
-    {
-    }
-}
-
-function loadlocalnumber(key, def)
-{
-    try
-    {
-        var str = localStorage.getItem(`${url.path}.${key}`);
-        if (typeof str == "undefined")
-            return def;
-        return Number(str);
-    }
-    catch(_)
-    {
-    }
-}
-
 function istouch()
 {
     return ( 'ontouchstart' in window ) ||
@@ -1898,11 +1851,6 @@ var dblclicklst =
 
         if (k == visibles.length)
             return;
-
-        var n = visibles[k].n;
-        var slice = galleryobj.data[n];
-        if (!slice.thumbfitted || !slice.thumbfitted.width)
-            return;
         if (context.canvas.imagegotorect && context.canvas.imagegotorect.hitest(x,y))
             return;
         if (context.canvas.buttonrect && context.canvas.buttonrect.hitest(x,y))
@@ -1917,14 +1865,22 @@ var dblclicklst =
             return;
         if (context.canvas.searchrect && context.canvas.searchrect.hitest(x,y))
             return;
+
+        var n = visibles[k].n;
+        var slice = galleryobj.data[n];
+        galleryobj.set(n);
+        clearInterval(globalobj.swipetimeout);
+        globalobj.swipetimeout = 0;
+        delete _4cnv.thumbcanvas;
+        delete photo.image;
         slice.tap = 1;
         context.refresh();
         setTimeout(function ()
         {
             slice.tap = 0;
             context.refresh();
-            galleryobj.set(n);
-            windowopen(addressobj.full());
+            menuobj.toggle(_8cnvctx);
+            contextobj.reset();
         }, 1000);
     },
 },
@@ -2543,13 +2499,8 @@ var presslst =
             return;
         if (context.canvas.searchrect && context.canvas.searchrect.hitest(x,y))
             return;
-
-        clearInterval(globalobj.timeout);
-        clearInterval(globalobj.timeauto);
-        globalobj.timeauto = 0;
-        globalobj.timeout = 0;
-         headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-        context.canvas.scrollobj.rotate(1);
+        buttonobjreset();
+        globalobj.hometap = 0;
         context.refresh();
     },
     press: function (context, rect, x, y)
@@ -5314,7 +5265,7 @@ galleryobj.init = function (obj)
     var zoom = (typeof galleryobj.zoom === "undefined") ?25:galleryobj.zoom;
     poomobj.set(zoom);
     loomobj.set(zoom);
-    slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:90);
+    slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:40);
 
     buttonobjreset();
 
@@ -5717,32 +5668,32 @@ function download()
 {
     if (galleryobj.value().image_url)
     {
-        windowopen(galleryobj.value().image_url);
+        window.open(galleryobj.value().image_url);
     }
     else if (galleryobj.value().original)
     {
-        windowopen(galleryobj.value().original);
+        window.open(galleryobj.value().original);
     }
     else if (galleryobj.value().full)
     {
-        windowopen(galleryobj.value().full);
+        window.open(galleryobj.value().full);
     }
     else
     {
         var id = galleryobj.value().id;
-        windowopen(`https://reportbase.com/image/${id}/blob`);
+        window.open(`https://reportbase.com/image/${id}/blob`);
     }
 }
 
 function imagegoto()
 {
-    var input = document.getElementById("image-goto-value");
+    var input = document.getElementById("page-goto-value");
     input.addEventListener("keyup", function(event)
     {
       if (event.keyCode === 13)
       {
         event.preventDefault();
-        var image = document.getElementById('image-goto-value').value.clean();
+        var image = document.getElementById('page-goto-value').value.clean();
         if (!image)
           return;
             globalobj.prompt = 0;
@@ -5755,14 +5706,14 @@ function imagegoto()
     });
 
     globalobj.block = 1;
-    const dialog = document.getElementById("image-goto");
+    const dialog = document.getElementById("page-goto");
     globalobj.prompt = dialog;
     dialog.addEventListener("click", function()
     {
         var rect = input.getBoundingClientRect();
-        if (event.target.id == "image-ok")
+        if (event.target.id == "page-ok")
         {
-            var image = document.getElementById('image-goto-value').value.clean();
+            var image = document.getElementById('page-goto-value').value.clean();
             if (!image)
               return;
             globalobj.prompt = 0;
@@ -5785,7 +5736,7 @@ function imagegoto()
     var current = Math.floor(
         Math.lerp(1,galleryobj.length(),1-_8cnv.timeobj.berp()));
 
-   document.getElementById('image-goto-value').value = current+1;
+   document.getElementById('page-goto-value').value = current+1;
     dialog.showModal();
     setTimeout(function() { globalobj.block = 0; }, 40);
 }
@@ -5802,7 +5753,7 @@ function searchshow(repos)
         var search = document.getElementById('search-value').value.clean();
         if (!search)
           return;
-        windowopen(`${url.origin}?${repos}=${search}&page=${url.page}`);
+        window.open(`${url.origin}?${repos}=${search}&page=${url.page}`);
       }
     });
 
@@ -5818,7 +5769,7 @@ function searchshow(repos)
             if (!search)
                 return;
             globalobj.prompt = 0;
-            windowopen(`${url.origin}?${repos}=${search}&page=${url.page}`);
+            window.open(`${url.origin}?${repos}=${search}&page=${url.page}`);
         }
         else if (event.clientY < rect.top || event.clientY > rect.bottom ||
             event.clientX < rect.left || event.clientX > rect.right)
@@ -6001,10 +5952,10 @@ function buttonobjreset()
     }
     else
     {
-        var width = galleryobj.width?galleryobj.width:1024;
-        var height = galleryobj.height?galleryobj.height:1024;
-        var a = width / height;
-        height = Math.floor(window.innerWidth/a);
+        var gwidth = galleryobj.width?galleryobj.width:1024;
+        var gheight = galleryobj.height?galleryobj.height:1024;
+        var a = gwidth / gheight;
+        var height = Math.floor(window.innerWidth/a);
         var lst = [];
         for (var n = Math.floor(height/4); n < Math.floor(height*5); ++n)
             lst.push(n);
