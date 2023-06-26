@@ -1,14 +1,10 @@
 {
   "title": "Repba Gallery",
-  "variant": "portrait",
-  "variantlist": "portait,portrait,portrait,portrait,portrait",
-  "buttonlist": "120,240,480,600,720",
-  "buttonstart": 1,
+      "width": 1024,
+      "height": 1359,
   "data": [
     {
       "id": "HULK.0000",
-      "width": 1024,
-      "height": 1359,
       "extent": "1024x1359 0.75",
       "size": "1.4MP",
       "quote": "Those who dance are considered mad by those who can't hear the music."

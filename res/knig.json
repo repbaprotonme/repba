@@ -1,15 +1,11 @@
 {
   "title": "Repba Gallery",
-  "variant": "portrait",
-  "variantlist": "portait,portrait,portrait,portrait,portrait",
-  "buttonlist": "120,240,480,600,720",
-  "buttonstart": 1,
+      "width": 2068,
+      "height": 3056,
   "data": [
     {
       "id": "KNIG.0000",
       "index": "1 of 198",
-      "width": 2068,
-      "height": 3056,
       "extent": "2068x3056 0.68",
       "size": "6.3MP",
       "quote": "Those who dance are considered mad by those who can't hear the music."

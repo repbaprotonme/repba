@@ -1,12 +1,12 @@
 {
   "title": "Cyberpunk Gallery",
   "title1": "Science fiction in a dystopian futuristic featuring futuristic technological and scientific achievements, such as artificial intelligence and cybernetics, juxtaposed with societal collapse, dystopia or decay.",
+      "width": 3840,
+      "height": 2160,
   "data": [
     {
       "id": "SKYE.0000",
       "index": "1 of 49",
-      "width": 3840,
-      "height": 2160,
       "extent": "3840x2160 1.78",
       "size": "8.3MP",
       "quote": "Those who dance are considered mad by those who can't hear the music."

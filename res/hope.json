@@ -1,7 +1,7 @@
 {
   "title": "Repba Gallery",
-  "template": "landscape",
-  "thumb": "landthumb",
+      "width": 3999,
+      "height": 2250,
   "data": [
     {
       "id": "HOPE.0000",

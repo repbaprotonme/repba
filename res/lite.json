@@ -1,15 +1,11 @@
 {
   "title": "Repba Gallery",
-  "variant": "portrait",
-  "variantlist": "portait,portrait,portrait,portrait,portrait",
-  "buttonlist": "120,240,480,600,720",
-  "buttonstart": 1,
+      "width": 2077,
+      "height": 2887,
   "data": [
     {
       "id": "LITE.0000",
       "index": "1 of 53",
-      "width": 2077,
-      "height": 2887,
       "extent": "2077x2887 0.72",
       "size": "6.0MP",
       "quote": "Those who dance are considered mad by those who can't hear the music."
@@ -688,6 +684,6 @@
       "extent": "2157x3840 0.56",
       "size": "8.3MP",
       "quote": "Try Being Informed Instead of Being Opinionated"
-    }
+   }
   ]
 }

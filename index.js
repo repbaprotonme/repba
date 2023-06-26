@@ -93,7 +93,10 @@ Math.clamp = function (min, max, val)
 
 function windowopen(url)
 {
-    window.open(url,"_self");
+    setTimeout(function()
+        {
+            window.open(url);//todo ,"_self");
+        },1000);
 }
 
 function savelocal(key, value)
@@ -1140,6 +1143,7 @@ var HomePanel = function ()
 {
     this.draw = function (context, rect, user, time)
     {
+        //context.canvas.timeobj.set((1-galleryobj.berp())*TIMEOBJ);//set to current item
         context.save();
         context.canvas.homerect = new rectangle();
         var a = new Layer(
@@ -1921,7 +1925,7 @@ var dblclicklst =
             context.refresh();
             galleryobj.set(n);
             windowopen(addressobj.full());
-        }, JULIETIME*3);
+        }, 1000);
     },
 },
 {
@@ -2223,6 +2227,8 @@ var panlst =
 	pan: function (context, rect, x, y, type)
     {
         var obj = context.canvas.scrollobj.value();
+        if (globalobj.dblclicktime)
+            return;
         if (type == "panleft" || type == "panright")
         {
             if (context.canvas.type == "panup" ||
@@ -3265,10 +3271,10 @@ var taplst =
             clearTimeout(globalobj.hometap)
             globalobj.hometap = setTimeout(function()
                 {
+                    buttonobjreset();
                     globalobj.hometap = 0;
                     context.refresh();
                 }, 400);
-            context.canvas.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
             context.refresh();
         }
         else
@@ -3502,21 +3508,12 @@ var getfrompoint = function (context, x, y)
 {
 	var slices = context.canvas.sliceobj.data;
 
-	var k;
+    var k;
     for (k = 0; k < slices.length; k++)
     {
-		var slice = slices[k];
-		if (!slice.fitwidth || !slice.fitheight)
-			continue;
-		var w = slice.fitwidth;
-		var h = slice.fitheight;
-		var x1 = slice.center.x - w / 2;
-		var y1 = slice.center.y - h / 2;
-		var x2 = x1 + w;
-		var y2 = y1 + h;
-		if (x >= x1 && x < x2 &&
-			y >= y1 && y < y2)
-			break;
+        var slice = slices[k];
+        if (slice.rect.hitest(x,y))
+            break;
     }
 
 	return k;
@@ -4011,17 +4008,16 @@ menuobj.draw = function()
     {
         var j = context.canvas.visibles[m];
         var height = canvas.buttonheight;
-        var y = j.y;
         j.slice.center = {x: j.x, y: j.y};
         j.slice.fitwidth = rect.width;
-        j.slice.fitheight = canvas.buttonheight;
-        j.slice.rect = new rectangle(0,y,rect.width,height);
-        j.slice.isvisible = y > -height && y<window.innerHeight;
+        j.slice.fitheight = height;
+        j.slice.rect = new rectangle(0,j.y,rect.width,height);
+        j.slice.isvisible = j.y > -height && j.y<window.innerHeight;
         isvisiblecount += j.slice.isvisible?1:0;
         offmenuctx.canvas.scrollobj = context.canvas.scrollobj;
         offmenuctx.save();
         var r = new rectangle(0,0,rect.width,height);
-        offmenuctx.translate(0, y);
+        offmenuctx.translate(0, j.y);
         context.canvas.draw(offmenuctx, r, j.slice, j.n);
         offmenuctx.restore();
     }
@@ -4066,7 +4062,7 @@ contextlst.forEach(function(context, n)
     canvas.timeobj.set(TIMEOBJ/2);
     canvas.scrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
     canvas.imagescrollobj = new circular_array("IMAGESCROLL", Math.floor(window.innerHeight/2));
-    canvas.imagescrollobj.set(0.1*canvas.imagescrollobj.length());
+    canvas.imagescrollobj.set(0.5*canvas.imagescrollobj.length());
     canvas.textscrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
 
     var obj = eventlst[n];
@@ -4195,9 +4191,12 @@ contextobj.reset = function ()
                 j = `${url.path}.${galleryobj.current().pad(4)}`;
             }
 
+            traitobj.split(this.width>this.height?80:60, "0.1-1.0", traitobj.length());
+            scapeobj.split(this.width>this.height?80:60, "0.1-1.0", scapeobj.length());
+
             document.title = `${j} (${photo.image.width}x${photo.image.height})`;
             rowobj.set(rowobj.length()/2);
-            _4cnv.timeobj.set(_4cnv.timeobj.value());//TIMEOBJ/2);
+            _4cnv.timeobj.set(TIMEOBJ/2);
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnv.autodirect = -_4cnv.movingpage;
             _4cnv.movingpage = 0;
@@ -5093,7 +5092,7 @@ var headlst =
 
             var a = new Layer(
             [
-                    new FillPanel("black"),
+                    //new FillPanel("black"),
                     new Col([0,50,0],
                     [
                         0,
@@ -5312,35 +5311,12 @@ galleryobj.init = function (obj)
     positypobj.set(70);
     positxlobj.set(50);
     positylobj.set(70);
-    traitobj.split(60, "0.1-1.0", traitobj.length());
-    scapeobj.split(60, "0.1-1.0", scapeobj.length());
     var zoom = (typeof galleryobj.zoom === "undefined") ?25:galleryobj.zoom;
     poomobj.set(zoom);
     loomobj.set(zoom);
     slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:90);
 
-    var min = galleryobj.min?galleryobj.min:0;
-    var max = galleryobj.max?galleryobj.max:0;
-    if (min && max)
-    {
-        var lst = [];
-        for (var n = min; n < max; ++n)
-            lst.push(n);
-        _8cnv.buttonobj = new circular_array("", lst);
-    }
-    else
-    {
-        var width = galleryobj.width?galleryobj.width:1024;
-        var height = galleryobj.height?galleryobj.height:1024;
-        var a = width / height;
-        height = Math.floor(window.innerWidth/a);
-        var lst = [];
-        for (var n = Math.floor(height/4); n < Math.floor(height*5); ++n)
-            lst.push(n);
-        var k = lst.findIndex(function(a){return a == height});
-        _8cnv.buttonobj = new circular_array("", lst);
-        _8cnv.buttonobj.set(k);
-    }
+    buttonobjreset();
 
     if (!galleryobj.length())
     {
@@ -5376,10 +5352,6 @@ galleryobj.init = function (obj)
             explore().then(function(files) { dropfiles(files); })
         }},
 
-        {title: "Search", path: "SEARCH", func: function()
-            {
-                searchshow("pexels")
-            }},
         {title:"Download", path: "DOWNLOAD", func: function()
             {
                 download();
@@ -5461,6 +5433,21 @@ galleryobj.init = function (obj)
              },
             enabled: function() { return false }
         },
+        {line:"Delete Image", func: function()
+            {
+                var id = "78c6f4e3-b7f1-4d98-4c85-bf46937dc800";//galleryobj.value().id;
+                fetch(`https://reportbase.com/image/${id}`, { method: 'DELETE' })
+                .then(res =>
+                    {
+                        location.reload();
+                        return res.json()
+                    })
+                .then(data => console.log(data))
+                .catch(error => { console.log("Error:", error); });
+            },
+            enabled: function() { return false }
+        },
+
         {line:"Dalle json", func: function()
             {
                 fetch(`https://bucket.reportbase5836.workers.dev/dalle.json`)
@@ -5609,7 +5596,7 @@ galleryobj.init = function (obj)
     contextobj.reset();
 }
 
-url.path = "reci";
+url.path = "home";
 url.project = 0;
 var leftmenu = 1;
 
@@ -5745,19 +5732,6 @@ function download()
         var id = galleryobj.value().id;
         windowopen(`https://reportbase.com/image/${id}/blob`);
     }
-}
-
-function deleteimage()
-{
-    var id = galleryobj.value().id;
-    fetch(`https://reportbase.com/image/${id}`, { method: 'DELETE' })
-    .then(res =>
-        {
-            location.reload();
-            return res.json()
-        })
-    .then(data => console.log(data))
-    .catch(error => { console.log("Error:", error); });
 }
 
 function imagegoto()
@@ -6014,4 +5988,28 @@ function MovingAverage()
 movingx = new MovingAverage();
 movingy = new MovingAverage();
 
-
+function buttonobjreset()
+{
+    var min = galleryobj.min?galleryobj.min:0;
+    var max = galleryobj.max?galleryobj.max:0;
+    if (min && max)
+    {
+        var lst = [];
+        for (var n = min; n < max; ++n)
+            lst.push(n);
+        _8cnv.buttonobj = new circular_array("", lst);
+    }
+    else
+    {
+        var width = galleryobj.width?galleryobj.width:1024;
+        var height = galleryobj.height?galleryobj.height:1024;
+        var a = width / height;
+        height = Math.floor(window.innerWidth/a);
+        var lst = [];
+        for (var n = Math.floor(height/4); n < Math.floor(height*5); ++n)
+            lst.push(n);
+        var k = lst.findIndex(function(a){return a == height});
+        _8cnv.buttonobj = new circular_array("", lst);
+        _8cnv.buttonobj.set(k);
+    }
+}

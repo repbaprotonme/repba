@@ -1,7 +1,7 @@
 {
   "title": "Repba Gallery",
-  "template": "landscape",
-  "thumb": "landthumb",
+      "width": 4987,
+      "height": 4088,
   "data": [
     {
       "id": "MAPS.0000",
@@ -15,8 +15,6 @@
     {
       "id": "MAPS.0001",
       "index": "2 of 24",
-      "width": 4987,
-      "height": 4088,
       "extent": "4987x4088 1.22",
       "size": "20.4MP",
       "quote": "May God have mercy on my enemies, cause I will not."

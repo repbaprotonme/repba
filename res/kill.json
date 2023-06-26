@@ -1,44 +1,8 @@
 {
   "title": "Repba Gallery",
-  "template": "portrait",
-  "thumb": "porthumb",
-  "data": [
-    {
-      "id": "KILL.0000",
-      "index": "1 of 64",
       "width": 1280,
       "height": 1927,
-      "extent": "1280x1927 0.66",
-      "size": "2.5MP",
-      "quote": "Those who dance are considered mad by those who can't hear the music."
-    },
-    {
-      "id": "KILL.0001",
-      "index": "2 of 64",
-      "width": 1280,
-      "height": 2073,
-      "extent": "1280x2073 0.62",
-      "size": "2.7MP",
-      "quote": "May God have mercy on my enemies, cause I will not."
-    },
-    {
-      "id": "KILL.0002",
-      "index": "3 of 64",
-      "width": 2560,
-      "height": 1978,
-      "extent": "2560x1978 1.29",
-      "size": "5.1MP",
-      "quote": "The difference between genius and stupidity is that genius has its limits."
-    },
-    {
-      "id": "KILL.0003",
-      "index": "4 of 64",
-      "width": 2560,
-      "height": 1977,
-      "extent": "2560x1977 1.29",
-      "size": "5.1MP",
-      "quote": "The Harder You Work, The Luckier You Get"
-    },
+  "data": [
     {
       "id": "KILL.0004",
       "index": "5 of 64",
@@ -569,15 +533,6 @@
       "extent": "3200x2363 1.35",
       "size": "7.6MP",
       "quote": "As For Our Majority... One is Enough"
-    },
-    {
-      "id": "KILL.0063",
-      "index": "64 of 64",
-      "width": 1280,
-      "height": 2058,
-      "extent": "1280x2058 0.62",
-      "size": "2.6MP",
-      "quote": "I Failed to Make the Chess Team Because of My Height"
     }
   ]
 }

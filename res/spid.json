@@ -1,13 +1,11 @@
 {
   "title": "Repba Gallery",
-  "template": "portrait",
-  "thumb": "porthumb",
+      "width": 963,
+      "height": 1266,
   "data": [
     {
       "id": "SPID.0000",
       "index": "1 of 64",
-      "width": 963,
-      "height": 1266,
       "extent": "963x1266 0.76",
       "size": "1.2MP",
       "quote": "Those who dance are considered mad by those who can't hear the music."
