@@ -240,7 +240,7 @@ let circular_array = function (title, data)
 };
 
 var timemain = new circular_array("TIMEMAIN", 30);
-timemain.set(8);
+timemain.set(6);
 
 var colobj = new circular_array("COLUMNS", [0,10,20,30,40,50,60,70,80,90].reverse());
 var channelobj = new circular_array("CHANNELS", [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
@@ -544,11 +544,11 @@ for (var n = 0; n < 6; ++n)
     canvaslst[n] = document.createElement("canvas");
 
 let ganvaslst = [];
-for (var n = 0; n < 20; ++n)
+for (var n = 0; n < ALIEXTENT; ++n)
     ganvaslst[n] = document.createElement("canvas");
 
 let imagelst = [];
-for (var n = 0; n < 20; ++n)
+for (var n = 0; n < ALIEXTENT; ++n)
     imagelst[n] = new Image();
 
 
@@ -1871,6 +1871,10 @@ var dblclicklst =
         galleryobj.set(n);
         clearInterval(globalobj.swipetimeout);
         globalobj.swipetimeout = 0;
+        headobj.set(3);
+        headham.panel = headobj.value();
+        headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+        bossobj.set(1);
         delete _4cnv.thumbcanvas;
         delete photo.image;
         slice.tap = 1;
@@ -2678,13 +2682,13 @@ var keylst =
             context.refresh();
             evt.preventDefault();
         }
-        else if (key == "pageup" || key == "arrowup" || key == "k" || (canvas.shiftKey && key == " "))
+        else if (key == "pageup" || key == "arrowup" || key == "k")
 		{
             var e = {type:"swipedown"}
             swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
             evt.preventDefault();
         }
-        else if (key == "pagedown" || key == "arrowdown" || key == "j" || key == " ")
+        else if (key == "pagedown" || key == "arrowdown" || key == "j")
 		{
             var e = {type:"swipeup"}
             swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
@@ -3932,7 +3936,7 @@ menuobj.draw = function()
         a.draw(context, rect, 0, 0);
     }
 
-    var size = Math.ceil(rect.height/canvas.buttonheight)+4;
+    var size = Math.ceil(rect.height/canvas.buttonheight)+8;
     var current = Math.floor(
         Math.lerp(0,slices.length-1,1-context.canvas.timeobj.berp()));
     var slicegroup = getrotatedlist(context.canvas.rotated,slices.length,current,size);
@@ -4142,8 +4146,8 @@ contextobj.reset = function ()
                 j = `${url.path}.${galleryobj.current().pad(4)}`;
             }
 
-            traitobj.split(this.width>this.height?80:60, "0.1-1.0", traitobj.length());
-            scapeobj.split(this.width>this.height?80:60, "0.1-1.0", scapeobj.length());
+            traitobj.split(50, "0.1-1.0", traitobj.length());
+            scapeobj.split(50, "0.1-1.0", scapeobj.length());
 
             document.title = `${j} (${photo.image.width}x${photo.image.height})`;
             rowobj.set(rowobj.length()/2);
@@ -4152,7 +4156,7 @@ contextobj.reset = function ()
             _4cnv.autodirect = -_4cnv.movingpage;
             _4cnv.movingpage = 0;
             contextobj.reset()
-           // swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
+            swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             setTimeout(function() { masterload(); }, 500);
         }
@@ -5210,6 +5214,7 @@ window.addEventListener("visibilitychange", (evt) =>
     }
     else
     {
+        savelocal("gallery",_8cnv.timeobj.current())
     }
 });
 
@@ -5545,6 +5550,9 @@ galleryobj.init = function (obj)
     var slices = _9cnv.sliceobj;
     slices.data = [];
     contextobj.reset();
+
+    var k = getlocalnumber("gallery",TIMEOBJ/2);
+    _8cnv.timeobj.set(k);
 }
 
 url.path = "home";
@@ -5957,10 +5965,51 @@ function buttonobjreset()
         var a = gwidth / gheight;
         var height = Math.floor(window.innerWidth/a);
         var lst = [];
-        for (var n = Math.floor(height/4); n < Math.floor(height*5); ++n)
+        var j = Math.max(180,Math.floor(height/2));
+        var b = Math.min(180*20,Math.floor(height*5));
+        for (var n = j; n < b; ++n)
             lst.push(n);
         var k = lst.findIndex(function(a){return a == height});
         _8cnv.buttonobj = new circular_array("", lst);
         _8cnv.buttonobj.set(k);
+    }
+}
+
+function savelocal(key, value)
+{
+    try
+    {
+        localStorage.setItem(`${url.path}.${key}`,value);
+    }
+    catch(_)
+    {
+    }
+}
+
+function getlocalstring(key, def)
+{
+    try
+    {
+        var str = localStorage.getItem(`${url.path}.${key}`);
+        if (typeof str == "undefined")
+            return def;
+        return str;
+    }
+    catch(_)
+    {
+    }
+}
+
+function getlocalnumber(key, def)
+{
+    try
+    {
+        var str = localStorage.getItem(`${url.path}.${key}`);
+        if (typeof str == "undefined")
+            return def;
+        return Number(str);
+    }
+    catch(_)
+    {
     }
 }

@@ -1,4 +1,5 @@
 # packages
+pacman -S ffmpeg 
 pacman -S libwebp ranger unrar rust wasm-pack ffmpeg libheif youtube-dl 
 
 # upgrade
