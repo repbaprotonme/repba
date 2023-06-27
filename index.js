@@ -706,6 +706,7 @@ var GalleryBar = function ()
         var buttonobj = context.canvas.buttonobj;
         var j = Math.lerp(1,context.canvas.sliceobj.length(),
             1-context.canvas.timeobj.berp());
+        j += galleryobj.startimage;
         a.draw(context, rect,
         [
             context.canvas.timeobj,
@@ -713,7 +714,7 @@ var GalleryBar = function ()
                 0,
                 0,
                 buttonobj,
-                `${j.toFixed(0)} of ${context.canvas.sliceobj.length()}`,
+                `${j.toFixed(0)} of ${galleryobj.lastimage}`,
                 context.canvas.scrollobj.value(),
                 0,
             ],
@@ -2288,7 +2289,8 @@ var panlst =
         else if (type == "panup" || type == "pandown")
         {
             var k = context.canvas.timeobj.length();
-            var jvalue = (k/(context.canvas.virtualheight)*(context.canvas.starty-y));
+            var jvalue = (k/(context.canvas.virtualheight)*
+                (context.canvas.starty-y)/2);
             var j = context.canvas.startt - jvalue;
             var len = context.canvas.timeobj.length();
             if (j < 0)
@@ -4132,7 +4134,7 @@ contextobj.reset = function ()
             this.aspect = this.width/this.height;
             this.size = ((this.width * this.height)/1000000).toFixed(1) + "MP";
             this.extent = `${this.width} x ${this.height}`;
-            extentobj.data[0] = `${galleryobj.current()+1} of ${galleryobj.length()}`;
+            extentobj.data[0] = `${galleryobj.startimage+galleryobj.current()+1} of ${galleryobj.lastimage}`;
             extentobj.data[1] = this.extent;
             extentobj.data[2] = galleryobj.value().id?galleryobj.value().id:"Undefined";
             extentobj.data[3] = `${window.innerWidth} x ${window.innerHeight}`;
@@ -5263,13 +5265,19 @@ var galleryobj = new circular_array("", 0);
 galleryobj.init = function (obj)
 {
     galleryobj = Object.assign(galleryobj,obj);
+    galleryobj.startimage = 0;
+    galleryobj.lastimage = galleryobj.length();
     if (url.searchParams.has("r"))
     {
         var str = url.searchParams.get("r");
         var k = str.clean();
         var j = k.split("-");
         if (j.length == 2)
+        {
+            galleryobj.startimage = Number(j[0]);
+            galleryobj.lastimage = Number(j[1]);
             galleryobj.data = galleryobj.data.slice(j[0],j[1]);
+        }
     }
 
     galleryobj.set(url.project);
