@@ -3939,7 +3939,7 @@ menuobj.draw = function()
         a.draw(context, rect, 0, 0);
     }
 
-    var size = Math.ceil(rect.height/canvas.buttonheight)+8;
+    var size = Math.ceil(rect.height/canvas.buttonheight)+3;
     var current = Math.floor(
         Math.lerp(0,slices.length-1,1-context.canvas.timeobj.berp()));
     var slicegroup = getrotatedlist(context.canvas.rotated,slices.length,current,size);
@@ -5979,7 +5979,7 @@ function buttonobjreset()
         var height = Math.floor(window.innerWidth/a);
         var lst = [];
         var j = Math.max(180,Math.floor(height/2));
-        var b = Math.min(180*20,Math.floor(height*5));
+        var b = Math.min(180*20,Math.floor(height*3));
         for (var n = j; n < b; ++n)
             lst.push(n);
         var k = lst.findIndex(function(a){return a == height});
