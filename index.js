@@ -2718,10 +2718,13 @@ var keylst =
         }
         else if (key == " " || key == "\\" || key == "/")
         {
-            menuobj.hide();
-        }
-        else if (key == "g")
-        {
+            clearInterval(globalobj.swipetimeout);
+            globalobj.swipetimeout = 0;
+            headobj.set(3);
+            headham.panel = headobj.value();
+            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            bossobj.set(1);
+            menuobj.toggle(_8cnvctx);
         }
         else if (key == "f")
         {
@@ -4158,6 +4161,7 @@ contextobj.reset = function ()
             contextobj.reset()
             swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            _4cnvctx.refresh();
             setTimeout(function() { masterload(); }, 500);
         }
     }
@@ -5259,6 +5263,15 @@ var galleryobj = new circular_array("", 0);
 galleryobj.init = function (obj)
 {
     galleryobj = Object.assign(galleryobj,obj);
+    if (url.searchParams.has("r"))
+    {
+        var str = url.searchParams.get("r");
+        var k = str.clean();
+        var j = k.split("-");
+        if (j.length == 2)
+            galleryobj.data = galleryobj.data.slice(j[0],j[1]);
+    }
+
     galleryobj.set(url.project);
     setfavicon();
     pretchobj.split(60, "40-90", pretchobj.length());
