@@ -5295,6 +5295,9 @@ galleryobj.init = function (obj)
 
     buttonobjreset();
 
+    var k = getlocalnumber("gallery",0);
+    _8cnv.timeobj.set(k);
+
     if (!galleryobj.length())
     {
         headobj.set(4);
@@ -5571,9 +5574,6 @@ galleryobj.init = function (obj)
     var slices = _9cnv.sliceobj;
     slices.data = [];
     contextobj.reset();
-
-    var k = getlocalnumber("gallery",TIMEOBJ/2);
-    _8cnv.timeobj.set(k);
 }
 
 url.path = "home";
