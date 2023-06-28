@@ -2600,7 +2600,8 @@ var keylst =
         canvas.slideshow = 0;
         var obj = context.canvas.scrollobj.value();
         if (canvas.ctrlKey && key == "arrowup" ||
-            canvas.shiftKey && key == "enter")
+            canvas.shiftKey && key == "enter" ||
+            canvas.shiftKey && key == " ")
         {
             var e = {type:"swipedown"}
             swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
@@ -2608,7 +2609,8 @@ var keylst =
         }
         else if (
             canvas.ctrlKey && key == "arrowdown" ||
-            key == "enter")
+            key == "enter" ||
+            key == " ")
         {
             var e = {type:"swipeup"}
             swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
@@ -2663,7 +2665,7 @@ var keylst =
             obj.rotateperc(2.5);
             context.refresh()
         }
-        else if (key == " " || key == "\\" || key == "/")
+        else if (key == "\\" || key == "/")
         {
             if (galleryobj.hideboss)
                 return;
@@ -2715,7 +2717,10 @@ var keylst =
         canvas.slideshow = 0;
 
         var key = evt.key.toLowerCase();
-        if (key == "pageup" || key == "arrowup" || evt.key == "j")
+        if (key == "pageup" ||
+            key == "arrowup" ||
+            key == " " ||
+            evt.key == "j")
 		{
             if (!canvas.shiftKey && canvas.block)
                 return;
@@ -2727,7 +2732,11 @@ var keylst =
             context.canvas.timeobj.rotate(-k);
             context.refresh()
         }
-        else if (key == "pagedown" || key == "arrowdown" || evt.key == "k")
+        else if (
+            key == "pagedown" ||
+            key == "arrowdown" ||
+            (canvas.shiftKey && key == " ") ||
+            kevt.key == "k")
 		{
             if (!canvas.shiftKey && canvas.block)
                 return;
@@ -2739,7 +2748,7 @@ var keylst =
             context.canvas.timeobj.rotate(k);
             context.refresh()
         }
-        else if (key == " " || key == "\\" || key == "/")
+        else if (key == "\\" || key == "/")
         {
             menuobj.hide();
         }
@@ -2829,24 +2838,24 @@ var keylst =
             canvas.autodirect = -1;
             swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
         }
-        else if (key == " ")
-        {
-            menuobj.toggle(_8cnvctx);
-        }
         else if (key == "tab")
         {
             evt.preventDefault();
             canvas.autodirect = evt.shiftKey?1:-1;
             swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
         }
-        else if (key == "arrowup" || key == "k")
+        else if (evt.shiftKey && key == " " ||
+            key == "arrowup" ||
+            key == "k")
         {
             var k = rowobj.length()/500;
             canvas.keyuptime += 0.3;
             rowobj.add(-k-canvas.keyuptime);
             contextobj.reset();
         }
-        else if (key == "arrowdown" || key == "j" )
+        else if (key == "arrowdown" ||
+            key == " " ||
+            key == "j" )
         {
             var k = rowobj.length()/500;
             canvas.keyuptime += 0.3;
@@ -5289,9 +5298,6 @@ galleryobj.init = function (obj)
 
     buttonobjreset();
 
-    var k = getlocalnumber("gallery",0);
-    _8cnv.timeobj.set(k);
-
     if (!galleryobj.length())
     {
         headobj.set(4);
@@ -5556,9 +5562,11 @@ galleryobj.init = function (obj)
     _7cnv.rotated = [...a,...a,...a];
 
     _8cnv.sliceobj.data = galleryobj.data;
-    _8cnv.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
     var a = Array(galleryobj.length()).fill().map((_, index) => index);
     _8cnv.rotated = [...a,...a,...a];
+
+    var k = getlocalnumber("gallery",0);
+    _8cnv.timeobj.set(k);
 
     var slices = _9cnv.sliceobj;
     slices.data = [];

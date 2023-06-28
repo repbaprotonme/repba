@@ -1,7 +1,7 @@
 ffmpeg -i input.mp4 -vf fps=1/10 %04d.png
 ssh scott@207.246.108.73 #login
 ls -1 | sort > out.txt
-find mind -type f > mind.txt  #recursive list files
+find res -type f > res.txt  #recursive list files
 du -h *  #human readable disk usage
 scp test scott@207.246.108.73:/home/scott
 grep -r --include "*.ini" "#auto" . #recursive find
@@ -27,6 +27,7 @@ alias folders="find . -maxdepth 1 -type d -print | xargs du -sk | sort -rn"
 unrar x file.rar 
 unrar -d file.rar 
 for file in *.rar; do unrar e "$file"; done
+unrar x 001.cbr 001/
 
 #unsplash get randome image
 wget -q -O unsplash_wallpaper.jpg https://unsplash.it/1920/1080/?random
