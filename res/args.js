@@ -12,7 +12,7 @@ fs.readFile(args[2], 'utf8', (error, str) =>
         var name = lst[n];
         if (!name)
             continue;
-        k.url = `http://reportbase.me/data/ice/${name}`;
+        k.url = `http://reportbase.me/data/${name}`;
         json.data.push(k);
     }
 

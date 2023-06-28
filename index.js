@@ -634,7 +634,7 @@ var GalleryBar = function ()
         context.canvas.buttonrect = new rectangle();
         context.canvas.hscrollrect = new rectangle();
         context.canvas.vscrollrect = new rectangle();
-        context.canvas.imagegotorect = new rectangle();
+        context.canvas.pageshowrect = new rectangle();
         var w = Math.min(320,rect.width-100);
         var j = window.innerWidth - rect.width >= 180;
         context.save();
@@ -685,7 +685,7 @@ var GalleryBar = function ()
                  ]):0,
                 new Layer(
                 [
-                    new Rectangle(context.canvas.imagegotorect),
+                    new Rectangle(context.canvas.pageshowrect),
                     new ShadowPanel(new Text("rgb(255,255,255)", "center", "middle",0, 0)),
                 ]),
                 new Col([20,0,20],
@@ -1502,7 +1502,6 @@ var makehammer = function (context, v, t)
 
     ham.element.addEventListener("dblclick", function (evt)
     {
-        //todo firefox
         var x = evt.offsetX;
         var y = evt.offsetY;
         if (typeof (ham.panel.dblclick) !== "function")
@@ -1840,53 +1839,6 @@ var dblclicklst =
     name: "GALLERY",
     click: function (context, rect, x, y)
     {
-    	var visibles = context.canvas.visibles;
-
-        var k;
-        for (k = 0; k < visibles.length; k++)
-        {
-            var slice = visibles[k];
-            if (slice.slice.rect.hitest(x,y))
-                break;
-        }
-
-        if (k == visibles.length)
-            return;
-        if (context.canvas.imagegotorect && context.canvas.imagegotorect.hitest(x,y))
-            return;
-        if (context.canvas.buttonrect && context.canvas.buttonrect.hitest(x,y))
-            return;
-        if (context.canvas.hscrollrect && context.canvas.hscrollrect.hitest(x,y))
-            return;
-        if (context.canvas.vscrollrect && context.canvas.vscrollrect.hitest(x,y))
-            return;
-        if (context.canvas.homerect && context.canvas.homerect.hitest(x,y))
-            return;
-        if (context.canvas.fullrect && context.canvas.fullrect.hitest(x,y))
-            return;
-        if (context.canvas.searchrect && context.canvas.searchrect.hitest(x,y))
-            return;
-
-        var n = visibles[k].n;
-        var slice = galleryobj.data[n];
-        galleryobj.set(n);
-        clearInterval(globalobj.swipetimeout);
-        globalobj.swipetimeout = 0;
-        headobj.set(3);
-        headham.panel = headobj.value();
-        headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-        bossobj.set(1);
-        delete _4cnv.thumbcanvas;
-        delete photo.image;
-        slice.tap = 1;
-        context.refresh();
-        setTimeout(function ()
-        {
-            slice.tap = 0;
-            context.refresh();
-            menuobj.toggle(_8cnvctx);
-            contextobj.reset();
-        }, 1000);
     },
 },
 {
@@ -2203,6 +2155,13 @@ var panlst =
                    obj.setperc(k);
                    context.refresh()
             }
+            else if (context.canvas.ishbar)
+            {
+                var obj = context.canvas.scrollobj.value();
+                var k = (x-context.canvas.hscrollrect.x)/context.canvas.hscrollrect.width;
+                obj.setperc(k);
+                context.refresh();
+            }
             else
             {
                 var but = context.canvas.buttonobj;
@@ -2224,20 +2183,31 @@ var panlst =
                 context.canvas.type == "panright")
                return;
             context.canvas.type = type;
-            var k = context.canvas.timeobj.length();
-            if (!context.canvas.starty)
-                context.canvas.starty = rect.height/2;
-            var e = context.canvas.starty-y;
-            var jvalue = (k/(context.canvas.virtualheight)*(e));
-            var j = context.canvas.startt - jvalue;
-            var len = context.canvas.timeobj.length();
-            if (j < 0)
-                 j = len+j-1;
-            else if (j >= len)
-                 j = j-len-1;
-            j = j % context.canvas.timeobj.length();
-            context.canvas.timeobj.set(j);
-            context.refresh()
+            if (context.canvas.isvbar)
+            {
+                var obj = context.canvas.timeobj;
+                var k = (y-context.canvas.vscrollrect.y)/context.canvas.vscrollrect.height;
+                obj.setperc(1-k);
+                context.refresh()
+            }
+            else
+            {
+                var k = context.canvas.timeobj.length();
+                if (!context.canvas.starty)
+                    context.canvas.starty = rect.height/2;
+                var e = context.canvas.starty-y;
+                var jvalue = (k/(context.canvas.virtualheight)*(e));
+                var j = context.canvas.startt - jvalue;
+                var len = context.canvas.timeobj.length();
+                if (j < 0)
+                     j = len+j-1;
+                else if (j >= len)
+                     j = j-len-1;
+                j = j % context.canvas.timeobj.length();
+                context.canvas.timeobj.set(j);
+                context.canvas.nohide = type == "pandown";
+                context.refresh()
+            }
         }
     },
 	panstart: function (context, rect, x, y)
@@ -2251,6 +2221,8 @@ var panlst =
         context.canvas.starty = y;
         context.canvas.startt = context.canvas.timeobj.current();
         context.canvas.isbuttonbar = context.canvas.buttonrect && context.canvas.buttonrect.hitest(x,y);
+        context.canvas.ishbar =  context.canvas.hscrollrect && context.canvas.hscrollrect.hitest(x,y);
+        context.canvas.isvbar =  context.canvas.vscrollrect && context.canvas.vscrollrect.hitest(x,y);
     },
 	panend: function (context, rect, x, y)
     {
@@ -2491,7 +2463,7 @@ var presslst =
     name: "GALLERY",
     pressup: function (context, rect, x, y)
     {
-        if (context.canvas.imagegotorect && context.canvas.imagegotorect.hitest(x,y))
+        if (context.canvas.pageshowrect && context.canvas.pageshowrect.hitest(x,y))
             return;
         if (context.canvas.buttonrect && context.canvas.buttonrect.hitest(x,y))
             return;
@@ -2628,6 +2600,8 @@ var swipelst =
 var swipeobj = new circular_array("SWIPE", swipelst);
 swipeobj.set(3);
 
+var dialog = 0;
+
 var keylst =
 [
 {
@@ -2645,7 +2619,7 @@ var keylst =
     },
 	keydown: function (evt)
 	{
-        if (globalobj.prompt)
+        if (dialog && dialog.open)
             return;
    		var context = menuobj.value()
         var canvas = context.canvas;
@@ -2758,7 +2732,7 @@ var keylst =
     },
 	keydown: function (evt)
 	{
-        if (globalobj.prompt)
+        if (dialog && dialog.open)
             return;
    		var context = menuobj.value()
         var canvas = context.canvas;
@@ -2835,7 +2809,7 @@ var keylst =
 	},
 	keydown: function (evt)
 	{
-        if (globalobj.prompt)
+        if (dialog && dialog.open())
             return;
 		var canvas = _4cnv;
 		var context = _4cnvctx;
@@ -3171,7 +3145,7 @@ var taplst =
             var obj = context.canvas.timeobj;
             var k = (y-context.canvas.vscrollrect.y)/context.canvas.vscrollrect.height;
             obj.setperc(1-k);
-            contextobj.reset();
+            context.refresh();
         }
         else if (context.fullrect && context.fullrect.hitest(x,y))
         {
@@ -3190,9 +3164,9 @@ var taplst =
             obj.setperc(k);
             context.refresh();
         }
-        else if (context.canvas.imagegotorect && context.canvas.imagegotorect.hitest(x,y))
+        else if (context.canvas.pageshowrect && context.canvas.pageshowrect.hitest(x,y))
         {
-            imagegoto();
+            pageshow();
         }
         else if (context.canvas.searchrect && context.canvas.searchrect.hitest(x,y))
         {
@@ -3239,8 +3213,53 @@ var taplst =
         }
         else
         {
-            context.canvas.nohide = context.canvas.nohide?0:1;
+            var visibles = context.canvas.visibles;
+
+            var k;
+            for (k = 0; k < visibles.length; k++)
+            {
+                var slice = visibles[k];
+                if (slice.slice.rect.hitest(x,y))
+                    break;
+            }
+
+            if (k == visibles.length)
+                return;
+            if (context.canvas.pageshowrect && context.canvas.pageshowrect.hitest(x,y))
+                return;
+            if (context.canvas.buttonrect && context.canvas.buttonrect.hitest(x,y))
+                return;
+            if (context.canvas.hscrollrect && context.canvas.hscrollrect.hitest(x,y))
+                return;
+            if (context.canvas.vscrollrect && context.canvas.vscrollrect.hitest(x,y))
+                return;
+            if (context.canvas.homerect && context.canvas.homerect.hitest(x,y))
+                return;
+            if (context.canvas.fullrect && context.canvas.fullrect.hitest(x,y))
+                return;
+            if (context.canvas.searchrect && context.canvas.searchrect.hitest(x,y))
+                return;
+
+            var n = visibles[k].n;
+            var slice = galleryobj.data[n];
+            galleryobj.set(n);
+            clearInterval(globalobj.swipetimeout);
+            globalobj.swipetimeout = 0;
+            headobj.set(3);
+            headham.panel = headobj.value();
+            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            bossobj.set(1);
+            delete _4cnv.thumbcanvas;
+            delete photo.image;
+            slice.tap = 1;
             context.refresh();
+            setTimeout(function ()
+            {
+                slice.tap = 0;
+                context.refresh();
+                menuobj.toggle(_8cnvctx);
+                contextobj.reset();
+            }, 1000);
         }
     },
 },
@@ -4781,23 +4800,22 @@ function resize()
 
 function escape()
 {
-    if (globalobj.prompt)
+    if (dialog && dialog.open())
     {
-        globalobj.prompt.close();
-        globalobj.prompt = 0;
+        dialog.close();
         headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         return;
     }
 
     overlayobj.set(0);
     slicewidthobj.debug = 0;
+    menuobj.hide();
     headobj.set(3);
     bossobj.set(1);
     headham.panel = headobj.value();
     headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
     delete _4cnv.thumbcanvas;
     galleryobj.transparent = 0;
-    menuobj.hide();
     contextobj.reset();
 }
 
@@ -5714,7 +5732,7 @@ function download()
     }
 }
 
-function imagegoto()
+function pageshow()
 {
     var input = document.getElementById("page-goto-value");
     input.addEventListener("keyup", function(event)
@@ -5722,11 +5740,13 @@ function imagegoto()
       if (event.keyCode === 13)
       {
         event.preventDefault();
-        var image = document.getElementById('page-goto-value').value.clean();
-        if (!image)
+        var page = document.getElementById('page-goto-value').value.clean();
+        if (!page)
           return;
-            globalobj.prompt = 0;
-            var k = image/galleryobj.length()
+            page = Math.clamp(galleryobj.startimage,
+                galleryobj.lastimage, page);
+            page -= galleryobj.startimage;
+            var k = page/galleryobj.length()
             var obj = _8cnv.timeobj;
             obj.setperc(1-k);
             contextobj.reset();
@@ -5735,18 +5755,19 @@ function imagegoto()
     });
 
     globalobj.block = 1;
-    const dialog = document.getElementById("page-goto");
-    globalobj.prompt = dialog;
+    dialog = document.getElementById("page-goto");
     dialog.addEventListener("click", function()
     {
         var rect = input.getBoundingClientRect();
         if (event.target.id == "page-ok")
         {
-            var image = document.getElementById('page-goto-value').value.clean();
-            if (!image)
+            var page = document.getElementById('page-goto-value').value.clean();
+            if (!page)
               return;
-            globalobj.prompt = 0;
-            var k = image/galleryobj.length()
+            page = Math.clamp(galleryobj.startimage,
+                galleryobj.lastimage, page);
+            page -= galleryobj.startimage;
+            var k = page/galleryobj.length()
             var obj = _8cnv.timeobj;
             obj.setperc(1-k);
             contextobj.reset();
@@ -5758,14 +5779,14 @@ function imagegoto()
             if (globalobj.block)
                 return;
             dialog.close();
-            globalobj.prompt = 0;
         }
     });
 
     var current = Math.floor(
         Math.lerp(1,galleryobj.length(),1-_8cnv.timeobj.berp()));
 
-   document.getElementById('page-goto-value').value = current+1;
+   document.getElementById('page-goto-value').value = current +
+        galleryobj.startimage;
     dialog.showModal();
     setTimeout(function() { globalobj.block = 0; }, 40);
 }
@@ -5787,8 +5808,7 @@ function searchshow(repos)
     });
 
     globalobj.block = 1;
-    const dialog = document.getElementById("search-overlay");
-    globalobj.prompt = dialog;
+    dialog = document.getElementById("search-overlay");
     dialog.addEventListener("click", function()
     {
         var rect = input.getBoundingClientRect();
@@ -5797,7 +5817,6 @@ function searchshow(repos)
             var search = document.getElementById('search-value').value.clean();
             if (!search)
                 return;
-            globalobj.prompt = 0;
             window.open(`${url.origin}?${repos}=${search}&page=${url.page}`);
         }
         else if (event.clientY < rect.top || event.clientY > rect.bottom ||
@@ -5806,7 +5825,6 @@ function searchshow(repos)
             if (globalobj.block)
                 return;
             dialog.close();
-            globalobj.prompt = 0;
         }
     });
 
@@ -5832,8 +5850,7 @@ function showprompt(str)
     textarea.readOnly = false;
 
     globalobj.block = 1;
-    const dialog = document.getElementById("prompt-overlay");
-    globalobj.prompt = dialog;
+    dialog = document.getElementById("prompt-overlay");
     dialog.addEventListener("click", function()
     {
         const rect = textarea.getBoundingClientRect();
@@ -5861,7 +5878,6 @@ function showprompt(str)
             if (globalobj.block)
                 return;
             dialog.close();
-            globalobj.prompt = 0;
         }
     });
 
@@ -5883,7 +5899,6 @@ function showdescribe(str)
 
     globalobj.block = 1;
     const dialog = document.getElementById("prompt-overlay");
-    globalobj.prompt = dialog;
     dialog.addEventListener("click", function()
     {
         const rect = textarea.getBoundingClientRect();
@@ -5898,7 +5913,6 @@ function showdescribe(str)
             if (globalobj.block)
                 return;
             dialog.close();
-            globalobj.prompt = 0;
         }
     });
 
