@@ -45,7 +45,6 @@ let photo = {};
 photo.image = 0;
 
 let url = new URL(window.location.href);
-url.page = url.searchParams.has("page") ? Number(url.searchParams.get("page")) : 0;
 
 function getRandomColor()
 {
@@ -1288,34 +1287,6 @@ rectangle.prototype.expand = function (x, y)
 	this.width += x*2;
 	this.height += y*2;
     return this;
-};
-
-var addressobj = {}
-
-addressobj.full = function (k)
-{
-    var zoom = zoomobj.value();
-    let surl = new URL(window.location.href);
-    var j = "";
-    var e = galleryobj.current().pad(4);
-    if (url.searchParams.has(galleryobj.repos))
-    {
-        var k = url.searchParams.get(galleryobj.repos);
-        k = k.split(".")[0];
-        j = `?${galleryobj.repos}=${k}.${e}`;
-    }
-    else
-    {
-        j = `?p=${url.path}.${e}`;
-    }
-
-    out =
-        url.origin +
-        url.pathname +
-        j +
-        "&b="+url.page;
-        "&page="+url.page;
-    return out;
 };
 
 CanvasRenderingContext2D.prototype.movepage = function(j)
@@ -2694,6 +2665,8 @@ var keylst =
         }
         else if (key == " " || key == "\\" || key == "/")
         {
+            if (galleryobj.hideboss)
+                return;
             clearInterval(globalobj.swipetimeout);
             globalobj.swipetimeout = 0;
             headobj.set(3);
@@ -2990,7 +2963,7 @@ var taplst =
         }
         else if (context.extentrect && context.extentrect.hitest(x,y))
         {
-            if (context.canvas.shiftlKey)
+            if (!galleryobj.visible || context.canvas.shiftlKey)
             {
                 if (galleryobj.value().id)
                     copytext(galleryobj.value().id);
@@ -3211,7 +3184,7 @@ var taplst =
                 }, 400);
             context.refresh();
         }
-        else
+        else if (!galleryobj.hideboss)
         {
             var visibles = context.canvas.visibles;
 
@@ -4807,6 +4780,9 @@ function escape()
         return;
     }
 
+    if (galleryobj.hideboss && menuobj.value() == _8cnvctx)
+        return;
+
     overlayobj.set(0);
     slicewidthobj.debug = 0;
     menuobj.hide();
@@ -5368,11 +5344,6 @@ galleryobj.init = function (obj)
                 catch (_)
                 {
                 }
-            }},
-        {title:"Copy Link", path: "COPYLINK", func: function()
-            {
-                copytext(addressobj.full());
-                menuobj.hide();
             }},
         {title:"Full Screen", path: "FULLSCREEN", func: function()
             {
@@ -5995,9 +5966,11 @@ function buttonobjreset()
     }
     else
     {
-        var gwidth = galleryobj.width?galleryobj.width:1024;
-        var gheight = galleryobj.height?galleryobj.height:1024;
-        var a = gwidth / gheight;
+        var ww = galleryobj.width?galleryobj.width:1024;;
+        var hh = galleryobj.height?galleryobj.height:1024;;
+        var w = url.searchParams.has("w")?url.searchParams.get("w"):ww;
+        var h = url.searchParams.has("h")?url.searchParams.get("h"):hh;
+        var a = w/h;
         var height = Math.floor(window.innerWidth/a);
         var lst = [];
         var j = Math.max(180,Math.floor(height/2));
