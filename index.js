@@ -2121,10 +2121,10 @@ var panlst =
             context.canvas.type = type;
             if (context.canvas.isbuttonbar)
             {
-                   var obj = context.canvas.buttonobj
-                   var k = (x - context.canvas.buttonrect.x) / context.canvas.buttonrect.width;
-                   obj.setperc(k);
-                   context.refresh()
+               var obj = context.canvas.buttonobj
+               var k = (x - context.canvas.buttonrect.x) / context.canvas.buttonrect.width;
+               obj.setperc(k);
+               context.refresh()
             }
             else if (context.canvas.ishbar)
             {
@@ -2334,6 +2334,27 @@ var panlst =
         }
         else if (type == "panup" || type == "pandown")
         {
+            if (type == "pandown")
+            {
+                if (headobj.current() != 0)
+                {
+                    headobj.set(0);
+                    headham.panel = headobj.value();
+                    headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+                }
+            }
+            else
+            {
+                var k = bossobj.current() == 1?3:1;
+                if (headobj.current() != k)
+                {
+                    headobj.set(k);
+                    headham.panel = headobj.value();
+                    headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+                }
+            }
+
+            panlst
             var zoom = zoomobj.value()
             if (Number(zoom.value()))
             {
@@ -5982,7 +6003,7 @@ function buttonobjreset()
         var height = Math.floor(window.innerWidth/a);
         var lst = [];
         var j = Math.max(180,Math.floor(height/2));
-        var b = Math.min(180*20,Math.floor(height*3));
+        var b = Math.min(180*20,Math.floor(height*4));
         for (var n = j; n < b; ++n)
             lst.push(n);
         var k = lst.findIndex(function(a){return a == height});
