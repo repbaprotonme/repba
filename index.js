@@ -705,7 +705,6 @@ var GalleryBar = function ()
         var buttonobj = context.canvas.buttonobj;
         var j = Math.lerp(1,context.canvas.sliceobj.length(),
             1-context.canvas.timeobj.berp());
-        j += galleryobj.startimage;
         a.draw(context, rect,
         [
             context.canvas.timeobj,
@@ -713,7 +712,7 @@ var GalleryBar = function ()
                 0,
                 0,
                 buttonobj,
-                `${j.toFixed(0)} of ${galleryobj.lastimage}`,
+                `${j.toFixed(0)} of ${galleryobj.length()}`,
                 context.canvas.scrollobj.value(),
                 0,
             ],
@@ -3214,7 +3213,7 @@ var taplst =
                 }, 400);
             context.refresh();
         }
-        else if (!galleryobj.hideboss)
+        else if (!galleryobj.hideboss || context.canvas.shiftKey)
         {
             var visibles = context.canvas.visibles;
 
@@ -4156,7 +4155,7 @@ contextobj.reset = function ()
             this.aspect = this.width/this.height;
             this.size = ((this.width * this.height)/1000000).toFixed(1) + "MP";
             this.extent = `${this.width} x ${this.height}`;
-            extentobj.data[0] = `${galleryobj.startimage+galleryobj.current()+1} of ${galleryobj.lastimage}`;
+            extentobj.data[0] = `${galleryobj.current()+1} of ${galleryobj.length()}`;
             extentobj.data[1] = this.extent;
             extentobj.data[2] = galleryobj.value().id?galleryobj.value().id:"Undefined";
             extentobj.data[3] = `${window.innerWidth} x ${window.innerHeight}`;
@@ -5289,7 +5288,6 @@ var galleryobj = new circular_array("", 0);
 galleryobj.init = function (obj)
 {
     galleryobj = Object.assign(galleryobj,obj);
-    galleryobj.startimage = 0;
     galleryobj.lastimage = galleryobj.length();
     if (url.searchParams.has("r"))
     {
@@ -5298,9 +5296,18 @@ galleryobj.init = function (obj)
         var j = k.split("-");
         if (j.length == 2)
         {
-            galleryobj.startimage = Number(j[0]);
-            galleryobj.lastimage = Number(j[1]);
             galleryobj.data = galleryobj.data.slice(j[0],j[1]);
+        }
+        else
+        {
+            var k = galleryobj.data.findIndex(function(a) {
+                return a.kid == str; });
+            if (k >= 0)
+            {
+                var pages = galleryobj.data[k].pages;
+                if (pages)
+                    galleryobj.data = galleryobj.data.slice(k,k+pages);
+            }
         }
     }
 
@@ -5785,8 +5792,7 @@ function pageshow()
     var current = Math.floor(
         Math.lerp(1,galleryobj.length(),1-_8cnv.timeobj.berp()));
 
-   document.getElementById('page-goto-value').value = current +
-        galleryobj.startimage;
+   document.getElementById('page-goto-value').value = current;
     dialog.showModal();
     setTimeout(function() { globalobj.block = 0; }, 40);
 }
@@ -5982,36 +5988,6 @@ function MovingAverage()
 movingx = new MovingAverage();
 movingy = new MovingAverage();
 
-function buttonobjreset()
-{
-    var min = galleryobj.min?galleryobj.min:0;
-    var max = galleryobj.max?galleryobj.max:0;
-    if (min && max)
-    {
-        var lst = [];
-        for (var n = min; n < max; ++n)
-            lst.push(n);
-        _8cnv.buttonobj = new circular_array("", lst);
-    }
-    else
-    {
-        var ww = galleryobj.width?galleryobj.width:1024;;
-        var hh = galleryobj.height?galleryobj.height:1024;;
-        var w = url.searchParams.has("w")?url.searchParams.get("w"):ww;
-        var h = url.searchParams.has("h")?url.searchParams.get("h"):hh;
-        var a = w/h;
-        var height = Math.floor(window.innerWidth/a);
-        var lst = [];
-        var j = Math.max(180,Math.floor(height/2));
-        var b = Math.min(180*20,Math.floor(height*4));
-        for (var n = j; n < b; ++n)
-            lst.push(n);
-        var k = lst.findIndex(function(a){return a == height});
-        _8cnv.buttonobj = new circular_array("", lst);
-        _8cnv.buttonobj.set(k);
-    }
-}
-
 function savelocal(key, value)
 {
     try
@@ -6050,3 +6026,37 @@ function getlocalnumber(key, def)
     {
     }
 }
+
+function buttonobjreset()
+{
+    var min = galleryobj.min?galleryobj.min:0;
+    var max = galleryobj.max?galleryobj.max:0;
+    if (min && max)
+    {
+        var lst = [];
+        for (var n = min; n < max; ++n)
+            lst.push(n);
+        _8cnv.buttonobj = new circular_array("", lst);
+    }
+    else
+    {
+        var www = galleryobj.width?galleryobj.width:1024;
+        var hhh = galleryobj.height?galleryobj.height:1024;
+        var ww = galleryobj.data[0].width?galleryobj.data[0].width:www;
+        var hh = galleryobj.data[0].height?galleryobj.data[0].height:hhh;
+        var w = url.searchParams.has("w")?url.searchParams.get("w"):ww;
+        var h = url.searchParams.has("h")?url.searchParams.get("h"):hh;
+        var a = w/h;
+        var height = Math.floor(window.innerWidth/a);
+        var lst = [];
+        var j = Math.max(180,Math.floor(height/2));
+        var b = Math.min(180*20,Math.floor(height*4));
+        for (var n = j; n < b; ++n)
+            lst.push(n);
+        var k = lst.findIndex(function(a){return a == height});
+        _8cnv.buttonobj = new circular_array("", lst);
+        _8cnv.buttonobj.set(k);
+    }
+}
+
+

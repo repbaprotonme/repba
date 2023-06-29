@@ -1,7 +1,5 @@
 {
   "title": "Repba Gallery",
-  "slidestop": 4,
-  "slidereduce": 400,
   "slicewidth": 640,
   "min": 240,
   "max": 320,
