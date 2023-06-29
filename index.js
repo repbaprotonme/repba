@@ -1,4 +1,5 @@
 //todo: https://obfuscator.io
+//todo: buttonlist % 120
 
 /* ++ += ==
 Copyright 2017 Tom Brinkman
@@ -539,15 +540,15 @@ offbossctx.font = DEFAULTFONT;
 offbossctx.fillText("  ", 0, 0);
 
 let canvaslst = [];
-for (var n = 0; n < 6; ++n)
+for (var n = 0; n < 120; ++n)
     canvaslst[n] = document.createElement("canvas");
 
 let ganvaslst = [];
-for (var n = 0; n < ALIEXTENT; ++n)
+for (var n = 0; n < 120; ++n)
     ganvaslst[n] = document.createElement("canvas");
 
 let imagelst = [];
-for (var n = 0; n < ALIEXTENT; ++n)
+for (var n = 0; n < 120; ++n)
     imagelst[n] = new Image();
 
 
@@ -2687,7 +2688,7 @@ var keylst =
         }
         else if (key == "\\" || key == "/")
         {
-            if (galleryobj.hideboss)
+            if (!galleryobj.showboss)
                 return;
             clearInterval(globalobj.swipetimeout);
             globalobj.swipetimeout = 0;
@@ -2811,7 +2812,7 @@ var keylst =
 	},
 	keydown: function (evt)
 	{
-        if (dialog && dialog.open())
+        if (dialog && dialog.open)
             return;
 		var canvas = _4cnv;
 		var context = _4cnvctx;
@@ -3213,7 +3214,7 @@ var taplst =
                 }, 400);
             context.refresh();
         }
-        else if (!galleryobj.hideboss || context.canvas.shiftKey)
+        else if (galleryobj.showboss || context.canvas.shiftKey)
         {
             var visibles = context.canvas.visibles;
 
@@ -4802,14 +4803,14 @@ function resize()
 
 function escape()
 {
-    if (dialog && dialog.open())
+    if (dialog && dialog.open)
     {
         dialog.close();
         headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         return;
     }
 
-    if (galleryobj.hideboss && menuobj.value() == _8cnvctx)
+    if (!galleryobj.showboss && menuobj.value() == _8cnvctx)
         return;
 
     overlayobj.set(0);
@@ -5291,9 +5292,8 @@ galleryobj.init = function (obj)
     galleryobj.lastimage = galleryobj.length();
     if (url.searchParams.has("r"))
     {
-        var str = url.searchParams.get("r");
-        var k = str.clean();
-        var j = k.split("-");
+        var str = url.searchParams.get("r").clean();
+        var j = str.split("-");
         if (j.length == 2)
         {
             galleryobj.data = galleryobj.data.slice(j[0],j[1]);
@@ -5301,7 +5301,8 @@ galleryobj.init = function (obj)
         else
         {
             var k = galleryobj.data.findIndex(function(a) {
-                return a.kid == str; });
+                return str && a.kid &&
+                    a.kid.toLowerCase() == str.toLowerCase(); });
             if (k >= 0)
             {
                 var pages = galleryobj.data[k].pages;
