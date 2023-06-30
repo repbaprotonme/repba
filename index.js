@@ -660,7 +660,7 @@ var GalleryBar = function ()
                 ]),
                 0,
             ]),
-            new RowA([80,0,40,60,SCROLLBARWIDTH,5],
+            new RowA([80,0,40,8,40,20,SCROLLBARWIDTH,5],
             [
                 context.canvas.nohide?
                     new Col([MARGINBAR,60,0,50,50,50,0,60,MARGINBAR],
@@ -687,11 +687,19 @@ var GalleryBar = function ()
                      ]),
                      0,
                  ]):0,
-                new Layer(
-                [
-                    new Rectangle(context.canvas.showpagerect),
-                    new ShadowPanel(new Text("rgb(255,255,255)", "center", "middle",0, 0)),
-                ]),
+                0,
+                 context.canvas.nohide?new Col([0,w,0],
+                 [
+                     0,
+                     new Layer(
+                     [
+                        new Rectangle(context.canvas.showpagerect),
+                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new ShadowPanel(new Text("rgb(255,255,255)", "center", "middle",0, 0)),
+                     ]),
+                     0,
+                 ]):0,
+                0,
                 new Col([20,0,20],
                 [
                     0,
@@ -715,7 +723,9 @@ var GalleryBar = function ()
                 0,
                 0,
                 buttonobj,
+                0,
                 infobj.value(),
+                0,
                 context.canvas.scrollobj.value(),
                 0,
             ],
@@ -2336,7 +2346,7 @@ var panlst =
         }
         else if (type == "panup" || type == "pandown")
         {
-            if (type == "pandown")
+            if (type == "panup")
             {
                 if (headobj.current() != 0)
                 {
@@ -2356,7 +2366,6 @@ var panlst =
                 }
             }
 
-            panlst
             var zoom = zoomobj.value()
             if (Number(zoom.value()))
             {
@@ -3310,7 +3319,7 @@ var bosslst =
             context.stretchrect = new rectangle();
             context.extentrect = new rectangle();
             var w = Math.min(320,rect.width-100);
-            var a = new RowA([60,0,40,8,40,8,40,ALIEXTENT,SCROLLBARWIDTH,MARGINBAR],
+            var a = new RowA([60,0,40,8,40,8,40,8,40,20,SCROLLBARWIDTH,MARGINBAR],
              [
                  0,
                  0,
@@ -3349,11 +3358,19 @@ var bosslst =
                     ]),
                     0,
                 ]),
-                new Layer(
-                [
-                    new Rectangle(context.extentrect),
+                 0,
+                 new Col([0,w,0],
+                 [
+                    0,
+                    new Layer(
+                    [
+                        new Shrink(new Rectangle(context.extentrect),4,0),
+                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
                     new ShadowPanel(new Text("rgb(255,255,255)", "center", "middle",0, 0)),
+                    ]),
+                    0,
                 ]),
+                 0,
                 0,
                 0
             ]);
@@ -3367,6 +3384,7 @@ var bosslst =
                     zoomobj.value(),
                     0,
                     stretchobj.value(),
+                    0,
                     extentobj.value(),
                     0,
                     0,
@@ -3400,7 +3418,7 @@ var bosslst =
             a.draw(context, rect,
                 [
                     0,
-                    extentobj.value(),
+                    0,//extentobj.value(),
                     0,
                     0,
                 ], user, time);
