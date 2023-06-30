@@ -41,6 +41,10 @@ const SMALLFONT = "15px archivo black";
 const DEFAULTFONT = "17px archivo black";
 const LARGEFONT = "20px archivo black";
 const HUGEFONT = "24px archivo black";
+const SLICEWIDTH = 20;
+const SLICEWIDTHSIZE = 640;
+const ZOOMAX = 92;
+
 globalobj = {};
 let photo = {};
 photo.image = 0;
@@ -1974,7 +1978,7 @@ var searchobj = new circular_array("SEARCH", searchlst);
 var extentobj = new circular_array("EXTENT", []);
 var infobj = new circular_array("INFO", []);
 
-var slicewidthobj = new circular_array("SLICEWIDTH", 640);
+var slicewidthobj = new circular_array("SLICEWIDTH", SLICEWIDTHSIZE);
 slicewidthobj.debug = 0;
 
 var poomobj = new circular_array("PORTZOOM", 100);
@@ -3569,7 +3573,8 @@ var buttonlst =
         var index = time%ganvaslst.length;
         var view = Math.floor(time/ganvaslst.length)
         user.thumbimg = imagelst[index]
-        if (context.canvas.scrollobj.current() == 0 &&
+        if (!galleryobj.hidegallery &&
+            context.canvas.scrollobj.current() == 0 &&
             user.thumbimg.view != view)
         {
             user.thumbimg.view = view;
@@ -3602,7 +3607,9 @@ var buttonlst =
                 console.log(error);
             }
         }
-        else if (context.canvas.scrollobj.current() == 0 &&
+        else if (
+            !galleryobj.hidegallery &&
+            context.canvas.scrollobj.current() == 0 &&
             user.thumbimg && user.thumbimg.width)
         {
             var obj = context.canvas.scrollobj.value();
@@ -3674,7 +3681,7 @@ var buttonlst =
                 a.draw(context, rect, 0, 0);
             }
         }
-        else if (context.canvas.scrollobj.current() == 1)
+        else
         {
             var lst = [];
             lst[0] = `${time+1} of ${galleryobj.length()}`;
@@ -3752,7 +3759,7 @@ function resetboss()
         context.show(0,0,window.innerWidth,window.innerHeight);
     }
 
-    var zoomax = galleryobj.zoomax ? galleryobj.zoomax : 92.00;
+    var zoomax = galleryobj.zoomax ? galleryobj.zoomax : ZOOMAX;
     var n = 0;
     for (; n < zoomax; ++n)
     {
@@ -5323,7 +5330,7 @@ galleryobj.init = function (obj)
     var zoom = (typeof galleryobj.zoom === "undefined") ?25:galleryobj.zoom;
     poomobj.set(zoom);
     loomobj.set(zoom);
-    slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:40);
+    slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:SLICEWIDTH);
 
     buttonobjreset();
 

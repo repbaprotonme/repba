@@ -1,74 +1,27 @@
 {
+    "min": 180,
+    "max": 240,
     "zoom": 0,
-  "data": [
+    "showboss": 1,
+    "hidegallery": 1,
+  "slicewidth": 90,
+  "data": 
+  [
     {
-      "full": "http://reportbase.me/data/HIRES.0000.jpg"
+        "title": "0000",
+      "full": "http://reportbase.me/res/hires/0000.jpg"
     },
     {
-      "full": "http://reportbase.me/data/HIRES.0001.jpg"
+        "title": "0001",
+      "full": "http://reportbase.me/res/hires/0001.jpg"
     },
     {
-      "full": "http://reportbase.me/data/HIRES.0002.jpg"
+        "title": "0002",
+      "full": "http://reportbase.me/res/hires/0002.jpg"
     },
     {
-      "full": "http://reportbase.me/data/HIRES.0003.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0004.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0005.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0006.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0007.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0008.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0009.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0010.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0011.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0012.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0013.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0014.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0015.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0016.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0017.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0018.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0019.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0020.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0021.jpg"
-    },
-    {
-      "full": "http://reportbase.me/data/HIRES.0022.jpg"
+        "title": "0003",
+      "full": "http://reportbase.me/res/hires/0003.jpg"
     }
   ]
 }
