@@ -5,7 +5,8 @@
   "data": [
     {
       "id": "SUIC.0000",
-      "index": "1 of 410",
+      "kid": "CHAP1",
+      "pages": 24,
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
@@ -221,7 +222,8 @@
     },
     {
       "id": "SUIC.0024",
-      "index": "25 of 410",
+      "pages": 24,
+      "kid": "CHAP2",
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
@@ -464,7 +466,8 @@
     },
     {
       "id": "SUIC.0051",
-      "index": "52 of 410",
+      "pages": 24,
+      "kid": "CHAP3",
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
@@ -680,7 +683,8 @@
     },
     {
       "id": "SUIC.0075",
-      "index": "76 of 410",
+      "pages": 24,
+      "kid": "CHAP4",
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
@@ -896,7 +900,8 @@
     },
     {
       "id": "SUIC.0099",
-      "index": "100 of 410",
+      "pages": 24,
+      "kid": "CHAP5",
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
@@ -1112,7 +1117,8 @@
     },
     {
       "id": "SUIC.0123",
-      "index": "124 of 410",
+      "pages": 24,
+      "kid": "CHAP6",
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
@@ -1346,7 +1352,8 @@
     },
     {
       "id": "SUIC.0149",
-      "index": "150 of 410",
+      "pages": 24,
+      "kid": "CHAP7",
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
@@ -1571,7 +1578,8 @@
     },
     {
       "id": "SUIC.0174",
-      "index": "175 of 410",
+      "pages": 24,
+      "kid": "CHAP8",
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
@@ -1886,7 +1894,8 @@
     },
     {
       "id": "SUIC.0209",
-      "index": "210 of 410",
+      "pages": 24,
+      "kid": "CHAP9",
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
@@ -1962,8 +1971,7 @@
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
-      "size": "6.1MP",
-      "quote": "I was the Kid Next Door's Imaginary Friend"
+      "size": "6.1MP"
     },
     {
       "id": "SUIC.0218",
@@ -2093,7 +2101,8 @@
     },
     {
       "id": "SUIC.0232",
-      "index": "233 of 410",
+      "pages": 24,
+      "kid": "CHAP10",
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
@@ -2318,7 +2327,8 @@
     },
     {
       "id": "SUIC.0257",
-      "index": "258 of 410",
+      "pages": 24,
+      "kid": "CHAP11",
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
@@ -2588,7 +2598,8 @@
     },
     {
       "id": "SUIC.0287",
-      "index": "288 of 410",
+      "pages": 24,
+      "kid": "CHAP12",
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
@@ -2822,7 +2833,8 @@
     },
     {
       "id": "SUIC.0313",
-      "index": "314 of 410",
+      "pages": 24,
+      "kid": "CHAP13",
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
@@ -3029,7 +3041,8 @@
     },
     {
       "id": "SUIC.0336",
-      "index": "337 of 410",
+      "pages": 24,
+      "kid": "CHAP14",
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
@@ -3245,7 +3258,8 @@
     },
     {
       "id": "SUIC.0360",
-      "index": "361 of 410",
+      "pages": 24,
+      "kid": "CHAP15",
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
@@ -3470,7 +3484,8 @@
     },
     {
       "id": "SUIC.0385",
-      "index": "386 of 410",
+      "pages": 24,
+      "kid": "CHAP16",
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",

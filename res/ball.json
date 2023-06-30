@@ -1,7 +1,8 @@
 {
   "title": "Repba Gallery",
-      "width": 1400,
-      "height": 2000,
+      "showboss": 1,
+      "width": 2000,
+      "height": 3000,
   "data": [
     {
       "id": "BALL.0000",

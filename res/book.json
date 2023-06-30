@@ -1,7 +1,8 @@
 {
   "title": "Repba Gallery",
-      "width": 2399,
-      "height": 3838,
+      "width": 2000,
+      "height": 3000,
+      "showboss": 1,
   "data": [
    {
       "id": "BOOK.0004",
