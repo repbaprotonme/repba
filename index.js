@@ -567,6 +567,7 @@ var MenuBar = function ()
 {
     this.draw = function (context, rect, user, time)
     {
+        return;
         context.save();
         var j = window.innerWidth - rect.width >= 180;
         var a = new Row([80,0,80],
@@ -639,6 +640,7 @@ var GalleryBar = function ()
         context.canvas.hscrollrect = new rectangle();
         context.canvas.vscrollrect = new rectangle();
         context.canvas.showpagerect = new rectangle();
+        context.canvas.chapterect = new rectangle();
         var w = Math.min(320,rect.width-100);
         var j = window.innerWidth - rect.width >= 180;
         context.save();
@@ -660,7 +662,7 @@ var GalleryBar = function ()
                 ]),
                 0,
             ]),
-            new RowA([80,0,40,8,40,20,SCROLLBARWIDTH,5],
+            new RowA([80,0,40,8,40,8,40,20,SCROLLBARWIDTH,5],
             [
                 context.canvas.nohide?
                     new Col([MARGINBAR,60,0,50,50,50,0,60,MARGINBAR],
@@ -684,6 +686,18 @@ var GalleryBar = function ()
                         new Rectangle(context.canvas.buttonrect),
                         new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
                         new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
+                     ]),
+                     0,
+                 ]):0,
+                0,
+                 context.canvas.nohide?new Col([0,w,0],
+                 [
+                     0,
+                     new Layer(
+                     [
+                        new Rectangle(context.canvas.chapterect),
+                        new Rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new ShadowPanel(new Text("rgb(255,255,255)", "center", "middle",0, 0)),
                      ]),
                      0,
                  ]):0,
@@ -723,6 +737,8 @@ var GalleryBar = function ()
                 0,
                 0,
                 buttonobj,
+                0,
+                _5cnv.sliceobj.value().title,
                 0,
                 infobj.value(),
                 0,
@@ -2872,6 +2888,10 @@ var keylst =
             context.refresh();
             evt.preventDefault();
         }
+        else if (key == "\\" || key == "/")
+        {
+            menuobj.toggle(_8cnvctx);
+        }
         else if (key == "arrowleft" || key == "h")
         {
             canvas.block = 1;
@@ -3190,9 +3210,9 @@ var taplst =
         {
             showpage();
         }
-        else if (context.canvas.searchrect && context.canvas.searchrect.hitest(x,y))
+        else if (context.canvas.chapterect && context.canvas.chapterect.hitest(x,y))
         {
-            menuobj.showindex(_3cnvctx);
+            menuobj.showindex(_5cnvctx);
         }
         else if (context.canvas.optionrect && context.canvas.optionrect.hitest(x,y))
         {
@@ -4054,7 +4074,7 @@ var eventlst =
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU",  drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new SearchBar(), scroll: new ScrollMenuBar(), buttonheight: 90, width: 640},
     {dblclick: "BOSS", mouse: "DEFAULT", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "GALLERY", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new Empty(), scroll: new DualPanel(), buttonheight: 30, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new DualPanel(), buttonheight: 90, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new Empty(), scroll: new DualPanel(), buttonheight: 90, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 50, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new MenuBar(), scroll: new ScrollMenuBar(), buttonheight: 90, width: 640},
     {dblclick: "GALLERY", mouse: "MENU", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "GALLERY", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new GalleryBar(), scroll: new DualPanel(), buttonheight: 320, width: 2160},
@@ -4882,7 +4902,13 @@ var headlst =
 	{
         this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.value().swipeleftright(_4cnvctx, rect, x, y, evt); }
         this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.value().swipeupdown(_4cnvctx, rect, x, y, evt); }
-    	this.press = function (context, rect, x, y) {pressobj.value().press(_4cnvctx, rect, x, y)}
+    	this.press = function (context, rect, x, y)
+        {
+            if (context.canvas.searchrect && context.canvas.searchrect.hitest(x,y))
+            {
+                menuobj.showindex(_3cnvctx);
+            }
+        }
 
      	this.tap = function (context, rect, x, y)
 		{
@@ -4893,7 +4919,7 @@ var headlst =
             }
             else if (context.canvas.searchrect && context.canvas.searchrect.hitest(x,y))
             {
-                menuobj.showindex(_3cnvctx);
+                searchshow("pixabay");
             }
             else if (context.fullrect && context.fullrect.hitest(x,y))
             {
@@ -5098,11 +5124,15 @@ var headlst =
 	{
         this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.value().swipeleftright(_4cnvctx, rect, x, y, evt); }
         this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.value().swipeupdown(_4cnvctx, rect, x, y, evt); }
-    	this.press = function (context, rect, x, y) {pressobj.value().press(_4cnvctx, rect, x, y)}
-        this.tap = function (context, rect, x, y)
+    	this.press = function (context, rect, x, y)
         {
             menuobj.setindex(_3cnvctx);
             menuobj.show();
+        }
+
+        this.tap = function (context, rect, x, y)
+        {
+            searchshow("pixabay");
         };
 
 		this.draw = function (context, rect, user, time)
@@ -5112,7 +5142,6 @@ var headlst =
 
             var a = new Layer(
             [
-                    //new FillPanel("black"),
                     new Col([0,50,0],
                     [
                         0,
@@ -5567,18 +5596,20 @@ galleryobj.init = function (obj)
     _5cnv.sliceobj.data =
     [
         {
-            title: "xxxxxxx",
+            title: "Chapter 1",
             func: function() {}
         },
         {
-            title: "yyyyyyy",
+            title: "Chapter 2",
             func: function() {}
         },
         {
-            title: "zzzzzzz",
+            title: "Chapter 3",
             func: function() {}
         }
     ];
+
+    _5cnv.sliceobj.set(1);
 
     var a = Array(_5cnv.sliceobj.length()).fill().map((_, index) => index);
     _5cnv.rotated = [...a,...a,...a];
