@@ -2802,7 +2802,7 @@ var keylst =
             key == "pagedown" ||
             key == "arrowdown" ||
             (canvas.shiftKey && key == " ") ||
-            kevt.key == "k")
+            evt.key == "k")
 		{
             if (!canvas.shiftKey && canvas.block)
                 return;
@@ -3130,7 +3130,7 @@ var taplst =
             bossobj.set(0);
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            menuobj.showindex(_7cnvctx);
+            menuobj.showindex(_5cnvctx);
             _4cnvctx.refresh()
         }
         else if ( context.canvas.searchrect && context.canvas.searchrect.hitest(x,y) )
@@ -3229,7 +3229,7 @@ var taplst =
             bossobj.set(0);
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            menuobj.showindex(_7cnvctx);
+            menuobj.showindex(_5cnvctx);
             _4cnvctx.refresh()
         }
         else if (context.canvas.scrollrect && context.canvas.scrollrect.hitest(x,y))
@@ -3729,7 +3729,7 @@ var buttonlst =
         {
             var lst = [];
             lst[0] = `${time+1} of ${galleryobj.length()}`;
-            lst[1] = `y: ${user.center.y.toFixed(2)}`;
+//            lst[1] = `y: ${user.center.y.toFixed(2)}`;
             let keys = Object.keys(user);
             for (var n = 0; n < keys.length; ++n)
             {
@@ -4919,7 +4919,7 @@ var headlst =
             }
             else if (context.canvas.searchrect && context.canvas.searchrect.hitest(x,y))
             {
-                searchshow("pixabay");
+                showsearch("pexels");
             }
             else if (context.fullrect && context.fullrect.hitest(x,y))
             {
@@ -4946,7 +4946,7 @@ var headlst =
                 bossobj.set(0);
                 headham.panel = headobj.value();
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-                menuobj.showindex(_7cnvctx);
+                menuobj.showindex(_5cnvctx);
                 _4cnvctx.refresh()
             }
             else
@@ -5132,7 +5132,7 @@ var headlst =
 
         this.tap = function (context, rect, x, y)
         {
-            searchshow("pixabay");
+            showsearch("pexels");
         };
 
 		this.draw = function (context, rect, user, time)
@@ -5252,7 +5252,7 @@ var HelpPanel = function ()
         var j = 5;
         var k = j/2;
         var e = new FillPanel(OPTIONFILL);
-        var s = menuobj.value() == _7cnvctx;
+        var s = menuobj.value() == _5cnvctx;
         var a = new Layer(
         [
             new Rectangle(context.canvas.helprect),
@@ -5480,6 +5480,11 @@ galleryobj.init = function (obj)
                 authClient.redirectToAccountPage()
             }
         },
+        {title:"About", path: "ABOUT", func: function()
+            {
+                menuobj.showindex(_7cnvctx);
+            }
+        },
     ];
 
     var a = Array(_2cnv.sliceobj.length()).fill().map((_, index) => index);
@@ -5487,12 +5492,12 @@ galleryobj.init = function (obj)
 
     _3cnv.sliceobj.data =
     [
-        {line:"Unsplash\nImage Search", func: function() { searchshow("unsplash"); }, enabled: function() {return false;} },
-        {line:"Pexels\nImage Search", func: function() { searchshow("pexels"); }, enabled: function() {return false;} },
-        {line:"Pixabay\nImage Search",func: function() { searchshow("pixabay"); }, enabled: function() {return false;} },
-        {line:"Pexels Collection\nImage Search",func: function() { searchshow("pexels_collection"); }, enabled: function() {return false;} },
-        {line:"Unsplash Collection\nImage Search",func: function() { searchshow("unsplash_collection"); }, enabled: function() {return false;} },
-        {line:"Unsplash User Collection\nImage Search",func: function() { searchshow("unsplash_user"); }, enabled: function() {return false;} },
+        {line:"Unsplash\nImage Search", func: function() { showsearch("unsplash"); }, enabled: function() {return false;} },
+        {line:"Pexels\nImage Search", func: function() { showsearch("pexels"); }, enabled: function() {return false;} },
+        {line:"Pixabay\nImage Search",func: function() { showsearch("pixabay"); }, enabled: function() {return false;} },
+        {line:"Pexels Collection\nImage Search",func: function() { showsearch("pexels_collection"); }, enabled: function() {return false;} },
+        {line:"Unsplash Collection\nImage Search",func: function() { showsearch("unsplash_collection"); }, enabled: function() {return false;} },
+        {line:"Unsplash User Collection\nImage Search",func: function() { showsearch("unsplash_user"); }, enabled: function() {return false;} },
         {line:"Dalle Prompt", func: function()
             {
                 menuobj.hide();
@@ -5727,6 +5732,7 @@ else if (url.searchParams.has("s"))
 }
 else
 {
+    galleryobj.showboss = 1;
     var path = `https://bucket.reportbase5836.workers.dev/home.json`;
     for (var n = 0; n < searchobj.length(); ++n)
     {
@@ -5740,7 +5746,7 @@ else
         if (k.length == 2)
             url.project = Number(k[1]);
         var search = k[0].toLowerCase();
-        path = `https://${j}.reportbase5836.workers.dev/?search=${search}&page=${url.page}`;
+        path = `https://${j}.reportbase5836.workers.dev/?search=${search}&page=1`;
     }
 
     fetch(path)
@@ -5865,7 +5871,7 @@ function showpage()
 }
 
 
-function searchshow(repos)
+function showsearch(repos)
 {
     var input = document.getElementById("search-value");
     input.addEventListener("keyup", function(event)
@@ -5876,7 +5882,7 @@ function searchshow(repos)
         var search = document.getElementById('search-value').value.clean();
         if (!search)
           return;
-        window.open(`${url.origin}?${repos}=${search}&page=${url.page}`);
+        window.open(`${url.origin}?${repos}=${search}&page=${url.page}`,"_self");
       }
     });
 
@@ -5890,7 +5896,7 @@ function searchshow(repos)
             var search = document.getElementById('search-value').value.clean();
             if (!search)
                 return;
-            window.open(`${url.origin}?${repos}=${search}&page=${url.page}`);
+            window.open(`${url.origin}?${repos}=${search}&page=${url.page}`,"_self");
         }
         else if (event.clientY < rect.top || event.clientY > rect.bottom ||
             event.clientX < rect.left || event.clientX > rect.right)
