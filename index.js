@@ -689,7 +689,7 @@ var GalleryBar = function ()
                       new Layer(
                      [
                         new Rectangle(context.canvas.buttonrect),
-                        panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
                         new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
                      ]),
                      0,
@@ -701,7 +701,7 @@ var GalleryBar = function ()
                      new Layer(
                      [
                         new Rectangle(context.canvas.chapterect),
-                        panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
                         new panel.shadow(new Text("rgb(255,255,255)", "center", "middle",0, 0)),
                      ]),
                      0,
@@ -713,7 +713,7 @@ var GalleryBar = function ()
                      new Layer(
                      [
                         new Rectangle(context.canvas.showpagerect),
-                        panel.rounded("rgba(255,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new panel.rounded("rgba(255,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
                         new panel.shadow(new Text("rgb(255,255,255)", "center", "middle",0, 0)),
                      ]),
                      0,
@@ -3350,8 +3350,8 @@ var bosslst =
                     new Layer(
                     [
                         new Shrink(new Rectangle(context.slicewidthrect),4,0),
-                        panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
-                         new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
+                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
                     ]),
                      0,
                 ]):0,
@@ -3362,8 +3362,8 @@ var bosslst =
                     new Layer(
                     [
                         new Shrink(new Rectangle(context.zoomrect),4,0),
-                        panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
-                         new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
+                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
                     ]),
                      0,
                 ]),
@@ -3374,8 +3374,8 @@ var bosslst =
                     new Layer(
                     [
                         new Shrink(new Rectangle(context.stretchrect),4,0),
-                        panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
-                         new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
+                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
                     ]),
                     0,
                 ]),
@@ -3386,7 +3386,7 @@ var bosslst =
                     new Layer(
                     [
                         new Shrink(new Rectangle(context.extentrect),4,0),
-                        panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
                         new panel.shadow(new Text("rgb(255,255,255)", "center", "middle",0, 0)),
                     ]),
                     0,
