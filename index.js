@@ -540,11 +540,15 @@ var offmenucnv = new OffscreenCanvas(1, 1);
 var offmenuctx = offmenucnv.getContext("2d");
 offmenuctx.font = DEFAULTFONT;
 offmenuctx.fillText("  ", 0, 0);
+offmenuctx.imageSmoothingEnabled = true;
+offmenuctx.imageSmoothingQuality = "low";
 
 var offbosscnv = new OffscreenCanvas(1, 1);
 var offbossctx = offbosscnv.getContext("2d");
 offbossctx.font = DEFAULTFONT;
 offbossctx.fillText("  ", 0, 0);
+offbossctx.imageSmoothingEnabled = true;
+offbossctx.imageSmoothingQuality = "low";
 
 let canvaslst = [];
 for (var n = 0; n < 120; ++n)
@@ -3570,8 +3574,7 @@ var buttonlst =
             0,
             new Layer(
             [
-                //new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 0, 20),
-                new FillPanel(clr),
+                new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 0, 20),
                 new panel.shrink(new MultiText(e), 20, 0),
             ]),
             0,
@@ -3597,8 +3600,7 @@ var buttonlst =
             0,
             new Layer(
             [
-                //new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 0, 10),
-                new FillPanel(clr),
+                new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 0, 10),
                 new panel.shrink(new Text("white", "center", "middle",0, 0), 20, 0),
             ]),
             0,
@@ -4154,6 +4156,8 @@ var contextobj = new circular_array("CTX", contextlst);
 contextlst.forEach(function(context, n)
 {
     var canvas = context.canvas;
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = "low";
     context.font = DEFAULTFONT;
     context.fillText("  ", 0, 0);
     canvas.autodirect = -1;
