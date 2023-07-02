@@ -587,10 +587,10 @@ var MenuBar = function ()
                 new ColA([MARGINBAR,60,0,50,50,50,0,60,MARGINBAR],
                 [
                     0,
-                    j?0:new OptionPanel(),
+                    j?0:new panel.options(),
                     0,
                     new panel.shift(new OpenPanel(),-10,0),
-                    new SearchPanel(),
+                    new panel.search(),
                     new panel.shift(new UploadPanel(),10,0),
                     0,
                    j?0:new panel.help(),
@@ -623,7 +623,7 @@ var SearchBar = function (header)
             [
                 0,
                 0,
-                new SearchPanel(),
+                new panel.search(),
                 0,
                 0,
             ]),
@@ -690,7 +690,7 @@ var GalleryBar = function ()
                      [
                         new Rectangle(context.canvas.buttonrect),
                         new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
-                        new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
+                        new panel.shrink(new CurrentHPanel(new panel.shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
                      ]),
                      0,
                  ]):0,
@@ -947,8 +947,8 @@ panel.full = function ()
         var a = new Layer(
         [
             new Rectangle(context.fullrect),
-            screenfull.isFullscreen ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),19,20) : 0,
-            new Shrink(new CirclePanel(screenfull.isFullscreen ? TRANSPARENT : SCROLLNAB, SEARCHFRAME,4),15,15),
+            screenfull.isFullscreen ? new panel.shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),19,20) : 0,
+            new panel.shrink(new CirclePanel(screenfull.isFullscreen ? TRANSPARENT : SCROLLNAB, SEARCHFRAME,4),15,15),
         ]);
 
         a.draw(context, rect, user, time);
@@ -1035,8 +1035,8 @@ var OpenPanel = function ()
         var a = new Layer(
         [
             new Rectangle(context.canvas.openrect),
-            new Shrink(new CirclePanel(SCROLLNAB, SEARCHFRAME,4),15,15),
-            new Shrink(new Panel(),16,34),
+            new panel.shrink(new CirclePanel(SCROLLNAB, SEARCHFRAME,4),15,15),
+            new panel.shrink(new Panel(),16,34),
         ]);
 
         a.draw(context, rect, user, time);
@@ -1072,8 +1072,8 @@ var UploadPanel = function ()
         var a = new Layer(
         [
             new Rectangle(context.canvas.uploadrect),
-            new Shrink(new CirclePanel(SCROLLNAB, SEARCHFRAME,4),15,15),
-            new Shrink(new Panel(),16,34),
+            new panel.shrink(new CirclePanel(SCROLLNAB, SEARCHFRAME,4),15,15),
+            new panel.shrink(new Panel(),16,34),
         ]);
 
         a.draw(context, rect, user, time);
@@ -1091,9 +1091,9 @@ var ScrollPanel = function ()
         var a = new Layer(
         [
             new Rectangle(context.canvas.scrollrect),
-            _8cnv.scrollobj.current() ? 0 : new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),17,17),
-            new Shrink(new CirclePanel(_8cnv.scrollobj.current() ? SCROLLNAB:TRANSPARENT, SEARCHFRAME,4),13,13),
-            new Shrink(new Row([0,4,0],
+            _8cnv.scrollobj.current() ? 0 : new panel.shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),17,17),
+            new panel.shrink(new CirclePanel(_8cnv.scrollobj.current() ? SCROLLNAB:TRANSPARENT, SEARCHFRAME,4),13,13),
+            new panel.shrink(new Row([0,4,0],
             [
                 new CirclePanel("white"),
                 0,
@@ -1115,9 +1115,9 @@ var ThumbPanel = function ()
         var a = new Layer(
         [
             new Rectangle(context.thumbpanel),
-            galleryobj.hidebars ? 0 : new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),19,19),
-            new Shrink(new CirclePanel(galleryobj.hidebars?SCROLLNAB:TRANSPARENT,SEARCHFRAME,4),15,15),
-            new Shrink(new panel.rounded(TRANSPARENT, 3, "white", 4, 4),16,30),
+            galleryobj.hidebars ? 0 : new panel.shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),19,19),
+            new panel.shrink(new CirclePanel(galleryobj.hidebars?SCROLLNAB:TRANSPARENT,SEARCHFRAME,4),15,15),
+            new panel.shrink(new panel.rounded(TRANSPARENT, 3, "white", 4, 4),16,30),
         ]);
 
         a.draw(context, rect, user, time);
@@ -1135,9 +1135,9 @@ var HomePanel = function ()
         var a = new Layer(
         [
             new Rectangle(context.canvas.homerect),
-            global.hometap ? new Shrink(new CirclePanel( MENUTAP,TRANSPARENT,4),19,19) : 0,
-            new Shrink(new CirclePanel(global.hometap?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),15,15),
-            new Shrink(new Row([0,0],
+            global.hometap ? new panel.shrink(new CirclePanel( MENUTAP,TRANSPARENT,4),19,19) : 0,
+            new panel.shrink(new CirclePanel(global.hometap?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),15,15),
+            new panel.shrink(new Row([0,0],
             [
                 new ArrowPanel(ARROWFILL,0),
                 new ArrowPanel(ARROWFILL,180),
@@ -1161,9 +1161,9 @@ var PrevPanel = function ()
         var a = new Layer(
         [
             new Rectangle(context.moveprev),
-            _4cnv.movingpage == -1 ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),22,22) : 0,
-            new Shrink(new CirclePanel(_4cnv.movingpage == -1?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
-            new Shrink(new ArrowPanel(ARROWFILL,270),20,30),
+            _4cnv.movingpage == -1 ? new panel.shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),22,22) : 0,
+            new panel.shrink(new CirclePanel(_4cnv.movingpage == -1?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
+            new panel.shrink(new ArrowPanel(ARROWFILL,270),20,30),
         ]);
 
         a.draw(context, rect, user, time);
@@ -1183,9 +1183,9 @@ var NextPanel = function ()
         var a = new Layer(
         [
             new Rectangle(context.movenext),
-            _4cnv.movingpage == 1 ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),22,22) : 0,
-            new Shrink(new CirclePanel(_4cnv.movingpage == 1?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
-            new Shrink(new ArrowPanel(ARROWFILL,90),20,30),
+            _4cnv.movingpage == 1 ? new panel.shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),22,22) : 0,
+            new panel.shrink(new CirclePanel(_4cnv.movingpage == 1?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
+            new panel.shrink(new ArrowPanel(ARROWFILL,90),20,30),
         ]);
 
         a.draw(context, rect, user, time);
@@ -1193,7 +1193,7 @@ var NextPanel = function ()
     }
 };
 
-SearchPanel = function ()
+panel.search = function ()
 {
     this.draw = function (context, rect, user, time)
     {
@@ -1223,9 +1223,9 @@ SearchPanel = function ()
         var a = new Layer(
         [
             new Rectangle(context.canvas.searchrect),
-            s ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),17,17) : 0,
-            new Shrink(new CirclePanel(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),13,13),
-            new Shrink(new Panel(),15,20),
+            s ? new panel.shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),17,17) : 0,
+            new panel.shrink(new CirclePanel(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),13,13),
+            new panel.shrink(new Panel(),15,20),
         ]);
 
         a.draw(context, rect, user, time);
@@ -3349,9 +3349,9 @@ var bosslst =
                      0,
                     new Layer(
                     [
-                        new Shrink(new Rectangle(context.slicewidthrect),4,0),
+                        new panel.shrink(new Rectangle(context.slicewidthrect),4,0),
                         new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
-                        new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
+                        new panel.shrink(new CurrentHPanel(new panel.shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
                     ]),
                      0,
                 ]):0,
@@ -3361,9 +3361,9 @@ var bosslst =
                      0,
                     new Layer(
                     [
-                        new Shrink(new Rectangle(context.zoomrect),4,0),
+                        new panel.shrink(new Rectangle(context.zoomrect),4,0),
                         new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
-                        new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
+                        new panel.shrink(new CurrentHPanel(new panel.shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
                     ]),
                      0,
                 ]),
@@ -3373,9 +3373,9 @@ var bosslst =
                     0,
                     new Layer(
                     [
-                        new Shrink(new Rectangle(context.stretchrect),4,0),
+                        new panel.shrink(new Rectangle(context.stretchrect),4,0),
                         new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
-                        new Shrink(new CurrentHPanel(new Shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
+                        new panel.shrink(new CurrentHPanel(new panel.shrink(new CirclePanel("white"),9,9), 30, 1),6,0)
                     ]),
                     0,
                 ]),
@@ -3385,7 +3385,7 @@ var bosslst =
                     0,
                     new Layer(
                     [
-                        new Shrink(new Rectangle(context.extentrect),4,0),
+                        new panel.shrink(new Rectangle(context.extentrect),4,0),
                         new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
                         new panel.shadow(new Text("rgb(255,255,255)", "center", "middle",0, 0)),
                     ]),
@@ -3570,8 +3570,9 @@ var buttonlst =
             0,
             new Layer(
             [
-                new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 0, 20),
-                new Shrink(new MultiText(e), 20, 0),
+                //new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 0, 20),
+                new FillPanel(clr),
+                new panel.shrink(new MultiText(e), 20, 0),
             ]),
             0,
         ]);
@@ -3596,8 +3597,9 @@ var buttonlst =
             0,
             new Layer(
             [
-                new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 0, 10),
-                new Shrink(new Text("white", "center", "middle",0, 0), 20, 0),
+                //new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 0, 10),
+                new FillPanel(clr),
+                new panel.shrink(new Text("white", "center", "middle",0, 0), 20, 0),
             ]),
             0,
         ]);
@@ -3627,8 +3629,9 @@ var buttonlst =
             0,
             new Layer(
             [
-                new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 0, 10),
-                new Shrink(new Text("white", "center", "middle",0, 0), 20, 0),
+                //new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 0, 10),
+                new FillPanel(clr),
+                new panel.shrink(new Text("white", "center", "middle",0, 0), 20, 0),
             ]),
             0,
         ]);
@@ -3818,7 +3821,7 @@ var buttonlst =
                     [
                         new panel.rounded("rgba(0,0,0,0.3)", 4, "rgba(255,255,255,0.4)", 16, 16),
                         user.tap?new FillPanel("rgba(255,125,0,0.4)"):0,
-                        new Shrink(new MultiText(e), 30, 15),
+                        new panel.shrink(new MultiText(e), 30, 15),
                     ]),
                     0,
                 ]),
@@ -4746,7 +4749,7 @@ panel.shift = function (panel, x, y)
     };
 };
 
-var Shrink = function (panel, extentw, extenth)
+panel.shrink = function (panel, extentw, extenth)
 {
     this.draw = function (context, rect, user, time)
     {
@@ -5024,10 +5027,10 @@ var headlst =
                new Col( [MARGINBAR, ALIEXTENT,0, 50,50,50, 0,ALIEXTENT, MARGINBAR],
                [
                    0,
-                   j?0:new OptionPanel(),
+                   j?0:new panel.options(),
                    0,
                    k?0:new panel.shift(new panel.full(),-10,0),
-                   k?0:new SearchPanel(),
+                   k?0:new panel.search(),
                    k?0:new panel.shift(new ThumbPanel(),10,0),
                    0,
                    m?0:new panel.help(),
@@ -5195,7 +5198,7 @@ var headlst =
                     new Col([0,50,0],
                     [
                         0,
-                        new SearchPanel(),
+                        new panel.search(),
                         0
                     ])
                ]);
@@ -5265,7 +5268,7 @@ var ClosePanel = function (size)
     }
 };
 
-var OptionPanel = function (size)
+panel.options = function (size)
 {
     this.draw = function (context, rect, user, time)
     {
@@ -5278,8 +5281,8 @@ var OptionPanel = function (size)
         var a = new Layer(
         [
             new Rectangle(context.canvas.optionrect),
-            s ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),22,22) : 0,
-            new Shrink(new CirclePanel(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
+            s ? new panel.shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),22,22) : 0,
+            new panel.shrink(new CirclePanel(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
             new Row( [0, rect.height*0.20, 0],
             [
                 0,
@@ -5306,8 +5309,8 @@ panel.help = function ()
         var a = new Layer(
         [
             new Rectangle(context.canvas.helprect),
-            s ? new Shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),22,22) : 0,
-            new Shrink(new CirclePanel(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
+            s ? new panel.shrink(new CirclePanel(MENUTAP,TRANSPARENT,4),22,22) : 0,
+            new panel.shrink(new CirclePanel(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
             new Col( [0,rect.height*0.20,0],
             [
                 0,
