@@ -540,14 +540,14 @@ var offmenucnv = new OffscreenCanvas(1, 1);
 var offmenuctx = offmenucnv.getContext("2d");
 offmenuctx.font = DEFAULTFONT;
 offmenuctx.fillText("  ", 0, 0);
-offmenuctx.imageSmoothingEnabled = true;
+offmenuctx.imageSmoothingEnabled = false;
 offmenuctx.imageSmoothingQuality = "low";
 
 var offbosscnv = new OffscreenCanvas(1, 1);
 var offbossctx = offbosscnv.getContext("2d");
 offbossctx.font = DEFAULTFONT;
 offbossctx.fillText("  ", 0, 0);
-offbossctx.imageSmoothingEnabled = true;
+offbossctx.imageSmoothingEnabled = false;
 offbossctx.imageSmoothingQuality = "low";
 
 let canvaslst = [];
@@ -4156,7 +4156,7 @@ var contextobj = new circular_array("CTX", contextlst);
 contextlst.forEach(function(context, n)
 {
     var canvas = context.canvas;
-    context.imageSmoothingEnabled = true;
+    context.imageSmoothingEnabled = false;
     context.imageSmoothingQuality = "low";
     context.font = DEFAULTFONT;
     context.fillText("  ", 0, 0);
