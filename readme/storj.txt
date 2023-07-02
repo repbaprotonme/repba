@@ -1,7 +1,0 @@
-https://us1.storj.io/new-project-dashboard
-
-satellite address
-12EayRS2V1kEsWESU9QMRseFhdxYxKicsiFmxrsLZHeLUtdps3S@us1.storj.io:7777
-
-api key
-1dfHtLpzDVABf7z148GgBAbpH1R7S1ZKwR7mK3ZpHCqudnzNVFL4LmnkuiDqGpUHyUseC3ZuPzgXE9sdg97RrM3m73DF1JvLfpevUTx5GKB9jY8qq43i

@@ -1,7 +1,6 @@
 {
     "width": 1024,
     "height": 1024,
-    "hideboss": 1,
   "data": [
     {
       "url": "http://reportbase.me/data/fowl/horror/fkxaeuftdu3b1.png",
@@ -12254,7 +12253,7 @@
     },
 
     {
-        "tite": "Hockey Todlers",
+        "title": "Hockey Todlers",
       "url": "http://reportbase.me/data/res/hock/je2s7v2ijg5b1.jpg",
       "id": "9f5a1ab0-cb73-471e-f369-bffea0f46b00",
         "kid": "HOCKT",
@@ -15110,7 +15109,7 @@
       "id": "da71c3c9-4bec-48cf-5e2d-b42a673f4b00"
     },
     {
-        "ttile": "Robin Williams",
+        "title": "Robin Williams",
       "url": "http://reportbase.me/data/res/robin/f79ov0xo0f6b1.jpg",
       "id": "f6c7e04d-4361-4785-7a75-6ffae2912400",
         "kid": "RWI",
@@ -17543,7 +17542,7 @@
     {
       "url": "http://reportbase.me/data/res/_444/knife palette painting.jpeg",
       "id": "4f970769-0505-4882-4068-6aec525ca400",
-        "Title": "Image Styles",
+        "title": "Image Styles",
        "kid": "IMSTY",
         "width": 1456,
         "height": 816,
@@ -21232,6 +21231,7 @@
       "id": "BIRD.0000",
       "extent": "2177x2755 0.79",
       "size": "6.0MP",
+        "title": "Bird's Eye View",
         "kid": "BIRD",
         "width": 2000,
         "height": 3000,
@@ -21854,7 +21854,7 @@
       "quote": "The Harder the Conflict the More Glorious the Triumph"
     },
     {
-      "title": "Rain",
+      "title": "Rainy Days",
       "id": "RAIN.0000",
       "pages": "78",
       "kid": "RAIN",

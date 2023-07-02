@@ -5,6 +5,7 @@
   "data": [
     {
       "id": "SUIC.0000",
+      "title": "Comic 1 - 16",
       "kid": "CHAP1",
       "pages": 24,
       "width": 1988,
@@ -223,6 +224,7 @@
     {
       "id": "SUIC.0024",
       "pages": 24,
+      "title": "Comic 2 - 16",
       "kid": "CHAP2",
       "width": 1988,
       "height": 3056,
@@ -467,6 +469,7 @@
     {
       "id": "SUIC.0051",
       "pages": 24,
+      "title": "Comic 3 - 16",
       "kid": "CHAP3",
       "width": 1988,
       "height": 3056,
@@ -684,6 +687,7 @@
     {
       "id": "SUIC.0075",
       "pages": 24,
+      "title": "Comic 4 - 16",
       "kid": "CHAP4",
       "width": 1988,
       "height": 3056,
@@ -901,6 +905,7 @@
     {
       "id": "SUIC.0099",
       "pages": 24,
+      "title": "Comic 5 - 16",
       "kid": "CHAP5",
       "width": 1988,
       "height": 3056,
@@ -1118,6 +1123,7 @@
     {
       "id": "SUIC.0123",
       "pages": 24,
+      "title": "Comic 6 - 16",
       "kid": "CHAP6",
       "width": 1988,
       "height": 3056,
@@ -1353,6 +1359,7 @@
     {
       "id": "SUIC.0149",
       "pages": 24,
+      "title": "Comic 7 - 16",
       "kid": "CHAP7",
       "width": 1988,
       "height": 3056,
@@ -1579,6 +1586,7 @@
     {
       "id": "SUIC.0174",
       "pages": 24,
+      "title": "Comic 8 - 16",
       "kid": "CHAP8",
       "width": 1988,
       "height": 3056,
@@ -1895,6 +1903,7 @@
     {
       "id": "SUIC.0209",
       "pages": 24,
+      "title": "Comic 9 - 16",
       "kid": "CHAP9",
       "width": 1988,
       "height": 3056,
@@ -2102,6 +2111,7 @@
     {
       "id": "SUIC.0232",
       "pages": 24,
+      "title": "Comic 10 - 16",
       "kid": "CHAP10",
       "width": 1988,
       "height": 3056,
@@ -2328,6 +2338,7 @@
     {
       "id": "SUIC.0257",
       "pages": 24,
+      "title": "Comic 11 - 16",
       "kid": "CHAP11",
       "width": 1988,
       "height": 3056,
@@ -2600,6 +2611,7 @@
       "id": "SUIC.0287",
       "pages": 24,
       "kid": "CHAP12",
+      "title": "Comic 12 - 16",
       "width": 1988,
       "height": 3056,
       "extent": "1988x3056 0.65",
@@ -2834,6 +2846,7 @@
     {
       "id": "SUIC.0313",
       "pages": 24,
+      "title": "Comic 13 - 16",
       "kid": "CHAP13",
       "width": 1988,
       "height": 3056,
@@ -3042,6 +3055,7 @@
     {
       "id": "SUIC.0336",
       "pages": 24,
+      "title": "Comic 14 - 16",
       "kid": "CHAP14",
       "width": 1988,
       "height": 3056,
@@ -3259,6 +3273,7 @@
     {
       "id": "SUIC.0360",
       "pages": 24,
+      "title": "Comic 15 - 16",
       "kid": "CHAP15",
       "width": 1988,
       "height": 3056,
@@ -3485,6 +3500,7 @@
     {
       "id": "SUIC.0385",
       "pages": 24,
+      "title": "Comic 16 - 16",
       "kid": "CHAP16",
       "width": 1988,
       "height": 3056,
