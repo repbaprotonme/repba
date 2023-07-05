@@ -26,6 +26,7 @@ const MENUTAP = "rgba(255,125,0,0.7)";
 const MENUTAG = "rgba(200,0,0,0.9)";
 const SELECTAP = "rgba(255,0,0.75,0.7)";
 const SCROLLNAB = "rgba(0,0,0,0.3)";
+const DARKNAB = "rgba(0,0,0,0.7)";
 const BARFILL = "rgba(0,0,0,0.5)";
 const MENUCOLOR = "rgba(0,0,0,0.5)";
 const OPTIONFILL = "white";
@@ -2047,7 +2048,7 @@ async function dropfiles(files)
     _8cnv.sliceobj.data = galleryobj.data;
     var a = Array(galleryobj.length()).fill().map((_, index) => index);
     _8cnv.rotated = [...a,...a,...a];
-
+    _8cnv.scrollobj.set(0);
     galleryobj.set(0);
     _8cnv.sliceobj.set(0);
     let ganvaslst = [];
@@ -2467,42 +2468,6 @@ var presslst =
         {
             infobj.rotate(1);
         }
-        else
-        {
-            var visibles = canvas.visibles;
-            var k;
-            for (k = 0; k < visibles.length; k++)
-            {
-                var j = visibles[k];
-                if (j.slice.rect.hitest(x,y))
-                    break;
-            }
-
-            if (k == visibles.length)
-                return;
-            var j = visibles[k];
-            if (!userobj.data)
-                userobj.data = [];
-            var str = j.slice.id;
-            if (j.slice.full)
-                str = j.slice.full;
-            else if (j.slice.url)
-                str = j.slice.url;
-            if (userobj.data.includes(str))
-            {
-                var index = userobj.data.indexOf(str);
-                userobj.data.splice(index, 1);
-                j.slice.bookmarked = 0;
-            }
-            else
-            {
-                userobj.data.push(str);
-                j.slice.bookmarked = 1;
-            }
-
-            userobj.data = Array.from(new Set(userobj.data));
-            userobj.save();
-        }
 
         context.refresh();
     },
@@ -2592,7 +2557,10 @@ var swipelst =
 },
 {
     name: "MENU",
-    swipeleftright: function (context, rect, x, y, evt) { },
+    swipeleftright: function (context, rect, x, y, evt)
+    {
+        menuobj.hide();
+    },
     swipeupdown: function (context, rect, x, y, evt)
     {
         var canvas = context.canvas;
@@ -2677,7 +2645,7 @@ var keylst =
             evt.preventDefault();
         }
         else if (
-            canvas.ctrlKey && key == "arrowdown" ||
+            key == "arrowdown" ||
             key == "enter" ||
             key == " " ||
             key == "pagedown" ||
@@ -2686,21 +2654,6 @@ var keylst =
             canvas.nohide = 0;
             var e = {type:"swipeup"}
             swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
-            evt.preventDefault();
-        }
-        else if (
-            canvas.ctrlKey && key == "arrowleft" ||
-            canvas.ctrlKey && key == "h")
-        {
-            canvas.imagescrollobj.set(0);
-            context.refresh();
-            evt.preventDefault();
-        }
-        else if (canvas.ctrlKey && key == "arrowright" ||
-           canvas.ctrlKey && key == "l")
-        {
-            canvas.imagescrollobj.set(canvas.imagescrollobj.length()-1);
-            context.refresh();
             evt.preventDefault();
         }
         else if (key == "-" || key == "[")
@@ -3253,8 +3206,8 @@ var taplst =
             var k;
             for (k = 0; k < visibles.length; k++)
             {
-                var slice = visibles[k];
-                if (slice.slice.rect.hitest(x,y))
+                var j = visibles[k];
+                if (j.slice.rect.hitest(x,y))
                     break;
             }
 
@@ -3277,15 +3230,42 @@ var taplst =
 
             var n = visibles[k].n;
             var slice = galleryobj.data[n];
-            if (canvas.shiftKey)
+            if (canvas.nohide && x < ALIEXTENT && y < slice.rect.y+ALIEXTENT)
             {
-                copytext(
-                  `"id": ${slice.id}",
-                  "title": "",
-                  "kid": "",
-                  "pages": 0,
-                  "width": 0,
-                  "height": 0`);
+                var visibles = canvas.visibles;
+                var k;
+                for (k = 0; k < visibles.length; k++)
+                {
+                    var j = visibles[k];
+                    if (j.slice.rect.hitest(x,y))
+                        break;
+                }
+
+                if (k == visibles.length)
+                    return;
+                var j = visibles[k];
+                if (!userobj.data)
+                    userobj.data = [];
+                var str = j.slice.id;
+                if (j.slice.full)
+                    str = j.slice.full;
+                else if (j.slice.url)
+                    str = j.slice.url;
+                if (userobj.data.includes(str))
+                {
+                    var index = userobj.data.indexOf(str);
+                    userobj.data.splice(index, 1);
+                    j.slice.bookmarked = 0;
+                }
+                else
+                {
+                    userobj.data.push(str);
+                    j.slice.bookmarked = 1;
+                }
+
+                userobj.data = Array.from(new Set(userobj.data));
+                userobj.save();
+                context.refresh();
             }
             else
             {
@@ -3795,35 +3775,24 @@ var buttonlst =
 
             if (user.tap)
             {
-                var w = rect.width/6;
-                if (w > 180)
-                    w = 180;
-                var a = new Layer(
-                    [
-                        new panel.fill("rgba(0,0,0,0.4)"),
-                        new Col([w,0,w],
-                        [
-                            0,
-                            new Row([20,0,20],
-                            [
-                                0,
-                                new panel.fill("rgba(255,125,0,0.4)"),
-                                0,
-                            ]),
-                            0,
-                        ])
-                    ]);
-
+                var a = new panel.fill("rgba(0,0,0,0.35)");
                 a.draw(context, rect, 0, 0);
             }
-
-            if (user.bookmarked)
+            else if (context.canvas.nohide)
             {
-                var a = new Col([40,0],
+                var a = new Col([ALIEXTENT,0],
                     [
-                        new panel.fill("rgba(255,0,0,0.6)"),
+                        new Row([ALIEXTENT, 0],
+                            [
+                                new Layer(
+                                [
+                                    user.bookmarked ? new panel.shrink(new panel.circle(MENUTAP),19,19) : 0,
+                                    new panel.shrink(new panel.circle(user.bookmarked ? TRANSPARENT:"rgba(0,0,0,0.2)",SEARCHFRAME,4),16,16),
+                                ]),
+                                0
+                            ]),
                         0,
-                    ]);
+                    ])
                 a.draw(context, rect, 0, 0);
             }
         }
@@ -5318,7 +5287,7 @@ panel.options = function (size)
         [
             new Rectangle(context.canvas.optionrect),
             s ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),22,22) : 0,
-            new panel.shrink(new panel.circle(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
+            new panel.shrink(new panel.circle(s?TRANSPARENT:DARKNAB,SEARCHFRAME,4),17,17),
             new Row( [0, rect.height*0.20, 0],
             [
                 0,
