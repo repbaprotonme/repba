@@ -1989,7 +1989,7 @@ userobj.save = function()
 {
     if (!global.user)
         return;
-    fetch(`https://bucket.reportbase5836.workers.dev/${global.user.id}.json`,
+    fetch(`https://bucket.reportbase5836.workers.dev/${userobj.userId}.json`,
         {
             method: 'POST',
             body: JSON.stringify(userobj)
@@ -6217,12 +6217,11 @@ if (url.protocol == "https:")
     authClient.getAuthenticationInfoOrNull(false)
     .then(function(client)
     {
-        global.user = 0;
         if (!client)
             return;
 
-        global.user = client.user;
-        fetch(`https://bucket.reportbase5836.workers.dev/${global.user.id}.json`)
+        Object.assign(userobj, client.user);
+        fetch(`https://bucket.reportbase5836.workers.dev/${userobj.userId}.json`)
         .then((response) => jsonhandler(response))
         .then(function (json)
             {
