@@ -1987,8 +1987,9 @@ var userobj = {}
 
 userobj.save = function()
 {
-    //delete userobj.data;//todo remove
-    fetch(`https://bucket.reportbase5836.workers.dev/user.json`,
+    if (!global.user)
+        return;
+    fetch(`https://bucket.reportbase5836.workers.dev/${global.user.id}.json`)
         {
             method: 'POST',
             body: JSON.stringify(userobj)
@@ -5896,31 +5897,6 @@ galleryobj.init = function (obj)
     var k = getlocalnumber("gallery",0);
     _8cnv.timeobj.set(k);
 
-    fetch(`https://bucket.reportbase5836.workers.dev/user.json`)
-    .then((response) => jsonhandler(response))
-    .then(function (json)
-        {
-            userobj = Object.assign(userobj,json);
-            if (userobj.data)
-            {
-                for (var n = 0; n < galleryobj.all.length; ++n)
-                {
-                    var k = galleryobj.all[n];
-                    var m = 0;
-                    for (; m < userobj.data.length; ++m)
-                    {
-                        if (userobj.data[m].id == k.id)
-                            break;
-                    }
-
-                    k.bookmarked = m < userobj.data.length;
-                }
-            }
-        })
-    .catch((error) => {});
-
-    var slices = _9cnv.sliceobj;
-    slices.data = [];
     contextobj.reset();
 }
 
@@ -6246,11 +6222,30 @@ if (url.protocol == "https:")
             return;
 
         global.user = client.user;
-        var body = JSON.stringify({ accessToken: client.accessToken, data: {tom:"Brinkman"}});
-        fetch(`https://propelauth.reportbase5836.workers.dev`, { method: "POST", body: body })
-          .then(response => jsonhandler(response))
-          .then(json => console.log(json) )
-          .catch(error => console.log(error) );
+        fetch(`https://bucket.reportbase5836.workers.dev/${global.user.id}.json`)
+        .then((response) => jsonhandler(response))
+        .then(function (json)
+            {
+                userobj = Object.assign(userobj,json);
+                if (userobj.data)
+                {
+                    for (var n = 0; n < galleryobj.all.length; ++n)
+                    {
+                        var k = galleryobj.all[n];
+                        var m = 0;
+                        for (; m < userobj.data.length; ++m)
+                        {
+                            if (userobj.data[m].id == k.id)
+                                break;
+                        }
+
+                        k.bookmarked = m < userobj.data.length;
+                    }
+
+                    _8cnvctx.refresh();
+                }
+            })
+        .catch((error) => {});
     })
 }
 
