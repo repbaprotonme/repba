@@ -1987,7 +1987,7 @@ var userobj = {}
 
 userobj.save = function()
 {
-    if (!global.user)
+    if (!userobj.userId)
         return;
     fetch(`https://bucket.reportbase5836.workers.dev/${userobj.userId}.json`,
         {
