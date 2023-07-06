@@ -2001,7 +2001,7 @@ userobj.save = function()
       var body = JSON.stringify(
       {
           accessToken: userobj.accessToken,
-          data: userob.data
+          data: userobj.data
       });
 
       fetch(`https://propelauth.reportbase5836.workers.dev`,
