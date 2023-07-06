@@ -3325,10 +3325,6 @@ var taplst =
                 if (!userobj.data)
                     userobj.data = [];
                 var str = j.slice.id;
-                if (j.slice.full)
-                    str = j.slice.full;
-                else if (j.slice.url)
-                    str = j.slice.url;
                 var f = [];
                 for (var n = 0; n < userobj.data.length; ++n)
                 {
