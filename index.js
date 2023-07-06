@@ -1987,19 +1987,22 @@ var userobj = {}
 
 userobj.save = function()
 {
-    authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
-    authClient.getAuthenticationInfoOrNull(false)
-    .then(function(client)
+    if (url.protocol == "https:")
     {
-         fetch(`https://bucket.reportbase5836.workers.dev/${client.user.userId}.json`,
-            {
-                method: 'POST',
-                body: JSON.stringify(userobj)
-            })
-          .then(response => jsonhandler(response))
-          .then(json => console.log(json) )
-          .catch(error => console.log(error) );
-    })
+        authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+        authClient.getAuthenticationInfoOrNull(false)
+        .then(function(client)
+        {
+             fetch(`https://bucket.reportbase5836.workers.dev/${client.user.userId}.json`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify(userobj)
+                })
+              .then(response => jsonhandler(response))
+              .then(json => console.log(json) )
+              .catch(error => console.log(error) );
+        })
+    }
 }
 
 function explore()
@@ -3181,7 +3184,6 @@ var taplst =
                 var a = Array(galleryobj.length()).fill().map((_, index) => index);
                 _8cnv.rotated = [...a,...a,...a];
                 galleryobj.set(0);
-                _5cnv.sliceobj.set(_5cnv.sliceobj.length()-1);
                 let ganvaslst = [];
                 for (var m = 0; m < 120; ++m)
                 {
@@ -5459,7 +5461,7 @@ window.addEventListener("visibilitychange", (evt) =>
     else
     {
         savelocal("gallery",_8cnv.timeobj.current())
-        savelocal("kid",_5cnv.sliceobj.value().kid)//todo
+        savelocal("kid",_5cnv.sliceobj.value().kid)
     }
 });
 
@@ -5766,7 +5768,6 @@ galleryobj.init = function (obj)
         var k = galleryobj.all[n];
         if (!k.kid)
             continue;
-        k.index = j++;
         k.func = function()
         {
             var kid = this.kid;
@@ -5808,50 +5809,46 @@ galleryobj.init = function (obj)
         _5cnv.sliceobj.data.push(galleryobj.all[n]);
     };
 
-    if (_5cnv.sliceobj.length())
+    _5cnv.sliceobj.data.sort((a, b) =>
     {
-        _5cnv.sliceobj.data.sort((a, b) =>
-        {
-              if (a.title < b.title)
-                return -1
-              return a.tile > b.title ? 1 : 0
-        })
+          if (a.title < b.title)
+            return -1
+          return a.tile > b.title ? 1 : 0
+    })
 
-        var k = {}
-        k.index = _5cnv.sliceobj.length()-1;
-        k.title = "All Images";
-        _5cnv.sliceobj.data.push(k);
-        _5cnv.sliceobj.set(_5cnv.sliceobj.length()-1);
-        k.func = function()
+    var k = {}
+    k.title = "All Images";
+    _5cnv.sliceobj.data.unshift(k);
+    k.func = function()
+    {
+        _5cnv.sliceobj.set(this.index);
+        galleryobj.data = galleryobj.all;
+        _8cnv.sliceobj.data = galleryobj.all;
+        var a = Array(galleryobj.length()).fill().map((_, index) => index);
+        _8cnv.rotated = [...a,...a,...a];
+        galleryobj.set(0);
+        let ganvaslst = [];
+        for (var m = 0; m < 120; ++m)
         {
-            _5cnv.sliceobj.set(this.index);
-            galleryobj.data = galleryobj.all;
-            _8cnv.sliceobj.data = galleryobj.all;
-            var a = Array(galleryobj.length()).fill().map((_, index) => index);
-            _8cnv.rotated = [...a,...a,...a];
-            galleryobj.set(0);
-            _5cnv.sliceobj.set(_5cnv.sliceobj.length()-1);
-            let ganvaslst = [];
-            for (var m = 0; m < 120; ++m)
-            {
-                ganvaslst[m] = document.createElement("canvas");
-                imagelst[m] = new Image();
-            }
-
-            buttonobjreset();
-            delete _4cnv.thumbcanvas;
-            delete photo.image;
-            contextobj.reset();
-            menuobj.hide();
-            menuobj.toggle(_8cnvctx);
+            ganvaslst[m] = document.createElement("canvas");
+            imagelst[m] = new Image();
         }
 
-        var j = _5cnv.sliceobj.data.findIndex(function(a) { return a.kid == kid; });
-        if (j >= 0)
-            _5cnv.sliceobj.set(j);
-        else
-            _5cnv.sliceobj.set(_5cnv.sliceobj.length()-1);
+        buttonobjreset();
+        delete _4cnv.thumbcanvas;
+        delete photo.image;
+        contextobj.reset();
+        menuobj.hide();
+        menuobj.toggle(_8cnvctx);
     }
+
+    for (var n = 0; n < _5cnv.sliceobj.length(); ++n)
+        _5cnv.sliceobj.data[n].index = n;
+
+    _5cnv.sliceobj.set(0);
+    var j = _5cnv.sliceobj.data.findIndex(function(a) { return a.kid == kid; });
+    if (j >= 0)
+        _5cnv.sliceobj.set(j);
 
     var a = Array(_5cnv.sliceobj.length()).fill().map((_, index) => index);
     _5cnv.rotated = [...a,...a,...a];
