@@ -1998,11 +1998,11 @@ userobj.save = function()
       .then(json => console.log(json) )
       .catch(error => console.log(error) );
 
-        var body = JSON.stringify(
-            {
-                accessToken: userobj.accessToken,
-                data: userob.data
-            };
+      var body = JSON.stringify(
+      {
+          accessToken: userobj.accessToken,
+          data: userob.data
+      });
 
       fetch(`https://propelauth.reportbase5836.workers.dev`,
       {
