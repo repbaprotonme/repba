@@ -1987,13 +1987,28 @@ var userobj = {}
 
 userobj.save = function()
 {
-    if (!userobj.userId)
+    if (!userobj.user)
         return;
-    fetch(`https://bucket.reportbase5836.workers.dev/${userobj.userId}.json`,
+    fetch(`https://bucket.reportbase5836.workers.dev/${userobj.user.userId}.json`,
         {
             method: 'POST',
             body: JSON.stringify(userobj)
         })
+      .then(response => jsonhandler(response))
+      .then(json => console.log(json) )
+      .catch(error => console.log(error) );
+
+        var body = JSON.stringify(
+            {
+                accessToken: userobj.accessToken,
+                data: userob.data
+            };
+
+      fetch(`https://propelauth.reportbase5836.workers.dev`,
+      {
+          method: "POST",
+          body: body
+      })
       .then(response => jsonhandler(response))
       .then(json => console.log(json) )
       .catch(error => console.log(error) );
@@ -6220,8 +6235,8 @@ if (url.protocol == "https:")
         if (!client)
             return;
 
-        Object.assign(userobj, client.user);
-        fetch(`https://bucket.reportbase5836.workers.dev/${userobj.userId}.json`)
+        Object.assign(userobj, client);
+        fetch(`https://bucket.reportbase5836.workers.dev/${userobj.user.userId}.json`)
         .then((response) => jsonhandler(response))
         .then(function (json)
             {
