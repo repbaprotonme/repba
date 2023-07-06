@@ -6232,32 +6232,24 @@ if (url.protocol == "https:")
     authClient.getAuthenticationInfoOrNull(false)
     .then(function(client)
     {
-        if (!client)
-            return;
-
-        Object.assign(userobj, client);
-        fetch(`https://bucket.reportbase5836.workers.dev/${userobj.user.userId}.json`)
+        fetch(`https://bucket.reportbase5836.workers.dev/${client.user.userId}.json`)
         .then((response) => jsonhandler(response))
         .then(function (json)
             {
-                userobj = Object.assign(userobj,json);
-                if (userobj.data)
+                if (!json.data)
+                    return;
+                for (var n = 0; n < galleryobj.all.length; ++n)
                 {
-                    for (var n = 0; n < galleryobj.all.length; ++n)
-                    {
-                        var k = galleryobj.all[n];
-                        var m = 0;
-                        for (; m < userobj.data.length; ++m)
-                        {
-                            if (userobj.data[m].id == k.id)
-                                break;
-                        }
+                    var k = galleryobj.all[n];
+                    var m = 0;
+                    for (; m < json.data.length; ++m)
+                        if (json.data[m].id == k.id)
+                            break;
 
-                        k.bookmarked = m < userobj.data.length;
-                    }
-
-                    _8cnvctx.refresh();
+                    k.bookmarked = m < json.data.length;
                 }
+
+                _8cnvctx.refresh();
             })
         .catch((error) => {});
     })
