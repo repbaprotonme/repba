@@ -1987,32 +1987,19 @@ var userobj = {}
 
 userobj.save = function()
 {
-    if (!userobj.user)
-        return;
-    fetch(`https://bucket.reportbase5836.workers.dev/${userobj.user.userId}.json`,
-        {
-            method: 'POST',
-            body: JSON.stringify(userobj)
-        })
-      .then(response => jsonhandler(response))
-      .then(json => console.log(json) )
-      .catch(error => console.log(error) );
-
-      var body = JSON.stringify(
-      {
-          accessToken: userobj.accessToken,
-          data: userobj.data
-      });
-
-      fetch(`https://propelauth.reportbase5836.workers.dev`,
-      {
-          method: "POST",
-          body: body
-      })
-      .then(response => jsonhandler(response))
-      .then(json => console.log(json) )
-      .catch(error => console.log(error) );
-}
+    authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+    authClient.getAuthenticationInfoOrNull(false)
+    .then(function(client)
+    {
+         fetch(`https://bucket.reportbase5836.workers.dev/${client.user.userId}.json`,
+            {
+                method: 'POST',
+                body: JSON.stringify(userobj)
+            })
+          .then(response => jsonhandler(response))
+          .then(json => console.log(json) )
+          .catch(error => console.log(error) );
+    })
 
 function explore()
 {
