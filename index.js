@@ -5579,7 +5579,12 @@ galleryobj.init = function (obj)
 
         {title:"Bookmarks", path: "BOOKmARKS", func: function()
             {
-                window.open(`https://reportbase.com?s=https://bucket.reportbase5836.workers.dev/user.json`);
+                authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+                authClient.getAuthenticationInfoOrNull(false)
+                .then(function(client)
+                {
+                    window.open(`https://reportbase.com?q=${client.user.userId}`);
+                })
             }},
 
         {title:"Download", path: "DOWNLOAD", func: function()
