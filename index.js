@@ -5502,7 +5502,7 @@ function wraptext(ctx, text, maxWidth)
 var galleryobj = new circular_array("", 0);
 galleryobj.init = function (obj)
 {
-    galleryobj = Object.assign(galleryobj,obj);
+    Object.assign(galleryobj,obj);
 
     galleryobj.all = [];
     for (var n = 0; n < galleryobj.length(); ++n)
@@ -6224,8 +6224,7 @@ if (url.protocol == "https:")
         .then((response) => jsonhandler(response))
         .then(function (json)
             {
-                if (!json.data)
-                    return;
+                Object.assign(userobj,json)
                 for (var n = 0; n < galleryobj.all.length; ++n)
                 {
                     var k = galleryobj.all[n];
