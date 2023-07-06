@@ -15,7 +15,6 @@ const SWIPETIME = 200;
 const MENUBARWIDTH = 12;
 const MENUPANWIDTH = 25;
 const THUMBORDER = 5;
-const THUMBSELECT = 10;
 const JULIETIME = 100;
 const ALIEXTENT = 60;
 const BEXTENT = 80;
@@ -43,7 +42,7 @@ const SMALLFONT = "15px archivo black";
 const DEFAULTFONT = "16px archivo black";
 const LARGEFONT = "18px archivo black";
 const HUGEFONT = "20px archivo black";
-const SLICEWIDTH = 20;
+const SLICEWIDTH = 60;
 const SLICEWIDTHSIZE = 640;
 const ZOOMAX = 92;
 
@@ -592,8 +591,8 @@ var GalleryBar = function ()
         canvas.chapterect = new rectangle();
         var w = Math.min(320,rect.width-100);
         var j = window.innerWidth - rect.width >= 180;
-        var ch = _5cnv.sliceobj.length()?40:-1;
-        var ck = _5cnv.sliceobj.length()?8:-1;
+        var ch = _5cnv.sliceobj.length()>1?40:-1;
+        var ck = _5cnv.sliceobj.length()>1?8:-1;
         context.save();
         var a = new LayerA(
         [
@@ -639,7 +638,7 @@ var GalleryBar = function ()
                      0,
                  ]):0,
                  0,
-                 (canvas.nohide && _5cnv.sliceobj.length())?new Col([0,w,0],
+                 (canvas.nohide && _5cnv.sliceobj.length() > 1)?new Col([0,w,0],
                  [
                      0,
                      new Layer(
@@ -2703,7 +2702,12 @@ var keylst =
             obj.rotateperc(2.5);
             context.refresh()
         }
-        else if (key == "\\" || key == "/")
+        else if (key == "tab")
+		{
+            menuobj.hide();
+            evt.preventDefault();
+        }
+        else if (key == "tab" || key == "\\" || key == "/")
         {
             clearInterval(global.swipetimeout);
             global.swipetimeout = 0;
@@ -2712,6 +2716,7 @@ var keylst =
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             bossobj.set(2);
             menuobj.toggle(_8cnvctx);
+            evt.preventDefault();
         }
         else if (key == "f")
         {
@@ -2858,9 +2863,10 @@ var keylst =
             context.refresh();
             evt.preventDefault();
         }
-        else if (key == "." || key == "\\" || key == "/")
+        else if (key == "tab" || key == "\\" || key == "/")
         {
             menuobj.toggle(_8cnvctx);
+            evt.preventDefault();
         }
         else if (key == "arrowleft" || key == "h")
         {
@@ -2876,12 +2882,6 @@ var keylst =
             setTimeout(function() { canvas.block = 0; }, canvas.keyblock);
             canvas.keyblock = util.clamp(50,200,canvas.keyblock-5);
             canvas.autodirect = -1;
-            swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
-        }
-        else if (key == "tab")
-        {
-            evt.preventDefault();
-            canvas.autodirect = evt.shiftKey?1:-1;
             swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
         }
         else if (evt.shiftKey && key == " " ||
@@ -3227,8 +3227,8 @@ var taplst =
         }
         else if (canvas.showpagerect && canvas.showpagerect.hitest(x,y))
         {
-            headobj.set(1);
-            bossobj.set(1);
+            headobj.set(3);
+            bossobj.set(2);
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             menuobj.hide();
@@ -3507,26 +3507,27 @@ var bosslst =
 
             var canvas = context.canvas;
             context.extentrect = new rectangle();
-            var a = new RowA([0,ALIEXTENT,SCROLLBARWIDTH,MARGINBAR],
+            var w = Math.min(320,rect.width-100);
+            var a = new Row([0,40,20,SCROLLBARWIDTH,MARGINBAR],
             [
-                0,
-                new Layer(
-                [
-                    new Rectangle(context.extentrect),
-                    new panel.shadow(new Text("rgb(255,255,255)", "center", "middle",0, 0)),
+                 0,
+                 new Col([0,w,0],
+                 [
+                    0,
+                    new Layer(
+                    [
+                        new panel.shrink(new Rectangle(context.extentrect),4,0),
+                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new panel.shadow(new Text("rgb(255,255,255)", "center", "middle",0, 0)),
+                    ]),
+                    0,
                 ]),
                 0,
                 0,
+                0
             ]);
 
-            a.draw(context, rect,
-                [
-                    0,
-                    0,//extentobj.value(),
-                    0,
-                    0,
-                ], user, time);
-
+            a.draw(context, rect, extentobj.value(), 0);
             var he = heightobj.value();
             var b = Math.berp(0,he.length()-1,he.current());
             var height = Math.max(60,Math.lerp(0, rect.height, b));
@@ -3536,8 +3537,8 @@ var bosslst =
             var w = r.width;
             var positx = positxobj.value();
             var posity = posityobj.value();
-            var x = Math.floor(Math.nub(positx.value(), positx.length(), w, rect.width))+THUMBSELECT;
-            var y = Math.floor(Math.nub(posity.value(), posity.length(), h, rect.height))+THUMBSELECT;
+            var x = Math.floor(Math.nub(positx.value(), positx.length(), w, rect.width));
+            var y = Math.floor(Math.nub(posity.value(), posity.length(), h, rect.height));
             context.canvas.thumbrect = new rectangle(x,y,w,h);
             var r = context.canvas.thumbrect;
 
@@ -3734,7 +3735,9 @@ var buttonlst =
             user.thumbimg.view = view;
             try
             {
-                if (user.full)
+                if (Number.isInteger(user.id))
+                    user.thumbimg.src = `https://images.pexels.com/photos/${user.id}/pexels-photo-${user.id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=2160&w=1080`;
+                else if (user.full)
                     user.thumbimg.src = user.full;
                 else if (user.file)
                     user.thumbimg.src = URL.createObjectURL(user.file);
@@ -3872,7 +3875,8 @@ var buttonlst =
                 var a = new panel.fill("rgba(0,0,0,0.35)");
                 a.draw(context, rect, 0, 0);
             }
-            else if (context.canvas.nohide)
+
+            if (context.canvas.nohide)
             {
                 var a = new Col([ALIEXTENT,0],
                     [
@@ -4360,6 +4364,8 @@ contextobj.reset = function ()
             var path = `https://reportbase.com/image/${id}/${template}`;
             if (galleryobj.raw)
                 path = `https://reportbase.com/image/${id}/blob`;
+            else if (Number.isInteger(id))
+                path = `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=2160&w=1080`;
             else if (galleryobj.value().full)
                 path = galleryobj.value().full;
             photo.image = new Image();
@@ -4426,7 +4432,9 @@ function masterload()
         var id = galleryobj.value().id;
         var template = galleryobj.variant ? galleryobj.variant : "3840x3840";
         var path = `https://reportbase.com/image/${id}/${template}`;
-        if (galleryobj.value().full)
+        if (Number.isInteger(id))
+            path = `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=2160&w=1080`;
+        else if (galleryobj.value().full)
             path = galleryobj.value().full;
         lst[n].src = path;
         lst[n].index = galleryobj.current();
@@ -5119,7 +5127,7 @@ var headlst =
             var w = k?k.canvas.width:0;
             var b = window.innerWidth == w;
             var j = menuobj.value() && b;
-            var m = j || !_5cnv.sliceobj.length();
+            var m = j || _5cnv.sliceobj.length() < 2;
             context.save();
             var a = new Row([BEXTENT,0],
             [
@@ -5228,7 +5236,7 @@ var headlst =
             context.save();
             context.shadowColor = "black";
             context.prompt = new rectangle()
-           var w = rect.width;
+            var w = rect.width;
             if (w > rect.width-BEXTENT*2)
                 w = rect.width-BEXTENT*2;
             var e = context.canvas.scrollobj.berp();
@@ -5535,9 +5543,9 @@ galleryobj.init = function (obj)
     pretchobj.split(60, "40-90", pretchobj.length());
     letchobj.split(60, "40-90", letchobj.length());
     positxpobj.set(50);
-    positypobj.set(70);
+    positypobj.set(50);
     positxlobj.set(50);
-    positylobj.set(70);
+    positylobj.set(50);
     var zoom = (typeof galleryobj.zoom === "undefined") ?25:galleryobj.zoom;
     poomobj.set(zoom);
     loomobj.set(zoom);
@@ -5587,6 +5595,11 @@ galleryobj.init = function (obj)
                 {
                     window.open(`https://reportbase.com?q=${client.user.userId}`);
                 })
+            }},
+
+        {title:"Search", path: "SEARCH", func: function()
+            {
+                showsearch("pexels");
             }},
 
         {title:"Download", path: "DOWNLOAD", func: function()
@@ -6092,7 +6105,7 @@ function showsearch(repos)
         var search = document.getElementById('search-value').value.clean();
         if (!search)
           return;
-        window.open(`${url.origin}?${repos}=${search}&page=${url.page}`,"_self");
+        window.open(`${url.origin}?${repos}=${search}&page=1`,"_self");
       }
     });
 
@@ -6106,7 +6119,7 @@ function showsearch(repos)
             var search = document.getElementById('search-value').value.clean();
             if (!search)
                 return;
-            window.open(`${url.origin}?${repos}=${search}&page=${url.page}`,"_self");
+            window.open(`${url.origin}?${repos}=${search}&page=1`,"_self");
         }
         else if (event.clientY < rect.top || event.clientY > rect.bottom ||
             event.clientX < rect.left || event.clientX > rect.right)

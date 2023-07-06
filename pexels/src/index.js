@@ -31,6 +31,9 @@ export default
                 var j = {};
                 var width = image.width;
                 var height = image.height;
+                j.id = image.id;
+                j.width = width;
+                j.height = height;
                 j.photographer = image.photographer;
                 j.photographer_url = image.photographer_url;
                 j.photographer_id = image.photographer_id;
