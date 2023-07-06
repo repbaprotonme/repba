@@ -2000,6 +2000,7 @@ userobj.save = function()
           .then(json => console.log(json) )
           .catch(error => console.log(error) );
     })
+}
 
 function explore()
 {
