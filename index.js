@@ -5583,13 +5583,38 @@ galleryobj.init = function (obj)
             explore().then(function(files) { dropfiles(files); })
         }},
 
-        {title:"Bookmarks", path: "BOOKmARKS", func: function()
+        {title:"Bookmarks", path: "BOOKMARKS", func: function()
             {
                 authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
                 authClient.getAuthenticationInfoOrNull(false)
                 .then(function(client)
                 {
                     window.open(`https://reportbase.com?q=${client.user.userId}`);
+                })
+            }},
+
+        {title:"Clear Bookmarks", path: "CLEAR", func: function()
+            {
+                authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+                authClient.getAuthenticationInfoOrNull(false)
+                .then(function(client)
+                {
+                    if (url.protocol == "https:")
+                    {
+                        authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+                        authClient.getAuthenticationInfoOrNull(false)
+                        .then(function(client)
+                        {
+                             fetch(`https://bucket.reportbase5836.workers.dev/${client.user.userId}.json`,
+                                {
+                                    method: 'POST',
+                                    body: JSON.stringify([])
+                                })
+                              .then(response => jsonhandler(response))
+                              .then(json => console.log(json) )
+                              .catch(error => console.log(error) );
+                        })
+                    }
                 })
             }},
 
@@ -6235,7 +6260,7 @@ if (url.protocol == "https:")
         .then((response) => jsonhandler(response))
         .then(function (json)
             {
-                Object.assign(userobj,json)
+//                Object.assign(userobj,json)
                 for (var n = 0; n < galleryobj.all.length; ++n)
                 {
                     var k = galleryobj.all[n];
