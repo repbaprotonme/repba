@@ -616,11 +616,12 @@ var GalleryBar = function ()
             new RowA([80,0,40,8,ch,ck,40,20,SCROLLBARWIDTH,5],
             [
                  canvas.nohide?
-                    new Col([0,60,60,60,60,0],
+                    new Col([0,60,60,60,60,60,0],
                  [
                     0,
                     new panel.fullscreen(),
                     new panel.bookmark(),
+                    new panel.search(),
                     new panel.meta(),
                     new panel.fitwindow(),
                     0,
@@ -1171,9 +1172,9 @@ panel.search = function ()
         {
             this.draw = function (context, rect, user, time)
             {
-                rect.x -= 2;
+                rect.x += 2;
                 rect.y += 7;
-                rect.width = 19 ;
+                rect.width = 19;
                 rect.height = 19;
                 var a = new panel.circle(TRANSPARENT,"white",4,1);
                 a.draw(context, rect, user, time);
@@ -1189,8 +1190,8 @@ panel.search = function ()
         var a = new Layer(
         [
             new Rectangle(context.canvas.searchrect),
-            s ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),17,17) : 0,
-            new panel.shrink(new panel.circle(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),13,13),
+            s ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),19,19) : 0,
+            new panel.shrink(new panel.circle(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),15,15),
             new panel.shrink(new Panel(),15,20),
         ]);
 
@@ -2357,6 +2358,7 @@ var panlst =
         {
             if (type == "panup")
             {
+                context.hidebars = 1;
                 if (headobj.current() != 0)
                 {
                     headobj.set(0);
@@ -2366,6 +2368,7 @@ var panlst =
             }
             else
             {
+                context.hidebars = 0;
                 var k = bossobj.current() == 2?3:1;
                 if (headobj.current() != k)
                 {
@@ -3041,6 +3044,7 @@ var taplst =
             var obj = new circular_array("", [1,3]);
             obj.set(obj.findindex(headobj.current()));
             obj.rotate(1);
+            context.hide = 0;
             headobj.set(obj.value());
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -3147,6 +3151,10 @@ var taplst =
             var k = (x-canvas.hscrollrect.x)/canvas.hscrollrect.width;
             obj.setperc(k);
             context.refresh();
+        }
+        else if (canvas.searchrect && canvas.searchrect.hitest(x,y))
+        {
+            showsearch("pexels");
         }
         else if (canvas.bookmarkrect && canvas.bookmarkrect.hitest(x,y))
         {
@@ -3412,7 +3420,7 @@ var bosslst =
 	{
     	this.draw = function (context, rect, user, time)
         {
-            if (menuobj.value())
+            if (context.hidebars || menuobj.value())
                 return;
             context.zoomrect = new rectangle();
             context.slicewidthrect = new rectangle();
@@ -3496,6 +3504,7 @@ var bosslst =
     	this.draw = function (context, r, user, time)
         {
             if (
+                context.hidebars ||
                 !photo.image ||
                 !photo.image.complete ||
                 !photo.image.naturalHeight)
@@ -5072,10 +5081,6 @@ var headlst =
                 bossobj.set(bossobj.current()?0:1)
                 _8cnvctx.refresh();
             }
-            else if (context.canvas.searchrect && context.canvas.searchrect.hitest(x,y))
-            {
-                showsearch("pexels");
-            }
             else if (context.fullrect && context.fullrect.hitest(x,y))
             {
                 if (screenfull.isEnabled)
@@ -5132,9 +5137,9 @@ var headlst =
                    0,
                    j?0:new panel.gallery(),
                    0,
-                   k?0:new panel.shift(new panel.fullscreen(),-10,0),
-                   k?0:new panel.search(),
-                   k?0:new panel.shift(new panel.thumb(),10,0),
+                   0,//k?0:new panel.shift(new panel.fullscreen(),-10,0),
+                   0,//k?0:new panel.search(),
+                   0,//k?0:new panel.shift(new panel.thumb(),10,0),
                    0,
                    m?0:new panel.help(),
                    0,
