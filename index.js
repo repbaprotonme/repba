@@ -26,7 +26,7 @@ const MENUTAP = "rgba(255,125,0,0.7)";
 const MENUTAG = "rgba(200,0,0,0.9)";
 const SELECTAP = "rgba(255,0,0.75,0.7)";
 const SCROLLNAB = "rgba(0,0,0,0.3)";
-const DARKNAB = "rgba(0,0,0,0.7)";
+const DARKNAB = "rgba(0,0,0,0.85)";
 const BARFILL = "rgba(0,0,0,0.5)";
 const MENUCOLOR = "rgba(0,0,0,0.5)";
 const OPTIONFILL = "white";
@@ -617,16 +617,13 @@ var GalleryBar = function ()
             new RowA([80,0,40,8,ch,ck,40,20,SCROLLBARWIDTH,5],
             [
                  canvas.nohide?
-                    new Col([MARGINBAR,60,0,50,50,50,0,60,MARGINBAR],
+                    new Col([0,60,60,60,60,0],
                  [
                     0,
-                    0,
-                    0,
-                    new panel.shift(new panel.full(),-10,0),
-                    new ScrollPanel(),
-                    new panel.shift(new HomePanel(),10,0),
-                    0,
-                    0,
+                    new panel.fullscreen(),
+                    new panel.bookmark(),
+                    new panel.meta(),
+                    new panel.fitwindow(),
                     0,
                  ]):0,
                  0,
@@ -884,7 +881,7 @@ panel.fill = function (color)
     };
 };
 
-panel.full = function ()
+panel.fullscreen = function ()
 {
     this.draw = function (context, rect, user, time)
     {
@@ -1028,7 +1025,28 @@ var UploadPanel = function ()
     }
 };
 
-var ScrollPanel = function ()
+panel.bookmark = function ()
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.save();
+        context.canvas.bookmarkrect = new rectangle();
+
+        var a = new Layer(
+        [
+            new Rectangle(context.canvas.bookmarkrect),
+            context.canvas.bookmark ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),19,19) : 0,
+            new panel.shrink(new panel.circle(context.canvas.bookmark ? TRANSPARENT : SCROLLNAB, SEARCHFRAME,4),15,15),
+            new panel.shrink(new panel.circle("rgba(0,0,0,0)","white",4),22,30),
+        ]);
+
+        a.draw(context, rect, user, time);
+        context.restore();
+    }
+};
+
+
+panel.meta = function ()
 {
     this.draw = function (context, rect, user, time)
     {
@@ -1038,8 +1056,8 @@ var ScrollPanel = function ()
         var a = new Layer(
         [
             new Rectangle(context.canvas.scrollrect),
-            _8cnv.scrollobj.current() ? 0 : new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),17,17),
-            new panel.shrink(new panel.circle(_8cnv.scrollobj.current() ? SCROLLNAB:TRANSPARENT, SEARCHFRAME,4),13,13),
+            _8cnv.scrollobj.current() ? 0 : new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),19,19),
+            new panel.shrink(new panel.circle(_8cnv.scrollobj.current() ? SCROLLNAB:TRANSPARENT, SEARCHFRAME,4),15,15),
             new panel.shrink(new Row([0,4,0],
             [
                 new panel.circle("white"),
@@ -1074,23 +1092,23 @@ panel.thumb = function ()
     }
 };
 
-var HomePanel = function ()
+panel.fitwindow = function ()
 {
     this.draw = function (context, rect, user, time)
     {
         //context.canvas.timeobj.set((1-galleryobj.berp())*TIMEOBJ);//set to current item
         context.save();
-        context.canvas.homerect = new rectangle();
+        context.canvas.fitwindowrect = new rectangle();
         var a = new Layer(
         [
-            new Rectangle(context.canvas.homerect),
+            new Rectangle(context.canvas.fitwindowrect),
             global.hometap ? new panel.shrink(new panel.circle( MENUTAP,TRANSPARENT,4),19,19) : 0,
             new panel.shrink(new panel.circle(global.hometap?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),15,15),
             new panel.shrink(new Row([0,0],
             [
                 new ArrowPanel(ARROWFILL,0),
                 new ArrowPanel(ARROWFILL,180),
-            ]),18,26),
+            ]),22,26),
         ]);
 
         a.draw(context, rect, user, time);
@@ -1969,6 +1987,7 @@ var userobj = {}
 
 userobj.save = function()
 {
+    //delete userobj.data;//todo remove
     fetch(`https://bucket.reportbase5836.workers.dev/user.json`,
         {
             method: 'POST',
@@ -2457,7 +2476,7 @@ var presslst =
             return;
         if (canvas.vscrollrect && canvas.vscrollrect.hitest(x,y))
             return;
-        if (canvas.homerect && canvas.homerect.hitest(x,y))
+        if (canvas.fitwindowrect && canvas.fitwindowrect.hitest(x,y))
             return;
         if (canvas.fullrect && canvas.fullrect.hitest(x,y))
             return;
@@ -2465,10 +2484,9 @@ var presslst =
             return;
 
         if (canvas.showpagerect && canvas.showpagerect.hitest(x,y))
-        {
             infobj.rotate(1);
-        }
-
+        else
+            canvas.nohide = canvas.nohide?0:1;
         context.refresh();
     },
     press: function (context, rect, x, y)
@@ -3051,7 +3069,7 @@ var taplst =
                     screenfull.request();
             }
         }
-        else if (context.canvas.optionrect && context.canvas.optionrect.hitest(x,y))
+        else if (context.canvas.galleryrect && context.canvas.galleryrect.hitest(x,y))
         {
             headobj.set(1);
             bossobj.set(1);
@@ -3123,6 +3141,60 @@ var taplst =
             obj.setperc(k);
             context.refresh();
         }
+        else if (canvas.bookmarkrect && canvas.bookmarkrect.hitest(x,y))
+        {
+            canvas.bookmark = canvas.bookmark?0:1;
+
+            if (canvas.bookmark)
+            {
+                var lst = galleryobj.all.filter(function (a) { return a.bookmarked; });
+                if (!lst.length)
+                    return;
+                galleryobj.data = lst;
+                _8cnv.sliceobj.data = galleryobj.data;
+                var a = Array(galleryobj.length()).fill().map((_, index) => index);
+                _8cnv.rotated = [...a,...a,...a];
+                galleryobj.set(0);
+                _8cnv.sliceobj.set(0);
+                let ganvaslst = [];
+                for (var m = 0; m < 120; ++m)
+                {
+                    ganvaslst[m] = document.createElement("canvas");
+                    imagelst[m] = new Image();
+                }
+
+                buttonobjreset();
+                delete _4cnv.thumbcanvas;
+                delete photo.image;
+                contextobj.reset()
+                menuobj.hide();
+                menuobj.toggle(_8cnvctx);
+            }
+            else
+            {
+                galleryobj.data = galleryobj.all;
+                _8cnv.sliceobj.data = galleryobj.all;
+                var a = Array(galleryobj.length()).fill().map((_, index) => index);
+                _8cnv.rotated = [...a,...a,...a];
+                galleryobj.set(0);
+                _5cnv.sliceobj.set(_5cnv.sliceobj.length()-1);
+                let ganvaslst = [];
+                for (var m = 0; m < 120; ++m)
+                {
+                    ganvaslst[m] = document.createElement("canvas");
+                    imagelst[m] = new Image();
+                }
+
+                buttonobjreset();
+                delete _4cnv.thumbcanvas;
+                delete photo.image;
+                contextobj.reset();
+                menuobj.hide();
+                menuobj.toggle(_8cnvctx);
+            }
+
+            context.refresh();
+        }
         else if (canvas.vscrollrect && canvas.vscrollrect.hitest(x,y))
         {
             var obj = canvas.timeobj;
@@ -3160,7 +3232,7 @@ var taplst =
         {
             menuobj.showindex(_5cnvctx);
         }
-        else if (canvas.optionrect && canvas.optionrect.hitest(x,y))
+        else if (canvas.galleryrect && canvas.galleryrect.hitest(x,y))
         {
             headobj.set(1);
             bossobj.set(1);
@@ -3188,7 +3260,7 @@ var taplst =
             canvas.scrollobj.rotate(1);
             context.refresh();
         }
-        else if (canvas.homerect && canvas.homerect.hitest(x,y))
+        else if (canvas.fitwindowrect && canvas.fitwindowrect.hitest(x,y))
         {
             clearTimeout(global.hometap)
             global.hometap = setTimeout(function()
@@ -3221,7 +3293,7 @@ var taplst =
                 return;
             if (canvas.vscrollrect && canvas.vscrollrect.hitest(x,y))
                 return;
-            if (canvas.homerect && canvas.homerect.hitest(x,y))
+            if (canvas.fitwindowrect && canvas.fitwindowrect.hitest(x,y))
                 return;
             if (canvas.fullrect && canvas.fullrect.hitest(x,y))
                 return;
@@ -3251,19 +3323,35 @@ var taplst =
                     str = j.slice.full;
                 else if (j.slice.url)
                     str = j.slice.url;
-                if (userobj.data.includes(str))
+                var f = [];
+                for (var n = 0; n < userobj.data.length; ++n)
                 {
-                    var index = userobj.data.indexOf(str);
-                    userobj.data.splice(index, 1);
+                    var id = userobj.data[n].id;
+                    if (typeof id != "undefined")
+                        f.push(id);
+                }
+
+                if (f.includes(str))
+                {
+                    var index = f.indexOf(str);
+                    f.splice(index, 1);
                     j.slice.bookmarked = 0;
                 }
                 else
                 {
-                    userobj.data.push(str);
+                    f.push(str);
                     j.slice.bookmarked = 1;
                 }
 
-                userobj.data = Array.from(new Set(userobj.data));
+                var lst = Array.from(new Set(f));
+                userobj.data = [];
+                for (var n = 0; n < lst.length; ++n)
+                {
+                    var k = {};
+                    k.id = lst[n];
+                    userobj.data.push(k);
+                }
+
                 userobj.save();
                 context.refresh();
             }
@@ -3787,7 +3875,7 @@ var buttonlst =
                                 new Layer(
                                 [
                                     user.bookmarked ? new panel.shrink(new panel.circle(MENUTAP),19,19) : 0,
-                                    new panel.shrink(new panel.circle(user.bookmarked ? TRANSPARENT:"rgba(0,0,0,0.2)",SEARCHFRAME,4),16,16),
+                                    new panel.shrink(new panel.circle(user.bookmarked ? TRANSPARENT:"rgba(0,0,0,0.2)","rgba(255,255,255,0.8)",4),16,16),
                                 ]),
                                 0
                             ]),
@@ -4988,7 +5076,7 @@ var headlst =
                         screenfull.request();
                 }
             }
-            else if (context.canvas.optionrect && context.canvas.optionrect.hitest(x,y))
+            else if (context.canvas.galleryrect && context.canvas.galleryrect.hitest(x,y))
             {
                 headobj.set(1);
                 bossobj.set(1);
@@ -5032,9 +5120,9 @@ var headlst =
                new Col( [MARGINBAR, ALIEXTENT,0, 50,50,50, 0,ALIEXTENT, MARGINBAR],
                [
                    0,
-                   j?0:new panel.options(),
+                   j?0:new panel.gallery(),
                    0,
-                   k?0:new panel.shift(new panel.full(),-10,0),
+                   k?0:new panel.shift(new panel.fullscreen(),-10,0),
                    k?0:new panel.search(),
                    k?0:new panel.shift(new panel.thumb(),10,0),
                    0,
@@ -5273,21 +5361,21 @@ var ClosePanel = function (size)
     }
 };
 
-panel.options = function (size)
+panel.gallery = function (size)
 {
     this.draw = function (context, rect, user, time)
     {
         context.save()
-        context.canvas.optionrect = new rectangle()
+        context.canvas.galleryrect = new rectangle()
         var j = 5;
         var k = j/2;
         var e = new panel.fill(OPTIONFILL);
         var s = menuobj.value() == _2cnvctx;
         var a = new Layer(
         [
-            new Rectangle(context.canvas.optionrect),
+            new Rectangle(context.canvas.galleryrect),
             s ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),22,22) : 0,
-            new panel.shrink(new panel.circle(s?TRANSPARENT:DARKNAB,SEARCHFRAME,4),17,17),
+            new panel.shrink(new panel.circle(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
             new Row( [0, rect.height*0.20, 0],
             [
                 0,
@@ -5484,6 +5572,11 @@ galleryobj.init = function (obj)
             menuobj.hide();
             explore().then(function(files) { dropfiles(files); })
         }},
+
+        {title:"Bookmarks", path: "BOOKmARKS", func: function()
+            {
+                window.open(`https://reportbase.com?s=https://bucket.reportbase5836.workers.dev/user.json`);
+            }},
 
         {title:"Download", path: "DOWNLOAD", func: function()
             {
@@ -5816,7 +5909,7 @@ galleryobj.init = function (obj)
                     var m = 0;
                     for (; m < userobj.data.length; ++m)
                     {
-                        if (userobj.data[m] == k.id)
+                        if (userobj.data[m].id == k.id)
                             break;
                     }
 
