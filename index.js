@@ -1989,7 +1989,7 @@ userobj.save = function()
 {
     if (!global.user)
         return;
-    fetch(`https://bucket.reportbase5836.workers.dev/${global.user.id}.json`)
+    fetch(`https://bucket.reportbase5836.workers.dev/${global.user.id}.json`,
         {
             method: 'POST',
             body: JSON.stringify(userobj)
