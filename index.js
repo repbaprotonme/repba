@@ -37,7 +37,7 @@ const SMALLFONT = "15px archivo black";
 const DEFAULTFONT = "16px archivo black";
 const LARGEFONT = "18px archivo black";
 const HUGEFONT = "20px archivo black";
-const SLICEWIDTH = 40;
+const SLICEWIDTH = 30;
 const SLICEWIDTHSIZE = 256;
 const ZOOMAX = 92;
 
@@ -412,8 +412,6 @@ let _9cnvctx = _9cnv.getContext("2d", opts);
 let headcnv = document.getElementById("head");
 let headcnvctx = headcnv.getContext("2d", opts);
 
-_8cnv.nohide = 1;
-
 headcnvctx.canvas.scrollobj = new circular_array("TEXTSCROLL", window.innerWidth/4);
 headcnvctx.font = DEFAULTFONT;
 headcnvctx.fillText("  ", 0, 0);
@@ -528,7 +526,7 @@ panel.gallerybar = function ()
                      0,
                  ]):0,
                  0,
-                 canvas.nohide?new panel.col([0,w,0],
+                 new panel.col([0,w,0],
                  [
                      0,
                      new Layer(
@@ -538,7 +536,7 @@ panel.gallerybar = function ()
                         new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
                      ]),
                      0,
-                ]):0,
+                ]),
                 0,
                 new panel.col([20,0,20],
                 [
@@ -1492,6 +1490,7 @@ var wheelst =
     name: "GALLERY",
     up: function (context, x, y, ctrl, shift, alt)
     {
+        var canvas = context.canvas;
         if (ctrl)
         {
             var buttonobj = context.canvas.buttonobj;
@@ -1500,24 +1499,31 @@ var wheelst =
         }
         else
         {
-            var k = 50*(window.innerHeight/context.canvas.virtualheight);
-            context.canvas.timeobj.rotate(k);
-            context.refresh()
+            clearTimeout(canvas.timeout);
+            canvas.timeout = setTimeout(function()
+            {
+                var e = {type:"swipeup"}
+                swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
+            }, 4);
         }
     },
  	down: function (context, x, y, ctrl, shift, alt)
     {
+        var canvas = context.canvas;
         if (ctrl)
         {
-            var buttonobj = context.canvas.buttonobj;
+            var buttonobj = canvas.buttonobj;
             buttonobj.addperc(-1.5/100);
             context.refresh();
         }
         else
         {
-            var k = 50*(window.innerHeight/context.canvas.virtualheight);
-            context.canvas.timeobj.rotate(-k);
-            context.refresh()
+            clearTimeout(canvas.timeout);
+            canvas.timeout = setTimeout(function()
+            {
+                var e = {type:"swipedown"}
+                swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
+            }, 4);
         }
     },
  	left: function (context, x, y, ctrl, shift, alt)
@@ -1663,7 +1669,6 @@ var dblclicklst =
             return;
         if (context.stretchrect && context.stretchrect.hitest(x,y))
             return;
-        _8cnv.nohide = 1;
         menuobj.toggle(_8cnvctx);
     },
 }
@@ -1991,7 +1996,7 @@ var panlst =
             else
             {
                 var but = context.canvas.buttonobj;
-                var e = Math.lerp(1,0.5,but.berp());
+                var e = Math.lerp(0.5,0.05,but.berp());
                 var obj = context.canvas.scrollobj.value();
                 var j = (rect.width-x)*e;
                 var k = panhorz(obj, j);
@@ -2030,7 +2035,6 @@ var panlst =
                      j = j-TIMEOBJ-1;
                 j = j % context.canvas.timeobj.length();
                 context.canvas.timeobj.set(j);
-                context.canvas.nohide = type == "pandown";
                 context.refresh()
             }
         }
@@ -2148,7 +2152,7 @@ var panlst =
                 context.refresh();
             context.canvas.lasty = y;
         }
-       else if (type == "panleft" || type == "panright")
+        else if (type == "panleft" || type == "panright")
         {
             if (context.canvas.iszoom)
             {
@@ -2189,28 +2193,6 @@ var panlst =
         }
         else if (type == "panup" || type == "pandown")
         {
-            if (type == "panup")
-            {
-                context.hidebars = 1;
-                if (headobj.current() != 0)
-                {
-                    headobj.set(0);
-                    headham.panel = headobj.value();
-                    headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-                }
-            }
-            else
-            {
-                context.hidebars = 0;
-                var k = bossobj.current() == 2?3:1;
-                if (headobj.current() != k)
-                {
-                    headobj.set(k);
-                    headham.panel = headobj.value();
-                    headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-                }
-            }
-
             var zoom = zoomobj.value()
             if (Number(zoom.value()))
             {
@@ -2327,7 +2309,9 @@ var presslst =
         if (canvas.searchrect && canvas.searchrect.hitest(x,y))
             return;
 
-        if (canvas.showpagerect && canvas.showpagerect.hitest(x,y))
+        if (canvas.shiftKey &&
+            canvas.showpagerect &&
+            canvas.showpagerect.hitest(x,y))
             infobj.rotate(1);
         else
             canvas.nohide = canvas.nohide?0:1;
@@ -2358,7 +2342,9 @@ var presslst =
             return;
         if (context.stretchrect && context.stretchrect.hitest(x,y))
             return;
-        if (context.extentrect && context.extentrect.hitest(x,y))
+        if (context.canvas.shiftKey &&
+            context.extentrect &&
+            context.extentrect.hitest(x,y))
         {
             if (galleryobj.value().id)
                 copytext(galleryobj.value().id);
@@ -2501,7 +2487,6 @@ var keylst =
             key == "arrowup" ||
             key == "k")
         {
-            canvas.nohide = 1;
             var e = {type:"swipedown"}
             swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
             evt.preventDefault();
@@ -2513,7 +2498,6 @@ var keylst =
             key == "pagedown" ||
            key == "j")
         {
-            canvas.nohide = 0;
             var e = {type:"swipeup"}
             swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
             evt.preventDefault();
@@ -2846,7 +2830,6 @@ var taplst =
         }
         else if (context.extentrect && context.extentrect.hitest(x,y))
         {
-            _8cnv.nohide = 1;
             menuobj.toggle(_8cnvctx);
         }
         else if (context.zoomrect && context.zoomrect.hitest(x,y))
@@ -3077,7 +3060,11 @@ var taplst =
         }
         else if (canvas.chapterect && canvas.chapterect.hitest(x,y))
         {
-            menuobj.showindex(_5cnvctx);
+            if (_5cnv.sliceobj.current() == 0)
+                menuobj.showindex(_5cnvctx);
+            else
+                _5cnv.sliceobj.data[0].func();
+            context.refresh();
         }
         else if (canvas.galleryrect && canvas.galleryrect.hitest(x,y))
         {
@@ -3259,7 +3246,7 @@ var bosslst =
 	{
     	this.draw = function (context, rect, user, time)
         {
-            if (context.hidebars || menuobj.value())
+            if (menuobj.value())
                 return;
             context.zoomrect = new rectangle();
             context.slicewidthrect = new rectangle();
@@ -3343,7 +3330,6 @@ var bosslst =
     	this.draw = function (context, r, user, time)
         {
             if (
-                context.hidebars ||
                 !photo.image ||
                 !photo.image.complete ||
                 !photo.image.naturalHeight)
@@ -4336,9 +4322,6 @@ contextobj.reset = function ()
             {
                 j = `${url.path}.${galleryobj.current().pad(4)}`;
             }
-
-            traitobj.split(50, "0.1-1.0", traitobj.length());
-            scapeobj.split(50, "0.1-1.0", scapeobj.length());
 
             document.title = `${j} (${photo.image.width}x${photo.image.height})`;
             rowobj.set(rowobj.length()/2);
@@ -5459,6 +5442,8 @@ galleryobj.init = function (obj)
     setfavicon();
     pretchobj.split(60, "40-90", pretchobj.length());
     letchobj.split(60, "40-90", letchobj.length());
+    traitobj.split(50, "0.1-1.0", traitobj.length());
+    scapeobj.split(50, "0.1-1.0", scapeobj.length());
     positxpobj.set(50);
     positypobj.set(50);
     positxlobj.set(50);
