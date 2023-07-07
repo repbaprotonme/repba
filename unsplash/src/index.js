@@ -24,6 +24,9 @@ export default
                 var height = image.height;
                 var aspect = (width/height).toFixed(2);
                 var user = image.user;
+                j.width = width;
+                j.height = height;
+                j.id = image.id;
                 j.photographer = user.name;
                 j.photographer_url = user.links.html;
                 j.photographer_id = user.id;
