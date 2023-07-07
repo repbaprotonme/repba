@@ -3351,7 +3351,14 @@ var taplst =
                             }
 
                             var lst = Array.from(new Set(json.data));
-                            userobj.data = json.data;
+                            userobj.data  = [];
+                            for (var n = 0; n < lst.length; ++n)
+                            {
+                                var k = {};
+                                k.id = lst[n];
+                                userobj.data.push(k);
+                            }
+
                             userobj.save();
                             _8cnvctx.refresh();
                         })
