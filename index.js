@@ -3161,7 +3161,6 @@ var taplst =
             canvas.bookmark = canvas.bookmark ? 0 : 1;
             if (canvas.bookmark)
             {
-                canvas.bookmark = 0;
                 var lst = galleryobj.all.filter(function (a) { return a.bookmarked; });
                 if (!lst.length)
                     return;
@@ -3187,7 +3186,6 @@ var taplst =
             }
             else
             {
-                canvas.bookmark = 1;
                 galleryobj.data = galleryobj.all;
                 _8cnv.sliceobj.data = galleryobj.all;
                 var a = Array(galleryobj.length()).fill().map((_, index) => index);
