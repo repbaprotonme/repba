@@ -3338,6 +3338,8 @@ var taplst =
                     .then((response) => jsonhandler(response))
                     .then(function (json)
                         {
+                            if (!json.data)
+                                json.data = [];
                             if (json.data.includes(id))
                             {
                                 var index = json.data.indexOf(id);
