@@ -3158,6 +3158,7 @@ var taplst =
         }
         else if (canvas.bookmarkrect && canvas.bookmarkrect.hitest(x,y))
         {
+            canvas.bookmark = canvas.bookmark ? 0 : 1;
             if (canvas.bookmark)
             {
                 canvas.bookmark = 0;
