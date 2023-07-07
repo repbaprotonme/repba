@@ -3158,10 +3158,9 @@ var taplst =
         }
         else if (canvas.bookmarkrect && canvas.bookmarkrect.hitest(x,y))
         {
-            canvas.bookmark = canvas.bookmark?0:1;
-
             if (canvas.bookmark)
             {
+                canvas.bookmark = 0;
                 var lst = galleryobj.all.filter(function (a) { return a.bookmarked; });
                 if (!lst.length)
                     return;
@@ -3187,6 +3186,7 @@ var taplst =
             }
             else
             {
+                canvas.bookmark = 1;
                 galleryobj.data = galleryobj.all;
                 _8cnv.sliceobj.data = galleryobj.all;
                 var a = Array(galleryobj.length()).fill().map((_, index) => index);
@@ -3330,39 +3330,35 @@ var taplst =
                 if (k == visibles.length)
                     return;
                 var j = visibles[k];
-                if (!userobj.data)
-                    userobj.data = [];
-                var str = j.slice.id;
-                var f = [];
-                for (var n = 0; n < userobj.data.length; ++n)
+                var id = j.slice.id;
+                authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+                authClient.getAuthenticationInfoOrNull(false)
+                .then(function(client)
                 {
-                    var id = userobj.data[n].id;
-                    if (typeof id != "undefined")
-                        f.push(id);
-                }
+                    fetch(`https://bucket.reportbase5836.workers.dev/${client.user.userId}.json`)
+                    .then((response) => jsonhandler(response))
+                    .then(function (json)
+                        {
+                            if (json.data.includes(id))
+                            {
+                                var index = json.data.indexOf(id);
+                                json.data.splice(index, 1);
+                                j.slice.bookmarked = 0;
+                            }
+                            else
+                            {
+                                json.data.push(id);
+                                j.slice.bookmarked = 1;
+                            }
 
-                if (f.includes(str))
-                {
-                    var index = f.indexOf(str);
-                    f.splice(index, 1);
-                    j.slice.bookmarked = 0;
-                }
-                else
-                {
-                    f.push(str);
-                    j.slice.bookmarked = 1;
-                }
+                            var lst = Array.from(new Set(json.data));
+                            userobj.data = json.data;
+                            userobj.save();
+                            _8cnvctx.refresh();
+                        })
+                    .catch((error) => {});
+                })
 
-                var lst = Array.from(new Set(f));
-                userobj.data = [];
-                for (var n = 0; n < lst.length; ++n)
-                {
-                    var k = {};
-                    k.id = lst[n];
-                    userobj.data.push(k);
-                }
-
-                userobj.save();
                 context.refresh();
             }
             else
@@ -6265,7 +6261,6 @@ if (url.protocol == "https:")
         .then((response) => jsonhandler(response))
         .then(function (json)
             {
-//                Object.assign(userobj,json)
                 for (var n = 0; n < galleryobj.all.length; ++n)
                 {
                     var k = galleryobj.all[n];
