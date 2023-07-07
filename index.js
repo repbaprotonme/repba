@@ -3340,6 +3340,8 @@ var taplst =
                         {
                             if (!json.data)
                                 json.data = [];
+                            for (var n = 0; n < json.data.length; ++n)
+                                json.data[n] = json.data[n].id;
                             if (json.data.includes(id))
                             {
                                 var index = json.data.indexOf(id);
