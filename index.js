@@ -2024,11 +2024,10 @@ var panlst =
                 var e = context.canvas.starty-y;
                 var jvalue = (k/(context.canvas.virtualheight)*(e));
                 var j = context.canvas.startt - jvalue;
-                var len = context.canvas.timeobj.length();
                 if (j < 0)
-                     j = len+j-1;
-                else if (j >= len)
-                     j = j-len-1;
+                     j = TIMEOBJ+j-1;
+                else if (j >= TIMEOBJ)
+                     j = j-TIMEOBJ-1;
                 j = j % context.canvas.timeobj.length();
                 context.canvas.timeobj.set(j);
                 context.canvas.nohide = type == "pandown";
