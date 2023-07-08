@@ -1,6 +1,5 @@
 //todo: https://obfuscator.io
 //todo: buttonlist % 120
-//todo: zero index panning of reci
 
 /* ++ += ==
 Copyright 2017 Tom Brinkman
@@ -155,21 +154,28 @@ let circular_array = function (title, data)
         return Math.lerp(0,this.length()-1,1-this.berp());
     };
 
+    this.rotateanchored = function (index)
+    {
+        this.CURRENT=this.ANCHOR-index;
+        if (this.CURRENT >= this.length())
+            this.CURRENT = this.CURRENT-this.length();
+        else if (this.CURRENT < 0)
+            this.CURRENT = this.length()+this.CURRENT;
+    };
+
     this.rotate = function (index)
     {
         this.CURRENT+=index;
         if (this.CURRENT >= this.length())
-            this.set(this.CURRENT-this.length());
+            this.CURRENT = this.CURRENT-this.length();
         else if (this.CURRENT < 0)
-            this.set(this.length()-this.CURRENT);
+            this.CURRENT = this.length()+this.CURRENT;
+        this.ANCHOR = this.CURRENT;
     };
 
     this.setanchor = function (index)
     {
-        if (typeof index === "undefined" ||
-            Number.isNaN(index) || index == null)
-            index = 0;
-        this.ANCHOR = util.clamp(0, this.length() - 1, index);
+        this.ANCHOR = index;
     };
 
     this.setdata = function (data)
@@ -188,10 +194,7 @@ let circular_array = function (title, data)
 
     this.setcurrent = function (index)
     {
-        if (typeof index === "undefined" ||
-            Number.isNaN(index) || index == null)
-            index = 0;
-        this.CURRENT = util.clamp(0, this.length() - 1, index);
+        this.CURRENT = index;
     };
 
     this.set = function (index)
@@ -412,6 +415,8 @@ let _9cnvctx = _9cnv.getContext("2d", opts);
 let headcnv = document.getElementById("head");
 let headcnvctx = headcnv.getContext("2d", opts);
 
+_8cnv.nohide = 1;
+
 headcnvctx.canvas.scrollobj = new circular_array("TEXTSCROLL", window.innerWidth/4);
 headcnvctx.font = DEFAULTFONT;
 headcnvctx.fillText("  ", 0, 0);
@@ -614,8 +619,15 @@ function calculateAspectRatioFit(imgwidth, imgheight, rectwidth, rectheight)
 	return new rectangle(xstart, ystart, width, height);
 }
 
-Math.berp = function (v0, v1, t) { return (t - v0) / (v1 - v0); };
-Math.lerp = function (v0, v1, t) { return (1 - t) * v0 + t * v1; };
+Math.berp = function (v0, v1, t)
+{
+    return (t - v0) / (v1 - v0);
+};
+
+Math.lerp = function (v0, v1, t)
+{
+    return (1 - t) * v0 + t * v1;
+};
 
 String.prototype.proper = function()
 {
@@ -933,7 +945,6 @@ panel.fitwindow = function ()
 {
     this.draw = function (context, rect, user, time)
     {
-        //context.canvas.timeobj.set((1-galleryobj.berp())*TIMEOBJ);//set to current item
         context.save();
         context.canvas.fitwindowrect = new rectangle();
         var a = new Layer(
@@ -1669,6 +1680,7 @@ var dblclicklst =
             return;
         if (context.stretchrect && context.stretchrect.hitest(x,y))
             return;
+        _8cnv.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
         menuobj.toggle(_8cnvctx);
     },
 }
@@ -1970,34 +1982,35 @@ var panlst =
 
 	pan: function (context, rect, x, y, type)
     {
-        var obj = context.canvas.scrollobj.value();
+        var canvas = context.canvas;
+        var obj = canvas.scrollobj.value();
         if (global.dblclicktime)
             return;
         if (type == "panleft" || type == "panright")
         {
-            if (context.canvas.type == "panup" ||
-                context.canvas.type == "pandown")
+            if (canvas.type == "panup" ||
+                canvas.type == "pandown")
                return;
-            context.canvas.type = type;
-            if (context.canvas.isbuttonbar)
+            canvas.type = type;
+            if (canvas.isbuttonbar)
             {
-               var obj = context.canvas.buttonobj
-               var k = (x - context.canvas.buttonrect.x) / context.canvas.buttonrect.width;
+               var obj = canvas.buttonobj
+               var k = (x - canvas.buttonrect.x) / canvas.buttonrect.width;
                obj.setperc(k);
                context.refresh()
             }
-            else if (context.canvas.ishbar)
+            else if (canvas.ishbar)
             {
-                var obj = context.canvas.scrollobj.value();
-                var k = (x-context.canvas.hscrollrect.x)/context.canvas.hscrollrect.width;
+                var obj = canvas.scrollobj.value();
+                var k = (x-canvas.hscrollrect.x)/canvas.hscrollrect.width;
                 obj.setperc(k);
                 context.refresh();
             }
             else
             {
-                var but = context.canvas.buttonobj;
+                var but = canvas.buttonobj;
                 var e = Math.lerp(0.5,0.05,but.berp());
-                var obj = context.canvas.scrollobj.value();
+                var obj = canvas.scrollobj.value();
                 var j = (rect.width-x)*e;
                 var k = panhorz(obj, j);
                 if (k == -1)
@@ -2010,31 +2023,25 @@ var panlst =
         }
         else if (type == "panup" || type == "pandown")
         {
-            if (context.canvas.type == "panleft" ||
-                context.canvas.type == "panright")
+            if (canvas.type == "panleft" ||
+                canvas.type == "panright")
                return;
-            context.canvas.type = type;
-            if (context.canvas.isvbar)
+            canvas.type = type;
+            if (canvas.isvbar)
             {
-                var obj = context.canvas.timeobj;
-                var k = (y-context.canvas.vscrollrect.y)/context.canvas.vscrollrect.height;
+                var obj = canvas.timeobj;
+                var k = (y-canvas.vscrollrect.y)/canvas.vscrollrect.height;
                 obj.setperc(1-k);
                 context.refresh()
             }
             else
             {
-                var k = context.canvas.timeobj.length();
-                if (!context.canvas.starty)
-                    context.canvas.starty = rect.height/2;
-                var e = context.canvas.starty-y;
-                var jvalue = (k/(context.canvas.virtualheight)*(e));
-                var j = context.canvas.startt - jvalue;
-                if (j < 0)
-                     j = TIMEOBJ+j-1;
-                else if (j >= TIMEOBJ)
-                     j = j-TIMEOBJ-1;
-                j = j % context.canvas.timeobj.length();
-                context.canvas.timeobj.set(j);
+                var e = canvas.starty-y;
+                if (!e)
+                    return;
+                var jvalue = TIMEOBJ/canvas.virtualheight
+                jvalue *= e;
+                canvas.timeobj.rotateanchored(jvalue);
                 context.refresh()
             }
         }
@@ -2049,7 +2056,7 @@ var panlst =
         clearInterval(global.timeauto);
         global.timeauto = 0;
         canvas.starty = y;
-        canvas.startt = canvas.timeobj.current();
+        canvas.timeobj.setanchor(canvas.timeobj.current());
         canvas.isbuttonbar = canvas.buttonrect && canvas.buttonrect.hitest(x,y);
         canvas.ishbar =  canvas.hscrollrect && canvas.hscrollrect.hitest(x,y);
         canvas.isvbar =  canvas.vscrollrect && canvas.vscrollrect.hitest(x,y);
@@ -4147,9 +4154,12 @@ menuobj.draw = function()
         offmenuctx.restore();
     }
 
-    var j = Math.lerp(1,context.canvas.sliceobj.length(),
-          1-context.canvas.timeobj.berp());
-    infobj.data[0] = `${j.toFixed(0)} of ${galleryobj.length()}`;
+    var t = context.canvas.timeobj;
+    var c = Math.ceil(galleryobj.length()*(1-(t.current()/t.length())));
+
+    infobj.data[0] = `${c} of ${galleryobj.length()}`;
+    infobj.data[0] = `${context.canvas.timeobj.ANCHOR.toFixed(6)}`;
+    infobj.data[0] = `${context.canvas.timeobj.CURRENT.toFixed(6)}`;
     infobj.data[1] = `${context.canvas.visibles.length}`;
     infobj.data[2] = `${isvisiblecount} of ${context.canvas.visibles.length}`;
     infobj.data[3] = `${((context.canvas.visibles.length*canvas.buttonheight)/rect.height).toFixed(2)}`;
