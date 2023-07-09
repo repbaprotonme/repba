@@ -537,7 +537,7 @@ panel.gallerybar = function ()
                      new Layer(
                      [
                         new Rectangle(canvas.showpagerect),
-                        new panel.rounded("rgba(255,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new panel.rounded(canvas.nohide?"rgba(255,180,0,0.5)":"rgba(255,0,0,0.5)", 4, "rgba(255,255,255,0.5)", 16, 16),
                         new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
                      ]),
                      0,
@@ -3038,12 +3038,8 @@ var taplst =
         }
         else if (canvas.showpagerect && canvas.showpagerect.hitest(x,y))
         {
-            headobj.set(3);
-            bossobj.set(2);
-            headham.panel = headobj.value();
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            menuobj.hide();
-            _4cnvctx.refresh();
+            canvas.nohide = canvas.nohide?0:1;
+            context.refresh();
         }
         else if (canvas.chapterect && canvas.chapterect.hitest(x,y))
         {
