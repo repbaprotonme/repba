@@ -479,15 +479,14 @@ panel.gallerybar = function ()
             new panel.col([0,SCROLLBARWIDTH,5],
             [
                 0,
-                new panel.row([20,0,20],
+                new panel.row([5,0,5],
                 [
                     0,
                     new Layer(
                     [
                         new panel.expand(new Rectangle(canvas.vscrollrect),10,0),
-                        new panel.expand(new Rectangle(canvas.vscrollrect),10,0),
-                        new panel.currentV(
-                            new panel.shadow(new panel.fill("white")), 90, 1),
+                        new panel.currentV(new panel.shadow(
+                            new panel.fill("white")), 90, 1),
                     ]),
                     0,
                 ]),
@@ -543,7 +542,7 @@ panel.gallerybar = function ()
                      0,
                 ]),
                 0,
-                new panel.col([20,0,20],
+                new panel.col([5,0,5],
                 [
                     0,
                     new Layer(
@@ -2007,7 +2006,7 @@ var panlst =
                obj.setperc(k);
                context.refresh()
             }
-            else if (canvas.ishbar)
+            else if (canvas.buttonrect && canvas.buttonrect.hitest(x,y))
             {
                 var obj = canvas.scrollobj.value();
                 var k = (x-canvas.hscrollrect.x)/canvas.hscrollrect.width;
@@ -2035,7 +2034,7 @@ var panlst =
                 canvas.type == "panright")
                return;
             canvas.type = type;
-            if (canvas.isvbar)
+            if (canvas.vscrollrect && canvas.vscrollrect.hitest(x,y))
             {
                 var obj = canvas.timeobj;
                 var k = (y-canvas.vscrollrect.y)/canvas.vscrollrect.height;
@@ -2063,9 +2062,6 @@ var panlst =
         global.timeauto = 0;
         canvas.starty = y;
         canvas.timeobj.setanchor(canvas.timeobj.current());
-        canvas.isbuttonbar = canvas.buttonrect && canvas.buttonrect.hitest(x,y);
-        canvas.ishbar =  canvas.hscrollrect && canvas.hscrollrect.hitest(x,y);
-        canvas.isvbar =  canvas.vscrollrect && canvas.vscrollrect.hitest(x,y);
     },
 	panend: function (context, rect, x, y)
     {
