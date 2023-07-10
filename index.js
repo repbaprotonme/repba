@@ -107,7 +107,8 @@ let circular_array = function (title, data)
 
     this.length = function ()
     {
-        return Array.isArray(this.data) ? this.data.length : Number(this.data);
+        return Array.isArray(this.data) ?
+            this.data.length : Number(this.data);
     };
 
     this.value = function ()
@@ -175,26 +176,32 @@ let circular_array = function (title, data)
 
     this.setanchor = function (index)
     {
-        this.ANCHOR = index;
-    };
-
-    this.setdata = function (data)
-    {
-        this.data = data;
-        if (this.current() >= this.length())
-            this.setcurrent(this.length()-1);
-    };
-
-    this.setdata = function (data)
-    {
-        this.data = data;
-        if (this.current() >= this.length())
-            this.setcurrent(this.length()-1);
+        if (typeof index === "undefined" ||
+            Number.isNaN(index) || index == null)
+            index = 0;
+        this.ANCHOR = util.clamp(0, this.length() - 1, index);
     };
 
     this.setcurrent = function (index)
     {
-        this.CURRENT = index;
+        if (typeof index === "undefined" ||
+            Number.isNaN(index) || index == null)
+            index = 0;
+        this.CURRENT = util.clamp(0, this.length() - 1, index);
+    };
+
+    this.setdata = function (data)
+    {
+        this.data = data;
+        if (this.current() >= this.length())
+            this.setcurrent(this.length()-1);
+    };
+
+    this.setdata = function (data)
+    {
+        this.data = data;
+        if (this.current() >= this.length())
+            this.setcurrent(this.length()-1);
     };
 
     this.set = function (index)
@@ -494,8 +501,7 @@ panel.gallerybar = function ()
             ]),
             new panel.rowA([80,0,40,8,ch,ck,40,20,SCROLLBARWIDTH,5],
             [
-                 canvas.nohide?
-                    new panel.col([0,60,60,60,60,60,0],
+                 canvas.nohide?new panel.col([0,60,60,60,60,60,0],
                  [
                     0,
                     new panel.fullscreen(),
@@ -506,7 +512,7 @@ panel.gallerybar = function ()
                     0,
                  ]):0,
                  0,
-                 canvas.nohide?new panel.col([0,w,0],
+                 0?new panel.col([0,w,0],
                  [
                      0,
                       new Layer(
@@ -524,7 +530,7 @@ panel.gallerybar = function ()
                      new Layer(
                      [
                         new Rectangle(canvas.chapterect),
-                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new panel.rounded("rgba(0,0,0,0.65)", 4, "rgba(255,255,255,0.5)", 16, 16),
                         new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
                      ]),
                      0,
@@ -536,7 +542,7 @@ panel.gallerybar = function ()
                      new Layer(
                      [
                         new Rectangle(canvas.showpagerect),
-                        new panel.rounded(canvas.nohide?"rgba(255,180,0,0.5)":"rgba(255,0,0,0.5)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new panel.rounded(canvas.nohide?"rgba(255,180,0,0.65)":"rgba(255,0,0,0.65)", 4, "rgba(255,255,255,0.5)", 16, 16),
                         new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
                      ]),
                      0,
@@ -2006,7 +2012,7 @@ var panlst =
                obj.setperc(k);
                context.refresh()
             }
-            else if (canvas.buttonrect && canvas.buttonrect.hitest(x,y))
+            else if (canvas.ishbar)
             {
                 var obj = canvas.scrollobj.value();
                 var k = (x-canvas.hscrollrect.x)/canvas.hscrollrect.width;
@@ -2016,7 +2022,7 @@ var panlst =
             else
             {
                 var but = canvas.buttonobj;
-                var e = Math.lerp(0.5,0.05,but.berp());
+                var e = Math.lerp(0.5,0.15,but.berp());
                 var obj = canvas.scrollobj.value();
                 var j = (rect.width-x)*e;
                 var k = panhorz(obj, j);
@@ -2034,7 +2040,7 @@ var panlst =
                 canvas.type == "panright")
                return;
             canvas.type = type;
-            if (canvas.vscrollrect && canvas.vscrollrect.hitest(x,y))
+            if (canvas.isvbar)
             {
                 var obj = canvas.timeobj;
                 var k = (y-canvas.vscrollrect.y)/canvas.vscrollrect.height;
@@ -2062,6 +2068,9 @@ var panlst =
         global.timeauto = 0;
         canvas.starty = y;
         canvas.timeobj.setanchor(canvas.timeobj.current());
+        canvas.isbuttonbar = canvas.buttonrect && canvas.buttonrect.hitest(x,y);
+        canvas.ishbar = canvas.hscrollrect && canvas.hscrollrect.hitest(x,y);
+        canvas.isvbar = canvas.vscrollrect && canvas.vscrollrect.hitest(x,y);
     },
 	panend: function (context, rect, x, y)
     {
@@ -2960,33 +2969,9 @@ var taplst =
         }
         else if (canvas.bookmarkrect && canvas.bookmarkrect.hitest(x,y))
         {
-            canvas.bookmark = canvas.bookmark ? 0 : 1;
             if (canvas.bookmark)
             {
-                var lst = galleryobj.all.filter(function (a) { return a.bookmarked; });
-                if (!lst.length)
-                    return;
-                galleryobj.data = lst;
-                _8cnv.sliceobj.data = galleryobj.data;
-                var a = Array(galleryobj.length()).fill().map((_, index) => index);
-                _8cnv.rotated = [...a,...a,...a];
-                galleryobj.set(0);
-                _8cnv.sliceobj.set(0);
-                for (var m = 0; m < 120; ++m)
-                {
-                    ganvaslst[m] = document.createElement("canvas");
-                    imagelst[m] = new Image();
-                }
-
-                buttonobjreset();
-                delete _4cnv.thumbcanvas;
-                delete photo.image;
-                contextobj.reset()
-                menuobj.hide();
-                menuobj.toggle(_8cnvctx);
-            }
-            else
-            {
+                canvas.bookmark = 0;
                 galleryobj.data = galleryobj.all;
                 _8cnv.sliceobj.data = galleryobj.all;
                 var a = Array(galleryobj.length()).fill().map((_, index) => index);
@@ -3002,6 +2987,32 @@ var taplst =
                 delete _4cnv.thumbcanvas;
                 delete photo.image;
                 contextobj.reset();
+                menuobj.hide();
+                menuobj.toggle(_8cnvctx);
+            }
+            else
+            {
+                var lst = galleryobj.all.filter(function (a) { return a.bookmarked; });
+                if (!lst.length)
+                    return;
+                canvas.bookmark = 1;
+                galleryobj.data = lst;
+                _8cnv.sliceobj.data = galleryobj.data;
+                var a = Array(galleryobj.length()).fill().map((_, index) => index);
+                _8cnv.rotated = [...a,...a,...a];
+                galleryobj.set(0);
+                _8cnv.sliceobj.set(0);
+                _8cnv.timeobj.set(0);
+                for (var m = 0; m < 120; ++m)
+                {
+                    ganvaslst[m] = document.createElement("canvas");
+                    imagelst[m] = new Image();
+                }
+
+                buttonobjreset();
+                delete _4cnv.thumbcanvas;
+                delete photo.image;
+                contextobj.reset()
                 menuobj.hide();
                 menuobj.toggle(_8cnvctx);
             }
@@ -3248,7 +3259,7 @@ var bosslst =
                      0,
                 ]):0,
                  0,
-                 new panel.col([0,w,0],
+                 slicewidthobj.debug?new panel.col([0,w,0],
                  [
                      0,
                     new Layer(
@@ -3258,9 +3269,9 @@ var bosslst =
                         new panel.shrink(new panel.currentH(new panel.shrink(new panel.circle("white"),9,9), 30, 1),6,0)
                     ]),
                      0,
-                ]),
+                ]):0,
                  0,
-                 new panel.col([0,w,0],
+                 slicewidthobj.debug?new panel.col([0,w,0],
                  [
                     0,
                     new Layer(
@@ -3270,7 +3281,7 @@ var bosslst =
                         new panel.shrink(new panel.currentH(new panel.shrink(new panel.circle("white"),9,9), 30, 1),6,0)
                     ]),
                     0,
-                ]),
+                ]):0,
                  0,
                  new panel.col([0,w,0],
                  [
@@ -3308,7 +3319,9 @@ var bosslst =
 	{
     	this.draw = function (context, r, user, time)
         {
-            if (
+           if (menuobj.value())
+                return;
+           if (
                 !photo.image ||
                 !photo.image.complete ||
                 !photo.image.naturalHeight)
@@ -5819,9 +5832,12 @@ galleryobj.init = function (obj)
     var a = Array(galleryobj.length()).fill().map((_, index) => index);
     _8cnv.rotated = [...a,...a,...a];
 
-    var k = getlocalnumber("gallery",0);
-    _8cnv.timeobj.set(k);
-
+    var k = localStorage.getItem(`${url.path}.gallery`);
+    var j = Number(k);
+    if (j >= 0 && j < TIMEOBJ)
+        _8cnv.timeobj.set(j);
+    else
+         _8cnv.timeobj.set(TIMEOBJ);
     contextobj.reset();
 }
 
@@ -6219,20 +6235,7 @@ function getlocalstring(key, def)
     }
     catch(_)
     {
-    }
-}
-
-function getlocalnumber(key, def)
-{
-    try
-    {
-        var str = localStorage.getItem(`${url.path}.${key}`);
-        if (typeof str == "undefined")
-            return def;
-        return Number(str);
-    }
-    catch(_)
-    {
+        return def;
     }
 }
 
