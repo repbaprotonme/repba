@@ -180,9 +180,9 @@ let circular_array = function (title, data)
             Number.isNaN(index) || index == null)
             index = 0;
         if (Array.isArray(this.data))
-            this.ANCHOR = util.clamp(0, this.length() - 1, index);
+            this.ANCHOR = util.clamp(0, this.length() - 1, Math.floor(index));
         else
-            this.ANCHOR = index;
+            this.ANCHOR = util.clamp(0, this.length(), index);
     };
 
     this.setcurrent = function (index)
@@ -191,9 +191,9 @@ let circular_array = function (title, data)
             Number.isNaN(index) || index == null)
             index = 0;
         if (Array.isArray(this.data))
-            this.CURRENT = util.clamp(0, this.length() - 1, index);
+            this.CURRENT = util.clamp(0, this.length() - 1, Math.floor(index));
         else
-            this.CURRENT = index;
+            this.CURRENT = util.clamp(0, this.length(), index);
     };
 
     this.setdata = function (data)
@@ -211,7 +211,7 @@ let circular_array = function (title, data)
 
     this.add = function (index)
     {
-        this.set(Number(this.current())+Math.floor(index));
+        this.set(this.current()+index);
     };
 
     this.addperc = function (g)
@@ -229,7 +229,7 @@ let circular_array = function (title, data)
     {
         var len = this.length();
         var k = Math.lerp(0,len-1,p);
-        this.set(Math.floor(k));
+        this.set(k);
     };
 
     this.findindex = function (k)
@@ -454,7 +454,7 @@ for (var n = 0; n < IMAGELSTSIZE; ++n)
 }
 
 let slicelst = [];
-const SLICERADIUS = 130000;
+const SLICERADIUS = 131000;
 for (let n = 499; n >= 1; n=n-1)
     slicelst.push({slices: n*3, delay: SLICERADIUS/n});
 
@@ -541,7 +541,7 @@ panel.gallerybar = function ()
                      new Layer(
                      [
                         new Rectangle(canvas.showpagerect),
-                        new panel.rounded(canvas.nohide?"rgba(255,180,0,0.65)":"rgba(255,0,0,0.65)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new panel.rounded("rgba(255,175,0,0.7)", 4, canvas.nohide?"rgba(255,255,255,0.85)":"rgba(255,255,255,0.5)", 16, 16),
                         new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
                      ]),
                      0,
@@ -587,13 +587,26 @@ panel.scrollbar = function ()
 {
     this.draw = function (context, rect, user, time)
     {
+        var canvas = context.canvas;
         context.save();
+        canvas.vscrollrect = new rectangle();
 
-        var a = new panel.col([0,9],
-        [
-            0,
-            new panel.currentV(new panel.fill("white"), 90, 1),
-        ]);
+        var a = new panel.col([0,SCROLLBARWIDTH,5],
+            [
+                0,
+                new panel.row([5,0,5],
+                [
+                    0,
+                    new Layer(
+                    [
+                        new panel.expand(new Rectangle(canvas.vscrollrect),10,0),
+                        new panel.currentV(new panel.shadow(
+                            new panel.fill("white")), 90, 1),
+                    ]),
+                    0,
+                ]),
+                0,
+            ]);
 
         a.draw(context, rect, context.canvas.timeobj, 0);
         context.restore();
@@ -2020,10 +2033,8 @@ var panlst =
             }
             else
             {
-                var but = canvas.buttonobj;
-                var e = Math.lerp(0.5,0.15,but.berp());
                 var obj = canvas.scrollobj.value();
-                var j = (rect.width-x)*e;
+                var j = (rect.width-x);
                 var k = panhorz(obj, j);
                 if (k == -1)
                     return;
@@ -2107,26 +2118,40 @@ var panlst =
         }
         else if (type == "panup" || type == "pandown")
         {
-            var e = context.canvas.starty-y;
-            var jvalue = TIMEOBJ/context.canvas.virtualheight
-            jvalue *= e;
-            context.canvas.timeobj.rotateanchored(jvalue);
-            context.refresh()
+            var canvas = context.canvas;
+            if (canvas.isvbar)
+            {
+                var obj = canvas.timeobj;
+                var k = (y-canvas.vscrollrect.y)/canvas.vscrollrect.height;
+                obj.setperc(1-k);
+                context.refresh()
+            }
+            else
+            {
+                var e = canvas.starty-y;
+                var jvalue = TIMEOBJ/canvas.virtualheight
+                jvalue *= e;
+                canvas.timeobj.rotateanchored(jvalue);
+                context.refresh()
+            }
         }
     },
 	panstart: function (context, rect, x, y)
     {
-        delete context.canvas.slideshow;
+        var canvas = context.canvas;
+        delete canvas.slideshow;
         clearInterval(global.timeauto);
         global.timeauto = 0;
-        context.canvas.starty = y;
+        canvas.starty = y;
         canvas.timeobj.setanchor(canvas.timeobj.current());
+        canvas.isvbar = canvas.vscrollrect && canvas.vscrollrect.hitest(x,y);
     },
 	panend: function (context, rect, x, y)
     {
-        delete context.canvas.starty;
+        var canvas = context.canvas;
+        delete canvas.starty;
         delete context.startt;
-        delete context.canvas.timeobj.offset;
+        delete canvas.timeobj.offset;
         var obj = context.canvas.scrollobj;
         delete obj.offset;
         context.refresh();
@@ -3688,7 +3713,7 @@ var buttonlst =
             new Layer(
             [
                 new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 0, 20),
-                new panel.shrink(new panel.multiText(e), 20, 0),
+                new panel.shrink(new panel.multitext(e), 20, 0),
             ]),
             0,
         ]);
@@ -4183,7 +4208,7 @@ contextlst.forEach(function(context, n)
     canvas.timeobj = new circular_array("", TIMEOBJ);
     canvas.timeobj.set(TIMEOBJ/2);
     canvas.scrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
-    canvas.imagescrollobj = new circular_array("IMAGESCROLL", Math.floor(window.innerHeight/2));
+    canvas.imagescrollobj = new circular_array("IMAGESCROLL", Math.floor(window.innerWidth));
     canvas.imagescrollobj.set(0.5*canvas.imagescrollobj.length());
     canvas.textscrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
 
