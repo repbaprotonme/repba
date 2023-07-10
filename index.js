@@ -179,7 +179,10 @@ let circular_array = function (title, data)
         if (typeof index === "undefined" ||
             Number.isNaN(index) || index == null)
             index = 0;
-        this.ANCHOR = util.clamp(0, this.length() - 1, index);
+        if (Array.isArray(this.data))
+            this.ANCHOR = util.clamp(0, this.length() - 1, index);
+        else
+            this.ANCHOR = index;
     };
 
     this.setcurrent = function (index)
@@ -187,14 +190,10 @@ let circular_array = function (title, data)
         if (typeof index === "undefined" ||
             Number.isNaN(index) || index == null)
             index = 0;
-        this.CURRENT = util.clamp(0, this.length() - 1, index);
-    };
-
-    this.setdata = function (data)
-    {
-        this.data = data;
-        if (this.current() >= this.length())
-            this.setcurrent(this.length()-1);
+        if (Array.isArray(this.data))
+            this.CURRENT = util.clamp(0, this.length() - 1, index);
+        else
+            this.CURRENT = index;
     };
 
     this.setdata = function (data)
