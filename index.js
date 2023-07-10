@@ -50,29 +50,29 @@ let url = new URL(window.location.href);
 
 util.random_color = function()
 {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++)
-    color += letters[Math.floor(Math.random() * 16)];
-  return color;
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++)
+        color += letters[Math.floor(Math.random() * 16)];
+    return color;
 }
 
 util.initialize_array_range = function(start, end)
 {
-  const length = end - start + 1;
-  return Array.from({ length }, (_, index) => start + index);
+    const length = end - start + 1;
+    return Array.from({ length }, (_, index) => start + index);
 }
 
 util.generate_uid = function()
 {
-  let timestamp = Date.now().toString(36);
-  let randomPart = Math.random().toString(36).substr(2, 5);
-  return timestamp + randomPart;
+    let timestamp = Date.now().toString(36);
+    let randomPart = Math.random().toString(36).substr(2, 5);
+    return timestamp + randomPart;
 }
 
 util.random_value = function (min, max)
 {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 util.clamp = function (min, max, val)
@@ -3792,17 +3792,16 @@ var buttonlst =
             user.thumbimg.time = time;
             try
             {
+                const variant = "2160x2160";
+                user.thumbimg.src = `https://reportbase.com/image/${user.id}/${variant}`;
                 if (Number.isInteger(user.id))
                     user.thumbimg.src = `https://images.pexels.com/photos/${user.id}/pexels-photo-${user.id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=2160&w=1080`;
                 else if (user.full)
                     user.thumbimg.src = user.full;
                 else if (user.file)
                     user.thumbimg.src = URL.createObjectURL(user.file);
-                else
-                {
-                    const variant = "2160x2160";
-                    user.thumbimg.src = `https://reportbase.com/image/${user.id}/${variant}`;
-                }
+                else if (!user.id && user.url)
+                    path = user.url;
 
                 user.thumbimg.onload = function()
                 {
@@ -4306,6 +4305,8 @@ contextobj.reset = function ()
                 path = `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=2160&w=1080`;
             else if (galleryobj.value().full)
                 path = galleryobj.value().full;
+            else if (!id && galleryobj.value().url)
+                path = galleryobj.value().url;
             photo.image = new Image();
             photo.image.src = path;
         }
@@ -4365,6 +4366,8 @@ function masterload()
             path = `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=2160&w=1080`;
         else if (galleryobj.value().full)
             path = galleryobj.value().full;
+        else if (!id && galleryobj.value().url)
+            path = galleryobj.value().url;
         lst[n].src = path;
         lst[n].index = galleryobj.current();
         lst[n].onload = function()
@@ -5380,7 +5383,7 @@ window.addEventListener("visibilitychange", (evt) =>
     else
     {
         savelocal("gallery",_8cnv.timeobj.current())
-        savelocal("kid",_5cnv.sliceobj.value().kid)
+        savelocal("filter",_5cnv.sliceobj.value().filter)
     }
 });
 
@@ -5427,27 +5430,17 @@ galleryobj.init = function (obj)
 
     galleryobj.all = [];
     for (var n = 0; n < galleryobj.length(); ++n)
-    {
         galleryobj.all.push(galleryobj.data[n]);
-    }
 
-    var kid = getlocalstring("kid", "")
-    var kindex = galleryobj.all.findIndex(function(a)
+    var filter = getlocalstring("filter", "")
+    var filterlst = galleryobj.all.filter(function(a)
     {
-        return kid && a.kid &&
-            a.kid.toLowerCase() == kid.toLowerCase();
+        return filter && a.filter &&
+            a.filter.toLowerCase() == filter.toLowerCase();
     });
 
-    if (kindex >= 0)
-    {
-        var pages = galleryobj.all[kindex].pages;
-        if (pages)
-        {
-            _5cnv.sliceobj.set(this.index);
-            galleryobj.data = galleryobj.all.slice(kindex,kindex+pages);
-        }
-    }
-
+    if (filterlst.length)
+        galleryobj.data = filterlst;
     galleryobj.lastimage = galleryobj.length();
 
     setfavicon();
@@ -5717,47 +5710,45 @@ galleryobj.init = function (obj)
     for (var n = 0; n < galleryobj.all.length; ++n)
     {
         var k = galleryobj.all[n];
-        if (!k.kid)
+        if (!k.filter)
             continue;
         k.func = function()
         {
-            var kid = this.kid;
-            var j = galleryobj.all.findIndex(function(a)
+            var filter = this.filter;
+            var filterlst = galleryobj.all.filter(function(a)
             {
-                return kid && a.kid &&
-                    a.kid.toLowerCase() == kid.toLowerCase();
+                return filter && a.filter &&
+                    a.filter.toLowerCase() == filter.toLowerCase();
             });
 
-            if (j >= 0)
+            if (filterlst.length)
             {
-                var pages = galleryobj.all[j].pages;
-                if (pages)
+                galleryobj.data = filterlst;
+                _5cnv.sliceobj.set(this.index);
+                _8cnv.sliceobj.data = galleryobj.data;
+                var a = Array(galleryobj.length()).fill().map((_, index) => index);
+                _8cnv.rotated = [...a,...a,...a];
+                galleryobj.set(0);
+                _8cnv.sliceobj.set(0);
+                let ganvaslst = [];
+                for (var m = 0; m < 120; ++m)
                 {
-                    _5cnv.sliceobj.set(this.index);
-                    galleryobj.data = galleryobj.all.slice(j,j+pages);
-                    _8cnv.sliceobj.data = galleryobj.data;
-                    var a = Array(galleryobj.length()).fill().map((_, index) => index);
-                    _8cnv.rotated = [...a,...a,...a];
-                    galleryobj.set(0);
-                    _8cnv.sliceobj.set(0);
-                    let ganvaslst = [];
-                    for (var m = 0; m < 120; ++m)
-                    {
-                        ganvaslst[m] = document.createElement("canvas");
-                        imagelst[m] = new Image();
-                    }
-
-                    buttonobjreset();
-                    delete _4cnv.thumbcanvas;
-                    delete photo.image;
-                    contextobj.reset()
-                    menuobj.hide();
-                    menuobj.toggle(_8cnvctx);
+                    ganvaslst[m] = document.createElement("canvas");
+                    imagelst[m] = new Image();
                 }
+
+                buttonobjreset();
+                delete _4cnv.thumbcanvas;
+                delete photo.image;
+                contextobj.reset()
+                menuobj.hide();
+                menuobj.toggle(_8cnvctx);
             }
         }
 
-        _5cnv.sliceobj.data.push(galleryobj.all[n]);
+        var j = _5cnv.sliceobj.data.findIndex(function(a) { return a.filter == k.filter; });
+        if (j == -1)
+            _5cnv.sliceobj.data.push(galleryobj.all[n]);
     };
 
     _5cnv.sliceobj.data.sort((a, b) =>
@@ -5797,7 +5788,7 @@ galleryobj.init = function (obj)
         _5cnv.sliceobj.data[n].index = n;
 
     _5cnv.sliceobj.set(0);
-    var j = _5cnv.sliceobj.data.findIndex(function(a) { return a.kid == kid; });
+    var j = _5cnv.sliceobj.data.findIndex(function(a) { return a.filter == filter; });
     if (j >= 0)
         _5cnv.sliceobj.set(j);
 
