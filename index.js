@@ -4307,15 +4307,9 @@ contextobj.reset = function ()
 
             var j = "";
             if (url.searchParams.has(galleryobj.repos))
-            {
-                var k = url.searchParams.get(galleryobj.repos).split(".")[0].proper();
-                j = `${k}.${galleryobj.current().pad(4)}`;
-            }
+                j = url.searchParams.get(galleryobj.repos).split(".")[0].proper();
             else
-            {
-                j = `${url.path}.${galleryobj.current().pad(4)}`;
-            }
-
+                j = url.path;
             document.title = `${j} (${photo.image.width}x${photo.image.height})`;
             rowobj.set(rowobj.length()/2);
             _4cnv.timeobj.set(TIMEOBJ/2);
