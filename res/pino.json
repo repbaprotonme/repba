@@ -1,6 +1,7 @@
 {
   "title": "Repba Gallery",
   "slicewidth": 180,
+  "showsearch": 1,
   "showboss": 1,
   "min": 180,
   "max": 240,

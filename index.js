@@ -492,7 +492,16 @@ panel.gallerybar = function ()
             ]),
             new panel.rowA([80,0,40,8,ch,ck,40,20,SCROLLBARWIDTH,5],
             [
-                 canvas.nohide?new panel.col([0,60,60,60,60,60,0],
+                 canvas.nohide?new panel.col(
+                 [
+                     0,
+                     60,
+                     60,
+                     galleryobj.showsearch?60:-1,
+                     60,
+                     60,
+                     0
+                 ],
                  [
                     0,
                     new panel.fullscreen(),
@@ -2499,6 +2508,7 @@ var keylst =
         if (
             canvas.shiftKey && key == " " ||
             key == "pageup" ||
+            (canvas.shiftKey && !galleryobj.showboss && key == "enter") ||
             key == "arrowup" ||
             key == "k")
         {
@@ -2509,6 +2519,7 @@ var keylst =
         else if (
             key == "arrowdown" ||
             key == " " ||
+            (!galleryobj.showboss && key == "enter") ||
             key == "pagedown" ||
            key == "j")
         {
@@ -2546,7 +2557,8 @@ var keylst =
             context.refresh()
             evt.preventDefault();
         }
-        else if (key == "enter")
+        else if (galleryobj.showboss &&
+            key == "enter")
 		{
             var visibles = canvas.visibles;
             var k;
@@ -2720,6 +2732,10 @@ var keylst =
             return;
         }
 
+        if (key == "control" ||
+            key == "shift")
+            return;
+
         if (key == "f")
         {
             if (screenfull.isEnabled)
@@ -2731,6 +2747,22 @@ var keylst =
             }
 
             context.refresh();
+            evt.preventDefault();
+        }
+        else if (
+            (canvas.ctrlKey && key == "arrowleft") ||
+            (canvas.ctrlKey && key == "h") ||
+            key == "pageup")
+        {
+            context.movepage(-1);
+            evt.preventDefault();
+        }
+        else if (
+            (canvas.ctrlKey && key == "arrowright") ||
+            (canvas.ctrlKey && key == "l") ||
+            key == "pagedown")
+        {
+            context.movepage(1);
             evt.preventDefault();
         }
         else if (key == "enter")
@@ -2795,20 +2827,6 @@ var keylst =
         {
             stretchobj.value().add(1);
             context.refresh();
-        }
-        else if (key == "pageup")
-        {
-            if (!galleryobj.length())
-                return;
-            context.movepage(-1);
-            evt.preventDefault();
-        }
-        else if (key == "pagedown")
-        {
-            if (!galleryobj.length())
-                return;
-            context.movepage(1);
-            evt.preventDefault();
         }
         else if (key == "escape")
         {
@@ -3225,7 +3243,7 @@ var taplst =
 
                 context.refresh();
             }
-            else
+            else if (galleryobj.showboss)
             {
                 galleryobj.set(n);
                 clearInterval(global.swipetimeout);
@@ -3806,7 +3824,8 @@ var buttonlst =
         var index = time%ganvaslst.length;
         var view = Math.floor(time/ganvaslst.length)
         user.thumbimg = imagelst[index]
-        if ( context.canvas.scrollobj.current() == 0 &&
+        if (!galleryobj.hidegallery &&
+            context.canvas.scrollobj.current() == 0 &&
             user.thumbimg.time != time)
         {
             user.thumbimg.time = time;
@@ -3841,6 +3860,7 @@ var buttonlst =
             }
         }
         else if (
+            !galleryobj.hidegallery &&
             context.canvas.scrollobj.current() == 0 &&
             user.thumbimg && user.thumbimg.width)
         {
@@ -4967,12 +4987,6 @@ function escape()
 
     overlayobj.set(0);
     slicewidthobj.debug = 0;
-    menuobj.hide();
-    headobj.set(3);
-    bossobj.set(2);
-    headham.panel = headobj.value();
-    headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-    delete _4cnv.thumbcanvas;
     galleryobj.transparent = 0;
     contextobj.reset();
 }
@@ -5491,28 +5505,19 @@ galleryobj.init = function (obj)
 
     slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:SLICEWIDTH);
 
-    buttonobjreset();
-
-    if (!galleryobj.length())
+    if (galleryobj.length())
     {
-        headobj.set(4);
-        menuobj.setindex(_3cnvctx);
-        menuobj.show();
+        buttonobjreset();
+        headobj.set(1);
+        bossobj.set(1);
+        _8cnv.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
+        menuobj.toggle(_8cnvctx);
+        _4cnvctx.refresh();
     }
     else
     {
-        if (galleryobj.length())
-        {
-            headobj.set(1);
-            bossobj.set(1);
-            _8cnv.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
-            menuobj.toggle(_8cnvctx);
-            _4cnvctx.refresh();
-        }
-        else
-        {
-            headobj.set(3);
-        }
+        showsearch("pexels");
+        return;
     }
 
     var h = window.self !== window.top ? 0 : BEXTENT;
@@ -5886,7 +5891,7 @@ if (url.searchParams.has("p"))
         return response.json()
     })
     .then((obj) => galleryobj.init(obj))
-    .catch((error) => { galleryobj.init([]) });
+    .catch((error) => { });
 }
 else if (url.searchParams.has("q"))
 {
@@ -5899,7 +5904,7 @@ else if (url.searchParams.has("q"))
         return response.json()
     })
     .then((obj) => galleryobj.init(obj))
-    .catch((error) => { galleryobj.init([]) });
+    .catch((error) => { });
 }
 else if (url.searchParams.has("s"))
 {
@@ -5912,7 +5917,7 @@ else if (url.searchParams.has("s"))
         return response.json()
     })
     .then((obj) => galleryobj.init(obj))
-    .catch((error) => { galleryobj.init([]) });
+    .catch((error) => { });
 }
 else
 {
@@ -5935,7 +5940,7 @@ else
         return response.json()
     })
     .then((obj) => galleryobj.init(obj))
-    .catch((error) => { galleryobj.init([]) });
+    .catch((error) => { });
 }
 
 function downloadtext(name, text)
@@ -6078,6 +6083,8 @@ function showsearch(repos)
         else if (event.clientY < rect.top || event.clientY > rect.bottom ||
             event.clientX < rect.left || event.clientX > rect.right)
         {
+            if (!galleryobj.length())
+                return;
             if (global.block)
                 return;
             dialog.close();
