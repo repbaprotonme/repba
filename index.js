@@ -445,14 +445,6 @@ let canvaslst = [];
 for (var n = 0; n < 6; ++n)
     canvaslst[n] = document.createElement("canvas");
 
-let ganvaslst = [];
-let imagelst = [];
-for (var n = 0; n < IMAGELSTSIZE; ++n)
-{
-    ganvaslst[n] = document.createElement("canvas");
-    imagelst[n] = new Image();
-}
-
 let slicelst = [];
 const SLICERADIUS = 131000;
 for (let n = 499; n >= 1; n=n-1)
@@ -1953,13 +1945,7 @@ async function dropfiles(files)
     _8cnv.scrollobj.set(0);
     galleryobj.set(0);
     _8cnv.sliceobj.set(0);
-    let ganvaslst = [];
-    for (var m = 0; m < 120; ++m)
-    {
-        ganvaslst[m] = document.createElement("canvas");
-        imagelst[m] = new Image();
-    }
-
+    galleryobj.reset()
     buttonobjreset();
     delete _4cnv.thumbcanvas;
     delete photo.image;
@@ -2511,7 +2497,6 @@ var keylst =
         canvas.slideshow = 0;
         var obj = canvas.scrollobj.value();
         if (
-            canvas.shiftKey && key == "enter" ||
             canvas.shiftKey && key == " " ||
             key == "pageup" ||
             key == "arrowup" ||
@@ -2523,7 +2508,6 @@ var keylst =
         }
         else if (
             key == "arrowdown" ||
-            key == "enter" ||
             key == " " ||
             key == "pagedown" ||
            key == "j")
@@ -2546,28 +2530,76 @@ var keylst =
         }
         else if (key == "arrowleft" || key == "h")
 		{
-            obj.rotateperc(-2.5);
+            if (canvas.ctrlKey)
+                obj.set(0);
+            else
+                obj.rotateperc(-2.5);
             context.refresh()
+            evt.preventDefault();
         }
         else if (key == "arrowright" || key == "l")
 		{
-            obj.rotateperc(2.5);
+            if (canvas.ctrlKey)
+                obj.set(obj.length()-1);
+            else
+                obj.rotateperc(2.5);
             context.refresh()
-        }
-        else if (key == "tab")
-		{
-            menuobj.hide();
             evt.preventDefault();
         }
-        else if (key == "tab" || key == "\\" || key == "/")
-        {
+        else if (key == "enter")
+		{
+            var visibles = canvas.visibles;
+            var k;
+            for (k = 0; k < visibles.length; k++)
+            {
+                var j = visibles[k];
+                if (j.slice.rect.hitest(
+                    window.innerWidth/2,window.innerHeight/2))
+                    break;
+            }
+
+            if (k == visibles.length)
+                return;
+            var n = visibles[k].n;
+            var slice = galleryobj.data[n];
+            galleryobj.set(n);
             clearInterval(global.swipetimeout);
             global.swipetimeout = 0;
             headobj.set(3);
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             bossobj.set(2);
-            menuobj.toggle(_8cnvctx);
+            delete _4cnv.thumbcanvas;
+            delete photo.image;
+            slice.tap = 1;
+            context.refresh();
+            setTimeout(function ()
+            {
+                slice.tap = 0;
+                context.refresh();
+                menuobj.hide();
+                contextobj.reset();
+            }, 400);
+
+            evt.preventDefault();
+        }
+        else if (key == "tab")
+        {
+            if (canvas.shiftKey)
+            {
+                obj.set(obj.length()-1);
+                var e = {type:"swipedown"}
+                swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
+                evt.preventDefault();
+            }
+            else
+            {
+                obj.set(0);
+                var e = {type:"swipeup"}
+                swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
+                evt.preventDefault();
+            }
+
             evt.preventDefault();
         }
         else if (key == "f")
@@ -2701,26 +2733,34 @@ var keylst =
             context.refresh();
             evt.preventDefault();
         }
-        else if (key == "tab" || key == "\\" || key == "/")
+        else if (key == "enter")
         {
             menuobj.toggle(_8cnvctx);
             evt.preventDefault();
         }
-        else if (key == "arrowleft" || key == "h")
+        else if (
+            (canvas.shiftKey && key == "tab") ||
+            key == "arrowleft" ||
+            key == "h")
         {
             canvas.block = 1;
             setTimeout(function() { canvas.block = 0; }, canvas.keyblock);
             canvas.keyblock = util.clamp(50,200,canvas.keyblock-5);
             canvas.autodirect = 1;
             swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
+            evt.preventDefault();
         }
-        else if (key == "arrowright" || key == "l")
+        else if (
+            key == "tab" ||
+            key == "arrowright" ||
+            key == "l")
         {
             canvas.block = 1;
             setTimeout(function() { canvas.block = 0; }, canvas.keyblock);
             canvas.keyblock = util.clamp(50,200,canvas.keyblock-5);
             canvas.autodirect = -1;
             swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
+            evt.preventDefault();
         }
         else if (evt.shiftKey && key == " " ||
             key == "arrowup" ||
@@ -2755,13 +2795,6 @@ var keylst =
         {
             stretchobj.value().add(1);
             context.refresh();
-        }
-        else if (key == "enter")
-        {
-            if (!galleryobj.length())
-                return;
-            context.movepage(evt.shiftKey?-1:1);
-            evt.preventDefault();
         }
         else if (key == "pageup")
         {
@@ -3001,12 +3034,7 @@ var taplst =
                 var a = Array(galleryobj.length()).fill().map((_, index) => index);
                 _8cnv.rotated = [...a,...a,...a];
                 galleryobj.set(0);
-                for (var m = 0; m < 120; ++m)
-                {
-                    ganvaslst[m] = document.createElement("canvas");
-                    imagelst[m] = new Image();
-                }
-
+                galleryobj.reset();
                 buttonobjreset();
                 delete _4cnv.thumbcanvas;
                 delete photo.image;
@@ -3027,12 +3055,7 @@ var taplst =
                 galleryobj.set(0);
                 _8cnv.sliceobj.set(0);
                 _8cnv.timeobj.set(0);
-                for (var m = 0; m < 120; ++m)
-                {
-                    ganvaslst[m] = document.createElement("canvas");
-                    imagelst[m] = new Image();
-                }
-
+                galleryobj.reset();
                 buttonobjreset();
                 delete _4cnv.thumbcanvas;
                 delete photo.image;
@@ -3074,10 +3097,7 @@ var taplst =
         }
         else if (canvas.chapterect && canvas.chapterect.hitest(x,y))
         {
-            if (_5cnv.sliceobj.current() == 0)
-                menuobj.showindex(_5cnvctx);
-            else
-                _5cnv.sliceobj.data[0].func();
+            menuobj.showindex(_5cnvctx);
             context.refresh();
         }
         else if (canvas.galleryrect && canvas.galleryrect.hitest(x,y))
@@ -3224,7 +3244,7 @@ var taplst =
                     context.refresh();
                     menuobj.toggle(_8cnvctx);
                     contextobj.reset();
-                }, 1000);
+                }, 400);
             }
         }
     },
@@ -5423,9 +5443,21 @@ function wraptext(ctx, text, maxWidth)
     return lineArray;
 }
 
+let ganvaslst = [];
+let imagelst = [];
 var galleryobj = new circular_array("", 0);
+galleryobj.reset = function()
+{
+    for (var n = 0; n < IMAGELSTSIZE; ++n)
+    {
+        ganvaslst[n] = document.createElement("canvas");
+        imagelst[n] = new Image();
+    }
+}
+
 galleryobj.init = function (obj)
 {
+    galleryobj.reset()
     Object.assign(galleryobj,obj);
 
     galleryobj.all = [];
@@ -5452,9 +5484,11 @@ galleryobj.init = function (obj)
     positypobj.set(50);
     positxlobj.set(50);
     positylobj.set(50);
+
     var zoom = (typeof galleryobj.zoom === "undefined") ?25:galleryobj.zoom;
     poomobj.set(zoom);
     loomobj.set(zoom);
+
     slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:SLICEWIDTH);
 
     buttonobjreset();
@@ -5731,12 +5765,7 @@ galleryobj.init = function (obj)
                 galleryobj.set(0);
                 _8cnv.sliceobj.set(0);
                 let ganvaslst = [];
-                for (var m = 0; m < 120; ++m)
-                {
-                    ganvaslst[m] = document.createElement("canvas");
-                    imagelst[m] = new Image();
-                }
-
+                galleryobj.reset()
                 buttonobjreset();
                 delete _4cnv.thumbcanvas;
                 delete photo.image;
@@ -5769,13 +5798,7 @@ galleryobj.init = function (obj)
         var a = Array(galleryobj.length()).fill().map((_, index) => index);
         _8cnv.rotated = [...a,...a,...a];
         galleryobj.set(0);
-        let ganvaslst = [];
-        for (var m = 0; m < 120; ++m)
-        {
-            ganvaslst[m] = document.createElement("canvas");
-            imagelst[m] = new Image();
-        }
-
+        galleryobj.reset()
         buttonobjreset();
         delete _4cnv.thumbcanvas;
         delete photo.image;
@@ -6025,7 +6048,6 @@ function showpage()
     setTimeout(function() { global.block = 0; }, 40);
 }
 
-
 function showsearch(repos)
 {
     var input = document.getElementById("search-value");
@@ -6261,12 +6283,10 @@ function buttonobjreset()
     }
     else
     {
-        var www = galleryobj.width?galleryobj.width:1024;
-        var hhh = galleryobj.height?galleryobj.height:1024;
-        var ww = galleryobj.data[0].width?galleryobj.data[0].width:www;
-        var hh = galleryobj.data[0].height?galleryobj.data[0].height:hhh;
-        var w = url.searchParams.has("w")?url.searchParams.get("w"):ww;
-        var h = url.searchParams.has("h")?url.searchParams.get("h"):hh;
+        var ww = galleryobj.width?galleryobj.width:1024;
+        var hh = galleryobj.height?galleryobj.height:1024;
+        var w = galleryobj.data[0].width?galleryobj.data[0].width:ww;
+        var h = galleryobj.data[0].height?galleryobj.data[0].height:hh;
         var a = w/h;
         var height = Math.floor(window.innerWidth/a);
         var lst = [];

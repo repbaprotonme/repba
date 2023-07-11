@@ -1,99 +1,122 @@
 {
     "width": 1200,
     "height": 1867,
-    "hideboss": 1,
   "data": [
     {
       "url": "http://reportbase.me/data/res/001/blz01.jpg",
-      "id": "aa95505a-8697-4085-ab49-0a6955e4d800"
+      "title": "Chapter 1",
+      "id": "aa95505a-8697-4085-ab49-0a6955e4d800",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz02.jpg",
-      "id": "63daf089-62c0-47b9-e855-c5ab142b8d00"
+      "id": "63daf089-62c0-47b9-e855-c5ab142b8d00",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz03.jpg",
-      "id": "57b13c5f-6399-4cff-5372-86291a8e1c00"
+      "id": "57b13c5f-6399-4cff-5372-86291a8e1c00",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz04.jpg",
-      "id": "eb290a80-7b2a-43da-167f-1e1c9e31a100"
+      "id": "eb290a80-7b2a-43da-167f-1e1c9e31a100",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz05.jpg",
-      "id": "0282a40f-d94a-4d95-8328-06f3f7f37000"
+      "id": "0282a40f-d94a-4d95-8328-06f3f7f37000",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz06.jpg",
-      "id": "311a2dae-f866-44f7-e82f-ce635080aa00"
+      "id": "311a2dae-f866-44f7-e82f-ce635080aa00",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz07.jpg",
-      "id": "0085d229-a850-4b38-2ae2-04e3fecc1800"
+      "id": "0085d229-a850-4b38-2ae2-04e3fecc1800",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz08.jpg",
-      "id": "d54cdc80-1098-4bc1-e8e5-9515a89f8100"
+      "id": "d54cdc80-1098-4bc1-e8e5-9515a89f8100",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz09 - 10.jpg",
-      "id": "a8e7bb7c-23de-473c-8a95-701a26993700"
+      "id": "a8e7bb7c-23de-473c-8a95-701a26993700",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz11.jpg",
-      "id": "7e52c876-c6a0-4918-92ac-96a025e41000"
+      "id": "7e52c876-c6a0-4918-92ac-96a025e41000",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz12.jpg",
-      "id": "d01fe0d3-0904-4ed2-70e2-a1358b0b4e00"
+      "id": "d01fe0d3-0904-4ed2-70e2-a1358b0b4e00",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz13.jpg",
-      "id": "31a2256a-d74f-49a3-c013-86530d56ec00"
+      "id": "31a2256a-d74f-49a3-c013-86530d56ec00",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz14.jpg",
-      "id": "8417eed3-5045-4237-9991-2a793c08c900"
+      "id": "8417eed3-5045-4237-9991-2a793c08c900",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz15.jpg",
-      "id": "3a79e061-1bea-452d-cdec-375ddf97a400"
+      "id": "3a79e061-1bea-452d-cdec-375ddf97a400",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz16.jpg",
-      "id": "92e04d13-a75b-420f-31ea-99eaa7d01000"
+      "id": "92e04d13-a75b-420f-31ea-99eaa7d01000",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz17.jpg",
-      "id": "c0af4575-388d-43a6-9674-a716a081a400"
+      "id": "c0af4575-388d-43a6-9674-a716a081a400",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz18.jpg",
-      "id": "f5610e8a-d622-4d3b-63b7-12e65d2e1400"
+      "id": "f5610e8a-d622-4d3b-63b7-12e65d2e1400",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz19.jpg",
-      "id": "bf04f345-7634-41ea-31f9-3bbac0f68c00"
+      "id": "bf04f345-7634-41ea-31f9-3bbac0f68c00",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz20.jpg",
-      "id": "6d3fce9a-5172-4c93-337c-2c97b3940200"
+      "id": "6d3fce9a-5172-4c93-337c-2c97b3940200",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz21.jpg",
-      "id": "71c06798-5968-4941-f1e1-8c7b5ad79600"
+      "id": "71c06798-5968-4941-f1e1-8c7b5ad79600",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz22.jpg",
-      "id": "c2b31a16-a0a1-4bf1-a357-d9406e48c100"
+      "id": "c2b31a16-a0a1-4bf1-a357-d9406e48c100",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz23.jpg",
-      "id": "f30935f5-37a1-402f-4d78-85c46a550600"
+      "id": "f30935f5-37a1-402f-4d78-85c46a550600",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/001/blz24.jpg",
-      "id": "e3906894-2fe4-4a66-c7bc-38efe0e61e00"
+      "id": "e3906894-2fe4-4a66-c7bc-38efe0e61e00",
+      "filter": "001"
     },
     {
       "url": "http://reportbase.me/data/res/002/blz01.jpg",
