@@ -1,4 +1,8 @@
 //todo: https://obfuscator.io
+//pvid.io
+//propel metadata
+//stabel base64
+//stable upsize
 
 /* ++ += ==
 Copyright 2017 Tom Brinkman
@@ -55,6 +59,11 @@ util.random_color = function()
     for (let i = 0; i < 6; i++)
         color += letters[Math.floor(Math.random() * 16)];
     return color;
+}
+
+util.numbersonly = function(str)
+{
+    return str.split('').filter(char => !isNaN(char)).join('');
 }
 
 util.initialize_array_range = function(start, end)
@@ -421,8 +430,6 @@ let _9cnvctx = _9cnv.getContext("2d", opts);
 let headcnv = document.getElementById("head");
 let headcnvctx = headcnv.getContext("2d", opts);
 
-_8cnv.nohide = 1;
-
 headcnvctx.canvas.scrollobj = new circular_array("TEXTSCROLL", window.innerWidth/4);
 headcnvctx.font = DEFAULTFONT;
 headcnvctx.fillText("  ", 0, 0);
@@ -467,6 +474,9 @@ panel.gallerybar = function ()
         canvas.vscrollrect = new rectangle();
         canvas.showpagerect = new rectangle();
         canvas.chapterect = new rectangle();
+        canvas.loginrect = new rectangle();
+        canvas.imagesrect = new rectangle();
+        canvas.archiverect = new rectangle();
         var w = Math.min(320,rect.width-100);
         var j = window.innerWidth - rect.width >= 180;
         var ch = _5cnv.sliceobj.length()>1?40:-1;
@@ -490,16 +500,17 @@ panel.gallerybar = function ()
                 ]),
                 0,
             ]),
-            new panel.rowA([80,0,40,8,ch,ck,40,20,SCROLLBARWIDTH,5],
+            new panel.rowA([80,0,40,8,40,8,40,
+                8,40,8,ch,ck,40,20,SCROLLBARWIDTH,5],
             [
                  canvas.nohide?new panel.col(
                  [
                      0,
-                     60,
-                     60,
-                     galleryobj.showsearch?60:-1,
-                     60,
-                     60,
+                     SAFARI?-1:ALIEXTENT,
+                     ALIEXTENT,
+                     galleryobj.showsearch?ALIEXTENT:-1,
+                     ALIEXTENT,
+                     ALIEXTENT,
                      0
                  ],
                  [
@@ -512,13 +523,50 @@ panel.gallerybar = function ()
                     0,
                  ]):0,
                  0,
-                 0?new panel.col([0,w,0],
+                 canvas.nohide?new panel.col([0,w,0],
                  [
                      0,
                       new Layer(
                      [
+                        new Rectangle(canvas.loginrect),
+                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
+                     ]),
+                     0,
+                 ]):0,
+                 0,
+                 canvas.nohide?new panel.col([0,w,0],
+                 [
+                     0,
+                      new Layer(
+                     [
+                        new Rectangle(canvas.archiverect),
+                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
+                     ]),
+                     0,
+                 ]):0,
+                 0,
+                 canvas.nohide?new panel.col([0,w,0],
+                 [
+                     0,
+                      new Layer(
+                     [
+                        new Rectangle(canvas.imagesrect),
+                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
+                     ]),
+                     0,
+                 ]):0,
+                 0,
+                  canvas.nohide?new panel.col([0,w,0],
+                 [
+                     0,
+                      new panel.layerA(
+                     [
                         new Rectangle(canvas.buttonrect),
                         new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new panel.shadow(new panel.text("rgb(210,210,210)", "center", "middle",0, 0)),
                         new panel.shrink(new panel.currentH(new panel.shrink(new panel.circle("white"),9,9), 30, 1),6,0)
                      ]),
                      0,
@@ -570,7 +618,18 @@ panel.gallerybar = function ()
             [
                 0,
                 0,
-                buttonobj,
+                "Login",
+                0,
+                "Load Archive",
+                0,
+                "Load Image(s)",
+                0,
+                [
+                    0,
+                    0,
+                    "Zoom",
+                    buttonobj,
+                ],
                 0,
                 _5cnv.sliceobj.value().title,
                 0,
@@ -2012,14 +2071,14 @@ var panlst =
                 canvas.type == "pandown")
                return;
             canvas.type = type;
-            if (canvas.isbuttonbar)
+            if (canvas.isbuttonrect)
             {
                var obj = canvas.buttonobj
                var k = (x - canvas.buttonrect.x) / canvas.buttonrect.width;
                obj.setperc(k);
                context.refresh()
             }
-            else if (canvas.ishbar)
+            else if (canvas.ishbarect)
             {
                 var obj = canvas.scrollobj.value();
                 var k = (x-canvas.hscrollrect.x)/canvas.hscrollrect.width;
@@ -2029,7 +2088,7 @@ var panlst =
             else
             {
                 var obj = canvas.scrollobj.value();
-                var j = (rect.width-x);
+                var j = (rect.width-x)*2;
                 var k = panhorz(obj, j);
                 if (k == -1)
                     return;
@@ -2045,7 +2104,7 @@ var panlst =
                 canvas.type == "panright")
                return;
             canvas.type = type;
-            if (canvas.isvbar)
+            if (canvas.isvbarect)
             {
                 var obj = canvas.timeobj;
                 var k = (y-canvas.vscrollrect.y)/canvas.vscrollrect.height;
@@ -2073,9 +2132,9 @@ var panlst =
         global.timeauto = 0;
         canvas.starty = y;
         canvas.timeobj.setanchor(canvas.timeobj.current());
-        canvas.isbuttonbar = canvas.buttonrect && canvas.buttonrect.hitest(x,y);
-        canvas.ishbar = canvas.hscrollrect && canvas.hscrollrect.hitest(x,y);
-        canvas.isvbar = canvas.vscrollrect && canvas.vscrollrect.hitest(x,y);
+        canvas.isbuttonrect = canvas.buttonrect && canvas.buttonrect.hitest(x,y);
+        canvas.ishbarect = canvas.hscrollrect && canvas.hscrollrect.hitest(x,y);
+        canvas.isvbarect = canvas.vscrollrect && canvas.vscrollrect.hitest(x,y);
     },
 	panend: function (context, rect, x, y)
     {
@@ -2114,7 +2173,7 @@ var panlst =
         else if (type == "panup" || type == "pandown")
         {
             var canvas = context.canvas;
-            if (canvas.isvbar)
+            if (canvas.isvbarect)
             {
                 var obj = canvas.timeobj;
                 var k = (y-canvas.vscrollrect.y)/canvas.vscrollrect.height;
@@ -2139,7 +2198,7 @@ var panlst =
         global.timeauto = 0;
         canvas.starty = y;
         canvas.timeobj.setanchor(canvas.timeobj.current());
-        canvas.isvbar = canvas.vscrollrect && canvas.vscrollrect.hitest(x,y);
+        canvas.isvbarect = canvas.vscrollrect && canvas.vscrollrect.hitest(x,y);
     },
 	panend: function (context, rect, x, y)
     {
@@ -2321,6 +2380,12 @@ var presslst =
     pressup: function (context, rect, x, y)
     {
         var canvas = context.canvas;
+        if (canvas.imagesrect && canvas.imagesrect.hitest(x,y))
+            return;
+        if (canvas.archiverect && canvas.archiverect.hitest(x,y))
+            return;
+        if (canvas.loginrect && canvas.loginrect.hitest(x,y))
+            return;
         if (canvas.buttonrect && canvas.buttonrect.hitest(x,y))
             return;
         if (canvas.hscrollrect && canvas.hscrollrect.hitest(x,y))
@@ -2501,15 +2566,32 @@ var keylst =
    		var context = menuobj.value()
         var canvas = context.canvas;
         var key = evt.key.toLowerCase();
+        var keycode = evt.keyCode || evt.which;
         canvas.shiftKey = evt.shiftKey;
         canvas.ctrlKey = evt.ctrlKey;
         canvas.slideshow = 0;
         var obj = canvas.scrollobj.value();
-        if (
+        if (keycode>=48 && keycode<=57)
+        {
+            if (!canvas.keylst)
+                canvas.keylst = []
+            canvas.keylst.push(key);
+            var page = canvas.keylst.join("");
+            var k = Math.berp(1,galleryobj.length(),page);
+            _8cnv.timeobj.setperc(1-k);
+            _8cnvctx.refresh();
+             clearTimeout(canvas.keylsttime);
+            canvas.keylsttime = setTimeout(function()
+                {
+                   delete canvas.keylst;
+                }, 1000)
+        }
+        else if (
             canvas.shiftKey && key == " " ||
             key == "pageup" ||
             (canvas.shiftKey && !galleryobj.showboss && key == "enter") ||
             key == "arrowup" ||
+            key == "w" ||
             key == "k")
         {
             var e = {type:"swipedown"}
@@ -2521,11 +2603,16 @@ var keylst =
             key == " " ||
             (!galleryobj.showboss && key == "enter") ||
             key == "pagedown" ||
+            key == "s" ||
            key == "j")
         {
             var e = {type:"swipeup"}
             swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
             evt.preventDefault();
+        }
+        else if (key == "g")
+        {
+            showpage();
         }
         else if (key == "-" || key == "[")
         {
@@ -2539,7 +2626,10 @@ var keylst =
             obj.addperc(1.5/100);
             context.refresh()
         }
-        else if (key == "arrowleft" || key == "h")
+        else if (
+            key == "arrowleft" ||
+            key == "a" ||
+            key == "h")
 		{
             if (canvas.ctrlKey)
                 obj.set(0);
@@ -2548,7 +2638,10 @@ var keylst =
             context.refresh()
             evt.preventDefault();
         }
-        else if (key == "arrowright" || key == "l")
+        else if (
+            key == "arrowright" ||
+            key == "d" ||
+            key == "l")
 		{
             if (canvas.ctrlKey)
                 obj.set(obj.length()-1);
@@ -2657,6 +2750,7 @@ var keylst =
         if (key == "pageup" ||
             key == "arrowup" ||
             key == " " ||
+            evt.key == "w" ||
             evt.key == "j")
 		{
             var e = {type:"swipeup"}
@@ -2666,6 +2760,7 @@ var keylst =
             key == "pagedown" ||
             key == "arrowdown" ||
             (canvas.shiftKey && key == " ") ||
+            evt.key == "s" ||
             evt.key == "k")
 		{
             var e = {type:"swipedown"}
@@ -2773,6 +2868,7 @@ var keylst =
         else if (
             (canvas.shiftKey && key == "tab") ||
             key == "arrowleft" ||
+            key == "a" ||
             key == "h")
         {
             canvas.block = 1;
@@ -2785,6 +2881,7 @@ var keylst =
         else if (
             key == "tab" ||
             key == "arrowright" ||
+            key == "d" ||
             key == "l")
         {
             canvas.block = 1;
@@ -2796,6 +2893,7 @@ var keylst =
         }
         else if (evt.shiftKey && key == " " ||
             key == "arrowup" ||
+            key == "w" ||
             key == "k")
         {
             rowobj.addperc(-5/100);
@@ -2803,6 +2901,7 @@ var keylst =
         }
         else if (key == "arrowdown" ||
             key == " " ||
+            key == "s" ||
             key == "j" )
         {
             rowobj.addperc(5/100);
@@ -3101,6 +3200,29 @@ var taplst =
                     screenfull.request();
             }
         }
+        else if (canvas.imagesrect && canvas.imagesrect.hitest(x,y))
+        {
+            explore().then(function(files)
+            {
+                dropfiles(files);
+                _8cnv.nohide = 0;
+                _8cnvctx.refresh();
+            })
+        }
+        else if (canvas.archiverect && canvas.archiverect.hitest(x,y))
+        {
+            //todo
+            explore().then(function(files)
+            {
+                dropfiles(files);
+                _8cnv.nohide = 0;
+                _8cnvctx.refresh();
+            })
+        }
+        else if (canvas.loginrect && canvas.loginrect.hitest(x,y))
+        {
+            authClient.redirectToLoginPage();
+        }
         else if (canvas.buttonrect && canvas.buttonrect.hitest(x,y))
         {
             var obj = canvas.buttonobj;
@@ -3172,6 +3294,12 @@ var taplst =
             if (k == visibles.length)
                 return;
             if (canvas.showpagerect && canvas.showpagerect.hitest(x,y))
+                return;
+            if (canvas.archiverect && canvas.archiverect.hitest(x,y))
+                return;
+            if (canvas.imagesrect && canvas.imagesrect.hitest(x,y))
+                return;
+            if (canvas.loginrect && canvas.loginrect.hitest(x,y))
                 return;
             if (canvas.buttonrect && canvas.buttonrect.hitest(x,y))
                 return;
@@ -4223,7 +4351,7 @@ var eventlst =
     {dblclick: "BOSS", mouse: "DEFAULT", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "GALLERY", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new panel.empty(), scroll: new panel.empty(), buttonheight: 30, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "SELECT", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 120, width: 640},
     {dblclick: "GALLERY", mouse: "MENU", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "GALLERY", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new panel.gallerybar(), scroll: new panel.empty(), buttonheight: 320, width: 5160},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
 ];
@@ -5469,6 +5597,8 @@ galleryobj.reset = function()
     }
 }
 
+_8cnv.nohide = url.path != "home";
+
 galleryobj.init = function (obj)
 {
     galleryobj.reset()
@@ -5478,7 +5608,7 @@ galleryobj.init = function (obj)
     for (var n = 0; n < galleryobj.length(); ++n)
         galleryobj.all.push(galleryobj.data[n]);
 
-    var filter = getlocalstring("filter", "")
+    var filter = url.filter?url.filter:getlocalstring("filter")
     var filterlst = galleryobj.all.filter(function(a)
     {
         return filter && a.filter &&
@@ -5526,10 +5656,14 @@ galleryobj.init = function (obj)
 
     _2cnv.sliceobj.data =
     [
-        {title:"Open", path: "OPEN", func: function()
+        {title:"Load Image(s)", path: "LOADIMAGES", func: function()
         {
             menuobj.hide();
             explore().then(function(files) { dropfiles(files); })
+        }},
+
+        {title:"Load Archive", path: "LOADARCHIVE", func: function()
+        {
         }},
 
         {title:"Bookmarks", path: "BOOKMARKS", func: function()
@@ -5715,10 +5849,10 @@ galleryobj.init = function (obj)
             },
             enabled: function() { return false }
         },
-       {line:"worker.js",  func: function()
+       {line:"offscreen.js",  func: function()
             {
                 var offcnv = new OffscreenCanvas(200, 200);
-                const offworker = new Worker('worker.js');
+                const offworker = new Worker('js/offscreen.js');
                 offworker.postMessage({msg: 'offscreen', canvas: offcnv}, [offcnv]);
                 offworker.addEventListener('message', function(ev)
                 {
@@ -5727,7 +5861,7 @@ galleryobj.init = function (obj)
                         var canvas = document.createElement("canvas");
                         let context = canvas.getContext("bitmaprenderer");
                         context.transferFromImageBitmap(ev.data.bitmap);
-                        headcnvctx.drawImage(canvas, 0, 0);
+                        _4cnvctx.drawImage(canvas, 0, 0);
                     }
                 });
             },
@@ -5845,19 +5979,15 @@ galleryobj.init = function (obj)
     _7cnv.sliceobj.data =
     [
         {
-            line: "Image Viewer\nhttps://reportbase.com\nimages@reportbase.com\nTom Brinkman",
+            line: "PDIV\nPanoramic Digital Image Viewer\nhttps://pdiv.io\nimages@pdiv.io",
             func: function() {}
         },
         {
-            line: "High Resolution\n360° Panoramas\nImage Stetch\nImage Zooming",
+            line: "© Tom Brinkman\nAll Rights Reserved",
             func: function() {}
         },
         {
-            line: "Digital Art\nGraphic Novels\nDrone Photgraphy\nLandscapes",
-            func: function() {}
-        },
-        {
-            line: "Side Scroller\nWrap Around\nFull Screen\nWide Image",
+            line: "PDIV is a digital image viewer for ultra-wide and panoramic images. Images are drawn onto the interior of a cylinder for 360-degree full-screen viewing experience.",
             func: function() {}
         },
     ];
@@ -5879,6 +6009,7 @@ galleryobj.init = function (obj)
 }
 
 url.path = "home";
+url.filter = url.searchParams.get("f");
 
 if (url.searchParams.has("p"))
 {
@@ -6006,19 +6137,17 @@ function showpage()
         var page = document.getElementById('page-goto-value').value.clean();
         if (!page)
           return;
-            page = util.clamp(galleryobj.startimage,
-                galleryobj.lastimage, page);
-            page -= galleryobj.startimage;
-            var k = page/galleryobj.length()
-            var obj = _8cnv.timeobj;
-            obj.setperc(1-k);
-            contextobj.reset();
+            var k = page/galleryobj.length();
+            _8cnv.timeobj.setperc(1-k);
+            _8cnvctx.refresh();
             dialog.close();
       }
     });
 
     global.block = 1;
     dialog = document.getElementById("page-goto");
+    dialog.classList.add('dialog');
+    dialog.style.width = window.innerWidth*0.85;
     dialog.addEventListener("click", function()
     {
         var rect = input.getBoundingClientRect();
@@ -6027,13 +6156,9 @@ function showpage()
             var page = document.getElementById('page-goto-value').value.clean();
             if (!page)
               return;
-            page = util.clamp(galleryobj.startimage,
-                galleryobj.lastimage, page);
-            page -= galleryobj.startimage;
-            var k = page/galleryobj.length()
-            var obj = _8cnv.timeobj;
-            obj.setperc(1-k);
-            contextobj.reset();
+            var k = page/galleryobj.length();
+            _8cnv.timeobj.setperc(1-k);
+            _8cnvctx.refresh();
             dialog.close();
         }
         else if (event.clientY < rect.top || event.clientY > rect.bottom ||
@@ -6298,7 +6423,7 @@ function buttonobjreset()
         var height = Math.floor(window.innerWidth/a);
         var lst = [];
         var j = Math.max(180,Math.floor(height/4));
-        var b = Math.min(180*20,Math.floor(height*4));
+        var b = Math.min(180*20,Math.floor(height*3));
         for (var n = j; n < b; ++n)
             lst.push(n);
         var k = lst.findIndex(function(a){return a == height});

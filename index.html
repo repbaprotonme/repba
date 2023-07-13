@@ -26,7 +26,6 @@ A:hover { COLOR: blue; TEXT-DECORATION: none; font-weight: none; cursor: pointer
 
 dialog
 {
-  width: 85%; 
   max-width: 640px; 
   position: absolute; 
   left: 50%; 
@@ -154,7 +153,6 @@ button
 }
 </style>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 <canvas id='_4' style='z-index: 1' width='0' height='0'></canvas>
 <canvas id='head' style='z-index: 2' width='0' height='0'></canvas>
 <canvas id='foot' style='z-index: 3' width='0' height='0'></canvas>
@@ -166,8 +164,9 @@ button
 <canvas id='_7' style='z-index: 9' width='0' height='0'></canvas>
 <canvas id='_8' style='z-index: 10' width='0' height='0'></canvas>
 <canvas id='_9' style='z-index: 11' width='0' height='0'></canvas>
-<script type="text/javascript" src="screenfull.min.js"></script>
-<script type="text/javascript" src="hammer.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<script type="text/javascript" src="js/screenfull.min.js"></script>
+<script type="text/javascript" src="js/hammer.min.js"></script>
 
 <script src="https://www.unpkg.com/@propelauth/javascript@2.0.0/dist/javascript.min.js" 
          integrity="sha384-CnMW/GT96q1vxl3xq1fIbUrmXpDIsXVtY+/FpJW+rMSCgjlOWpbVfs5G0dg2bMN5" 
@@ -178,9 +177,9 @@ button
 </head>
 <body ondragstart="return false;" ondrop="return false"; oncontextmenu='return false;'>
 
-<dialog id="page-goto" style="max-width: 360px;">
+<dialog id="page-goto" style="max-width: 480px;">
     <div class="earth">
-      <input id="page-goto-value" autocapitalize="off" placeholder="Page Number"></input>
+      <input type="number" id="page-goto-value" autocapitalize="off" placeholder="Page Number"></input>
     </div>
     <div class="footer">
       <button class="fade" id="page-ok" style="" type="button">Page</button>
