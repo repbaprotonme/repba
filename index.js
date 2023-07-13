@@ -501,14 +501,13 @@ panel.gallerybar = function ()
                 0,
             ]),
             new panel.rowA([80,0,40,8,40,8,40,
-                8,40,8,ch,ck,40,20,SCROLLBARWIDTH,5],
+                8,40,8,40,8,ch,ck,40,20,SCROLLBARWIDTH,5],
             [
                  canvas.nohide?new panel.col(
                  [
                      0,
                      SAFARI?-1:ALIEXTENT,
                      ALIEXTENT,
-                     galleryobj.showsearch?ALIEXTENT:-1,
                      ALIEXTENT,
                      ALIEXTENT,
                      0
@@ -517,7 +516,6 @@ panel.gallerybar = function ()
                     0,
                     new panel.fullscreen(),
                     new panel.bookmark(),
-                    new panel.search(),
                     new panel.meta(),
                     new panel.fitwindow(),
                     0,
@@ -529,6 +527,18 @@ panel.gallerybar = function ()
                       new Layer(
                      [
                         new Rectangle(canvas.loginrect),
+                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
+                        new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
+                     ]),
+                     0,
+                 ]):0,
+                 0,
+                 (galleryobj.showsearch && canvas.nohide)?new panel.col([0,w,0],
+                 [
+                     0,
+                      new Layer(
+                     [
+                        new Rectangle(canvas.searchrect),
                         new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
                         new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
                      ]),
@@ -620,9 +630,11 @@ panel.gallerybar = function ()
                 0,
                 "Login",
                 0,
+                "Search",
+                0,
                 "Load Archive",
                 0,
-                "Load Image(s)",
+                "Load Image (s)",
                 0,
                 [
                     0,
@@ -2032,6 +2044,8 @@ var droplst =
     name: "DEFAULT",
     drop: function (context, evt)
     {
+        if (!evt.dataTransfer.files.length)
+            return;
         dropfiles(evt.dataTransfer.files);
     },
 },
@@ -2039,6 +2053,8 @@ var droplst =
     name: "GALLERY",
     drop: function (context, evt)
     {
+        if (!evt.dataTransfer.files.length)
+            return;
         dropfiles(evt.dataTransfer.files);
     },
 },
@@ -2480,7 +2496,7 @@ var swipelst =
     {
         var canvas = context.canvas;
         context.swipetype = evt.type;
-        var slidestop = 12;
+        var slidestop = 4;
         var slidereduce = 48;
         movingx = new MovingAverage();
         movingy = new MovingAverage();
@@ -3076,7 +3092,12 @@ var taplst =
         }
         else if (canvas.openrect && canvas.openrect.hitest(x,y))
         {
-            explore().then(function(files) { dropfiles(files); })
+            explore().then(function(files)
+            {
+                if (!files.length)
+                    return;
+                dropfiles(files);
+            })
         }
         else if (canvas.helprect && canvas.helprect.hitest(x,y))
         {
@@ -3204,6 +3225,8 @@ var taplst =
         {
             explore().then(function(files)
             {
+                if (!files.length)
+                    return;
                 dropfiles(files);
                 _8cnv.nohide = 0;
                 _8cnvctx.refresh();
@@ -3211,9 +3234,10 @@ var taplst =
         }
         else if (canvas.archiverect && canvas.archiverect.hitest(x,y))
         {
-            //todo
             explore().then(function(files)
             {
+                if (!files.length)
+                    return;
                 dropfiles(files);
                 _8cnv.nohide = 0;
                 _8cnvctx.refresh();
@@ -3332,6 +3356,7 @@ var taplst =
                 var j = visibles[k];
                 var id = j.slice.id;
                 j.slice.bookmarked = j.slice.bookmarked ? 0 : 1;
+                context.refresh();
                 authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
                 authClient.getAuthenticationInfoOrNull(false)
                 .then(function(client)
@@ -5656,10 +5681,15 @@ galleryobj.init = function (obj)
 
     _2cnv.sliceobj.data =
     [
-        {title:"Load Image(s)", path: "LOADIMAGES", func: function()
+        {title:"Load Image (s)", path: "LOADIMAGES", func: function()
         {
             menuobj.hide();
-            explore().then(function(files) { dropfiles(files); })
+            explore().then(function(files)
+            {
+                if (!files.length)
+                    return;
+                dropfiles(files);
+            })
         }},
 
         {title:"Load Archive", path: "LOADARCHIVE", func: function()
