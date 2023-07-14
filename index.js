@@ -1,8 +1,5 @@
-//todo: https://obfuscator.io
+//https://obfuscator.io
 //pvid.io
-//propel metadata
-//stabel base64
-//stable upsize
 
 /* ++ += ==
 Copyright 2017 Tom Brinkman
@@ -39,11 +36,12 @@ const SMALLFONT = "15px archivo black";
 const DEFAULTFONT = "16px archivo black";
 const LARGEFONT = "18px archivo black";
 const HUGEFONT = "20px archivo black";
+const DOTSFONT = "60px archivo black";
 const SLICEWIDTH = 30;
 const SLICEWIDTHSIZE = 256;
 const ZOOMAX = 92;
 const IMAGELSTSIZE = 120;
-
+const ROUND = 8;
 var panel = {}
 var global = {};
 let photo = {};
@@ -427,6 +425,18 @@ let _8cnv = document.getElementById("_8");
 let _8cnvctx = _8cnv.getContext("2d", opts);
 let _9cnv = document.getElementById("_9");
 let _9cnvctx = _9cnv.getContext("2d", opts);
+let _10cnv = document.getElementById("_10");
+let _10cnvctx = _10cnv.getContext("2d", opts);
+let _11cnv = document.getElementById("_11");
+let _11cnvctx = _11cnv.getContext("2d", opts);
+let _12cnv = document.getElementById("_12");
+let _12cnvctx = _12cnv.getContext("2d", opts);
+let _13cnv = document.getElementById("_13");
+let _13cnvctx = _13cnv.getContext("2d", opts);
+let _14cnv = document.getElementById("_14");
+let _14cnvctx = _14cnv.getContext("2d", opts);
+let _15cnv = document.getElementById("_15");
+let _15cnvctx = _15cnv.getContext("2d", opts);
 let headcnv = document.getElementById("head");
 let headcnvctx = headcnv.getContext("2d", opts);
 
@@ -473,14 +483,17 @@ panel.gallerybar = function ()
         canvas.hscrollrect = new rectangle();
         canvas.vscrollrect = new rectangle();
         canvas.showpagerect = new rectangle();
-        canvas.chapterect = new rectangle();
-        canvas.loginrect = new rectangle();
+        canvas.bookmarkrect = new rectangle();
+        context.chapterect = new rectangle();
+        canvas.galleryrect = new rectangle();
         canvas.imagesrect = new rectangle();
-        canvas.archiverect = new rectangle();
+        canvas.searchrect = new rectangle();
         var w = Math.min(320,rect.width-100);
         var j = window.innerWidth - rect.width >= 180;
-        var ch = _5cnv.sliceobj.length()>1?40:-1;
+        var ch = _5cnv.sliceobj.length()>1?50:-1;
         var ck = _5cnv.sliceobj.length()>1?8:-1;
+        var rounded = new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.4)", 16, 16);
+        var text = new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0));
         context.save();
         var a = new panel.layerA(
         [
@@ -500,99 +513,38 @@ panel.gallerybar = function ()
                 ]),
                 0,
             ]),
-            new panel.rowA([80,0,40,8,40,8,40,
-                8,40,8,40,8,ch,ck,40,20,SCROLLBARWIDTH,5],
+            new panel.rowA([80,0,40,8,40,20,SCROLLBARWIDTH,5],
             [
-                 canvas.nohide?new panel.col(
+                 new panel.col(
                  [
                      0,
-                     SAFARI?-1:ALIEXTENT,
                      ALIEXTENT,
                      ALIEXTENT,
                      ALIEXTENT,
-                     0
+                     ALIEXTENT,
+                     ALIEXTENT,
+                     0,
                  ],
                  [
                     0,
-                    new panel.fullscreen(),
+                    new panel.gallery(),
                     new panel.bookmark(),
                     new panel.meta(),
+                    new panel.fullscreen(),
                     new panel.fitwindow(),
                     0,
-                 ]):0,
+                 ]),
                  0,
-                 canvas.nohide?new panel.col([0,w,0],
+                 new panel.col([0,w,0],
                  [
                      0,
                       new Layer(
                      [
-                        new Rectangle(canvas.loginrect),
-                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
-                        new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
+                        new Rectangle(context.chapterect),
+                        text,
                      ]),
                      0,
-                 ]):0,
-                 0,
-                 (galleryobj.showsearch && canvas.nohide)?new panel.col([0,w,0],
-                 [
-                     0,
-                      new Layer(
-                     [
-                        new Rectangle(canvas.searchrect),
-                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
-                        new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
-                     ]),
-                     0,
-                 ]):0,
-                 0,
-                 canvas.nohide?new panel.col([0,w,0],
-                 [
-                     0,
-                      new Layer(
-                     [
-                        new Rectangle(canvas.archiverect),
-                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
-                        new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
-                     ]),
-                     0,
-                 ]):0,
-                 0,
-                 canvas.nohide?new panel.col([0,w,0],
-                 [
-                     0,
-                      new Layer(
-                     [
-                        new Rectangle(canvas.imagesrect),
-                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
-                        new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
-                     ]),
-                     0,
-                 ]):0,
-                 0,
-                  canvas.nohide?new panel.col([0,w,0],
-                 [
-                     0,
-                      new panel.layerA(
-                     [
-                        new Rectangle(canvas.buttonrect),
-                        new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.5)", 16, 16),
-                        new panel.shadow(new panel.text("rgb(210,210,210)", "center", "middle",0, 0)),
-                        new panel.shrink(new panel.currentH(new panel.shrink(new panel.circle("white"),9,9), 30, 1),6,0)
-                     ]),
-                     0,
-                 ]):0,
-                 0,
-                 (canvas.nohide && _5cnv.sliceobj.length() > 1)?new panel.col([0,w,0],
-                 [
-                     0,
-                     new Layer(
-                     [
-                        new Rectangle(canvas.chapterect),
-                        new panel.rounded("rgba(0,0,0,0.65)", 4, "rgba(255,255,255,0.5)", 16, 16),
-                        new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
-                     ]),
-                     0,
-                 ]):0,
+                 ]),
                  0,
                  new panel.col([0,w,0],
                  [
@@ -600,8 +552,8 @@ panel.gallerybar = function ()
                      new Layer(
                      [
                         new Rectangle(canvas.showpagerect),
-                        new panel.rounded("rgba(255,175,0,0.7)", 4, canvas.nohide?"rgba(255,255,255,0.85)":"rgba(255,255,255,0.5)", 16, 16),
-                        new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
+                         rounded,
+                         text,
                      ]),
                      0,
                 ]),
@@ -612,8 +564,7 @@ panel.gallerybar = function ()
                     new Layer(
                     [
                         new panel.expand(new Rectangle(canvas.hscrollrect),0,10),
-                        new panel.currentH(
-                            new panel.shadow(new panel.fill("white")), 90, 1),
+                        new panel.currentH(new panel.shadow(new panel.fill("white")), 90, 1),
                     ]),
                     0,
                 ]),
@@ -626,24 +577,9 @@ panel.gallerybar = function ()
         [
             canvas.timeobj,
             [
-                0,
-                0,
-                "Login",
-                0,
-                "Search",
-                0,
-                "Load Archive",
-                0,
-                "Load Image (s)",
-                0,
-                [
-                    0,
-                    0,
-                    "Zoom",
-                    buttonobj,
-                ],
-                0,
-                _5cnv.sliceobj.value().title,
+                0, 0,
+                _5cnv.sliceobj.length() > 1 ?
+                    _5cnv.sliceobj.value().title : "",
                 0,
                 infobj.value(),
                 0,
@@ -989,11 +925,11 @@ panel.meta = function ()
     this.draw = function (context, rect, user, time)
     {
         context.save();
-        context.canvas.scrollrect = new rectangle();
+        context.canvas.metarect = new rectangle();
 
         var a = new Layer(
         [
-            new Rectangle(context.canvas.scrollrect),
+            new Rectangle(context.canvas.metarect),
             _8cnv.scrollobj.current() ? 0 : new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),19,19),
             new panel.shrink(new panel.circle(_8cnv.scrollobj.current() ? SCROLLNAB:TRANSPARENT, SEARCHFRAME,4),15,15),
             new panel.shrink(new panel.row([0,4,0],
@@ -1575,6 +1511,12 @@ var _6ham = makehammer(_6cnvctx,0.5,15);
 var _7ham = makehammer(_7cnvctx,0.5,15);
 var _8ham = makehammer(_8cnvctx,0.5,15);
 var _9ham = makehammer(_9cnvctx,0.5,15);
+var _10ham = makehammer(_10cnvctx,0.5,15);
+var _11ham = makehammer(_11cnvctx,0.5,15);
+var _12ham = makehammer(_12cnvctx,0.5,15);
+var _13ham = makehammer(_13cnvctx,0.5,15);
+var _14ham = makehammer(_14cnvctx,0.5,15);
+var _15ham = makehammer(_15cnvctx,0.5,15);
 var headham = makehammer(headcnvctx,0.5,15);
 _4ham.get('pinch').set({ enable: true });
 _8ham.get('pinch').set({ enable: true });
@@ -1605,7 +1547,7 @@ var wheelst =
             canvas.timeout = setTimeout(function()
             {
                 var e = {type:"swipeup"}
-                swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
+                swipelst[4].swipeupdown (context, context.rect, 0, 0, e)
             }, 4);
         }
     },
@@ -1624,7 +1566,7 @@ var wheelst =
             canvas.timeout = setTimeout(function()
             {
                 var e = {type:"swipedown"}
-                swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
+                swipelst[4].swipeupdown (context, context.rect, 0, 0, e)
             }, 4);
         }
     },
@@ -1958,12 +1900,38 @@ userobj.save = function()
     }
 }
 
-function explore()
+function explorearchives()
+{
+    var input = document.createElement("input");
+    input.type = "file";
+    input.multiple = false;
+    input.accept = "applicatoin/zip, application/vnd.rar, application/x-tar";
+    return new Promise(function(resolve)
+    {
+        document.activeElement.onfocus = function()
+        {
+            document.activeElement.onfocus = null;
+            setTimeout(resolve, 500);
+        };
+
+        input.onchange = function()
+        {
+            var files = Array.from(input.files);
+            if (!file.length)
+                return;
+            return resolve(files);
+        };
+
+        input.click();
+    });
+}
+
+function exploreimages()
 {
     var input = document.createElement("input");
     input.type = "file";
     input.multiple = true;
-    input.accept = "image/*";
+    input.accept = "image/png, image/jpeg, image/jpg, image/webp, image/gif, image/avif";
     return new Promise(function(resolve)
     {
         document.activeElement.onfocus = function()
@@ -2419,8 +2387,6 @@ var presslst =
             canvas.showpagerect &&
             canvas.showpagerect.hitest(x,y))
             infobj.rotate(1);
-        else
-            canvas.nohide = canvas.nohide?0:1;
         context.refresh();
     },
     press: function (context, rect, x, y)
@@ -2496,7 +2462,7 @@ var swipelst =
     {
         var canvas = context.canvas;
         context.swipetype = evt.type;
-        var slidestop = 4;
+        var slidestop = 12;
         var slidereduce = 48;
         movingx = new MovingAverage();
         movingy = new MovingAverage();
@@ -2553,6 +2519,26 @@ var swipelst =
     {
     },
 },
+{
+    name: "TOUCHPAD",
+    swipeleftright: function (context, rect, x, y, evt) { },
+    swipeupdown: function (context, rect, x, y, evt)
+    {
+        var canvas = context.canvas;
+        context.swipetype = evt.type;
+        var slidestop = 4;
+        var slidereduce = 48;
+        movingx = new MovingAverage();
+        movingy = new MovingAverage();
+        canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
+        canvas.slidereduce = canvas.slideshow/slidereduce;
+        clearInterval(global.swipetimeout);
+        global.swipetimeout = setInterval(function ()
+            {
+                context.refresh();
+            }, timemain.value());
+   },
+},
 ];
 
 var swipeobj = new circular_array("SWIPE", swipelst);
@@ -2605,7 +2591,7 @@ var keylst =
         else if (
             canvas.shiftKey && key == " " ||
             key == "pageup" ||
-            (canvas.shiftKey && !galleryobj.showboss && key == "enter") ||
+            (canvas.shiftKey && key == "enter") ||
             key == "arrowup" ||
             key == "w" ||
             key == "k")
@@ -2617,7 +2603,7 @@ var keylst =
         else if (
             key == "arrowdown" ||
             key == " " ||
-            (!galleryobj.showboss && key == "enter") ||
+            key == "enter" ||
             key == "pagedown" ||
             key == "s" ||
            key == "j")
@@ -2666,8 +2652,7 @@ var keylst =
             context.refresh()
             evt.preventDefault();
         }
-        else if (galleryobj.showboss &&
-            key == "enter")
+        else if (0)
 		{
             var visibles = canvas.visibles;
             var k;
@@ -2863,6 +2848,7 @@ var keylst =
         else if (
             (canvas.ctrlKey && key == "arrowleft") ||
             (canvas.ctrlKey && key == "h") ||
+            (canvas.shiftKey && key == "enter") ||
             key == "pageup")
         {
             context.movepage(-1);
@@ -2871,14 +2857,10 @@ var keylst =
         else if (
             (canvas.ctrlKey && key == "arrowright") ||
             (canvas.ctrlKey && key == "l") ||
+            key == "enter" ||
             key == "pagedown")
         {
             context.movepage(1);
-            evt.preventDefault();
-        }
-        else if (key == "enter")
-        {
-            menuobj.toggle(_8cnvctx);
             evt.preventDefault();
         }
         else if (
@@ -3010,6 +2992,11 @@ var taplst =
                 contextobj.reset()
             }
         }
+        else if (context.chapterect && context.chapterect.hitest(x,y))
+        {
+            menuobj.showindex(_5cnvctx);
+            context.refresh();
+        }
         else if (context.extentrect && context.extentrect.hitest(x,y))
         {
             menuobj.toggle(_8cnvctx);
@@ -3092,10 +3079,8 @@ var taplst =
         }
         else if (canvas.openrect && canvas.openrect.hitest(x,y))
         {
-            explore().then(function(files)
+            exploreimages().then(function(files)
             {
-                if (!files.length)
-                    return;
                 dropfiles(files);
             })
         }
@@ -3213,6 +3198,7 @@ var taplst =
         }
         else if (context.fullrect && context.fullrect.hitest(x,y))
         {
+            context.refresh();
             if (screenfull.isEnabled)
             {
                 if (screenfull.isFullscreen)
@@ -3221,25 +3207,28 @@ var taplst =
                     screenfull.request();
             }
         }
+        else if (context.canvas.galleryrect && context.canvas.galleryrect.hitest(x,y))
+        {
+            headobj.set(1);
+            headham.panel = headobj.value();
+            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            bossobj.set(1);
+            menuobj.showindex(_2cnvctx);
+           _4cnvctx.refresh()
+        }
         else if (canvas.imagesrect && canvas.imagesrect.hitest(x,y))
         {
-            explore().then(function(files)
+            exploreimages().then(function(files)
             {
-                if (!files.length)
-                    return;
                 dropfiles(files);
-                _8cnv.nohide = 0;
                 _8cnvctx.refresh();
             })
         }
         else if (canvas.archiverect && canvas.archiverect.hitest(x,y))
         {
-            explore().then(function(files)
+            explorearchives().then(function(file)
             {
-                if (!files.length)
-                    return;
-                dropfiles(files);
-                _8cnv.nohide = 0;
+                dropfiles(file);
                 _8cnvctx.refresh();
             })
         }
@@ -3256,10 +3245,15 @@ var taplst =
         }
         else if (canvas.showpagerect && canvas.showpagerect.hitest(x,y))
         {
-            canvas.nohide = canvas.nohide?0:1;
+            headobj.set(3);
+            bossobj.set(2);
+            headham.panel = headobj.value();
+            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            menuobj.hide();
+            _4cnvctx.refresh();
             context.refresh();
         }
-        else if (canvas.chapterect && canvas.chapterect.hitest(x,y))
+        else if (context.chapterect && context.chapterect.hitest(x,y))
         {
             menuobj.showindex(_5cnvctx);
             context.refresh();
@@ -3272,6 +3266,7 @@ var taplst =
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             menuobj.showindex(_2cnvctx);
             _4cnvctx.refresh();
+            context.refresh();
         }
         else if (canvas.helprect && canvas.helprect.hitest(x,y))
         {
@@ -3282,7 +3277,7 @@ var taplst =
             menuobj.showindex(_5cnvctx);
             _4cnvctx.refresh()
         }
-        else if (canvas.scrollrect && canvas.scrollrect.hitest(x,y))
+        else if (canvas.metarect && canvas.metarect.hitest(x,y))
         {
             clearInterval(global.timeout);
             clearInterval(global.timeauto);
@@ -3340,7 +3335,7 @@ var taplst =
 
             var n = visibles[k].n;
             var slice = galleryobj.data[n];
-            if (canvas.nohide && x < ALIEXTENT && y < slice.rect.y+ALIEXTENT)
+            if (x < ALIEXTENT && y < slice.rect.y+ALIEXTENT)
             {
                 var visibles = canvas.visibles;
                 var k;
@@ -3357,46 +3352,8 @@ var taplst =
                 var id = j.slice.id;
                 j.slice.bookmarked = j.slice.bookmarked ? 0 : 1;
                 context.refresh();
-                authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
-                authClient.getAuthenticationInfoOrNull(false)
-                .then(function(client)
-                {
-                    fetch(`https://bucket.reportbase5836.workers.dev/${client.user.userId}.json`)
-                    .then((response) => jsonhandler(response))
-                    .then(function (json)
-                        {
-                            if (!json.data)
-                                json.data = [];
-                            for (var n = 0; n < json.data.length; ++n)
-                                json.data[n] = json.data[n].id;
-                            if (json.data.includes(id))
-                            {
-                                var index = json.data.indexOf(id);
-                                json.data.splice(index, 1);
-                            }
-                            else
-                            {
-                                json.data.push(id);
-                            }
-
-                            var lst = Array.from(new Set(json.data));
-                            userobj.data  = [];
-                            for (var n = 0; n < lst.length; ++n)
-                            {
-                                var k = {};
-                                k.id = lst[n];
-                                userobj.data.push(k);
-                            }
-
-                            userobj.save();
-                            _8cnvctx.refresh();
-                        })
-                    .catch((error) => {});
-                })
-
-                context.refresh();
             }
-            else if (galleryobj.showboss)
+            else
             {
                 galleryobj.set(n);
                 clearInterval(global.swipetimeout);
@@ -3457,8 +3414,11 @@ var bosslst =
             context.slicewidthrect = new rectangle();
             context.stretchrect = new rectangle();
             context.extentrect = new rectangle();
+            context.chapterect = new rectangle();
+            var canvas = context.canvas;
             var w = Math.min(320,rect.width-100);
-            var a = new panel.rowA([60,0,40,8,40,8,40,8,40,20,SCROLLBARWIDTH,MARGINBAR],
+            var a = new panel.rowA([60,0,40,8,40,8,
+                40,8,40,8,40,20,SCROLLBARWIDTH,MARGINBAR],
              [
                  0,
                  0,
@@ -3498,6 +3458,12 @@ var bosslst =
                     0,
                 ]):0,
                  0,
+                 new Layer(
+                 [
+                    new Rectangle(context.chapterect),
+                    new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
+                 ]),
+                 0,
                  new panel.col([0,w,0],
                  [
                     0,
@@ -3524,6 +3490,9 @@ var bosslst =
                     0,
                     stretchobj.value(),
                     0,
+                    _5cnv.sliceobj.length() > 1 ?
+                        _5cnv.sliceobj.value().title : "",
+                    0,
                     extentobj.value(),
                     0,
                     0,
@@ -3544,10 +3513,17 @@ var bosslst =
 
             var canvas = context.canvas;
             context.extentrect = new rectangle();
+            context.chapterect = new rectangle();
             var w = Math.min(320,rect.width-100);
-            var a = new panel.row([0,40,20,SCROLLBARWIDTH,MARGINBAR],
+            var a = new panel.rowA([0,40,8,40,20,SCROLLBARWIDTH,MARGINBAR],
             [
                  0,
+                 new Layer(
+                 [
+                    new Rectangle(context.chapterect),
+                    new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
+                 ]),
+                0,
                  new panel.col([0,w,0],
                  [
                     0,
@@ -3564,7 +3540,18 @@ var bosslst =
                 0
             ]);
 
-            a.draw(context, rect, extentobj.value(), 0);
+            a.draw(context, rect,
+                [
+                    0,
+                    _5cnv.sliceobj.length() > 1 ?
+                        _5cnv.sliceobj.value().title : "",
+                    0,
+                    extentobj.value(),
+                    0,
+                    0,
+                    0,
+                ]);
+
             var he = heightobj.value();
             var b = Math.berp(0,he.length()-1,he.current());
             var height = Math.max(60,Math.lerp(0, rect.height, b));
@@ -4054,7 +4041,7 @@ var buttonlst =
                             x, 0, rect.width, rect.height,
                             0, 0, rect.width, rect.height);
 
-                        if (user.photographer && context.canvas.nohide)
+                        if (user.photographer)
                         {
                             var a = new panel.rowA([22,22,22,0],
                                 [
@@ -4096,7 +4083,7 @@ var buttonlst =
                             0, y, rect.width, rect.height,
                             0, 0, rect.width, rect.height);
 
-                        if (user.photographer && context.canvas.nohide)
+                        if (user.photographer)
                         {
                             var a = new panel.rowA([22,22,22,0],
                                 [
@@ -4124,23 +4111,20 @@ var buttonlst =
                 a.draw(context, rect, 0, 0);
             }
 
-            if (context.canvas.nohide)
-            {
-                var a = new panel.col([ALIEXTENT,0],
-                    [
-                        new panel.row([ALIEXTENT, 0],
+            var a = new panel.col([ALIEXTENT,0],
+                [
+                    new panel.row([ALIEXTENT, 0],
+                        [
+                            new Layer(
                             [
-                                new Layer(
-                                [
-                                    user.bookmarked ? new panel.shrink(new panel.circle(MENUTAP),19,19) : 0,
-                                    new panel.shrink(new panel.circle(user.bookmarked ? TRANSPARENT:"rgba(0,0,0,0.2)","rgba(255,255,255,0.8)",4),16,16),
-                                ]),
-                                0
+                                user.bookmarked ? new panel.shrink(new panel.circle(MENUTAP),19,19) : 0,
+                                new panel.shrink(new panel.circle(user.bookmarked ? TRANSPARENT:"rgba(0,0,0,0.2)","rgba(255,255,255,0.8)",4),16,16),
                             ]),
-                        0,
-                    ])
+                            0
+                        ]),
+                    0,
+                ])
                 a.draw(context, rect, 0, 0);
-            }
         }
         else
         {
@@ -4197,9 +4181,15 @@ _6ham.panel = new panel.yoll();
 _7ham.panel = new panel.yoll();
 _8ham.panel = new panel.yoll();
 _9ham.panel = new panel.yoll();
+_10ham.panel = new panel.yoll();
+_11ham.panel = new panel.yoll();
+_12ham.panel = new panel.yoll();
+_13ham.panel = new panel.yoll();
+_14ham.panel = new panel.yoll();
+_15ham.panel = new panel.yoll();
 
-let contextlst = [_1cnvctx,_2cnvctx,_3cnvctx,_4cnvctx,_5cnvctx,_6cnvctx,_7cnvctx,_8cnvctx,_9cnvctx];
-let menulst = [0, _1cnvctx, _2cnvctx,_3cnvctx,_5cnvctx,_6cnvctx,_7cnvctx,_8cnvctx,_9cnvctx];
+let contextlst = [_1cnvctx,_2cnvctx,_3cnvctx,_4cnvctx,_5cnvctx,_6cnvctx,_7cnvctx,_8cnvctx,_9cnvctx,_10cnvctx,_11cnvctx,_12cnvctx,_13cnvctx,_14cnvctx,_15cnvctx];
+let menulst = [0, _1cnvctx, _2cnvctx,_3cnvctx,_5cnvctx,_6cnvctx,_7cnvctx,_8cnvctx,_9cnvctx,_10cnvctx,_11cnvctx,_12cnvctx,_13cnvctx,_14cnvctx,_15cnvctx];
 var menuobj = new circular_array("MENU", menulst);
 
 menuobj.showindex = function(context)
@@ -4343,7 +4333,6 @@ menuobj.draw = function()
         j.slice.rect = new rectangle(0,j.y,rect.width,height);
         j.slice.isvisible = j.y > -height && j.y<window.innerHeight;
         isvisiblecount += j.slice.isvisible?1:0;
-        offmenuctx.canvas.nohide = context.canvas.nohide;
         offmenuctx.canvas.sliceobj = context.canvas.sliceobj;
         offmenuctx.canvas.scrollobj = context.canvas.scrollobj;
         offmenuctx.save();
@@ -4371,13 +4360,19 @@ menuobj.draw = function()
 var eventlst =
 [
     {dblclick: "DEFAULT", mouse: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", button: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 0, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU",  drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "SELECT", wheel: "MENU",  drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
     {dblclick: "BOSS", mouse: "DEFAULT", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "GALLERY", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new panel.empty(), scroll: new panel.empty(), buttonheight: 30, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "SELECT", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 120, width: 640},
     {dblclick: "GALLERY", mouse: "MENU", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "GALLERY", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new panel.gallerybar(), scroll: new panel.empty(), buttonheight: 320, width: 5160},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
 ];
 
@@ -5132,12 +5127,8 @@ function resize()
 function escape()
 {
     if (dialog && dialog.open)
-    {
         dialog.close();
-        headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-        return;
-    }
-
+    menuobj.hide();
     overlayobj.set(0);
     slicewidthobj.debug = 0;
     galleryobj.transparent = 0;
@@ -5224,6 +5215,8 @@ var headlst =
 		this.draw = function (context, rect, user, time)
         {
             context.clear();
+           if (menuobj.value())
+                return;
             var k = menuobj.value();
             var w = k?k.canvas.width:0;
             var b = window.innerWidth == w;
@@ -5241,7 +5234,7 @@ var headlst =
                    0,//k?0:new panel.search(),
                    0,//k?0:new panel.shift(new panel.thumb(),10,0),
                    0,
-                   m?0:new panel.help(),
+                   -1,//m?-1:new panel.help(),
                    0,
                 ]),
                0,
@@ -5333,6 +5326,8 @@ var headlst =
 		this.draw = function (context, rect, user, time)
 		{
             context.clear();
+           if (menuobj.value())
+                return;
             var k = menuobj.value();
             context.save();
             context.shadowColor = "black";
@@ -5400,6 +5395,8 @@ var headlst =
 		{
             context.save();
             context.clear();
+           if (menuobj.value())
+                return;
 
             var a = new Layer(
             [
@@ -5569,8 +5566,18 @@ window.addEventListener("visibilitychange", (evt) =>
     }
     else
     {
-        savelocal("gallery",_8cnv.timeobj.current())
-        savelocal("filter",_5cnv.sliceobj.value().filter)
+        var local = {};
+        local.gallery = _8cnv.timeobj.current();
+        local.filter = _5cnv.sliceobj.value().filter;
+        local.bookmarks = [];
+        var lst = galleryobj.all.filter(function (a) { return a.bookmarked; });
+        for (var n = 0; n < lst.length; ++n)
+        {
+            var k = galleryobj.all[n];
+            local.bookmarks.push(k.id);
+        }
+
+        localStorage.setItem(url.path,JSON.stringify(local));
     }
 });
 
@@ -5622,18 +5629,47 @@ galleryobj.reset = function()
     }
 }
 
-_8cnv.nohide = url.path != "home";
-
 galleryobj.init = function (obj)
 {
     galleryobj.reset()
     Object.assign(galleryobj,obj);
+    var local = {};
+    local.filter = "";
+    local.gallery = "";
+    local.bookmarks = [];
+    try
+    {
+        var k = localStorage.getItem(url.path);
+        if (k)
+            local = JSON.parse(k);
+    }
+    catch(_)
+    {
+    }
 
     galleryobj.all = [];
     for (var n = 0; n < galleryobj.length(); ++n)
         galleryobj.all.push(galleryobj.data[n]);
 
-    var filter = url.filter?url.filter:getlocalstring("filter")
+    try
+    {
+        for (var n = 0; n < galleryobj.all.length; ++n)
+        {
+            var k = galleryobj.all[n];
+            var j = local.bookmarks.findIndex(function(id)
+            {
+                return id == k.id;
+            });
+
+            k.bookmarked = j>=0?1:0;
+        }
+    }
+    catch(_)
+    {
+
+    }
+
+    var filter = url.filter?url.filter:local.filter;
     var filterlst = galleryobj.all.filter(function(a)
     {
         return filter && a.filter &&
@@ -5642,6 +5678,7 @@ galleryobj.init = function (obj)
 
     if (filterlst.length)
         galleryobj.data = filterlst;
+
     galleryobj.lastimage = galleryobj.length();
 
     setfavicon();
@@ -5681,62 +5718,7 @@ galleryobj.init = function (obj)
 
     _2cnv.sliceobj.data =
     [
-        {title:"Load Image (s)", path: "LOADIMAGES", func: function()
-        {
-            menuobj.hide();
-            explore().then(function(files)
-            {
-                if (!files.length)
-                    return;
-                dropfiles(files);
-            })
-        }},
-
-        {title:"Load Archive", path: "LOADARCHIVE", func: function()
-        {
-        }},
-
-        {title:"Bookmarks", path: "BOOKMARKS", func: function()
-            {
-                authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
-                authClient.getAuthenticationInfoOrNull(false)
-                .then(function(client)
-                {
-                    window.open(`https://reportbase.com?q=${client.user.userId}`);
-                })
-            }},
-
-        {title:"Clear Bookmarks", path: "CLEAR", func: function()
-            {
-                authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
-                authClient.getAuthenticationInfoOrNull(false)
-                .then(function(client)
-                {
-                    if (url.protocol == "https:")
-                    {
-                        authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
-                        authClient.getAuthenticationInfoOrNull(false)
-                        .then(function(client)
-                        {
-                             fetch(`https://bucket.reportbase5836.workers.dev/${client.user.userId}.json`,
-                                {
-                                    method: 'POST',
-                                    body: JSON.stringify([])
-                                })
-                              .then(response => jsonhandler(response))
-                              .then(json => console.log(json) )
-                              .catch(error => console.log(error) );
-                        })
-                    }
-                })
-            }},
-
-        {title:"Search", path: "SEARCH", func: function()
-            {
-                showsearch("pexels");
-            }},
-
-        {title:"Download", path: "DOWNLOAD", func: function()
+       {title:"Download", path: "DOWNLOAD", func: function()
             {
                 download();
                 menuobj.hide();
@@ -5776,27 +5758,32 @@ galleryobj.init = function (obj)
              },
             enabled: function() { return slicewidthobj.debug; }
         },
-       {title:"Login", path: "LOGIN", func: function()
-            {
-                authClient.redirectToLoginPage();
-            }
-        },
-        {title:"Logout", path: "LOGOUT", func: function()
-            {
-                authClient.logout(true)
-            }
-        },
-        {title:"Account", path: "ACCOUNT", func: function()
-            {
-                authClient.redirectToAccountPage()
-            }
-        },
         {title:"About", path: "ABOUT", func: function()
             {
                 menuobj.showindex(_7cnvctx);
             }
         },
-        {title:"Advanced", path: "ADVANCED", func: function()
+        {title:"Search", path: "SEARCH", func: function()
+            {
+                menuobj.showindex(_6cnvctx);
+            }
+        },
+        {title:"Login", path: "LOGIN", func: function()
+            {
+                menuobj.showindex(_9cnvctx);
+            }
+        },
+        {title:"Load", path: "LOAD", func: function()
+            {
+                menuobj.showindex(_11cnvctx);
+            }
+        },
+        {title:"Bookmarks", path: "BOOKMARKS", func: function()
+            {
+                menuobj.showindex(_10cnvctx);
+            }
+        },
+         {title:"Advanced", path: "ADVANCED", func: function()
             {
                 menuobj.showindex(_3cnvctx);
             }
@@ -5808,9 +5795,6 @@ galleryobj.init = function (obj)
 
     _3cnv.sliceobj.data =
     [
-        {line:"Unsplash\nImage Search", func: function() { showsearch("unsplash"); }, enabled: function() {return false;} },
-        {line:"Pexels\nImage Search", func: function() { showsearch("pexels"); }, enabled: function() {return false;} },
-        {line:"Pixabay\nImage Search",func: function() { showsearch("pixabay"); }, enabled: function() {return false;} },
         {line:"Pexels Collection\nImage Search",func: function() { showsearch("pexels_collection"); }, enabled: function() {return false;} },
         {line:"Unsplash Collection\nImage Search",func: function() { showsearch("unsplash_collection"); }, enabled: function() {return false;} },
         {line:"Unsplash User Collection\nImage Search",func: function() { showsearch("unsplash_user"); }, enabled: function() {return false;} },
@@ -5989,18 +5973,9 @@ galleryobj.init = function (obj)
 
     _6cnv.sliceobj.data =
     [
-        {
-            title: "xxxxxxx",
-            func: function() {}
-        },
-        {
-            title: "yyyyyyy",
-            func: function() {}
-        },
-        {
-            title: "zzzzzzz",
-            func: function() {}
-        }
+        {line:"Unsplash\nImage Search", func: function() { showsearch("unsplash"); }, enabled: function() {return false;} },
+        {line:"Pexels\nImage Search", func: function() { showsearch("pexels"); }, enabled: function() {return false;} },
+        {line:"Pixabay\nImage Search",func: function() { showsearch("pixabay"); }, enabled: function() {return false;} },
     ];
 
     var a = Array(_6cnv.sliceobj.length()).fill().map((_, index) => index);
@@ -6029,12 +6004,113 @@ galleryobj.init = function (obj)
     var a = Array(galleryobj.length()).fill().map((_, index) => index);
     _8cnv.rotated = [...a,...a,...a];
 
-    var k = localStorage.getItem(`${url.path}.gallery`);
-    var j = Number(k);
+    _9cnv.sliceobj.data =
+    [
+       {title:"Login", path: "LOGIN", func: function()
+            {
+                authClient.redirectToLoginPage();
+            }
+        },
+        {title:"Logout", path: "LOGOUT", func: function()
+            {
+                authClient.logout(true)
+            }
+        },
+        {title:"Account", path: "ACCOUNT", func: function()
+            {
+                authClient.redirectToAccountPage()
+            }
+        },
+    ];
+
+    var a = Array(_9cnv.sliceobj.length()).fill().map((_, index) => index);
+    _9cnv.rotated = [...a,...a,...a];
+
+    _10cnv.sliceobj.data =
+    [
+        {title:"Export Bookmarks", path: "EXPORTBOOK", func: function()
+            {
+            }},
+
+        {title:"Import Bookmarks", path: "IMPORTBOOK", func: function()
+            {
+        }},
+
+        {title:"View Bookmarks", path: "IMPORTBOOK", func: function()
+            {
+                /*
+                authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+                authClient.getAuthenticationInfoOrNull(false)
+                .then(function(client)
+                {
+                    window.open(`https://reportbase.com?q=${client.user.userId}`);
+                })
+                */
+        }},
+
+        {title:"Clear Bookmarks", path: "CLEAR", func: function()
+            {
+                /*
+                authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+                authClient.getAuthenticationInfoOrNull(false)
+                .then(function(client)
+                {
+                    authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+                    authClient.getAuthenticationInfoOrNull(false)
+                    .then(function(client)
+                    {
+                         fetch(`https://bucket.reportbase5836.workers.dev/${client.user.userId}.json`,
+                            {
+                                method: 'POST',
+                                body: JSON.stringify([])
+                            })
+                          .then(response => jsonhandler(response))
+                          .then(json => console.log(json) )
+                          .catch(error => console.log(error) );
+                    })
+                })
+                */
+            }},
+
+    ];
+
+    var a = Array(_10cnv.sliceobj.length()).fill().map((_, index) => index);
+    _10cnv.rotated = [...a,...a,...a];
+
+    _11cnv.sliceobj.data =
+    [
+        {line:"Images\njpg png webp avif", path: "LOADIMAGES", func: function()
+        {
+            menuobj.hide();
+            exploreimages().then(function(files)
+            {
+                dropfiles(files);
+            })
+        }},
+
+        {line:"Archives\ncbr zip cbz rar tar", path: "LOADARCHIVE", func: function()
+        {
+            archiveOpenFile("http;//reportbase.me/example.zip", 0, function(archive, err)
+            {
+                console.log(archive);
+            });
+
+            //menuobj.hide();
+            //explorearchives().then(function(file)
+            //{
+            //    dropfiles(file);
+            //})
+        }},
+    ];
+
+    var a = Array(_11cnv.sliceobj.length()).fill().map((_, index) => index);
+    _11cnv.rotated = [...a,...a,...a];
+
+    var j = Number(local.gallery);
     if (j >= 0 && j < TIMEOBJ)
         _8cnv.timeobj.set(j);
     else
-         _8cnv.timeobj.set(TIMEOBJ);
+        _8cnv.timeobj.set(TIMEOBJ);
     contextobj.reset();
 }
 
@@ -6345,6 +6421,7 @@ async function copytext(text)
         navigator.clipboard.writeText(text)
 }
 
+/*
 if (url.protocol == "https:")
 {
     authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
@@ -6355,22 +6432,11 @@ if (url.protocol == "https:")
         .then((response) => jsonhandler(response))
         .then(function (json)
             {
-                for (var n = 0; n < galleryobj.all.length; ++n)
-                {
-                    var k = galleryobj.all[n];
-                    var m = 0;
-                    for (; m < json.data.length; ++m)
-                        if (json.data[m].id == k.id)
-                            break;
-
-                    k.bookmarked = m < json.data.length;
-                }
-
-                _8cnvctx.refresh();
             })
         .catch((error) => {});
     })
 }
+*/
 
 function jsonhandler(response)
 {
@@ -6406,30 +6472,8 @@ function MovingAverage()
 movingx = new MovingAverage();
 movingy = new MovingAverage();
 
-function savelocal(key, value)
+function getlocal(def)
 {
-    try
-    {
-        localStorage.setItem(`${url.path}.${key}`,value);
-    }
-    catch(_)
-    {
-    }
-}
-
-function getlocalstring(key, def)
-{
-    try
-    {
-        var str = localStorage.getItem(`${url.path}.${key}`);
-        if (typeof str == "undefined")
-            return def;
-        return str;
-    }
-    catch(_)
-    {
-        return def;
-    }
 }
 
 function buttonobjreset()
