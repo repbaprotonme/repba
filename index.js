@@ -486,7 +486,6 @@ panel.gallerybar = function ()
         canvas.showpagerect = new rectangle();
         context.chapterect = new rectangle();
         canvas.galleryrect = new rectangle();
-        canvas.imagesrect = new rectangle();
         canvas.searchrect = new rectangle();
         canvas.optionsrect = new rectangle();
 
@@ -1891,54 +1890,6 @@ userobj.save = function()
     }
 }
 
-function explorearchives()
-{
-    var input = document.createElement("input");
-    input.type = "file";
-    input.multiple = false;
-    input.accept = "applicatoin/zip";
-    return new Promise(function(resolve)
-    {
-        document.activeElement.onfocus = function()
-        {
-            document.activeElement.onfocus = null;
-            setTimeout(resolve, 500);
-        };
-
-        input.onchange = function()
-        {
-            var files = Array.from(input.files);
-            return resolve(files[0]);
-        };
-
-        input.click();
-    });
-}
-
-function exploreimages()
-{
-    var input = document.createElement("input");
-    input.type = "file";
-    input.multiple = true;
-    input.accept = "image/png, image/jpeg, image/jpg, image/webp, image/gif, image/avif";
-    return new Promise(function(resolve)
-    {
-        document.activeElement.onfocus = function()
-        {
-            document.activeElement.onfocus = null;
-            setTimeout(resolve, 500);
-        };
-
-        input.onchange = function()
-        {
-            var files = Array.from(input.files);
-            return resolve(files);
-        };
-
-        input.click();
-    });
-}
-
 async function loadzip(path)
 {
     galleryobj.data = [];
@@ -1962,6 +1913,11 @@ async function loadzip(path)
         {
             var k = {}
             k.blob = await entries[key].blob(`image/${ext}`);
+            var lst = key.split("/");
+            k.name = lst.pop();
+            k.filter = lst.join("/");
+            if (!k.title)
+                k.title = k.filter;
             galleryobj.data.push(k);
             if (!galleryobj.width)
             {
@@ -2041,7 +1997,7 @@ var droplst =
             {
                 dropfiles(files);
             }
-            else if (ext == 'zip')
+            else if (ext == 'zip' || ext == 'cbz')
             {
                 loadzip(files[0]);
             }
@@ -2389,8 +2345,6 @@ var presslst =
     pressup: function (context, rect, x, y)
     {
         var canvas = context.canvas;
-        if (canvas.imagesrect && canvas.imagesrect.hitest(x,y))
-            return;
         if (canvas.archiverect && canvas.archiverect.hitest(x,y))
             return;
         if (canvas.loginrect && canvas.loginrect.hitest(x,y))
@@ -2643,7 +2597,7 @@ var keylst =
         }
         else if (key == "g")
         {
-            showpage();
+            pagedialog();
         }
         else if (key == "-" || key == "[")
         {
@@ -2897,6 +2851,10 @@ var keylst =
             rowobj.addperc(-5/100);
             contextobj.reset();
         }
+        else if (key == "g")
+        {
+            pagedialog();
+        }
         else if (key == " ")
         {
             delete galleryobj.pantype;
@@ -3080,13 +3038,6 @@ var taplst =
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             context.refresh();
         }
-        else if (canvas.openrect && canvas.openrect.hitest(x,y))
-        {
-            exploreimages().then(function(files)
-            {
-                dropfiles(files);
-            })
-        }
         else if ( canvas.searchrect && canvas.searchrect.hitest(x,y) )
         {
             menuobj.showindex(_3cnvctx);
@@ -3167,13 +3118,6 @@ var taplst =
             bossobj.set(1);
             menuobj.showindex(_2cnvctx);
            _4cnvctx.refresh()
-        }
-        else if (canvas.imagesrect && canvas.imagesrect.hitest(x,y))
-        {
-            exploreimages().then(function(files)
-            {
-                dropfiles(files);
-            })
         }
         else if (canvas.loginrect && canvas.loginrect.hitest(x,y))
         {
@@ -3258,8 +3202,6 @@ var taplst =
             if (canvas.showpagerect && canvas.showpagerect.hitest(x,y))
                 return;
             if (canvas.archiverect && canvas.archiverect.hitest(x,y))
-                return;
-            if (canvas.imagesrect && canvas.imagesrect.hitest(x,y))
                 return;
             if (canvas.loginrect && canvas.loginrect.hitest(x,y))
                 return;
@@ -4193,7 +4135,7 @@ menuobj.draw = function()
 var eventlst =
 [
     {dblclick: "DEFAULT", mouse: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", button: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 0, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "SELECT", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
     {dblclick: "BOSS", mouse: "DEFAULT", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "DEFAULT", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new panel.empty(), scroll: new panel.empty(), buttonheight: 30, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "SELECT", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
@@ -5158,11 +5100,6 @@ var headlst =
                 }
                 else
                 {
-                    var k = galleryobj.value();
-                    if (k.prompt)
-                        showprompt(k.prompt);
-                    else if (k.description)
-                        showdescribe(k.description);
                 }
             }
             else
@@ -5602,8 +5539,7 @@ galleryobj.init = function (obj)
         {line:"Dalle Prompt", func: function()
             {
                 menuobj.hide();
-                var k = galleryobj.value();
-                showprompt(k.prompt?k.prompt:"");
+                promptdialog();
              },
             enabled: function() { return false }
         },
@@ -5812,19 +5748,51 @@ galleryobj.init = function (obj)
         {line:"Load Images\njpg png webp avif gif", path: "LOADIMAGES", func: function()
         {
             menuobj.hide();
-            exploreimages().then(function(files)
+            var input = document.createElement("input");
+            input.type = "file";
+            input.multiple = true;
+            input.accept = "image/png, image/jpeg, image/jpg, image/webp, image/gif, image/avif";
+            return new Promise(function(resolve)
             {
-                dropfiles(files);
-            })
+                document.activeElement.onfocus = function()
+                {
+                    document.activeElement.onfocus = null;
+                    setTimeout(resolve, 500);
+                };
+
+                input.onchange = function()
+                {
+                    var files = Array.from(input.files);
+                    return dropfiles(files[0]);
+                };
+
+                input.click();
+            });
         }},
 
         {line:"Load Archive\nzip cbz", path: "LOADARCHIVE", func: function()
         {
             menuobj.hide();
-            explorearchives().then(function(file)
+            var input = document.createElement("input");
+            input.type = "file";
+            input.multiple = false;
+            input.accept = "applicatoin/zip";
+            return new Promise(function(resolve)
             {
-               loadzip(file);
-            })
+                document.activeElement.onfocus = function()
+                {
+                    document.activeElement.onfocus = null;
+                    setTimeout(resolve, 500);
+                };
+
+                input.onchange = function()
+                {
+                    var files = Array.from(input.files);
+                    return loadzip(files[0]);
+                };
+
+                input.click();
+            });
         }},
     ];
 
@@ -5977,26 +5945,41 @@ function download()
     }
 }
 
-function showpage()
+function pagedialog()
 {
-    var input = document.getElementById("page-goto-value");
+    function go(page)
+    {
+        if (menuobj.value() == _8cnvctx)
+        {
+            var k = page/galleryobj.length();
+            _8cnv.timeobj.setperc(1-k);
+            _8cnvctx.refresh();
+        }
+        else
+        {
+            galleryobj.set(page);
+            delete _4cnv.thumbcanvas;
+            delete photo.image;
+            contextobj.reset();
+        }
+
+        dialog.close();
+    }
+
+    var input = document.getElementById("page-input");
+    dialog = document.getElementById("page-dialog");
     input.addEventListener("keyup", function(event)
     {
       if (event.keyCode === 13)
       {
         event.preventDefault();
-        var page = document.getElementById('page-goto-value').value.clean();
-        if (!page)
-          return;
-            var k = page/galleryobj.length();
-            _8cnv.timeobj.setperc(1-k);
-            _8cnvctx.refresh();
-            dialog.close();
+        var page = input.value.clean();
+        if (page)
+          go(page);
       }
     });
 
     global.block = 1;
-    dialog = document.getElementById("page-goto");
     dialog.classList.add('dialog');
     dialog.style.width = window.innerWidth*0.85;
     dialog.addEventListener("click", function()
@@ -6004,13 +5987,9 @@ function showpage()
         var rect = input.getBoundingClientRect();
         if (event.target.id == "page-ok")
         {
-            var page = document.getElementById('page-goto-value').value.clean();
-            if (!page)
-              return;
-            var k = page/galleryobj.length();
-            _8cnv.timeobj.setperc(1-k);
-            _8cnvctx.refresh();
-            dialog.close();
+            var page = input.value.clean();
+            if (page)
+              go(page);
         }
         else if (event.clientY < rect.top || event.clientY > rect.bottom ||
             event.clientX < rect.left || event.clientX > rect.right)
@@ -6021,37 +6000,44 @@ function showpage()
         }
     });
 
-    var current = Math.floor(
-        Math.lerp(1,galleryobj.length(),1-_8cnv.timeobj.berp()));
+    if (menuobj.value() == _8cnvctx)
+    {
+        var current = Math.floor(
+            Math.lerp(1,galleryobj.length(),1-_8cnv.timeobj.berp()));
+        input.value = current;
+    }
+    else
+    {
+        input.value = galleryobj.current()
+    }
 
-   document.getElementById('page-goto-value').value = current;
     dialog.showModal();
     setTimeout(function() { global.block = 0; }, 40);
 }
 
 function showsearch(repos)
 {
-    var input = document.getElementById("search-value");
+    var input = document.getElementById("search-input");
+    dialog = document.getElementById("search-dialog");
     input.addEventListener("keyup", function(event)
     {
-      if (event.keyCode === 13)
-      {
-        event.preventDefault();
-        var search = document.getElementById('search-value').value.clean();
-        if (!search)
-          return;
-        window.open(`${url.origin}?${repos}=${search}&page=1`,"_self");
-      }
+        if (event.keyCode === 13)
+        {
+            event.preventDefault();
+            var search = input.value.clean();
+            if (!search)
+                return;
+            window.open(`${url.origin}?${repos}=${search}&page=1`,"_self");
+        }
     });
 
     global.block = 1;
-    dialog = document.getElementById("search-overlay");
     dialog.addEventListener("click", function()
     {
         var rect = input.getBoundingClientRect();
         if (event.target.id == "search-ok")
         {
-            var search = document.getElementById('search-value').value.clean();
+            var search = input.value.clean();
             if (!search)
                 return;
             window.open(`${url.origin}?${repos}=${search}&page=1`,"_self");
@@ -6074,22 +6060,22 @@ function showsearch(repos)
         search = k.split(".")[0];
     }
 
-    document.getElementById('search-value').value = search;
+    input.value = search;
     dialog.showModal();
     setTimeout(function() { global.block = 0; }, 40);
 }
 
-function showprompt(str)
+function promptdialog(str)
 {
     var button = document.getElementById ("prompt-ok");
     button.innerHTML = "Submiit";
-    var textarea = document.getElementById ("prompt-value");
+    var textarea = document.getElementById ("prompt-dialog");
     var rows = (window.innerHeight*0.50)/25;
     textarea.rows = rows;
     textarea.readOnly = false;
 
     global.block = 1;
-    dialog = document.getElementById("prompt-overlay");
+    dialog = document.getElementById("prompt-dialog");
     dialog.addEventListener("click", function()
     {
         const rect = textarea.getBoundingClientRect();
@@ -6121,40 +6107,6 @@ function showprompt(str)
     });
 
     textarea.value = str;
-    dialog.showModal();
-    textarea.setSelectionRange(0, 0);
-    setTimeout(function() { global.block = 0; }, 40);
-}
-
-function showdescribe(str)
-{
-    var button = document.getElementById ("prompt-ok");
-    button.innerHTML = "Copy";
-    var textarea = document.getElementById ("prompt-value");
-    var rows = (window.innerHeight*0.50)/25;
-    textarea.rows = rows;
-    textarea.value = str?str:"";
-    textarea.readOnly = true;
-
-    global.block = 1;
-    const dialog = document.getElementById("prompt-overlay");
-    dialog.addEventListener("click", function()
-    {
-        const rect = textarea.getBoundingClientRect();
-        if (event.target.id == "prompt-ok")
-        {
-            copytext(textarea.value);
-            dialog.close();
-        }
-        else if (event.clientY < rect.top || event.clientY > rect.bottom ||
-            event.clientX < rect.left || event.clientX > rect.right)
-        {
-            if (global.block)
-                return;
-            dialog.close();
-        }
-    });
-
     dialog.showModal();
     textarea.setSelectionRange(0, 0);
     setTimeout(function() { global.block = 0; }, 40);
