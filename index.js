@@ -564,7 +564,7 @@ panel.gallerybar = function ()
                      ]),
                      0,
                  ]):0,
-                 0,
+                0,
                 new panel.col([0,w,0],
                  [
                      0,
@@ -1173,7 +1173,7 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     galleryobj.rotate(j);
     var k = galleryobj.value();
     galleryobj.set(e);
-    if (!k.file && (_4cnv.movingpage || !k.loaded || galleryobj.length() == 1))
+    if (!k.blob && (_4cnv.movingpage || !k.loaded || galleryobj.length() == 1))
     {
         masterload();
         _4cnv.movingpage = 0;
@@ -1896,7 +1896,7 @@ function explorearchives()
     var input = document.createElement("input");
     input.type = "file";
     input.multiple = false;
-    input.accept = "applicatoin/zip, application/vnd.rar, application/x-tar";
+    input.accept = "applicatoin/zip";
     return new Promise(function(resolve)
     {
         document.activeElement.onfocus = function()
@@ -1908,9 +1908,7 @@ function explorearchives()
         input.onchange = function()
         {
             var files = Array.from(input.files);
-            if (!file.length)
-                return;
-            return resolve(files);
+            return resolve(files[0]);
         };
 
         input.click();
@@ -1941,33 +1939,52 @@ function exploreimages()
     });
 }
 
-unzipit.setOptions(
-{
-  workerURL: 'https://unpkg.com/unzipit@0.1.9/dist/unzipit-worker.module.js',
-  numWorkers: 2,
-});
-
 async function loadzip(path)
 {
-	const {entries} = await unzipit.unzip(path);
-    Object.entries(entries).forEach(async ([name, entry]) =>
+    galleryobj.data = [];
+    galleryobj.all = [];
+    galleryobj.min = 0;
+    galleryobj.max = 0;
+    galleryobj.width = 0;
+    galleryobj.height = 0;
+    delete galleryobj.repos;
+    const {entries} = await unzipit.unzip(path);
+    let keys = Object.keys(entries);
+    for (var n = 0; n < keys.length; ++n)
     {
-        var fileName = name;
-        var ext = fileName.replace(/^.*\./, '');
+        var key = keys[n];
+        var entry = entries[key];
+        if (entry.isDirectory)
+            continue;
+        var ext = key.replace(/^.*\./, '');
         if (ext == 'png' || ext == 'jpg' || ext == 'jpeg' ||
             ext == 'webp' || ext == 'avif' || ext == 'gif')
         {
-            const blob = await entry.blob();
-            const img = new Image();
-            img.src = URL.createObjectURL(blob);
-            document.body.appendChild(img);
+            var k = {}
+            k.blob = await entries[key].blob(`image/${ext}`);
+            galleryobj.data.push(k);
+            if (!galleryobj.width)
+            {
+                var image = new Image();
+                image.src = URL.createObjectURL(k.blob);
+                image.onload = function(file)
+                {
+                    galleryobj.width = this.width;
+                    galleryobj.height = this.height;
+                    buttonobjreset()
+                };
+            }
         }
-    })
+    }
+
+    galleryobj.init(galleryobj)
+    _8cnv.timeobj.set(0);
+    _8cnvctx.refresh();
+    menuobj.setindex(_8cnvctx);
+    menuobj.show()
 }
 
-loadzip('https://greggman.github.io/unzipit/test/data/large.zip');
-
-async function dropfiles(files)
+async function dropfiles(blobs)
 {
     menuobj.hide();
     galleryobj.data = [];
@@ -1978,25 +1995,25 @@ async function dropfiles(files)
     galleryobj.height = 0;
     delete galleryobj.repos;
 
-    for (var i = 0; i < files.length; i++)
+    for (var i = 0; i < blobs.length; i++)
     {
-        var fileName = files[i].name.toLowerCase();
-        var ext = fileName.replace(/^.*\./, '');
+        var name = blobs[i].name.toLowerCase();
+        var ext = name.replace(/^.*\./, '');
         if (ext == 'png' || ext == 'jpg' || ext == 'jpeg' ||
             ext == 'webp' || ext == 'avif' || ext == 'gif')
         {
             var k = {}
-            k.file = files[i];
-            k.ispng = (ext == 'png');
+            k.blob = blobs[i];
             galleryobj.data.push(k);
             if (!galleryobj.width)
             {
                 var image = new Image();
-                image.src = URL.createObjectURL(k.file);
+                image.src = URL.createObjectURL(k.blob);
                 image.onload = function(file)
                 {
-                    galleryobj.height = this.height;
                     galleryobj.width = this.width;
+                    galleryobj.height = this.height;
+                    buttonobjreset()
                 };
             }
        }
@@ -2015,18 +2032,24 @@ var droplst =
     name: "DEFAULT",
     drop: function (context, evt)
     {
-        if (!evt.dataTransfer.files.length)
-            return;
-        dropfiles(evt.dataTransfer.files);
-    },
-},
-{
-    name: "GALLERY",
-    drop: function (context, evt)
-    {
-        if (!evt.dataTransfer.files.length)
-            return;
-        dropfiles(evt.dataTransfer.files);
+        var files = evt.dataTransfer.files;
+        if (files.length == 1 && files[0].name)
+        {
+            var ext = files[0].name.toLowerCase().replace(/^.*\./, '');
+            if (ext == 'png' || ext == 'jpg' || ext == 'jpeg' ||
+                ext == 'webp' || ext == 'avif' || ext == 'gif')
+            {
+                dropfiles(files);
+            }
+            else if (ext == 'zip')
+            {
+                loadzip(files[0]);
+            }
+        }
+        else
+        {
+            dropfiles(files);
+        }
     },
 },
 ];
@@ -2986,29 +3009,15 @@ var taplst =
             menuobj.showindex(_2cnvctx);
             context.refresh();
         }
-        /*
-        else if (context.helprect && context.helprect.hitest(x,y))
-        {
-            bossobj.set(1);
-            headobj.set(3);
-            headham.panel = headobj.value();
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            menuobj.hide();
-            _4cnvctx.refresh();
-            evt.preventDefault();
-        }
-        */
         else if (context.chapterect && context.chapterect.hitest(x,y))
         {
-            headobj.set(1);
-            headham.panel = headobj.value();
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            _5cnv.timeobj.set(0);
             menuobj.showindex(_5cnvctx);
-            context.refresh();
         }
         else if (context.extentrect && context.extentrect.hitest(x,y))
         {
-            menuobj.toggle(_8cnvctx);
+            _5cnv.timeobj.set(0);
+            menuobj.showindex(_5cnvctx);
         }
         else if (context.zoomrect && context.zoomrect.hitest(x,y))
         {
@@ -3034,23 +3043,6 @@ var taplst =
             menuobj.hide();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnvctx.refresh();
-        }
-        else
-        {
-            /*
-            var obj = new circular_array("", [1,3]);
-            obj.set(obj.findindex(headobj.current()));
-            obj.rotate(1);
-            context.hide = 0;
-            headobj.set(obj.value());
-            headham.panel = headobj.value();
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            bossobj.set(1);
-            galleryobj.transparent = 0;
-            galleryobj.hidefocus = 0;
-            context.refresh();
-            menuobj.hide();
-            */
         }
     }
 },
@@ -3095,17 +3087,6 @@ var taplst =
                 dropfiles(files);
             })
         }
-        /*
-        else if (canvas.helprect && canvas.helprect.hitest(x,y))
-        {
-            headobj.set(1);
-            bossobj.set(1);
-            headham.panel = headobj.value();
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            menuobj.showindex(_5cnvctx);
-            _4cnvctx.refresh()
-        }
-        */
         else if ( canvas.searchrect && canvas.searchrect.hitest(x,y) )
         {
             menuobj.showindex(_3cnvctx);
@@ -3192,15 +3173,6 @@ var taplst =
             exploreimages().then(function(files)
             {
                 dropfiles(files);
-                _8cnvctx.refresh();
-            })
-        }
-        else if (canvas.archiverect && canvas.archiverect.hitest(x,y))
-        {
-            explorearchives().then(function(file)
-            {
-                dropfiles(file);
-                _8cnvctx.refresh();
             })
         }
         else if (canvas.loginrect && canvas.loginrect.hitest(x,y))
@@ -3221,20 +3193,13 @@ var taplst =
         }
         else if (canvas.showpagerect && canvas.showpagerect.hitest(x,y))
         {
-            delete galleryobj.pantype;
-            headobj.set(1);
-            bossobj.set(1);
-            headham.panel = headobj.value();
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            menuobj.hide();
-            _4cnvctx.refresh();
-            context.refresh();
+            _5cnv.timeobj.set(0);
+            menuobj.showindex(_5cnvctx);
         }
         else if (context.chapterect && context.chapterect.hitest(x,y))
         {
-            delete galleryobj.pantype;
+            _5cnv.timeobj.set(0);
             menuobj.showindex(_5cnvctx);
-            context.refresh();
         }
         else if (canvas.galleryrect && canvas.galleryrect.hitest(x,y))
         {
@@ -3573,7 +3538,7 @@ bossobj.draw = function()
     if (!slice)
         return;
     context.save();
-    if (galleryobj.value().ispng || slicewidthobj.debug)
+    if (slicewidthobj.debug)
         context.clear();
     context.shadowOffsetX = 0;
     context.shadowOffsetY = 0;
@@ -3861,8 +3826,8 @@ var buttonlst =
                     user.thumbimg.src = `https://images.pexels.com/photos/${user.id}/pexels-photo-${user.id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=2160&w=1080`;
                 else if (user.full)
                     user.thumbimg.src = user.full;
-                else if (user.file)
-                    user.thumbimg.src = URL.createObjectURL(user.file);
+                else if (user.blob)
+                    user.thumbimg.src = URL.createObjectURL(user.blob);
                 else if (!user.id && user.url)
                     path = user.url;
 
@@ -4228,20 +4193,20 @@ menuobj.draw = function()
 var eventlst =
 [
     {dblclick: "DEFAULT", mouse: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", button: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 0, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "SELECT", wheel: "MENU",  drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
-    {dblclick: "BOSS", mouse: "DEFAULT", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "GALLERY", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new panel.empty(), scroll: new panel.empty(), buttonheight: 30, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "SELECT", wheel:  "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 120, width: 640},
-    {dblclick: "GALLERY", mouse: "MENU", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "GALLERY", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new panel.gallerybar(), scroll: new panel.empty(), buttonheight: 320, width: 5160},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "GALLERY", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "SELECT", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {dblclick: "BOSS", mouse: "DEFAULT", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "DEFAULT", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new panel.empty(), scroll: new panel.empty(), buttonheight: 30, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "SELECT", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 120, width: 640},
+    {dblclick: "GALLERY", mouse: "MENU", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "DEFAULT", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new panel.gallerybar(), scroll: new panel.empty(), buttonheight: 320, width: 5160},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
 ];
 
 var contextobj = new circular_array("CTX", contextlst);
@@ -4343,11 +4308,10 @@ contextobj.reset = function ()
     }
     else
     {
-        if (galleryobj.value().file)
+        if (galleryobj.value().blob)
         {
-            var file = galleryobj.value().file;
-            var path = URL.createObjectURL(file)
             photo.image = new Image();
+            var path = URL.createObjectURL(galleryobj.value().blob)
             photo.image.src = path;
         }
         else
@@ -5774,17 +5738,7 @@ galleryobj.init = function (obj)
     k.func = function()
     {
         _5cnv.sliceobj.set(this.index);
-        galleryobj.data = galleryobj.all;
-        _8cnv.sliceobj.data = galleryobj.all;
-        var a = Array(galleryobj.length()).fill().map((_, index) => index);
-        _8cnv.rotated = [...a,...a,...a];
-        galleryobj.set(0);
-        buttonobjreset();
-        delete _4cnv.thumbcanvas;
-        delete photo.image;
-        contextobj.reset();
-        menuobj.hide();
-        menuobj.toggle(_8cnvctx);
+        galleryobj.init();
     }
 
     for (var n = 0; n < _5cnv.sliceobj.length(); ++n)
@@ -5853,69 +5807,9 @@ galleryobj.init = function (obj)
     var a = Array(_9cnv.sliceobj.length()).fill().map((_, index) => index);
     _9cnv.rotated = [...a,...a,...a];
 
-    _10cnv.sliceobj.data =
-    [
-        {title:"Export Bookmarks", path: "EXPORTBOOK", func: function()
-            {
-            }},
-
-        {title:"Import Bookmarks", path: "IMPORTBOOK", func: function()
-            {
-        }},
-
-        {title:"View Bookmarks", path: "IMPORTBOOK", func: function()
-            {
-                if (localobj.bookmarked)
-                {
-                    localobj.bookmarked = 0;
-                    galleryobj.data = galleryobj.all;
-                    _8cnv.sliceobj.data = galleryobj.all;
-                }
-                else
-                {
-                    var lst = galleryobj.all.filter(function (a) { return a.bookmarked; });
-                    if (!lst.length)
-                        return;
-                    localobj.bookmarked = 1;
-                    galleryobj.data = lst;
-                    _8cnv.sliceobj.data = galleryobj.data;
-                }
-
-                var a = Array(galleryobj.length()).fill().map((_, index) => index);
-                _8cnv.rotated = [...a,...a,...a];
-                galleryobj.set(0);
-                _8cnv.sliceobj.set(0);
-                _8cnv.timeobj.set(0);
-                buttonobjreset();
-                delete _4cnv.thumbcanvas;
-                delete photo.image;
-                contextobj.reset()
-                menuobj.hide();
-                menuobj.toggle(_8cnvctx);
-                context.refresh();
-            }},
-
-        {title:"Clear Bookmarks", path: "CLEAR", func: function()
-            {
-                localobj.bookmarked = 0;
-                localobj.bookmarks = [];
-                try
-                {
-                    localStorage.setItem(url.path,JSON.stringify(localobj));
-                }
-                catch(_)
-                {
-                }
-            }},
-
-    ];
-
-    var a = Array(_10cnv.sliceobj.length()).fill().map((_, index) => index);
-    _10cnv.rotated = [...a,...a,...a];
-
     _11cnv.sliceobj.data =
     [
-        {line:"Images\njpg png webp avif", path: "LOADIMAGES", func: function()
+        {line:"Load Images\njpg png webp avif gif", path: "LOADIMAGES", func: function()
         {
             menuobj.hide();
             exploreimages().then(function(files)
@@ -5924,18 +5818,13 @@ galleryobj.init = function (obj)
             })
         }},
 
-        {line:"Archives\ncbr zip cbz rar tar", path: "LOADARCHIVE", func: function()
+        {line:"Load Archive\nzip cbz", path: "LOADARCHIVE", func: function()
         {
-            archiveOpenFile("http;//reportbase.me/example.zip", 0, function(archive, err)
+            menuobj.hide();
+            explorearchives().then(function(file)
             {
-                console.log(archive);
-            });
-
-            //menuobj.hide();
-            //explorearchives().then(function(file)
-            //{
-            //    dropfiles(file);
-            //})
+               loadzip(file);
+            })
         }},
     ];
 
@@ -5950,11 +5839,11 @@ galleryobj.init = function (obj)
     contextobj.reset();
     if (galleryobj.length())
     {
-        buttonobjreset();
         headobj.set(1);
         bossobj.set(1);
         _8cnv.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
         menuobj.hide();
+        buttonobjreset()
         menuobj.toggle(_8cnvctx);
         _4cnvctx.refresh();
     }
@@ -5967,7 +5856,13 @@ galleryobj.init = function (obj)
 url.path = "home";
 url.filter = url.searchParams.get("f");
 
-if (url.searchParams.has("p"))
+if (url.searchParams.has("z"))
+{
+    // https://greggman.github.io/unzipit/test/data/large.zip
+    var path = url.searchParams.get("z");
+    loadzip(path);
+}
+else if (url.searchParams.has("p"))
 {
     url.path = url.searchParams.get("p");
     fetch(`res/${url.path}.json`)

@@ -42,7 +42,6 @@ export default
                 j.image_url = image.url;
                 j.original = image.src.original;
                 j.thumb = image.src.medium;
-                j.ispng = j.original && j.original.toLowerCase().substr(j.original.length-4) == ".png"
                 if (width > height)
                     j.full = `${j.original}?auto=compress&cs=tinysrgb&fit=crop&h=1080&w=2160`;
                 else

@@ -27,7 +27,6 @@ export default
                 image.photographer = image.user;
                 image.photographer_url = `https://pixabay.com/users/${image.user}-${image.user_id}/`;
                 image.photographer_id = image.user_id;
-                image.ispng = image.original.toLowerCase().substr(image.original.length-4) == ".png"
                 delete image.tags;
                 delete image.type;
                  data.push(image);

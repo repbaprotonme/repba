@@ -41,7 +41,6 @@ export default
                     j.full = `${j.original}&q=80&w=2160`;
                 j.thumb = image.urls.small;
                 j.created = image.created_at.substr(0,10);
-                j.ispng = j.original.toLowerCase().substr(j.original.length-4) == ".png"
                 data.push(j);
             })
 
