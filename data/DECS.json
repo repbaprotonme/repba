@@ -1,0 +1,21 @@
+{
+  "images": 11, 
+  "template": "PORTRAIT",
+  "title": "Decorative Books",
+  "basepath": "https://reportbase.com/data/",
+  "filenames":
+  [
+      "DECS.0000.webp", 
+      "DECS.0001.webp", 
+      "DECS.0002.webp", 
+      "DECS.0003.webp", 
+      "DECS.0004.webp", 
+      "DECS.0005.webp", 
+      "DECS.0006.webp", 
+      "DECS.0007.webp", 
+      "DECS.0008.webp", 
+      "DECS.0009.webp", 
+      "DECS.0010.webp", 
+      "DECS.0011.webp"
+  ]
+}
