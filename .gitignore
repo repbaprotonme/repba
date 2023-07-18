@@ -7,9 +7,12 @@ error
 *.avif
 *.webp
 *.gif
+*.png
 *.jpg
 *.jpeg
 *.cbz
 *.cbr
 *.zip
+*.rar
+
 
