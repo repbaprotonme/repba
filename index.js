@@ -40,7 +40,7 @@ const DOTSFONT = "60px archivo black";
 const SLICEWIDTH = 30;
 const SLICEWIDTHSIZE = 256;
 const ZOOMAX = 92;
-const IMAGELSTSIZE = 120;
+const IMAGELSTSIZE = SAFARI?30:120;
 const ROUND = 8;
 
 var panel = {}
@@ -553,16 +553,11 @@ panel.gallerybar = function ()
                 ]):0,
                 0,
                  (_5cnv.sliceobj.length()>1)?
-                    new panel.col([0,w,0],
-                 [
-                     0,
-                      new Layer(
+                     new Layer(
                      [
                         new Rectangle(context.chapterect),
                         text,
-                     ]),
-                     0,
-                 ]):0,
+                     ]):0,
                 0,
                 new panel.col([0,w,0],
                  [
@@ -1928,6 +1923,7 @@ async function loadzip(path)
                     galleryobj.width = this.width;
                     galleryobj.height = this.height;
                     buttonobjreset()
+                    URL.revokeObjectURL(this.src);
                 };
             }
         }
@@ -1938,6 +1934,10 @@ async function loadzip(path)
     _8cnvctx.refresh();
     menuobj.setindex(_8cnvctx);
     menuobj.show()
+}
+
+async function loadjson(path)
+{
 }
 
 async function dropfiles(blobs)
@@ -1970,6 +1970,7 @@ async function dropfiles(blobs)
                     galleryobj.width = this.width;
                     galleryobj.height = this.height;
                     buttonobjreset()
+                    URL.revokeObjectURL(this.src);
                 };
             }
        }
@@ -2000,6 +2001,10 @@ var droplst =
             else if (ext == 'zip' || ext == 'cbz')
             {
                 loadzip(files[0]);
+            }
+            else if (ext == 'json')
+            {
+                loadgalleryblob(files[0]);
             }
         }
         else
@@ -3304,16 +3309,11 @@ var bosslst =
                      0
                  ]):0,
                 0,
-                 new panel.col([0,w,0],
-                 [
-                    0,
                      new Layer(
                      [
                         new Rectangle(context.chapterect),
                         new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
                      ]),
-                    0,
-                ]),
                 0,
                  new panel.col([0,w,0],
                  [
@@ -3655,6 +3655,8 @@ var getfrompoint = function (context, x, y)
     for (k = 0; k < slices.length; k++)
     {
         var slice = slices[k];
+        if (!slice.rect)
+            continue;
         if (slice.rect.hitest(x,y))
             break;
     }
@@ -3769,9 +3771,10 @@ var buttonlst =
                 else if (user.full)
                     user.thumbimg.src = user.full;
                 else if (user.blob)
+                    //todo
                     user.thumbimg.src = URL.createObjectURL(user.blob);
                 else if (!user.id && user.url)
-                    path = user.url;
+                    user.thumbimg.src = user.url;
 
                 user.thumbimg.onload = function()
                 {
@@ -3911,10 +3914,7 @@ var buttonlst =
                 var key = keys[n];
                 var value = user[key]
                 if (value && value.length && typeof value === 'string')
-                {
-                    if (value.substr(0,4) != "http")
-                        lst.push(value);
-                }
+                    lst.push(value);
             }
 
             var e = _8cnv.textscrollobj.berp();
@@ -4144,7 +4144,7 @@ var eventlst =
     {dblclick: "GALLERY", mouse: "MENU", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "DEFAULT", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new panel.gallerybar(), scroll: new panel.empty(), buttonheight: 320, width: 5160},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
     {dblclick: "DEFAULT", mouse: "MENU", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
@@ -4253,8 +4253,10 @@ contextobj.reset = function ()
         if (galleryobj.value().blob)
         {
             photo.image = new Image();
-            var path = URL.createObjectURL(galleryobj.value().blob)
-            photo.image.src = path;
+            var blob = URL.createObjectURL(galleryobj.value().blob)
+            if (photo.image.blob)
+                URL.revokeObjectURL(chor.href);
+            photo.image.src = blob;
         }
         else
         {
@@ -5751,7 +5753,7 @@ galleryobj.init = function (obj)
             var input = document.createElement("input");
             input.type = "file";
             input.multiple = true;
-            input.accept = "image/png, image/jpeg, image/jpg, image/webp, image/gif, image/avif";
+            input.accept = ".png,.jpeg,.jpg,.webp,.gif,.avif";
             return new Promise(function(resolve)
             {
                 document.activeElement.onfocus = function()
@@ -5770,13 +5772,33 @@ galleryobj.init = function (obj)
             });
         }},
 
+        {line:"Load Gallery\njson", path: "LOADGALLERY", func: function()
+        {
+            menuobj.hide();
+            var input = document.createElement("input");
+            input.type = "file";
+            input.multiple = false;
+            input.accept = ".json";
+            return new Promise(function(resolve)
+            {
+                input.onchange = function()
+                {
+                    var files = Array.from(input.files);
+                    loadgalleryblob(files[0]);
+                    return true;
+                };
+
+                input.click();
+            });
+        }},
+
         {line:"Load Archive\nzip cbz", path: "LOADARCHIVE", func: function()
         {
             menuobj.hide();
             var input = document.createElement("input");
             input.type = "file";
             input.multiple = false;
-            input.accept = "applicatoin/zip";
+            input.accept = ".zip,.cbz";
             return new Promise(function(resolve)
             {
                 document.activeElement.onfocus = function()
@@ -5821,44 +5843,8 @@ galleryobj.init = function (obj)
     }
  }
 
-url.path = "home";
-url.filter = url.searchParams.get("f");
-
-if (url.searchParams.has("z"))
+function loadgallery(path)
 {
-    // https://greggman.github.io/unzipit/test/data/large.zip
-    var path = url.searchParams.get("z");
-    loadzip(path);
-}
-else if (url.searchParams.has("p"))
-{
-    url.path = url.searchParams.get("p");
-    fetch(`res/${url.path}.json`)
-    .then(function (response)
-    {
-        if (!response.ok)
-            throw new Error('Network error');
-        return response.json()
-    })
-    .then((obj) => galleryobj.init(obj))
-    .catch((error) => { });
-}
-else if (url.searchParams.has("q"))
-{
-    url.path = url.searchParams.get("q");
-    fetch(`https://bucket.reportbase5836.workers.dev/${url.path}.json`)
-    .then(function (response)
-    {
-        if (!response.ok)
-            throw new Error('Network error');
-        return response.json()
-    })
-    .then((obj) => galleryobj.init(obj))
-    .catch((error) => { });
-}
-else if (url.searchParams.has("s"))
-{
-    var path = url.searchParams.get("s");
     fetch(path)
     .then(function (response)
     {
@@ -5868,6 +5854,29 @@ else if (url.searchParams.has("s"))
     })
     .then((obj) => galleryobj.init(obj))
     .catch((error) => { });
+}
+
+url.path = "home";
+url.filter = url.searchParams.get("f");
+
+if (url.searchParams.has("z"))
+{
+    loadzip(url.searchParams.get("z"));
+}
+else if (url.searchParams.has("p"))
+{
+    url.path = url.searchParams.get("p");
+    loadgallery(`res/${url.path}.json`)
+}
+else if (url.searchParams.has("q"))
+{
+    url.path = url.searchParams.get("q");
+    loadgallery(`https://bucket.reportbase5836.workers.dev/${url.path}.json`);
+}
+else if (url.searchParams.has("s"))
+{
+    var path = url.searchParams.get("s");
+    loadgallery(path);
 }
 else
 {
@@ -5882,15 +5891,7 @@ else
         path = `https://${j}.reportbase5836.workers.dev/?search=${search}&page=1`;
     }
 
-    fetch(path)
-    .then(function (response)
-    {
-        if (!response.ok)
-            throw new Error('Network error');
-        return response.json()
-    })
-    .then((obj) => galleryobj.init(obj))
-    .catch((error) => { });
+    loadgallery(path);
 }
 
 function downloadtext(name, text)
@@ -6178,13 +6179,31 @@ function buttonobjreset()
         var a = w/h;
         var height = Math.floor(window.innerWidth/a);
         var lst = [];
-        var j = Math.max(180,Math.floor(height/4));
+        var j = 120;
         var b = Math.min(180*20,Math.floor(height*3));
         for (var n = j; n < b; ++n)
             lst.push(n);
         var k = lst.findIndex(function(a){return a == height});
         _8cnv.buttonobj = new circular_array("", lst);
         _8cnv.buttonobj.set(k);
+    }
+}
+
+async function loadgalleryblob(blob)
+{
+    try
+    {
+        galleryobj.min = 0;
+        galleryobj.max = 0;
+        galleryobj.width = 0;
+        galleryobj.height = 0;
+        var str = await blob.text();
+        var json = JSON.parse(str);
+        galleryobj.init(json);
+    }
+    catch(_)
+    {
+
     }
 }
 

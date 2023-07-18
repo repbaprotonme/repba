@@ -1,2 +1,2 @@
-#node args.js ../data/max/* | jq > args.json 
-node args.js ../data/res.txt | jq > args.json
+#find * -type f > files
+node args.js ../data/starwars/files | jq > ../data/starwars/starwars.json

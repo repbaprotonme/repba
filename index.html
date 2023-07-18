@@ -32,18 +32,18 @@ dialog
   left: 50%; 
   top: 50%; 
   transform: translate(-50%, -50%); 
-  background-color: rgba(255,255,255,0.1);
+  background-color: rgba(0,0,0,0.7);
   padding: 20px 20px 20px 20px; 
   border-radius: 20px;
   max-height: 80vh;
   border-width: 5px; 
-  border-color: rgba(255,255,255,0.4); 
+  border-color: rgba(255,255,255,0.7); 
   overflow-y: scroll;
 }
 
 dialog::backdrop 
 {
-  background-color: rgba(0,0,0,0.8);
+  background-color: rgba(0,0,0,0.6);
 }
 
 label
@@ -193,16 +193,16 @@ button
 
 <dialog id="page-dialog" style="max-width: 480px;">
     <div class="earth">
-      <input type="number" id="page-input" autocapitalize="off" placeholder="Image Number"></input>
+      <input type="number" id="page-input" autocapitalize="off" placeholder="Image"></input>
     </div>
     <div class="footer">
-      <button class="fade" id="page-ok" style="" type="button">Page</button>
+      <button class="fade" id="page-ok" style="" type="button">Image</button>
     </div>
 </dialog>
 
-<dialog id="search-dialog" style="max-width: 360px;">
+<dialog id="search-dialog" style="max-width: 480px;">
     <div class="earth">
-      <input id="search-input" autocapitalize="off" placeholder="Enter Search"></input>
+      <input id="search-input" autocapitalize="off" placeholder="Search"></input>
     </div>
     <div class="footer">
       <button class="fade" id="search-ok" style="" type="button">Search</button>
@@ -211,7 +211,7 @@ button
 
 <dialog id="prompt-dialog" style="max-width: 720px;">
     <div class="earth">
-      <textarea id="prompt-input" autocapitalize="off" placeholder="Enter prompt" rows=8 style=""></textarea>
+      <textarea id="prompt-input" autocapitalize="off" placeholder="Prompt" rows=8 style=""></textarea>
     </div>
     <div class="footer">
       <button class="fade" id="prompt-ok" style="" type="button"></button>
