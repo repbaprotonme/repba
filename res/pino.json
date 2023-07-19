@@ -1,5 +1,7 @@
 {
   "title": "Repba Gallery",
+  "slidestop": 3,
+  "slidereduce": 200,
   "slicewidth": 180,
   "showsearch": 1,
   "showboss": 1,

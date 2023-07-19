@@ -1367,8 +1367,6 @@ var makehammer = function (context, v, t)
             if (typeof (ham.panel.wheeldown) == "function")
                 ham.panel.wheeldown(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey);
         }
-
-        //todo
         if (evt.deltaX < 0)
         {
             if (typeof (ham.panel.wheeleft) == "function")
@@ -1541,8 +1539,20 @@ var wheelst =
             clearTimeout(canvas.timeout);
             canvas.timeout = setTimeout(function()
             {
-                var e = {type:"swipeup"}
-                swipelst[4].swipeupdown (context, context.rect, 0, 0, e)
+                var canvas = context.canvas;
+                context.swipetype = "swipeup";
+                var slidestop = 4;
+                var slidereduce = 48;
+                movingx = new MovingAverage();
+                movingy = new MovingAverage();
+                canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
+                canvas.slidereduce = canvas.slideshow/slidereduce;
+                clearInterval(global.swipetimeout);
+                global.swipetimeout = setInterval(function ()
+                    {
+                        context.refresh();
+                    }, timemain.value());
+                context.refresh();
             }, 4);
         }
     },
@@ -1560,16 +1570,34 @@ var wheelst =
             clearTimeout(canvas.timeout);
             canvas.timeout = setTimeout(function()
             {
-                var e = {type:"swipedown"}
-                swipelst[4].swipeupdown (context, context.rect, 0, 0, e)
+                var canvas = context.canvas;
+                context.swipetype = "swipedown";
+                var slidestop = 4;
+                var slidereduce = 48;
+                movingx = new MovingAverage();
+                movingy = new MovingAverage();
+                canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
+                canvas.slidereduce = canvas.slideshow/slidereduce;
+                clearInterval(global.swipetimeout);
+                global.swipetimeout = setInterval(function ()
+                    {
+                        context.refresh();
+                    }, timemain.value());
+                context.refresh();
             }, 4);
         }
     },
  	left: function (context, x, y, ctrl, shift, alt)
     {
+        var obj = context.canvas.scrollobj.value();
+        obj.addperc(-0.01);
+        context.refresh()
     },
  	right: function (context, x, y, ctrl, shift, alt)
     {
+        var obj = context.canvas.scrollobj.value();
+        obj.addperc(0.01);
+        context.refresh()
     },
 },
 {
@@ -1584,8 +1612,20 @@ var wheelst =
             clearTimeout(context.canvas.timeout);
             context.canvas.timeout = setTimeout(function()
             {
-                var e = {type:"swipeup"}
-                swipelst[2].swipeupdown (context, context.rect, 0, 0, e)
+                var canvas = context.canvas;
+                context.swipetype = "swipeup";
+                var slidestop = 2;
+                var slidereduce = 48;
+                movingx = new MovingAverage();
+                movingy = new MovingAverage();
+                canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
+                canvas.slidereduce = canvas.slideshow/slidereduce;
+                clearInterval(global.swipetimeout);
+                global.swipetimeout = setInterval(function ()
+                    {
+                        context.refresh();
+                    }, timemain.value());
+                context.refresh();
             }, 4);
         }
     },
@@ -1599,8 +1639,20 @@ var wheelst =
             clearTimeout(context.canvas.timeout);
             context.canvas.timeout = setTimeout(function()
             {
-                var e = {type:"swipedown"}
-                swipelst[2].swipeupdown (context, context.rect, 0, 0, e)
+                var canvas = context.canvas;
+                context.swipetype = "swipedown";
+                var slidestop = 2;
+                var slidereduce = 48;
+                movingx = new MovingAverage();
+                movingy = new MovingAverage();
+                canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
+                canvas.slidereduce = canvas.slideshow/slidereduce;
+                clearInterval(global.swipetimeout);
+                global.swipetimeout = setInterval(function ()
+                    {
+                        context.refresh();
+                    }, timemain.value());
+                context.refresh();
             }, 4);
         }
     },
@@ -1683,9 +1735,15 @@ var wheelst =
 	},
  	left: function (context, x, y, ctrl, shift, alt)
     {
+        context.canvas.autodirect = -1;
+        swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
+        context.refresh();
     },
  	right: function (context, x, y, ctrl, shift, alt)
     {
+        context.canvas.autodirect = 1;
+        swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
+        context.refresh();
     },
 },
 ];
@@ -2449,7 +2507,7 @@ var swipelst =
     {
         var canvas = context.canvas;
         context.swipetype = evt.type;
-        var slidestop = 12;
+        var slidestop = 9;
         var slidereduce = 48;
         movingx = new MovingAverage();
         movingy = new MovingAverage();
@@ -2460,6 +2518,7 @@ var swipelst =
             {
                 context.refresh();
             }, timemain.value());
+        context.refresh();
    },
 },
 {
@@ -2481,6 +2540,7 @@ var swipelst =
             {
                 context.refresh();
             }, timemain.value());
+        context.refresh();
     },
 },
 {
@@ -2490,8 +2550,8 @@ var swipelst =
         var canvas = context.canvas;
         if (evt)
             canvas.autodirect = evt.type == "swipeleft"?-1:1;
-        var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:6);
-        var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:100);
+        var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:2);
+        var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:60);
         canvas.slidestop += slidestop;
         canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
         canvas.slidereduce = canvas.slidestop/slidereduce;
@@ -2500,31 +2560,12 @@ var swipelst =
             {
                 bossobj.draw()
             }, timemain.value());
+        context.refresh();
     },
 
     swipeupdown: function (context, rect, x, y, evt)
     {
     },
-},
-{
-    name: "TOUCHPAD",
-    swipeleftright: function (context, rect, x, y, evt) { },
-    swipeupdown: function (context, rect, x, y, evt)
-    {
-        var canvas = context.canvas;
-        context.swipetype = evt.type;
-        var slidestop = 4;
-        var slidereduce = 48;
-        movingx = new MovingAverage();
-        movingy = new MovingAverage();
-        canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
-        canvas.slidereduce = canvas.slideshow/slidereduce;
-        clearInterval(global.swipetimeout);
-        global.swipetimeout = setInterval(function ()
-            {
-                context.refresh();
-            }, timemain.value());
-   },
 },
 ];
 
@@ -4126,10 +4167,20 @@ menuobj.draw = function()
         offmenuctx.restore();
     }
 
-    var t = context.canvas.timeobj;
-    var c = Math.lerp(1,galleryobj.length(),1-t.berp());
-    //todo
-    infobj.data[0] = `${c.toFixed(0)} of ${galleryobj.length()}`;
+    var visibles = canvas.visibles;
+
+    var k;
+    for (k = 0; k < visibles.length; k++)
+    {
+        var j = visibles[k];
+        if (!j.slice || !j.slice.rect)
+            continue;
+        if (j.slice.rect.hitest(x,y))
+            break;
+    }
+
+    var n = visibles[k].n;
+    infobj.data[0] = `${n+1} of ${galleryobj.length()}`;
     infobj.data[1] = `${context.canvas.timeobj.ANCHOR.toFixed(6)}`;
     infobj.data[2] = `${context.canvas.timeobj.CURRENT.toFixed(6)}`;
     infobj.data[3] = `${context.canvas.visibles.length}`;
