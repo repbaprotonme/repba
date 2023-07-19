@@ -515,7 +515,7 @@ panel.gallerybar = function ()
                 ]),
                 0,
             ]),
-            new panel.rowA([80,0,26,8,ch,ck,26,20,SCROLLBARWIDTH,5],
+            new panel.rowA([80,0,26,8,ch,ck,26,26,SCROLLBARWIDTH,5],
             [
                  visib?new panel.col(
                  [
@@ -1175,7 +1175,6 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
         return;
     }
 
-    clearInterval(global.swipetimeout)
     _4cnv.slidestop = 0;
     clearInterval(global.swipetimeout);
     global.swipetimeout = 0;
@@ -1363,18 +1362,19 @@ var makehammer = function (context, v, t)
             if (typeof (ham.panel.wheelup) == "function")
                 ham.panel.wheelup(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey);
         }
-        else
+        else if (evt.deltaY > 0)
         {
             if (typeof (ham.panel.wheeldown) == "function")
                 ham.panel.wheeldown(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey);
         }
 
+        //todo
         if (evt.deltaX < 0)
         {
             if (typeof (ham.panel.wheeleft) == "function")
                 ham.panel.wheeleft(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey);
         }
-        else
+        else if (evt.deltaX > 0)
         {
             if (typeof (ham.panel.wheelright) == "function")
                 ham.panel.wheelright(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey);
@@ -1909,6 +1909,7 @@ async function loadzip(path)
             var k = {}
             k.blob = await entries[key].blob(`image/${ext}`);
             var lst = key.split("/");
+            k.ext = ext;
             k.name = lst.pop();
             k.filter = lst.join("/");
             if (!k.title)
@@ -1930,7 +1931,6 @@ async function loadzip(path)
     }
 
     galleryobj.init(galleryobj)
-    _8cnv.timeobj.set(0);
     _8cnvctx.refresh();
     menuobj.setindex(_8cnvctx);
     menuobj.show()
@@ -1959,6 +1959,7 @@ async function dropfiles(blobs)
             ext == 'webp' || ext == 'avif' || ext == 'gif')
         {
             var k = {}
+            k.ext = ext;
             k.blob = blobs[i];
             galleryobj.data.push(k);
             if (!galleryobj.width)
@@ -2249,7 +2250,7 @@ var panlst =
             var zoom = zoomobj.value()
             if (Number(zoom.value()))
             {
-                var h = (rect.height*(1-zoom.value()/100))*2;//too
+                var h = (rect.height*(1-zoom.value()/100))*2;
                 y = (y/rect.height)*h;
                 var k = panvert(rowobj, h-y);
                 if (k == -1)
@@ -2677,9 +2678,9 @@ var keylst =
             bossobj.set(1);
             headobj.set(1);
             headham.panel = headobj.value();
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             menuobj.hide();
             _4cnvctx.refresh();
+            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             evt.preventDefault();
         }
         else if (key == "escape")
@@ -2766,6 +2767,25 @@ var keylst =
         canvas.keyblock = 100;
         canvas.keydown = 0;
         context.refresh();
+        var key = evt.key.toLowerCase();
+        if (
+            (canvas.ctrlKey && key == "arrowleft") ||
+            (canvas.ctrlKey && key == "h") ||
+            (canvas.shiftKey && key == "enter") ||
+            key == "pageup")
+        {
+            context.movepage(-1);
+            evt.preventDefault();
+        }
+        else if (
+            (canvas.ctrlKey && key == "arrowright") ||
+            (canvas.ctrlKey && key == "l") ||
+            key == "enter" ||
+            key == "pagedown")
+        {
+            context.movepage(1);
+            evt.preventDefault();
+        }
 	},
 	keydown: function (evt)
 	{
@@ -2802,24 +2822,6 @@ var keylst =
             }
 
             context.refresh();
-            evt.preventDefault();
-        }
-        else if (
-            (canvas.ctrlKey && key == "arrowleft") ||
-            (canvas.ctrlKey && key == "h") ||
-            (canvas.shiftKey && key == "enter") ||
-            key == "pageup")
-        {
-            context.movepage(-1);
-            evt.preventDefault();
-        }
-        else if (
-            (canvas.ctrlKey && key == "arrowright") ||
-            (canvas.ctrlKey && key == "l") ||
-            key == "enter" ||
-            key == "pagedown")
-        {
-            context.movepage(1);
             evt.preventDefault();
         }
         else if (
@@ -3198,6 +3200,8 @@ var taplst =
             for (k = 0; k < visibles.length; k++)
             {
                 var j = visibles[k];
+                if (!j.slice || !j.slice.rect)
+                    continue;
                 if (j.slice.rect.hitest(x,y))
                     break;
             }
@@ -3295,7 +3299,7 @@ var bosslst =
             var ch = _5cnv.sliceobj.length()>1?26:-1;
             var ck = _5cnv.sliceobj.length()>1?8:-1;
             var w = Math.min(120,rect.width-100);
-            var a = new panel.rowA([0,26,8,ch,ck,26,20,SCROLLBARWIDTH,MARGINBAR],
+            var a = new panel.rowA([0,26,8,ch,ck,26,26,SCROLLBARWIDTH,MARGINBAR],
             [
                  0,
                  0?new panel.col([0,w,0],
@@ -3771,8 +3775,10 @@ var buttonlst =
                 else if (user.full)
                     user.thumbimg.src = user.full;
                 else if (user.blob)
-                    //todo
+                {
+                    URL.revokeObjectURL(user.thumbimg.src);
                     user.thumbimg.src = URL.createObjectURL(user.blob);
+                }
                 else if (!user.id && user.url)
                     user.thumbimg.src = user.url;
 
@@ -3866,6 +3872,10 @@ var buttonlst =
                             user.thumbimg,0,0,user.thumbimg.width,user.thumbimg.height,
                             0,0,user.thumbfitted.width,user.thumbfitted.height);
                         user.thumbimg.count += 1;
+                    }
+                    else
+                    {
+                        delete user.thumbimg;
                     }
 
                     if (user.isvisible)
@@ -4117,9 +4127,8 @@ menuobj.draw = function()
     }
 
     var t = context.canvas.timeobj;
-    var c = util.clamp(1,galleryobj.length()-1,
-        Math.lerp(1,galleryobj.length(),1-t.berp()));
-
+    var c = Math.lerp(1,galleryobj.length(),1-t.berp());
+    //todo
     infobj.data[0] = `${c.toFixed(0)} of ${galleryobj.length()}`;
     infobj.data[1] = `${context.canvas.timeobj.ANCHOR.toFixed(6)}`;
     infobj.data[2] = `${context.canvas.timeobj.CURRENT.toFixed(6)}`;
@@ -4253,10 +4262,9 @@ contextobj.reset = function ()
         if (galleryobj.value().blob)
         {
             photo.image = new Image();
-            var blob = URL.createObjectURL(galleryobj.value().blob)
-            if (photo.image.blob)
-                URL.revokeObjectURL(chor.href);
-            photo.image.src = blob;
+            URL.revokeObjectURL(photo.image.blob );
+            photo.image.blob = URL.createObjectURL(galleryobj.value().blob)
+            photo.image.src = photo.image.blob;
         }
         else
         {
@@ -4983,7 +4991,6 @@ var headlst =
             }
             else if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
             {
-                _8cnv.timeobj.set(0);
                 headobj.set(1);
                 bossobj.set(1);
                 headham.panel = headobj.value();
@@ -5494,6 +5501,13 @@ galleryobj.init = function (obj)
             },
             enabled: function() { return screenfull.isFullscreen; }
         },
+        {title:"Folders", path: "FOLDERS", func: function()
+            {
+                _5cnv.timeobj.set(0);
+                menuobj.showindex(_5cnvctx);
+             },
+            enabled: function() { return slicewidthobj.debug; }
+        },
         {title:"Debug", path: "DEBUG", func: function()
             {
                 menuobj.hide();
@@ -5825,13 +5839,12 @@ galleryobj.init = function (obj)
     if (j >= 0 && j < TIMEOBJ)
         _8cnv.timeobj.set(j);
     else
-        _8cnv.timeobj.set(TIMEOBJ);
+        _8cnv.timeobj.set(TIMEOBJ - TIMEOBJ/galleryobj.length()/2);
     contextobj.reset();
     if (galleryobj.length())
     {
         headobj.set(1);
         bossobj.set(1);
-        _8cnv.timeobj.set((1-galleryobj.berp())*TIMEOBJ);
         menuobj.hide();
         buttonobjreset()
         menuobj.toggle(_8cnvctx);
@@ -5980,7 +5993,6 @@ function pagedialog()
       }
     });
 
-    global.block = 1;
     dialog.classList.add('dialog');
     dialog.style.width = window.innerWidth*0.85;
     dialog.addEventListener("click", function()
@@ -5995,8 +6007,6 @@ function pagedialog()
         else if (event.clientY < rect.top || event.clientY > rect.bottom ||
             event.clientX < rect.left || event.clientX > rect.right)
         {
-            if (global.block)
-                return;
             dialog.close();
         }
     });
@@ -6013,7 +6023,6 @@ function pagedialog()
     }
 
     dialog.showModal();
-    setTimeout(function() { global.block = 0; }, 40);
 }
 
 function showsearch(repos)
@@ -6032,7 +6041,6 @@ function showsearch(repos)
         }
     });
 
-    global.block = 1;
     dialog.addEventListener("click", function()
     {
         var rect = input.getBoundingClientRect();
@@ -6048,8 +6056,6 @@ function showsearch(repos)
         {
             if (!galleryobj.length())
                 return;
-            if (global.block)
-                return;
             dialog.close();
         }
     });
@@ -6063,7 +6069,6 @@ function showsearch(repos)
 
     input.value = search;
     dialog.showModal();
-    setTimeout(function() { global.block = 0; }, 40);
 }
 
 function promptdialog(str)
@@ -6075,7 +6080,6 @@ function promptdialog(str)
     textarea.rows = rows;
     textarea.readOnly = false;
 
-    global.block = 1;
     dialog = document.getElementById("prompt-dialog");
     dialog.addEventListener("click", function()
     {
@@ -6101,8 +6105,6 @@ function promptdialog(str)
         else if (event.clientY < rect.top || event.clientY > rect.bottom ||
             event.clientX < rect.left || event.clientX > rect.right)
         {
-            if (global.block)
-                return;
             dialog.close();
         }
     });
@@ -6110,7 +6112,6 @@ function promptdialog(str)
     textarea.value = str;
     dialog.showModal();
     textarea.setSelectionRange(0, 0);
-    setTimeout(function() { global.block = 0; }, 40);
 }
 
 async function copytext(text)
