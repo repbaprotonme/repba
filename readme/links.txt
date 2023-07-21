@@ -31,24 +31,13 @@ https://github.com/trekhleb/javascript-algorithms
 https://github.com/tayllan/awesome-algorithms
 https://platform.openai.com/playground
 https://silvia-odwyer.github.io/photon/demo.html
-https://www.youtube.com/c/musicbrokers/featured
-https://mpost.io/top-50-text-to-image-prompts-for-ai-art-generators-midjourney-and-dall-e/
 https://dallery.gallery/wp-content/uploads/2022/07/The-DALL%C2%B7E-2-prompt-book-v1.02.pdf
-https://mpost.io/midjourney-and-dall-e-artist-styles-dump-with-examples-130-famous-ai-painting-techniques/
 https://blog.cloudflare.com/workers-node-js-asynclocalstorage/
 https://blog.cloudflare.comQpages-functions-with-webassembly/
 https://quickref.me/chatgpt.html
 https://www.cloudflare.com/forstartups/?utm_source=thenewstack&utm_medium=website&utm_content=inline-mention&utm_campaign=platform
-https://cdn.openai.com/papers/gpt-4.pdf
 https://civitai.com/models/86/openjourney
-https://www.expresspros.com/
 https://www.postman.com/
-https://www.futuretools.io/
-https://front.comparium.app/
-https://vectr.com/design/editor/f8a8e900-89ee-415a-91be-d9072312dba1
-https://photoscapes.com/  #slideshows
-https://developers.artsy.net/v2/docs/images
-https://api.artic.edu/docs/#conventions
 
 []
 advanced image processing

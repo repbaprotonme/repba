@@ -1,4 +1,4 @@
-//https://obfuscator.io
+//httpy://obfuscator.io
 //pvid.io
 
 /* ++ += ==
@@ -40,7 +40,7 @@ const DOTSFONT = "60px archivo black";
 const SLICEWIDTH = 30;
 const SLICEWIDTHSIZE = 256;
 const ZOOMAX = 92;
-const IMAGELSTSIZE = SAFARI?30:120;
+const IMAGELSTSIZE = SAFARI?60:120;
 const ROUND = 8;
 
 var panel = {}
@@ -103,7 +103,7 @@ util.rotated_list = function (lst, size, start, width)
 {
     width = Math.min(size, width);
     start += size - width;
-    return lst.slice(start,start+width*2);
+    return lst.slice(start,start+width*2.0);
 }
 
 let circular_array = function (title, data)
@@ -1541,7 +1541,7 @@ var wheelst =
             {
                 var canvas = context.canvas;
                 context.swipetype = "swipeup";
-                var slidestop = 4;
+                var slidestop = 2;
                 var slidereduce = 48;
                 movingx = new MovingAverage();
                 movingy = new MovingAverage();
@@ -1572,7 +1572,7 @@ var wheelst =
             {
                 var canvas = context.canvas;
                 context.swipetype = "swipedown";
-                var slidestop = 4;
+                var slidestop = 2;
                 var slidereduce = 48;
                 movingx = new MovingAverage();
                 movingy = new MovingAverage();
@@ -1590,13 +1590,13 @@ var wheelst =
  	left: function (context, x, y, ctrl, shift, alt)
     {
         var obj = context.canvas.scrollobj.value();
-        obj.addperc(-0.01);
+        obj.addperc(0.01);
         context.refresh()
     },
  	right: function (context, x, y, ctrl, shift, alt)
     {
         var obj = context.canvas.scrollobj.value();
-        obj.addperc(0.01);
+        obj.addperc(-0.01);
         context.refresh()
     },
 },
@@ -1735,6 +1735,7 @@ var wheelst =
 	},
  	left: function (context, x, y, ctrl, shift, alt)
     {
+        //todo fast
         context.canvas.autodirect = -1;
         swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
         context.refresh();
@@ -1945,6 +1946,26 @@ userobj.save = function()
 
 async function loadzip(path)
 {
+    const {entries} = await unzipit.unzip(path);
+    let keys = Object.keys(entries);
+    var count = 0;
+    for (var n = 0; n < keys.length; ++n)
+    {
+        var key = keys[n];
+        var entry = entries[key];
+        if (entry.isDirectory)
+            continue;
+        var ext = key.replace(/^.*\./, '');
+        if (ext == 'png' || ext == 'jpg' || ext == 'jpeg' ||
+            ext == 'webp' || ext == 'avif' || ext == 'gif')
+        {
+            count += 1;
+        }
+    }
+
+    if (!count)
+        return;
+
     galleryobj.data = [];
     galleryobj.all = [];
     galleryobj.min = 0;
@@ -1952,8 +1973,6 @@ async function loadzip(path)
     galleryobj.width = 0;
     galleryobj.height = 0;
     delete galleryobj.repos;
-    const {entries} = await unzipit.unzip(path);
-    let keys = Object.keys(entries);
     for (var n = 0; n < keys.length; ++n)
     {
         var key = keys[n];
@@ -1994,10 +2013,6 @@ async function loadzip(path)
     menuobj.show()
 }
 
-async function loadjson(path)
-{
-}
-
 async function dropfiles(blobs)
 {
     menuobj.hide();
@@ -2017,6 +2032,7 @@ async function dropfiles(blobs)
             ext == 'webp' || ext == 'avif' || ext == 'gif')
         {
             var k = {}
+            k.name = name;
             k.ext = ext;
             k.blob = blobs[i];
             galleryobj.data.push(k);
@@ -2063,7 +2079,7 @@ var droplst =
             }
             else if (ext == 'json')
             {
-                loadgalleryblob(files[0]);
+                loadjson(files[0]);
             }
         }
         else
@@ -2431,7 +2447,7 @@ var presslst =
             canvas.showpagerect.hitest(x,y))
             infobj.rotate(1);
         else
-            galleryobj.pantype = galleryobj.pantype == "panup"?"pandown":"panup";
+            galleryobj.noui = galleryobj.noui?0:1;
         context.refresh();
     },
     press: function (context, rect, x, y)
@@ -2452,23 +2468,22 @@ var presslst =
     pressup: function (context, rect, x, y)
     {
         galleryobj.hidefocus = 0;
-    },
+        if (context.canvas.thumbrect &&
+            !context.canvas.thumbrect.hitest(x,y))
+        {
+            headobj.set(headobj.current()?0:1);
+            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+        }
+     },
     press: function (context, rect, x, y)
     {
         if (context.zoomrect && context.zoomrect.hitest(x,y))
             return;
         if (context.stretchrect && context.stretchrect.hitest(x,y))
             return;
-        if (context.canvas.shiftKey &&
-            context.extentrect &&
-            context.extentrect.hitest(x,y))
-        {
-            if (galleryobj.value().id)
-                copytext(galleryobj.value().id);
-            extentobj.rotate(1);
-            context.refresh();
-        }
-        else
+        if (
+            context.canvas.thumbrect &&
+            context.canvas.thumbrect.hitest(x,y))
         {
             headobj.set(1);
             headham.panel = headobj.value();
@@ -2507,8 +2522,8 @@ var swipelst =
     {
         var canvas = context.canvas;
         context.swipetype = evt.type;
-        var slidestop = 9;
-        var slidereduce = 48;
+        var slidestop = 6;
+        var slidereduce = 90;
         movingx = new MovingAverage();
         movingy = new MovingAverage();
         canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
@@ -2550,8 +2565,8 @@ var swipelst =
         var canvas = context.canvas;
         if (evt)
             canvas.autodirect = evt.type == "swipeleft"?-1:1;
-        var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:2);
-        var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:60);
+        var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:6);
+        var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:120);
         canvas.slidestop += slidestop;
         canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
         canvas.slidereduce = canvas.slidestop/slidereduce;
@@ -3004,6 +3019,7 @@ var taplst =
         }
         else if (context.helprect && context.helprect.hitest(x,y))
         {
+            galleryobj.noui = 0;
             delete galleryobj.pantype;
             menuobj.toggle(_8cnvctx);
         }
@@ -3049,6 +3065,11 @@ var taplst =
             menuobj.hide();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnvctx.refresh();
+        }
+        else
+        {
+            headobj.set(1);
+            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         }
     }
 },
@@ -3825,6 +3846,8 @@ var buttonlst =
 
                 user.thumbimg.onload = function()
                 {
+                    this.width;
+                    this.height;
                     this.count = 0;
                     menuobj.draw();
                 }
@@ -3857,25 +3880,25 @@ var buttonlst =
             {
                 if (b > b2)
                 {
-                    if (user.thumbfitted.height != rect.height ||
-                        user.thumbimg.count < 1)
-                    {
-                        var thumbfittedctx = user.thumbfitted.getContext("2d");
-                        user.thumbfitted.height = rect.height;
-                        user.thumbfitted.width = rect.height*b;
-                        thumbfittedctx.drawImage(
-                            user.thumbimg,0,0,user.thumbimg.width,user.thumbimg.height,
-                            0,0,user.thumbfitted.width,user.thumbfitted.height);
-                        user.thumbimg.count += 1;
-                    }
-                    else
-                    {
-                        delete user.thumbimg;
-                    }
-
                     if  (user.isvisible)
                     {
-                        var x = Math.nub(obj.value(), obj.length(),
+                        if (user.thumbfitted.height != rect.height ||
+                            user.thumbimg.count < 1)
+                        {
+                            var thumbfittedctx = user.thumbfitted.getContext("2d");
+                            user.thumbfitted.height = rect.height;
+                            user.thumbfitted.width = rect.height*b;
+                            thumbfittedctx.drawImage(
+                                user.thumbimg,0,0,user.thumbimg.width,user.thumbimg.height,
+                                0,0,user.thumbfitted.width,user.thumbfitted.height);
+                            user.thumbimg.count += 1;
+                        }
+                        else
+                        {
+                            delete user.thumbimg;
+                        }
+
+                       var x = Math.nub(obj.value(), obj.length(),
                             rect.width, user.thumbfitted.width);
                         context.drawImage(user.thumbfitted,
                             x, 0, rect.width, rect.height,
@@ -3903,24 +3926,24 @@ var buttonlst =
                 }
                 else
                 {
-                    if (user.thumbfitted.width != rect.width ||
-                        user.thumbimg.count < 1)
-                    {
-                        var thumbfittedctx = user.thumbfitted.getContext("2d");
-                        user.thumbfitted.width = rect.width;
-                        user.thumbfitted.height = rect.width/b;
-                        thumbfittedctx.drawImage(
-                            user.thumbimg,0,0,user.thumbimg.width,user.thumbimg.height,
-                            0,0,user.thumbfitted.width,user.thumbfitted.height);
-                        user.thumbimg.count += 1;
-                    }
-                    else
-                    {
-                        delete user.thumbimg;
-                    }
-
                     if (user.isvisible)
                     {
+                        if (user.thumbfitted.width != rect.width ||
+                            user.thumbimg.count < 1)
+                        {
+                            var thumbfittedctx = user.thumbfitted.getContext("2d");
+                            user.thumbfitted.width = rect.width;
+                            user.thumbfitted.height = rect.width/b;
+                            thumbfittedctx.drawImage(
+                                user.thumbimg,0,0,user.thumbimg.width,user.thumbimg.height,
+                                0,0,user.thumbfitted.width,user.thumbfitted.height);
+                            user.thumbimg.count += 1;
+                        }
+                        else
+                        {
+                            delete user.thumbimg;
+                        }
+
                         var y = Math.nub(obj.value(), obj.length(),
                             rect.height, user.thumbfitted.height);
                         context.drawImage(user.thumbfitted,
@@ -4125,7 +4148,7 @@ menuobj.draw = function()
 
     var a = new panel.fill("rgba(0,0,0,0.4)");
     a.draw(context, rect, 0, 0);
-    var size = Math.ceil(rect.height/canvas.buttonheight)+3;
+    var size = Math.ceil(rect.height/canvas.buttonheight)+4;
     var current = Math.floor(
         Math.lerp(0,slices.length-1,1-context.canvas.timeobj.berp()));
     var slicegroup = util.rotated_list(context.canvas.rotated,slices.length,current,size);
@@ -4148,6 +4171,7 @@ menuobj.draw = function()
     offmenucnv.width = rect.width;
     offmenucnv.height = rect.height;
     var isvisiblecount = 0;
+    var current = -1;
     for (var m = 0; m < context.canvas.visibles.length; ++m)
     {
         var j = context.canvas.visibles[m];
@@ -4157,6 +4181,8 @@ menuobj.draw = function()
         j.slice.fitheight = height;
         j.slice.rect = new rectangle(0,j.y,rect.width,height);
         j.slice.isvisible = j.y > -height && j.y<window.innerHeight;
+        if (j.slice.rect.hitest(window.innerWidth/2,window.innerHeight/2))
+            current = j.n;
         isvisiblecount += j.slice.isvisible?1:0;
         offmenuctx.canvas.sliceobj = context.canvas.sliceobj;
         offmenuctx.canvas.scrollobj = context.canvas.scrollobj;
@@ -4167,28 +4193,19 @@ menuobj.draw = function()
         offmenuctx.restore();
     }
 
-    var visibles = canvas.visibles;
-
-    var k;
-    for (k = 0; k < visibles.length; k++)
-    {
-        var j = visibles[k];
-        if (!j.slice || !j.slice.rect)
-            continue;
-        if (j.slice.rect.hitest(x,y))
-            break;
-    }
-
-    var n = visibles[k].n;
-    infobj.data[0] = `${n+1} of ${galleryobj.length()}`;
+    infobj.data[0] = `${current+1} of ${galleryobj.length()}`;
+//    infobj.data[0] = `${isvisiblecount} of ${context.canvas.visibles.length}`;
+/*
     infobj.data[1] = `${context.canvas.timeobj.ANCHOR.toFixed(6)}`;
     infobj.data[2] = `${context.canvas.timeobj.CURRENT.toFixed(6)}`;
     infobj.data[3] = `${context.canvas.visibles.length}`;
-    infobj.data[4] = `${isvisiblecount} of ${context.canvas.visibles.length}`;
     infobj.data[5] = `${((context.canvas.visibles.length*canvas.buttonheight)/rect.height).toFixed(2)}`;
+*/
 
     context.drawImage(offmenucnv, 0, 0);
-    context.canvas.bar.draw(context, rect, 0, 0);
+
+    if (!galleryobj.noui)
+        context.canvas.bar.draw(context, rect, 0, 0);
     context.canvas.scroll.draw(context, rect, 0, 0);
 }
 
@@ -4230,7 +4247,7 @@ contextlst.forEach(function(context, n)
     canvas.timeobj = new circular_array("", TIMEOBJ);
     canvas.timeobj.set(TIMEOBJ/2);
     canvas.scrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
-    canvas.imagescrollobj = new circular_array("IMAGESCROLL", Math.floor(window.innerWidth));
+    canvas.imagescrollobj = new circular_array("IMAGESCROLL", window.innerWidth);
     canvas.imagescrollobj.set(0.5*canvas.imagescrollobj.length());
     canvas.textscrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
 
@@ -4319,19 +4336,8 @@ contextobj.reset = function ()
         }
         else
         {
-            var id = galleryobj.value().id;
-            var template = galleryobj.variant ? galleryobj.variant : "3840x3840";
-            var path = `https://reportbase.com/image/${id}/${template}`;
-            if (galleryobj.raw)
-                path = `https://reportbase.com/image/${id}/blob`;
-            else if (Number.isInteger(id))
-                path = `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=2160&w=1080`;
-            else if (galleryobj.value().full)
-                path = galleryobj.value().full;
-            else if (!id && galleryobj.value().url)
-                path = galleryobj.value().url;
             photo.image = new Image();
-            photo.image.src = path;
+            photo.image.src = galleryobj.getpath();
         }
 
         headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -4382,16 +4388,7 @@ function masterload()
         lst[n] = new Image();
         if (galleryobj.value().loaded)
            return;
-        var id = galleryobj.value().id;
-        var template = galleryobj.variant ? galleryobj.variant : "3840x3840";
-        var path = `https://reportbase.com/image/${id}/${template}`;
-        if (Number.isInteger(id))
-            path = `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=2160&w=1080`;
-        else if (galleryobj.value().full)
-            path = galleryobj.value().full;
-        else if (!id && galleryobj.value().url)
-            path = galleryobj.value().url;
-        lst[n].src = path;
+        lst[n].src = galleryobj.getpath();
         lst[n].index = galleryobj.current();
         lst[n].onload = function()
         {
@@ -5042,6 +5039,7 @@ var headlst =
             }
             else if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
             {
+                galleryobj.noui = 0;
                 headobj.set(1);
                 bossobj.set(1);
                 headham.panel = headobj.value();
@@ -5469,6 +5467,32 @@ function wraptext(ctx, text, maxWidth)
 let thumbfittedlst = [];
 let thumbimglst = [];
 var galleryobj = new circular_array("", 0);
+galleryobj.getrawpath = function()
+{
+    var id = galleryobj.value().id;
+    var path = `https://reportbase.com/image/${id}/blob`;
+    if (Number.isInteger(id))
+        path = `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=2160&w=1080`;
+    else if (galleryobj.value().full)
+        path = galleryobj.value().full;
+    else if (!id && galleryobj.value().url)
+       path = galleryobj.value().url;
+    return path;
+}
+
+galleryobj.getpath = function()
+{
+//        var id = galleryobj.value().id;
+//        window.open(`https://reportbase.com/image/${id}/blob`);
+    var id = galleryobj.value().id;
+    var template = galleryobj.variant ? galleryobj.variant : "3840x3840";
+    var path = `https://reportbase.com/image/${id}/${template}`;
+    if (galleryobj.value().full)
+        path = galleryobj.value().full;
+    else if (!id && galleryobj.value().url)
+        path = galleryobj.value().url;
+    return path;
+}
 
 galleryobj.init = function (obj)
 {
@@ -5523,8 +5547,34 @@ galleryobj.init = function (obj)
     [
        {title:"Download", path: "DOWNLOAD", func: function()
             {
-                download();
-                menuobj.hide();
+                if (galleryobj.value().blob)
+                {
+                      const anchor = document.createElement('a');
+                      anchor.href = URL.createObjectURL(galleryobj.value().blob);
+                      anchor.download = galleryobj.value().name;
+                      anchor.click();
+                      URL.revokeObjectURL(anchor.href);
+                      anchor.remove();
+                }
+                else
+                {
+                    fetch(galleryobj.getrawpath())
+                    .then(response => response.blob())
+                    .then(blob =>
+                    {
+                      const anchor = document.createElement('a');
+                      anchor.href = URL.createObjectURL(blob);
+                      var name = galleryobj.value().id?galleryobj.value().id:'image';
+                      anchor.download = name;
+                      anchor.click();
+                      URL.revokeObjectURL(anchor.href);
+                      anchor.remove();
+                    })
+                    .catch(error =>
+                    {
+                      console.error('Error downloading image:', error);
+                    });
+                }
             }},
         {title:"Screenshot", path: "SCREENSHOT", func: function()
             {
@@ -5725,6 +5775,7 @@ galleryobj.init = function (obj)
 
         var j = _5cnv.sliceobj.data.findIndex(function(a) { return a.filter == k.filter; });
         if (j == -1)
+            //todo
             _5cnv.sliceobj.data.push(galleryobj.all[n]);
     };
 
@@ -5849,7 +5900,7 @@ galleryobj.init = function (obj)
                 input.onchange = function()
                 {
                     var files = Array.from(input.files);
-                    loadgalleryblob(files[0]);
+                    loadjson(files[0]);
                     return true;
                 };
 
@@ -5967,47 +6018,6 @@ function downloadtext(name, text)
 	document.body.appendChild(element);
 	element.click();
 	document.body.removeChild(element);
-}
-
-function downloadimage()
-{
-    var url = `https://reportbase.com/image/HOPE.0000/blob`;
-    fetch(url)
-    .then(response => response.blob())
-    .then(blob =>
-    {
-      const anchor = document.createElement('a');
-      anchor.href = URL.createObjectURL(blob);
-      anchor.download = 'image.jpg';
-      anchor.click();
-      URL.revokeObjectURL(anchor.href);
-      anchor.remove();
-    })
-    .catch(error =>
-    {
-      console.error('Error downloading image:', error);
-    });
-}
-
-function download()
-{
-    if (galleryobj.value().image_url)
-    {
-        window.open(galleryobj.value().image_url);
-    }
-    else if (galleryobj.value().original)
-    {
-        window.open(galleryobj.value().original);
-    }
-    else if (galleryobj.value().full)
-    {
-        window.open(galleryobj.value().full);
-    }
-    else
-    {
-        var id = galleryobj.value().id;
-        window.open(`https://reportbase.com/image/${id}/blob`);
-    }
 }
 
 function pagedialog()
@@ -6238,10 +6248,13 @@ function buttonobjreset()
         var k = lst.findIndex(function(a){return a == height});
         _8cnv.buttonobj = new circular_array("", lst);
         _8cnv.buttonobj.set(k);
+        var width = height*a;
+        _8cnv.imagescrollobj = new circular_array("IMAGESCROLL", width);
+        _8cnv.imagescrollobj.set(0.5*_8cnv.imagescrollobj.length());
     }
 }
 
-async function loadgalleryblob(blob)
+async function loadjson(blob)
 {
     try
     {
