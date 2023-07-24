@@ -1,5 +1,5 @@
 //httpy://obfuscator.io
-//pvid.io
+//piv.studios
 
 /* ++ += ==
 Copyright 2017 Tom Brinkman
@@ -267,7 +267,21 @@ let circular_array = function (title, data)
 };
 
 var timemain = new circular_array("TIMEMAIN", 30);
-timemain.set(4);
+timemain.set(0);
+
+var localobj = {};
+localobj.filter = "";
+localobj.gallery = "";
+
+try
+{
+    var k = localStorage.getItem(url.path);
+    if (k)
+        localobj = JSON.parse(k);
+}
+catch(_)
+{
+}
 
 panel.yoll = function ()
 {
@@ -504,12 +518,19 @@ panel.gallerybar = function ()
         canvas.optionsrect = new rectangle();
 
         var visib = 1;
-        var w = Math.min(120,rect.width-100);
+        var w = Math.min(360,rect.width-100);
         var j = window.innerWidth - rect.width >= 180;
-        var ch = _5cnv.sliceobj.length()>1?26:-1;
-        var ck = _5cnv.sliceobj.length()>1?8:-1;
+        var title = _5cnv.sliceobj.value().title;
+        var gridlst = [];
+        if (title)
+        {
+            gridlst = title.split("/");
+            gridlst.push(infobj.value());
+        }
+
+        var rows = gridlst.length;
+        var rh = 30;
         var rounded = new panel.rounded("rgba(0,0,0,0.4)", 4, "rgba(255,255,255,0.4)", 16, 16);
-        var text = new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0));
         context.save();
         var a = new panel.layerA(
         [
@@ -529,7 +550,7 @@ panel.gallerybar = function ()
                 ]),
                 0,
             ]),
-            new panel.rowA([80,0,26,8,26,8,26,8,26,26,SCROLLBARWIDTH,5],
+            new panel.rowA([80,0,rows*rh,8,SCROLLBARWIDTH,5],
             [
                  visib?new panel.col(
                  [
@@ -555,36 +576,18 @@ panel.gallerybar = function ()
                     0,
                  ]):0,
                  0,
-                 (_5cnv.sliceobj.length()>1)?
-                     new Layer(
-                     [
-                        new Rectangle(canvas.optionsrect),
-                         text,
-                     ]):0,
-                 0,
-                 (_5cnv.sliceobj.length()>1)?
-                     new Layer(
-                     [
-                        new Rectangle(canvas.optionsrect),
-                         text,
-                     ]):0,
-                0,
-                 (_5cnv.sliceobj.length()>1)?
-                     new Layer(
-                     [
-                        new Rectangle(context.chapterect),
-                        text,
-                     ]):0,
-                0,
                 new panel.col([0,w,0],
-                 [
-                     0,
-                     new Layer(
-                     [
-                        new Rectangle(canvas.showpagerect),
-                         text,
-                     ]),
-                     0,
+                [
+                  0,
+                  new Layer(
+                  [
+                    new Rectangle(context.chapterect),
+                    new panel.gridA(1, rows, 1,
+                        new panel.shadow(new panel.text(
+                            "rgb(255,255,255)",
+                            "center", "middle",0, 0))),
+                  ]),
+                  0,
                 ]),
                 0,
                 new panel.col([5,0,5],
@@ -606,18 +609,9 @@ panel.gallerybar = function ()
         [
             canvas.timeobj,
             [
-                0, 0,
-
-                _5cnv.sliceobj.length() > 1 ?
-                    _5cnv.sliceobj.value().title : "",
                 0,
-                _5cnv.sliceobj.length() > 1 ?
-                    _5cnv.sliceobj.value().title : "",
                 0,
-                _5cnv.sliceobj.length() > 1 ?
-                    _5cnv.sliceobj.value().title : "",
-                0,
-                infobj.value(),
+                gridlst,
                 0,
                 canvas.scrollobj.value(),
                 0,
@@ -787,6 +781,17 @@ panel.fill = function (color)
     {
         context.save();
         context.fillStyle = color?color:user;
+        context.fillRect(rect.x, rect.y, rect.width, rect.height);
+        context.restore();
+    };
+};
+
+panel.randomfill = function ()
+{
+    this.draw = function (context, rect, user, time)
+    {
+        context.save();
+        context.fillStyle = util.random_color();
         context.fillRect(rect.x, rect.y, rect.width, rect.height);
         context.restore();
     };
@@ -1562,17 +1567,15 @@ var wheelst =
             {
                 var canvas = context.canvas;
                 context.swipetype = "swipeup";
-                var slidestop = 2;
-                var slidereduce = 48;
-                movingx = new MovingAverage();
-                movingy = new MovingAverage();
+                var slidestop = 3;
+                var slidereduce = 1200;
                 canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
                 canvas.slidereduce = canvas.slideshow/slidereduce;
                 clearInterval(global.swipetimeout);
                 global.swipetimeout = setInterval(function ()
-                    {
-                        context.refresh();
-                    }, timemain.value());
+                {
+                    context.refresh();
+                }, timemain.value());
                 context.refresh();
             }, 4);
         }
@@ -1593,17 +1596,15 @@ var wheelst =
             {
                 var canvas = context.canvas;
                 context.swipetype = "swipedown";
-                var slidestop = 2;
-                var slidereduce = 48;
-                movingx = new MovingAverage();
-                movingy = new MovingAverage();
+                var slidestop = 3;
+                var slidereduce = 1200;
                 canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
                 canvas.slidereduce = canvas.slideshow/slidereduce;
                 clearInterval(global.swipetimeout);
                 global.swipetimeout = setInterval(function ()
-                    {
-                        context.refresh();
-                    }, timemain.value());
+                {
+                    context.refresh();
+                }, timemain.value());
                 context.refresh();
             }, 4);
         }
@@ -1635,8 +1636,8 @@ var wheelst =
             {
                 var canvas = context.canvas;
                 context.swipetype = "swipeup";
-                var slidestop = 2;
-                var slidereduce = 48;
+                var slidestop = 1;
+                var slidereduce = 120;
                 movingx = new MovingAverage();
                 movingy = new MovingAverage();
                 canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
@@ -1662,8 +1663,8 @@ var wheelst =
             {
                 var canvas = context.canvas;
                 context.swipetype = "swipedown";
-                var slidestop = 2;
-                var slidereduce = 48;
+                var slidestop = 1;
+                var slidereduce = 120;
                 movingx = new MovingAverage();
                 movingy = new MovingAverage();
                 canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
@@ -1973,6 +1974,7 @@ async function loadzip(path)
         }
     }
 
+    localobj.gallery = 0;
     galleryobj.init(galleryobj)
     _8cnvctx.refresh();
     menuobj.setindex(_8cnvctx);
@@ -1981,6 +1983,21 @@ async function loadzip(path)
 
 async function dropfiles(blobs)
 {
+    var count = 0;
+    for (var i = 0; i < blobs.length; i++)
+    {
+        var name = blobs[i].name.toLowerCase();
+        var ext = name.replace(/^.*\./, '');
+        if (ext == 'png' || ext == 'jpg' || ext == 'jpeg' ||
+            ext == 'webp' || ext == 'avif' || ext == 'gif')
+        {
+            count += 1;
+        }
+    }
+
+    if (!count)
+        return;
+
     menuobj.hide();
     galleryobj.data = [];
     galleryobj.all = [];
@@ -2017,8 +2034,8 @@ async function dropfiles(blobs)
        }
     }
 
+    localobj.gallery = 0;
     galleryobj.init(galleryobj)
-    _8cnv.timeobj.set(0);
     _8cnvctx.refresh();
     menuobj.setindex(_8cnvctx);
     menuobj.show()
@@ -2470,8 +2487,8 @@ var swipelst =
     {
         var canvas = context.canvas;
         context.swipetype = evt.type;
-        var slidestop = 6;
-        var slidereduce = 90;
+        var slidestop = 3;
+        var slidereduce = 300;
         movingx = new MovingAverage();
         movingy = new MovingAverage();
         canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
@@ -2489,13 +2506,14 @@ var swipelst =
     swipeleftright: function (context, rect, x, y, evt)
     {
         menuobj.hide();
+        _4cnvctx.refresh();
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
         var canvas = context.canvas;
         context.swipetype = evt.type;
-        var slidestop = 4;
-        var slidereduce = 50;
+        var slidestop = 1;
+        var slidereduce = 360;
         canvas.slideshow = (context.canvas.timeobj.length()/context.canvas.virtualheight)*slidestop;
         canvas.slidereduce = canvas.slideshow/slidereduce;
         clearInterval(global.swipetimeout);
@@ -2571,19 +2589,9 @@ var keylst =
             key == "w" ||
             key == "k")
         {
-            if (canvas.ctrlKey)
-            {
-
-            }
-            else
-            {
-                galleryobj.pantype = "pandown";
-                _4cnvctx.refresh();
-                var e = {type:"swipedown"}
-                swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
-            }
-
-            evt.preventDefault();
+            //todo
+            canvas.timeobj.rotate(TIMEOBJ/galleryobj.length());
+            context.refresh()
         }
         else if (
             key == "arrowdown" ||
@@ -2592,19 +2600,8 @@ var keylst =
             key == "s" ||
             key == "j")
         {
-            if (canvas.ctrlKey)
-            {
-
-            }
-            else
-            {
-                 galleryobj.pantype = "panup";
-                _4cnvctx.refresh();
-                var e = {type:"swipeup"}
-                swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
-            }
-
-            evt.preventDefault();
+            canvas.timeobj.rotate(-TIMEOBJ/galleryobj.length());
+            context.refresh()
         }
         else if (key == "g")
         {
@@ -2627,10 +2624,7 @@ var keylst =
             key == "a" ||
             key == "h")
 		{
-            if (canvas.ctrlKey)
-                obj.set(0);
-            else
-                obj.rotateperc(-2.5);
+            obj.rotateperc(-2.5);
             context.refresh()
             evt.preventDefault();
         }
@@ -2639,10 +2633,7 @@ var keylst =
             key == "d" ||
             key == "l")
 		{
-            if (canvas.ctrlKey)
-                obj.set(obj.length()-1);
-            else
-                obj.rotateperc(2.5);
+            obj.rotateperc(2.5);
             context.refresh()
             evt.preventDefault();
         }
@@ -2980,7 +2971,7 @@ var taplst =
             menuobj.showindex(_2cnvctx);
             context.refresh();
         }
-        else if (context.chapterect && context.chapterect.hitest(x,y))
+        else if (_5cnv.sliceobj.length() > 1 && context.chapterect && context.chapterect.hitest(x,y))
         {
             _5cnv.timeobj.set(0);
             menuobj.showindex(_5cnvctx);
@@ -3161,7 +3152,7 @@ var taplst =
                 menuobj.showindex(_5cnvctx);
             }
         }
-        else if (context.chapterect && context.chapterect.hitest(x,y))
+        else if (_5cnv.sliceobj.length() > 1 && context.chapterect && context.chapterect.hitest(x,y))
         {
             _5cnv.timeobj.set(0);
             menuobj.showindex(_5cnvctx);
@@ -3310,54 +3301,45 @@ var bosslst =
             context.optionsrect = new rectangle();
             var visib = (!galleryobj.pantype ||
                 galleryobj.pantype == "pandown") ? 1 : 0;
-            var ch = _5cnv.sliceobj.length()>1?26:-1;
-            var ck = _5cnv.sliceobj.length()>1?8:-1;
-            var w = Math.min(120,rect.width-100);
-            var a = new panel.rowA([0,26,8,ch,ck,26,26,SCROLLBARWIDTH,MARGINBAR],
+            var w = Math.min(360,rect.width-100);
+            var j = window.innerWidth - rect.width >= 180;
+            var title = _5cnv.sliceobj.value().title;
+            var gridlst = [];
+            if (title)
+            {
+                gridlst = title.split("/");
+                gridlst.push(extentobj.value());
+            }
+
+            var rows = gridlst.length;
+            var rh = 30;
+            var a = new panel.rowA([0,rows*rh,8,SCROLLBARWIDTH,MARGINBAR],
             [
                  0,
-                 0?new panel.col([0,w,0],
-                 [
-                    0,
-                     new Layer(
-                     [
-                        new Rectangle(context.optionsrect),
-                        new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
-                     ]),
-                     0
-                 ]):0,
-                0,
-                     galleryobj.noui?0:new Layer(
-                     [
-                        new Rectangle(context.chapterect),
-                        new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
-                     ]),
-                0,
-                 galleryobj.noui?0:new panel.col([0,w,0],
-                 [
-                    0,
-                    new Layer(
-                    [
-                        new panel.shrink(new Rectangle(context.extentrect),4,0),
-                        new panel.shadow(new panel.text("rgb(255,255,255)", "center", "middle",0, 0)),
-                    ]),
-                    0,
+                new panel.col([0,w,0],
+                [
+                  0,
+                  new Layer(
+                  [
+                    new Rectangle(context.chapterect),
+                    new panel.gridA(1, rows, 1,
+                        new panel.shadow(new panel.text(
+                            "rgb(255,255,255)",
+                            "center", "middle",0, 0))),
+                  ]),
+                  0,
                 ]),
                 0,
                 0,
-                0
+                0,
             ]);
 
             a.draw(context, rect,
                 [
                     0,
-                    "Options",
-                    0,
-                    _5cnv.sliceobj.length() > 1 ?
-                        _5cnv.sliceobj.value().title : "",
+                    gridlst,
                     0,
                     extentobj.value(),
-                    0,
                     0,
                     0,
                 ]);
@@ -3776,6 +3758,44 @@ var buttonlst =
         var index = time%IMAGELSTSIZE;
         var view = Math.floor(time/IMAGELSTSIZE)
         user.thumbimg = thumbimglst[index]
+
+        function foo()
+        {
+            if (!context.canvas.infolst)
+            {
+                context.canvas.infolst = [];
+                context.canvas.infolst[0] = `${time+1} of ${galleryobj.length()}`;
+                let keys = Object.keys(user);
+                for (var n = 0; n < keys.length; ++n)
+                {
+                    var key = keys[n];
+                    var value = user[key]
+                    if (value && value.length && typeof value === 'string')
+                        context.canvas.infolst.push(value);
+                }
+            }
+
+            var e = _8cnv.textscrollobj.berp();
+            var a = new panel.col([25,0,25],
+            [
+                0,
+                new panel.row([15,0,20],
+                [
+                    0,
+                    new Layer(
+                    [
+                        new panel.rounded("rgba(0,0,0,0.3)", 4, "rgba(255,255,255,0.4)", 16, 16),
+                        user.tap?new panel.fill("rgba(255,125,0,0.4)"):0,
+                        new panel.shrink(new panel.multitext(e), 30, 15),
+                    ]),
+                    0,
+                ]),
+                0,
+            ]);
+
+            a.draw(context, rect, context.canvas.infolst, 0);
+        }
+
         if (context.canvas.scrollobj.current() == 0 &&
             user.thumbimg.time != time)
         {
@@ -3832,57 +3852,53 @@ var buttonlst =
             {
                 if (b > b2)
                 {
-                    if  (user.isvisible)
+                    if (user.thumbfitted.height != rect.height ||
+                        user.thumbimg.count < 1)
                     {
-                        if (user.thumbfitted.height != rect.height ||
-                            user.thumbimg.count < 1)
-                        {
-                            var thumbfittedctx = user.thumbfitted.getContext("2d");
-                            user.thumbfitted.height = rect.height;
-                            user.thumbfitted.width = rect.height*b;
-                            thumbfittedctx.drawImage(
-                                user.thumbimg,0,0,user.thumbimg.width,user.thumbimg.height,
-                                0,0,user.thumbfitted.width,user.thumbfitted.height);
-                            user.thumbimg.count += 1;
-                        }
-                        else
-                        {
-                            delete user.thumbimg;
-                        }
-
-                       var x = Math.nub(obj.value(), obj.length(),
-                            rect.width, user.thumbfitted.width);
-                        context.drawImage(user.thumbfitted,
-                            x, 0, rect.width, rect.height,
-                            0, 0, rect.width, rect.height);
+                        var thumbfittedctx = user.thumbfitted.getContext("2d");
+                        user.thumbfitted.height = rect.height;
+                        user.thumbfitted.width = rect.height*b;
+                        thumbfittedctx.drawImage(
+                            user.thumbimg,0,0,user.thumbimg.width,user.thumbimg.height,
+                            0,0,user.thumbfitted.width,user.thumbfitted.height);
+                        user.thumbimg.count += 1;
                     }
+                    else
+                    {
+                        delete user.thumbimg;
+                        foo();
+                    }
+
+                   var x = Math.nub(obj.value(), obj.length(),
+                        rect.width, user.thumbfitted.width);
+                    context.drawImage(user.thumbfitted,
+                        x, 0, rect.width, rect.height,
+                        0, 0, rect.width, rect.height);
                 }
                 else
                 {
-                    if (user.isvisible)
+                    if (user.thumbfitted.width != rect.width ||
+                        user.thumbimg.count < 1)
                     {
-                        if (user.thumbfitted.width != rect.width ||
-                            user.thumbimg.count < 1)
-                        {
-                            var thumbfittedctx = user.thumbfitted.getContext("2d");
-                            user.thumbfitted.width = rect.width;
-                            user.thumbfitted.height = rect.width/b;
-                            thumbfittedctx.drawImage(
-                                user.thumbimg,0,0,user.thumbimg.width,user.thumbimg.height,
-                                0,0,user.thumbfitted.width,user.thumbfitted.height);
-                            user.thumbimg.count += 1;
-                        }
-                        else
-                        {
-                            delete user.thumbimg;
-                        }
-
-                        var y = Math.nub(obj.value(), obj.length(),
-                            rect.height, user.thumbfitted.height);
-                        context.drawImage(user.thumbfitted,
-                            0, y, rect.width, rect.height,
-                            0, 0, rect.width, rect.height);
+                        var thumbfittedctx = user.thumbfitted.getContext("2d");
+                        user.thumbfitted.width = rect.width;
+                        user.thumbfitted.height = rect.width/b;
+                        thumbfittedctx.drawImage(
+                            user.thumbimg,0,0,user.thumbimg.width,user.thumbimg.height,
+                            0,0,user.thumbfitted.width,user.thumbfitted.height);
+                        user.thumbimg.count += 1;
                     }
+                    else
+                    {
+                        delete user.thumbimg;
+                        foo();
+                    }
+
+                    var y = Math.nub(obj.value(), obj.length(),
+                        rect.height, user.thumbfitted.height);
+                    context.drawImage(user.thumbfitted,
+                        0, y, rect.width, rect.height,
+                        0, 0, rect.width, rect.height);
                 }
             }
 
@@ -3894,36 +3910,7 @@ var buttonlst =
         }
         else
         {
-            var lst = [];
-            lst[0] = `${time+1} of ${galleryobj.length()}`;
-            let keys = Object.keys(user);
-            for (var n = 0; n < keys.length; ++n)
-            {
-                var key = keys[n];
-                var value = user[key]
-                if (value && value.length && typeof value === 'string')
-                    lst.push(value);
-            }
-
-            var e = _8cnv.textscrollobj.berp();
-            var a = new panel.col([25,0,25],
-            [
-                0,
-                new panel.row([15,0,20],
-                [
-                    0,
-                    new Layer(
-                    [
-                        new panel.rounded("rgba(0,0,0,0.3)", 4, "rgba(255,255,255,0.4)", 16, 16),
-                        user.tap?new panel.fill("rgba(255,125,0,0.4)"):0,
-                        new panel.shrink(new panel.multitext(e), 30, 15),
-                    ]),
-                    0,
-                ]),
-                0,
-            ]);
-
-            a.draw(context, rect, lst, 0);
+            foo();
         }
     }
 },
@@ -5436,8 +5423,8 @@ galleryobj.init = function (obj)
     setfavicon();
     pretchobj.split(60, "40-90", pretchobj.length());
     letchobj.split(60, "40-90", letchobj.length());
-    traitobj.split(50, "0.1-1.0", traitobj.length());
-    scapeobj.split(50, "0.1-1.0", scapeobj.length());
+    traitobj.split(60, "0.1-1.0", traitobj.length());
+    scapeobj.split(60, "0.1-1.0", scapeobj.length());
     positxpobj.set(50);
     positypobj.set(50);
     positxlobj.set(50);
@@ -5679,6 +5666,7 @@ galleryobj.init = function (obj)
             continue;
         k.func = function()
         {
+            localobj.gallery = TIMEOBJ;
             localobj.filter = this.filter;
             galleryobj.init();
         }
@@ -5849,7 +5837,7 @@ galleryobj.init = function (obj)
     _11cnv.rotated = [...a,...a,...a];
 
     var j = Number(localobj.gallery);
-    if (j >= 0 && j < TIMEOBJ)
+    if (j > 0 && j < TIMEOBJ)
         _8cnv.timeobj.set(j);
     else
         _8cnv.timeobj.set(TIMEOBJ - TIMEOBJ/galleryobj.length()/2);
@@ -6138,7 +6126,7 @@ function buttonobjreset()
     if (min && max)
     {
         var lst = [];
-        for (var n = min; n < max; ++n)
+        for (var n = min; n <= max; ++n)
             lst.push(n);
         _8cnv.buttonobj = new circular_array("", lst);
     }
@@ -6180,20 +6168,6 @@ async function loadjson(blob)
     {
 
     }
-}
-
-var localobj = {};
-localobj.filter = "";
-localobj.gallery = "";
-
-try
-{
-    var k = localStorage.getItem(url.path);
-    if (k)
-        localobj = JSON.parse(k);
-}
-catch(_)
-{
 }
 
 

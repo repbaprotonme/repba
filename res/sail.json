@@ -1118,22 +1118,1127 @@
       "quote": "If it doesnt challenge you, it wont change you."
     },
     {
-      "id": "SAIL.0127",
-      "index": "125 of 127",
-      "width": 1182,
-      "height": 1627,
-      "extent": "1182x1627 0.73",
-      "size": "1.9MP",
-      "quote": "Work while they sleep. Learn while they party. Save while they spend. Live like they dream."
+      "id": "SAIL.0129",
+      "index": "127 of 127",
+      "width": 1220,
+      "height": 1629,
+      "extent": "1220x1629 0.75",
+      "size": "2.0MP",
+      "quote": "Falling down is an accident, staying down is a choice."
     },
     {
-      "id": "SAIL.0128",
-      "index": "126 of 127",
-      "width": 1092,
-      "height": 1515,
-      "extent": "1092x1515 0.72",
+      "id": "SAIL.0000",
+      "index": "1 of 127",
+      "extent": "1228x1637 0.75",
+      "size": "2.0MP",
+      "quote": "Those who dance are considered mad by those who can't hear the music."
+    },
+    {
+      "id": "SAIL.0004",
+      "index": "2 of 127",
+      "width": 1076,
+      "height": 1564,
+      "extent": "1076x1564 0.69",
       "size": "1.7MP",
-      "quote": "They Say a Little Knowledge is a Dangerous Thing, but It's Not One Half As Bad As a Lot of Ignorance."
+      "quote": "May God have mercy on my enemies, cause I will not."
+    },
+    {
+      "id": "SAIL.0005",
+      "index": "3 of 127",
+      "width": 1078,
+      "height": 1580,
+      "extent": "1078x1580 0.68",
+      "size": "1.7MP",
+      "quote": "The difference between genius and stupidity is that genius has its limits."
+    },
+    {
+      "id": "SAIL.0006",
+      "index": "4 of 127",
+      "width": 1071,
+      "height": 1561,
+      "extent": "1071x1561 0.69",
+      "size": "1.7MP",
+      "quote": "The Harder You Work, The Luckier You Get"
+    },
+    {
+      "id": "SAIL.0007",
+      "index": "5 of 127",
+      "width": 1077,
+      "height": 1561,
+      "extent": "1077x1561 0.69",
+      "size": "1.7MP",
+      "quote": "Teamwork Makes the Dream Work"
+    },
+    {
+      "id": "SAIL.0008",
+      "index": "6 of 127",
+      "width": 1082,
+      "height": 1556,
+      "extent": "1082x1556 0.70",
+      "size": "1.7MP",
+      "quote": "OK Monday, Lets Do This"
+    },
+    {
+      "id": "SAIL.0009",
+      "index": "7 of 127",
+      "width": 1092,
+      "height": 1562,
+      "extent": "1092x1562 0.70",
+      "size": "1.7MP",
+      "quote": "Do Not Decrease the Goal, Increase the Effort"
+    },
+    {
+      "id": "SAIL.0010",
+      "index": "8 of 127",
+      "width": 1083,
+      "height": 1555,
+      "extent": "1083x1555 0.70",
+      "size": "1.7MP",
+      "quote": "We Didn't Lose the Game, We Just Ran Out of Time"
+    },
+    {
+      "id": "SAIL.0011",
+      "index": "9 of 127",
+      "width": 1078,
+      "height": 1564,
+      "extent": "1078x1564 0.69",
+      "size": "1.7MP",
+      "quote": "The Seeds of Doubt Grow Bitter Fruit"
+    },
+    {
+      "id": "SAIL.0012",
+      "index": "10 of 127",
+      "width": 1080,
+      "height": 1573,
+      "extent": "1080x1573 0.69",
+      "size": "1.7MP",
+      "quote": "Success Consists of Getting Up Just One More Time Than You Fail"
+    },
+    {
+      "id": "SAIL.0013",
+      "index": "11 of 127",
+      "width": 1082,
+      "height": 1570,
+      "extent": "1082x1570 0.69",
+      "size": "1.7MP",
+      "quote": "Enjoy Life Today, Yesterday Is Gone Tomorrow"
+    },
+    {
+      "id": "SAIL.0014",
+      "index": "12 of 127",
+      "width": 1080,
+      "height": 1568,
+      "extent": "1080x1568 0.69",
+      "size": "1.7MP",
+      "quote": "If Not Us Who? If Not Now When?"
+    },
+    {
+      "id": "SAIL.0015",
+      "index": "13 of 127",
+      "width": 1081,
+      "height": 1570,
+      "extent": "1081x1570 0.69",
+      "size": "1.7MP",
+      "quote": "If Opportunity Does Not Knock, Build a Door"
+    },
+    {
+      "id": "SAIL.0016",
+      "index": "14 of 127",
+      "width": 1081,
+      "height": 1566,
+      "extent": "1081x1566 0.69",
+      "size": "1.7MP",
+      "quote": "It Was Not Raining When Noah Built the Ark"
+    },
+    {
+      "id": "SAIL.0017",
+      "index": "15 of 127",
+      "width": 1085,
+      "height": 1567,
+      "extent": "1085x1567 0.69",
+      "size": "1.7MP",
+      "quote": "What We Are is God's Gift, What We Become is Our Gift to God"
+    },
+    {
+      "id": "SAIL.0018",
+      "index": "16 of 127",
+      "width": 1086,
+      "height": 1567,
+      "extent": "1086x1567 0.69",
+      "size": "1.7MP",
+      "quote": "The Best Way to Predict the Future is To Invent It"
+    },
+    {
+      "id": "SAIL.0019",
+      "index": "17 of 127",
+      "width": 1083,
+      "height": 1568,
+      "extent": "1083x1568 0.69",
+      "size": "1.7MP",
+      "quote": "Failure is the Condiment Which Gives Success Its Flavor"
+    },
+    {
+      "id": "SAIL.0020",
+      "index": "18 of 127",
+      "width": 1082,
+      "height": 1570,
+      "extent": "1082x1570 0.69",
+      "size": "1.7MP",
+      "quote": "I can Resist Everything Except Temptation"
+    },
+    {
+      "id": "SAIL.0021",
+      "index": "19 of 127",
+      "width": 1094,
+      "height": 1581,
+      "extent": "1094x1581 0.69",
+      "size": "1.7MP",
+      "quote": "What's Another Word For Thesaurus"
+    },
+    {
+      "id": "SAIL.0022",
+      "index": "20 of 127",
+      "width": 1091,
+      "height": 1581,
+      "extent": "1091x1581 0.69",
+      "size": "1.7MP",
+      "quote": "It Is During the Darkest Moments That We Must Focus To See the Light"
+    },
+    {
+      "id": "SAIL.0023",
+      "index": "21 of 127",
+      "width": 1081,
+      "height": 1580,
+      "extent": "1081x1580 0.68",
+      "size": "1.7MP",
+      "quote": "Winners Never Quit, Quitters Never Win"
+    },
+    {
+      "id": "SAIL.0024",
+      "index": "22 of 127",
+      "width": 1076,
+      "height": 1569,
+      "extent": "1076x1569 0.69",
+      "size": "1.7MP",
+      "quote": "If Two Wrongs Don't Make a Right, Try Three"
+    },
+    {
+      "id": "SAIL.0025",
+      "index": "23 of 127",
+      "width": 1082,
+      "height": 1580,
+      "extent": "1082x1580 0.68",
+      "size": "1.7MP",
+      "quote": "Try Being Informed Instead of Being Opinionated"
+    },
+    {
+      "id": "SAIL.0026",
+      "index": "24 of 127",
+      "width": 1086,
+      "height": 1575,
+      "extent": "1086x1575 0.69",
+      "size": "1.7MP",
+      "quote": "I Refuse to Join Any Club That Would Have Me As a Member"
+    },
+    {
+      "id": "SAIL.0027",
+      "index": "25 of 127",
+      "width": 1081,
+      "height": 1571,
+      "extent": "1081x1571 0.69",
+      "size": "1.7MP",
+      "quote": "Life is A Series of Commas, Not Periods"
+    },
+    {
+      "id": "SAIL.0028",
+      "index": "26 of 127",
+      "width": 1083,
+      "height": 1572,
+      "extent": "1083x1572 0.69",
+      "size": "1.7MP",
+      "quote": "My Fake Plants Died Because I Did Not Pretend to Water Them"
+    },
+    {
+      "id": "SAIL.0029",
+      "index": "27 of 127",
+      "width": 1082,
+      "height": 1576,
+      "extent": "1082x1576 0.69",
+      "size": "1.7MP",
+      "quote": "Life is What Happens When You Are Busy Making Other Plans"
+    },
+    {
+      "id": "SAIL.0030",
+      "index": "28 of 127",
+      "width": 1079,
+      "height": 1571,
+      "extent": "1079x1571 0.69",
+      "size": "1.7MP",
+      "quote": "We are a Conclave of Geniuses, Knows as the Intelligencia"
+    },
+    {
+      "id": "SAIL.0031",
+      "index": "29 of 127",
+      "width": 1080,
+      "height": 1572,
+      "extent": "1080x1572 0.69",
+      "size": "1.7MP",
+      "quote": "Believe You Can and You are Half Way There"
+    },
+    {
+      "id": "SAIL.0032",
+      "index": "30 of 127",
+      "width": 1080,
+      "height": 1575,
+      "extent": "1080x1575 0.69",
+      "size": "1.7MP",
+      "quote": "If you Think You Can Or Think You Can't, Either Way Your Right"
+    },
+    {
+      "id": "SAIL.0033",
+      "index": "31 of 127",
+      "width": 1078,
+      "height": 1572,
+      "extent": "1078x1572 0.69",
+      "size": "1.7MP",
+      "quote": "The Road to Success and The Road To Failure Are Exactly the Same"
+    },
+    {
+      "id": "SAIL.0034",
+      "index": "32 of 127",
+      "width": 1081,
+      "height": 1586,
+      "extent": "1081x1586 0.68",
+      "size": "1.7MP",
+      "quote": "The Secret of Getting Ahead Is Getting Started"
+    },
+    {
+      "id": "SAIL.0035",
+      "index": "33 of 127",
+      "width": 1082,
+      "height": 1577,
+      "extent": "1082x1577 0.69",
+      "size": "1.7MP",
+      "quote": "What Does Not Kill You Makes You Stronger"
+    },
+    {
+      "id": "SAIL.0036",
+      "index": "34 of 127",
+      "width": 1079,
+      "height": 1576,
+      "extent": "1079x1576 0.68",
+      "size": "1.7MP",
+      "quote": "The Harder the Conflict the More Glorious the Triumph"
+    },
+    {
+      "id": "SAIL.0037",
+      "index": "35 of 127",
+      "width": 1079,
+      "height": 1571,
+      "extent": "1079x1571 0.69",
+      "size": "1.7MP",
+      "quote": "Don't Spend Time Beating On a Wall Hoping To Tranform It Into A Door"
+    },
+    {
+      "id": "SAIL.0038",
+      "index": "36 of 127",
+      "width": 1076,
+      "height": 1574,
+      "extent": "1076x1574 0.68",
+      "size": "1.7MP",
+      "quote": "I May Not Be There Yet but I'm Closer Than I Was Yesterday"
+    },
+    {
+      "id": "SAIL.0039",
+      "index": "37 of 127",
+      "width": 1080,
+      "height": 1572,
+      "extent": "1080x1572 0.69",
+      "size": "1.7MP",
+      "quote": "Do What You Love, Love What You Do"
+    },
+    {
+      "id": "SAIL.0040",
+      "index": "38 of 127",
+      "width": 1083,
+      "height": 1580,
+      "extent": "1083x1580 0.69",
+      "size": "1.7MP",
+      "quote": "The Pessimist Sees Difficulty In Every Opportunity The Optimist Sees Opportunity In Every Difficulty"
+    },
+    {
+      "id": "SAIL.0041",
+      "index": "39 of 127",
+      "width": 1084,
+      "height": 1578,
+      "extent": "1084x1578 0.69",
+      "size": "1.7MP",
+      "quote": "If Your Going Through Hell Keep Going"
+    },
+    {
+      "id": "SAIL.0042",
+      "index": "40 of 127",
+      "width": 1082,
+      "height": 1575,
+      "extent": "1082x1575 0.69",
+      "size": "1.7MP",
+      "quote": "Open Your Mind Before Your Mouth"
+    },
+    {
+      "id": "SAIL.0043",
+      "index": "41 of 127",
+      "width": 1074,
+      "height": 1575,
+      "extent": "1074x1575 0.68",
+      "size": "1.7MP",
+      "quote": "If You Can Dream It You Can Do It"
+    },
+    {
+      "id": "SAIL.0044",
+      "index": "42 of 127",
+      "width": 1080,
+      "height": 1574,
+      "extent": "1080x1574 0.69",
+      "size": "1.7MP",
+      "quote": "Creativity Is Intelligence Having Fun"
+    },
+    {
+      "id": "SAIL.0045",
+      "index": "43 of 127",
+      "width": 1082,
+      "height": 1576,
+      "extent": "1082x1576 0.69",
+      "size": "1.7MP",
+      "quote": "Fake It Until You Make It"
+    },
+    {
+      "id": "SAIL.0046",
+      "index": "44 of 127",
+      "width": 1079,
+      "height": 1570,
+      "extent": "1079x1570 0.69",
+      "size": "1.7MP",
+      "quote": "The Secret of Getting Ahead is Getting Started"
+    },
+    {
+      "id": "SAIL.0047",
+      "index": "45 of 127",
+      "width": 1076,
+      "height": 1564,
+      "extent": "1076x1564 0.69",
+      "size": "1.7MP",
+      "quote": "The Best Way to Keep One's Word is Not to Give It"
+    },
+    {
+      "id": "SAIL.0048",
+      "index": "46 of 127",
+      "width": 1076,
+      "height": 1575,
+      "extent": "1076x1575 0.68",
+      "size": "1.7MP",
+      "quote": "Learn to Say 'No' to the Good so You can Say 'Yes' to the Best"
+    },
+    {
+      "id": "SAIL.0049",
+      "index": "47 of 127",
+      "width": 2148,
+      "height": 1578,
+      "extent": "2148x1578 1.36",
+      "size": "3.4MP",
+      "quote": "The Best Way to Hold a Man is in Your Arms"
+    },
+    {
+      "id": "SAIL.0050",
+      "index": "48 of 127",
+      "width": 1078,
+      "height": 1575,
+      "extent": "1078x1575 0.68",
+      "size": "1.7MP",
+      "quote": "The Best Question is Not What is Best, but Who Shall Decide What is Best"
+    },
+    {
+      "id": "SAIL.0051",
+      "index": "49 of 127",
+      "width": 1083,
+      "height": 1575,
+      "extent": "1083x1575 0.69",
+      "size": "1.7MP",
+      "quote": "Only a Mediocre Person is Always at His Best"
+    },
+    {
+      "id": "SAIL.0052",
+      "index": "50 of 127",
+      "width": 1082,
+      "height": 1565,
+      "extent": "1082x1565 0.69",
+      "size": "1.7MP",
+      "quote": "We've Been Gone Five Years and the Best they Could Come up With was Boy Bands?"
+    },
+    {
+      "id": "SAIL.0053",
+      "index": "51 of 127",
+      "width": 1080,
+      "height": 1573,
+      "extent": "1080x1573 0.69",
+      "size": "1.7MP",
+      "quote": "No Man has a Good Enough Memory to be a Successful Liar"
+    },
+    {
+      "id": "SAIL.0054",
+      "index": "52 of 127",
+      "width": 1080,
+      "height": 1565,
+      "extent": "1080x1565 0.69",
+      "size": "1.7MP",
+      "quote": "Get Your Facts First, then you can Distort Them as You Please"
+    },
+    {
+      "id": "SAIL.0055",
+      "index": "53 of 127",
+      "width": 1083,
+      "height": 1557,
+      "extent": "1083x1557 0.70",
+      "size": "1.7MP",
+      "quote": "All Generalizations are False, Including This One"
+    },
+    {
+      "id": "SAIL.0056",
+      "index": "54 of 127",
+      "width": 1079,
+      "height": 1576,
+      "extent": "1079x1576 0.68",
+      "size": "1.7MP",
+      "quote": "Between Two Evils, I Always Pick the One I Never Tried Before"
+    },
+    {
+      "id": "SAIL.0057",
+      "index": "55 of 127",
+      "width": 1081,
+      "height": 1576,
+      "extent": "1081x1576 0.69",
+      "size": "1.7MP",
+      "quote": "I No Doubt Deserved my Enemies, but I don't Believe I Deserved My Friends"
+    },
+    {
+      "id": "SAIL.0058",
+      "index": "56 of 127",
+      "width": 1081,
+      "height": 1569,
+      "extent": "1081x1569 0.69",
+      "size": "1.7MP",
+      "quote": "Food Is an Important Part of a Balanced Diet"
+    },
+    {
+      "id": "SAIL.0059",
+      "index": "57 of 127",
+      "width": 1085,
+      "height": 1577,
+      "extent": "1085x1577 0.69",
+      "size": "1.7MP",
+      "quote": "Housework Can't Kill You, but Why Take a Chance?"
+    },
+    {
+      "id": "SAIL.0060",
+      "index": "58 of 127",
+      "width": 1082,
+      "height": 1573,
+      "extent": "1082x1573 0.69",
+      "size": "1.7MP",
+      "quote": "There Are Lots of People who Mistake their Imagination for Their Memory"
+    },
+    {
+      "id": "SAIL.0061",
+      "index": "59 of 127",
+      "width": 1082,
+      "height": 1572,
+      "extent": "1082x1572 0.69",
+      "size": "1.7MP",
+      "quote": "The Reports of My Death Have Been Greatly Exaggerated"
+    },
+    {
+      "id": "SAIL.0062",
+      "index": "60 of 127",
+      "width": 1082,
+      "height": 1575,
+      "extent": "1082x1575 0.69",
+      "size": "1.7MP",
+      "quote": "Before I Refuse to Take Your Questions, I Have an Opening Statement"
+    },
+    {
+      "id": "SAIL.0063",
+      "index": "61 of 127",
+      "width": 1099,
+      "height": 1247,
+      "extent": "1099x1247 0.88",
+      "size": "1.4MP",
+      "quote": "A Government That Robs Peter to Pay Paul Can Always Depend on the Support of Paul"
+    },
+    {
+      "id": "SAIL.0064",
+      "index": "62 of 127",
+      "width": 1223,
+      "height": 1632,
+      "extent": "1223x1632 0.75",
+      "size": "2.0MP",
+      "quote": "I Have had a Perfectly Wonderful Evening, but this Wasn't It"
+    },
+    {
+      "id": "SAIL.0065",
+      "index": "63 of 127",
+      "width": 1097,
+      "height": 1494,
+      "extent": "1097x1494 0.73",
+      "size": "1.6MP",
+      "quote": "As For Our Majority... One is Enough"
+    },
+    {
+      "id": "SAIL.0066",
+      "index": "64 of 127",
+      "width": 1206,
+      "height": 1610,
+      "extent": "1206x1610 0.75",
+      "size": "1.9MP",
+      "quote": "I Failed to Make the Chess Team Because of My Height"
+    },
+    {
+      "id": "SAIL.0067",
+      "index": "65 of 127",
+      "width": 1117,
+      "height": 1503,
+      "extent": "1117x1503 0.74",
+      "size": "1.7MP",
+      "quote": "You Can Always Tell When a Man's Well Informed - His Views are Pretty Much Like Your Own"
+    },
+    {
+      "id": "SAIL.0068",
+      "index": "66 of 127",
+      "width": 1034,
+      "height": 1542,
+      "extent": "1034x1542 0.67",
+      "size": "1.6MP",
+      "quote": "It's Simple, If It Jiggles, It's Fat"
+    },
+    {
+      "id": "SAIL.0069",
+      "index": "67 of 127",
+      "width": 1041,
+      "height": 1544,
+      "extent": "1041x1544 0.67",
+      "size": "1.6MP",
+      "quote": "Yield to Temptation - It May Not Pass Your Way Again"
+    },
+    {
+      "id": "SAIL.0070",
+      "index": "68 of 127",
+      "width": 1039,
+      "height": 1538,
+      "extent": "1039x1538 0.68",
+      "size": "1.6MP",
+      "quote": "If I Want to Knock a Story Off the Front Page, I Just Change My Hairstyle"
+    },
+    {
+      "id": "SAIL.0071",
+      "index": "69 of 127",
+      "width": 1039,
+      "height": 1545,
+      "extent": "1039x1545 0.67",
+      "size": "1.6MP",
+      "quote": "All Right Everyone, Line Up Alphabetically According to Your Height"
+    },
+    {
+      "id": "SAIL.0072",
+      "index": "70 of 127",
+      "width": 1036,
+      "height": 1538,
+      "extent": "1036x1538 0.67",
+      "size": "1.6MP",
+      "quote": "Why Do You Have to be a Nonconformist Like Everybody Else?"
+    },
+    {
+      "id": "SAIL.0073",
+      "index": "71 of 127",
+      "width": 1040,
+      "height": 1543,
+      "extent": "1040x1543 0.67",
+      "size": "1.6MP",
+      "quote": "I was the Kid Next Door's Imaginary Friend"
+    },
+    {
+      "id": "SAIL.0074",
+      "index": "72 of 127",
+      "width": 1034,
+      "height": 1545,
+      "extent": "1034x1545 0.67",
+      "size": "1.6MP",
+      "quote": "I Don't Think Anyone Should Write Their Autobiography Until After They're Dead"
+    },
+    {
+      "id": "SAIL.0075",
+      "index": "73 of 127",
+      "width": 1034,
+      "height": 1550,
+      "extent": "1034x1550 0.67",
+      "size": "1.6MP",
+      "quote": "I Read Part of it All the Way Through"
+    },
+    {
+      "id": "SAIL.0076",
+      "index": "74 of 127",
+      "width": 1039,
+      "height": 1543,
+      "extent": "1039x1543 0.67",
+      "size": "1.6MP",
+      "quote": "There Cannot be a Crisis Next Week. My Schedule is Already Full."
+    },
+    {
+      "id": "SAIL.0077",
+      "index": "75 of 127",
+      "width": 2208,
+      "height": 1588,
+      "extent": "2208x1588 1.39",
+      "size": "3.5MP",
+      "quote": "Everybody Talks About the Weather, but Nobody Does Anything About It."
+    },
+    {
+      "id": "SAIL.0078",
+      "index": "76 of 127",
+      "width": 1046,
+      "height": 1549,
+      "extent": "1046x1549 0.68",
+      "size": "1.6MP",
+      "quote": "Originality is the Fine Art of Remembering What You Hear but Forgetting Where You Heard It."
+    },
+    {
+      "id": "SAIL.0079",
+      "index": "77 of 127",
+      "width": 1038,
+      "height": 1551,
+      "extent": "1038x1551 0.67",
+      "size": "1.6MP",
+      "quote": "Work until your idols become your rivals."
+    },
+    {
+      "id": "SAIL.0080",
+      "index": "78 of 127",
+      "width": 1038,
+      "height": 1546,
+      "extent": "1038x1546 0.67",
+      "size": "1.6MP",
+      "quote": "To Be or Not to be. That's Not Really a Question."
+    },
+    {
+      "id": "SAIL.0081",
+      "index": "79 of 127",
+      "width": 1037,
+      "height": 1547,
+      "extent": "1037x1547 0.67",
+      "size": "1.6MP",
+      "quote": "Dont limit your challenges, challenge your limits."
+    },
+    {
+      "id": "SAIL.0082",
+      "index": "80 of 127",
+      "width": 1043,
+      "height": 1557,
+      "extent": "1043x1557 0.67",
+      "size": "1.6MP",
+      "quote": "Laziness is Nothing More than the Habit of Resting Before You Get Tired"
+    },
+    {
+      "id": "SAIL.0083",
+      "index": "81 of 127",
+      "width": 1052,
+      "height": 1566,
+      "extent": "1052x1566 0.67",
+      "size": "1.6MP",
+      "quote": "Food is an Important Part of a Balanced Diet"
+    },
+    {
+      "id": "SAIL.0084",
+      "index": "82 of 127",
+      "width": 1045,
+      "height": 1562,
+      "extent": "1045x1562 0.67",
+      "size": "1.6MP",
+      "quote": "Most People Never Run Far Enough on Their First Wind to Find Out They've Got a Second."
+    },
+    {
+      "id": "SAIL.0085",
+      "index": "83 of 127",
+      "width": 1042,
+      "height": 1557,
+      "extent": "1042x1557 0.67",
+      "size": "1.6MP",
+      "quote": "What comes easy wont last, what lasts wont come easy."
+    },
+    {
+      "id": "SAIL.0086",
+      "index": "84 of 127",
+      "width": 1038,
+      "height": 1556,
+      "extent": "1038x1556 0.67",
+      "size": "1.6MP",
+      "quote": "Half the Lies They Tell About Me Aren't True."
+    },
+    {
+      "id": "SAIL.0087",
+      "index": "85 of 127",
+      "width": 1038,
+      "height": 1553,
+      "extent": "1038x1553 0.67",
+      "size": "1.6MP",
+      "quote": "If you dont build your dreams, someone else will hire you to build theirs."
+    },
+    {
+      "id": "SAIL.0088",
+      "index": "86 of 127",
+      "width": 1034,
+      "height": 1554,
+      "extent": "1034x1554 0.67",
+      "size": "1.6MP",
+      "quote": "Hard work beats talent when talent doesnt work hard."
+    },
+    {
+      "id": "SAIL.0089",
+      "index": "87 of 127",
+      "width": 1039,
+      "height": 1559,
+      "extent": "1039x1559 0.67",
+      "size": "1.6MP",
+      "quote": "Don't Play Too Much Golf. Two Rounds a Day are Plenty."
+    },
+    {
+      "id": "SAIL.0090",
+      "index": "88 of 127",
+      "width": 1036,
+      "height": 1555,
+      "extent": "1036x1555 0.67",
+      "size": "1.6MP",
+      "quote": "Be stubborn about your goals but flexible about your methods."
+    },
+    {
+      "id": "SAIL.0091",
+      "index": "89 of 127",
+      "width": 1037,
+      "height": 1555,
+      "extent": "1037x1555 0.67",
+      "size": "1.6MP",
+      "quote": "The Best Thing to Hold Onto in Life is Each Other."
+    },
+    {
+      "id": "SAIL.0092",
+      "index": "90 of 127",
+      "width": 1042,
+      "height": 1555,
+      "extent": "1042x1555 0.67",
+      "size": "1.6MP",
+      "quote": "Dont be pushed by your problems, be led by your dreams."
+    },
+    {
+      "id": "SAIL.0093",
+      "index": "91 of 127",
+      "width": 1047,
+      "height": 1558,
+      "extent": "1047x1558 0.67",
+      "size": "1.6MP",
+      "quote": "If the Facts Don't Fit the Theory, Change the Facts."
+    },
+    {
+      "id": "SAIL.0094",
+      "index": "92 of 127",
+      "width": 2200,
+      "height": 1592,
+      "extent": "2200x1592 1.38",
+      "size": "3.5MP",
+      "quote": "Theory Helps us to Bear Our Ignorance of Facts."
+    },
+    {
+      "id": "SAIL.0095",
+      "index": "93 of 127",
+      "width": 1036,
+      "height": 1557,
+      "extent": "1036x1557 0.67",
+      "size": "1.6MP",
+      "quote": "If your dreams dont scare you, they are not big enough."
+    },
+    {
+      "id": "SAIL.0096",
+      "index": "94 of 127",
+      "width": 1062,
+      "height": 1454,
+      "extent": "1062x1454 0.73",
+      "size": "1.5MP",
+      "quote": "Reason, Observation, and Experience; the Holy Trinity of Science."
+    },
+    {
+      "id": "SAIL.0097",
+      "index": "95 of 127",
+      "width": 1102,
+      "height": 1543,
+      "extent": "1102x1543 0.71",
+      "size": "1.7MP",
+      "quote": "Your Theory is Crazy, But It's Not Crazy Enough To Be True."
+    },
+    {
+      "id": "SAIL.0098",
+      "index": "96 of 127",
+      "width": 1091,
+      "height": 1561,
+      "extent": "1091x1561 0.70",
+      "size": "1.7MP",
+      "quote": "The man on top of the mountain didnt fall there."
+    },
+    {
+      "id": "SAIL.0099",
+      "index": "97 of 127",
+      "width": 1093,
+      "height": 1544,
+      "extent": "1093x1544 0.71",
+      "size": "1.7MP",
+      "quote": "Do what you have to do until you can do what you want to do."
+    },
+    {
+      "id": "SAIL.0100",
+      "index": "98 of 127",
+      "width": 1091,
+      "height": 1558,
+      "extent": "1091x1558 0.70",
+      "size": "1.7MP",
+      "quote": "Research is What I'm Doing When I Don't Know What I'm Doing."
+    },
+    {
+      "id": "SAIL.0101",
+      "index": "99 of 127",
+      "width": 1085,
+      "height": 1560,
+      "extent": "1085x1560 0.70",
+      "size": "1.7MP",
+      "quote": "Science Has Made us Gods Even Before We Are Worthy of Being Men."
+    },
+    {
+      "id": "SAIL.0102",
+      "index": "100 of 127",
+      "width": 1092,
+      "height": 1560,
+      "extent": "1092x1560 0.70",
+      "size": "1.7MP",
+      "quote": "The Virtues of Science Are Skepticism and Independence Of Thought."
+    },
+    {
+      "id": "SAIL.0103",
+      "index": "101 of 127",
+      "width": 1091,
+      "height": 1563,
+      "extent": "1091x1563 0.70",
+      "size": "1.7MP",
+      "quote": "Nobody Cares How Much You Know, Until They Know How Much You Care."
+    },
+    {
+      "id": "SAIL.0104",
+      "index": "102 of 127",
+      "width": 1089,
+      "height": 1556,
+      "extent": "1089x1556 0.70",
+      "size": "1.7MP",
+      "quote": "The Time is Always Right To Do What Is Right."
+    },
+    {
+      "id": "SAIL.0105",
+      "index": "103 of 127",
+      "width": 1084,
+      "height": 1550,
+      "extent": "1084x1550 0.70",
+      "size": "1.7MP",
+      "quote": "Judge a Man by His Questions Rather Than His Answers."
+    },
+    {
+      "id": "SAIL.0106",
+      "index": "104 of 127",
+      "width": 1087,
+      "height": 1559,
+      "extent": "1087x1559 0.70",
+      "size": "1.7MP",
+      "quote": "I Think; Therefore I Am"
+    },
+    {
+      "id": "SAIL.0107",
+      "index": "105 of 127",
+      "width": 1091,
+      "height": 1545,
+      "extent": "1091x1545 0.71",
+      "size": "1.7MP",
+      "quote": "If You Do What You've Always Done, You'll Get What You've Always Gotten."
+    },
+    {
+      "id": "SAIL.0108",
+      "index": "106 of 127",
+      "width": 1096,
+      "height": 1566,
+      "extent": "1096x1566 0.70",
+      "size": "1.7MP",
+      "quote": "You Cannot Step Into the Same River Twice."
+    },
+    {
+      "id": "SAIL.0109",
+      "index": "107 of 127",
+      "width": 1097,
+      "height": 1552,
+      "extent": "1097x1552 0.71",
+      "size": "1.7MP",
+      "quote": "Insanity is Doing the same Thing Over and Over Again and Expecting Different Results."
+    },
+    {
+      "id": "SAIL.0110",
+      "index": "108 of 127",
+      "width": 1089,
+      "height": 1569,
+      "extent": "1089x1569 0.69",
+      "size": "1.7MP",
+      "quote": "Nothing is So Good As It Seems Beforehand."
+    },
+    {
+      "id": "SAIL.0111",
+      "index": "109 of 127",
+      "width": 1092,
+      "height": 1567,
+      "extent": "1092x1567 0.70",
+      "size": "1.7MP",
+      "quote": "United We Stand, Divided We Fall."
+    },
+    {
+      "id": "SAIL.0112",
+      "index": "110 of 127",
+      "width": 1088,
+      "height": 1565,
+      "extent": "1088x1565 0.70",
+      "size": "1.7MP",
+      "quote": "Lend Yourself to Others, but Give Yourself to Yourself."
+    },
+    {
+      "id": "SAIL.0113",
+      "index": "111 of 127",
+      "width": 1092,
+      "height": 1562,
+      "extent": "1092x1562 0.70",
+      "size": "1.7MP",
+      "quote": "The Very Essence of Instinct Is That It's Followed Independently of Reason."
+    },
+    {
+      "id": "SAIL.0114",
+      "index": "112 of 127",
+      "width": 1094,
+      "height": 1556,
+      "extent": "1094x1556 0.70",
+      "size": "1.7MP",
+      "quote": "Fortune Favors the Bold."
+    },
+    {
+      "id": "SAIL.0115",
+      "index": "113 of 127",
+      "width": 1094,
+      "height": 1562,
+      "extent": "1094x1562 0.70",
+      "size": "1.7MP",
+      "quote": "In the Kingdom of the Blind, the One-Eyed Man is King."
+    },
+    {
+      "id": "SAIL.0116",
+      "index": "114 of 127",
+      "width": 1097,
+      "height": 1550,
+      "extent": "1097x1550 0.71",
+      "size": "1.7MP",
+      "quote": "You will never know your limits until you push yourself to them."
+    },
+    {
+      "id": "SAIL.0117",
+      "index": "115 of 127",
+      "width": 1096,
+      "height": 1566,
+      "extent": "1096x1566 0.70",
+      "size": "1.7MP",
+      "quote": "If we keep doing what we are doing, were going to keep getting what were getting."
+    },
+    {
+      "id": "SAIL.0118",
+      "index": "116 of 127",
+      "width": 1092,
+      "height": 1566,
+      "extent": "1092x1566 0.70",
+      "size": "1.7MP",
+      "quote": "You didnt come this far only to come this far."
+    },
+    {
+      "id": "SAIL.0119",
+      "index": "117 of 127",
+      "width": 1092,
+      "height": 1564,
+      "extent": "1092x1564 0.70",
+      "size": "1.7MP",
+      "quote": "A hill is just another opportunity to leave your competition behind."
+    },
+    {
+      "id": "SAIL.0120",
+      "index": "118 of 127",
+      "width": 1092,
+      "height": 1560,
+      "extent": "1092x1560 0.70",
+      "size": "1.7MP",
+      "quote": "A Man Doesn't Know What he Knows Until He Knows What He Doesn't Know."
+    },
+    {
+      "id": "SAIL.0121",
+      "index": "119 of 127",
+      "width": 1102,
+      "height": 1571,
+      "extent": "1102x1571 0.70",
+      "size": "1.7MP",
+      "quote": "I Shut My Eyes In Order To See."
+    },
+    {
+      "id": "SAIL.0122",
+      "index": "120 of 127",
+      "width": 1034,
+      "height": 1541,
+      "extent": "1034x1541 0.67",
+      "size": "1.6MP",
+      "quote": "He Who Defends Everything Defends Nothing."
+    },
+    {
+      "id": "SAIL.0123",
+      "index": "121 of 127",
+      "width": 1041,
+      "height": 1534,
+      "extent": "1041x1534 0.68",
+      "size": "1.6MP",
+      "quote": "When All Else is Lost, the Future Still Remains."
+    },
+    {
+      "id": "SAIL.0124",
+      "index": "122 of 127",
+      "width": 1094,
+      "height": 1564,
+      "extent": "1094x1564 0.70",
+      "size": "1.7MP",
+      "quote": "What Worries You, Masters You."
+    },
+    {
+      "id": "SAIL.0125",
+      "index": "123 of 127",
+      "width": 1093,
+      "height": 1562,
+      "extent": "1093x1562 0.70",
+      "size": "1.7MP",
+      "quote": "Real Knowledge Is to Know the Extent of One's Ignorance."
+    },
+    {
+      "id": "SAIL.0126",
+      "index": "124 of 127",
+      "width": 1037,
+      "height": 1571,
+      "extent": "1037x1571 0.66",
+      "size": "1.6MP",
+      "quote": "If it doesnt challenge you, it wont change you."
     },
     {
       "id": "SAIL.0129",
