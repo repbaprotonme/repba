@@ -295,28 +295,16 @@ panel.yoll = function ()
     		context.canvas.tap_(context, rect, x, y, shift, ctrl);
 	};
 
-    this.wheelright = function (context, x, y, ctrl, shift, alt)
+    this.wheeleftright = function (context, x, y, ctrl, shift, alt, type)
     {
-		if (context.canvas.wheelright_)
-      		context.canvas.wheelright_(context, x, y, ctrl, shift, alt);
+		if (context.canvas.wheeleftright_)
+      		context.canvas.wheeleftright_(context, x, y, ctrl, shift, alt, type);
    	};
 
-    this.wheeleft = function (context, x, y, ctrl, shift, alt)
+    this.wheelupdown = function (context, x, y, ctrl, shift, alt, type)
     {
-		if (context.canvas.wheeleft_)
-      		context.canvas.wheeleft_(context, x, y, ctrl, shift, alt);
-   	};
-
-    this.wheeldown = function (context, x, y, ctrl, shift, alt)
-    {
-		if (context.canvas.wheeldown_)
-      		context.canvas.wheeldown_(context, x, y, ctrl, shift, alt);
-   	};
-
-    this.wheelup = function (context, x, y, ctrl, shift, alt)
-    {
-		if (context.canvas.wheelup_)
-      		context.canvas.wheelup_(context, x, y, ctrl, shift, alt);
+		if (context.canvas.wheelupdown_)
+      		context.canvas.wheelupdown_(context, x, y, ctrl, shift, alt, type);
    	};
 
     this.drop = function (context, evt)
@@ -1385,23 +1373,24 @@ var makehammer = function (context, v, t)
         evt.preventDefault();
         if (evt.deltaY < 0)
         {
-            if (typeof (ham.panel.wheelup) == "function")
-                ham.panel.wheelup(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey);
+            if (typeof (ham.panel.wheelupdown) == "function")
+                ham.panel.wheelupdown(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey, "wheelup");
         }
         else if (evt.deltaY > 0)
         {
-            if (typeof (ham.panel.wheeldown) == "function")
-                ham.panel.wheeldown(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey);
+            if (typeof (ham.panel.wheelupdown) == "function")
+                ham.panel.wheelupdown(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey, "wheeldown");
         }
-        else if (evt.deltaX < 0)
+
+        if (evt.deltaX < 0)
         {
-            if (typeof (ham.panel.wheeleft) == "function")
-                ham.panel.wheeleft(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey);
+            if (typeof (ham.panel.wheeleftright) == "function")
+                ham.panel.wheeleftright(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey, "wheeleft");
         }
         else if (evt.deltaX > 0)
         {
-            if (typeof (ham.panel.wheelright) == "function")
-                ham.panel.wheelright(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey);
+            if (typeof (ham.panel.wheeleftright) == "function")
+                ham.panel.wheeleftright(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey, "wheelright");
         }
     });
 
@@ -1544,14 +1533,12 @@ var wheelst =
 [
 {
     name: "DEFAULT",
-    up: function (context, x, y, ctrl, shift, alt) { },
- 	down: function (context, x, y, ctrl, shift, alt) { },
- 	left: function (context, x, y, ctrl, shift, alt) { },
- 	right: function (context, x, y, ctrl, shift, alt) { },
+    updown: function (context, x, y, ctrl, shift, alt, type) { },
+ 	leftright: function (context, x, y, ctrl, shift, alt, type) { },
 },
 {
     name: "GALLERY",
-    up: function (context, x, y, ctrl, shift, alt)
+    updown: function (context, x, y, ctrl, shift, alt, type)
     {
         var canvas = context.canvas;
         if (ctrl)
@@ -1562,69 +1549,30 @@ var wheelst =
         }
         else
         {
-            clearTimeout(canvas.timeout);
-            canvas.timeout = setTimeout(function()
+            var canvas = context.canvas;
+            canvas.autodirect = type == "wheelup" ? -1 : 1;
+            var slidestop = 2;
+            var slidereduce = 100;
+            canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
+            canvas.slidereduce = canvas.slideshow/slidereduce;
+            clearInterval(global.swipetimeout);
+            global.swipetimeout = setInterval(function ()
             {
-                var canvas = context.canvas;
-                context.swipetype = "swipeup";
-                var slidestop = 3;
-                var slidereduce = 1200;
-                canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
-                canvas.slidereduce = canvas.slideshow/slidereduce;
-                clearInterval(global.swipetimeout);
-                global.swipetimeout = setInterval(function ()
-                {
-                    context.refresh();
-                }, timemain.value());
                 context.refresh();
-            }, 4);
-        }
-    },
- 	down: function (context, x, y, ctrl, shift, alt)
-    {
-        var canvas = context.canvas;
-        if (ctrl)
-        {
-            var buttonobj = canvas.buttonobj;
-            buttonobj.addperc(-1.5/100);
+            }, timemain.value());
             context.refresh();
         }
-        else
-        {
-            clearTimeout(canvas.timeout);
-            canvas.timeout = setTimeout(function()
-            {
-                var canvas = context.canvas;
-                context.swipetype = "swipedown";
-                var slidestop = 3;
-                var slidereduce = 1200;
-                canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
-                canvas.slidereduce = canvas.slideshow/slidereduce;
-                clearInterval(global.swipetimeout);
-                global.swipetimeout = setInterval(function ()
-                {
-                    context.refresh();
-                }, timemain.value());
-                context.refresh();
-            }, 4);
-        }
     },
- 	left: function (context, x, y, ctrl, shift, alt)
+ 	leftright: function (context, x, y, ctrl, shift, alt, type)
     {
         var obj = context.canvas.scrollobj.value();
-        obj.addperc(0.01);
-        context.refresh()
-    },
- 	right: function (context, x, y, ctrl, shift, alt)
-    {
-        var obj = context.canvas.scrollobj.value();
-        obj.addperc(-0.01);
+        obj.addperc(type == "wheeleft" ?  0.01 : -0.01);
         context.refresh()
     },
 },
 {
     name: "MENU",
-    up: function (context, x, y, ctrl, shift, alt)
+    updown: function (context, x, y, ctrl, shift, alt, type)
     {
         if (ctrl)
         {
@@ -1635,12 +1583,10 @@ var wheelst =
             context.canvas.timeout = setTimeout(function()
             {
                 var canvas = context.canvas;
-                context.swipetype = "swipeup";
+                canvas.autodirect = type == "wheelup" ? -1 : 1;
                 var slidestop = 1;
-                var slidereduce = 120;
-                movingx = new MovingAverage();
-                movingy = new MovingAverage();
-                canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
+                var slidereduce = 60;
+                canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
                 canvas.slidereduce = canvas.slideshow/slidereduce;
                 clearInterval(global.swipetimeout);
                 global.swipetimeout = setInterval(function ()
@@ -1651,43 +1597,13 @@ var wheelst =
             }, 4);
         }
     },
- 	down: function (context, x, y, ctrl, shift, alt)
-    {
-        if (ctrl)
-        {
-        }
-        else
-        {
-            clearTimeout(context.canvas.timeout);
-            context.canvas.timeout = setTimeout(function()
-            {
-                var canvas = context.canvas;
-                context.swipetype = "swipedown";
-                var slidestop = 1;
-                var slidereduce = 120;
-                movingx = new MovingAverage();
-                movingy = new MovingAverage();
-                canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
-                canvas.slidereduce = canvas.slideshow/slidereduce;
-                clearInterval(global.swipetimeout);
-                global.swipetimeout = setInterval(function ()
-                    {
-                        context.refresh();
-                    }, timemain.value());
-                context.refresh();
-            }, 4);
-        }
-    },
- 	left: function (context, x, y, ctrl, shift, alt)
-    {
-    },
- 	right: function (context, x, y, ctrl, shift, alt)
+ 	leftright: function (context, x, y, ctrl, shift, alt)
     {
     },
 },
 {
     name: "BOSS",
-    up: function (context, x, y, ctrl, shift, alt)
+    updown: function (context, x, y, ctrl, shift, alt, type)
     {
         if (ctrl)
         {
@@ -1698,72 +1614,44 @@ var wheelst =
                 pinchobj.set(0);
                 var obj = heightobj.value();
                 delete context.canvas.thumbcanvas;
-                obj.add(1);
+                obj.add(type=="wheelup"?1:-1);
                 context.refresh();
             }
             else
             {
-                zoomobj.value().add(1);
+                zoomobj.value().add(type=="wheelup"?1:-1);
                 contextobj.reset()
             }
         }
         else if (shift)
         {
-            stretchobj.value().add(1);
+            stretchobj.value().add(type=="wheelup"?1:-1);
             context.refresh();
         }
         else
         {
             var zoom = zoomobj.value();
             var j = (100-zoom.value())/100;
-            rowobj.add(j*10);
+            var k = type=="wheelup"?1:-1;
+            rowobj.add(k*j*10);
             contextobj.reset()
         }
 	},
- 	down: function (context, x, y, ctrl, shift, alt)
+ 	leftright: function (context, x, y, ctrl, shift, alt, type)
     {
-        if (ctrl)
-        {
-            var isthumb = context.canvas.thumbrect &&
-                   context.canvas.thumbrect.hitest(x,y);
-            if (isthumb)
+        var canvas = context.canvas;
+        canvas.autodirect = type == "wheeleft" ? -1 : 1;
+        var slidestop = 2;
+        var slidereduce = 100;
+        canvas.slidestop += slidestop;
+        canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
+        canvas.slidereduce = canvas.slidestop/slidereduce;
+        clearInterval(global.swipetimeout);
+        global.swipetimeout = setInterval(function ()
             {
-                pinchobj.set(0);
-                var obj = heightobj.value();
-                delete context.canvas.thumbcanvas;
-                obj.add(-1);
-                context.refresh();
-            }
-            else
-            {
-                zoomobj.value().add(-1);
-                contextobj.reset()
-            }
-        }
-        else if (shift)
-        {
-            stretchobj.value().add(-1);
-            context.refresh();
-        }
-        else
-        {
-            var zoom = zoomobj.value();
-            var j = (100-zoom.value())/100;
-            rowobj.add(-j*10);
-            contextobj.reset()
-        }
-	},
- 	left: function (context, x, y, ctrl, shift, alt)
-    {
-        var k = 15000/context.canvas.virtualwidth;
-        context.canvas.timeobj.rotate(-k);
-        context.refresh()
-    },
- 	right: function (context, x, y, ctrl, shift, alt)
-    {
-        var k = 15000/context.canvas.virtualwidth;
-        context.canvas.timeobj.rotate(k);
-        context.refresh()
+                bossobj.draw()
+            }, timemain.value());
+        context.refresh();
     },
 },
 ];
@@ -2438,10 +2326,6 @@ var presslst =
      },
     press: function (context, rect, x, y)
     {
-        if (context.zoomrect && context.zoomrect.hitest(x,y))
-            return;
-        if (context.stretchrect && context.stretchrect.hitest(x,y))
-            return;
         if (
             context.canvas.thumbrect &&
             context.canvas.thumbrect.hitest(x,y))
@@ -2462,9 +2346,10 @@ var presslst =
         }
         else
         {
-            galleryobj.noui = galleryobj.noui?0:1;
+            headobj.set(bossobj.noui);
         }
 
+        headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         context.refresh();
     }
 },
@@ -2486,12 +2371,10 @@ var swipelst =
     swipeupdown: function (context, rect, x, y, evt)
     {
         var canvas = context.canvas;
-        context.swipetype = evt.type;
-        var slidestop = 3;
-        var slidereduce = 300;
-        movingx = new MovingAverage();
-        movingy = new MovingAverage();
-        canvas.slideshow = (canvas.timeobj.length()/canvas.virtualheight)*slidestop;
+        canvas.autodirect = evt.type == "swipeup" ? -1 : 1;
+        var slidestop = 6;
+        var slidereduce = 120;
+        canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
         canvas.slidereduce = canvas.slideshow/slidereduce;
         clearInterval(global.swipetimeout);
         global.swipetimeout = setInterval(function ()
@@ -2511,10 +2394,9 @@ var swipelst =
     swipeupdown: function (context, rect, x, y, evt)
     {
         var canvas = context.canvas;
-        context.swipetype = evt.type;
         var slidestop = 1;
         var slidereduce = 360;
-        canvas.slideshow = (context.canvas.timeobj.length()/context.canvas.virtualheight)*slidestop;
+        canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
         canvas.slidereduce = canvas.slideshow/slidereduce;
         clearInterval(global.swipetimeout);
         global.swipetimeout = setInterval(function ()
@@ -2529,8 +2411,7 @@ var swipelst =
     swipeleftright: function (context, rect, x, y, evt)
     {
         var canvas = context.canvas;
-        if (evt)
-            canvas.autodirect = evt.type == "swipeleft"?-1:1;
+        canvas.autodirect = evt.type == "swipeleft"?-1:1;
         var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:6);
         var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:120);
         canvas.slidestop += slidestop;
@@ -2589,8 +2470,8 @@ var keylst =
             key == "w" ||
             key == "k")
         {
-            //todo
-            canvas.timeobj.rotate(TIMEOBJ/galleryobj.length());
+            var j = TIMEOBJ/galleryobj.length();
+            canvas.timeobj.rotate(j);
             context.refresh()
         }
         else if (
@@ -2600,7 +2481,8 @@ var keylst =
             key == "s" ||
             key == "j")
         {
-            canvas.timeobj.rotate(-TIMEOBJ/galleryobj.length());
+            var j = TIMEOBJ/galleryobj.length();
+            canvas.timeobj.rotate(-j);
             context.refresh()
         }
         else if (key == "g")
@@ -2829,8 +2711,7 @@ var keylst =
             canvas.block = 1;
             setTimeout(function() { canvas.block = 0; }, canvas.keyblock);
             canvas.keyblock = util.clamp(50,200,canvas.keyblock-5);
-            canvas.autodirect = 1;
-            swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
+            swipeobj.value().swipeleftright(context, context.rect(), 0, 0, {type:"swipe"})
             evt.preventDefault();
         }
         else if (
@@ -2842,8 +2723,7 @@ var keylst =
             canvas.block = 1;
             setTimeout(function() { canvas.block = 0; }, canvas.keyblock);
             canvas.keyblock = util.clamp(50,200,canvas.keyblock-5);
-            canvas.autodirect = -1;
-            swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
+            swipeobj.value().swipeleftright(context, context.rect(), 0, 0, {type:"swipeleft"} )
             evt.preventDefault();
         }
         else if (
@@ -3299,8 +3179,6 @@ var bosslst =
             context.extentrect = new rectangle();
             context.chapterect = new rectangle();
             context.optionsrect = new rectangle();
-            var visib = (!galleryobj.pantype ||
-                galleryobj.pantype == "pandown") ? 1 : 0;
             var w = Math.min(360,rect.width-100);
             var j = window.innerWidth - rect.width >= 180;
             var title = _5cnv.sliceobj.value().title;
@@ -3316,7 +3194,7 @@ var bosslst =
             var a = new panel.rowA([0,rows*rh,8,SCROLLBARWIDTH,MARGINBAR],
             [
                  0,
-                new panel.col([0,w,0],
+                headobj.current()?new panel.col([0,w,0],
                 [
                   0,
                   new Layer(
@@ -3328,7 +3206,7 @@ var bosslst =
                             "center", "middle",0, 0))),
                   ]),
                   0,
-                ]),
+                ]):0,
                 0,
                 0,
                 0,
@@ -3458,7 +3336,7 @@ bossobj.draw = function()
         canvas.slidestop -= canvas.slidereduce;
         if (canvas.slidestop > 0)
         {
-            var j = _4cnv.autodirect*(TIMEOBJ/1000)
+            var j = canvas.autodirect*(TIMEOBJ/1000)
             canvas.timeobj.rotate(j*canvas.slidestop);
         }
         else
@@ -3690,7 +3568,7 @@ var buttonlst =
             0,
         ]);
 
-        a.draw(context, rect, user.line.split("\n"), time);
+        a.draw(context, rect, user.title.split("\n"), time);
         context.restore();
     }
 },
@@ -4001,7 +3879,6 @@ menuobj.show = function()
         context.show(l, 0, w, window.innerHeight);
     }
 
-    delete context.swipetype;
     clearInterval(global.timeout);
     headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
     context.refresh();
@@ -4025,7 +3902,7 @@ menuobj.draw = function()
 
     if (context.canvas.slideshow > 0)
     {
-        var k = (context.swipetype == "swipeup")?-1:1;
+        var k = canvas.autodirect;
         context.canvas.timeobj.rotate(k*context.canvas.slideshow);
         context.canvas.slideshow -= context.canvas.slidereduce
     }
@@ -4072,7 +3949,7 @@ menuobj.draw = function()
     offmenucnv.width = rect.width;
     offmenucnv.height = rect.height;
     var isvisiblecount = 0;
-    var current = -1;
+    menuobj.centered = 0;
     for (var m = 0; m < context.canvas.visibles.length; ++m)
     {
         var j = context.canvas.visibles[m];
@@ -4083,7 +3960,7 @@ menuobj.draw = function()
         j.slice.rect = new rectangle(0,j.y,rect.width,height);
         j.slice.isvisible = j.y > -height && j.y<window.innerHeight;
         if (j.slice.rect.hitest(window.innerWidth/2,window.innerHeight/2))
-            current = j.n;
+            menuobj.centered = j.n;
         isvisiblecount += j.slice.isvisible?1:0;
         offmenuctx.canvas.sliceobj = context.canvas.sliceobj;
         offmenuctx.canvas.scrollobj = context.canvas.scrollobj;
@@ -4094,7 +3971,7 @@ menuobj.draw = function()
         offmenuctx.restore();
     }
 
-    infobj.data[0] = `${current+1} of ${galleryobj.length()}`;
+    infobj.data[0] = `${menuobj.centered+1} of ${galleryobj.length()}`;
 //    infobj.data[0] = `${isvisiblecount} of ${context.canvas.visibles.length}`;
 /*
     infobj.data[1] = `${context.canvas.timeobj.ANCHOR.toFixed(6)}`;
@@ -4179,10 +4056,8 @@ contextlst.forEach(function(context, n)
 
     var k = wheelst.findIndex(function (a) { return a.name == obj.wheel });
     k = wheelst[k];
-    canvas.wheelup_ = k.up;
-    canvas.wheeldown_ = k.down;
-    canvas.wheeleft_ = k.left;
-    canvas.wheelright_ = k.right;
+    canvas.wheelupdown_ = k.updown;
+    canvas.wheeleftright_ = k.leftright;
 
     var k = mouselst.findIndex(function (a) {return a.name == obj.mouse});
     k = mouselst[k];
@@ -5499,13 +5374,6 @@ galleryobj.init = function (obj)
             },
             enabled: function() { return screenfull.isFullscreen; }
         },
-        {title:"Folders", path: "FOLDERS", func: function()
-            {
-                _5cnv.timeobj.set(0);
-                menuobj.showindex(_5cnvctx);
-             },
-            enabled: function() { return slicewidthobj.debug; }
-        },
         {title:"Debug", path: "DEBUG", func: function()
             {
                 menuobj.hide();
@@ -5532,7 +5400,7 @@ galleryobj.init = function (obj)
         },
         {title:"Load", path: "LOAD", func: function()
             {
-                menuobj.showindex(_11cnvctx);
+                menuobj.showindex(_5cnvctx);
             }
         },
          {title:"Advanced", path: "ADVANCED", func: function()
@@ -5547,23 +5415,23 @@ galleryobj.init = function (obj)
 
     _3cnv.sliceobj.data =
     [
-        {line:"Pexels Collection\nImage Search",func: function() { showsearch("pexels_collection"); }, enabled: function() {return false;} },
-        {line:"Unsplash Collection\nImage Search",func: function() { showsearch("unsplash_collection"); }, enabled: function() {return false;} },
-        {line:"Unsplash User Collection\nImage Search",func: function() { showsearch("unsplash_user"); }, enabled: function() {return false;} },
-        {line:"Dalle Prompt", func: function()
+        {title:"pexels collection\nimage search",func: function() { showsearch("pexels_collection"); }, enabled: function() {return false;} },
+        {title:"unsplash collection\nimage search",func: function() { showsearch("unsplash_collection"); }, enabled: function() {return false;} },
+        {title:"unsplash user collection\nimage search",func: function() { showsearch("unsplash_user"); }, enabled: function() {return false;} },
+        {title:"dalle prompt", func: function()
             {
                 menuobj.hide();
                 promptdialog();
              },
             enabled: function() { return false }
         },
-        {line:"Propelauth", func: function()
+        {title:"propelauth", func: function()
             {
-                authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
-                authClient.getAuthenticationInfoOrNull(false)
+                authclient = propelauth.createclient({authurl: "https://auth.reportbase.com", enablebackgroundtokenrefresh: true})
+                authclient.getauthenticationinfoornull(false)
                 .then(function(client)
                 {
-                    fetch(`https://bucket.reportbase5836.workers.dev/${client.user.userId}.json`)
+                    fetch(`https://bucket.reportbase5836.workers.dev/${client.user.userid}.json`)
                     .then((response) => jsonhandler(response))
                     .then(function (json) { })
                     .catch((error) => {});
@@ -5571,22 +5439,22 @@ galleryobj.init = function (obj)
             },
             enabled: function() { return false }
         },
-        {line:"Delete Image", func: function()
+        {title:"delete image", func: function()
             {
                 var id = galleryobj.value().id;
-                fetch(`https://reportbase.com/image/${id}`, { method: 'DELETE' })
+                fetch(`https://reportbase.com/image/${id}`, { method: 'delete' })
                 .then(res =>
                     {
                         location.reload();
                         return res.json()
                     })
                 .then(data => console.log(data))
-                .catch(error => { console.log("Error:", error); });
+                .catch(error => { console.log("error:", error); });
             },
             enabled: function() { return false }
         },
 
-        {line:"Dalle json", func: function()
+        {title:"dalle json", func: function()
             {
                 fetch(`https://bucket.reportbase5836.workers.dev/dalle.json`)
                 .then((response) => jsonhandler(response))
@@ -5594,8 +5462,8 @@ galleryobj.init = function (obj)
                 {
                     fetch(`https://dalle.reportbase5836.workers.dev`,
                     {
-                        method: 'POST',
-                        body: JSON.stringify(json)
+                        method: 'post',
+                        body: json.stringify(json)
                     })
                     .then((response) => jsonhandler(response))
                     .then((json) =>
@@ -5611,14 +5479,14 @@ galleryobj.init = function (obj)
              },
             enabled: function() { return false }
         },
-       {line:"ulid", func: function()
+       {title:"ulid", func: function()
             {
                 fetch("https://uuid.rocks/ulid")
                 .then(response => texthandler(response))
                 .then(uuid =>
                 {
-                    var body = JSON.stringify(lst);
-                    fetch(`https://bucket.reportbase5836.workers.dev/${uuid}`, { method: 'POST', body: body } )
+                    var body = json.stringify(lst);
+                    fetch(`https://bucket.reportbase5836.workers.dev/${uuid}`, { method: 'post', body: body } )
                       .then(response => jsonhandler(response))
                       .then(json => console.log(json) )
                       .catch(error => console.log(error) );
@@ -5628,25 +5496,25 @@ galleryobj.init = function (obj)
             },
             enabled: function() { return false }
         },
-       {line:"offscreen.js",  func: function()
+       {title:"offscreen.js",  func: function()
             {
-                var offcnv = new OffscreenCanvas(200, 200);
-                const offworker = new Worker('js/offscreen.js');
-                offworker.postMessage({msg: 'offscreen', canvas: offcnv}, [offcnv]);
-                offworker.addEventListener('message', function(ev)
+                var offcnv = new offscreencanvas(200, 200);
+                const offworker = new worker('js/offscreen.js');
+                offworker.postmessage({msg: 'offscreen', canvas: offcnv}, [offcnv]);
+                offworker.addeventlistener('message', function(ev)
                 {
                     if (ev.data.msg === 'render')
                     {
-                        var canvas = document.createElement("canvas");
-                        let context = canvas.getContext("bitmaprenderer");
-                        context.transferFromImageBitmap(ev.data.bitmap);
-                        _4cnvctx.drawImage(canvas, 0, 0);
+                        var canvas = document.createelement("canvas");
+                        let context = canvas.getcontext("bitmaprenderer");
+                        context.transferfromimagebitmap(ev.data.bitmap);
+                        _4cnvctx.drawimage(canvas, 0, 0);
                     }
                 });
             },
             enabled: function() { return false }
         },
-       {line: "6cnvctx", func: function()
+       {title: "6cnvctx", func: function()
             {
                 menuobj.showindex(_6cnvctx);
             },
@@ -5657,124 +5525,29 @@ galleryobj.init = function (obj)
     var a = Array(_3cnv.sliceobj.length()).fill().map((_, index) => index);
     _3cnv.rotated = [...a,...a,...a];
 
-    _5cnv.sliceobj.data = [];
-    var j = 0;
-    for (var n = 0; n < galleryobj.all.length; ++n)
-    {
-        var k = galleryobj.all[n];
-        if (!k.filter)
-            continue;
-        k.func = function()
-        {
-            localobj.gallery = TIMEOBJ;
-            localobj.filter = this.filter;
-            galleryobj.init();
-        }
-
-        var j = _5cnv.sliceobj.data.findIndex(function(a) { return a.filter == k.filter; });
-        if (j == -1)
-            //todo
-            _5cnv.sliceobj.data.push(galleryobj.all[n]);
-    };
-
-    _5cnv.sliceobj.data.sort((a, b) =>
-    {
-          if (a.title < b.title)
-            return -1
-          return a.tile > b.title ? 1 : 0
-    })
-
-    var k = {}
-    k.title = "All Images";
-    _5cnv.sliceobj.data.unshift(k);
-    k.func = function()
-    {
-        localobj.gallery = TIMEOBJ;
-        localobj.filter = "";
-        galleryobj.init();
-    }
-
-    for (var n = 0; n < _5cnv.sliceobj.length(); ++n)
-        _5cnv.sliceobj.data[n].index = n;
-
-    _5cnv.sliceobj.set(0);
-    var j = _5cnv.sliceobj.data.findIndex(function(a) { return a.filter == filter; });
-    if (j >= 0)
-        _5cnv.sliceobj.set(j);
-
-    var a = Array(_5cnv.sliceobj.length()).fill().map((_, index) => index);
-    _5cnv.rotated = [...a,...a,...a];
-
-    _6cnv.sliceobj.data =
+    _5cnv.sliceobj.data =
     [
-        {line:"Unsplash\nImage Search", func: function() { showsearch("unsplash"); }, enabled: function() {return false;} },
-        {line:"Pexels\nImage Search", func: function() { showsearch("pexels"); }, enabled: function() {return false;} },
-        {line:"Pixabay\nImage Search",func: function() { showsearch("pixabay"); }, enabled: function() {return false;} },
-    ];
-
-    var a = Array(_6cnv.sliceobj.length()).fill().map((_, index) => index);
-    _6cnv.rotated = [...a,...a,...a];
-
-    _7cnv.sliceobj.data =
-    [
-        {
-            line: "PDIV\nPanoramic Digital Image Viewer\nhttps://pdiv.io\nimages@pdiv.io",
-            func: function() {}
-        },
-        {
-            line: "© Tom Brinkman\nAll Rights Reserved",
-            func: function() {}
-        },
-        {
-            line: "PDIV is a digital image viewer for ultra-wide and panoramic images. Images are drawn onto the interior of a cylinder for 360-degree full-screen viewing experience.",
-            func: function() {}
-        },
-    ];
-
-    var a = Array(_7cnv.sliceobj.length()).fill().map((_, index) => index);
-    _7cnv.rotated = [...a,...a,...a];
-
-    _8cnv.sliceobj.data = galleryobj.data;
-    var a = Array(galleryobj.length()).fill().map((_, index) => index);
-    _8cnv.rotated = [...a,...a,...a];
-
-    _9cnv.sliceobj.data =
-    [
-       {title:"Login", path: "LOGIN", func: function()
+        {title:"All Images", func: function()
             {
-                authClient.redirectToLoginPage();
-            }
+                localobj.gallery = 0;
+                localobj.filter = "";
+                galleryobj.init();
+            },
+            enabled: function() {return false;}
         },
-        {title:"Logout", path: "LOGOUT", func: function()
-            {
-                authClient.logout(true)
-            }
-        },
-        {title:"Account", path: "ACCOUNT", func: function()
-            {
-                authClient.redirectToAccountPage()
-            }
-        },
-    ];
-
-    var a = Array(_9cnv.sliceobj.length()).fill().map((_, index) => index);
-    _9cnv.rotated = [...a,...a,...a];
-
-    _11cnv.sliceobj.data =
-    [
-        {line:"Load Images\njpg png webp avif gif", path: "LOADIMAGES", func: function()
+        {title:"load Images/jpg png webp avif gif", path: "loadimages", func: function()
         {
             menuobj.hide();
-            var input = document.createElement("input");
+            var input = document.createelement("input");
             input.type = "file";
             input.multiple = true;
             input.accept = ".png,.jpeg,.jpg,.webp,.gif,.avif";
-            return new Promise(function(resolve)
+            return new promise(function(resolve)
             {
-                document.activeElement.onfocus = function()
+                document.activeelement.onfocus = function()
                 {
-                    document.activeElement.onfocus = null;
-                    setTimeout(resolve, 500);
+                    document.activeelement.onfocus = null;
+                    settimeout(resolve, 500);
                 };
 
                 input.onchange = function()
@@ -5787,14 +5560,14 @@ galleryobj.init = function (obj)
             });
         }},
 
-        {line:"Load Gallery\njson", path: "LOADGALLERY", func: function()
+        {title:"load Gallery/json", path: "loadgallery", func: function()
         {
             menuobj.hide();
-            var input = document.createElement("input");
+            var input = document.createelement("input");
             input.type = "file";
             input.multiple = false;
             input.accept = ".json";
-            return new Promise(function(resolve)
+            return new promise(function(resolve)
             {
                 input.onchange = function()
                 {
@@ -5807,7 +5580,7 @@ galleryobj.init = function (obj)
             });
         }},
 
-        {line:"Load Archive\nzip cbz", path: "LOADARCHIVE", func: function()
+        {title:"load Archive/zip cbz", path: "loadarchive", func: function()
         {
             menuobj.hide();
             var input = document.createElement("input");
@@ -5830,6 +5603,105 @@ galleryobj.init = function (obj)
 
                 input.click();
             });
+        }},
+    ];
+
+    var j = 0;
+    for (var n = 0; n < galleryobj.all.length; ++n)
+    {
+        var k = galleryobj.all[n];
+        if (!k.filter)
+            continue;
+        k.func = function()
+        {
+            localobj.gallery = 0;
+            localobj.filter = this.filter;
+            galleryobj.init();
+        }
+
+        var j = _5cnv.sliceobj.data.findIndex(function(a) { return a.filter == k.filter; });
+        if (j == -1)
+            _5cnv.sliceobj.data.push(galleryobj.all[n]);
+    };
+/*
+    _5cnv.sliceobj.data.sort((a, b) =>
+    {
+          if (a.title < b.title)
+            return -1
+          return a.tile > b.title ? 1 : 0
+    })
+*/
+
+    for (var n = 0; n < _5cnv.sliceobj.length(); ++n)
+        _5cnv.sliceobj.data[n].index = n;
+
+    _5cnv.sliceobj.set(0);
+    var j = _5cnv.sliceobj.data.findIndex(function(a) { return a.filter == filter; });
+    if (j >= 0)
+        _5cnv.sliceobj.set(j);
+
+    var a = Array(_5cnv.sliceobj.length()).fill().map((_, index) => index);
+    _5cnv.rotated = [...a,...a,...a];
+
+    _6cnv.sliceobj.data =
+    [
+        {title:"unsplash\nimage search", func: function() { showsearch("unsplash"); }, enabled: function() {return false;} },
+        {title:"pexels\nimage search", func: function() { showsearch("pexels"); }, enabled: function() {return false;} },
+        {title:"pixabay\nimage search",func: function() { showsearch("pixabay"); }, enabled: function() {return false;} },
+    ];
+
+    var a = Array(_6cnv.sliceobj.length()).fill().map((_, index) => index);
+    _6cnv.rotated = [...a,...a,...a];
+
+    _7cnv.sliceobj.data =
+    [
+        {
+            title: "pdiv\npanoramic digital image viewer\nhttps://pdiv.io\nimages@pdiv.io",
+            func: function() {}
+        },
+        {
+            title: "© tom brinkman\nall rights reserved",
+            func: function() {}
+        },
+        {
+            title: "pdiv is a digital image viewer for ultra-wide and panoramic images. images are drawn onto the interior of a cylinder for 360-degree full-screen viewing experience.",
+            func: function() {}
+        },
+    ];
+
+    var a = Array(_7cnv.sliceobj.length()).fill().map((_, index) => index);
+    _7cnv.rotated = [...a,...a,...a];
+
+    _8cnv.sliceobj.data = galleryobj.data;
+    var a = Array(galleryobj.length()).fill().map((_, index) => index);
+    _8cnv.rotated = [...a,...a,...a];
+
+    _9cnv.sliceobj.data =
+    [
+       {title:"login", path: "login", func: function()
+            {
+                authclient.redirecttologinpage();
+            }
+        },
+        {title:"logout", path: "logout", func: function()
+            {
+                authclient.logout(true)
+            }
+        },
+        {title:"account", path: "account", func: function()
+            {
+                authclient.redirecttoaccountpage()
+            }
+        },
+    ];
+
+    var a = Array(_9cnv.sliceobj.length()).fill().map((_, index) => index);
+    _9cnv.rotated = [...a,...a,...a];
+
+    _11cnv.sliceobj.data =
+    [
+        {title:"", path: "", func: function()
+        {
         }},
     ];
 
