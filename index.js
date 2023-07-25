@@ -267,7 +267,7 @@ let circular_array = function (title, data)
 };
 
 var timemain = new circular_array("TIMEMAIN", 30);
-timemain.set(0);
+timemain.set(8);
 
 var localobj = {};
 localobj.filter = "";
@@ -1559,7 +1559,7 @@ var wheelst =
         {
             var canvas = context.canvas;
             canvas.autodirect = type == "wheelup" ? -1 : 1;
-            var slidestop = 8;
+            var slidestop = 6;
             var slidereduce = 60;
             canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
             canvas.slidereduce = canvas.slideshow/slidereduce;
@@ -1577,24 +1577,18 @@ var wheelst =
     name: "MENU",
     updown: function (context, x, y, ctrl, shift, alt, type)
     {
-        if (ctrl)
+        clearTimeout(context.canvas.timeout);
+        context.canvas.timeout = setTimeout(function()
         {
-        }
-        else
-        {
-            clearTimeout(context.canvas.timeout);
-            context.canvas.timeout = setTimeout(function()
-            {
-                var canvas = context.canvas;
-                canvas.autodirect = type == "wheelup" ? -1 : 1;
-                var slidestop = 1;
-                var slidereduce = 60;
-                canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
-                canvas.slidereduce = canvas.slideshow/slidereduce;
-                clearInterval(global.swipetimeout);
-                context.refresh();
-            }, 4);
-        }
+            var canvas = context.canvas;
+            canvas.autodirect = type == "wheelup" ? -1 : 1;
+            var slidestop = 6;
+            var slidereduce = 60;
+            canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
+            canvas.slidereduce = canvas.slideshow/slidereduce;
+            clearInterval(global.swipetimeout);
+            context.refresh();
+        }, 4);
     },
  	leftright: function (context, x, y, ctrl, shift, alt)
     {
@@ -2385,8 +2379,9 @@ var swipelst =
     swipeupdown: function (context, rect, x, y, evt)
     {
         var canvas = context.canvas;
-        var slidestop = 1;
-        var slidereduce = 360;
+        canvas.autodirect = evt.type == "swipeup" ? -1 : 1;
+        var slidestop = 6;
+        var slidereduce = 60;
         canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
         canvas.slidereduce = canvas.slideshow/slidereduce;
         clearInterval(global.swipetimeout);
@@ -2599,8 +2594,7 @@ var keylst =
             evt.key == "w" ||
             evt.key == "j")
 		{
-            var e = {type:"swipeup"}
-            swipelst[2].swipeupdown (context, context.rect, 0, 0, e)
+            swipelst[2].swipeupdown (context, context.rect, 0, 0, {type:"swipedown"})
         }
         else if (
             key == "pagedown" ||
@@ -2608,8 +2602,7 @@ var keylst =
             evt.key == "s" ||
             evt.key == "k")
 		{
-            var e = {type:"swipedown"}
-            swipelst[2].swipeupdown (context, context.rect, 0, 0, e)
+            swipelst[2].swipeupdown (context, context.rect, 0, 0, {type:"swipeup"})
         }
         else if (key == "\\" || key == "/")
         {
@@ -4766,7 +4759,7 @@ var headlst =
 	{
         this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.value().swipeleftright(_4cnvctx, rect, x, y, evt); }
         this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.value().swipeupdown(_4cnvctx, rect, x, y, evt); }
-    	this.press = function (context, rect, x, y) {pressobj.geturrent().press(_4cnvctx, rect, x, y)}
+    	this.press = function (context, rect, x, y) {pressobj.value().press(_4cnvctx, rect, x, y)}
      	this.tap = function (context, rect, x, y) {tapobj.value().tap(_4cnvctx, rect, x, y)};
 		this.draw = function (context, rect, user, time)
         {
@@ -5539,7 +5532,7 @@ galleryobj.init = function (obj)
             },
             enabled: function() {return false;}
         },
-        {title:"load Images/jpg png webp avif gif", path: "loadimages", func: function()
+        {title:"Load Images/jpg png webp avif gif", path: "loadimages", func: function()
         {
             menuobj.hide();
             var input = document.createelement("input");
@@ -5564,7 +5557,7 @@ galleryobj.init = function (obj)
             });
         }},
 
-        {title:"load Gallery/json", path: "loadgallery", func: function()
+        {title:"Load Image Gallery/json", path: "loadgallery", func: function()
         {
             menuobj.hide();
             var input = document.createelement("input");
@@ -5584,7 +5577,7 @@ galleryobj.init = function (obj)
             });
         }},
 
-        {title:"load Archive/zip cbz", path: "loadarchive", func: function()
+        {title:"Load Image Archive/zip cbz", path: "loadarchive", func: function()
         {
             menuobj.hide();
             var input = document.createElement("input");
