@@ -1211,8 +1211,13 @@ CanvasRenderingContext2D.prototype.hide = function ()
 
 CanvasRenderingContext2D.prototype.refresh = function ()
 {
-    this.canvas.lastime = -0.0000000000101010101;
-    bossobj.draw()
+    var context = this;
+    clearInterval(global.swipetimeout);
+    global.swipetimeout = setInterval(function ()
+    {
+        context.canvas.lastime = -0.0000000000101010101;
+        bossobj.draw()
+    }, timemain.value());
 };
 
 CanvasRenderingContext2D.prototype.show = function (x, y, width, height)
@@ -1540,6 +1545,8 @@ var wheelst =
     name: "GALLERY",
     updown: function (context, x, y, ctrl, shift, alt, type)
     {
+        if (context.canvas.pinching)
+            return;
         var canvas = context.canvas;
         if (ctrl)
         {
@@ -1551,15 +1558,10 @@ var wheelst =
         {
             var canvas = context.canvas;
             canvas.autodirect = type == "wheelup" ? -1 : 1;
-            var slidestop = 2;
-            var slidereduce = 100;
+            var slidestop = 8;
+            var slidereduce = 60;
             canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
             canvas.slidereduce = canvas.slideshow/slidereduce;
-            clearInterval(global.swipetimeout);
-            global.swipetimeout = setInterval(function ()
-            {
-                context.refresh();
-            }, timemain.value());
             context.refresh();
         }
     },
@@ -1589,10 +1591,6 @@ var wheelst =
                 canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
                 canvas.slidereduce = canvas.slideshow/slidereduce;
                 clearInterval(global.swipetimeout);
-                global.swipetimeout = setInterval(function ()
-                    {
-                        context.refresh();
-                    }, timemain.value());
                 context.refresh();
             }, 4);
         }
@@ -1647,10 +1645,6 @@ var wheelst =
         canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
         canvas.slidereduce = canvas.slidestop/slidereduce;
         clearInterval(global.swipetimeout);
-        global.swipetimeout = setInterval(function ()
-            {
-                bossobj.draw()
-            }, timemain.value());
         context.refresh();
     },
 },
@@ -1690,7 +1684,7 @@ var pinchlst =
     {
         var obj = context.canvas.buttonobj;
         obj.addperc(context.canvas.scale &&
-            scale<context.canvas.scale?-0.003:0.003);
+            scale<context.canvas.scale?-0.03:0.03);
         context.refresh();
         context.canvas.scale = scale;
     },
@@ -2321,9 +2315,11 @@ var presslst =
             !context.canvas.thumbrect.hitest(x,y))
         {
             headobj.set(headobj.current()?0:1);
+            headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            context.refresh();
         }
-     },
+    },
     press: function (context, rect, x, y)
     {
         if (
@@ -2344,13 +2340,8 @@ var presslst =
             posity.set((y/rect.height)*100);
             context.refresh();
         }
-        else
-        {
-            headobj.set(bossobj.noui);
-        }
 
         headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-        context.refresh();
     }
 },
 ];
@@ -2372,8 +2363,8 @@ var swipelst =
     {
         var canvas = context.canvas;
         canvas.autodirect = evt.type == "swipeup" ? -1 : 1;
-        var slidestop = 6;
-        var slidereduce = 120;
+        var slidestop = 8;
+        var slidereduce = 60;
         canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
         canvas.slidereduce = canvas.slideshow/slidereduce;
         clearInterval(global.swipetimeout);
@@ -2381,7 +2372,6 @@ var swipelst =
             {
                 context.refresh();
             }, timemain.value());
-        context.refresh();
    },
 },
 {
@@ -2412,8 +2402,8 @@ var swipelst =
     {
         var canvas = context.canvas;
         canvas.autodirect = evt.type == "swipeleft"?-1:1;
-        var slidestop = Number(galleryobj.slidestop?galleryobj.slidestop:6);
-        var slidereduce = Number(galleryobj.slidereduce?galleryobj.slidereduce:120);
+        var slidestop = galleryobj.slidestop?galleryobj.slidestop:6;
+        var slidereduce = galleryobj.slidereduce?galleryobj.slidereduce:120;
         canvas.slidestop += slidestop;
         canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
         canvas.slidereduce = canvas.slidestop/slidereduce;
@@ -2422,7 +2412,6 @@ var swipelst =
             {
                 bossobj.draw()
             }, timemain.value());
-        context.refresh();
     },
 
     swipeupdown: function (context, rect, x, y, evt)
@@ -4148,7 +4137,7 @@ contextobj.reset = function ()
             _4cnv.movingpage = 0;
             contextobj.reset()
             if (!galleryobj.noautopan)
-                swipeobj.value().swipeleftright(context, context.rect(), 0, 0, 0)
+                swipeobj.value().swipeleftright(context, context.rect(), 0, 0, {type:"swipeleft"})
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnvctx.refresh();
             setTimeout(function() { masterload(); }, 500);
@@ -5252,8 +5241,6 @@ galleryobj.getrawpath = function()
 
 galleryobj.getpath = function()
 {
-//        var id = galleryobj.value().id;
-//        window.open(`https://reportbase.com/image/${id}/blob`);
     var id = galleryobj.value().id;
     var template = galleryobj.variant ? galleryobj.variant : "3840x3840";
     var path = `https://reportbase.com/image/${id}/${template}`;
