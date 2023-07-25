@@ -1551,7 +1551,8 @@ var wheelst =
         if (ctrl)
         {
             var buttonobj = context.canvas.buttonobj;
-            buttonobj.addperc(1.5/100);
+            var k = type == "wheelup" ? 1 : -1;
+            buttonobj.addperc(k*1/100);
             context.refresh();
         }
         else
@@ -1683,10 +1684,10 @@ var pinchlst =
     pinch: function (context, x, y, scale)
     {
         var obj = context.canvas.buttonobj;
-        obj.addperc(context.canvas.scale &&
-            scale<context.canvas.scale?-0.03:0.03);
-        context.refresh();
+        var k = scale<context.canvas.scale?-0.003:0.003;
+        obj.addperc(context.canvas.scale && k);
         context.canvas.scale = scale;
+        context.refresh();
     },
     pinchstart: function (context, rect, x, y)
     {
@@ -2459,9 +2460,18 @@ var keylst =
             key == "w" ||
             key == "k")
         {
-            var j = TIMEOBJ/galleryobj.length();
-            canvas.timeobj.rotate(j);
-            context.refresh()
+            if (canvas.ctrlKey)
+            {
+                var j = TIMEOBJ/galleryobj.length();
+                canvas.timeobj.rotate(j);
+                context.refresh()
+            }
+            else
+            {
+                swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipeup"})
+            }
+
+            evt.preventDefault();
         }
         else if (
             key == "arrowdown" ||
@@ -2470,9 +2480,18 @@ var keylst =
             key == "s" ||
             key == "j")
         {
-            var j = TIMEOBJ/galleryobj.length();
-            canvas.timeobj.rotate(-j);
-            context.refresh()
+            if (canvas.ctrlKey)
+            {
+                var j = TIMEOBJ/galleryobj.length();
+                canvas.timeobj.rotate(-j);
+                context.refresh()
+            }
+            else
+            {
+                swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipedown"})
+            }
+
+            evt.preventDefault();
         }
         else if (key == "g")
         {
@@ -2513,15 +2532,13 @@ var keylst =
             if (canvas.shiftKey)
             {
                 obj.set(obj.length()-1);
-                var e = {type:"swipedown"}
-                swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
+                swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipedown"})
                 evt.preventDefault();
             }
             else
             {
                 obj.set(0);
-                var e = {type:"swipeup"}
-                swipelst[1].swipeupdown (context, context.rect, 0, 0, e)
+                swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipeup"})
                 evt.preventDefault();
             }
 
