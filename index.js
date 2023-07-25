@@ -3,7 +3,7 @@
 
 /* ++ += ==
 Copyright 2017 Tom Brinkman
-http://www.reportbase.com
+https://piv.studio
 */
 
 function iOS()
@@ -2468,7 +2468,7 @@ var keylst =
             }
             else
             {
-                swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipeup"})
+                swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipedown"})
             }
 
             evt.preventDefault();
@@ -2488,7 +2488,7 @@ var keylst =
             }
             else
             {
-                swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipedown"})
+                swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipeup"})
             }
 
             evt.preventDefault();
