@@ -3889,7 +3889,7 @@ menuobj.draw = function()
 
     var a = new panel.fill("rgba(0,0,0,0.4)");
     a.draw(context, rect, 0, 0);
-    var size = Math.ceil(rect.height/canvas.buttonheight)+2;
+    var size = Math.ceil(rect.height/canvas.buttonheight)+3;
     var current = Math.floor(
         Math.lerp(0,slices.length-1,1-context.canvas.timeobj.berp()));
     var slicegroup = util.rotated_list(context.canvas.rotated,slices.length,current,size);
