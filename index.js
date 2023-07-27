@@ -532,12 +532,14 @@ panel.gallerybar = function ()
                  ],
                  [
                     0,
-                    new panel.help(),
+                    galleryobj.length()>4?new panel.help():0,
                     0,
                     new panel.fullscreen(),
+                    _5cnv.sliceobj.length() > 1 ?
+                        new panel.fitwindow() :
+                        new panel.search(),
                     new panel.meta(),
-                    new panel.fitwindow(),
-                    0,
+                     0,
                     new panel.gallery(),
                     0,
                  ]):0,
@@ -637,7 +639,7 @@ buttonobj.reset = function()
         var height = Math.floor(window.innerWidth/a);
         buttonobj.data = [];
         var j = 180;
-        var b = Math.min(240*20,Math.floor(height*3));
+        var b = Math.floor(height*3);
         for (var n = j; n < b; ++n)
             buttonobj.data.push(n);
         var k = buttonobj.data.findIndex(function(a){return a == height});
@@ -1199,8 +1201,6 @@ CanvasRenderingContext2D.prototype.movepage = function(j)
     }
 
     _4cnv.slidestop = 0;
-    clearInterval(global.swipetimeout);
-    global.swipetimeout = 0;
     _4cnv.movingpage = j;
     galleryobj.rotate(j);
     _4cnvctx.refresh();
@@ -1561,7 +1561,6 @@ var wheelst =
         {
             var k = type == "wheelup" ? 1 : -1;
             buttonobj.addperc(k*1/100);
-            context.refresh();
         }
         else
         {
@@ -1571,14 +1570,14 @@ var wheelst =
             var slidereduce = 100;
             canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
             canvas.slidereduce = canvas.slideshow/slidereduce;
-            context.refresh();
         }
+
+        context.refresh();
     },
  	leftright: function (context, x, y, ctrl, shift, alt, type)
     {
         var obj = context.canvas.scrollobj.value();
-        var k = 0.005;
-        obj.addperc(type == "wheeleft" ?  k : -k);
+        obj.add(type == "wheeleft" ?  2 : -2);
         context.refresh()
     },
 },
@@ -1595,7 +1594,6 @@ var wheelst =
             var slidereduce = 60;
             canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
             canvas.slidereduce = canvas.slideshow/slidereduce;
-            clearInterval(global.swipetimeout);
             context.refresh();
         }, 4);
     },
@@ -1648,7 +1646,6 @@ var wheelst =
         canvas.slidestop += slidestop;
         canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
         canvas.slidereduce = canvas.slidestop/slidereduce;
-        clearInterval(global.swipetimeout);
         context.refresh();
     },
 },
@@ -2160,7 +2157,6 @@ var panlst =
 	{
         var canvas = context.canvas;
         clearInterval(global.timeout);
-        clearInterval(global.swipetimeout)
         canvas.slidestop = 0;
         canvas.startx = x;
         canvas.starty = y;
@@ -2340,8 +2336,8 @@ var swipelst =
     {
         var canvas = context.canvas;
         canvas.autodirect = evt.type == "swipeup" ? -1 : 1;
-        var slidestop = 3;
-        var slidereduce = 80;
+        var slidestop = 6;
+        var slidereduce = 200;
         canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
         canvas.slidereduce = canvas.slideshow/slidereduce;
         context.refresh();
@@ -2362,11 +2358,6 @@ var swipelst =
         var slidereduce = 60;
         canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
         canvas.slidereduce = canvas.slideshow/slidereduce;
-        clearInterval(global.swipetimeout);
-        global.swipetimeout = setInterval(function ()
-            {
-                context.refresh();
-            }, timemain.value());
         context.refresh();
     },
 },
@@ -2376,16 +2367,12 @@ var swipelst =
     {
         var canvas = context.canvas;
         canvas.autodirect = evt.type == "swipeleft"?-1:1;
-        var slidestop = evt.shiftKey?12:6;
-        var slidereduce = evt.shiftKey?400:120;
+        var slidestop = 6;
+        var slidereduce = 120;
         canvas.slidestop += slidestop;
         canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
         canvas.slidereduce = canvas.slidestop/slidereduce;
-        clearInterval(global.swipetimeout);
-        global.swipetimeout = setInterval(function ()
-            {
-                bossobj.draw()
-            }, timemain.value());
+        bossobj.draw()
     },
 
     swipeupdown: function (context, rect, x, y, evt)
@@ -2436,13 +2423,17 @@ var keylst =
             {
                 var j = TIMEOBJ/galleryobj.length();
                 canvas.timeobj.rotate(j);
-                context.refresh()
             }
             else
             {
-                swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipedown"})
+                canvas.autodirect = 1;
+                var slidestop = 3;
+                var slidereduce = 100;
+                canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
+                canvas.slidereduce = canvas.slideshow/slidereduce;
             }
 
+            context.refresh();
             evt.preventDefault();
         }
         else if (
@@ -2456,13 +2447,17 @@ var keylst =
             {
                 var j = TIMEOBJ/galleryobj.length();
                 canvas.timeobj.rotate(-j);
-                context.refresh()
             }
             else
             {
-                swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipeup"})
+                canvas.autodirect = -1;
+                var slidestop = 3;
+                var slidereduce = 100;
+                canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
+                canvas.slidereduce = canvas.slideshow/slidereduce;
             }
 
+            context.refresh()
             evt.preventDefault();
         }
         else if (key == "g")
@@ -2512,16 +2507,16 @@ var keylst =
         {
             var obj = canvas.scrollobj.value();
             if (canvas.shiftKey)
-            {
                 obj.set(obj.length()-1);
-                swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipedown"})
-            }
             else
-            {
                 obj.set(0);
-                swipelst[1].swipeupdown (context, context.rect, 0, 0, {type:"swipeup"})
-            }
-
+            canvas.autodirect = canvas.shiftKey?1:-1;
+            var slidestop = 6;
+            var slidereduce = 120;
+            canvas.slidestop += slidestop;
+            canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
+            canvas.slidereduce = canvas.slidestop/slidereduce;
+            bossobj.draw()
             evt.preventDefault();
         }
         else if (key == "f")
@@ -2579,7 +2574,12 @@ var keylst =
             evt.key == "w" ||
             evt.key == "j")
 		{
-            swipelst[2].swipeupdown (context, context.rect, 0, 0, {type:"swipedown"})
+            canvas.autodirect = 1;
+            var slidestop = 2;
+            var slidereduce = 60;
+            canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
+            canvas.slidereduce = canvas.slideshow/slidereduce;
+            context.refresh();
         }
         else if (
             key == "pagedown" ||
@@ -2587,7 +2587,12 @@ var keylst =
             evt.key == "s" ||
             evt.key == "k")
 		{
-            swipelst[2].swipeupdown (context, context.rect, 0, 0, {type:"swipeup"})
+            canvas.autodirect = -1;
+            var slidestop = 2;
+            var slidereduce = 60;
+            canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
+            canvas.slidereduce = canvas.slideshow/slidereduce;
+            context.refresh();
         }
         else if (key == "\\" || key == "/")
         {
@@ -2695,7 +2700,13 @@ var keylst =
             canvas.block = 1;
             setTimeout(function() { canvas.block = 0; }, canvas.keyblock);
             canvas.keyblock = util.clamp(50,200,canvas.keyblock-5);
-            swipeobj.value().swipeleftright(context, context.rect(), 0, 0, {type:"swipe"})
+            canvas.autodirect = 1;
+            var slidestop = 6;
+            var slidereduce = 120;
+            canvas.slidestop += slidestop;
+            canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
+            canvas.slidereduce = canvas.slidestop/slidereduce;
+            bossobj.draw()
             evt.preventDefault();
         }
         else if (
@@ -2707,7 +2718,13 @@ var keylst =
             canvas.block = 1;
             setTimeout(function() { canvas.block = 0; }, canvas.keyblock);
             canvas.keyblock = util.clamp(50,200,canvas.keyblock-5);
-            swipeobj.value().swipeleftright(context, context.rect(), 0, 0, {type:"swipeleft"} )
+            canvas.autodirect = -1;
+            var slidestop = 6;
+            var slidereduce = 120;
+            canvas.slidestop += slidestop;
+            canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
+            canvas.slidereduce = canvas.slidestop/slidereduce;
+            bossobj.draw()
             evt.preventDefault();
         }
         else if (
@@ -2715,7 +2732,7 @@ var keylst =
             key == "w" ||
             key == "k")
         {
-            rowobj.addperc(-5/100);
+            rowobj.addperc(-1/100);
             contextobj.reset();
         }
         else if (key == "g")
@@ -2731,7 +2748,7 @@ var keylst =
             key == "s" ||
             key == "j" )
         {
-            rowobj.addperc(5/100);
+            rowobj.addperc(1/100);
             contextobj.reset();
         }
         else if (key == "-" || key == "{")
@@ -2894,7 +2911,7 @@ var taplst =
         }
         else if (canvas.searchrect && canvas.searchrect.hitest(x,y))
         {
-            menuobj.showindex(_3cnvctx);
+            menuobj.showindex(_6cnvctx);
         }
         else if (context.fullrect && context.fullrect.hitest(x,y))
         {
@@ -2917,7 +2934,7 @@ var taplst =
         }
         else if ( canvas.searchrect && canvas.searchrect.hitest(x,y) )
         {
-            menuobj.showindex(_3cnvctx);
+            menuobj.showindex(_6cnvctx);
         }
         else if (x > rect.width - (MENUBARWIDTH*2) )
         {
@@ -2967,7 +2984,7 @@ var taplst =
         }
         else if (canvas.searchrect && canvas.searchrect.hitest(x,y))
         {
-            showsearch("pexels");
+            menuobj.showindex(_6cnvctx);
         }
         else if (canvas.vscrollrect && canvas.vscrollrect.hitest(x,y))
         {
@@ -3102,8 +3119,6 @@ var taplst =
             var slice = galleryobj.data[n];
             delete galleryobj.pantype;
             galleryobj.set(n);
-            clearInterval(global.swipetimeout);
-            global.swipetimeout = 0;
             headobj.set(1);
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -4113,7 +4128,17 @@ contextobj.reset = function ()
             _4cnv.movingpage = 0;
             contextobj.reset()
             if (!galleryobj.noautopan)
-                swipeobj.value().swipeleftright(context, context.rect(), 0, 0, {type:"swipeleft"})
+            {
+                var canvas = context.canvas;
+                canvas.autodirect = -1;
+                var slidestop = 6;
+                var slidereduce = 120;
+                canvas.slidestop += slidestop;
+                canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
+                canvas.slidereduce = canvas.slidestop/slidereduce;
+                bossobj.draw()
+            }
+
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnvctx.refresh();
             setTimeout(function() { masterload(); }, 500);
@@ -4723,8 +4748,6 @@ var headlst =
 [
 	new function ()
 	{
-        this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.value().swipeleftright(_4cnvctx, rect, x, y, evt); }
-        this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.value().swipeupdown(_4cnvctx, rect, x, y, evt); }
     	this.press = function (context, rect, x, y) {pressobj.value().press(_4cnvctx, rect, x, y)}
      	this.tap = function (context, rect, x, y) {tapobj.value().tap(_4cnvctx, rect, x, y)};
 		this.draw = function (context, rect, user, time)
@@ -4734,15 +4757,7 @@ var headlst =
 	},
 	new function ()
 	{
-        this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.value().swipeleftright(_4cnvctx, rect, x, y, evt); }
-        this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.value().swipeupdown(_4cnvctx, rect, x, y, evt); }
-    	this.press = function (context, rect, x, y)
-        {
-            if (context.canvas.searchrect && context.canvas.searchrect.hitest(x,y))
-            {
-                menuobj.showindex(_3cnvctx);
-            }
-        }
+    	this.press = function (context, rect, x, y) { }
 
      	this.tap = function (context, rect, x, y)
 		{
@@ -4835,8 +4850,6 @@ var headlst =
     },
 	new function ()
 	{
-        this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.value().swipeleftright(_4cnvctx, rect, x, y, evt); }
-        this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.value().swipeupdown(_4cnvctx, rect, x, y, evt); }
     	this.press = function (context, rect, x, y) {pressobj.value().press(_4cnvctx, rect, x, y)}
     	this.tap = function (context, rect, x, y) {tapobj.value().tap(_4cnvctx, rect, x, y);}
 		this.draw = function (context, rect, user, time) { };
@@ -4964,8 +4977,6 @@ var headlst =
 	},
 	new function ()
 	{
-        this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.value().swipeleftright(_4cnvctx, rect, x, y, evt); }
-        this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.value().swipeupdown(_4cnvctx, rect, x, y, evt); }
     	this.press = function (context, rect, x, y)
         {
             menuobj.setindex(_3cnvctx);
@@ -5000,8 +5011,6 @@ var headlst =
 	},
 	new function ()
 	{
-        this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.value().swipeleftright(_4cnvctx, rect, x, y, evt); }
-        this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.value().swipeupdown(_4cnvctx, rect, x, y, evt); }
         this.tap = function (context, rect, x, y){ tapobj.value().tap(_4cnvctx, rect, x, y); }
     	this.press = function (context, rect, x, y)
         {
@@ -5019,8 +5028,6 @@ var headlst =
 	},
 	new function ()
 	{
-        this.swipeleftright = function (context, rect, x, y, evt) { swipeobj.value().swipeleftright(_4cnvctx, rect, x, y, evt); }
-        this.swipeupdown = function (context, rect, x, y, evt) { swipeobj.value().swipeupdown(_4cnvctx, rect, x, y, evt); }
     	this.press = function (context, rect, x, y) {pressobj.value().press(_4cnvctx, rect, x, y)}
         this.tap = function (context, rect, x, y){ tapobj.value().tap(_4cnvctx, rect, x, y); }
 		this.draw = function (context, rect, user, time) { };
