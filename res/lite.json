@@ -1,688 +1,310 @@
 {
-  "title": "Repba Gallery",
+"title": "Satellite Photos",
       "width": 2077,
       "height": 2887,
   "data": [
     {
       "id": "LITE.0000",
-      "index": "1 of 53",
-      "extent": "2077x2887 0.72",
-      "size": "6.0MP",
       "quote": "Those who dance are considered mad by those who can't hear the music."
     },
     {
       "id": "LITE.0001",
-      "index": "2 of 53",
-      "width": 2449,
-      "height": 2449,
-      "extent": "2449x2449 1.00",
-      "size": "6.0MP",
       "quote": "May God have mercy on my enemies, cause I will not."
     },
     {
       "id": "LITE.0002",
-      "index": "3 of 53",
-      "width": 1884,
-      "height": 3183,
-      "extent": "1884x3183 0.59",
-      "size": "6.0MP",
       "quote": "The difference between genius and stupidity is that genius has its limits."
     },
     {
       "id": "LITE.0003",
-      "index": "4 of 53",
-      "width": 1886,
-      "height": 3179,
-      "extent": "1886x3179 0.59",
-      "size": "6.0MP",
       "quote": "The Harder You Work, The Luckier You Get"
     },
     {
       "id": "LITE.0004",
-      "index": "5 of 53",
-      "width": 2093,
-      "height": 2865,
-      "extent": "2093x2865 0.73",
-      "size": "6.0MP",
       "quote": "Teamwork Makes the Dream Work"
     },
     {
       "id": "LITE.0005",
-      "index": "6 of 53",
-      "width": 2447,
-      "height": 2451,
-      "extent": "2447x2451 1.00",
-      "size": "6.0MP",
       "quote": "OK Monday, Lets Do This"
     },
     {
       "id": "LITE.0006",
-      "index": "7 of 53",
-      "width": 2449,
-      "height": 2449,
-      "extent": "2449x2449 1.00",
-      "size": "6.0MP",
       "quote": "Do Not Decrease the Goal, Increase the Effort"
     },
     {
       "id": "LITE.0007",
-      "index": "8 of 53",
-      "width": 2271,
-      "height": 2641,
-      "extent": "2271x2641 0.86",
-      "size": "6.0MP",
       "quote": "We Didn't Lose the Game, We Just Ran Out of Time"
     },
     {
       "id": "LITE.0008",
-      "index": "9 of 53",
-      "width": 2449,
-      "height": 2449,
-      "extent": "2449x2449 1.00",
-      "size": "6.0MP",
       "quote": "The Seeds of Doubt Grow Bitter Fruit"
     },
     {
       "id": "LITE.0009",
-      "index": "10 of 53",
-      "width": 2449,
-      "height": 2449,
-      "extent": "2449x2449 1.00",
-      "size": "6.0MP",
       "quote": "Success Consists of Getting Up Just One More Time Than You Fail"
     },
     {
       "id": "LITE.0010",
-      "index": "11 of 53",
-      "width": 2411,
-      "height": 2487,
-      "extent": "2411x2487 0.97",
-      "size": "6.0MP",
       "quote": "Enjoy Life Today, Yesterday Is Gone Tomorrow"
     },
     {
       "id": "LITE.0011",
-      "index": "12 of 53",
-      "width": 2190,
-      "height": 2738,
-      "extent": "2190x2738 0.80",
-      "size": "6.0MP",
       "quote": "If Not Us Who? If Not Now When?"
     },
     {
       "id": "LITE.0012",
-      "index": "13 of 53",
-      "width": 2449,
-      "height": 2449,
-      "extent": "2449x2449 1.00",
-      "size": "6.0MP",
       "quote": "If Opportunity Does Not Knock, Build a Door"
     },
     {
       "id": "LITE.0013",
-      "index": "14 of 53",
-      "width": 2449,
-      "height": 2449,
-      "extent": "2449x2449 1.00",
-      "size": "6.0MP",
       "quote": "It Was Not Raining When Noah Built the Ark"
     },
     {
       "id": "LITE.0014",
-      "index": "15 of 53",
-      "width": 2449,
-      "height": 2449,
-      "extent": "2449x2449 1.00",
-      "size": "6.0MP",
       "quote": "What We Are is God's Gift, What We Become is Our Gift to God"
     },
     {
       "id": "LITE.0015",
-      "index": "16 of 53",
-      "width": 2449,
-      "height": 2449,
-      "extent": "2449x2449 1.00",
-      "size": "6.0MP",
       "quote": "The Best Way to Predict the Future is To Invent It"
     },
     {
       "id": "LITE.0016",
-      "index": "17 of 53",
-      "width": 2449,
-      "height": 2449,
-      "extent": "2449x2449 1.00",
-      "size": "6.0MP",
       "quote": "Failure is the Condiment Which Gives Success Its Flavor"
     },
     {
       "id": "LITE.0017",
-      "index": "18 of 53",
-      "width": 2449,
-      "height": 2449,
-      "extent": "2449x2449 1.00",
-      "size": "6.0MP",
       "quote": "I can Resist Everything Except Temptation"
     },
     {
       "id": "LITE.0018",
-      "index": "19 of 53",
-      "width": 2087,
-      "height": 2874,
-      "extent": "2087x2874 0.73",
-      "size": "6.0MP",
       "quote": "What's Another Word For Thesaurus"
     },
     {
       "id": "LITE.0019",
-      "index": "20 of 53",
-      "width": 1620,
-      "height": 3703,
-      "extent": "1620x3703 0.44",
-      "size": "6.0MP",
       "quote": "It Is During the Darkest Moments That We Must Focus To See the Light"
     },
     {
       "id": "LITE.0020",
-      "index": "21 of 53",
-      "width": 1689,
-      "height": 3551,
-      "extent": "1689x3551 0.48",
-      "size": "6.0MP",
       "quote": "Winners Never Quit, Quitters Never Win"
     },
     {
       "id": "LITE.0021",
-      "index": "22 of 53",
-      "width": 2435,
-      "height": 2463,
-      "extent": "2435x2463 0.99",
-      "size": "6.0MP",
       "quote": "If Two Wrongs Don't Make a Right, Try Three"
     },
     {
       "id": "LITE.0022",
-      "index": "23 of 53",
-      "width": 2670,
-      "height": 2246,
-      "extent": "2670x2246 1.19",
-      "size": "6.0MP",
       "quote": "Try Being Informed Instead of Being Opinionated"
     },
     {
       "id": "LITE.0023",
-      "index": "24 of 53",
-      "width": 1083,
-      "height": 1901,
-      "extent": "1083x1901 0.57",
-      "size": "2.1MP",
       "quote": "I Refuse to Join Any Club That Would Have Me As a Member"
     },
     {
       "id": "LITE.0024",
-      "index": "25 of 53",
-      "width": 1024,
-      "height": 1267,
-      "extent": "1024x1267 0.81",
-      "size": "1.3MP",
       "quote": "Life is A Series of Commas, Not Periods"
     },
     {
       "id": "LITE.0025",
-      "index": "26 of 53",
-      "width": 1876,
-      "height": 1877,
-      "extent": "1876x1877 1.00",
-      "size": "3.5MP",
       "quote": "My Fake Plants Died Because I Did Not Pretend to Water Them"
     },
     {
       "id": "LITE.0026",
-      "index": "27 of 53",
-      "width": 1080,
-      "height": 1920,
-      "extent": "1080x1920 0.56",
-      "size": "2.1MP",
       "quote": "Life is What Happens When You Are Busy Making Other Plans"
     },
     {
       "id": "LITE.0027",
-      "index": "28 of 53",
-      "width": 1956,
-      "height": 3067,
-      "extent": "1956x3067 0.64",
-      "size": "6.0MP",
       "quote": "We are a Conclave of Geniuses, Knows as the Intelligencia"
     },
     {
       "id": "LITE.0028",
-      "index": "29 of 53",
-      "width": 2121,
-      "height": 2828,
-      "extent": "2121x2828 0.75",
-      "size": "6.0MP",
       "quote": "Believe You Can and You are Half Way There"
     },
     {
       "id": "LITE.0029",
-      "index": "30 of 53",
-      "width": 1335,
-      "height": 2000,
-      "extent": "1335x2000 0.67",
-      "size": "2.7MP",
       "quote": "If you Think You Can Or Think You Can't, Either Way Your Right"
     },
     {
       "id": "LITE.0030",
-      "index": "31 of 53",
-      "width": 1895,
-      "height": 3164,
-      "extent": "1895x3164 0.60",
-      "size": "6.0MP",
       "quote": "The Road to Success and The Road To Failure Are Exactly the Same"
     },
     {
       "id": "LITE.0031",
-      "index": "32 of 53",
-      "width": 2700,
-      "height": 2221,
-      "extent": "2700x2221 1.22",
-      "size": "6.0MP",
       "quote": "The Secret of Getting Ahead Is Getting Started"
     },
     {
       "id": "LITE.0032",
-      "index": "33 of 53",
-      "width": 2469,
-      "height": 2429,
-      "extent": "2469x2429 1.02",
-      "size": "6.0MP",
       "quote": "What Does Not Kill You Makes You Stronger"
     },
     {
       "id": "LITE.0033",
-      "index": "34 of 53",
-      "width": 1435,
-      "height": 2546,
-      "extent": "1435x2546 0.56",
-      "size": "3.7MP",
       "quote": "The Harder the Conflict the More Glorious the Triumph"
     },
     {
       "id": "LITE.0034",
-      "index": "35 of 53",
-      "width": 2558,
-      "height": 1434,
-      "extent": "2558x1434 1.78",
-      "size": "3.7MP",
       "quote": "Don't Spend Time Beating On a Wall Hoping To Tranform It Into A Door"
     },
     {
       "id": "LITE.0035",
-      "index": "36 of 53",
-      "width": 1436,
-      "height": 2554,
-      "extent": "1436x2554 0.56",
-      "size": "3.7MP",
       "quote": "I May Not Be There Yet but I'm Closer Than I Was Yesterday"
     },
     {
       "id": "LITE.0036",
-      "index": "37 of 53",
-      "width": 2121,
-      "height": 2828,
-      "extent": "2121x2828 0.75",
-      "size": "6.0MP",
       "quote": "Do What You Love, Love What You Do"
     },
     {
       "id": "LITE.0037",
-      "index": "38 of 53",
-      "width": 2459,
-      "height": 2439,
-      "extent": "2459x2439 1.01",
-      "size": "6.0MP",
       "quote": "The Pessimist Sees Difficulty In Every Opportunity The Optimist Sees Opportunity In Every Difficulty"
     },
     {
       "id": "LITE.0038",
-      "index": "39 of 53",
-      "width": 2451,
-      "height": 2447,
-      "extent": "2451x2447 1.00",
-      "size": "6.0MP",
       "quote": "If Your Going Through Hell Keep Going"
     },
     {
       "id": "LITE.0039",
-      "index": "40 of 53",
-      "width": 2202,
-      "height": 2724,
-      "extent": "2202x2724 0.81",
-      "size": "6.0MP",
       "quote": "Open Your Mind Before Your Mouth"
     },
     {
       "id": "LITE.0040",
-      "index": "41 of 53",
-      "width": 2446,
-      "height": 2452,
-      "extent": "2446x2452 1.00",
-      "size": "6.0MP",
       "quote": "If You Can Dream It You Can Do It"
     },
     {
       "id": "LITE.0041",
-      "index": "42 of 53",
-      "width": 2463,
-      "height": 2435,
-      "extent": "2463x2435 1.01",
-      "size": "6.0MP",
       "quote": "Creativity Is Intelligence Having Fun"
     },
     {
       "id": "LITE.0042",
-      "index": "43 of 53",
-      "width": 2180,
-      "height": 2165,
-      "extent": "2180x2165 1.01",
-      "size": "4.7MP",
       "quote": "Fake It Until You Make It"
     },
     {
       "id": "LITE.0043",
-      "index": "44 of 53",
-      "width": 2439,
-      "height": 2459,
-      "extent": "2439x2459 0.99",
-      "size": "6.0MP",
       "quote": "The Secret of Getting Ahead is Getting Started"
     },
     {
       "id": "LITE.0044",
-      "index": "45 of 53",
-      "width": 1782,
-      "height": 2040,
-      "extent": "1782x2040 0.87",
-      "size": "3.6MP",
       "quote": "The Best Way to Keep One's Word is Not to Give It"
     },
     {
       "id": "LITE.0045",
-      "index": "46 of 53",
-      "width": 1890,
-      "height": 3173,
-      "extent": "1890x3173 0.60",
-      "size": "6.0MP",
       "quote": "Learn to Say 'No' to the Good so You can Say 'Yes' to the Best"
     },
     {
       "id": "LITE.0046",
-      "index": "47 of 53",
-      "width": 2449,
-      "height": 2449,
-      "extent": "2449x2449 1.00",
-      "size": "6.0MP",
       "quote": "The Best Way to Hold a Man is in Your Arms"
     },
     {
       "id": "LITE.0047",
-      "index": "48 of 53",
-      "width": 2031,
-      "height": 2952,
-      "extent": "2031x2952 0.69",
-      "size": "6.0MP",
       "quote": "The Best Question is Not What is Best, but Who Shall Decide What is Best"
     },
     {
       "id": "LITE.0048",
-      "index": "49 of 53",
-      "width": 2449,
-      "height": 2449,
-      "extent": "2449x2449 1.00",
-      "size": "6.0MP",
       "quote": "Only a Mediocre Person is Always at His Best"
     },
     {
       "id": "LITE.0049",
-      "index": "50 of 53",
-      "width": 2449,
-      "height": 2449,
-      "extent": "2449x2449 1.00",
-      "size": "6.0MP",
       "quote": "We've Been Gone Five Years and the Best they Could Come up With was Boy Bands?"
     },
     {
       "id": "LITE.0050",
-      "index": "51 of 53",
-      "width": 1518,
-      "height": 1908,
-      "extent": "1518x1908 0.80",
-      "size": "2.9MP",
       "quote": "No Man has a Good Enough Memory to be a Successful Liar"
     },
     {
       "id": "LITE.0051",
-      "index": "52 of 53",
-      "width": 2449,
-      "height": 2449,
-      "extent": "2449x2449 1.00",
-      "size": "6.0MP",
       "quote": "Get Your Facts First, then you can Distort Them as You Please"
     },
     {
       "id": "LITE.0052",
-      "index": "53 of 53",
-      "width": 2449,
-      "height": 2449,
-      "extent": "2449x2449 1.00",
-      "size": "6.0MP",
       "quote": "All Generalizations are False, Including This One"
     },
     {
       "id": "MEAL.0000",
-      "index": "1 of 23",
-      "width": 2560,
-      "height": 3840,
-      "extent": "2560x3840 0.67",
-      "size": "9.8MP",
       "quote": "Those who dance are considered mad by those who can't hear the music."
     },
     {
       "id": "MEAL.0001",
-      "index": "2 of 23",
-      "width": 2560,
-      "height": 3840,
-      "extent": "2560x3840 0.67",
-      "size": "9.8MP",
       "quote": "May God have mercy on my enemies, cause I will not."
     },
     {
       "id": "MEAL.0002",
-      "index": "3 of 23",
-      "width": 1624,
-      "height": 3840,
-      "extent": "1624x3840 0.42",
-      "size": "6.2MP",
       "quote": "The difference between genius and stupidity is that genius has its limits."
     },
     {
       "id": "MEAL.0003",
-      "index": "4 of 23",
-      "width": 1710,
-      "height": 3840,
-      "extent": "1710x3840 0.45",
-      "size": "6.6MP",
       "quote": "The Harder You Work, The Luckier You Get"
     },
     {
       "id": "MEAL.0004",
-      "index": "5 of 23",
-      "width": 1597,
-      "height": 3840,
-      "extent": "1597x3840 0.42",
-      "size": "6.1MP",
       "quote": "Teamwork Makes the Dream Work"
     },
     {
       "id": "MEAL.0005",
-      "index": "6 of 23",
-      "width": 1920,
-      "height": 3840,
-      "extent": "1920x3840 0.50",
-      "size": "7.4MP",
       "quote": "OK Monday, Lets Do This"
     },
     {
       "id": "MEAL.0006",
-      "index": "7 of 23",
-      "width": 1920,
-      "height": 3840,
-      "extent": "1920x3840 0.50",
-      "size": "7.4MP",
       "quote": "Do Not Decrease the Goal, Increase the Effort"
     },
     {
       "id": "MEAL.0007",
-      "index": "8 of 23",
-      "width": 1920,
-      "height": 3840,
-      "extent": "1920x3840 0.50",
-      "size": "7.4MP",
       "quote": "We Didn't Lose the Game, We Just Ran Out of Time"
     },
     {
       "id": "MEAL.0008",
-      "index": "9 of 23",
-      "width": 1920,
-      "height": 3840,
-      "extent": "1920x3840 0.50",
-      "size": "7.4MP",
       "quote": "The Seeds of Doubt Grow Bitter Fruit"
     },
     {
       "id": "MEAL.0009",
-      "index": "10 of 23",
-      "width": 3072,
-      "height": 3840,
-      "extent": "3072x3840 0.80",
-      "size": "11.8MP",
       "quote": "Success Consists of Getting Up Just One More Time Than You Fail"
     },
     {
       "id": "MEAL.0010",
-      "index": "11 of 23",
-      "width": 3072,
-      "height": 3840,
-      "extent": "3072x3840 0.80",
-      "size": "11.8MP",
       "quote": "Enjoy Life Today, Yesterday Is Gone Tomorrow"
     },
     {
       "id": "MEAL.0011",
-      "index": "12 of 23",
-      "width": 2560,
-      "height": 3840,
-      "extent": "2560x3840 0.67",
-      "size": "9.8MP",
       "quote": "If Not Us Who? If Not Now When?"
     },
     {
       "id": "MEAL.0012",
-      "index": "13 of 23",
-      "width": 2880,
-      "height": 3840,
-      "extent": "2880x3840 0.75",
-      "size": "11.1MP",
       "quote": "If Opportunity Does Not Knock, Build a Door"
     },
     {
       "id": "MEAL.0013",
-      "index": "14 of 23",
-      "width": 2880,
-      "height": 3840,
-      "extent": "2880x3840 0.75",
-      "size": "11.1MP",
       "quote": "It Was Not Raining When Noah Built the Ark"
     },
     {
       "id": "MEAL.0014",
-      "index": "15 of 23",
-      "width": 1920,
-      "height": 3840,
-      "extent": "1920x3840 0.50",
-      "size": "7.4MP",
       "quote": "What We Are is God's Gift, What We Become is Our Gift to God"
     },
     {
       "id": "MEAL.0015",
-      "index": "16 of 23",
-      "width": 1920,
-      "height": 3840,
-      "extent": "1920x3840 0.50",
-      "size": "7.4MP",
       "quote": "The Best Way to Predict the Future is To Invent It"
     },
     {
       "id": "MEAL.0016",
-      "index": "17 of 23",
-      "width": 1920,
-      "height": 3840,
-      "extent": "1920x3840 0.50",
-      "size": "7.4MP",
       "quote": "Failure is the Condiment Which Gives Success Its Flavor"
     },
     {
       "id": "MEAL.0017",
-      "index": "18 of 23",
-      "width": 1920,
-      "height": 3840,
-      "extent": "1920x3840 0.50",
-      "size": "7.4MP",
       "quote": "I can Resist Everything Except Temptation"
     },
     {
       "id": "MEAL.0018",
-      "index": "19 of 23",
-      "width": 1920,
-      "height": 3840,
-      "extent": "1920x3840 0.50",
-      "size": "7.4MP",
       "quote": "What's Another Word For Thesaurus"
     },
     {
       "id": "MEAL.0019",
-      "index": "20 of 23",
-      "width": 1920,
-      "height": 3840,
-      "extent": "1920x3840 0.50",
-      "size": "7.4MP",
       "quote": "It Is During the Darkest Moments That We Must Focus To See the Light"
     },
     {
       "id": "MEAL.0020",
-      "index": "21 of 23",
-      "width": 1920,
-      "height": 3840,
-      "extent": "1920x3840 0.50",
-      "size": "7.4MP",
       "quote": "Winners Never Quit, Quitters Never Win"
     },
     {
       "id": "MEAL.0021",
-      "index": "22 of 23",
-      "width": 2160,
-      "height": 3840,
-      "extent": "2160x3840 0.56",
-      "size": "8.3MP",
       "quote": "If Two Wrongs Don't Make a Right, Try Three"
     },
     {
       "id": "MEAL.0022",
-      "index": "23 of 23",
-      "width": 2157,
-      "height": 3840,
-      "extent": "2157x3840 0.56",
-      "size": "8.3MP",
       "quote": "Try Being Informed Instead of Being Opinionated"
    }
   ]
