@@ -1559,15 +1559,15 @@ var wheelst =
         var canvas = context.canvas;
         if (ctrl)//pinch
         {
-            var k = type == "wheelup" ? 1 : -1;
-            buttonobj.addperc(k*1/100);
+            var k = type == "wheelup" ? 25 : -25;
+            buttonobj.add(k);
         }
         else
         {
             var canvas = context.canvas;
             canvas.autodirect = type == "wheelup" ? 1 : -1;
             var slidestop = 2;
-            var slidereduce = 100;
+            var slidereduce = 200;
             canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
             canvas.slidereduce = canvas.slideshow/slidereduce;
         }
@@ -1577,7 +1577,7 @@ var wheelst =
  	leftright: function (context, x, y, ctrl, shift, alt, type)
     {
         var obj = context.canvas.scrollobj.value();
-        obj.add(type == "wheeleft" ?  2 : -2);
+        obj.add(type == "wheeleft" ?  3 : -3);
         context.refresh()
     },
 },
@@ -2336,8 +2336,8 @@ var swipelst =
     {
         var canvas = context.canvas;
         canvas.autodirect = evt.type == "swipeup" ? -1 : 1;
-        var slidestop = 6;
-        var slidereduce = 200;
+        var slidestop = 3;
+        var slidereduce = 800;
         canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
         canvas.slidereduce = canvas.slideshow/slidereduce;
         context.refresh();
