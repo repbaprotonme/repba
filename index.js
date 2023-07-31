@@ -30,7 +30,6 @@ const THUMBORDER = 5;
 const ALIEXTENT = 60;
 const BEXTENT = 80;
 const TIMEOBJ = 3927;
-const DELAYCENTER = TIMEOBJ;
 const MENUSELECT = "rgba(255,175,0,0.4)";
 const MENUTAP = "rgba(255,125,0,0.7)";
 const SELECTAP = "rgba(255,0,0.75,0.7)";
@@ -52,7 +51,7 @@ const DEFAULTFONT = "16px archivo black";
 const LARGEFONT = "18px archivo black";
 const HUGEFONT = "20px archivo black";
 const DOTSFONT = "60px archivo black";
-const SLICEWIDTH = 60;
+const SLICEWIDTH = 20;
 const SLICEWIDTHSIZE = 256;
 const ZOOMAX = 92;
 const IMAGELSTSIZE = iOS()?30:120;
@@ -271,7 +270,7 @@ let circular_array = function (title, data)
 };
 
 var timemain = new circular_array("TIMEMAIN", 30);
-timemain.set(4);
+timemain.set(0);
 
 panel.yoll = function ()
 {
@@ -1217,14 +1216,14 @@ CanvasRenderingContext2D.prototype.hide = function ()
     this.canvas.height = 0;
 };
 
-CanvasRenderingContext2D.prototype.refresh = function ()
+CanvasRenderingContext2D.prototype.refresh = function (skip=1)
 {
     var context = this;
     clearInterval(global.swipetimeout);
     global.swipetimeout = setInterval(function ()
     {
         context.canvas.lastime = -0.0000000000101010101;
-        menuobj.draw();
+        menuobj.draw(skip);
         bossobj.draw()
     }, timemain.value());
 };
@@ -1563,7 +1562,7 @@ var wheelst =
             return;
         var canvas = context.canvas;
         context.canvas.slideshow = 0;
-        if (ctrl)//pinch
+        if (ctrl)
         {
             var k = type == "wheelup" ? 25 : -25;
             buttonobj.add(k);
@@ -1572,7 +1571,7 @@ var wheelst =
         {
             var canvas = context.canvas;
             canvas.autodirect = type == "wheelup" ? 1 : -1;
-            var lst = [1.0,1.5,2.0,2.5];
+            var lst = [0.25,0.5,1.0,1.5];
             var n = util.clamp(0,lst.length-1,galleryobj.length()-1);
             var slidestop = lst[n];
 
@@ -1584,14 +1583,14 @@ var wheelst =
             canvas.slidereduce = canvas.slideshow/slidereduce;
         }
 
-        context.refresh();
+        context.refresh(3);
     },
  	leftright: function (context, x, y, ctrl, shift, alt, type)
     {
         context.canvas.slideshow = 0;
         var obj = context.canvas.scrollobj.value();
         obj.add(type == "wheeleft" ?  4 : -4);
-        context.refresh()
+        context.refresh(2)
     },
 },
 {
@@ -1698,7 +1697,7 @@ var pinchlst =
     {
         var obj = buttonobj;
         var k = scale<context.canvas.scale?-0.005:0.005;
-        obj.addperc(context.canvas.scale && k);
+        obj.addperc(k);
         context.canvas.scale = scale;
         context.refresh();
     },
@@ -2344,10 +2343,10 @@ var swipelst =
         var canvas = context.canvas;
         canvas.autodirect = evt.type == "swipeup" ? -1 : 1;
         var slidestop = 3;
-        var slidereduce = 800;
+        var slidereduce = 200;
         canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
         canvas.slidereduce = canvas.slideshow/slidereduce;
-        context.refresh();
+        context.refresh(2);
    },
 },
 {
@@ -2434,13 +2433,13 @@ var keylst =
             else
             {
                 canvas.autodirect = 1;
-                var slidestop = 3;
-                var slidereduce = 100;
+                var slidestop = 2;
+                var slidereduce = 150;
                 canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
                 canvas.slidereduce = canvas.slideshow/slidereduce;
             }
 
-            context.refresh();
+            context.refresh(2);
             evt.preventDefault();
         }
         else if (
@@ -2458,13 +2457,13 @@ var keylst =
             else
             {
                 canvas.autodirect = -1;
-                var slidestop = 3;
-                var slidereduce = 100;
+                var slidestop = 2;
+                var slidereduce = 150;
                 canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
                 canvas.slidereduce = canvas.slideshow/slidereduce;
             }
 
-            context.refresh()
+            context.refresh(2)
             evt.preventDefault();
         }
         else if (key == "g")
@@ -2539,6 +2538,26 @@ var keylst =
             context.refresh();
             evt.preventDefault();
         }
+        else if (key == "1")
+        {
+            TIMEOBJ += -25;
+            context.refresh()
+        }
+        else if (key == "2")
+        {
+            TIMEOBJ += 25;
+            context.refresh()
+        }
+        else if (key == "t")
+        {
+            canvas.buttonheight -= 25;
+            context.refresh()
+        }
+        else if (key == "y")
+        {
+            canvas.buttonheight += 25;
+            context.refresh()
+        }
         else if (key == " ")
         {
             var j = _8cnv.timeobj.berp();
@@ -2605,9 +2624,25 @@ var keylst =
             canvas.slidereduce = canvas.slideshow/slidereduce;
             context.refresh();
         }
-        else if (key == "\\" || key == "/")
+        else if (key == "1")
         {
-            menuobj.hide();
+            TIMEOBJ += -25;
+            context.refresh()
+        }
+        else if (key == "2")
+        {
+            TIMEOBJ += 25;
+            context.refresh()
+        }
+        else if (key == "t")
+        {
+            canvas.buttonheight -= 25;
+            context.refresh()
+        }
+        else if (key == "y")
+        {
+            canvas.buttonheight += 25;
+            context.refresh()
         }
         else if (key == "enter")
         {
@@ -2804,10 +2839,10 @@ CanvasRenderingContext2D.prototype.hithumb = function(x,y)
         var b = c/rect.width;
         var e = this.canvas.sliceobj.length();
         var m = (1-b)*e;
-        var j = DELAYCENTER/e;
+        var j = TIMEOBJ/e;
         var time = j*m;
-        var k = time % DELAYCENTER;
-        var e = this.canvas.timeobj.length()*(k/DELAYCENTER);
+        var k = time % TIMEOBJ;
+        var e = this.canvas.timeobj.length()*(k/TIMEOBJ);
         this.canvas.timeobj.set(e);
     }
 
@@ -3001,7 +3036,7 @@ var bosslst =
                 return;
 
             var canvas = context.canvas;
-            if (!global.swipetimeout)
+            if (1)//!global.swipetimeout)
             {
                 context.extentrect = new rectangle();
                 context.chapterect = new rectangle();
@@ -3142,7 +3177,7 @@ var bosslst =
         }
     },
  ];
-
+var bosscount = 0;
 var bossobj = new circular_array("", bosslst);
 bossobj.draw = function()
 {
@@ -3176,6 +3211,10 @@ bossobj.draw = function()
             global.swipetimeout = 0;
         }
     }
+
+    bosscount += 1;
+    if (bosscount%4)
+        return;
 
     var stretch = stretchobj.value();
     var virtualpinch = _4cnv.virtualwidth*(stretch.value()/100);
@@ -3723,7 +3762,9 @@ menuobj.show = function()
     setTimeout(function() { f(); }, 1000);
 }
 
-menuobj.draw = function()
+var mencount = 1
+
+menuobj.draw = function(skip=1)
 {
     var context = this.value();
     if (!context)
@@ -3734,7 +3775,6 @@ menuobj.draw = function()
     if (!slices.length)
         return;
     const rect = context.rect();
-
     if (context.canvas.slideshow > 0)
     {
         var k = canvas.autodirect;
@@ -3748,8 +3788,12 @@ menuobj.draw = function()
         global.swipetimeout = 0;
     }
 
+    mencount += 1;
+    if (mencount%skip)
+        return;
+
     var len = context.canvas.sliceobj.length()
-    var delayinterval = DELAYCENTER / len / 1000;
+    var delayinterval = TIMEOBJ / len / 1000;
     context.canvas.virtualheight = len*canvas.buttonheight;
     context.clear();
     if (context == _8cnvctx)
@@ -3758,7 +3802,7 @@ menuobj.draw = function()
         context.canvas.virtualheight = len*canvas.buttonheight*0.635;
     }
 
-    var a = new panel.fill("rgba(0,0,0,0.4)");
+    var a = new panel.fill("rgba(0,0,0,0.5)");
     a.draw(context, rect, 0, 0);
     var size = Math.ceil(rect.height/canvas.buttonheight)+3;
     var current = Math.floor(
@@ -3801,7 +3845,7 @@ menuobj.draw = function()
         offmenuctx.restore();
     }
 
-    if (!global.swipetimeout)
+    if (1)//!global.swipetimeout)
     {
         infobj.data = [];
         var title = _5cnv.sliceobj.value().title;
