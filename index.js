@@ -488,6 +488,7 @@ panel.gallerybar = function ()
     {
         var canvas = context.canvas;
         canvas.buttonrect = new rectangle();
+        canvas.bscrollrect = new rectangle();
         canvas.hscrollrect = new rectangle();
         canvas.vscrollrect = new rectangle();
         context.chapterect = new rectangle();
@@ -502,7 +503,8 @@ panel.gallerybar = function ()
         context.save();
         var a = new panel.layerA(
         [
-            new panel.col([0,SCROLLBARWIDTH,5],
+            galleryobj.noscrollbars?0:
+                new panel.colA([5,SCROLLBARWIDTH,0,SCROLLBARWIDTH,5],
             [
                 0,
                 new panel.row([60,0,60],
@@ -511,9 +513,20 @@ panel.gallerybar = function ()
                     new Layer(
                     [
                         new panel.fill("rgba(0,0,0,0.5)"),
+                        new panel.expand(new panel.rectangle(canvas.bscrollrect),10,0),
+                        new panel.currentV(new panel.shadow(new panel.fill("white")), 90, 0),
+                    ]),
+                    0,
+                ]),
+                0,
+                new panel.row([60,0,60],
+                [
+                    0,
+                    new Layer(
+                    [
+                        new panel.fill("rgba(0,0,0,0.5)"),
                         new panel.expand(new panel.rectangle(canvas.vscrollrect),10,0),
-                        new panel.currentV(new panel.shadow(
-                            new panel.fill("white")), 90, 1),
+                        new panel.currentV(new panel.shadow(new panel.fill("white")), 90, 1),
                     ]),
                     0,
                 ]),
@@ -537,7 +550,7 @@ panel.gallerybar = function ()
                   0,
                 ]),
                 0,
-                new panel.col([60,0,60],
+                galleryobj.noscrollbars?0:new panel.col([60,0,60],
                 [
                     0,
                     new Layer(
@@ -554,7 +567,13 @@ panel.gallerybar = function ()
 
         a.draw(context, rect,
         [
-            canvas.timeobj,
+            [
+                0,
+                buttonobj,
+                0,
+                canvas.timeobj,
+                0,
+            ],
             [
                 0,
                 0,
@@ -585,8 +604,7 @@ panel.scrollbar = function ()
                     new Layer(
                     [
                         new panel.expand(new panel.rectangle(canvas.vscrollrect),10,0),
-                        new panel.currentV(new panel.shadow(
-                            new panel.fill("white")), 90, 1),
+                        new panel.currentV(new panel.shadow(new panel.fill("white")), 90, 1),
                     ]),
                     0,
                 ]),
@@ -628,7 +646,7 @@ buttonobj.reset = function()
 
         buttonobj.data = [];
         var j = 180;
-        for (var n = j; n < height*4; ++n)
+        for (var n = j; n < 1080*4; ++n)
             buttonobj.data.push(n);
         var k = buttonobj.data.findIndex(function(a){return a == height});
         if (localobj.button >= 0)
@@ -1569,21 +1587,24 @@ var wheelst =
         context.canvas.slideshow = 0;
         if (ctrl)
         {
-            var k = type == "wheelup" ? 25 : -25;
+            var k = type == "wheelup" ? -15 : 15;
+            buttonobj.add(k);
+        }
+        else if (canvas.bscrollrect  && canvas.bscrollrect.hitest(x,y))
+        {
+            var k = type == "wheelup" ? -15 : 15;
             buttonobj.add(k);
         }
         else
         {
             var canvas = context.canvas;
             canvas.autodirect = type == "wheelup" ? 1 : -1;
-            var lst = [0.25,0.5,1.0,1.5];
+            var lst = [0.25,0.75,1.5,2.0];
             var n = util.clamp(0,lst.length-1,galleryobj.length()-1);
             var slidestop = lst[n];
-
-            var lst = [30,50,70,100];
+            var lst = [50,100,150,200];
             var n = util.clamp(0,lst.length-1,galleryobj.length()-1);
             var slidereduce = lst[n];
-
             canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
             canvas.slidereduce = canvas.slideshow/slidereduce;
         }
@@ -1592,10 +1613,11 @@ var wheelst =
     },
  	leftright: function (context, x, y, ctrl, shift, alt, type)
     {
+        var canvas = context.canvas;
         context.canvas.slideshow = 0;
         var obj = context.canvas.scrollobj.value();
         obj.add(type == "wheeleft" ?  4 : -4);
-        context.refresh(2)
+        context.refresh()
     },
 },
 {
@@ -1701,7 +1723,7 @@ var pinchlst =
     name: "GALLERY",
     pinch: function (context, x, y, scale)
     {
-        var k = scale<context.canvas.scale?-5:5;
+        var k = scale<context.canvas.scale?-2.5:2.5;
         buttonobj.add(k);
         context.canvas.scale = scale;
         context.refresh();
@@ -2024,7 +2046,13 @@ var panlst =
         }
         else if (type == "panup" || type == "pandown")
         {
-            if (canvas.isvbarect)
+            if (canvas.isbuttonrect)
+            {
+                var k = (y-canvas.bscrollrect.y)/canvas.bscrollrect.height;
+                buttonobj.setperc(k);
+                context.refresh()
+            }
+            else if (canvas.isvbarect)
             {
                 var obj = canvas.timeobj;
                 var k = (y-canvas.vscrollrect.y)/canvas.vscrollrect.height;
@@ -2052,7 +2080,7 @@ var panlst =
         global.timeauto = 0;
         canvas.starty = y;
         canvas.timeobj.setanchor(canvas.timeobj.current());
-        canvas.isbuttonrect = canvas.buttonrect && canvas.buttonrect.hitest(x,y);
+        canvas.isbuttonrect = canvas.bscrollrect  && canvas.bscrollrect.hitest(x,y);
         canvas.ishbarect = canvas.hscrollrect && canvas.hscrollrect.hitest(x,y);
         canvas.isvbarect = canvas.vscrollrect && canvas.vscrollrect.hitest(x,y);
     },
@@ -2276,7 +2304,7 @@ var presslst =
     },
     press: function (context, rect, x, y)
     {
-        buttonobj.reset();
+        galleryobj.noscrollbars = galleryobj.noscrollbars?0:1;
         context.refresh();
     }
 },
@@ -2314,7 +2342,7 @@ var presslst =
         }
         else
         {
-            galleryobj.nothumbnail = galleryobj.nothumbnail?0:1;
+            galleryobj.noscrollbars = galleryobj.noscrollbars?0:1;
         }
 
         context.refresh();
@@ -2488,7 +2516,7 @@ var keylst =
         }
         else if (key == "g")
         {
-            pagedialog();
+            gotodialog();
         }
         else if (key == "/" || key == "\\")
         {
@@ -2761,6 +2789,11 @@ var keylst =
             rowobj.addperc(-1/100);
             contextobj.reset();
         }
+        else if (key == ",")
+        {
+            galleryobj.noscrollbar = galleryobj.noscrollbar?0:1;
+            context.refresh();
+        }
         else if (key == ".")
         {
             galleryobj.nothumbnail = galleryobj.nothumbnail?0:1;
@@ -2768,7 +2801,7 @@ var keylst =
         }
         else if (key == "g")
         {
-            pagedialog();
+            gotodialog();
         }
         else if (key == " ")
         {
@@ -2937,6 +2970,12 @@ var taplst =
             var obj = canvas.scrollobj.value();
             var k = (x-canvas.hscrollrect.x)/canvas.hscrollrect.width;
             obj.setperc(k);
+            context.refresh();
+        }
+        else if (canvas.bscrollrect && canvas.bscrollrect.hitest(x,y))
+        {
+            var k = (y-canvas.vscrollrect.y)/canvas.vscrollrect.height;
+            buttonobj.setperc(k);
             context.refresh();
         }
         else if (canvas.vscrollrect && canvas.vscrollrect.hitest(x,y))
@@ -5182,6 +5221,12 @@ galleryobj.init = function (obj)
                     });
                 }
             }},
+        {title:"Scrollbars", path: "", func: function()
+            {
+               galleryobj.noscrollbars = galleryobj.noscrollbars?0:1;
+            },
+            enabled: function() { return !galleryobj.noscrollbars; }
+        },
         {title:"Thumbnail", path: "", func: function()
             {
                galleryobj.nothumbnail = galleryobj.nothumbnail?0:1;
@@ -5619,7 +5664,7 @@ function downloadtext(name, text)
 	document.body.removeChild(element);
 }
 
-function pagedialog()
+function gotodialog()
 {
     function go(page)
     {
@@ -5631,7 +5676,7 @@ function pagedialog()
         }
         else
         {
-            galleryobj.set(page);
+            galleryobj.set(page+1);
             delete _4cnv.thumbcanvas;
             delete photo.image;
             contextobj.reset();
@@ -5664,7 +5709,7 @@ function pagedialog()
             if (page)
               go(page);
         }
-        else if (rect.hitest(event.x,event.y))
+        else if (!rect.hitest(event.x,event.y))
         {
             dialog.close();
         }
