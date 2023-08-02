@@ -1,5 +1,7 @@
 {
   "title": "Documents",
+  "hideheader": 1,
+  "hideboss": 1,
   "data": [
     {
       "id": "DOCS.0000",
