@@ -51,7 +51,7 @@ const DEFAULTFONT = "16px archivo black";
 const LARGEFONT = "18px archivo black";
 const HUGEFONT = "20px archivo black";
 const DOTSFONT = "60px archivo black";
-const SLICEWIDTH = 40;
+const SLICEWIDTH = 20;
 const SLICEWIDTHSIZE = 256;
 const ZOOMAX = 92;
 const IMAGELSTSIZE = iOS()?30:120;
@@ -500,6 +500,7 @@ panel.gallerybar = function ()
         var rows = infobj.data.length;
         var s = canvas.scrollobj.current() == 1 || galleryobj.hidefooter;
         var rh = 26;
+        var bh = rect.height/2;
         context.save();
         var a = new panel.layerA(
         [
@@ -507,26 +508,26 @@ panel.gallerybar = function ()
                 new panel.colA([5,SCROLLBARWIDTH,0,SCROLLBARWIDTH,5],
             [
                 0,
-                new panel.row([60,0,60],
+                new panel.row([0,bh,0],
                 [
                     0,
                     new Layer(
                     [
                         new panel.fill("rgba(0,0,0,0.5)"),
                         new panel.expand(new panel.rectangle(canvas.bscrollrect),10,0),
-                        new panel.currentV(new panel.shadow(new panel.fill("white")), 90, 0),
+                        new panel.currentV(new panel.shadow(new panel.fill("white")), bh/5, 0),
                     ]),
                     0,
                 ]),
                 0,
-                new panel.row([60,0,60],
+                new panel.row([0,bh,0],
                 [
                     0,
                     new Layer(
                     [
                         new panel.fill("rgba(0,0,0,0.5)"),
                         new panel.expand(new panel.rectangle(canvas.vscrollrect),10,0),
-                        new panel.currentV(new panel.shadow(new panel.fill("white")), 90, 1),
+                        new panel.currentV(new panel.shadow(new panel.fill("white")), bh/5, 1),
                     ]),
                     0,
                 ]),
@@ -550,14 +551,14 @@ panel.gallerybar = function ()
                   0,
                 ]),
                 0,
-                galleryobj.noscrollbars?0:new panel.col([60,0,60],
+                galleryobj.noscrollbars?0:new panel.col([0,bh,0],
                 [
                     0,
                     new Layer(
                     [
                         new panel.fill("rgba(0,0,0,0.5)"),
                         new panel.expand(new panel.rectangle(canvas.hscrollrect),0,10),
-                        new panel.currentH(new panel.shadow(new panel.fill("white")), 90, 1),
+                        new panel.currentH(new panel.shadow(new panel.fill("white")), bh/5, 1),
                     ]),
                     0,
                 ]),
@@ -619,43 +620,28 @@ panel.scrollbar = function ()
 var buttonobj = new circular_array("", []);
 buttonobj.reset = function()
 {
-    var min = galleryobj.min?galleryobj.min:0;
-    var max = galleryobj.max?galleryobj.max:0;
-    if (min && max)
-    {
-        buttonobj.data = [];
-        for (var n = min; n <= max; ++n)
-            buttonobj.data.push(n);
-        var s = Math.floor(buttonobj.length()/2);
-        var j = localobj.button >= 0 ? localobj.button : s;
-        buttonobj.set(s);
-    }
-    else
-    {
-        var ww = galleryobj.width?galleryobj.width:1024;
-        var hh = galleryobj.height?galleryobj.height:1024;
-        var w = galleryobj.data[0].width?galleryobj.data[0].width:ww;
-        var h = galleryobj.data[0].height?galleryobj.data[0].height:hh;
-        var a = w/h;
-        var height = window.innerWidth/a;
-        var factor = 1;
-        if (!galleryobj.buttonfactor)
-            factor = 2;
-        height = Math.floor(
-            Math.min(height, window.innerHeight/factor));
+    var ww = galleryobj.width?galleryobj.width:1024;
+    var hh = galleryobj.height?galleryobj.height:1024;
+    var w = galleryobj.data[0].width?galleryobj.data[0].width:ww;
+    var h = galleryobj.data[0].height?galleryobj.data[0].height:hh;
+    var a = w/h;
+    var height = window.innerWidth/a;
+    var factor = 1;
+    if (!galleryobj.buttonfactor)
+        factor = 2;
+    height = Math.floor(
+        Math.min(height, window.innerHeight/factor));
 
-        buttonobj.data = [];
-        var j = 180;
-        for (var n = j; n < 1080*4; ++n)
-            buttonobj.data.push(n);
-        var k = buttonobj.data.findIndex(function(a){return a == height});
-        if (localobj.button >= 0)
-           k = localobj.button;
-        buttonobj.set(k);
-        var width = height*a;
-        _8cnv.imagescrollobj = new circular_array("IMAGESCROLL", width);
-        _8cnv.imagescrollobj.set(0.5*_8cnv.imagescrollobj.length());
-    }
+    buttonobj.data = [];
+    for (var n = 180; n < photo.image.height; ++n)
+        buttonobj.data.push(n);
+    var k = buttonobj.data.findIndex(function(a){return a == height});
+    if (localobj.button >= 0)
+       k = localobj.button;
+    buttonobj.set(k);
+    var width = height*a;
+    _8cnv.imagescrollobj = new circular_array("IMAGESCROLL", width);
+    _8cnv.imagescrollobj.set(0.5*_8cnv.imagescrollobj.length());
 }
 
 function calculateAspectRatioFit(imgwidth, imgheight, rectwidth, rectheight)
@@ -1587,7 +1573,7 @@ var wheelst =
         context.canvas.slideshow = 0;
         if (ctrl)
         {
-            var k = type == "wheelup" ? -15 : 15;
+            var k = type == "wheelup"?5:-5;
             buttonobj.add(k);
         }
         else if (canvas.bscrollrect  && canvas.bscrollrect.hitest(x,y))
@@ -1644,6 +1630,7 @@ var wheelst =
     name: "BOSS",
     updown: function (context, x, y, ctrl, shift, alt, type)
     {
+        var canvas = context.canvas;
         if (ctrl)
         {
             var isthumb = context.canvas.thumbrect &&
@@ -1662,10 +1649,19 @@ var wheelst =
                 contextobj.reset()
             }
         }
-        else if (shift)
+        else if (context.zoomrect && context.zoomrect.hitest(x,y))
         {
-            stretchobj.value().add(type=="wheelup"?1:-1);
-            context.refresh();
+            var zoom = zoomobj.value();
+            var k = type == "wheelup" ? -1 : 1;
+            zoom.add(k);
+            contextobj.reset()
+        }
+        else if (context.stretchrect  && context.stretchrect.hitest(x,y))
+        {
+            var stretch = stretchobj.value();
+            var k = type == "wheelup" ? -1 : 1;
+            stretch.add(k);
+            context.refresh()
         }
         else
         {
@@ -1673,19 +1669,33 @@ var wheelst =
             var j = (100-zoom.value())/100;
             var k = type=="wheelup"?1:-1;
             rowobj.add(k*j*10);
-            contextobj.reset(2)
+            contextobj.reset()
         }
 	},
  	leftright: function (context, x, y, ctrl, shift, alt, type)
     {
-        var canvas = context.canvas;
-        canvas.autodirect = type == "wheeleft" ? -1 : 1;
-        var slidestop = photo.image.aspect > 2.5 ? 3 : 1.5;
-        var slidereduce = photo.image.aspect > 2.5 ? 300 : 100;
-        canvas.slidestop += slidestop;
-        canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
-        canvas.slidereduce = canvas.slidestop/slidereduce;
-        context.refresh(3);
+        if (context.zoomrect && context.zoomrect.hitest(x,y))
+        {
+        }
+        else if (context.stretchrect  && context.stretchrect.hitest(x,y))
+        {
+        }
+        else if (context.heightrect  && context.heightrect.hitest(x,y))
+        {
+            heightobj.value().add(type == "wheeleft" ?  1 : -1);
+            context.refresh()
+        }
+        else
+        {
+            var canvas = context.canvas;
+            canvas.autodirect = type == "wheeleft" ? -1 : 1;
+            var slidestop = photo.image.aspect > 2.5 ? 3 : 1.5;
+            var slidereduce = photo.image.aspect > 2.5 ? 300 : 100;
+            canvas.slidestop += slidestop;
+            canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
+            canvas.slidereduce = canvas.slidestop/slidereduce;
+            context.refresh();
+        }
     },
 },
 ];
@@ -1723,13 +1733,14 @@ var pinchlst =
     name: "GALLERY",
     pinch: function (context, x, y, scale)
     {
-        var k = scale<context.canvas.scale?-2.5:2.5;
+        var k = scale<context.canvas.scale?-3:3;
         buttonobj.add(k);
         context.canvas.scale = scale;
         context.refresh();
     },
     pinchstart: function (context, rect, x, y)
     {
+        context.canvas.start = buttonobj.current();
         context.canvas.pinching = 1;
         context.canvas.slideshow = 0;
     },
@@ -1747,8 +1758,7 @@ var pinchlst =
     pinch: function (context, x, y, scale)
     {
         var obj = context.obj;
-        obj.add(context.canvas.scale &&
-            scale<context.canvas.scale?-1:1);
+        obj.add(scale<context.canvas.scale?-1:1);
         contextobj.reset();
         context.canvas.scale = scale;
     },
@@ -2054,9 +2064,8 @@ var panlst =
             }
             else if (canvas.isvbarect)
             {
-                var obj = canvas.timeobj;
                 var k = (y-canvas.vscrollrect.y)/canvas.vscrollrect.height;
-                obj.setperc(1-k);
+                canvas.timeobj.setperc(1-k);
                 context.refresh()
             }
             else
@@ -2190,18 +2199,42 @@ var panlst =
         }
         else if (type == "panleft" || type == "panright")
         {
-            var e = context.canvas.startx-x;
-            var jvalue = TIMEOBJ/context.canvas.virtualwidth;
-            jvalue *= e;
-            context.canvas.timeobj.rotateanchored(jvalue);
-            context.refresh()
+            if (context.isheightrect)
+            {
+                var k = (x-context.heightrect.x)/
+                    context.heightrect.width;
+                heightobj.value().setperc(k);
+                context.refresh()
+            }
+            else
+            {
+                var e = context.canvas.startx-x;
+                var jvalue = TIMEOBJ/context.canvas.virtualwidth;
+                jvalue *= e;
+                context.canvas.timeobj.rotateanchored(jvalue);
+                context.refresh()
+            }
         }
         else if (type == "panup" || type == "pandown")
         {
             galleryobj.pantype = type;
             context.refresh()
             var zoom = zoomobj.value()
-            if (Number(zoom.value()))
+            if (context.iszoomrect)
+            {
+                var zoom = zoomobj.value();
+                var k = (y-context.zoomrect.y)/context.zoomrect.height;
+                zoom.setperc(1-k);
+                contextobj.reset()
+            }
+            else if (context.isstretchrect)
+            {
+                var stretch = stretchobj.value();
+                var k = (y-context.stretchrect.y)/context.stretchrect.height;
+                stretch.setperc(1-k);
+                contextobj.reset()
+            }
+            else if (Number(zoom.value()))
             {
                 var h = (rect.height*(1-zoom.value()/100))*2;
                 y = (y/rect.height)*h;
@@ -2224,12 +2257,12 @@ var panlst =
         canvas.isthumb = canvas.thumbrect &&
             canvas.thumbrect.hitest(x,y);
         canvas.timeobj.setanchor(canvas.timeobj.current());
-        canvas.islicewidth = context.slicewidthrect && context.slicewidthrect.hitest(x,y);
-        canvas.istretch = context.stretchrect && context.stretchrect.hitest(x,y);
-        canvas.iszoom = context.zoomrect && context.zoomrect.hitest(x,y);
         movingx = new MovingAverage();
         movingy = new MovingAverage();
         headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+        context.isheightrect = context.heightrect && context.heightrect.hitest(x,y);
+        context.iszoomrect = context.zoomrect && context.zoomrect.hitest(x,y);
+        context.isstretchrect = context.stretchrect && context.stretchrect.hitest(x,y);
         contextobj.reset();
     },
     panend: function (context, rect, x, y)
@@ -2240,8 +2273,6 @@ var panlst =
         galleryobj.hidefocus = 0;
         clearTimeout(context.timepan)
         canvas.isthumb = 0;
-        canvas.iszoom = 0;
-        canvas.istretch = 0;
         delete stretchobj.value().offset;
         delete zoomobj.value().offset;
         delete canvas.startx;
@@ -2304,7 +2335,7 @@ var presslst =
     },
     press: function (context, rect, x, y)
     {
-        galleryobj.noscrollbars = galleryobj.noscrollbars?0:1;
+    //    galleryobj.noscrollbars = galleryobj.noscrollbars?0:1;
         context.refresh();
     }
 },
@@ -2342,7 +2373,7 @@ var presslst =
         }
         else
         {
-            galleryobj.noscrollbars = galleryobj.noscrollbars?0:1;
+//            galleryobj.noscrollbars = galleryobj.noscrollbars?0:1;
         }
 
         context.refresh();
@@ -2807,7 +2838,6 @@ var keylst =
         {
             var j = galleryobj.berp();
             _8cnv.timeobj.setperc(1-j);
-            _8cnv.timeobj.add(TIMEOBJ/galleryobj.length())
             contextobj.reset();
             delete galleryobj.pantype;
             menuobj.toggle(_8cnvctx);
@@ -2903,6 +2933,27 @@ var taplst =
                 galleryobj.transparent = 1;
                 contextobj.reset()
             }
+        }
+        else if (context.zoomrect && context.zoomrect.hitest(x,y))
+        {
+            var zoom = zoomobj.value();
+            var k = (y-context.zoomrect.y)/context.zoomrect.height;
+            zoom.setperc(1-k);
+            contextobj.reset()
+        }
+        else if (context.heightrect && context.heightrect.hitest(x,y))
+        {
+            var k = (x-context.heightrect.x)/
+                context.heightrect.width;
+            heightobj.value().setperc(k);
+            context.refresh()
+        }
+        else if (context.stretchrect  && context.stretchrect.hitest(x,y))
+        {
+            var stretch = stretchobj.value();
+            var k = (y-context.stretchrect.y)/context.stretchrect.height;
+            stretch.setperc(1-k);
+            contextobj.reset()
         }
         else if (context.helprect && context.helprect.hitest(x,y))
         {
@@ -3064,9 +3115,12 @@ var bosslst =
             if (!galleryobj.hidefooter)
             {
                 context.extentrect = new rectangle();
+                context.zoomrect = new rectangle();
+                context.stretchrect = new rectangle();
                 context.chapterect = new rectangle();
-                var w = Math.min(360,rect.width-100);
-                var j = window.innerWidth - rect.width >= 180;
+                context.heightrect = new rectangle();
+                var w = Math.min(360,r.width-100);
+                var j = window.innerWidth - r.width >= 180;
                 var lst = [];
                 var title = _5cnv.sliceobj.value().title;
                 if (title)
@@ -3080,7 +3134,39 @@ var bosslst =
 
                 var rows = lst.length;
                 var rh = 26;
-                var a = new panel.rowA([0,rows*rh,8,SCROLLBARWIDTH,MARGINBAR],
+                var bh = rect.height/2;
+            var a = new panel.layerA(
+            [
+                galleryobj.noscrollbars?0:
+                    new panel.colA([5,SCROLLBARWIDTH,0,SCROLLBARWIDTH,5],
+                [
+                    0,
+                    new panel.row([0,bh,0],
+                    [
+                        0,
+                        new Layer(
+                        [
+                            new panel.fill("rgba(0,0,0,0.5)"),
+                            new panel.expand(new panel.rectangle(context.zoomrect),10,1),
+                            new panel.currentV(new panel.shadow(new panel.fill("white")), bh/5, 1),
+                        ]),
+                        0,
+                    ]),
+                    0,
+                    new panel.row([0,bh,0],
+                    [
+                        0,
+                        new Layer(
+                        [
+                            new panel.fill("rgba(0,0,0,0.5)"),
+                            new panel.expand(new panel.rectangle(context.stretchrect),10,0),
+                            new panel.currentV(new panel.shadow(new panel.fill("white")), bh/5, 1),
+                        ]),
+                        0,
+                    ]),
+                    0,
+                ]),
+                new panel.rowA([0,rows*rh,8,SCROLLBARWIDTH,MARGINBAR],
                 [
                     0,
                     new panel.col([0,w,0],
@@ -3097,18 +3183,37 @@ var bosslst =
                       0,
                     ]),
                     0,
+                    galleryobj.noscrollbars?0:new panel.col([0,bh,0],
+                    [
+                        0,
+                        new Layer(
+                        [
+                            new panel.fill("rgba(0,0,0,0.5)"),
+                            new panel.expand(new panel.rectangle(context.heightrect),0,10),
+                            new panel.currentH(new panel.shadow(new panel.fill("white")), bh/5, 1),
+                        ]),
+                        0,
+                    ]),
                     0,
-                    0,
-                ]);
+                ])
+            ]);
 
                 a.draw(context, rect,
                     [
-                        0,
-                        lst,
-                        0,
-                        0,
-                        0,
-                        0,
+                        [
+                            0,
+                            zoomobj.value(),
+                            0,
+                            stretchobj.value(),
+                            0,
+                        ],
+                        [
+                            0,
+                            lst,
+                            0,
+                            heightobj.value(),
+                            0,
+                        ]
                     ]);
             }
 
@@ -3117,8 +3222,8 @@ var bosslst =
 
             var he = heightobj.value();
             var b = Math.berp(0,he.length()-1,he.current());
-            var height = Math.max(60,Math.lerp(0, rect.height, b));
-            var width = Math.max(60,Math.lerp(0, rect.width, b));
+            var height = Math.lerp(90, rect.height-180, b);
+            var width = Math.lerp(90, rect.width-80, b);
             var r = calculateAspectRatioFit(photo.image.width, photo.image.height, width, height);
             var h = r.height;
             var w = r.width;
@@ -4030,6 +4135,7 @@ contextobj.reset = function ()
             extentobj.data[2] = galleryobj.value().id?galleryobj.value().id:"Undefined";
             extentobj.data[3] = `${window.innerWidth} x ${window.innerHeight}`;
             var e = galleryobj.value();
+            buttonobj.reset()
 
             var j = "";
             if (url.searchParams.has(galleryobj.repos))
@@ -4712,7 +4818,6 @@ var headlst =
             {
                 var j = galleryobj.berp();
                 _8cnv.timeobj.setperc(1-j)
-                _8cnv.timeobj.add(TIMEOBJ/galleryobj.length())
                 headobj.set(BOSS);
                 headham.panel = headobj.value();
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -5578,7 +5683,6 @@ galleryobj.init = function (obj)
         headobj.set(BOSS);
         headham.panel = headobj.value();
         menuobj.hide();
-        buttonobj.reset()
         menuobj.toggle(_8cnvctx);
         _4cnvctx.refresh();
     }
@@ -5670,19 +5774,17 @@ function gotodialog()
     {
         if (menuobj.value() == _8cnvctx)
         {
-            var k = page/galleryobj.length();
+            var k = (page-1)/galleryobj.length();
             _8cnv.timeobj.setperc(1-k);
             _8cnvctx.refresh();
         }
         else
         {
-            galleryobj.set(page+1);
+            galleryobj.set(page-1);
             delete _4cnv.thumbcanvas;
             delete photo.image;
             contextobj.reset();
         }
-
-        dialog.close();
     }
 
     var input = document.getElementById("page-input");
@@ -5693,8 +5795,8 @@ function gotodialog()
       {
         event.preventDefault();
         var page = input.value.clean();
-        if (page)
-          go(page);
+        go(Number(page));
+        dialog.close();
       }
     });
 
@@ -5702,12 +5804,12 @@ function gotodialog()
     dialog.style.width = window.innerWidth*0.85;
     dialog.addEventListener("click", function(event)
     {
-        var rect = new rectangle(input.getBoundingClientRect());
+        var rect = new rectangle(dialog.getBoundingClientRect());
         if (event.target.id == "page-ok")
         {
             var page = input.value.clean();
-            if (page)
-              go(page);
+            go(Number(page));
+            dialog.close();
         }
         else if (!rect.hitest(event.x,event.y))
         {
@@ -5719,11 +5821,11 @@ function gotodialog()
     {
         var current = Math.floor(
             Math.lerp(1,galleryobj.length(),1-_8cnv.timeobj.berp()));
-        input.value = current;
+        input.value = current+1;
     }
     else
     {
-        input.value = galleryobj.current()
+        input.value = galleryobj.current()+1
     }
 
     dialog.showModal();
