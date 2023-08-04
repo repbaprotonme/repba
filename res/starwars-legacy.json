@@ -1,7 +1,8 @@
 {
    "title": "Starwars Legacy",
    "slow": "1",
-   "buttonfactor":1,
+   "hideboss":1,
+   "buttonfactor":-1,
    "data": [
     {
       "url": "http://reportbase.me/data/starwars/legacy/001/acvr.jpg",
