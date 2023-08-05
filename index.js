@@ -626,7 +626,7 @@ buttonobj.reset = function()
     var h = galleryobj.data[0].height?galleryobj.data[0].height:hh;
     var a = w/h;
     var height = window.innerWidth/a;
-
+    var bheight = height*3;
     if (galleryobj.buttonfactor != -1)
     {
         var factor = 1;
@@ -636,7 +636,7 @@ buttonobj.reset = function()
     }
 
     buttonobj.data = [];
-    for (var n = 180; n < height*3; ++n)
+    for (var n = 180; n < bheight; ++n)
         buttonobj.data.push(n);
     var k = buttonobj.data.findIndex(function(a){return a == Math.floor(height)});
     buttonobj.set(k);
@@ -1580,14 +1580,14 @@ var wheelst =
         }
         else if (canvas.bscrollrect  && canvas.bscrollrect.hitest(x,y))
         {
-            var k = type == "wheelup" ? -15 : 15;
+            var k = type == "wheelup"?-15:15;
             buttonobj.add(k);
         }
         else
         {
             var canvas = context.canvas;
             canvas.autodirect = type == "wheelup" ? 1 : -1;
-            var lst = [0.25,0.75,1.5,2.0];
+            var lst = [0.5,1.1,1.25,1.5];
             var n = util.clamp(0,lst.length-1,galleryobj.length()-1);
             var slidestop = lst[n];
             var lst = [50,100,150,200];
@@ -2335,8 +2335,9 @@ var presslst =
     },
     press: function (context, rect, x, y)
     {
-    //    galleryobj.noscrollbars = galleryobj.noscrollbars?0:1;
-        context.refresh();
+            galleryobj.buttonfactor = 11;
+            buttonobj.reset();
+            menuobj.draw();
     }
 },
 {
@@ -2480,6 +2481,9 @@ function xxb()
     contextobj.reset();
     delete galleryobj.pantype;
     menuobj.toggle(_8cnvctx);
+    headobj.set(GALLERY);
+    headham.panel = headobj.value();
+    headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
 }
 
 var keylst =
@@ -2567,6 +2571,12 @@ var keylst =
             }, timemain.value());
 
             evt.preventDefault();
+        }
+        else if (key == "r")
+        {
+            galleryobj.buttonfactor = 11;
+            buttonobj.reset();
+            menuobj.draw();
         }
         else if (key == "g")
         {
@@ -3927,7 +3937,7 @@ menuobj.draw = function()
         context.canvas.timeobj.rotate(k*context.canvas.slideshow);
         context.canvas.slideshow -= context.canvas.slidereduce
 
-        if (++mencount%2)
+        if (++mencount%4)
             return;
     }
     else
@@ -4029,8 +4039,8 @@ var contextobj = new circular_array("CTX", contextlst);
 contextlst.forEach(function(context, n)
 {
     var canvas = context.canvas;
-    context.imageSmoothingEnabled = false;
-    context.imageSmoothingQuality = "low";
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = "high";
     context.font = DEFAULTFONT;
     context.fillText("  ", 0, 0);
     canvas.autodirect = -1;
@@ -4988,6 +4998,8 @@ var headlst =
                     menuobj.show();
                 }
 
+                headobj.set(BOSS);
+                headham.panel = headobj.value();
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
                 _4cnvctx.refresh()
             }
@@ -5709,7 +5721,8 @@ url.path = "home";
 
 if (url.searchParams.has("z"))
 {
-    loadzip(url.searchParams.get("z"));
+    var k = url.searchParams.get("z");
+    loadzip(`http://reportbse.me/data/${k}.zip`);
 }
 else if (url.searchParams.has("p"))
 {
