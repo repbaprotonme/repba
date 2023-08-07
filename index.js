@@ -486,6 +486,8 @@ panel.gallerybar = function ()
 {
     this.draw = function (context, rect, user, time)
     {
+            if (!headcnv.height)
+                return;
         var canvas = context.canvas;
         canvas.buttonrect = new rectangle();
         canvas.bscrollrect = new rectangle();
@@ -1592,13 +1594,8 @@ var wheelst =
         {
             var canvas = context.canvas;
             canvas.autodirect = type == "wheelup" ? -1 : 1;
-            var j = Math.lerp(1.5,2.5,buttonobj.berp());
-            var lst = [0.5,1.0,1.25,j];
-            var n = util.clamp(0,lst.length-1,galleryobj.length()-1);
-            var slidestop = lst[n];
-            var lst = [50,100,150,300];
-            var n = util.clamp(0,lst.length-1,galleryobj.length()-1);
-            var slidereduce = lst[n];
+            var slidestop = 1
+            var slidereduce = 240;
             canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
             canvas.slidereduce = canvas.slideshow/slidereduce;
         }
@@ -2364,8 +2361,8 @@ var presslst =
     },
     press: function (context, rect, x, y)
     {
-            galleryobj.buttonfactor = galleryobj.buttonfactor==-1?0:-1;
-            buttonobj.reset();
+            headcnv.height = headcnv.height?0:BEXTENT;
+            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             menuobj.draw();
     }
 },
@@ -2403,9 +2400,10 @@ var presslst =
         }
         else
         {
-            galleryobj.nothumbnail = galleryobj.nothumbnail?0:1;
+            headcnv.height = headcnv.height?0:BEXTENT;
         }
 
+        menuobj.draw();
         context.refresh();
         headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
     }
@@ -2522,20 +2520,6 @@ swipeobj.set(3);
 
 var dialog = 0;
 
-function xxg()
-{
-    delete _4cnv.thumbcanvas;
-    delete photo.image;
-    contextobj.reset();
-    var j = _8cnv.timeobj.berp();
-    galleryobj.set(_8cnvctx.canvas.centered);
-    headobj.set(BOSS);
-    headham.panel = headobj.value();
-    headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-    menuobj.hide();
-    _4cnvctx.refresh();
-}
-
 function xxb()
 {
     delete _4cnv.thumbcanvas;
@@ -2597,8 +2581,8 @@ var keylst =
             else
             {
                 canvas.autodirect = 1;
-                var slidestop = 3;
-                var slidereduce = 200;
+                var slidestop = 1.5;
+                var slidereduce = 240;
                 canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
                 canvas.slidereduce = canvas.slideshow/slidereduce;
             }
@@ -2627,8 +2611,8 @@ var keylst =
             else
             {
                 canvas.autodirect = -1;
-                var slidestop = 3;
-                var slidereduce = 200;
+                var slidestop = 1.5;
+                var slidereduce = 240;
                 canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
                 canvas.slidereduce = canvas.slideshow/slidereduce;
             }
@@ -2720,11 +2704,6 @@ var keylst =
             }
 
             context.refresh();
-            evt.preventDefault();
-        }
-        else if (key == " ")
-        {
-            xxg();
             evt.preventDefault();
         }
         else if (key == "escape")
@@ -2941,10 +2920,6 @@ var keylst =
         {
             gotodialog();
         }
-        else if (key == " ")
-        {
-            xxb();
-        }
         else if (key == "arrowdown" ||
             key == "s" ||
             key == "j" )
@@ -3080,8 +3055,18 @@ var taplst =
         {
             menuobj.hide();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            _4cnvctx.refresh();
         }
+        else
+        {
+                menuobj.setindex(_8cnvctx);
+                menuobj.show();
+                headobj.set(GALLERY);
+                headham.panel = headobj.value();
+                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+//            _4cnvctx.movepage(x<rect.width/2?-1:1);
+        }
+
+        _4cnvctx.refresh();
     }
 },
 {
@@ -3164,7 +3149,7 @@ var taplst =
         }
         else
         {
-            var visibles = canvas.visibles;
+            var visibles = _8cnv.visibles;
 
             var k;
             for (k = 0; k < visibles.length; k++)
@@ -3223,6 +3208,8 @@ var bosslst =
 	{
     	this.draw = function (context, r, user, time)
         {
+            if (!headcnv.height)
+                return;
            if (
                 !photo.image ||
                 !photo.image.complete ||
@@ -4862,6 +4849,10 @@ function resize()
 
 function escape()
 {
+    headcnv.height = headcnv.height?0:BEXTENT;
+    headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+    menuobj.draw();
+    _4cnvctx.refresh();
 }
 
 window.addEventListener("focus", (evt) => { });
@@ -4931,7 +4922,11 @@ var headlst =
 		{
             if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
             {
-                xxb();
+                menuobj.setindex(_8cnvctx);
+                menuobj.show();
+                headobj.set(GALLERY);
+                headham.panel = headobj.value();
+                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             }
             else if (!menuobj.value() &&
                 context.moveprev && context.moveprev.hitest(x,y))
@@ -5062,7 +5057,9 @@ var headlst =
 
             if (canvas.helprect && canvas.helprect.hitest(x,y))
             {
-                xxg();
+                var k = taplst.findIndex(function(a){return a.name == "GALLERY";});
+                var rect = _4cnvctx.rect()
+                taplst[k].tap(_4cnvctx, rect, rect.width/2, rect.height/2);
             }
             else if (context.fullrect && context.fullrect.hitest(x,y))
             {
@@ -5112,24 +5109,17 @@ var headlst =
             }
             else if (context.canvas.galleryrect && context.canvas.galleryrect.hitest(x,y))
             {
-                delete _4cnv.thumbcanvas;
-                delete photo.image;
-                var j = _8cnv.timeobj.berp();
-                galleryobj.set(_8cnvctx.canvas.centered);
-                contextobj.reset();
-                _4cnvctx.refresh();
-                var ctx = menuobj.value();
-                menuobj.hide();
-                if (ctx != _2cnvctx)
-                {
-                    menuobj.setindex(_2cnvctx);
-                    menuobj.show();
-                }
+                var k = taplst.findIndex(function(a){return a.name == "GALLERY";});
+                var rect = _4cnvctx.rect()
+                taplst[k].tap(_4cnvctx, rect, rect.width/2, rect.height/2);
 
-                headobj.set(BOSS);
-                headham.panel = headobj.value();
-                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-                _4cnvctx.refresh()
+                setTimeout(function()
+                {
+                    menuobj.showindex(_2cnvctx);
+                    headobj.set(BOSS);
+                    headham.panel = headobj.value();
+                    headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+                }, 400);
             }
  		};
 
