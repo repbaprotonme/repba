@@ -630,10 +630,13 @@ buttonobj.reset = function()
     var bheight = height*3;
     if (galleryobj.buttonfactor != -1)
     {
-        var factor = 1;
-        if (!galleryobj.buttonfactor)
-            factor = 0.67;
-        height = Math.min(height, window.innerHeight*factor);
+        if (typeof galleryobj.buttonfactor == "undefined" ||
+            galleryobj.buttonfactor==0)
+            height = window.innerHeight*0.67;
+        else if (galleryobj.buttonfactor==1)
+            height = Math.min(height, window.innerHeight);
+        else
+            height = window.innerHeight*galleryobj.buttonfactor;
     }
 
     buttonobj.data = [];
@@ -1576,7 +1579,8 @@ var wheelst =
         context.canvas.slideshow = 0;
         if (ctrl)
         {
-            var k = type == "wheelup"?5:-5;
+            var j = Math.lerp(5,50,buttonobj.berp());
+            var k = type == "wheelup"?j:-j;
             buttonobj.add(k);
         }
         else if (canvas.bscrollrect  && canvas.bscrollrect.hitest(x,y))
@@ -1587,12 +1591,12 @@ var wheelst =
         else
         {
             var canvas = context.canvas;
-            canvas.autodirect = type == "wheelup" ? 1 : -1;
-            var j = Math.lerp(1.5,3,buttonobj.berp());
-            var lst = [0.5,1.1,1.25,j];
+            canvas.autodirect = type == "wheelup" ? -1 : 1;
+            var j = Math.lerp(1.5,2.5,buttonobj.berp());
+            var lst = [0.5,1.0,1.25,j];
             var n = util.clamp(0,lst.length-1,galleryobj.length()-1);
             var slidestop = lst[n];
-            var lst = [50,100,150,200];
+            var lst = [50,100,150,300];
             var n = util.clamp(0,lst.length-1,galleryobj.length()-1);
             var slidereduce = lst[n];
             canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*slidestop;
@@ -1603,12 +1607,22 @@ var wheelst =
     },
  	leftright: function (context, x, y, ctrl, shift, alt, type)
     {
-        var canvas = context.canvas;
-        context.canvas.slideshow = 0;
-        var obj = context.canvas.scrollobj.value();
-        var j = Math.lerp(6,2,buttonobj.berp());
-        obj.add(type == "wheeleft" ?  j : -j);
-        context.refresh()
+        clearInterval(global.swipetimeout)
+        var j = Math.lerp(2,0.5,buttonobj.berp());
+        context.canvas.startleftright = j
+        clearInterval(context.canvas.leftright)
+        context.canvas.leftright = setInterval(function()
+        {
+            var obj = context.canvas.scrollobj.value();
+            obj.add(
+                type == "wheeleft"?
+                    context.canvas.startleftright:
+                    -context.canvas.startleftright);
+            context.canvas.startleftright -= 0.005;
+            if (context.canvas.startleftright < 0)
+                clearInterval(context.canvas.leftright);
+            context.refresh()
+        }, 8);
     },
 },
 {
@@ -1671,10 +1685,20 @@ var wheelst =
         else
         {
             var zoom = zoomobj.value();
-            var j = (100-zoom.value())/100;
-            var k = type=="wheelup"?1:-1;
-            rowobj.add(k*j*10);
-            contextobj.reset()
+            var j = Math.lerp(0.0075,0.005,zoom.berp());
+            context.canvas.startupdown = j;
+            clearInterval(context.canvas.updown)
+            context.canvas.updown = setInterval(function()
+            {
+                rowobj.addperc(
+                    type == "wheelup"?
+                        context.canvas.startupdown:
+                        -context.canvas.startupdown);
+                context.canvas.startupdown -= 0.0001;
+                if (context.canvas.startupdown < 0)
+                    clearInterval(context.canvas.updown);
+                contextobj.reset();
+            }, 8);
         }
 	},
  	leftright: function (context, x, y, ctrl, shift, alt, type)
@@ -1694,8 +1718,8 @@ var wheelst =
         {
             var canvas = context.canvas;
             canvas.autodirect = type == "wheeleft" ? -1 : 1;
-            var slidestop = photo.image.aspect > 2.5 ? 3 : 1.5;
-            var slidereduce = photo.image.aspect > 2.5 ? 300 : 100;
+            var slidestop = 2;
+            var slidereduce = 240;
             canvas.slidestop += slidestop;
             canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
             canvas.slidereduce = canvas.slidestop/slidereduce;
@@ -1738,7 +1762,7 @@ var pinchlst =
     name: "GALLERY",
     pinch: function (context, x, y, scale)
     {
-        var j = Math.lerp(3,10,buttonobj.berp());
+        var j = Math.lerp(6,20,buttonobj.berp());
         var k = scale<context.canvas.scale?-j:j;
         buttonobj.add(k);
         context.canvas.scale = scale;
@@ -2049,7 +2073,7 @@ var panlst =
             else
             {
                 var obj = canvas.scrollobj.value();
-                var j = (rect.width-x)*2;
+                var j = (rect.width-x);
                 var k = panhorz(obj, j);
                 if (k == -1)
                     return;
@@ -2090,6 +2114,7 @@ var panlst =
         movingx = new MovingAverage();
         movingy = new MovingAverage();
         delete canvas.slideshow;
+        clearInterval(context.canvas.leftright)
         clearInterval(global.timeauto);
         global.timeauto = 0;
         canvas.starty = y;
@@ -2378,7 +2403,7 @@ var presslst =
         }
         else
         {
-//            galleryobj.noscrollbars = galleryobj.noscrollbars?0:1;
+            galleryobj.nothumbnail = galleryobj.nothumbnail?0:1;
         }
 
         context.refresh();
@@ -2399,7 +2424,25 @@ var swipelst =
 },
 {
     name: "GALLERY",
-    swipeleftright: function (context, rect, x, y, evt) { },
+    swipeleftright: function (context, rect, x, y, evt)
+    {
+        var j = Math.lerp(1.0,0.5,buttonobj.berp());
+        context.canvas.startleftright = j
+        clearInterval(context.canvas.leftright)
+        context.canvas.leftright = setInterval(function()
+        {
+            var obj = context.canvas.scrollobj.value();
+            obj.rotateperc(
+                evt.type == "swipeleft"?
+                    context.canvas.startleftright:
+                    -context.canvas.startleftright);
+            context.canvas.startleftright -= 0.005;
+            if (context.canvas.startleftright < 0)
+                clearInterval(context.canvas.leftright);
+            context.refresh()
+        }, 8);
+        evt.preventDefault();
+    },
     swipeupdown: function (context, rect, x, y, evt)
     {
         var canvas = context.canvas;
@@ -2450,11 +2493,26 @@ var swipelst =
         canvas.slidestop += slidestop;
         canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
         canvas.slidereduce = canvas.slidestop/slidereduce;
-        context.refresh(3);
-    },
+        context.refresh();
+     },
 
     swipeupdown: function (context, rect, x, y, evt)
     {
+        var zoom = zoomobj.value();
+        var j = Math.lerp(0.0075,0.005,zoom.berp());
+        context.canvas.startupdown = j;
+        clearInterval(context.canvas.updown)
+        context.canvas.updown = setInterval(function()
+        {
+            rowobj.addperc(
+                evt.type == "swipeup"?
+                    context.canvas.startupdown:
+                    -context.canvas.startupdown);
+            context.canvas.startupdown -= 0.0001;
+            if (context.canvas.startupdown < 0)
+                clearInterval(context.canvas.updown);
+            contextobj.reset();
+        }, 8);
     },
 },
 ];
@@ -2497,10 +2555,6 @@ function xxb()
     headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
 }
 
-function xxm()
-{
-}
-
 var keylst =
 [
 {
@@ -2527,6 +2581,7 @@ var keylst =
         canvas.shiftKey = evt.shiftKey;
         canvas.ctrlKey = evt.ctrlKey;
         canvas.slideshow = 0;
+        clearInterval(context.canvas.leftright);
         if (
             key == "pageup" ||
             (canvas.shiftKey && key == "enter") ||
@@ -2615,31 +2670,44 @@ var keylst =
             context.refresh()
         }
         else if (
+            (canvas.shiftKey && key == "tab") ||
             key == "arrowleft" ||
             key == "a" ||
             key == "h")
 		{
-            var obj = canvas.scrollobj.value();
-            obj.rotateperc(-1);
-            context.refresh()
+            var j = Math.lerp(0.5,0.25,buttonobj.berp());
+            context.canvas.startleftright = j;
+            clearInterval(context.canvas.leftright);
+            context.canvas.leftright = setInterval(function()
+            {
+                var obj = canvas.scrollobj.value();
+                obj.rotateperc(-context.canvas.startleftright);
+                context.canvas.startleftright -= 0.005;
+                if (context.canvas.startleftright < 0)
+                    clearInterval(context.canvas.leftright);
+                context.refresh()
+            }, 8);
             evt.preventDefault();
         }
         else if (
+            (!canvas.shiftKey && key == "tab") ||
             key == "arrowright" ||
             key == "d" ||
             key == "l")
 		{
-            var obj = canvas.scrollobj.value();
-            obj.rotateperc(1);
-            context.refresh()
+            var j = Math.lerp(0.5,0.25,buttonobj.berp());
+            context.canvas.startleftright = j
+            clearInterval(context.canvas.leftright);
+            context.canvas.leftright = setInterval(function()
+            {
+                var obj = canvas.scrollobj.value();
+                obj.rotateperc(context.canvas.startleftright);
+                context.canvas.startleftright -= 0.005;
+                if (context.canvas.startleftright < 0)
+                    clearInterval(context.canvas.leftright);
+                context.refresh()
+            }, 8);
             evt.preventDefault();
-        }
-        else if (key == "tab")
-        {
-            var j = TIMEOBJ/galleryobj.length();
-            canvas.timeobj.rotate(canvas.shiftKey?j:-j);
-            evt.preventDefault();
-            context.refresh()
         }
         else if (key == "f")
         {
@@ -2810,18 +2878,13 @@ var keylst =
             key == "a" ||
             key == "h")
         {
-            canvas.block = 1;
-            setTimeout(function() { canvas.block = 0; }, canvas.keyblock);
-            canvas.keyblock = util.clamp(50,200,canvas.keyblock-5);
             canvas.autodirect = 1;
-            var k = key == "tab" ? 4 : 2;
-            var slidestop = k;
-            var k = key == "tab" ? 360 : 180;
-            var slidereduce = k;
+            var slidestop = 3;
+            var slidereduce = 180;
             canvas.slidestop += slidestop;
             canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
             canvas.slidereduce = canvas.slidestop/slidereduce;
-            context.refresh(2);
+            context.refresh();
             evt.preventDefault();
         }
         else if (
@@ -2830,18 +2893,13 @@ var keylst =
             key == "d" ||
             key == "l")
         {
-            canvas.block = 1;
-            setTimeout(function() { canvas.block = 0; }, canvas.keyblock);
-            canvas.keyblock = util.clamp(50,200,canvas.keyblock-5);
             canvas.autodirect = -1;
-            var k = key == "tab" ? 4 : 2;
-            var slidestop = k;
-            var k = key == "tab" ? 720 : 180;
-            var slidereduce = k;
+            var slidestop = 3;
+            var slidereduce = 180;
             canvas.slidestop += slidestop;
             canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
             canvas.slidereduce = canvas.slidestop/slidereduce;
-            context.refresh(2);
+            context.refresh();
             evt.preventDefault();
         }
         else if (key == "/" || key == "\\")
@@ -2856,8 +2914,18 @@ var keylst =
             key == "w" ||
             key == "k")
         {
-            rowobj.addperc(-1/100);
-            contextobj.reset();
+            var zoom = zoomobj.value();
+            var j = Math.lerp(0.0075,0.005,zoom.berp());
+            context.canvas.startupdown = j;
+            clearInterval(context.canvas.updown)
+            context.canvas.updown = setInterval(function()
+            {
+                rowobj.addperc(context.canvas.startupdown);
+                context.canvas.startupdown -= 0.0001;
+                if (context.canvas.startupdown < 0)
+                    clearInterval(context.canvas.updown);
+                contextobj.reset();
+            }, 8);
         }
         else if (key == ",")
         {
@@ -2881,8 +2949,18 @@ var keylst =
             key == "s" ||
             key == "j" )
         {
-            rowobj.addperc(1/100);
-            contextobj.reset();
+            var zoom = zoomobj.value();
+            var j = Math.lerp(0.0075,0.005,zoom.berp());
+            context.canvas.startupdown = j;
+            clearInterval(context.canvas.updown)
+            context.canvas.updown = setInterval(function()
+            {
+                rowobj.addperc(-context.canvas.startupdown);
+                context.canvas.startupdown -= 0.0001;
+                if (context.canvas.startupdown < 0)
+                    clearInterval(context.canvas.updown);
+                contextobj.reset();
+            }, 8);
         }
         else if (key == "-" || key == "{")
         {
@@ -4195,11 +4273,11 @@ contextobj.reset = function ()
                 var canvas = context.canvas;
                 canvas.autodirect = -1;
                 var slidestop = 2;
-                var slidereduce = this.aspect>3?840:120;
+                var slidereduce = 240;
                 canvas.slidestop += slidestop;
                 canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
                 canvas.slidereduce = canvas.slidestop/slidereduce;
-                context.refresh(2);
+                context.refresh();
             }
 
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -4896,6 +4974,7 @@ var headlst =
 		this.draw = function (context, rect, user, time)
         {
             context.clear();
+            var b = 0;
             var k = menuobj.value();
             var w = k?k.canvas.width:0;
             var b = window.innerWidth == w;
@@ -4910,8 +4989,8 @@ var headlst =
                    new panel.help(),
                    0,
 
-                   k?0:new panel.previous(),
-                   k?0:new panel.next(),
+                   (b||k)?0:new panel.previous(),
+                   (b||k)?0:new panel.next(),
 
                    0,
                    new panel.gallery(),
@@ -4997,7 +5076,7 @@ var headlst =
             }
             else if (canvas.openrect && canvas.openrect.hitest(x,y))
                 {
-                    loadimages();
+                    importdialog();
                 }
             else if (canvas.fitwindowrect && canvas.fitwindowrect.hitest(x,y))
             {
@@ -5022,7 +5101,13 @@ var headlst =
             else if (canvas.metarect && canvas.metarect.hitest(x,y))
             {
                 _8cnv.scrollobj.rotate(1);
-                _4cnvctx.refresh();
+                galleryobj.buttonfactor =
+                    _8cnv.scrollobj.current()?0.5:-1;
+                buttonobj.reset();
+                menuobj.draw();
+                setTimeout(function(){menuobj.draw()},100);
+                setTimeout(function(){menuobj.draw()},500);
+                setTimeout(function(){menuobj.draw()},1000);
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             }
             else if (context.canvas.galleryrect && context.canvas.galleryrect.hitest(x,y))
@@ -5051,6 +5136,7 @@ var headlst =
 		this.draw = function (context, rect, user, time)
         {
             context.clear();
+            var b = 0;
             context.save();
             var w = Math.min(360,rect.width-100);
             var j = window.innerWidth - rect.width >= 180;
@@ -5073,11 +5159,12 @@ var headlst =
                     0,
                     new panel.help(),
                     0,
-                    new panel.fullscreen(),
+                    b?0:new panel.fullscreen(),
+                    b?0:(
                     _5cnv.sliceobj.length() > 1 ?
                         new panel.fitwindow():
-                        new panel.open(),
-                    new panel.meta(),
+                        new panel.open()),
+                    b?0:new panel.meta(),
                     0,
                     new panel.gallery(),
                     0,
@@ -5356,7 +5443,12 @@ galleryobj.init = function (obj)
 
     _2cnv.sliceobj.data =
     [
-       {title:"Download", path: "DOWNLOAD", func: function()
+        {title:"Import", func: function()
+            {
+                importdialog();
+            }
+        },
+       {title:"Export", func: function()
             {
                 menuobj.hide();
                 if (galleryobj.value().blob)
@@ -5442,11 +5534,6 @@ galleryobj.init = function (obj)
             {
             menuobj.setindex(_9cnvctx);
             menuobj.show();
-            }
-        },
-        {title:"Load Images", path: "LOAD", func: function()
-            {
-                loadimages();
             }
         },
          {title:"Advanced", path: "ADVANCED", func: function()
@@ -6000,7 +6087,7 @@ async function loadjson(blob)
     }
 }
 
-function loadimages()
+function importdialog()
 {
     var input = document.createElement("input");
     input.type = "file";

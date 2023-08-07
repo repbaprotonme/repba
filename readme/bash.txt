@@ -2,6 +2,7 @@ ffmpeg -i input.mp4 -vf fps=1/10 %04d.png
 ssh scott@207.246.108.73 #login
 ls -1 | sort > out.txt
 find -s * -type f > res.txt  #recursive list files
+df -h #disk free
 du -h *  #human readable disk usage
 scp test scott@207.246.108.73:/home/scott
 grep -r --include "*.ini" "#auto" . #recursive find
