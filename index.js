@@ -454,15 +454,15 @@ var offmenucnv = new OffscreenCanvas(1, 1);
 var offmenuctx = offmenucnv.getContext("2d");
 offmenuctx.font = DEFAULTFONT;
 offmenuctx.fillText("  ", 0, 0);
-offmenuctx.imageSmoothingEnabled = false;
-offmenuctx.imageSmoothingQuality = "low";
+offmenuctx.imageSmoothingEnabled = true;
+offmenuctx.imageSmoothingQuality = "high";
 
 var offbosscnv = new OffscreenCanvas(1, 1);
 var offbossctx = offbosscnv.getContext("2d");
 offbossctx.font = DEFAULTFONT;
 offbossctx.fillText("  ", 0, 0);
-offbossctx.imageSmoothingEnabled = false;
-offbossctx.imageSmoothingQuality = "low";
+offbossctx.imageSmoothingEnabled = true;
+offbossctx.imageSmoothingQuality = "high";
 
 let canvaslst = [];
 for (var n = 0; n < 6; ++n)
@@ -1599,8 +1599,7 @@ var wheelst =
     {
         context.canvas.slideshow = 0;
         clearInterval(global.swipetimeout)
-        var j = 5;
-        context.canvas.startleftright = j
+        context.canvas.startleftright = 3
         clearInterval(context.canvas.leftright)
         context.canvas.leftright = setInterval(function()
         {
@@ -1613,7 +1612,7 @@ var wheelst =
             if (context.canvas.startleftright < 0)
                 clearInterval(context.canvas.leftright);
             menuobj.draw();
-        }, 4);
+        }, TIMEMAIN);
     },
 },
 {
@@ -1691,7 +1690,7 @@ var wheelst =
                 if (context.canvas.startupdown < 0)
                     clearInterval(context.canvas.updown);
                 contextobj.reset();
-            }, 6);
+            }, TIMEMAIN);
         }
 	},
  	leftright: function (context, x, y, ctrl, shift, alt, type)
@@ -2440,7 +2439,7 @@ var swipelst =
             if (context.canvas.startleftright < 0)
                 clearInterval(context.canvas.leftright);
             context.refresh()
-        }, 8);
+        }, TIMEMAIN);
         evt.preventDefault();
     },
     swipeupdown: function (context, rect, x, y, evt)
@@ -2514,7 +2513,7 @@ var swipelst =
                 if (context.canvas.startupdown < 0)
                     clearInterval(context.canvas.updown);
                 contextobj.reset();
-            }, 6);
+            }, TIMEMAIN);
     },
 },
 ];
@@ -2535,6 +2534,8 @@ var keylst =
     {
    		var context = menuobj.value()
         var canvas = context.canvas;
+        canvas.shiftKey = 0;
+        canvas.ctrlKey = 0;
         canvas.keyblock = 100;
     },
 	keydown: function (evt)
@@ -2636,6 +2637,7 @@ var keylst =
             key == "a" ||
             key == "h")
 		{
+            //todo broken
             var j = Math.lerp(2,1,buttonobj.berp());
             context.canvas.startleftright = j;
             clearInterval(context.canvas.leftright);
@@ -2647,7 +2649,7 @@ var keylst =
                 if (context.canvas.startleftright < 0)
                     clearInterval(context.canvas.leftright);
                 context.refresh()
-            }, 8);
+            }, TIMEMAIN);
             evt.preventDefault();
         }
         else if (
@@ -2667,7 +2669,7 @@ var keylst =
                 if (context.canvas.startleftright < 0)
                     clearInterval(context.canvas.leftright);
                 context.refresh()
-            }, 8);
+            }, TIMEMAIN);
             evt.preventDefault();
         }
         else if (key == "f")
@@ -2877,7 +2879,7 @@ var keylst =
                 if (context.canvas.startupdown < 0)
                     clearInterval(context.canvas.updown);
                 contextobj.reset();
-            }, 8);
+            }, TIMEMAIN);
         }
         else if (key == "g")
         {
@@ -2898,7 +2900,7 @@ var keylst =
                 if (context.canvas.startupdown < 0)
                     clearInterval(context.canvas.updown);
                 contextobj.reset();
-            }, 8);
+            }, TIMEMAIN);
         }
         else if (key == "-" || key == "{")
         {
@@ -3074,7 +3076,6 @@ var taplst =
         global.timeauto = 0;
         var obj = canvas.scrollobj.value();
         context.refresh();
-//todo: download
         if (canvas.hscrollrect && canvas.hscrollrect.hitest(x,y))
         {
             var obj = canvas.scrollobj.value();
@@ -3116,11 +3117,11 @@ var taplst =
             headcnvctx.show(0,0,window.innerWidth,BEXTENT);
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             menuobj.draw();
-            if (galleryobj.hideboss)
+
+            if (!context.canvas.shiftKey && galleryobj.hideboss)
                 return;
 
             var visibles = _8cnv.visibles;
-
             var k;
             for (k = 0; k < visibles.length; k++)
             {
