@@ -27,9 +27,11 @@ const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*(iOS()?3:10);
 const MENUBARWIDTH = 12;
 const THUMBORDER = 5;
+const BUTTONMARGIN = 30;
 const ALIEXTENT = 60;
 const BEXTENT = 80;
 const TIMEOBJ = 3927;
+const SCROLLMARGIN = 8;
 const MENUSELECT = "rgba(255,175,0,0.4)";
 const MENUTAP = "rgba(255,125,0,0.7)";
 const SELECTAP = "rgba(255,0,0.75,0.7)";
@@ -59,6 +61,7 @@ const BOSS = 0;
 const GALLERY = 1;
 const READER = 2;
 const TIMEMAIN = 4;
+const TIMESECOND = 8;
 
 var panel = {}
 var global = {};
@@ -492,7 +495,6 @@ panel.gallerybar = function ()
         context.chapterect = new rectangle();
         canvas.galleryrect = new rectangle();
         canvas.searchrect = new rectangle();
-
             if (!headcnv.height)
                 return;
         var w = Math.min(360,rect.width-100);
@@ -505,7 +507,7 @@ panel.gallerybar = function ()
         context.save();
         var a = new panel.layerA(
         [
-            new panel.colA([15,SCROLLBARWIDTH,0,SCROLLBARWIDTH,15],
+            new panel.colA([SCROLLMARGIN,SCROLLBARWIDTH,0,SCROLLBARWIDTH,SCROLLMARGIN],
             [
                 0,
                 new panel.row([0,bh,0],
@@ -1074,7 +1076,8 @@ panel.search = function ()
             }
         };
 
-        var s = menuobj.value() == _7cnvctx;
+        var s = menuobj.value() == _3cnvctx ||
+            menuobj.value() == _7cnvctx;
         var a = new Layer(
         [
             new panel.rectangle(context.canvas.searchrect),
@@ -1690,7 +1693,7 @@ var wheelst =
                 if (context.canvas.startupdown < 0)
                     clearInterval(context.canvas.updown);
                 contextobj.reset();
-            }, TIMEMAIN);
+            }, TIMESECOND);
         }
 	},
  	leftright: function (context, x, y, ctrl, shift, alt, type)
@@ -2359,10 +2362,6 @@ var presslst =
     },
     press: function (context, rect, x, y)
     {
-        var h = headcnv.height?0:BEXTENT;
-            headcnvctx.show(0,0,window.innerWidth,h);
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            menuobj.draw();
     }
 },
 {
@@ -2397,16 +2396,8 @@ var presslst =
             positx.set((x/rect.width)*100);
             posity.set((y/rect.height)*100);
         }
-        else
-        {
-            var r = new rectangle(40,0,rect.width-80,rect.height-40);
-            if (r.hitest(x,y))
-                headcnv.height = headcnv.height?0:BEXTENT;
-        }
 
-        menuobj.draw();
         context.refresh();
-        headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
     }
 },
 ];
@@ -2536,7 +2527,6 @@ var keylst =
         var canvas = context.canvas;
         canvas.shiftKey = 0;
         canvas.ctrlKey = 0;
-        canvas.keyblock = 100;
     },
 	keydown: function (evt)
 	{
@@ -2637,7 +2627,6 @@ var keylst =
             key == "a" ||
             key == "h")
 		{
-            //todo broken
             var j = Math.lerp(2,1,buttonobj.berp());
             context.canvas.startleftright = j;
             clearInterval(context.canvas.leftright);
@@ -2698,7 +2687,6 @@ var keylst =
     {
    		var context = menuobj.value()
         var canvas = context.canvas;
-        canvas.keyblock = 100;
     },
 	keydown: function (evt)
 	{
@@ -2767,9 +2755,6 @@ var keylst =
 	{
 		var canvas = _4cnv;
 		var context = _4cnvctx;
-        canvas.keyuptime = 0;
-        canvas.keyblock = 100;
-        canvas.keydown = 0;
         context.refresh();
         var key = evt.key.toLowerCase();
         if (
@@ -2796,7 +2781,6 @@ var keylst =
 		var canvas = _4cnv;
 		var context = _4cnvctx;
 		var rect = context.rect();
-        canvas.keydown = 1;
         canvas.ctrlKey = evt.ctrlKey;
         canvas.shiftKey = evt.shiftKey;
 
@@ -2879,7 +2863,7 @@ var keylst =
                 if (context.canvas.startupdown < 0)
                     clearInterval(context.canvas.updown);
                 contextobj.reset();
-            }, TIMEMAIN);
+            }, TIMESECOND);
         }
         else if (key == "g")
         {
@@ -2900,7 +2884,7 @@ var keylst =
                 if (context.canvas.startupdown < 0)
                     clearInterval(context.canvas.updown);
                 contextobj.reset();
-            }, TIMEMAIN);
+            }, TIMESECOND);
         }
         else if (key == "-" || key == "{")
         {
@@ -3118,7 +3102,7 @@ var taplst =
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             menuobj.draw();
 
-            if (!context.canvas.shiftKey && galleryobj.hideboss)
+            if (galleryobj.hideboss)
                 return;
 
             var visibles = _8cnv.visibles;
@@ -3625,12 +3609,12 @@ var buttonlst =
         if (user.tap)
             clr = MENUTAP;
         var e = context.canvas.scrollobj.berp();
-        var a = new panel.col([20,0,20],
+        var a = new panel.col([BUTTONMARGIN,0,BUTTONMARGIN],
         [
             0,
             new Layer(
             [
-                new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 0, 20),
+                new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 10, 20),
                 new panel.shrink(new panel.multitext(e), 20, 0),
             ]),
             0,
@@ -3651,12 +3635,12 @@ var buttonlst =
         else if (context.canvas.sliceobj.current() == time)
           clr = MENUSELECT;
 
-        var a = new panel.col([20,0,20],
+        var a = new panel.col([BUTTONMARGIN,0,BUTTONMARGIN],
         [
             0,
             new Layer(
             [
-                new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 0, 10),
+                new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 10, 10),
                 new panel.shrink(new panel.multitext(e), 20, 0),
             ]),
             0,
@@ -3682,12 +3666,12 @@ var buttonlst =
               clr = MENUSELECT;
         }
 
-        var a = new panel.col([20,0,20],
+        var a = new panel.col([BUTTONMARGIN,0,BUTTONMARGIN],
         [
             0,
             new Layer(
             [
-                new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 0, 10),
+                new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 10, 10),
                 new panel.shrink(new panel.text("white", "center", "middle",0, 0), 20, 0),
             ]),
             0,
@@ -4110,10 +4094,8 @@ contextlst.forEach(function(context, n)
     canvas.autodirect = -1;
     canvas.slideshow = 0;
     canvas.slidereduce = 0;
-    canvas.keyuptime = 0;
     canvas.slidestop = 0;
     canvas.lastime = 0;
-    canvas.keyblock = 100;
     canvas.sliceobj = new circular_array("", []);
     canvas.timeobj = new circular_array("", TIMEOBJ);
     canvas.timeobj.set(TIMEOBJ/2);
@@ -5045,9 +5027,23 @@ var headlst =
 
         this.press = function (context, rect, x, y)
         {
-            headcnv.height = 0;
-            menuobj.draw();
-            _4cnvctx.refresh();
+            if (context.canvas.searchrect &&
+                context.canvas.searchrect.hitest(x,y))
+            {
+                if (menuobj.value() == _3cnvctx)
+                {
+                    _3cnvctx.hide();
+                    menuobj.setindex(_8cnvctx);
+                    menuobj.draw();
+                }
+                else
+                {
+                    menuobj.setindex(_3cnvctx);
+                    menuobj.show();
+                }
+
+                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            }
         };
 
      	this.tap = function (context, rect, x, y)
@@ -5062,6 +5058,9 @@ var headlst =
 
             if (canvas.helprect && canvas.helprect.hitest(x,y))
             {
+                _3cnvctx.hide()
+                _5cnvctx.hide()
+                _7cnvctx.hide()
                 _8cnvctx.hide();
                 menuobj.set(0);
                 headobj.set(BOSS);
@@ -5093,6 +5092,7 @@ var headlst =
                     menuobj.show();
                 }
 
+                _3cnvctx.hide()
                 _5cnvctx.hide()
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             }
@@ -5269,14 +5269,19 @@ panel.help = function ()
     }
 };
 
+var dialog = 0;
 window.addEventListener("keyup", function (evt)
 {
+    if (dialog)
+        return;
     var context = menuobj.value()?menuobj.value():_4cnvctx;
 	return context.canvas.keyup_(evt);
 });
 
 window.addEventListener("keydown", function (evt)
 {
+    if (dialog)
+        return;
     var context = menuobj.value()?menuobj.value():_4cnvctx;
     return context.canvas.keydown_(evt);
 }, false);
@@ -5634,7 +5639,7 @@ galleryobj.init = function (obj)
             }
         },
         {
-            title: "pdiv\npanoramic digital image viewer\nhttps://pdiv.io\nimages@pdiv.io",
+            title: "piv\npanoramic image viewer\nhttps://piv.studio\nimages@piv.studio",
             func: function() {}
         },
         {
@@ -5642,7 +5647,7 @@ galleryobj.init = function (obj)
             func: function() {}
         },
         {
-            title: "pdiv is a digital image viewer for ultra-wide and panoramic images. images are drawn onto the interior of a cylinder for 360-degree full-screen viewing experience.",
+            title: "piv is a digital image viewer. images are drawn onto the interior of a cylinder for a wrap-around, full-screen viewing experience.",
             func: function() {}
         },
        {title:"Download", func: function()
