@@ -1590,7 +1590,7 @@ var wheelst =
             clearInterval(context.canvas.leftright)
             var canvas = context.canvas;
             canvas.autodirect = type == "wheelup" ? 1 : -1;
-            getreduce(context.canvas,x,rect.width/2);
+            getreduce(context.canvas,x,canvas.width/2);
         }
 
         context.refresh();
@@ -1624,7 +1624,7 @@ var wheelst =
         {
             var canvas = context.canvas;
             canvas.autodirect = type == "wheelup" ? -1 : 1;
-            getreduce(canvas,x,rect.width/2);
+            getreduce(canvas,x,canvas.width/2);
             context.refresh();
         }, TIMESECOND);
     },
@@ -1890,8 +1890,6 @@ async function loadzip(path)
 
     galleryobj.data = [];
     galleryobj.all = [];
-    galleryobj.min = 0;
-    galleryobj.max = 0;
     galleryobj.width = 0;
     galleryobj.height = 0;
     delete galleryobj.repos;
@@ -5796,6 +5794,26 @@ if (url.searchParams.has("p"))
     url.path = url.searchParams.get("p");
     var ext = url.path.replace(/^.*\./, '');
     ext = ext.toLowerCase();
+    if (1)
+    {
+        var path = `https://dweb.link/api/v0/ls?arg=QmNfp2CXHKogKD2Ju8YVWhk7W7PCQQjEFdE64hmW1NoE4e`; 
+        fetch(path)
+        .then(function (response)
+        {
+            if (!response.ok)
+                throw new Error('Network error');
+            return response.json()
+        })
+        .then(function (json)
+        {
+            console.log(json);
+        })
+        .catch((error) => 
+        { 
+            console.log(error);
+        });
+    }
+    
     if (ext == 'json')
     {
         fetch(url.path)
@@ -5807,7 +5825,6 @@ if (url.searchParams.has("p"))
         })
         .then((obj) => galleryobj.init(obj))
         .catch((error) => { });
-            loadzip(url.path)
     }
     else
     {
@@ -6111,15 +6128,19 @@ function getreduce(canvas,x,w)
     if (x < w)
     {
         var k = x/w;
-        var slidereduce = Math.lerp(120,360,k);
+        var slidereduce = Math.lerp(60,240,k);
     }
     else
     {
         var k = (x-w)/w;
-        var slidereduce = Math.lerp(360,120,k);
+        var slidereduce = Math.lerp(240,60,k);
     }
 
-    canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*3;
+    var lst = [1.0,1.5,2.0,2.5,3.0];
+    var j = util.clamp(0,lst.length-1,galleryobj.length()-1);
+    var k = lst[j]
+    canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*k;
     canvas.slidereduce = canvas.slideshow/slidereduce;
 }
+
 
