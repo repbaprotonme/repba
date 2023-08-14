@@ -46,8 +46,7 @@ const THUMBSTROKE = "rgba(255,255,255,0.4)";
 const SEARCHFRAME = "rgba(255,255,255,0.5)";
 const TRANSPARENT = "rgba(0,0,0,0)";
 const ARROWFILL = "white";
-const SCROLLBARWIDTH = 6;
-const MARGINBAR = 5;
+const SCROLLBARWIDTH = 8;
 const SMALLFONT = "15px archivo black";
 const DEFAULTFONT = "16px archivo black";
 const LARGEFONT = "18px archivo black";
@@ -502,8 +501,8 @@ panel.gallerybar = function ()
         var rows = infobj.data.length;
         var s = canvas.scrollobj.current() == 1;
         var rh = 26;
-        var bh = Math.min(240,rect.height/2);
-        var cw = Math.min(240,rect.width/2);
+        var bh = Math.min(240,rect.height/3);
+        var cw = Math.min(240,rect.width/3);
         context.save();
         var a = new panel.layerA(
         [
@@ -688,7 +687,7 @@ String.prototype.isjson = function()
     var ext = this.extension();
     ext = ext.toLowerCase();
     var lst = ['json'];
-    var k = lst.findIndex(function(a) {return a == ext;})    
+    var k = lst.findIndex(function(a) {return a == ext;})
     return k >= 0;
 }
 
@@ -697,7 +696,7 @@ String.prototype.isarchive = function()
     var ext = this.extension();
     ext = ext.toLowerCase();
     var lst = ['zip','cbz'];
-    var k = lst.findIndex(function(a) {return a == ext;})    
+    var k = lst.findIndex(function(a) {return a == ext;})
     return k >= 0;
 }
 
@@ -706,7 +705,7 @@ String.prototype.isimage = function()
     var ext = this.extension();
     ext = ext.toLowerCase();
     var lst = ['png','jpg','jpeg','webp','avif','gif'];
-    var k = lst.findIndex(function(a) {return a == ext;})    
+    var k = lst.findIndex(function(a) {return a == ext;})
     return k >= 0;
 }
 
@@ -1629,29 +1628,14 @@ var wheelst =
             clearInterval(context.canvas.leftright)
             var canvas = context.canvas;
             canvas.autodirect = type == "wheelup" ? 1 : -1;
-            getreduce(context.canvas,x,canvas.width/2);
+            menuobj.updown(context.canvas,x,canvas.width/2);
         }
 
         context.refresh();
     },
  	leftright: function (context, x, y, ctrl, shift, alt, type)
     {
-        context.canvas.slideshow = 0;
-        clearInterval(global.swipetimeout)
-        context.canvas.startleftright = 3
-        clearInterval(context.canvas.leftright)
-        context.canvas.leftright = setInterval(function()
-        {
-            var obj = context.canvas.scrollobj.value();
-            obj.add(
-                type == "wheeleft"?
-                    context.canvas.startleftright:
-                    -context.canvas.startleftright);
-            context.canvas.startleftright -= 0.01;
-            if (context.canvas.startleftright < 0)
-                clearInterval(context.canvas.leftright);
-            menuobj.draw();
-        }, TIMEMAIN);
+        menuobj.leftright(context, x, y, ctrl, shift, alt, type == "wheeleft");
     },
 },
 {
@@ -1663,7 +1647,7 @@ var wheelst =
         {
             var canvas = context.canvas;
             canvas.autodirect = type == "wheelup" ? -1 : 1;
-            getreduce(canvas,x,canvas.width/2);
+            menuobj.updown(canvas,x,canvas.width/2);
             context.refresh();
         }, TIMESECOND);
     },
@@ -2465,29 +2449,14 @@ var swipelst =
     name: "GALLERY",
     swipeleftright: function (context, rect, x, y, evt)
     {
-        var j = Math.lerp(3.0,0.25,buttonobj.berp());
-        context.canvas.startleftright = j
-        clearInterval(context.canvas.leftright)
-        context.canvas.leftright = setInterval(function()
-        {
-            var obj = context.canvas.scrollobj.value();
-            obj.rotateperc(
-                evt.type == "swipeleft"?
-                    context.canvas.startleftright:
-                    -context.canvas.startleftright);
-            context.canvas.startleftright -= 0.005;
-            if (context.canvas.startleftright < 0)
-                clearInterval(context.canvas.leftright);
-            context.refresh()
-        }, TIMEMAIN);
-        evt.preventDefault();
+        menuobj.leftright (context, x, y, 0, 0, 0, evt.type == "swipeleft" )
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
         var canvas = context.canvas;
         canvas.autodirect = evt.type == "swipeup" ? -1 : 1;
         var slidestop = 4;
-        getreduce(canvas,x,rect.width/2);
+        menuobj.updown(canvas,x,rect.width/2);
         clearInterval(global.swipetimeout);
         global.swipetimeout = setInterval(function ()
         {
@@ -2507,7 +2476,7 @@ var swipelst =
     {
         var canvas = context.canvas;
         canvas.autodirect = evt.type == "swipeup" ? -1 : 1;
-        getreduce(canvas,x,rect.width/2);
+        menuobj.updown(canvas,x,rect.width/2);
         clearInterval(global.swipetimeout);
         global.swipetimeout = setInterval(function ()
         {
@@ -2590,7 +2559,7 @@ var keylst =
             key == "k")
         {
             canvas.autodirect = 1;
-            getreduce(canvas,1,6);
+            menuobj.updown(canvas,1,6);
             clearInterval(global.swipetimeout);
             global.swipetimeout = setInterval(function ()
             {
@@ -2624,7 +2593,7 @@ var keylst =
             key == "j")
         {
             canvas.autodirect = -1;
-            getreduce(canvas,1,6);
+            menuobj.updown(canvas,1,6);
             clearInterval(global.swipetimeout);
             global.swipetimeout = setInterval(function ()
             {
@@ -2661,18 +2630,7 @@ var keylst =
             key == "a" ||
             key == "h")
 		{
-            context.canvas.startleftright = 1;
-            clearInterval(context.canvas.leftright);
-            context.canvas.leftright = setInterval(function()
-            {
-                var obj = canvas.scrollobj.value();
-                obj.rotateperc(-context.canvas.startleftright);
-                context.canvas.startleftright -= 0.0005;
-                if (context.canvas.startleftright < 0)
-                    clearInterval(context.canvas.leftright);
-                context.refresh()
-            }, TIMESECOND);
-            evt.preventDefault();
+            menuobj.leftright (context, 0, 0, 0, 0, 0, 1)
         }
         else if (
             (!canvas.shiftKey && key == "tab") ||
@@ -2680,17 +2638,7 @@ var keylst =
             key == "d" ||
             key == "l")
 		{
-            context.canvas.startleftright = 1;
-            clearInterval(context.canvas.leftright);
-            context.canvas.leftright = setInterval(function()
-            {
-                var obj = canvas.scrollobj.value();
-                obj.rotateperc(context.canvas.startleftright);
-                context.canvas.startleftright -= 0.0005;
-                if (context.canvas.startleftright < 0)
-                    clearInterval(context.canvas.leftright);
-                context.refresh()
-            }, TIMESECOND);
+            menuobj.leftright (context, 0, 0, 0, 0, 0, 0)
         }
         else if (key == "f")
         {
@@ -2735,7 +2683,7 @@ var keylst =
             evt.key == "j")
 		{
             canvas.autodirect = 1;
-            getreduce(canvas,1,2);
+            menuobj.updown(canvas,1,2);
             context.refresh();
         }
         else if (
@@ -2745,7 +2693,7 @@ var keylst =
             evt.key == "k")
 		{
             canvas.autodirect = -1;
-            getreduce(canvas,1,2);
+            menuobj.updown(canvas,1,2);
             context.refresh();
         }
         else if (key == "enter")
@@ -3218,8 +3166,8 @@ var bosslst =
 
             var rows = lst.length;
             var rh = 26;
-            var bh = Math.min(240,rect.height/2);
-            var cw = Math.min(240,rect.width/2);
+            var bh = Math.min(240,rect.height/3);
+            var cw = Math.min(240,rect.width/3);
         var a = new panel.layerA(
         [
             new panel.colA([10,SCROLLBARWIDTH,0,SCROLLBARWIDTH,10],
@@ -3791,7 +3739,7 @@ var buttonlst =
                 {
                     thumbimg.src = user.url;
                 }
-                
+
                 thumbimg.onload = function()
                 {
                     this.count = 0;
@@ -5446,6 +5394,24 @@ async function initblob (blob)
     }
 }
 
+menuobj.leftright = function (context, x, y, ctrl, shift, alt, type)
+{
+    context.canvas.slideshow = 0;
+    clearInterval(global.swipetimeout)
+    context.canvas.startleftright = 4;
+    clearInterval(context.canvas.leftright)
+    context.canvas.leftright = setInterval(function()
+    {
+        var obj = context.canvas.scrollobj.value();
+        obj.add(type ? context.canvas.startleftright :
+            -context.canvas.startleftright);
+        context.canvas.startleftright -= 0.1
+        if (context.canvas.startleftright < 0)
+            clearInterval(context.canvas.leftright);
+        menuobj.draw();
+    }, 4);
+}
+
 galleryobj.init = function (obj)
 {
     if (obj)
@@ -5860,7 +5826,7 @@ if (url.searchParams.has("p"))
     url.path = url.searchParams.get("p");
     if (url.path.charAt(0) == 'Q' && url.path.charAt(1) == 'm')
     {
-        var path = `https://dweb.link/api/v0/ls?arg=${url.path}`; 
+        var path = `https://dweb.link/api/v0/ls?arg=${url.path}`;
         fetch(path)
         .then(function (response)
         {
@@ -5874,8 +5840,8 @@ if (url.searchParams.has("p"))
             var j = k.Links;
             loadipfs(j);
         })
-        .catch((error) => 
-        { 
+        .catch((error) =>
+        {
             console.log(error);
         });
     }
@@ -6187,7 +6153,7 @@ function importdialog()
     });
 }
 
-function getreduce(canvas,x,w)
+menuobj.updown = function(canvas,x,w)
 {
     if (x < w)
     {
@@ -6200,7 +6166,7 @@ function getreduce(canvas,x,w)
         var slidereduce = Math.lerp(960,180,k);
     }
 
-    var lst = [1.0,1.5,2.0,2.5,3.0];
+    var lst = [0.5,0.75,1.0,1.25,1.5,1.75,2.0,2.25,2.5,2.75,3.0];
     var j = util.clamp(0,lst.length-1,galleryobj.length()-1);
     var k = lst[j]
     canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*k;

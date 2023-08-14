@@ -12,7 +12,7 @@ fs.readFile(args[2], 'utf8', (error, str) =>
         var name = lst[n];
         if (!name)
             continue;
-        k.url = `http://reportbase.me/data/starwars/legacy/${name}`;
+        k.url = `http://207.246.108.73/data/starwars/legacy/${name}`;
         var j = `starwars/legacy/${name}`;
         j = j.split("/");
         j.pop();
