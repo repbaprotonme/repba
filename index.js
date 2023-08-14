@@ -678,6 +678,45 @@ Math.lerp = function (v0, v1, t)
     return (1 - t) * v0 + t * v1;
 };
 
+String.prototype.extension = function()
+{
+    return this.replace(/^.*\./, '');
+}
+
+String.prototype.isjson = function()
+{
+    var ext = this.extension();
+    ext = ext.toLowerCase();
+    var lst = ['json'];
+    var k = lst.findIndex(function(a) {return a == ext;})    
+    return k >= 0;
+}
+
+String.prototype.isarchive = function()
+{
+    var ext = this.extension();
+    ext = ext.toLowerCase();
+    var lst = ['zip','cbz'];
+    var k = lst.findIndex(function(a) {return a == ext;})    
+    return k >= 0;
+}
+
+String.prototype.isimage = function()
+{
+    var ext = this.extension();
+    ext = ext.toLowerCase();
+    var lst = ['png','jpg','jpeg','webp','avif','gif'];
+    var k = lst.findIndex(function(a) {return a == ext;})    
+    return k >= 0;
+}
+
+String.prototype.proper = function()
+{
+    if (!this.length)
+        return this;
+    return this.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+}
+
 String.prototype.proper = function()
 {
     if (!this.length)
@@ -1857,6 +1896,39 @@ userobj.save = function()
     }
 }
 
+function loadipfs(json)
+{
+    galleryobj.data = [];
+    galleryobj.all = [];
+    for (var n = 0; n < json.length; ++n)
+    {
+        var k = json[n];
+        if (k.Type != 2)
+            continue;
+        var j = {}
+        j.id = k.Hash;
+        j.name = k.Name;
+        if (!j.name.isimage())
+            continue;
+        galleryobj.data.push(j);
+        if (galleryobj.width)
+            continue;
+        galleryobj.width = -1;
+        var image = new Image();
+        image.src = `https://ipfs.io/ipfs/${j.id}?filename=${j.name}`;
+        image.onload = function(file)
+        {
+            galleryobj.width = this.width;
+            galleryobj.height = this.height;
+            buttonobj.reset()
+        };
+    }
+
+    localobj.gallery = 0;
+    galleryobj.hideboss = 1;
+    galleryobj.init(galleryobj)
+}
+
 async function loadzip(path)
 {
     const {entries} = await unzipit.unzip(path);
@@ -1876,13 +1948,9 @@ async function loadzip(path)
             galleryobj.title = "";
             continue;
         }
-        var ext = key.replace(/^.*\./, '');
-        ext = ext.toLowerCase();
-        if (ext == 'png' || ext == 'jpg' || ext == 'jpeg' ||
-            ext == 'webp' || ext == 'avif' || ext == 'gif')
-        {
+
+        if (key.isimage())
             count += 1;
-        }
     }
 
     if (!count)
@@ -1902,15 +1970,12 @@ async function loadzip(path)
         var entry = entries[key];
         if (entry.isDirectory)
             continue;
-        var ext = key.replace(/^.*\./, '');
-        ext = ext.toLowerCase();
-        if (ext == 'png' || ext == 'jpg' || ext == 'jpeg' ||
-            ext == 'webp' || ext == 'avif' || ext == 'gif')
+        if (key.isimage())
         {
             var k = {}
-            k.blob = await entries[key].blob(`image/${ext}`);
+            k.ext = key.extension();
+            k.blob = await entries[key].blob(`image/${k.ext}`);
             var lst = key.split("/");
-            k.ext = ext;
             k.name = lst.pop();
             k.filter = lst.join("/");
             if (!k.title)
@@ -1918,6 +1983,7 @@ async function loadzip(path)
             galleryobj.data.push(k);
             if (!galleryobj.width)
             {
+                galleryobj.width = -1;
                 var image = new Image();
                 image.src = URL.createObjectURL(k.blob);
                 image.onload = function(file)
@@ -1942,12 +2008,8 @@ async function dropfiles(blobs)
     for (var i = 0; i < blobs.length; i++)
     {
         var name = blobs[i].name.toLowerCase();
-        var ext = name.replace(/^.*\./, '');
-        if (ext == 'png' || ext == 'jpg' || ext == 'jpeg' ||
-            ext == 'webp' || ext == 'avif' || ext == 'gif')
-        {
+        if (name.isimage())
             count += 1;
-        }
     }
 
     if (!count)
@@ -1956,26 +2018,22 @@ async function dropfiles(blobs)
     menuobj.hide();
     galleryobj.data = [];
     galleryobj.all = [];
-    galleryobj.min = 0;
-    galleryobj.max = 0;
     galleryobj.width = 0;
     galleryobj.height = 0;
     delete galleryobj.repos;
 
     for (var i = 0; i < blobs.length; i++)
     {
-        var name = blobs[i].name.toLowerCase();
-        var ext = name.replace(/^.*\./, '');
-        if (ext == 'png' || ext == 'jpg' || ext == 'jpeg' ||
-            ext == 'webp' || ext == 'avif' || ext == 'gif')
+        var name = blobs[i].name;
+        if (name.isimage())
         {
             var k = {}
             k.name = name;
-            k.ext = ext;
             k.blob = blobs[i];
             galleryobj.data.push(k);
             if (!galleryobj.width)
             {
+                galleryobj.width = -1;
                 var image = new Image();
                 image.src = URL.createObjectURL(k.blob);
                 image.onload = function(file)
@@ -2004,18 +2062,17 @@ var droplst =
         var files = evt.dataTransfer.files;
         if (files.length == 1 && files[0].name)
         {
-            var ext = files[0].name.toLowerCase().replace(/^.*\./, '');
-            if (ext == 'png' || ext == 'jpg' || ext == 'jpeg' ||
-                ext == 'webp' || ext == 'avif' || ext == 'gif')
+            var naae = files[0].name;
+            if (name.isimage())
             {
                 dropfiles(files);
             }
-            else if (ext == 'zip' || ext == 'cbz')
+            else if (name.isarchive())
             {
                 var blob = files[0];
                 loadzip(blob);
             }
-            else if (ext == 'json')
+            else if (name.isjson())
             {
                 var blob = files[0];
                 initblob(blob);
@@ -3712,20 +3769,29 @@ var buttonlst =
             thumbimg.view = view;
             try
             {
-                const variant = "1080x1080";
-                thumbimg.src = `https://reportbase.com/image/${user.id}/${variant}`;
-                if (Number.isInteger(user.id))
-                    thumbimg.src = `https://images.pexels.com/photos/${user.id}/pexels-photo-${user.id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=2160&w=1080`;
+                if (user.id && user.id.length >= 2)
+                {
+                    if (Number.isInteger(user.id))
+                        thumbimg.src = `https://images.pexels.com/photos/${user.id}/pexels-photo-${user.id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=2160&w=1080`;
+                    else if (url.path.charAt(0) == 'Q' && url.path.charAt(1) == 'm')
+                        thumbimg.src = `https://ipfs.io/ipfs/${user.id}?filename=${user.name}`;
+                    else
+                        thumbimg.src = `https://reportbase.com/image/${user.id}/1080x1080`;
+                }
                 else if (user.full)
+                {
                     thumbimg.src = user.full;
+                }
                 else if (user.blob)
                 {
                     URL.revokeObjectURL(thumbimg.src);
                     thumbimg.src = URL.createObjectURL(user.blob);
                 }
                 else if (!user.id && user.url)
+                {
                     thumbimg.src = user.url;
-
+                }
+                
                 thumbimg.onload = function()
                 {
                     this.count = 0;
@@ -5792,11 +5858,9 @@ url.path = "home";
 if (url.searchParams.has("p"))
 {
     url.path = url.searchParams.get("p");
-    var ext = url.path.replace(/^.*\./, '');
-    ext = ext.toLowerCase();
-    if (1)
+    if (url.path.charAt(0) == 'Q' && url.path.charAt(1) == 'm')
     {
-        var path = `https://dweb.link/api/v0/ls?arg=QmNfp2CXHKogKD2Ju8YVWhk7W7PCQQjEFdE64hmW1NoE4e`; 
+        var path = `https://dweb.link/api/v0/ls?arg=${url.path}`; 
         fetch(path)
         .then(function (response)
         {
@@ -5806,15 +5870,16 @@ if (url.searchParams.has("p"))
         })
         .then(function (json)
         {
-            console.log(json);
+            var k = json.Objects[0];
+            var j = k.Links;
+            loadipfs(j);
         })
         .catch((error) => 
         { 
             console.log(error);
         });
     }
-    
-    if (ext == 'json')
+    else if (url.path.isjson())
     {
         fetch(url.path)
         .then(function (response)
@@ -6096,18 +6161,17 @@ function importdialog()
             var files = Array.from(input.files);
             if (files.length == 1 && files[0].name)
             {
-                var ext = files[0].name.toLowerCase().replace(/^.*\./, '');
-                if (ext == 'png' || ext == 'jpg' || ext == 'jpeg' ||
-                    ext == 'webp' || ext == 'avif' || ext == 'gif')
+                var name = files[0].name;
+                if (name.isimage())
                 {
                     dropfiles(files);
                 }
-                else if (ext == 'zip' || ext == 'cbz')
+                else if (name.isarchive())
                 {
                     var blob = files[0];
                     loadzip(blob);
                 }
-                else if (ext == 'json')
+                else if (name.isjson())
                 {
                     var blob = files[0];
                     initblob(blob);
@@ -6128,12 +6192,12 @@ function getreduce(canvas,x,w)
     if (x < w)
     {
         var k = x/w;
-        var slidereduce = Math.lerp(60,240,k);
+        var slidereduce = Math.lerp(180,960,k);
     }
     else
     {
         var k = (x-w)/w;
-        var slidereduce = Math.lerp(240,60,k);
+        var slidereduce = Math.lerp(960,180,k);
     }
 
     var lst = [1.0,1.5,2.0,2.5,3.0];
