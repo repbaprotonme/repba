@@ -1909,7 +1909,6 @@ function loadipfs(json)
     }
 
     localobj.gallery = 0;
-    galleryobj.hideboss = 1;
     galleryobj.init(galleryobj)
 }
 
@@ -1982,7 +1981,6 @@ async function loadzip(path)
     }
 
     localobj.gallery = 0;
-    galleryobj.hideboss = 1;
     galleryobj.init(galleryobj)
 }
 
@@ -2033,7 +2031,6 @@ async function dropfiles(blobs)
 
     galleryobj.title = "";
     localobj.gallery = 0;
-    galleryobj.hideboss = 1;
     galleryobj.init(galleryobj)
 }
 
@@ -5372,12 +5369,15 @@ galleryobj.getpath = function()
     var id = galleryobj.value().id;
     var template = galleryobj.variant ? galleryobj.variant : "3840x3840";
     var path = `https://reportbase.com/image/${id}/${template}`;
-    if (galleryobj.raw)
+    var gallery = galleryobj.value();
+    if (id.charAt(0) == 'Q' && id.charAt(1) == 'm')
+        path = `https://ipfs.io/ipfs/${id}?filename=${gallery.name}`;
+    else if (galleryobj.raw)
         path = `https://reportbase.com/image/${id}/blob`;
-    else if (galleryobj.value().full)
-        path = galleryobj.value().full;
-    else if (!id && galleryobj.value().url)
-        path = galleryobj.value().url;
+    else if (gallery.full)
+        path = gallery.full;
+    else if (!id && gallery.url)
+        path = gallery.url;
     return path;
 }
 
@@ -5820,40 +5820,50 @@ function loadgallery(path)
 }
 
 url.path = "home";
+//https://dweb.link/ipfs/bafybeid6exmwfgtmxor5tkzhlkfqlgpa3wxsoljh2xq3tdhyp4febfzwhy
 
-if (url.searchParams.has("p"))
+if (url.searchParams.has("z"))
+{
+     url.path = url.searchParams.get("z");
+     var path = `https://dweb.link/ipfs/${url.path}`;
+     fetch(path)
+    .then((response) => blobhandler(response))
+    .then(function (blob) { loadzip(blob); })
+    .catch((error) => { });
+}
+else if (url.searchParams.has("p"))
 {
     url.path = url.searchParams.get("p");
-    if (url.path.charAt(0) == 'Q' && url.path.charAt(1) == 'm')
+    if ((url.path.charAt(0) == 'Q' && url.path.charAt(1) == 'm') || //filebase
+        (url.path.charAt(0) == 'b' && url.path.charAt(1) == 'a'))   //web3.storage
     {
         var path = `https://dweb.link/api/v0/ls?arg=${url.path}`;
         fetch(path)
-        .then(function (response)
-        {
-            if (!response.ok)
-                throw new Error('Network error');
-            return response.json()
-        })
+        .then(response => jsonhandler(response))
         .then(function (json)
         {
             var k = json.Objects[0];
             var j = k.Links;
-            loadipfs(j);
+            var e = j[0];
+            if (j.length == 1 && e.Type == 2)
+            {
+                var path = encodeURI(`https://${k.Hash}.ipfs.dweb.link/${e.Name}`);
+                fetch(path)
+                .then((response) => blobhandler(response))
+                .then(function (blob) { loadzip(blob); })
+                .catch((error) => { });
+            }
+            else
+            {
+                loadipfs(j);
+            }
         })
-        .catch((error) =>
-        {
-            console.log(error);
-        });
+        .catch((error) => { });
     }
     else if (url.path.isjson())
     {
         fetch(url.path)
-        .then(function (response)
-        {
-            if (!response.ok)
-                throw new Error('Network error');
-            return response.json()
-        })
+        .then(response => jsonhandler(response))
         .then((obj) => galleryobj.init(obj))
         .catch((error) => { });
     }
@@ -6068,11 +6078,12 @@ async function copytext(text)
         navigator.clipboard.writeText(text)
 }
 
-/*
-if (url.protocol == "https:")
+function blobhandler(response)
 {
+    if (response.ok)
+        return response.blob()
+    throw Error(response.statusText);
 }
-*/
 
 function jsonhandler(response)
 {
