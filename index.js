@@ -1,9 +1,9 @@
 //http://obfuscator.io
-//piv.studio
 
 /* ++ += ==
 Copyright 2017 Tom Brinkman
-https://piv.studio
+https://zip-view.com
+https://ipfs-view.com
 */
 
 function iOS()
@@ -1628,7 +1628,7 @@ var wheelst =
             clearInterval(context.canvas.leftright)
             var canvas = context.canvas;
             canvas.autodirect = type == "wheelup" ? 1 : -1;
-            menuobj.updown(context.canvas,x,canvas.width/2);
+            galleryobj.updown(context.canvas,x,canvas.width/2);
         }
 
         context.refresh();
@@ -2311,6 +2311,7 @@ var panlst =
         canvas.slidestop = 0;
         canvas.startx = x;
         canvas.starty = y;
+        galleryobj.hidefocus = 0;
         canvas.isthumb = canvas.thumbrect &&
             canvas.thumbrect.hitest(x,y);
         canvas.timeobj.setanchor(canvas.timeobj.current());
@@ -2325,9 +2326,6 @@ var panlst =
     panend: function (context, rect, x, y)
 	{
         var canvas = context.canvas;
-        if (galleryobj.hidefocus)
-            galleryobj.transparent = 0;
-        galleryobj.hidefocus = 0;
         clearTimeout(context.timepan)
         canvas.isthumb = 0;
         delete stretchobj.value().offset;
@@ -2417,7 +2415,6 @@ var presslst =
             headobj.set(BOSS);
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            galleryobj.transparent = 0;
             galleryobj.hidefocus = 0;
             menuobj.hide();
             galleryobj.hidefocus = 1;
@@ -2425,6 +2422,10 @@ var presslst =
             var posity = posityobj.value();
             positx.set((x/rect.width)*100);
             posity.set((y/rect.height)*100);
+        }
+        else
+        {
+            context.canvas.hidethumb = context.canvas.hidethumb?0:1;
         }
 
         context.refresh();
@@ -2453,7 +2454,7 @@ var swipelst =
         var canvas = context.canvas;
         canvas.autodirect = evt.type == "swipeup" ? -1 : 1;
         var slidestop = 4;
-        menuobj.updown(canvas,x,rect.width/2);
+        galleryobj.updown(canvas,x,rect.width/2);
         clearInterval(global.swipetimeout);
         global.swipetimeout = setInterval(function ()
         {
@@ -2556,7 +2557,7 @@ var keylst =
             key == "k")
         {
             canvas.autodirect = 1;
-            menuobj.updown(canvas,1,6);
+            galleryobj.updown(canvas,1,6);
             clearInterval(global.swipetimeout);
             global.swipetimeout = setInterval(function ()
             {
@@ -2590,7 +2591,7 @@ var keylst =
             key == "j")
         {
             canvas.autodirect = -1;
-            menuobj.updown(canvas,1,6);
+            galleryobj.updown(canvas,1,6);
             clearInterval(global.swipetimeout);
             global.swipetimeout = setInterval(function ()
             {
@@ -3097,15 +3098,8 @@ var taplst =
             galleryobj.set(n);
             delete _4cnv.thumbcanvas;
             delete photo.image;
-            slice.tap = 1;
-            context.refresh();
-            setTimeout(function ()
-            {
-                slice.tap = 0;
-                context.refresh();
-                menuobj.toggle(_8cnvctx);
-                contextobj.reset();
-            }, 400);
+            menuobj.toggle(_8cnvctx);
+            contextobj.reset();
         }
     },
 },
@@ -3140,7 +3134,7 @@ var bosslst =
             context.stretchrect = new rectangle();
             context.chapterect = new rectangle();
             context.heightrect = new rectangle();
-            if (!headcnv.height)
+            if (context.canvas.hidethumb)
                 return;
            if (
                 !photo.image ||
@@ -3244,7 +3238,6 @@ var bosslst =
                         0,
                     ]
                 ]);
-
             var he = heightobj.value();
             var b = Math.berp(0,he.length()-1,he.current());
             var height = Math.lerp(90, rect.height-180, b);
@@ -3307,25 +3300,22 @@ var bosslst =
             var r = new rectangle(xx,yy,ww,hh);
             canvas.selectrect = []
             canvas.selectrect.push(r);
-            if (!galleryobj.hidefocus)
+            var blackfill = new panel.fill(THUMBFILL);
+            blackfill.draw(context, r, 0, 0);
+            whitestroke.draw(context, r, 0, 0);
+            if (xx > x)//leftside
             {
-                var blackfill = new panel.fill(THUMBFILL);
+                var r = new rectangle(xx-w,yy,ww,hh);
+                canvas.selectrect.push(r);
                 blackfill.draw(context, r, 0, 0);
                 whitestroke.draw(context, r, 0, 0);
-                if (xx > x)//leftside
-                {
-                    var r = new rectangle(xx-w,yy,ww,hh);
-                    canvas.selectrect.push(r);
-                    blackfill.draw(context, r, 0, 0);
-                    whitestroke.draw(context, r, 0, 0);
-                }
-                else if (xx < x)//right side
-                {
-                    var r = new rectangle(w+xx,yy,ww,hh);
-                    canvas.selectrect.push(r);
-                    blackfill.draw(context, r, 0, 0);
-                    whitestroke.draw(context, r, 0, 0);
-                }
+            }
+            else if (xx < x)//right side
+            {
+                var r = new rectangle(w+xx,yy,ww,hh);
+                canvas.selectrect.push(r);
+                blackfill.draw(context, r, 0, 0);
+                whitestroke.draw(context, r, 0, 0);
             }
 
             context.restore();
@@ -4785,7 +4775,6 @@ function resize()
 {
     delete _4cnv.thumbcanvas;
     contextobj.reset()
-    galleryobj.transparent = 0;
     var h = window.self !== window.top ? 0 : headcnv.height;
     headcnvctx.show(0,0,window.innerWidth,h);
     headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -4940,7 +4929,7 @@ var headlst =
                new panel.col( [12, ALIEXTENT,0,ALIEXTENT,ALIEXTENT,0,ALIEXTENT, 12],
                [
                    0,
-                   j?0:new panel.help(),
+                   0,//j?0:new panel.help(),
                    0,
 
                    (b||k)?0:new panel.previous(),
@@ -5143,7 +5132,7 @@ var headlst =
                  ],
                  [
                     0,
-                    j?0:new panel.help(),
+                    0,//j?0:new panel.help(),
                     0,
                     new panel.fullscreen(),
                     new panel.search(),
@@ -5367,16 +5356,24 @@ galleryobj.getrawpath = function()
 galleryobj.getpath = function()
 {
     var id = galleryobj.value().id;
-    var template = galleryobj.variant ? galleryobj.variant : "3840x3840";
-    var path = `https://reportbase.com/image/${id}/${template}`;
     var gallery = galleryobj.value();
-    if (id.charAt(0) == 'Q' && id.charAt(1) == 'm')
-        path = `https://ipfs.io/ipfs/${id}?filename=${gallery.name}`;
+    if (id)
+    {
+        if (id.charAt(0) == 'Q' && id.charAt(1) == 'm')
+        {
+            path = `https://ipfs.io/ipfs/${id}?filename=${gallery.name}`;
+        }
+        else
+        {
+            var template = galleryobj.variant ? galleryobj.variant : "3840x3840";
+            path = `https://reportbase.com/image/${id}/${template}`;
+        }
+    }
     else if (galleryobj.raw)
         path = `https://reportbase.com/image/${id}/blob`;
     else if (gallery.full)
         path = gallery.full;
-    else if (!id && gallery.url)
+    else if (gallery.url)
         path = gallery.url;
     return path;
 }
@@ -6164,17 +6161,37 @@ function importdialog()
     });
 }
 
+galleryobj.updown = function(canvas,x,w)
+{
+    if (x < w)
+    {
+        var k = x/w;
+        var slidereduce = Math.lerp(60,960,k);
+    }
+    else
+    {
+        var k = (x-w)/w;
+        var slidereduce = Math.lerp(960,60,k);
+    }
+
+    var lst = [0.5,0.75,1.0,1.25,1.5,1.75,2.0,2.25,2.5,2.75,3.0];
+    var j = util.clamp(0,lst.length-1,galleryobj.length()-1);
+    var k = lst[j]
+    canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*k;
+    canvas.slidereduce = canvas.slideshow/slidereduce;
+}
+
 menuobj.updown = function(canvas,x,w)
 {
     if (x < w)
     {
         var k = x/w;
-        var slidereduce = Math.lerp(180,960,k);
+        var slidereduce = Math.lerp(60,240,k);
     }
     else
     {
         var k = (x-w)/w;
-        var slidereduce = Math.lerp(960,180,k);
+        var slidereduce = Math.lerp(240,60,k);
     }
 
     var lst = [0.5,0.75,1.0,1.25,1.5,1.75,2.0,2.25,2.5,2.75,3.0];
