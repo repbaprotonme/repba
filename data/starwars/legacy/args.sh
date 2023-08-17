@@ -1,1 +1,1 @@
-node args.js files | jq > ../../../res/legacy-starwars.json
+node args.js files | jq > index.json

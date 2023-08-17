@@ -5,6 +5,7 @@ fs.readFile(args[2], 'utf8', (error, str) =>
 {
    var lst = str.split("\n")
     var json = {};
+    json.hideboss = 1;
     json.data = []
     for (var n = 0; n < lst.length; ++n)
     {
@@ -16,8 +17,9 @@ fs.readFile(args[2], 'utf8', (error, str) =>
         var j = `starwars/legacy/${name}`;
         j = j.split("/");
         j.pop();
-        k.filter = j.join("/")
-        k.title = k.filter
+        k.folder = j.join("/")
+        name = name.split("/")[0];
+        k.title = `Chapter ${name}`;
         k.width = 1200
         k.height = 1865
         json.data.push(k);
