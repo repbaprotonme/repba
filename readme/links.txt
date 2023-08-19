@@ -1,5 +1,7 @@
-https://skybox.blockadelabs.com/
-https://adesigne.com/artificial-intelligence/stable-diffusion-artists-style-list-with-prompts-and-examples/
+[ai]
+https://skybox.blockadelabs.com/ #ai 3d world
+
+[prompts]
 https://stablediffusionweb.com/#demo
 https://blog.klungo.no/2021/12/07/cloudflare-images-has-a-lot-of-issues/
 https://blog.cloudflare.com/startup-program-v2/
