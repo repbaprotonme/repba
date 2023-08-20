@@ -4039,30 +4039,38 @@ menuobj.draw = function()
         var k = canvas.autodirect;
         context.canvas.timeobj.rotate(k*context.canvas.slideshow);
         context.canvas.slideshow -= context.canvas.slidereduce
+        if (context.canvas.slideshow > 0)
+        {
+            if (headcnv.height)
+            {
+                headcnv.height = 0;
+                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+                menuobj.draw();
+            }
+        }
+        else
+         {
+            context.canvas.slideshow = 0;
+            clearInterval(global.swipetimeout);
+            global.swipetimeout = 0;
+             clearTimeout(canvas.timeout);
+             canvas.timeout = setTimeout(function()
+             {
+                headcnv.height = BEXTENT;
+                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+                menuobj.draw();
+                setTimeout(function(){menuobj.draw()},100);
+                setTimeout(function(){menuobj.draw()},500);
+                setTimeout(function(){menuobj.draw()},1000);
+                setTimeout(function(){menuobj.draw()},2000);
+                setTimeout(function(){menuobj.draw()},3000);
+                setTimeout(function(){menuobj.draw()},4000);
+                setTimeout(function(){menuobj.draw()},5000);
+             }, 1000);
+         }
+
         if (!context.canvas.panning && ++mencount % canvas.modulo)
             return;
-        if (headcnv.height)
-        {
-            headcnv.height = 0;
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            menuobj.draw();
-        }
-    }
-    else
-    {
-        context.canvas.slideshow = 0;
-        clearInterval(global.swipetimeout);
-        global.swipetimeout = 0;
-       clearTimeout(context.canvas.timeout);
-         context.canvas.timeout = setTimeout(function()
-         {
-             if (!headcnv.height)
-             {
-                 headcnv.height = BEXTENT;
-                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-                 menuobj.draw();
-             }
-         }, 100);
     }
 
     var len = context.canvas.sliceobj.length()
@@ -4075,7 +4083,7 @@ menuobj.draw = function()
         context.canvas.virtualheight = len*canvas.buttonheight*0.635;
     }
 
-    var a = new panel.fill("rgba(0,0,0,0.5)");
+    var a = new panel.fill("rgba(0,0,0,0.4)");
     a.draw(context, rect, 0, 0);
     var size = Math.ceil(rect.height/canvas.buttonheight)+3;
     var current = Math.floor(
@@ -4118,28 +4126,32 @@ menuobj.draw = function()
         offmenuctx.restore();
     }
 
-    infobj.data = [];
-    var value = galleryobj.data[context.canvas.centered];
-    if (value && value.folder)
+    if (context.canvas.slideshow)
     {
-        var folder = value.folder;
-        if (folder && _5cnv.sliceobj.length() > 2)
+        infobj.data = [];
+        var value = galleryobj.data[context.canvas.centered];
+        if (value && value.folder)
         {
-            infobj.data = folder.split("/");
-            infobj.data.push(value.name);
-            var k = Math.max(0,infobj.data.length-4);
-            infobj.data = infobj.data.slice(k);
+            var folder = value.folder;
+            if (folder && _5cnv.sliceobj.length() > 2)
+            {
+                infobj.data = folder.split("/");
+                infobj.data.push(value.name);
+                var k = Math.max(0,infobj.data.length-4);
+                infobj.data = infobj.data.slice(k);
+            }
+
+            var k = galleryobj.data[context.canvas.centered];
+            if (k && k.photographer)
+                infobj.data.push(k.photographer);
+            if (url.searchParams.has(galleryobj.repos))
+                infobj.data.push(url.searchParams.get(galleryobj.repos));
         }
 
-        var k = galleryobj.data[context.canvas.centered];
-        if (k && k.photographer)
-            infobj.data.push(k.photographer);
-        if (url.searchParams.has(galleryobj.repos))
-            infobj.data.push(url.searchParams.get(galleryobj.repos));
+        if (galleryobj.length() > 1)
+            infobj.data.push(`${context.canvas.centered+1} of ${galleryobj.length()}`);
     }
 
-    if (galleryobj.length() > 1)
-        infobj.data.push(`${context.canvas.centered+1} of ${galleryobj.length()}`);
     context.drawImage(offmenucnv, 0, 0);
     context.canvas.bar.draw(context, rect, 0, 0);
     context.canvas.scroll.draw(context, rect, 0, 0);
@@ -4154,7 +4166,7 @@ var eventlst =
     {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 150, width: 640},
     {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
     {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 120, width: 640},
-    {dblclick: "GALLERY", modulo: 2, updownmin: 90, updownmax: 360, mouse: "GALLERY", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "DEFAULT", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new panel.gallerybar(), scroll: new panel.empty(), buttonheight: 320, width: iOS()?720:5160},
+    {dblclick: "GALLERY", modulo: 4, updownmin: 90, updownmax: 360, mouse: "GALLERY", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "DEFAULT", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new panel.gallerybar(), scroll: new panel.empty(), buttonheight: 320, width: iOS()?720:5160},
     {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
     {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
     {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
@@ -4976,6 +4988,7 @@ var headlst =
 
         this.press = function (context, rect, x, y)
         {
+            //todo: 4 long presses to turn debug menu
             _4cnv.hidethumb = _4cnv.hidethumb?0:1;
             _4cnvctx.refresh();
         };
@@ -4984,15 +4997,16 @@ var headlst =
 		{
             if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
             {
-                if (menuobj.value() == _7cnvctx)
+                var menu = _7cnvctx;//_3cnvctx
+                if (menuobj.value() == menu)
                 {
-                    _7cnvctx.hide();
+                    menu.hide();
                     menuobj.setindex(0);
                     menuobj.draw();
                 }
                 else
                 {
-                    menuobj.setindex(_7cnvctx);
+                    menuobj.setindex(menu);
                     menuobj.show();
                 }
 
@@ -5156,20 +5170,19 @@ var headlst =
             }
             else if (canvas.helprect && canvas.helprect.hitest(x,y))
             {
-                if (menuobj.value() == _7cnvctx)
+                var menu = _7cnvctx;
+                if (menuobj.value() == menu)
                 {
-                    _7cnvctx.hide();
-                    menuobj.setindex(_8cnvctx);
+                    menu.hide();
+                    menuobj.setindex(0);
                     menuobj.draw();
                 }
                 else
                 {
-                    menuobj.setindex(_7cnvctx);
+                    menuobj.setindex(menu);
                     menuobj.show();
                 }
 
-                _3cnvctx.hide()
-                _5cnvctx.hide()
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             }
             else if (canvas.metarect && canvas.metarect.hitest(x,y))
@@ -5936,6 +5949,7 @@ else if (url.searchParams.has("p"))
             loadipfs(k.Links,url.path);
             setTimeout(function()
             {
+                //todo: load image to set width height
                 buttonobj.reset()
                 galleryobj.init(galleryobj)
             }, 300);
