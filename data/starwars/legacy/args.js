@@ -10,16 +10,14 @@ fs.readFile(args[2], 'utf8', (error, str) =>
     for (var n = 0; n < lst.length; ++n)
     {
         var k = {};
-        var name = lst[n];
-        if (!name)
+        var path = lst[n];
+        if (!path)
             continue;
-        k.url = `http://207.246.108.73/data/starwars/legacy/${name}`;
-        var j = `starwars/legacy/${name}`;
-        j = j.split("/");
-        j.pop();
-        k.folder = j.join("/")
-        name = name.split("/")[0];
-        k.title = `Chapter ${name}`;
+        k.url = `http://207.246.108.73/data/starwars/legacy/${path}`;
+        var j = `starwars/legacy/${path}`;
+        var e = j.split("/");
+        k.name = e.pop();
+        k.folder = e.join("/");
         k.width = 1200
         k.height = 1865
         json.data.push(k);
