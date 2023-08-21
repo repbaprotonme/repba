@@ -36,7 +36,7 @@ const SCROLLMARGIN = 8;
 const MENUSELECT = "rgba(255,175,0,0.4)";
 const MENUTAP = "rgba(255,125,0,0.7)";
 const SELECTAP = "rgba(255,0,0.75,0.7)";
-const SCROLLNAB = "rgba(0,0,0,0.5)";
+const SCROLLNAB = "rgba(0,0,0,0.75)";
 const DARKNAB = "rgba(0,0,0,0.85)";
 const BARFILL = "rgba(0,0,0,0.5)";
 const MENUCOLOR = "rgba(0,0,0,0.5)";
@@ -502,6 +502,8 @@ panel.gallerybar = function ()
 {
     this.draw = function (context, rect, user, time)
     {
+        if (!headcnv.height)
+            return;
         var canvas = context.canvas;
         canvas.buttonrect = new rectangle();
         canvas.bscrollrect = new rectangle();
@@ -510,8 +512,6 @@ panel.gallerybar = function ()
         context.chapterect = new rectangle();
         canvas.galleryrect = new rectangle();
         canvas.helprect = new rectangle();
-        if (!headcnv.height)
-            return;
         var w = Math.min(360,rect.width-100);
         var j = window.innerWidth - rect.width >= 180;
         var rows = infobj.data.length;
@@ -1966,7 +1966,6 @@ async function loadzip(path)
     galleryobj.all = [];
     galleryobj.width = 0;
     galleryobj.height = 0;
-    galleryobj.showboss = 0;
     localobj.time = 0;
     delete galleryobj.repos;
     for (var n = 0; n < keys.length; ++n)
@@ -2025,7 +2024,6 @@ async function loadblob(blob)
     galleryobj.all = [];
     galleryobj.width = 0;
     galleryobj.height = 0;
-    galleryobj.showboss = 0;
     localobj.time = 0;
     delete galleryobj.repos;
     galleryobj.set(0);
@@ -2768,11 +2766,6 @@ var keylst =
             context.refresh();
             evt.preventDefault();
         }
-        else if (key == "escape")
-        {
-            escape();
-            evt.preventDefault();
-        }
  	}
 },
 {
@@ -2828,11 +2821,6 @@ var keylst =
             }
 
             context.refresh();
-            evt.preventDefault();
-        }
-        else if (key == "escape")
-        {
-            escape();
             evt.preventDefault();
         }
   	}
@@ -2993,11 +2981,6 @@ var keylst =
         {
             stretchobj.value().add(1);
             context.refresh();
-        }
-        else if (key == "escape")
-        {
-            escape();
-            evt.preventDefault();
         }
 	}
 },
@@ -3184,14 +3167,6 @@ var taplst =
             clearInterval(global.swipetimeout);
             global.swipetimeout = 0;
 
-            if (!galleryobj.showboss)
-            {
-                headcnv.height = headcnv.height?0:BEXTENT;
-                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-                menuobj.draw();
-              return;
-            }
-
             var visibles = _8cnv.visibles;
             var k;
             for (k = 0; k < visibles.length; k++)
@@ -3204,7 +3179,16 @@ var taplst =
             }
 
             if (k == visibles.length)
+            {
+                menuobj.hide();
+                headcnv.height = BEXTENT;
+                headobj.set(BOSS);
+                headham.panel = headobj.value();
+                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+                contextobj.reset();
                 return;
+            }
+
             var n = visibles[k].n;
             var slice = galleryobj.data[n];
             headcnv.height = BEXTENT;
@@ -3516,8 +3500,9 @@ bossobj.draw = function(skip=1)
         offbossctx.drawImage(slice.canvas,
             slice.x, 0, colwidth, rect.height,
             x, 0, w, rect.height);
-        overlayobj.value().draw(offbossctx,
-            new rectangle(x,0,w,rect.height), `${n+1}of${slices.length}`, 0);
+//        overlayobj.value().draw(offbossctx,
+//           new rectangle(x,0,w,rect.height),
+//                `${n+1}of${slices.length}`, 0);
     }
 
     context.drawImage(offbosscnv,0,0)
@@ -3783,7 +3768,7 @@ var buttonlst =
                     0,
                     new Layer(
                     [
-                        new panel.rounded("rgba(0,0,0,0.3)", 4, "rgba(255,255,255,0.4)", 16, 16),
+                        new panel.rounded(SCROLLNAB, 4, SEARCHFRAME, 16, 16),
                         user.tap?new panel.fill("rgba(255,125,0,0.4)"):0,
                         new panel.shrink(new panel.multitext(e), 30, 15),
                     ]),
@@ -4070,6 +4055,7 @@ menuobj.draw = function()
     var delayinterval = TIMEOBJ / len / 1000;
     context.canvas.virtualheight = len*canvas.buttonheight;
     context.clear();
+
     if (context == _8cnvctx)
     {
         canvas.buttonheight = buttonobj.value();
@@ -4105,7 +4091,7 @@ menuobj.draw = function()
         var j = {slice, x, y, n};
         slice.rect = new rectangle(0,y,rect.width,canvas.buttonheight);
         slice.isvisible = y > -canvas.buttonheight && y < window.innerHeight;
-        context.canvas.visibles.push(j);
+        context.canvas.visibles.push(j);//todo
 
         if (j.slice.rect.hitest(window.innerWidth/2,window.innerHeight/2))
             context.canvas.centered = j.n;
@@ -4149,26 +4135,28 @@ menuobj.draw = function()
     else
     {
         context.drawImage(offmenucnv, 0, 0);
+        context.canvas.bar.draw(context, rect, 0, 0);
+        context.canvas.scroll.draw(context, rect, 0, 0);
     }
 }
 
 var eventlst =
 [
-    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", button: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 0, width: 640},
-    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
-    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
-    {dblclick: "BOSS", modulo: 1, updownmin: 30, updownmax: 120, mouse: "BOSS", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "DEFAULT", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new panel.empty(), scroll: new panel.empty(), buttonheight: 30, width: 640},
-    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 150, width: 640},
-    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
-    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 120, width: 640},
+    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "DEFAULT", pan: "DEFAULT", swipe: "DEFAULT", button: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 0, width: 640},
+    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {dblclick: "BOSS", modulo: 1, updownmin: 30, updownmax: 60, mouse: "BOSS", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "DEFAULT", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new panel.empty(), scroll: new panel.empty(), buttonheight: 30, width: 640},
+    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 150, width: 640},
+    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 120, width: 640},
     {dblclick: "GALLERY", modulo: 1, updownmin: 30, updownmax: 180, mouse: "GALLERY", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "DEFAULT", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new panel.gallerybar(), scroll: new panel.empty(), buttonheight: 320, width: iOS()?720:5160},
-    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
-    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
 ];
 
 var contextobj = new circular_array("CTX", contextlst);
@@ -4895,26 +4883,20 @@ function rotate(pointX, pointY, originX, originY, angle)
 
 function resize()
 {
-    escape();
+    var h = _8cnv.height;
+    menuobj.hide();
+    if (h)
+    {
+        menuobj.setindex(_8cnvctx);
+        menuobj.show();
+    }
+
     delete _4cnv.thumbcanvas;
     headcnvctx.show(0,0,window.innerWidth,BEXTENT);
     headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
     contextobj.reset()
     menuobj.show();
     _4cnvctx.refresh();
-}
-
-function escape()
-{
-    _2cnvctx.hide();
-    _3cnvctx.hide();
-    _5cnvctx.hide();
-    _6cnvctx.hide();
-    _7cnvctx.hide();
-    _9cnvctx.hide();
-    menuobj.setindex(_8cnvctx);
-    _4cnvctx.refresh();
-    headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
 }
 
 window.addEventListener("focus", (evt) => { });
@@ -5183,17 +5165,26 @@ var headlst =
             }
             else if (canvas.helprect && canvas.helprect.hitest(x,y))
             {
-                var menu = context.canvas.presscount>3?_3cnvctx:_7cnvctx;
-                if (menuobj.value() == menu)
+                if (_8cnv.scrollobj.current() == 1)
                 {
-                    menu.hide();
-                    menuobj.setindex(_8cnvctx);
+                    _8cnv.scrollobj.set(0);
+                    buttonobj.reset();
                     menuobj.draw();
                 }
                 else
                 {
-                    menuobj.setindex(menu);
-                    menuobj.show();
+                    var menu = context.canvas.presscount>3?_3cnvctx:_7cnvctx;
+                    if (menuobj.value() == menu)
+                    {
+                        menu.hide();
+                        menuobj.setindex(_8cnvctx);
+                        menuobj.draw();
+                    }
+                    else
+                    {
+                        menuobj.setindex(menu);
+                        menuobj.show();
+                    }
                 }
 
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -5732,9 +5723,6 @@ galleryobj.init = function (obj)
             _5cnv.sliceobj.data.push(galleryobj.all[n]);
     };
 
-    //for (var n = 0; n < _5cnv.sliceobj.length(); ++n)
-     //   _5cnv.sliceobj.data[n].index = n;
-
     _5cnv.sliceobj.set(0);
     var j = _5cnv.sliceobj.data.findIndex(function(a) { return a.folder == folder; });
     if (j >= 0)
@@ -5901,10 +5889,10 @@ galleryobj.init = function (obj)
     if (galleryobj.length())
     {
        menuobj.hide();
-        if (galleryobj.length()>1)
+        if (galleryobj.length()>6)
             menuobj.toggle(_8cnvctx);
         _4cnvctx.refresh();
-        headobj.set(galleryobj.length()==1?BOSS:GALLERY);
+        headobj.set(galleryobj.length()>6?GALLERY:BOSS);
         headham.panel = headobj.value();
         headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
      }
