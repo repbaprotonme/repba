@@ -36,7 +36,7 @@ const SCROLLMARGIN = 8;
 const MENUSELECT = "rgba(255,175,0,0.4)";
 const MENUTAP = "rgba(255,125,0,0.7)";
 const SELECTAP = "rgba(255,0,0.75,0.7)";
-const SCROLLNAB = "rgba(0,0,0,0.3)";
+const SCROLLNAB = "rgba(0,0,0,0.5)";
 const DARKNAB = "rgba(0,0,0,0.85)";
 const BARFILL = "rgba(0,0,0,0.5)";
 const MENUCOLOR = "rgba(0,0,0,0.5)";
@@ -1317,11 +1317,9 @@ CanvasRenderingContext2D.prototype.rect = function ()
 };
 
 CanvasRenderingContext2D.prototype.clear =
-    CanvasRenderingContext2D.prototype.clear || function (rect)
+    CanvasRenderingContext2D.prototype.clear || function ()
     {
-        if (!rect)
-            rect = new rectangle(0, 0, this.canvas.width, this.canvas.height);
-        this.clearRect(rect.x, rect.y, rect.width, rect.height);
+        this.clearRect(0, 0, this.canvas.width, this.canvas.height);
     };
 
 var makehammer = function (context, v, t)
@@ -2172,7 +2170,7 @@ var panlst =
             else
             {
                 var obj = canvas.scrollobj.value();
-                var j = (rect.width-x);
+                var j = rect.width-x;
                 var k = panhorz(obj, j);
                 if (k == -1)
                     return;
@@ -3185,12 +3183,14 @@ var taplst =
         {
             clearInterval(global.swipetimeout);
             global.swipetimeout = 0;
-            headcnvctx.show(0,0,window.innerWidth,BEXTENT);
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            menuobj.draw();
 
             if (!galleryobj.showboss)
-               return;
+            {
+                headcnv.height = headcnv.height?0:BEXTENT;
+                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+                menuobj.draw();
+              return;
+            }
 
             var visibles = _8cnv.visibles;
             var k;
@@ -3488,8 +3488,6 @@ bossobj.draw = function(skip=1)
     if (slicewidthobj.debug ||
         (galleryobj.value() && galleryobj.value().ispng))
         context.clear();
-    context.shadowOffsetX = 0;
-    context.shadowOffsetY = 0;
     for (var m = 0; m < slices.length; ++m)
         slices[m].stretchwidth = 0;
 
@@ -4031,8 +4029,6 @@ menuobj.draw = function()
     var canvas = context.canvas;
     var time = canvas.timeobj.value()/1000;
     var slices = context.canvas.sliceobj.data;
-    if (!slices.length)
-        return;
     const rect = context.rect();
     if (context.canvas.slideshow > 0)
     {
@@ -4068,9 +4064,6 @@ menuobj.draw = function()
                 setTimeout(function(){menuobj.draw()},5000);
              }, 1000);
          }
-
-        if (!context.canvas.panning && ++mencount % canvas.modulo)
-            return;
     }
 
     var len = context.canvas.sliceobj.length()
@@ -4083,52 +4076,51 @@ menuobj.draw = function()
         context.canvas.virtualheight = len*canvas.buttonheight*0.635;
     }
 
-    var a = new panel.fill("rgba(0,0,0,0.4)");
-    a.draw(context, rect, 0, 0);
-    var size = Math.ceil(rect.height/canvas.buttonheight)+3;
     var current = Math.floor(
         Math.lerp(0,slices.length-1,1-context.canvas.timeobj.berp()));
-    var visibles = util.rotated_list(context.canvas.rotated,slices.length,current,size);
-    context.canvas.visibles = [];
-    for (var m = 0; m < visibles.length; ++m)
+    if (canvas.lastcurrent != current)
     {
-        var n = visibles[m];
+        canvas.lastcurrent = current;
+        var size = Math.ceil(rect.height/canvas.buttonheight)+3;
+        canvas.normal = util.rotated_list(canvas.rotated,slices.length,current,size);
+    }
+
+    context.canvas.visibles = [];
+    offmenucnv.width = rect.width;
+    offmenucnv.height = rect.height;
+    var isvisiblecount = 0;
+    context.canvas.centered = 0;
+    var r = new rectangle(0,0,rect.width,canvas.buttonheight);
+    for (var m = 0; m < canvas.normal.length; ++m)
+    {
+        var n = canvas.normal[m];
         var slice = slices[n];
         var t = time + n*delayinterval;
         var bos = Math.tan(t*VIRTCONST);
         var j = Math.berp(-1, 1, bos);
         var y = j * context.canvas.virtualheight;
-        var e = (context.canvas.virtualheight-rect.height)/2;
+        var e = (canvas.virtualheight-rect.height)/2;
         y -= e;
         var x = rect.width/2;
-        var b = {slice, x, y, n};
+        var j = {slice, x, y, n};
         slice.rect = new rectangle(0,y,rect.width,canvas.buttonheight);
         slice.isvisible = y > -canvas.buttonheight && y < window.innerHeight;
-        context.canvas.visibles.push(b);
-    }
+        context.canvas.visibles.push(j);
 
-    offmenucnv.width = rect.width;
-    offmenucnv.height = rect.height;
-    var isvisiblecount = 0;
-    context.canvas.centered = 0;
-    for (var m = 0; m < context.canvas.visibles.length; ++m)
-    {
-        var j = context.canvas.visibles[m];
         if (j.slice.rect.hitest(window.innerWidth/2,window.innerHeight/2))
             context.canvas.centered = j.n;
         isvisiblecount += j.slice.isvisible?1:0;
         offmenuctx.canvas.sliceobj = context.canvas.sliceobj;
         offmenuctx.canvas.scrollobj = context.canvas.scrollobj;
         offmenuctx.save();
-        var r = new rectangle(0,0,rect.width,canvas.buttonheight);
         offmenuctx.translate(0, j.y);
         context.canvas.draw(offmenuctx, r, j.slice, j.n);
         offmenuctx.restore();
     }
 
-    if (context.canvas.slideshow)
+    infobj.data = [];
+    if (!context.canvas.slideshow)
     {
-        infobj.data = [];
         var value = galleryobj.data[context.canvas.centered];
         if (value && value.folder)
         {
@@ -4150,11 +4142,14 @@ menuobj.draw = function()
 
         if (galleryobj.length() > 1)
             infobj.data.push(`${context.canvas.centered+1} of ${galleryobj.length()}`);
+        context.drawImage(offmenucnv, 0, 0);
+        context.canvas.bar.draw(context, rect, 0, 0);
+        context.canvas.scroll.draw(context, rect, 0, 0);
     }
-
-    context.drawImage(offmenucnv, 0, 0);
-    context.canvas.bar.draw(context, rect, 0, 0);
-    context.canvas.scroll.draw(context, rect, 0, 0);
+    else
+    {
+        context.drawImage(offmenucnv, 0, 0);
+    }
 }
 
 var eventlst =
@@ -4166,7 +4161,7 @@ var eventlst =
     {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 150, width: 640},
     {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
     {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 120, width: 640},
-    {dblclick: "GALLERY", modulo: 4, updownmin: 90, updownmax: 360, mouse: "GALLERY", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "DEFAULT", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new panel.gallerybar(), scroll: new panel.empty(), buttonheight: 320, width: iOS()?720:5160},
+    {dblclick: "GALLERY", modulo: 1, updownmin: 30, updownmax: 180, mouse: "GALLERY", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "DEFAULT", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new panel.gallerybar(), scroll: new panel.empty(), buttonheight: 320, width: iOS()?720:5160},
     {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
     {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
     {dblclick: "DEFAULT", modulo: 1, updownmin: 30, updownmax: 120, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
@@ -4902,10 +4897,9 @@ function resize()
 {
     escape();
     delete _4cnv.thumbcanvas;
-    contextobj.reset()
-    var h = window.self !== window.top ? 0 : headcnv.height;
-    headcnvctx.show(0,0,window.innerWidth,h);
+    headcnvctx.show(0,0,window.innerWidth,BEXTENT);
     headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+    contextobj.reset()
     menuobj.show();
     _4cnvctx.refresh();
 }
@@ -4988,16 +4982,25 @@ var headlst =
 
         this.press = function (context, rect, x, y)
         {
-            //todo: 4 long presses to turn debug menu
-            _4cnv.hidethumb = _4cnv.hidethumb?0:1;
-            _4cnvctx.refresh();
+            if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
+            {
+               if (typeof context.canvas.presscount == "undefined")
+                    context.canvas.presscount = 1;
+               else
+                    context.canvas.presscount++;
+            }
+            else
+            {
+                _4cnv.hidethumb = _4cnv.hidethumb?0:1;
+                _4cnvctx.refresh();
+            }
         };
 
      	this.tap = function (context, rect, x, y)
 		{
             if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
             {
-                var menu = _7cnvctx;//_3cnvctx
+                var menu = context.canvas.presscount>3 ? _3cnvctx:_7cnvctx;
                 if (menuobj.value() == menu)
                 {
                     menu.hide();
@@ -5140,12 +5143,22 @@ var headlst =
 
         this.press = function (context, rect, x, y)
         {
-            _5cnvctx.hide()
-            _7cnvctx.hide()
-            menuobj.setindex(_8cnvctx);
-            _8cnv.scrollobj.rotate(1);
-            buttonobj.reset();
-            menuobj.draw();
+            if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
+            {
+               if (typeof context.canvas.presscount == "undefined")
+                    context.canvas.presscount = 1;
+               else
+                    context.canvas.presscount++;
+            }
+            else
+            {
+                _5cnvctx.hide()
+                _7cnvctx.hide()
+                menuobj.setindex(_8cnvctx);
+                _8cnv.scrollobj.rotate(1);
+                buttonobj.reset();
+                menuobj.draw();
+            }
         };
 
      	this.tap = function (context, rect, x, y)
@@ -5170,11 +5183,11 @@ var headlst =
             }
             else if (canvas.helprect && canvas.helprect.hitest(x,y))
             {
-                var menu = _7cnvctx;
+                var menu = context.canvas.presscount>3?_3cnvctx:_7cnvctx;
                 if (menuobj.value() == menu)
                 {
                     menu.hide();
-                    menuobj.setindex(0);
+                    menuobj.setindex(_8cnvctx);
                     menuobj.draw();
                 }
                 else
@@ -5191,7 +5204,6 @@ var headlst =
                 _7cnvctx.hide()
                 menuobj.setindex(_8cnvctx);
                 _8cnv.scrollobj.rotate(1);
-                menuobj.draw();
                 buttonobj.reset();
                 menuobj.draw();
                 setTimeout(function(){menuobj.draw()},100);
@@ -5320,7 +5332,8 @@ panel.help = function ()
         var j = 5;
         var k = j/2;
         var e = new panel.fill(OPTIONFILL);
-        var s = menuobj.value() == _7cnvctx;
+        var s = menuobj.value() == _3cnvctx ||
+            menuobj.value() == _7cnvctx;
         var a = new Layer(
         [
             new panel.rectangle(context.canvas.helprect),
@@ -5495,15 +5508,15 @@ menuobj.leftright = function (context, x, y, ctrl, shift, alt, type)
 {
     context.canvas.slideshow = 0;
     clearInterval(global.swipetimeout)
-    context.canvas.startleftright = 2;
+    context.canvas.startleftright = 3;
     var j = context.canvas.centered;
     var index = j%IMAGELSTSIZE;
     var w = thumbfittedlst[index].width;
-    var e = context.canvas.width/1000000;
+    var e = w/rect.width/50;
+    var obj = context.canvas.scrollobj.value();
     clearInterval(context.canvas.leftright)
     context.canvas.leftright = setInterval(function()
     {
-        var obj = context.canvas.scrollobj.value();
         obj.add(type ? context.canvas.startleftright :
             -context.canvas.startleftright);
         context.canvas.startleftright -= e;
