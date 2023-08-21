@@ -4017,6 +4017,7 @@ menuobj.draw = function()
     offmenucnv.height = rect.height;
     offmenuctx.canvas.sliceobj = context.canvas.sliceobj;
     offmenuctx.canvas.scrollobj = context.canvas.scrollobj;
+    offmenuctx.save();
     var isvisiblecount = 0;
     context.canvas.centered = 0;
     var r = new rectangle(0,0,rect.width,canvas.buttonheight);
@@ -4024,24 +4025,8 @@ menuobj.draw = function()
     {
         var n = canvas.normal[m];
         var slice = slices[n];
-        var t = time + n*delayinterval;
-        var bos = Math.tan(t*VIRTCONST);
-        var j = Math.berp(-1, 1, bos);
-        var y = j * context.canvas.virtualheight;
-        var e = (canvas.virtualheight-rect.height)/2;
-        y -= e;
-        var x = rect.width/2;
-        var j = {slice, x, y, n};
-        slice.rect = new rectangle(0,y,rect.width,canvas.buttonheight);
-        slice.isvisible = y > -canvas.buttonheight && y < window.innerHeight;
-        if (j.slice.rect.hitest(window.innerWidth/2,window.innerHeight/2))
-            context.canvas.centered = j.n;
-        isvisiblecount += j.slice.isvisible?1:0;
-        if (slice.isvisible)
-            context.canvas.visibles.push(j);
-
-        var index = j.n%IMAGELSTSIZE;
-        var view = Math.floor(j.n/IMAGELSTSIZE);
+        var index = n%IMAGELSTSIZE;
+        var view = Math.floor(n/IMAGELSTSIZE);
         var thumbimg = thumbimglst[index];
         var thumbfitted = thumbfittedlst[index];
         if (canvas.scrollobj.current() == 0 &&
@@ -4052,12 +4037,12 @@ menuobj.draw = function()
             try
             {
                 URL.revokeObjectURL(thumbimg.src);
-                thumbimg.src = imagepath(j.slice);
+                thumbimg.src = imagepath(slice);
                 thumbimg.onload = function()
                 {
                     this.count = 0;
-                    j.slice.extent = `${this.width}x${this.height}`;
-                    delete j.slice.infolst;
+                    slice.extent = `${this.width}x${this.height}`;
+                    delete slice.infolst;
                     menuobj.draw();
                 }
 
@@ -4072,15 +4057,34 @@ menuobj.draw = function()
                 console.log(error);
             }
         }
-        else if (slice.isvisible)
+        else
         {
-            offmenuctx.save();
-            offmenuctx.translate(0, j.y);
-            context.canvas.draw(offmenuctx, r, j.slice, j.n);
-            offmenuctx.restore();
+            var t = time + n*delayinterval;
+            var bos = Math.tan(t*VIRTCONST);
+            var j = Math.berp(-1, 1, bos);
+            var y = j * context.canvas.virtualheight;
+            var e = (canvas.virtualheight-rect.height)/2;
+            y -= e;
+            var x = rect.width/2;
+            var j = {slice, x, y, n};
+            slice.rect = new rectangle(0,y,rect.width,canvas.buttonheight);
+            slice.isvisible = y > -canvas.buttonheight && y < window.innerHeight;
+            if (slice.isvisible)
+            {
+                if (j.slice.rect.hitest(window.innerWidth/2,window.innerHeight/2))
+                    context.canvas.centered = j.n;
+                isvisiblecount += j.slice.isvisible?1:0;
+                if (slice.isvisible)
+                    context.canvas.visibles.push(j);
+
+                offmenuctx.translate(0, j.y);
+                context.canvas.draw(offmenuctx, r, j.slice, j.n);
+                offmenuctx.translate(0, -j.y);
+             }
         }
     }
 
+    offmenuctx.restore();
     infobj.data = [];
     if (!context.canvas.slideshow)
     {
