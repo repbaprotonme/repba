@@ -36,9 +36,8 @@ const SCROLLMARGIN = 8;
 const MENUSELECT = "rgba(255,175,0,0.4)";
 const MENUTAP = "rgba(255,125,0,0.7)";
 const SELECTAP = "rgba(255,0,0.75,0.7)";
-const SCROLLNAB = "rgba(0,0,0,0.75)";
+const SCROLLNAB = "rgba(0,0,0,0.3)";
 const DARKNAB = "rgba(0,0,0,0.85)";
-const BARFILL = "rgba(0,0,0,0.5)";
 const MENUCOLOR = "rgba(0,0,0,0.5)";
 const OPTIONFILL = "white";
 const THUMBFILP = "rgba(0,0,0,0.4)";
@@ -46,12 +45,14 @@ const THUMBFILL = "rgba(0,0,0,0.4)";
 const THUMBSTROKE = "rgba(255,255,255,0.4)";
 const SEARCHFRAME = "rgba(255,255,255,0.5)";
 const TRANSPARENT = "rgba(0,0,0,0)";
+const FILLBAR = "rgba(0,0,0,0.2)";
+const FILLMENU = "rgba(0,0,0,0.4)";
 const ARROWFILL = "white";
 const SCROLLBARWIDTH = 8;
-const SMALLFONT = "15px archivo black";
-const DEFAULTFONT = "16px archivo black";
-const LARGEFONT = "18px archivo black";
-const HUGEFONT = "20px archivo black";
+const SMALLFONT = "16px archivo black";
+const DEFAULTFONT = "18px archivo black";
+const LARGEFONT = "20px archivo black";
+const HUGEFONT = "22px archivo black";
 const DOTSFONT = "60px archivo black";
 const SLICEWIDTH = 20;
 const SLICEWIDTHSIZE = 256;
@@ -530,7 +531,7 @@ panel.gallerybar = function ()
                     0,
                     new Layer(
                     [
-                        new panel.fill("rgba(0,0,0,0.5)"),
+                        new panel.fill(FILLBAR),
                         new panel.expand(new panel.rectangle(canvas.bscrollrect),10,0),
                         new panel.currentV(new panel.shadow(new panel.fill("white")), bh/6, 0),
                     ]),
@@ -542,7 +543,7 @@ panel.gallerybar = function ()
                     0,
                     new Layer(
                     [
-                        new panel.fill("rgba(0,0,0,0.5)"),
+                        new panel.fill(FILLBAR),
                         new panel.expand(new panel.rectangle(canvas.vscrollrect),10,0),
                         new panel.currentV(new panel.shadow(new panel.fill("white")), bh/6, 1),
                     ]),
@@ -562,7 +563,7 @@ panel.gallerybar = function ()
                     new panel.rectangle(context.chapterect),
                     new panel.gridA(1, rows, 1,
                         new panel.shadow(new panel.text(
-                            "rgb(255,255,255)",
+                            "white",
                             "center", "middle",0, 0))),
                   ]),
                   0,
@@ -573,7 +574,7 @@ panel.gallerybar = function ()
                     0,
                     new Layer(
                     [
-                        new panel.fill("rgba(0,0,0,0.5)"),
+                        new panel.fill(FILLBAR),
                         new panel.expand(new panel.rectangle(canvas.hscrollrect),0,10),
                         new panel.currentH(new panel.shadow(new panel.fill("white")), bh/5, 1),
                     ]),
@@ -644,12 +645,6 @@ buttonobj.reset = function()
     var a = w/h;
     var height = window.innerWidth/a;
     var bheight = height*3;
-    if (_8cnv.scrollobj.current())
-    {
-        height = 240;
-        bheight = Math.min(window.innerHeight-40,640);
-    }
-
     buttonobj.data = [];
     for (var n = height; n < bheight; ++n)
         buttonobj.data.push(n);
@@ -1050,7 +1045,7 @@ panel.fitwindow = function ()
         [
             new panel.rectangle(context.canvas.fitwindowrect),
             s ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),22,22) : 0,
-            new panel.shrink(new panel.circle(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
+            new panel.shrink(new panel.circle(s?TRANSPARENT:FILLBAR,SEARCHFRAME,4),17,17),
             new panel.row( [0, rect.height*0.20, 0],
             [
                 0,
@@ -1077,7 +1072,7 @@ panel.previous = function ()
         [
             new panel.rectangle(context.moveprev),
             _4cnv.movingpage == -1 ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),22,22) : 0,
-            new panel.shrink(new panel.circle(_4cnv.movingpage == -1?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
+            new panel.shrink(new panel.circle(_4cnv.movingpage == -1?TRANSPARENT:FILLBAR,SEARCHFRAME,4),17,17),
             new panel.shrink(new panel.arrow(ARROWFILL,270),20,30),
         ]);
 
@@ -1099,7 +1094,7 @@ panel.next = function ()
         [
             new panel.rectangle(context.movenext),
             _4cnv.movingpage == 1 ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),22,22) : 0,
-            new panel.shrink(new panel.circle(_4cnv.movingpage == 1?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
+            new panel.shrink(new panel.circle(_4cnv.movingpage == 1?TRANSPARENT:FILLBAR,SEARCHFRAME,4),17,17),
             new panel.shrink(new panel.arrow(ARROWFILL,90),20,30),
         ]);
 
@@ -1805,11 +1800,11 @@ var pinchlst =
     },
     pinchend: function (context)
     {
+        headcnv.height = BEXTENT;
+        headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+        menuobj.draw();
         context.canvas.scale = 1;
-        setTimeout(function()
-        {
-            context.canvas.pinching = 0;
-        }, 100);
+        setTimeout(function() { context.canvas.pinching = 0; }, 100);
     },
 },
 {
@@ -2447,25 +2442,6 @@ var presslst =
     },
     press: function (context, rect, x, y)
     {
-        var canvas = context.canvas;
-        if (canvas.hscrollrect && canvas.hscrollrect.hitest(x,y))
-        {
-        }
-        else if (canvas.bscrollrect && canvas.bscrollrect.hitest(x,y))
-        {
-        }
-        else if (canvas.vscrollrect && canvas.vscrollrect.hitest(x,y))
-        {
-        }
-        else
-        {
-            _5cnvctx.hide()
-            _7cnvctx.hide()
-            menuobj.setindex(_8cnvctx);
-            _8cnv.scrollobj.rotate(1);
-            buttonobj.reset();
-            menuobj.draw();
-        }
     }
 },
 {
@@ -2510,7 +2486,19 @@ var presslst =
         }
         else
         {
-            context.canvas.hidethumb = context.canvas.hidethumb?0:1;
+            headobj.set(1);
+            headham.panel = headobj.value();
+            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            bossobj.set(1);
+            galleryobj.transparent = 0;
+            galleryobj.hidefocus = 0;
+            menuobj.hide();
+            galleryobj.hidefocus = 1;
+            var positx = positxobj.value();
+            var posity = posityobj.value();
+            positx.set((x/rect.width)*100);
+            posity.set((y/rect.height)*100);
+            context.refresh();
         }
 
         context.refresh();
@@ -2636,7 +2624,6 @@ var keylst =
         clearInterval(context.canvas.leftright);
         if (
             (canvas.shiftKey && key == " ") ||
-            (canvas.shiftKey && key == "enter") ||
             key == "arrowup" ||
             key == "w" ||
             key == "k")
@@ -2654,6 +2641,7 @@ var keylst =
         }
         else if (
             key == "," ||
+            (canvas.shiftKey && key == "enter") ||
             key == "pageup")
         {
             var j = TIMEOBJ/galleryobj.length();
@@ -2662,6 +2650,7 @@ var keylst =
         }
         else if (
             key == "." ||
+            key == "enter" ||
             key == "pagedown")
         {
             var j = TIMEOBJ/galleryobj.length();
@@ -2671,7 +2660,6 @@ var keylst =
         else if (
             key == "arrowdown" ||
             key == " " ||
-            key == "enter" ||
             key == "s" ||
             key == "j")
         {
@@ -2773,12 +2761,6 @@ var keylst =
             canvas.autodirect = -1;
             menuobj.updown(canvas,1,2);
             context.refresh();
-        }
-        else if (key == "enter")
-        {
-            evt.preventDefault();
-            _4cnvctx.movepage(evt.shiftKey?-1:1);
-            setTimeout(function(){ _8cnvctx.refresh();}, 100);
         }
         else if (key == "f")
         {
@@ -3210,9 +3192,9 @@ var bosslst =
             var w = Math.min(360,r.width-100);
             var j = window.innerWidth - r.width >= 180;
             var lst = [];
-            var folder = _5cnv.sliceobj.value().folder;
-            if (folder)
-                lst = folder.split("/");
+            //var folder = _5cnv.sliceobj.value().folder;
+            //if (folder)
+            //   lst = folder.split("/");
             var k = galleryobj.value();
             if (k && k.photographer)
                 lst.push(k.photographer);
@@ -3234,7 +3216,7 @@ var bosslst =
                     0,
                     new Layer(
                     [
-                        new panel.fill("rgba(0,0,0,0.5)"),
+                        new panel.fill(FILLBAR),
                         new panel.expand(new panel.rectangle(context.zoomrect),10,1),
                         new panel.currentV(new panel.shadow(new panel.fill("white")), bh/6, 1),
                     ]),
@@ -3246,7 +3228,7 @@ var bosslst =
                     0,
                     new Layer(
                     [
-                        new panel.fill("rgba(0,0,0,0.5)"),
+                        new panel.fill(FILLBAR),
                         new panel.expand(new panel.rectangle(context.stretchrect),10,0),
                         new panel.currentV(new panel.shadow(new panel.fill("white")), bh/6, 1),
                     ]),
@@ -3265,7 +3247,7 @@ var bosslst =
                     new panel.rectangle(context.chapterect),
                     new panel.gridA(1, rows, 1,
                         new panel.shadow(new panel.text(
-                            "rgb(255,255,255)",
+                            "white",
                             "center", "middle",0, 0))),
                   ]),
                   0,
@@ -3276,7 +3258,7 @@ var bosslst =
                     0,
                     new Layer(
                     [
-                        new panel.fill("rgba(0,0,0,0.5)"),
+                        new panel.fill(FILLBAR),
                         new panel.expand(new panel.rectangle(context.heightrect),0,10),
                         new panel.currentH(new panel.shadow(new panel.fill("white")), bh/5, 1),
                     ]),
@@ -3629,7 +3611,7 @@ var buttonlst =
     draw: function (context, rect, user, time)
     {
         context.save()
-        var clr = SCROLLNAB;
+        var clr = FILLBAR;
         if (user.tap)
             clr = MENUTAP;
 
@@ -3662,7 +3644,7 @@ var buttonlst =
     draw: function (context, rect, user, time)
     {
         context.save()
-        var clr = SCROLLNAB;
+        var clr = FILLBAR;
         if (user.tap)
         {
             clr = MENUTAP;
@@ -3750,53 +3732,6 @@ var buttonlst =
                         0, 0, rect.width, rect.height);
                 }
             }
-        }
-        else
-        {
-            if (!user.infolst)
-            {
-                user.infolst = [];
-                user.infolst[0] = `${time+1} of ${galleryobj.length()}`;
-                let keys = Object.keys(user);
-                for (var n = 0; n < keys.length; ++n)
-                {
-                    var key = keys[n];
-                    var value = user[key]
-                    if (!value)
-                        continue;
-                    if (typeof value === "object")
-                        continue;
-                    if (typeof value === "function")
-                        continue;
-                    if (typeof value === "boolean")
-                        continue;
-                    if (typeof value === "number")
-                        continue;
-                    if (value.startsWith("http"))
-                        continue;
-                    user.infolst.push(`${key}: ${value}`);
-                }
-            }
-
-            var e = _8cnv.textscrollobj.berp();
-            var a = new panel.col([25,0,25],
-            [
-                0,
-                new panel.row([15,0,20],
-                [
-                    0,
-                    new Layer(
-                    [
-                        new panel.rounded(SCROLLNAB, 4, SEARCHFRAME, 16, 16),
-                        user.tap?new panel.fill("rgba(255,125,0,0.4)"):0,
-                        new panel.shrink(new panel.multitext(e), 30, 15),
-                    ]),
-                    0,
-                ]),
-                0,
-            ]);
-
-            a.draw(context, rect, user.infolst, 0);
         }
     }
 },
@@ -3911,6 +3846,8 @@ menuobj.draw = function()
     var time = canvas.timeobj.value()/1000;
     var slices = context.canvas.sliceobj.data;
     const rect = context.rect();
+    if (!rect.width || !rect.height)
+        return;
     if (context.canvas.slideshow > 0)
     {
         var k = canvas.autodirect;
@@ -3951,11 +3888,15 @@ menuobj.draw = function()
     var delayinterval = TIMEOBJ / len / 1000;
     context.canvas.virtualheight = len*canvas.buttonheight;
     context.clear();
-
     if (context == _8cnvctx)
     {
         canvas.buttonheight = buttonobj.value();
         context.canvas.virtualheight = len*canvas.buttonheight*0.635;
+    }
+    else
+    {
+        var a = new panel.fill(FILLMENU);
+        a.draw(context, new rectangle(0,0,canvas.width,canvas.height), 0, 0);
     }
 
     var current = Math.floor(
@@ -3997,7 +3938,6 @@ menuobj.draw = function()
                 {
                     this.count = 0;
                     slice.extent = `${this.width}x${this.height}`;
-                    delete slice.infolst;
                     menuobj.draw();
                 }
 
@@ -4039,12 +3979,11 @@ menuobj.draw = function()
         }
     }
 
-    offmenuctx.restore();
     infobj.data = [];
     if (!context.canvas.slideshow)
     {
         var value = galleryobj.data[context.canvas.centered];
-        if (value && value.folder)
+        if (0 && value && value.folder)
         {
             var folder = value.folder;
             if (folder && _5cnv.sliceobj.length() > 2)
@@ -4054,26 +3993,21 @@ menuobj.draw = function()
                 var k = Math.max(0,infobj.data.length-4);
                 infobj.data = infobj.data.slice(k);
             }
-
-            var k = galleryobj.data[context.canvas.centered];
-            if (k && k.photographer)
-                infobj.data.push(k.photographer);
-            if (url.searchParams.has(galleryobj.repos))
-                infobj.data.push(url.searchParams.get(galleryobj.repos));
         }
 
+        var k = galleryobj.data[context.canvas.centered];
+        if (k && k.photographer)
+            infobj.data.push(k.photographer);
+        if (url.searchParams.has(galleryobj.repos))
+            infobj.data.push(url.searchParams.get(galleryobj.repos));
         if (galleryobj.length() > 1)
             infobj.data.push(`${context.canvas.centered+1} of ${galleryobj.length()}`);
+    }
         context.drawImage(offmenucnv, 0, 0);
         context.canvas.bar.draw(context, rect, 0, 0);
         context.canvas.scroll.draw(context, rect, 0, 0);
-    }
-    else
-    {
-        context.drawImage(offmenucnv, 0, 0);
-        context.canvas.bar.draw(context, rect, 0, 0);
-        context.canvas.scroll.draw(context, rect, 0, 0);
-    }
+
+    offmenuctx.restore();
 }
 
 var eventlst =
@@ -4900,25 +4834,16 @@ var headlst =
 
         this.press = function (context, rect, x, y)
         {
-            if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
-            {
-               if (typeof context.canvas.presscount == "undefined")
-                    context.canvas.presscount = 1;
-               else
-                    context.canvas.presscount++;
-            }
-            else
-            {
-                _4cnv.hidethumb = _4cnv.hidethumb?0:1;
-                _4cnvctx.refresh();
-            }
+            _4cnv.hidethumb = _4cnv.hidethumb?0:1;
+            _4cnvctx.refresh();
         };
 
      	this.tap = function (context, rect, x, y)
 		{
             if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
             {
-                var menu = context.canvas.presscount>3 ? _3cnvctx:_7cnvctx;
+                _5cnvctx.hide()
+                var menu = _7cnvctx;
                 if (menuobj.value() == menu)
                 {
                     menu.hide();
@@ -4945,6 +4870,7 @@ var headlst =
                 context.canvas.fitwindowrect &&
                 context.canvas.fitwindowrect.hitest(x,y))
             {
+                _7cnvctx.hide()
                 if (menuobj.value() == _5cnvctx)
                 {
                     _5cnvctx.hide();
@@ -4961,7 +4887,9 @@ var headlst =
             }
             else
             {
-                tapobj.data[BOSS].tap(context, rect, x, y)
+                var k = menuobj.value()?MENU:BOSS;
+                var j = menuobj.value()?menuobj.value():_4cnvctx;
+                tapobj.data[k].tap(j, rect, x, y)
             }
 		};
 
@@ -5057,22 +4985,6 @@ var headlst =
 
         this.press = function (context, rect, x, y)
         {
-            if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
-            {
-               if (typeof context.canvas.presscount == "undefined")
-                    context.canvas.presscount = 1;
-               else
-                    context.canvas.presscount++;
-            }
-            else
-            {
-                _5cnvctx.hide()
-                _7cnvctx.hide()
-                menuobj.setindex(_8cnvctx);
-                _8cnv.scrollobj.rotate(1);
-                buttonobj.reset();
-                menuobj.draw();
-            }
         };
 
      	this.tap = function (context, rect, x, y)
@@ -5109,41 +5021,19 @@ var headlst =
             }
             else if (canvas.helprect && canvas.helprect.hitest(x,y))
             {
-                if (_8cnv.scrollobj.current() == 1)
+                _5cnvctx.hide()
+                if (menuobj.value() == _7cnvctx)
                 {
-                    _8cnv.scrollobj.set(0);
-                    buttonobj.reset();
+                    _7cnvctx.hide();
+                    menuobj.setindex(_8cnvctx);
                     menuobj.draw();
                 }
                 else
                 {
-                    var menu = context.canvas.presscount>3?_3cnvctx:_7cnvctx;
-                    if (menuobj.value() == menu)
-                    {
-                        menu.hide();
-                        menuobj.setindex(_8cnvctx);
-                        menuobj.draw();
-                    }
-                    else
-                    {
-                        menuobj.setindex(menu);
-                        menuobj.show();
-                    }
+                    menuobj.setindex(_7cnvctx);
+                    menuobj.show();
                 }
 
-                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            }
-            else if (canvas.metarect && canvas.metarect.hitest(x,y))
-            {
-                _5cnvctx.hide()
-                _7cnvctx.hide()
-                menuobj.setindex(_8cnvctx);
-                _8cnv.scrollobj.rotate(1);
-                buttonobj.reset();
-                menuobj.draw();
-                setTimeout(function(){menuobj.draw()},100);
-                setTimeout(function(){menuobj.draw()},500);
-                setTimeout(function(){menuobj.draw()},1000);
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             }
             else if (
@@ -5167,7 +5057,10 @@ var headlst =
             }
             else
             {
-                tapobj.data[GALLERY].tap(context, rect, x, y)
+                if (menuobj.value()==_8cnvctx)
+                    tapobj.data[GALLERY].tap(context, rect, x, y)
+                else
+                    tapobj.data[MENU].tap(context, rect, x, y)
             }
  		};
 
@@ -5276,7 +5169,7 @@ panel.help = function ()
         [
             new panel.rectangle(context.canvas.helprect),
             s ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),22,22) : 0,
-            new panel.shrink(new panel.circle(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),17,17),
+            new panel.shrink(new panel.circle(s?TRANSPARENT:FILLBAR,SEARCHFRAME,4),17,17),
             new panel.col( [0,rect.height*0.20,0],
             [
                 0,
