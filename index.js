@@ -1943,17 +1943,8 @@ async function loadipfs(json, folder)
             var f = await response.json()
             var e = f.Objects[0];
             var b = `${folder}/${j.name}`
-            buttonobj.reset()
-            galleryobj.init(galleryobj)
-            folderfound = 1;
             loadipfs(e.Links, b);
         }
-    }
-
-    if (!folderfound)
-    {
-        buttonobj.reset()
-        galleryobj.init(galleryobj)
     }
 }
 
@@ -2010,26 +2001,7 @@ async function loadzip(path)
         }
     }
 
-    galleryobj.set(0);
-    if (galleryobj.width)
-    {
-        buttonobj.reset();
-        galleryobj.init(galleryobj)
-    }
-    else
-    {
-        var blob = galleryobj.value().blob;
-        var image = new Image();
-        image.src = URL.createObjectURL(blob);
-        image.onload = function()
-        {
-            galleryobj.width = this.width;
-            galleryobj.height = this.height;
-            buttonobj.reset();
-            URL.revokeObjectURL(this.src);
-            galleryobj.init(galleryobj)
-        };
-    }
+    galleryobj.init(galleryobj)
 }
 
 async function loadblob(blob)
@@ -2097,24 +2069,7 @@ async function loadimages(blobs)
         }
     }
 
-    if (galleryobj.width)
-    {
-        buttonobj.reset()
-        galleryobj.init(galleryobj)
-    }
-    else
-    {
-        var image = new Image();
-        image.src = URL.createObjectURL(blobs[0]);
-        image.onload = function(file)
-        {
-            galleryobj.width = this.width;
-            galleryobj.height = this.height;
-            buttonobj.reset()
-            URL.revokeObjectURL(this.src);
-            galleryobj.init(galleryobj)
-        };
-    }
+    galleryobj.init(galleryobj)
 }
 
 var droplst =
@@ -4978,13 +4933,11 @@ var headlst =
 
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             }
-            else if (!menuobj.value() &&
-                context.moveprev && context.moveprev.hitest(x,y))
+            else if (context.moveprev && context.moveprev.hitest(x,y))
             {
                 _4cnvctx.movepage(-1);
             }
-            else if (!menuobj.value() &&
-                context.movenext && context.movenext.hitest(x,y))
+            else if (context.movenext && context.movenext.hitest(x,y))
             {
                 _4cnvctx.movepage(1);
             }
@@ -5142,6 +5095,18 @@ var headlst =
                         screenfull.request();
                 }
             }
+            else if (context.moveprev && context.moveprev.hitest(x,y))
+            {
+                var j = TIMEOBJ/galleryobj.length();
+                _8cnv.timeobj.rotate(j);
+                menuobj.draw();
+            }
+            else if (context.movenext && context.movenext.hitest(x,y))
+            {
+                var j = TIMEOBJ/galleryobj.length();
+                _8cnv.timeobj.rotate(-j);
+                menuobj.draw();
+            }
             else if (canvas.helprect && canvas.helprect.hitest(x,y))
             {
                 if (_8cnv.scrollobj.current() == 1)
@@ -5214,7 +5179,7 @@ var headlst =
             var rows = infobj.data.length;
             var rh = 26;
             var e = _5cnv.sliceobj.length() <= 2;
-            var s = !galleryobj.showheader ||
+            var s = galleryobj.length() == 1 ||
                 menuobj.value() == _5cnvctx ||
                  menuobj.value() == _7cnvctx;
             var a = new panel.col(
@@ -5223,8 +5188,8 @@ var headlst =
                     0,
                     new panel.help(),
                     0,
-                    s?0:new panel.fullscreen(),
-                    s?0:new panel.meta(),
+                   s?0:new panel.previous(),
+                   s?0:new panel.next(),
                     0,
                     e?0:new panel.fitwindow(),
                     0,
@@ -5503,23 +5468,7 @@ async function loadjson (blob)
     {
         var text = await blob.text();
         var json = JSON.parse(text);
-        if (json.width)
-        {
-            buttonobj.reset();
-            galleryobj.init(json)
-        }
-        else
-        {
-            var image = new Image();
-            image.src = imagepath(json.data[0]);
-            image.onload = function()
-            {
-                galleryobj.width = this.width;
-                galleryobj.height = this.height;
-                buttonobj.reset();
-                galleryobj.init(galleryobj)
-            };
-        }
+        galleryobj.init(json)
     }
     catch(_)
     {
@@ -5574,10 +5523,26 @@ galleryobj.init = function (obj)
             a.folder.toLowerCase() == folder.toLowerCase();
     });
 
-    if (lst.length)
+   if (lst.length)
         galleryobj.data = lst;
     else
         galleryobj.data = galleryobj.all;
+
+    if (galleryobj.width)
+    {
+        buttonobj.reset();
+    }
+    else
+    {
+        var image = new Image();
+        image.src = imagepath(galleryobj.data[0]);
+        image.onload = function()
+        {
+            galleryobj.width = this.width;
+            galleryobj.height = this.height;
+            buttonobj.reset();
+        };
+    }
 
     setfavicon();
     pretchobj.split(60, "40-90", pretchobj.length());
@@ -5979,18 +5944,10 @@ else if (url.searchParams.has("p"))
             galleryobj.all = [];
             var k = json.Objects[0];
             loadipfs(k.Links,url.path);
-            if (!galleryobj.width)
+            setTimeout(function()
             {
-                var image = new Image();
-                image.src = imagepath(galleryobj.data[0]);
-                image.onload = function()
-                {
-                    galleryobj.width = this.width;
-                    galleryobj.height = this.height;
-                    buttonobj.reset();
-                    galleryobj.init(galleryobj)
-                };
-            }
+                galleryobj.init(galleryobj)
+            }, 400);
         })
         .catch((error) => { });
     }
