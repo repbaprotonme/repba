@@ -1,5 +1,6 @@
 # packages
-pacman -S ffmpeg kubo aws-cli libwebp ranger unrar rust wasm-pack ffmpeg libheif youtube-dl 
+pacman -S kubo aws-cli libwebp ranger unrar rust wasm-pack ffmpeg libheif 
+youtube youtube-dl 
 
 # upgrade
 sudo pacman -S archlinux-keyring && sudo pacman -Syu
@@ -13,6 +14,9 @@ yaourt -Syua                       # upgrade system including yaourt
 pacman -Qdt                        # do you have any orphaned packages
 pacman -Rns $(pacman -Qdtq)        # to remove all orphaned packages
 pacman -Scc                        # cleans /var/cache to retrieve lots of files space
+
+#show installed packages by size
+paste <(pacman -Q | awk '{ print $1; }' | xargs pacman -Qi | grep 'Size' | awk '{ print $4$5; }') <(pacman -Q | awk '{print $1; }') | sort -n | column -t
 
 # other
 pacman -Q                          # Show all installed packages

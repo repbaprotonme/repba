@@ -1,0 +1,7 @@
+systemctl start ipfs.service
+
+ipfs pin ls --type=recursive
+
+https://docs.infura.io/networks/ipfs/http-api-methods #ipfs api
+
+https://<Gateway>/ipfs/<CID Hash> 

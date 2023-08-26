@@ -1642,7 +1642,7 @@ var wheelst =
             clearInterval(context.canvas.leftright)
             var canvas = context.canvas;
             canvas.autodirect = type == "wheelup" ? 1 : -1;
-            menuobj.updown(context.canvas,x,canvas.width/2,1,180);
+            menuobj.updown(context.canvas,x,canvas.width/2,1,120);
         }
 
         context.refresh();
@@ -4909,10 +4909,10 @@ var headlst =
             }
             else if (context.moveprev && context.moveprev.hitest(x,y))
             {
-                if (_8cnv.shiftKey)
+                if (1)
                 {
                     _8cnv.autodirect = 1;
-                    menuobj.updown(_8cnv,1,6,2,120);
+                    menuobj.updown(_8cnv,1,6,1,60);
                     clearInterval(global.swipetimeout);
                     global.swipetimeout = setInterval(function ()
                     {
@@ -4929,10 +4929,10 @@ var headlst =
             }
             else if (context.movenext && context.movenext.hitest(x,y))
             {
-                if (_8cnv.shiftKey)
+                if (1)
                 {
                     _8cnv.autodirect = -1;
-                    menuobj.updown(_8cnv,1,6,2,120);
+                    menuobj.updown(_8cnv,1,6,1,60);
                     clearInterval(global.swipetimeout);
                     global.swipetimeout = setInterval(function ()
                     {
