@@ -1,10 +1,13 @@
-sudo useradd -M scott
-sudo passwd scott  #123
+ln -s /usr/bin/vim /usr/bin/vi
+visudo
 
-vim /etc/ssh/sshd_config
-AllowUsers scott
-sudo systemctl restart sshd
-sudo usermod -d /srv/http/data/neptune -m greg
-sudo chown -R greg /srv/http/data/neptune
-sudo chmod r-o reportbase.com
-chmod 755 imgs #drwxr-xr-x
+useradd -M scott
+mkdir -p /home/scott
+chown scott:scott /home/scott
+usermod -d /home/scott scott
+
+passwd scott  #123
+chown -R scott:scott /usr/share/nginx/html
+chmod 755 /usr/share/nginx/html #drwxr-xr-x
+git clone https://github.com/repbaprotonme/repba.git html
+
