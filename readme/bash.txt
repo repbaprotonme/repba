@@ -1,3 +1,7 @@
+pdftoppm -jpeg name.pdf name #convert pdf to images
+sed -i 's/old-text/new-text/g' input.txt  #replace all strings in a file
+identify *png | sort -gk 3 #sort images by aspect ratio
+find /path/ -type d -print  #show folder names only
 ls -a | grep "^\." #show only hidden images
 zip -r a.zip a 
 ffmpeg -i input.mp4 -vf fps=1/10 %04d.png
