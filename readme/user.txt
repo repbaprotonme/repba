@@ -18,6 +18,8 @@ scp -r scott@207.246.108.73:/home/scott/.vimrc /home/scott/.vimrc
 #startup
 systemctl enable nginx
 systemctl restart nginx
+systemctl enable ipfs.service
+systemctl restart ipfs.service
 
 #visudo
 #/etc/sudoers

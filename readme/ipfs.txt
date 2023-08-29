@@ -1,7 +1,42 @@
-systemctl start ipfs.service
-
-ipfs pin ls --type=recursive
-
 https://docs.infura.io/networks/ipfs/http-api-methods #ipfs api
-
 https://<Gateway>/ipfs/<CID Hash> 
+
+Write the following script to /etc/systemd/system/ipfs.service:
+
+[Unit]
+Description=IPFS daemon
+After=network.target
+
+[Service]
+### Uncomment the following line for custom ipfs datastore location
+# Environment=IPFS_PATH=/path/to/desired/location/of/datastore
+ExecStart=/usr/local/bin/ipfs daemon
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+Then, run:
+
+sudo systemctl start ipfs
+.. to start the service, and:
+
+Write the following script to /etc/systemd/system/ipfs.service:
+
+[Unit]
+Description=IPFS daemon
+After=network.target
+
+[Service]
+### Uncomment the following line for custom ipfs datastore location
+# Environment=IPFS_PATH=/path/to/desired/location/of/datastore
+ExecStart=/usr/local/bin/ipfs daemon
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+Then, run:
+
+sudo systemctl start ipfs
+.. to start the service, and:
+
+sudo systemctl enable ipfssudo systemctl enable ipfs
