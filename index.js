@@ -45,7 +45,7 @@ const THUMBFILL = "rgba(0,0,0,0.4)";
 const THUMBSTROKE = "rgba(255,255,255,0.4)";
 const SEARCHFRAME = "rgba(255,255,255,0.5)";
 const TRANSPARENT = "rgba(0,0,0,0)";
-const FILLBAR = "rgba(0,0,0,0.2)";
+const FILLBAR = "rgba(0,0,0,0.35)";
 const FILLMENU = "rgba(0,0,0,0.6)";
 const ARROWFILL = "white";
 const SCROLLBARWIDTH = 8;
@@ -192,16 +192,14 @@ let circular_array = function (title, data)
 
     this.berp = function ()
     {
-        if (this.length() <= 1)
-            return 0;
-        return Math.berp(0,this.length()-1,this.current());
+        console.assert(!Array.isArray(this.data));
+        return Math.berp(0,this.length(),this.current());
     };
 
-    this.lerp = function ()
+    this.lerp = function (berp)
     {
-        if (this.length() <= 1)
-            return 0;
-        return Math.lerp(0,this.length()-1,1-this.berp());
+        console.assert(Array.isArray(this.data));
+        return Math.floor(Math.lerp(0,this.length(),berp));
     };
 
     this.rotateanchored = function (index)
@@ -523,8 +521,8 @@ panel.gallerybar = function ()
         var rows = infobj.data.length;
         var s = canvas.scrollobj.current() == 1;
         var rh = 26;
-        var bh = rect.height-120;
-        var cw = rect.width-120;
+        var bh = rect.height-30;
+        var cw = rect.width-30;
         context.save();
         var a = new panel.layerA(
         [
@@ -2406,6 +2404,7 @@ var presslst =
     },
     press: function (context, rect, x, y)
     {
+        localobj.time = _8cnv.timeobj.current();
         galleryobj.width = 0;
         galleryobj.height = 0;
         galleryobj.init();
@@ -3050,7 +3049,7 @@ var taplst =
                 return;
             }
 
-            var visibles = _8cnv.visibles;
+            var visibles = canvas.visibles;
             var k;
             for (k = 0; k < visibles.length; k++)
             {
@@ -3100,8 +3099,19 @@ var taplst =
         }
         else
         {
-            var k = getfrompoint(context, x, y);
-            var slice = canvas.sliceobj.data[k];
+            var visibles = canvas.visibles;
+            var k;
+            for (k = 0; k < visibles.length; k++)
+            {
+                var j = visibles[k];
+                if (!j.slice || !j.slice.rect)
+                    continue;
+                if (j.slice.rect.hitest(x,y))
+                    break;
+            }
+
+            var n = visibles[k].n;
+            var slice = canvas.sliceobj.data[n];
             if (!slice)
                 return;
 
@@ -3171,8 +3181,8 @@ var bosslst =
 
             var rows = lst.length;
             var rh = 26;
-            var bh = rect.height-120;
-            var cw = rect.width-120;
+            var bh = rect.height-30;
+            var cw = rect.width-30;
         var a = new panel.layerA(
         [
             new panel.colA([SCROLLMARGIN,SCROLLBARWIDTH,0,SCROLLBARWIDTH,SCROLLMARGIN],
@@ -3559,23 +3569,6 @@ bossobj.reset = function()
     context.refresh();
 }
 
-var getfrompoint = function (context, x, y)
-{
-	var slices = context.canvas.sliceobj.data;
-
-    var k;
-    for (k = 0; k < slices.length; k++)
-    {
-        var slice = slices[k];
-        if (!slice.rect)
-            continue;
-        if (slice.rect.hitest(x,y))
-            break;
-    }
-
-	return k;
-}
-
 var buttonlst =
 [
 {
@@ -3846,8 +3839,7 @@ menuobj.draw = function()
         a.draw(context, new rectangle(0,0,canvas.width,canvas.height), 0, 0);
     }
 
-    var current = Math.floor(
-        Math.lerp(0,slices.length-1,1-context.canvas.timeobj.berp()));
+    var current = context.canvas.sliceobj.lerp(1-context.canvas.timeobj.berp());
     if (canvas.lastcurrent != current)
     {
         canvas.lastcurrent = current;
@@ -3929,16 +3921,7 @@ menuobj.draw = function()
     {
         var value = galleryobj.data[context.canvas.centered];
         if (value && value.folder)
-        {
-            var folder = value.folder;
-            if (folder && _5cnv.sliceobj.length() > 1)
-            {
-                infobj.data = folder.split("/").slice(1);
-                var k = Math.max(0,infobj.data.length-4);
-                infobj.data = infobj.data.slice(k);
-            }
-        }
-
+            infobj.data = value.folder.split("/");
         var k = galleryobj.data[context.canvas.centered];
         if (k && k.photographer)
             infobj.data.push(k.photographer);
@@ -3947,10 +3930,10 @@ menuobj.draw = function()
         if (galleryobj.length() > 1)
             infobj.data.push(`${context.canvas.centered+1} of ${galleryobj.length()}`);
     }
-        context.drawImage(offmenucnv, 0, 0);
-        context.canvas.bar.draw(context, rect, 0, 0);
-        context.canvas.scroll.draw(context, rect, 0, 0);
 
+    context.drawImage(offmenucnv, 0, 0);
+    context.canvas.bar.draw(context, rect, 0, 0);
+    context.canvas.scroll.draw(context, rect, 0, 0);
     offmenuctx.restore();
 }
 
@@ -5689,8 +5672,7 @@ galleryobj.init = function (obj)
     else
     {
         var image = new Image();
-        var current = Math.floor(
-            Math.lerp(0,galleryobj.length()-1,1-_8cnv.timeobj.berp()));
+        var current = galleryobj.lerp(1-_8cnv.timeobj.berp());
         image.src = imagepath(galleryobj.data[current]);
         image.onload = function()
         {
@@ -5698,6 +5680,12 @@ galleryobj.init = function (obj)
             galleryobj.height = this.height;
             buttonobj.reset();
         };
+
+        image.onerror =
+            image.onabort = function(error)
+        {
+            buttonobj.reset();
+        }
     }
 
     buttonobj.reset()
