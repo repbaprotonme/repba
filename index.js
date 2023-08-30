@@ -46,7 +46,7 @@ const THUMBSTROKE = "rgba(255,255,255,0.4)";
 const SEARCHFRAME = "rgba(255,255,255,0.5)";
 const TRANSPARENT = "rgba(0,0,0,0)";
 const FILLBAR = "rgba(0,0,0,0.3)";
-const NUBAR = "rgba(255,255,255,0.6)";
+const NUBAR = "rgba(255,255,255,0.8)";
 const FILLMENU = "rgba(0,0,0,0.6)";
 const ARROWFILL = "white";
 const SCROLLBARWIDTH = 8;
@@ -508,14 +508,16 @@ panel.gallerybar = function ()
     this.draw = function (context, rect, user, time)
     {
         var canvas = context.canvas;
-        canvas.buttonrect = new rectangle();
+        canvas.speedrect = new rectangle();
+        canvas.reducerect = new rectangle();
         canvas.bscrollrect = new rectangle();
         canvas.hscrollrect = new rectangle();
         canvas.vscrollrect = new rectangle();
         context.chapterect = new rectangle();
         canvas.galleryrect = new rectangle();
-        canvas.helprect = new rectangle();
         if (window.innerHeight === screen.height)
+            return;
+        if (headcnv.height == 0)
             return;
         var w = Math.min(360,rect.width-100);
         var j = window.innerWidth - rect.width >= 180;
@@ -535,8 +537,8 @@ panel.gallerybar = function ()
                     0,
                     new Layer(
                     [
-                        0,//new panel.expand(new panel.rectangle(canvas.bscrollrect),10,0),
-                        0,//new panel.currentV(new panel.fill(NUBAR), bh/6, 0),
+                        new panel.expand(new panel.rectangle(canvas.speedrect),10,0),
+                        new panel.currentV(new panel.fill(NUBAR), bh/6, 0),
                     ]),
                     0,
                 ]),
@@ -546,8 +548,8 @@ panel.gallerybar = function ()
                     0,
                     new Layer(
                     [
-                        0,//new panel.expand(new panel.rectangle(canvas.vscrollrect),10,0),
-                        0,//new panel.currentV(new panel.fill(NUBAR), bh/6, 1),
+                        new panel.expand(new panel.rectangle(canvas.reducerect),10,0),
+                        new panel.currentV(new panel.fill(NUBAR), bh/6, 0),
                     ]),
                     0,
                 ]),
@@ -589,9 +591,9 @@ panel.gallerybar = function ()
         [
             [
                 0,
-                buttonobj,
+                speedobj,
                 0,
-                canvas.timeobj,
+                reduceobj,
                 0,
             ],
             [
@@ -1842,6 +1844,10 @@ var traitobj = new circular_array("TRAIT", 100);
 var scapeobj = new circular_array("SCAPE", 100);
 var heightobj = new circular_array("HEIGHT", [traitobj,scapeobj]);
 var pinchobj = new circular_array("PINCH", [heightobj,zoomobj]);
+var speedobj = new circular_array("SPEED", 100);
+speedobj.set(30);
+var reduceobj = new circular_array("REDUCE", 100);
+reduceobj.set(10);
 
 var userobj = {}
 
@@ -2109,16 +2115,16 @@ var panlst =
         }
         else if (type == "panup" || type == "pandown")
         {
-            if (canvas.isbuttonrect)
+            if (canvas.isspeedrect)
             {
-                var k = (y-canvas.bscrollrect.y)/canvas.bscrollrect.height;
-                buttonobj.setperc(k);
+                var k = (y-canvas.speedrect.y)/canvas.speedrect.height;
+                speedobj.setperc(k);
                 context.refresh()
             }
-            else if (canvas.isvbarect)
+            else if (canvas.isreducerect)
             {
-                var k = (y-canvas.vscrollrect.y)/canvas.vscrollrect.height;
-                canvas.timeobj.setperc(1-k);
+                var k = (y-canvas.reducerect.y)/canvas.reducerect.height;
+                reduceobj.setperc(k);
                 context.refresh()
             }
             else
@@ -2143,9 +2149,9 @@ var panlst =
         global.timeauto = 0;
         canvas.starty = y;
         canvas.timeobj.setanchor(canvas.timeobj.current());
-        canvas.isbuttonrect = canvas.bscrollrect  && canvas.bscrollrect.hitest(x,y);
+        canvas.isspeedrect = canvas.speedrect  && canvas.speedrect.hitest(x,y);
         canvas.ishbarect = canvas.hscrollrect && canvas.hscrollrect.hitest(x,y);
-        canvas.isvbarect = canvas.vscrollrect && canvas.vscrollrect.hitest(x,y);
+        canvas.isreducerect = canvas.reducerect && canvas.reducerect.hitest(x,y);
     },
 	panend: function (context, rect, x, y)
     {
@@ -2407,10 +2413,6 @@ var presslst =
     },
     press: function (context, rect, x, y)
     {
-        localobj.time = _8cnv.timeobj.current();
-        galleryobj.width = 0;
-        galleryobj.height = 0;
-        galleryobj.init();
     }
 },
 {
@@ -2433,7 +2435,6 @@ var presslst =
             context.canvas.thumbrect &&
             context.canvas.thumbrect.hitest(x,y))
         {
-            context.canvas.hidethumb = context.canvas.hidethumb?0:1;
         }
         else if (context.zoomrect && context.zoomrect.hitest(x,y))
         {
@@ -2446,7 +2447,6 @@ var presslst =
         }
         else
         {
-            context.canvas.hidethumb = 0;
             headobj.set(1);
             headham.panel = headobj.value();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -2637,8 +2637,29 @@ var keylst =
         {
             gotodialog();
         }
+        else if (key == "e")
+        {
+            canvas.autodirect = -1;
+            if (global.swipetimeout)
+            {
+                clearInterval(global.swipetimeout);
+                global.swipetimeout = 0;
+            }
+            else
+            {
+                global.swipetimeout = setInterval(function ()
+                {
+                    context.canvas.lastime = -0.0000000000101010101;
+                    menuobj.updown(canvas);
+                    menuobj.draw();
+                }, TIMEMAIN);
+            }
+
+            evt.preventDefault();
+        }
         else if (key == "/" || key == "\\")
         {
+
             var h = headcnv.height?0:BEXTENT;
             headcnvctx.show(0,0,window.innerWidth,h);
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -3002,14 +3023,6 @@ var taplst =
             global.swipetimeout = 0;
             if (galleryobj.length() > GALLERYMIN && galleryobj.hideboss)
             {
-                if (screenfull.isEnabled)
-                {
-                    if (window.innerHeight == screen.height)
-                        screenfull.exit();
-                    else
-                        screenfull.request();
-                }
-
                 return;
             }
 
@@ -3037,7 +3050,6 @@ var taplst =
 
             var n = visibles[k].n;
             var slice = galleryobj.data[n];
-            context.canvas.hidethumb = 0;
             headcnv.height = BEXTENT;
             headobj.set(BOSS);
             headham.panel = headobj.value();
@@ -3125,8 +3137,6 @@ var bosslst =
             context.heightrect = new rectangle();
             if (window.innerHeight === screen.height)
                 return;
-            if (context.canvas.hidethumb)
-                return;
             if (
                 !photo.image ||
                 !photo.image.complete ||
@@ -3186,8 +3196,7 @@ var bosslst =
                     new panel.rectangle(context.chapterect),
                     new panel.gridA(1, rows, 1,
                         new panel.shadow(new panel.text(
-                            NUBAR,
-                            "center", "middle",0, 0))),
+                            NUBAR, "center", "middle",0, 0))),
                   ]),
                   0,
                 ]),
@@ -3816,13 +3825,14 @@ menuobj.draw = function()
     context.canvas.visibles = [];
     if (offmenucnv.width != rect.width)
     {
-       // offmenucnv.width = rect.width;
-       // offmenucnv.height = rect.height;
-       // offmenuctx.canvas.sliceobj = context.canvas.sliceobj;
-       // offmenuctx.canvas.scrollobj = context.canvas.scrollobj;
+        offmenucnv.width = rect.width;
+        offmenucnv.height = rect.height;
+        offmenuctx.canvas.sliceobj = context.canvas.sliceobj;
+        offmenuctx.canvas.scrollobj = context.canvas.scrollobj;
     }
 
-    context.save();
+    offmenuctx.save();
+    offmenuctx.clearRect(0, 0, rect.width, rect.height);
     var isvisiblecount = 0;
     context.canvas.centered = 0;
     var r = new rectangle(0,0,rect.width,canvas.buttonheight);
@@ -3878,9 +3888,9 @@ menuobj.draw = function()
                 isvisiblecount += j.slice.isvisible?1:0;
                 if (slice.isvisible)
                     context.canvas.visibles.push(j);
-                context.translate(0, j.y);
-                context.canvas.draw(context, r, j.slice, j.n);
-                context.translate(0, -j.y);
+                offmenuctx.translate(0, j.y);
+                context.canvas.draw(offmenuctx, r, j.slice, j.n);
+                offmenuctx.translate(0, -j.y);
              }
         }
     }
@@ -3903,7 +3913,7 @@ menuobj.draw = function()
     context.drawImage(offmenucnv, 0, 0);
     context.canvas.bar.draw(context, rect, 0, 0);
     context.canvas.scroll.draw(context, rect, 0, 0);
-    context.restore();
+    offmenuctx.restore();
 }
 
 var eventlst =
@@ -4725,8 +4735,6 @@ var headlst =
 
         this.press = function (context, rect, x, y)
         {
-            _4cnv.hidethumb = _4cnv.hidethumb?0:1;
-            _4cnvctx.refresh();
         };
 
      	this.tap = function (context, rect, x, y)
@@ -4801,14 +4809,14 @@ var headlst =
                new panel.col( [30, ALIEXTENT,0,ALIEXTENT,ALIEXTENT,0,ALIEXTENT, 30],
                [
                    0,
-                   new panel.help(),
+                   0,//new panel.help(),
                    0,
 
-                   s?0:new panel.previous(),
-                   s?0:new panel.next(),
+                   new panel.previous(),
+                   new panel.next(),
 
                    0,
-                   e?0:new panel.fitwindow(),
+                   0,//e?0:new panel.fitwindow(),
                    0,
                 ]),
                0,
@@ -5999,12 +6007,13 @@ function importdialog()
     });
 }
 
-menuobj.updown = function(canvas,x,w,f=1,g=1)
+menuobj.updown = function(canvas)
 {
-
+    var f = Math.lerp(0.1,2,speedobj.berp());
+    var g = Math.lerp(1,960,reduceobj.berp());
     var lst = [1.5,1.75,2.0,2.25,2.5,3.0,3.5,4.0];
     var j = util.clamp(0,lst.length-1,canvas.sliceobj.length());
-    var k = Math.max(1.5,lst[j]*f);
+    var k = lst[j]*f;
     canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*k;
     canvas.slidereduce = canvas.slideshow/g;
 }

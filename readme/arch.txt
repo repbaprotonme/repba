@@ -1,6 +1,5 @@
 # packages
-pacman -S poppler imagemagick nodejs vim nginx kubo aws-cli libwebp ranger unrar rust wasm-pack ffmpeg libheif 
-youtube youtube-dl 
+pacman -S poppler imagemagick nodejs npm vim nginx kubo aws-cli libwebp ranger unrar rust wasm-pack ffmpeg libheif 
 
 # upgrade
 sudo pacman -S archlinux-keyring && sudo pacman -Syu
