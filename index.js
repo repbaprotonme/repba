@@ -1611,23 +1611,31 @@ var wheelst =
         context.canvas.slideshow = 0;
         if (ctrl)
         {
+            context.canvas.pinching = 1;
             var k = type == "wheelup"?1:-1;
-            buttonobj.addperc(k*0.01);
-            _8cnv.imagescrollobj.set(0);
+            var j = Math.lerp(0.001,0.2,buttonobj.berp());
+            buttonobj.addperc(k*j);
+            context.canvas.lastime = -0.0000000000101010101;
+            menuobj.draw();
+            clearTimeout(global.swipetimeout)
+            global.swipetimeout = setTimeout(function ()
+            {
+                context.canvas.pinching = 0;
+                menuobj.draw();
+            }, 20);
         }
         else
         {
             clearInterval(context.canvas.leftright)
             menuobj.updown(context, type == "wheelup" ? 1 : -1);
-        }
-
-        if (!global.swipetimeout)
-        {
-            global.swipetimeout = setInterval(function ()
+            if (!global.swipetimeout)
             {
-                context.canvas.lastime = -0.0000000000101010101;
-                menuobj.draw();
-            }, TIMEMAIN);
+                global.swipetimeout = setInterval(function ()
+                {
+                    context.canvas.lastime = -0.0000000000101010101;
+                    menuobj.draw();
+                }, TIMEMAIN);
+            }
         }
     },
  	leftright: function (context, x, y, ctrl, shift, alt, type)
@@ -1660,12 +1668,12 @@ var wheelst =
                 pinchobj.set(0);
                 var obj = heightobj.value();
                 delete context.canvas.thumbcanvas;
-                obj.addperc(type=="wheelup"?0.01:-0.01);
+                obj.addperc(type=="wheelup"?0.02:-0.02);
                 context.refresh();
             }
             else
             {
-                zoomobj.value().addperc(type=="wheelup"?0.01:-0.01);
+                zoomobj.value().addperc(type=="wheelup"?0.02:-0.02);
                 contextobj.reset()
             }
         }
@@ -1735,12 +1743,29 @@ var pinchlst =
     name: "BOSS",
     pinch: function (context, x, y, scale)
     {
+        var obj = context.obj;
+        obj.add(scale<context.canvas.scale?-1:1);
+        contextobj.reset();
+        context.canvas.scale = scale;
     },
     pinchstart: function (context, rect, x, y)
     {
+        context.canvas.pinching = 1;
+        menuobj.hide();
+        context.canvas.isthumb = context.canvas.thumbrect && context.canvas.thumbrect.expand &&
+            context.canvas.thumbrect.expand(40,40).hitest(x,y);
+        pinchobj.set(context.canvas.isthumb?0:1)
+        context.obj = pinchobj.value().value();
     },
     pinchend: function (context)
     {
+        clearTimeout(global.pinchtime);
+        global.pinchtime = setTimeout(function()
+        {
+            context.canvas.pinching = 0;
+            context.canvas.isthumb = 0;
+            context.refresh();
+        }, 40);
     },
 },
 ];
@@ -2038,26 +2063,15 @@ var panlst =
         var obj = canvas.scrollobj.value();
         if (type == "panleft" || type == "panright")
         {
-            if (canvas.ishbarect)
-            {
-                var obj = canvas.scrollobj.value();
-                var k = (x-canvas.hscrollrect.x)/
-                    canvas.hscrollrect.width;
-                obj.setperc(k);
-                context.refresh()
-            }
-            else
-            {
-                var obj = canvas.scrollobj.value();
-                var j = rect.width-x;
-                var k = panhorz(obj, j);
-                if (k == -1)
-                    return;
-                if (k == obj.anchor())
-                    return;
-                obj.set(k);
-                context.refresh()
-            }
+            var obj = canvas.scrollobj.value();
+            var j = canvas.startx-x;
+            var k = panhorz(obj, j);
+            if (k == -1)
+                return;
+            if (k == obj.anchor())
+                return;
+            obj.set(k);
+            context.refresh()
         }
         else if (type == "panup" || type == "pandown")
         {
@@ -2093,10 +2107,10 @@ var panlst =
         clearInterval(context.canvas.leftright)
         clearInterval(global.timeauto);
         global.timeauto = 0;
+        canvas.startx = x;
         canvas.starty = y;
         canvas.timeobj.setanchor(canvas.timeobj.current());
         canvas.isspeedrect = canvas.speedrect  && canvas.speedrect.hitest(x,y);
-        canvas.ishbarect = canvas.hscrollrect && canvas.hscrollrect.hitest(x,y);
         canvas.isreducerect = canvas.reducerect && canvas.reducerect.hitest(x,y);
     },
 	panend: function (context, rect, x, y)
@@ -2592,12 +2606,12 @@ var keylst =
         }
         else if (key == "-" || key == "[")
         {
-            buttonobj.addperc(-1.5/100);
+            buttonobj.addperc(-1.0/100);
             context.refresh()
         }
         else if (key == "+" || key == "]" || key == "=")
         {
-            buttonobj.addperc(1.5/100);
+            buttonobj.addperc(1.0/100);
             context.refresh()
         }
         else if (
@@ -3321,7 +3335,7 @@ bossobj.updown = function(type)
             type == -1?
             context.canvas.startupdown:
             -context.canvas.startupdown);
-        context.canvas.startupdown -= 0.00002;
+        context.canvas.startupdown -= 0.000025;
         if (context.canvas.startupdown < 0)
         {
             clearInterval(context.canvas.updown);
@@ -3693,6 +3707,7 @@ menuobj.draw = function()
     const rect = context.rect();
     if (!rect.width || !rect.height)
         return;
+
     if (context.canvas.slideshow > 0)
     {
         var k = canvas.autodirect;
@@ -3721,11 +3736,13 @@ menuobj.draw = function()
         a.draw(context, new rectangle(0,0,canvas.width,canvas.height), 0, 0);
     }
 
-    var current = context.canvas.sliceobj.lerp(1-context.canvas.timeobj.berp());
+    var current = context.canvas.sliceobj.lerp(
+        1-context.canvas.timeobj.berp());
     if (canvas.lastcurrent != current)
     {
         canvas.lastcurrent = current;
-        var size = Math.ceil(rect.height/canvas.buttonheight)+5;
+        var j = canvas.pinching ? 0 : 4;
+        var size = Math.ceil(rect.height/canvas.buttonheight)+j;
         canvas.normal = util.rotated_list(canvas.rotated,slices.length,current,size);
     }
 
@@ -3785,7 +3802,6 @@ menuobj.draw = function()
             y -= e;
             var x = rect.width/2;
             var j = {slice, x, y, n};
-            //todo: max height
             slice.rect = new rectangle(0,y,rect.width,canvas.buttonheight);
             slice.isvisible = y > -canvas.buttonheight && y < window.innerHeight;
             if (slice.isvisible || (!canvas.panning && !canvas.slideshow))
@@ -5871,17 +5887,29 @@ menuobj.leftright = function (context, type)
     var w = thumbfittedlst[index].width;
     context.canvas.startleftright = (window.innerWidth/w)*3;
     var e = context.canvas.startleftright/100;
-    var obj = context.canvas.scrollobj.value();
-    clearInterval(context.canvas.leftright)
-    context.canvas.leftright = setInterval(function()
+    if (type != context.canvas.leftrighttype)
     {
-        obj.add(type == -1 ? context.canvas.startleftright :
-            -context.canvas.startleftright);
-        context.canvas.startleftright -= e;
-        if (context.canvas.startleftright < 0)
-            clearInterval(context.canvas.leftright);
-        menuobj.draw();
-    }, TIMEMAIN);
+        clearInterval(context.canvas.leftrightime);
+        context.canvas.leftrightime = 0;
+        context.canvas.leftrighttype = type;
+    }
+
+    if (!context.canvas.leftrightime)
+    {
+        context.canvas.leftrightime = setInterval(function()
+        {
+            var obj = context.canvas.scrollobj.value();
+            obj.add(type == -1 ? context.canvas.startleftright :
+                -context.canvas.startleftright);
+            context.canvas.startleftright -= e;
+            if (context.canvas.startleftright < 0)
+            {
+                clearInterval(context.canvas.leftrightime);
+                context.canvas.leftrightime = 0;
+            }
+            menuobj.draw();
+        }, TIMEMAIN);
+    }
 }
 
 bossobj.leftright = function(type)
@@ -5889,8 +5917,8 @@ bossobj.leftright = function(type)
     var context = _4cnvctx;
     var canvas = _4cnv;
     canvas.autodirect = type;
-    var slidestop = 2;
-    var slidereduce = 360;
+    var slidestop = 1;
+    var slidereduce = 180;
     canvas.slidestop += slidestop;
     canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
     canvas.slidereduce = canvas.slidestop/slidereduce;
@@ -5906,7 +5934,7 @@ buttonobj.reset = function()
     var a = w/h;
     var gheight = window.innerWidth/a;
     var height = Math.min(window.innerHeight/3,gheight/3);
-    var bheight = Math.min(1.5*h,5160);
+    var bheight = Math.min(h*2,5160);
     buttonobj.data = [];
     for (var n = height; n < bheight; ++n)
         buttonobj.data.push(n);
