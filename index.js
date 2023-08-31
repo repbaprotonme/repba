@@ -641,25 +641,6 @@ panel.scrollbar = function ()
 };
 
 var buttonobj = new circular_array("", []);
-buttonobj.reset = function()
-{
-    var ww = galleryobj.width?galleryobj.width:1024;
-    var hh = galleryobj.height?galleryobj.height:1024;
-    var w = galleryobj.data[0].width?galleryobj.data[0].width:ww;
-    var h = galleryobj.data[0].height?galleryobj.data[0].height:hh;
-    var a = w/h;
-    var gheight = window.innerWidth/a;
-    var height = gheight/2;
-    var bheight = Math.min(1080*3,gheight*5);
-    buttonobj.data = [];
-    for (var n = height; n < bheight; ++n)
-        buttonobj.data.push(n);
-    var k = buttonobj.data.findIndex(function(a){return a == Math.floor(gheight/2)});
-    buttonobj.set(Math.floor((gheight-height)*1));
-    var width = gheight*a;
-    _8cnv.imagescrollobj = new circular_array("IMAGESCROLL", width);
-    _8cnv.imagescrollobj.set(0.5*_8cnv.imagescrollobj.length());
-}
 
 function calculateAspectRatioFit(imgwidth, imgheight, rectwidth, rectheight)
 {
@@ -1632,13 +1613,12 @@ var wheelst =
         {
             var k = type == "wheelup"?1:-1;
             buttonobj.addperc(k*0.01);
+            _8cnv.imagescrollobj.set(0);
         }
         else
         {
             clearInterval(context.canvas.leftright)
-            var canvas = context.canvas;
-            canvas.autodirect = type == "wheelup" ? 1 : -1;
-            menuobj.updown(context.canvas,x,canvas.width/2,1,120);
+            menuobj.updown(context, type == "wheelup" ? 1 : -1);
         }
 
         if (!global.swipetimeout)
@@ -1652,16 +1632,14 @@ var wheelst =
     },
  	leftright: function (context, x, y, ctrl, shift, alt, type)
     {
-        menuobj.leftright(context, x, y, ctrl, shift, alt, type == "wheelright");
+        menuobj.leftright(context, type == "wheelright"?-1:1);
     },
 },
 {
     name: "MENU",
     updown: function (context, x, y, ctrl, shift, alt, type)
     {
-        var canvas = context.canvas;
-        canvas.autodirect = type == "wheelup" ? -1 : 1;
-        menuobj.updown(canvas,x,canvas.width/2,1,60);
+        menuobj.updown(context, type == "wheelup" ? -1 : 1);
         context.refresh();
     },
  	leftright: function (context, x, y, ctrl, shift, alt)
@@ -1693,45 +1671,12 @@ var wheelst =
         }
         else
         {
-            clearInterval(global.swipetimeout)
-            context.canvas.startupdown = 0.005
-            clearInterval(context.canvas.updown)
-            context.canvas.updown = setInterval(function()
-            {
-                rowobj.addperc(
-                    type == "wheelup"?
-                        context.canvas.startupdown:
-                        -context.canvas.startupdown);
-                context.canvas.startupdown -= 0.00005;
-                if (context.canvas.startupdown < 0)
-                    clearInterval(context.canvas.updown);
-                contextobj.reset();
-            }, TIMESECOND);
+            bossobj.updown(type=="wheelup"?-1:1);
         }
 	},
  	leftright: function (context, x, y, ctrl, shift, alt, type)
     {
-        if (context.zoomrect && context.zoomrect.hitest(x,y))
-            return;
-        if (context.stretchrect  && context.stretchrect.hitest(x,y))
-            return;
-        if (context.heightrect  && context.heightrect.hitest(x,y))
-        {
-            heightobj.value().add(type == "wheeleft" ?  1 : -1);
-            context.refresh()
-        }
-        else
-        {
-            clearInterval(context.canvas.updown)
-            var canvas = context.canvas;
-            canvas.autodirect = type == "wheeleft" ? -1 : 1;
-            var slidestop = 1;
-            var slidereduce = 240;
-            canvas.slidestop += slidestop;
-            canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
-            canvas.slidereduce = canvas.slidestop/slidereduce;
-            context.refresh();
-        }
+        bossobj.leftright(type == "wheeleft" ? -1 : 1);
     },
 },
 ];
@@ -1846,7 +1791,7 @@ var scapeobj = new circular_array("SCAPE", 100);
 var heightobj = new circular_array("HEIGHT", [traitobj,scapeobj]);
 var pinchobj = new circular_array("PINCH", [heightobj,zoomobj]);
 var speedobj = new circular_array("SPEED", 100);
-speedobj.set(30);
+speedobj.set(20);
 var reduceobj = new circular_array("REDUCE", 100);
 reduceobj.set(10);
 
@@ -2491,13 +2436,11 @@ var swipelst =
     name: "GALLERY",
     swipeleftright: function (context, rect, x, y, evt)
     {
-        menuobj.leftright (context, x, y, 0, 0, 0, evt.type == "swipeleft" )
+        menuobj.leftright (context, evt.type == "swipeleft"?-1:1)
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
-        var canvas = context.canvas;
-        canvas.autodirect = evt.type == "swipeup" ? -1 : 1;
-        menuobj.updown(canvas,x,rect.width/2,1,120);
+        menuobj.updown(context, evt.type == "swipeup" ? -1 : 1);
         if (!global.swipetimeout)
         {
             global.swipetimeout = setInterval(function ()
@@ -2517,47 +2460,19 @@ var swipelst =
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
-        var canvas = context.canvas;
-        canvas.autodirect = evt.type == "swipeup" ? -1 : 1;
-        menuobj.updown(canvas,x,rect.width/2);
-        clearInterval(global.swipetimeout);
-        global.swipetimeout = setInterval(function ()
-        {
-            context.canvas.lastime = -0.0000000000101010101;
-            menuobj.draw();
-        }, TIMEMAIN);
+        bossobj.updown(type=="swipeup"?-1:1);
     },
 },
 {
     name: "BOSS",
     swipeleftright: function (context, rect, x, y, evt)
     {
-        var canvas = context.canvas;
-        canvas.autodirect = evt.type == "swipeleft"?-1:1;
-        var slidestop = 2;
-        var slidereduce = 120;
-        canvas.slidestop += slidestop;
-        canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
-        canvas.slidereduce = canvas.slidestop/slidereduce;
-        context.refresh();
+        bossobj.leftright("swipeleft"?-1:1);
      },
 
     swipeupdown: function (context, rect, x, y, evt)
     {
-        var zoom = zoomobj.value();
-        var j = Math.lerp(0.0075,0.005,zoom.berp());
-        context.canvas.startupdown = j;
-        clearInterval(context.canvas.updown)
-        context.canvas.updown = setInterval(function()
-        {
-            rowobj.addperc(evt.type == "swipeup"?
-                context.canvas.startupdown:
-                -context.canvas.startupdown);
-            context.canvas.startupdown -= 0.0001;
-            if (context.canvas.startupdown < 0)
-                clearInterval(context.canvas.updown);
-            contextobj.reset();
-        }, TIMESECOND);
+        bossobj.updown(evt.type == "swipeup"?-1:1);
     },
 },
 ];
@@ -2608,8 +2523,7 @@ var keylst =
             key == "pageup" ||
             key == "k")
         {
-            canvas.autodirect = 1;
-            menuobj.updown(canvas,1,6,canvas.keydown>1?0.5:1.0,60);
+            menuobj.updown(context, 1);
             if (!global.swipetimeout)
             {
                 global.swipetimeout = setInterval(function ()
@@ -2630,8 +2544,7 @@ var keylst =
             key == "pagedown" ||
             key == "j")
         {
-            canvas.autodirect = -1;
-            menuobj.updown(canvas,1,6,canvas.keydown>1?0.5:1.0,60);
+            menuobj.updown(context, -1);
             if (!global.swipetimeout)
             {
                 global.swipetimeout = setInterval(function ()
@@ -2652,18 +2565,18 @@ var keylst =
             canvas.autodirect = -1;
             if (global.swipetimeout)
             {
-                speedobj.set(10);
+                speedobj.set(15);
                 clearInterval(global.swipetimeout);
                 global.swipetimeout = 0;
                 context.refresh()
             }
             else
             {
+                speedobj.set(7.5);
                 global.swipetimeout = setInterval(function ()
                 {
-                    speedobj.set(5);
+                    menuobj.updown(context, -1);
                     context.canvas.lastime = -0.0000000000101010101;
-                    menuobj.updown(canvas);
                     menuobj.draw();
                 }, TIMEMAIN);
             }
@@ -2693,7 +2606,7 @@ var keylst =
             key == "a" ||
             key == "h")
 		{
-            menuobj.leftright (context, 0, 0, 0, 0, 0, 0)
+            menuobj.leftright (context, 1)
         }
         else if (
             (!canvas.shiftKey && key == "tab") ||
@@ -2701,7 +2614,7 @@ var keylst =
             key == "d" ||
             key == "l")
 		{
-            menuobj.leftright (context, 0, 0, 0, 0, 0, 1)
+            menuobj.leftright (context, -1)
         }
         else if (key == "f")
         {
@@ -2740,8 +2653,7 @@ var keylst =
             evt.key == "w" ||
             evt.key == "j")
 		{
-            canvas.autodirect = 1;
-            menuobj.updown(canvas,1,2,1,60);
+            menuobj.updown(context, 1);
             context.refresh();
         }
         else if (
@@ -2750,8 +2662,7 @@ var keylst =
             evt.key == "s" ||
             evt.key == "k")
 		{
-            canvas.autodirect = -1;
-            menuobj.updown(canvas,1,2,1,60);
+            menuobj.updown(context, -1);
             context.refresh();
         }
         else if (key == "f")
@@ -2836,14 +2747,7 @@ var keylst =
             key == "a" ||
             key == "h")
         {
-            canvas.autodirect = 1;
-            var slidestop = 3;
-            var slidereduce = 180;
-            canvas.slidestop += slidestop;
-            canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
-            canvas.slidereduce = canvas.slidestop/slidereduce;
-            context.refresh();
-            evt.preventDefault();
+            bossobj.leftright(1);
         }
         else if (
             key == "tab" ||
@@ -2851,14 +2755,7 @@ var keylst =
             key == "d" ||
             key == "l")
         {
-            canvas.autodirect = -1;
-            var slidestop = 3;
-            var slidereduce = 180;
-            canvas.slidestop += slidestop;
-            canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
-            canvas.slidereduce = canvas.slidestop/slidereduce;
-            context.refresh();
-            evt.preventDefault();
+            bossobj.leftright(-1);
         }
         else if (key == "/" || key == "\\")
         {
@@ -2867,44 +2764,32 @@ var keylst =
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             context.refresh()
         }
+        else if (key == "e")
+        {
+            canvas.autodirect = -1;
+            var slidestop = 1.0;
+            var slidereduce = 3600000;
+            canvas.slidestop += slidestop;
+            canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
+            canvas.slidereduce = canvas.slidestop/slidereduce;
+            context.refresh();
+        }
         else if (
             key == "arrowup" ||
             key == "w" ||
             key == "k")
         {
-            var zoom = zoomobj.value();
-            var j = Math.lerp(0.0075,0.005,zoom.berp());
-            context.canvas.startupdown = j;
-            clearInterval(context.canvas.updown)
-            context.canvas.updown = setInterval(function()
-            {
-                rowobj.addperc(context.canvas.startupdown);
-                context.canvas.startupdown -= 0.0001;
-                if (context.canvas.startupdown < 0)
-                    clearInterval(context.canvas.updown);
-                contextobj.reset();
-            }, TIMESECOND);
-        }
-        else if (key == "g")
-        {
-            gotodialog();
+            bossobj.updown(-1);
         }
         else if (key == "arrowdown" ||
             key == "s" ||
             key == "j" )
         {
-            var zoom = zoomobj.value();
-            var j = Math.lerp(0.0075,0.005,zoom.berp());
-            context.canvas.startupdown = j;
-            clearInterval(context.canvas.updown)
-            context.canvas.updown = setInterval(function()
-            {
-                rowobj.addperc(-context.canvas.startupdown);
-                context.canvas.startupdown -= 0.0001;
-                if (context.canvas.startupdown < 0)
-                    clearInterval(context.canvas.updown);
-                contextobj.reset();
-            }, TIMESECOND);
+            bossobj.updown(1);
+        }
+        else if (key == "g")
+        {
+            gotodialog();
         }
         else if (key == "-" || key == "{")
         {
@@ -3238,7 +3123,6 @@ var bosslst =
             var y = Math.floor(Math.nub(posity.value(), posity.length(), h, rect.height));
             canvas.thumbrect = new rectangle(x,y,w,h);
             var r = canvas.thumbrect;
-
             context.save();
             context.shadowOffsetX = 0;
             context.shadowOffsetY = 0;
@@ -3331,7 +3215,8 @@ bossobj.draw = function(skip=1)
 
     if (global.swipetimeout)
     {
-        canvas.slidestop -= canvas.slidereduce;
+        if (!context.canvas.keydown)
+            canvas.slidestop -= canvas.slidereduce;
         if (canvas.slidestop > 0)
         {
             var j = canvas.autodirect*(TIMEOBJ/1000)
@@ -3417,6 +3302,35 @@ bossobj.draw = function(skip=1)
         var a = bossobj.value()
         a.draw(context, rect, 0, 0);
     }
+}
+
+bossobj.updown = function(type)
+{
+    var context = _4cnvctx;
+    var canvas = _4cnv;
+    var k = canvas.selectrect[0].height/
+        canvas.thumbcanvas.height/100;
+    context.canvas.startupdown = k;
+    if (context.canvas.updowntype == type)
+        return;
+    context.canvas.updowntype = type;
+    clearInterval(context.canvas.updown);
+    context.canvas.updown = setInterval(function()
+    {
+        rowobj.addperc(
+            type == -1?
+            context.canvas.startupdown:
+            -context.canvas.startupdown);
+        context.canvas.startupdown -= 0.00002;
+        if (context.canvas.startupdown < 0)
+        {
+            clearInterval(context.canvas.updown);
+            context.canvas.startupdown = 0;
+            delete context.canvas.updowntype;
+        }
+
+        contextobj.reset();
+    }, TIMESECOND);
 }
 
 bossobj.reset = function()
@@ -3824,9 +3738,7 @@ menuobj.draw = function()
         offmenuctx.canvas.scrollobj = context.canvas.scrollobj;
     }
 
-    var ctx = context;//offmenuctx
-    //ctx.save();
-    //ctx.clearRect(0, 0, rect.width, rect.height);
+    var ctx = context;
     var isvisiblecount = 0;
     context.canvas.centered = 0;
     var r = new rectangle(0,0,rect.width,canvas.buttonheight);
@@ -3873,6 +3785,7 @@ menuobj.draw = function()
             y -= e;
             var x = rect.width/2;
             var j = {slice, x, y, n};
+            //todo: max height
             slice.rect = new rectangle(0,y,rect.width,canvas.buttonheight);
             slice.isvisible = y > -canvas.buttonheight && y < window.innerHeight;
             if (slice.isvisible || (!canvas.panning && !canvas.slideshow))
@@ -4061,16 +3974,7 @@ contextobj.reset = function ()
             contextobj.reset()
 
             if (galleryobj.autopan)
-            {
-                var canvas = context.canvas;
-                canvas.autodirect = -1;
-                var slidestop = 2;
-                var slidereduce = 240;
-                canvas.slidestop += slidestop;
-                canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
-                canvas.slidereduce = canvas.slidestop/slidereduce;
-                context.refresh();
-            }
+                bossobj.leftright(-1);
 
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnvctx.refresh();
@@ -4887,46 +4791,6 @@ var headlst =
                         screenfull.request();
                 }
             }
-            else if (context.moveprev && context.moveprev.hitest(x,y))
-            {
-                if (1)
-                {
-                    _8cnv.autodirect = 1;
-                    menuobj.updown(_8cnv,1,6,1,240);
-                    clearInterval(global.swipetimeout);
-                    global.swipetimeout = setInterval(function ()
-                    {
-                        _8cnv.lastime = -0.0000000000101010101;
-                        menuobj.draw();
-                    }, TIMEMAIN);
-                }
-                else
-                {
-                    var j = TIMEOBJ/galleryobj.length();
-                    _8cnv.timeobj.rotate(j);
-                    menuobj.draw();
-                }
-            }
-            else if (context.movenext && context.movenext.hitest(x,y))
-            {
-                if (1)
-                {
-                    _8cnv.autodirect = -1;
-                    menuobj.updown(_8cnv,1,6,1,240);
-                    clearInterval(global.swipetimeout);
-                    global.swipetimeout = setInterval(function ()
-                    {
-                        _8cnv.lastime = -0.0000000000101010101;
-                        menuobj.draw();
-                    }, TIMEMAIN);
-                }
-                else
-                {
-                    var j = TIMEOBJ/galleryobj.length();
-                    _8cnv.timeobj.rotate(-j);
-                    menuobj.draw();
-                }
-            }
             else if (canvas.helprect && canvas.helprect.hitest(x,y))
             {
                 _5cnvctx.hide()
@@ -5269,28 +5133,6 @@ async function loadjson (blob)
     catch(_)
     {
     }
-}
-
-menuobj.leftright = function (context, x, y, ctrl, shift, alt, type)
-{
-    context.canvas.slideshow = 0;
-    clearInterval(global.swipetimeout)
-    context.canvas.startleftright = 3;
-    var j = context.canvas.centered;
-    var index = j%IMAGELSTSIZE;
-    var w = thumbfittedlst[index].width;
-    var e = w/rect.width/50;
-    var obj = context.canvas.scrollobj.value();
-    clearInterval(context.canvas.leftright)
-    context.canvas.leftright = setInterval(function()
-    {
-        obj.add(type ? context.canvas.startleftright :
-            -context.canvas.startleftright);
-        context.canvas.startleftright -= e;
-        if (context.canvas.startleftright < 0)
-            clearInterval(context.canvas.leftright);
-        menuobj.draw();
-    }, 4);
 }
 
 galleryobj.init = function (obj)
@@ -5988,8 +5830,10 @@ function importdialog()
     });
 }
 
-menuobj.updown = function(canvas)
+menuobj.updown = function(context, type)
 {
+    var canvas = context.canvas;
+    canvas.autodirect = type;
     var f = Math.lerp(0.1,2,speedobj.berp());
     var g = Math.lerp(1,960,reduceobj.berp());
     var lst = [1.5,1.75,2.0,2.25,2.5,3.0,3.5,4.0];
@@ -6016,6 +5860,58 @@ function selectfolder()
         galleryobj.init();
         break;
     }
+}
+
+menuobj.leftright = function (context, type)
+{
+    context.canvas.slideshow = 0;
+    clearInterval(global.swipetimeout)
+    var j = context.canvas.centered;
+    var index = j%IMAGELSTSIZE;
+    var w = thumbfittedlst[index].width;
+    context.canvas.startleftright = (window.innerWidth/w)*3;
+    var e = context.canvas.startleftright/100;
+    var obj = context.canvas.scrollobj.value();
+    clearInterval(context.canvas.leftright)
+    context.canvas.leftright = setInterval(function()
+    {
+        obj.add(type == -1 ? context.canvas.startleftright :
+            -context.canvas.startleftright);
+        context.canvas.startleftright -= e;
+        if (context.canvas.startleftright < 0)
+            clearInterval(context.canvas.leftright);
+        menuobj.draw();
+    }, TIMEMAIN);
+}
+
+bossobj.leftright = function(type)
+{
+    var context = _4cnvctx;
+    var canvas = _4cnv;
+    canvas.autodirect = type;
+    var slidestop = 2;
+    var slidereduce = 360;
+    canvas.slidestop += slidestop;
+    canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
+    canvas.slidereduce = canvas.slidestop/slidereduce;
+    context.refresh();
+}
+
+buttonobj.reset = function()
+{
+    var ww = galleryobj.width?galleryobj.width:1024;
+    var hh = galleryobj.height?galleryobj.height:1024;
+    var w = galleryobj.data[0].width?galleryobj.data[0].width:ww;
+    var h = galleryobj.data[0].height?galleryobj.data[0].height:hh;
+    var a = w/h;
+    var gheight = window.innerWidth/a;
+    var height = Math.min(window.innerHeight/3,gheight/3);
+    var bheight = Math.min(1.5*h,5160);
+    buttonobj.data = [];
+    for (var n = height; n < bheight; ++n)
+        buttonobj.data.push(n);
+    var k = buttonobj.data.findIndex(function(a){return a == Math.floor(gheight/2)});
+    buttonobj.set(Math.floor(gheight-height));
 }
 
 
