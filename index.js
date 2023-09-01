@@ -595,9 +595,9 @@ panel.gallerybar = function ()
         [
             [
                 0,
-                speedobj,
+                canvas.speedobj,
                 0,
-                reduceobj,
+                canvas.reduceobj,
                 0,
             ],
             [
@@ -1615,7 +1615,7 @@ var wheelst =
         {
             context.canvas.pinching = 1;
             var k = type == "wheelup"?1:-1;
-            var j = Math.lerp(0.001,0.2,buttonobj.berp());
+            var j = 0.01;//Math.lerp(0.001,0.02,buttonobj.berp());
             buttonobj.addperc(k*j);
             context.canvas.lastime = -0.0000000000101010101;
             menuobj.draw();
@@ -1812,10 +1812,6 @@ var traitobj = new circular_array("TRAIT", 100);
 var scapeobj = new circular_array("SCAPE", 100);
 var heightobj = new circular_array("HEIGHT", [traitobj,scapeobj]);
 var pinchobj = new circular_array("PINCH", [heightobj,zoomobj]);
-var speedobj = new circular_array("SPEED", 100);
-speedobj.set(20);
-var reduceobj = new circular_array("REDUCE", 100);
-reduceobj.set(5);
 
 var userobj = {}
 
@@ -2075,7 +2071,7 @@ var panlst =
             if (canvas.isspeedrect)
             {
                 var k = (y-canvas.speedrect.y)/canvas.speedrect.height;
-                speedobj.setperc(k);
+                canvas.speedobj.setperc(k);
                 context.canvas.lastime = -0.0000000000101010101;
                 menuobj.updown(context);
                 if (!global.swipetimeout)
@@ -2089,7 +2085,7 @@ var panlst =
             else if (canvas.isreducerect)
             {
                 var k = (y-canvas.reducerect.y)/canvas.reducerect.height;
-                reduceobj.setperc(k);
+                canvas.reduceobj.setperc(k);
                 context.canvas.lastime = -0.0000000000101010101;
                 menuobj.updown(context);
                 if (!global.swipetimeout)
@@ -2225,21 +2221,11 @@ var panlst =
         }
         else if (type == "panleft" || type == "panright")
         {
-            if (context.isheightrect)
-            {
-                var k = (x-context.heightrect.x)/
-                    context.heightrect.width;
-                heightobj.value().setperc(k);
-                context.refresh()
-            }
-            else
-            {
-                var e = context.canvas.startx-x;
-                var jvalue = TIMEOBJ/context.canvas.virtualwidth;
-                jvalue *= e;
-                context.canvas.timeobj.rotateanchored(jvalue);
-                context.refresh()
-            }
+            var e = context.canvas.startx-x;
+            var jvalue = TIMEOBJ/context.canvas.virtualwidth;
+            jvalue *= e;
+            context.canvas.timeobj.rotateanchored(jvalue);
+            context.refresh()
         }
         else if (type == "panup" || type == "pandown")
         {
@@ -2532,12 +2518,8 @@ var keylst =
 
         clearInterval(context.canvas.leftright);
         if (
-            (canvas.shiftKey && key == " ") ||
             key == "arrowup" ||
             key == "w" ||
-            key == "," ||
-            (canvas.shiftKey && key == "enter") ||
-            key == "pageup" ||
             key == "k")
         {
             menuobj.updown(context, 1);
@@ -2552,13 +2534,54 @@ var keylst =
 
             evt.preventDefault();
         }
+        else if (key == "enter")
+        {
+            var speed = canvas.speedobj.current();
+            var reduce = canvas.reduceobj.current();
+            canvas.speedobj.set(50);
+            canvas.reduceobj.set(2);
+            var j = (canvas.shiftKey) ? 1 : -1;
+            menuobj.updown(context, j);
+            if (!global.swipetimeout)
+            {
+                global.swipetimeout = setInterval(function ()
+                {
+                    context.canvas.lastime = -0.0000000000101010101;
+                    menuobj.draw();
+                }, TIMEMAIN);
+            }
+
+            canvas.speedobj.set(speed);
+            canvas.reduceobj.set(reduce);
+            evt.preventDefault();
+        }
+         else if (
+            key == " " ||
+            key == "pagedown" ||
+            key == "pageup")
+        {
+            var speed = canvas.speedobj.current();
+            var reduce = canvas.reduceobj.current();
+            canvas.speedobj.set(25);
+            canvas.reduceobj.set(5);
+            var j = (canvas.shiftKey || key == "pageup") ? 1 : -1;
+            menuobj.updown(context, j);
+            if (!global.swipetimeout)
+            {
+                global.swipetimeout = setInterval(function ()
+                {
+                    context.canvas.lastime = -0.0000000000101010101;
+                    menuobj.draw();
+                }, TIMEMAIN);
+            }
+
+            canvas.speedobj.set(speed);
+            canvas.reduceobj.set(reduce);
+            evt.preventDefault();
+        }
         else if (
             key == "arrowdown" ||
-            key == " " ||
             key == "s" ||
-            key == "." ||
-            key == "enter" ||
-            key == "pagedown" ||
             key == "j")
         {
             menuobj.updown(context, -1);
@@ -2851,14 +2874,27 @@ var taplst =
                 contextobj.reset()
             }
         }
+        else if (context.slicewidthrect &&
+            context.slicewidthrect.hitest(x,y))
+        {
+            var k = (y-context.slicewidthrect.y)/context.slicewidthrect.height;
+            slicewidthobj.setperc(1-k);
+            contextobj.reset()
+        }
+        else if (context.stretchrect &&
+            context.stretchrect.hitest(x,y))
+        {
+            var stretch = stretchobj.value();
+            var k = (y-context.stretchrect.y)/context.stretchrect.height;
+            stretch.setperc(1-k);
+            contextobj.reset()
+        }
         else if (galleryobj.repos && context.extentrect && context.extentrect.hitest(x,y))
         {
             window.open(galleryobj.photographer_url,galleryobj.repos);
         }
         else if (galleryobj.length() > 1)
         {
-            //var j = galleryobj.berp();
-            //_8cnv.timeobj.setperc(1-j);
             menuobj.setindex(_8cnvctx);
             menuobj.show();
             headobj.set(GALLERY);
@@ -2887,6 +2923,22 @@ var taplst =
             context.chapterect.hitest(x,y))
         {
             window.open(galleryobj.photographer_url,galleryobj.repos);
+        }
+        else if (canvas.speedrect  && canvas.speedrect.hitest(x,y))
+        {
+            var k = (y-canvas.speedrect.y)/canvas.speedrect.height;
+            canvas.speedobj.setperc(k);
+            context.canvas.lastime = -0.0000000000101010101;
+            menuobj.updown(context);
+            context.refresh()
+        }
+        else if (canvas.reducerect && canvas.reducerect.hitest(x,y))
+        {
+            var k = (y-canvas.reducerect.y)/canvas.reducerect.height;
+            canvas.reduceobj.setperc(k);
+            context.canvas.lastime = -0.0000000000101010101;
+            menuobj.updown(context);
+            context.refresh()
         }
         else if (menuobj.value() && menuobj.value() != _8cnvctx)
         {
@@ -3084,9 +3136,9 @@ var bosslst =
                 [
                     [
                         0,
-                        slicewidthobj,
+                        slicewidthobj,//todo
                         0,
-                        stretchobj.value(),
+                        stretchobj.value(),//todo
                         0,
                     ],
                     [
@@ -3859,6 +3911,10 @@ contextlst.forEach(function(context, n)
     canvas.imagescrollobj = new circular_array("IMAGESCROLL", window.innerWidth);
     canvas.imagescrollobj.set(0.5*canvas.imagescrollobj.length());
     canvas.textscrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
+    canvas.speedobj = new circular_array("SPEED", 100);
+    canvas.speedobj.set(20);
+    canvas.reduceobj = new circular_array("REDUCE", 100);
+    canvas.reduceobj.set(5);
 
     canvas.updownmin = obj.updownmin;
     canvas.updownmax = obj.updownmax;
@@ -3975,8 +4031,6 @@ contextobj.reset = function ()
             else
                 j = url.path;
             document.title = `${j} (${this.width}x${this.height})`;
-            rowobj.set(rowobj.length()/2);
-            _4cnv.timeobj.set(TIMEOBJ/2);
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnv.autodirect = -_4cnv.movingpage;
             _4cnv.movingpage = 0;
@@ -5850,8 +5904,8 @@ menuobj.updown = function(context, type)
     var canvas = context.canvas;
     if (type)
         canvas.autodirect = type;
-    var f = Math.lerp(0.01,1,speedobj.berp());
-    var g = Math.lerp(1,10000,reduceobj.berp());
+    var f = Math.lerp(0.01,1,canvas.speedobj.berp());
+    var g = Math.lerp(1,10000,canvas.reduceobj.berp());
     var lst = [1.5,1.75,2.0,2.25,2.5,3.0,3.5,4.0];
     var j = util.clamp(0,lst.length-1,canvas.sliceobj.length());
     var k = lst[j]*f;
@@ -5885,8 +5939,13 @@ menuobj.leftright = function (context, type)
     var j = context.canvas.centered;
     var index = j%IMAGELSTSIZE;
     var w = thumbfittedlst[index].width;
-    context.canvas.startleftright = (window.innerWidth/w)*3;
-    var e = context.canvas.startleftright/100;
+    var h = thumbfittedlst[index].height;
+    if (w != window.innerWidth)
+        context.canvas.startleftright = (window.innerWidth/w)*3;
+    else
+        context.canvas.startleftright = (window.innerHeight/h)*3;
+
+    var e = context.canvas.startleftright/50;
     if (type != context.canvas.leftrighttype)
     {
         clearInterval(context.canvas.leftrightime);
