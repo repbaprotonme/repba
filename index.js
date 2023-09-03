@@ -55,8 +55,8 @@ const DEFAULTFONT = "18px archivo black";
 const LARGEFONT = "20px archivo black";
 const HUGEFONT = "22px archivo black";
 const DOTSFONT = "60px archivo black";
-const SLICEWIDTH = 20;
-const SLICEWIDTHSIZE = 256;
+const SLICEWIDTH = 36;
+const SLICEWIDTHSIZE = 36*20;
 const ZOOMAX = 92;
 const IMAGELSTSIZE = iOS()?30:120;
 const BOSS = 0;
@@ -346,12 +346,6 @@ panel.yoll = function ()
         var canvas = context.canvas;
 		if (canvas.mouse && canvas.mouse.move)
       		canvas.mouse.move(context, rect, x, y);
-   	};
-
-    this.dblclick = function (context, rect, x, y)
-    {
-		if (context.canvas.dblclick_)
-      		context.canvas.dblclick_(context, rect, x, y);
    	};
 
 	this.pan = function (context, rect, x, y, type)
@@ -1419,15 +1413,6 @@ var makehammer = function (context, v, t)
         ham.panel.mousemove(context, context.rect(), x, y);
     });
 
-    ham.element.addEventListener("dblclick", function (evt)
-    {
-        var x = evt.offsetX;
-        var y = evt.offsetY;
-        if (typeof (ham.panel.dblclick) !== "function")
-            return;
-        ham.panel.dblclick(context, context.rect(), x, y);
-    });
-
     ham.element.addEventListener("wheel", function (evt)
     {
         const { deltaY } = evt;
@@ -1615,7 +1600,7 @@ var wheelst =
         {
             context.canvas.pinching = 1;
             var k = type == "wheelup"?1:-1;
-            var j = 0.01;//Math.lerp(0.001,0.02,buttonobj.berp());
+            var j = Math.lerp(0.01,0.1,buttonobj.berp());
             buttonobj.addperc(k*j);
             context.canvas.lastime = -0.0000000000101010101;
             menuobj.draw();
@@ -1686,27 +1671,6 @@ var wheelst =
 },
 ];
 
-var dblclicklst =
-[
-{
-    name: "DEFAULT",
-    click: function (context, rect, x, y) { },
-},
-{
-    name: "GALLERY",
-    click: function (context, rect, x, y)
-    {
-    },
-},
-{
-    name: "BOSS",
-    click: function (context, rect, x, y)
-    {
-    },
-}
-]
-var xlst = [];
-
 var pinchlst =
 [
 {
@@ -1719,9 +1683,9 @@ var pinchlst =
     name: "GALLERY",
     pinch: function (context, x, y, scale)
     {
-        var j = Math.lerp(6,20,buttonobj.berp());
-        var k = scale<context.canvas.scale?-j:j;
-        buttonobj.add(k);
+        var j = Math.lerp(0.005,0.02,buttonobj.berp());
+        var k = scale<context.canvas.scale?-1:1;
+        buttonobj.addperc(k*j);
         context.canvas.scale = scale;
         context.refresh();
     },
@@ -1790,14 +1754,22 @@ var extentobj = new circular_array("EXTENT", []);
 var infobj = new circular_array("INFO", []);
 infobj.reset = function(index)
 {
-    var value = galleryobj.data[index];
-    if (value && value.folder)
-        infobj.data = value.folder.split("/");
-    var k = galleryobj.data[index];
-    if (k && k.photographer)
-        infobj.data.push(k.photographer);
-    if (url.searchParams.has(galleryobj.repos))
-        infobj.data.push(url.searchParams.get(galleryobj.repos));
+    if (!galleryobj.infohide)
+    {
+        var value = galleryobj.data[index];
+        if (value && value.folder)
+        {
+            infobj.data = value.folder.split("/");
+            infobj.data.push(value.name);
+        }
+
+        var k = galleryobj.data[index];
+        if (k && k.photographer)
+            infobj.data.push(k.photographer);
+        if (url.searchParams.has(galleryobj.repos))
+            infobj.data.push(url.searchParams.get(galleryobj.repos));
+    }
+
     if (galleryobj.length() > 1)
         infobj.data.push(`${index+1} of ${galleryobj.length()}`);
 }
@@ -2233,15 +2205,31 @@ var panlst =
             if (context.islicewidthrect)
             {
                 var k = (y-context.slicewidthrect.y)/context.slicewidthrect.height;
-                slicewidthobj.setperc(1-k);
-                contextobj.reset()
+                if (slicewidthobj.debug)
+                {
+                    slicewidthobj.setperc(k);
+                    contextobj.reset()
+                }
+                else
+                {
+                    context.canvas.speedobj.setperc(k);
+                    bossobj.leftright(-1);
+                }
             }
             else if (context.isstretchrect)
             {
-                var stretch = stretchobj.value();
                 var k = (y-context.stretchrect.y)/context.stretchrect.height;
-                stretch.setperc(1-k);
-                contextobj.reset()
+                if (slicewidthobj.debug)
+                {
+                    var stretch = stretchobj.value();
+                    stretch.setperc(k);
+                    contextobj.reset()
+                }
+                else
+                {
+                    context.canvas.reduceobj.setperc(k);
+                    bossobj.leftright(-1);
+                }
             }
             else if (Number(zoom.value()))
             {
@@ -2368,13 +2356,13 @@ var presslst =
         }
         else if (screenfull.isEnabled)
         {
+            buttonobj.set(0);
             if (window.innerHeight === screen.height)
                 screenfull.exit();
             else
                 screenfull.request();
+            context.refresh();
         }
-
-        context.refresh();
     },
     press: function (context, rect, x, y)
     {
@@ -2431,9 +2419,16 @@ pressobj.set(3);
 var swipelst =
 [
 {
-    name: "DEFAULT",
-    swipeleftright: function (context, rect, x, y, evt) {},
-    swipeupdown: function (context, rect, x, y, evt) {},
+    name: "BOSS",
+    swipeleftright: function (context, rect, x, y, evt)
+    {
+        bossobj.leftright(evt.type == "swipeleft"?-1:1);
+     },
+
+    swipeupdown: function (context, rect, x, y, evt)
+    {
+        bossobj.updown(evt.type == "swipeup"?-1:1);
+    },
 },
 {
     name: "GALLERY",
@@ -2458,24 +2453,10 @@ var swipelst =
     name: "MENU",
     swipeleftright: function (context, rect, x, y, evt)
     {
-        menuobj.hide();
-        _4cnvctx.refresh();
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
-        bossobj.updown(type=="swipeup"?-1:1);
-    },
-},
-{
-    name: "BOSS",
-    swipeleftright: function (context, rect, x, y, evt)
-    {
-        bossobj.leftright("swipeleft"?-1:1);
-     },
-
-    swipeupdown: function (context, rect, x, y, evt)
-    {
-        bossobj.updown(evt.type == "swipeup"?-1:1);
+        menuobj.updown(context, evt.type=="swipeup"?-1:1);
     },
 },
 ];
@@ -2519,6 +2500,9 @@ var keylst =
         clearInterval(context.canvas.leftright);
         if (
             key == "arrowup" ||
+            key == "pageup" ||
+            (canvas.shiftKey && evt.key == "enter") ||
+            (canvas.shiftKey && evt.key == " ") ||
             key == "w" ||
             key == "k")
         {
@@ -2534,53 +2518,11 @@ var keylst =
 
             evt.preventDefault();
         }
-        else if (key == "enter")
-        {
-            var speed = canvas.speedobj.current();
-            var reduce = canvas.reduceobj.current();
-            canvas.speedobj.set(50);
-            canvas.reduceobj.set(2);
-            var j = (canvas.shiftKey) ? 1 : -1;
-            menuobj.updown(context, j);
-            if (!global.swipetimeout)
-            {
-                global.swipetimeout = setInterval(function ()
-                {
-                    context.canvas.lastime = -0.0000000000101010101;
-                    menuobj.draw();
-                }, TIMEMAIN);
-            }
-
-            canvas.speedobj.set(speed);
-            canvas.reduceobj.set(reduce);
-            evt.preventDefault();
-        }
-         else if (
-            key == " " ||
-            key == "pagedown" ||
-            key == "pageup")
-        {
-            var speed = canvas.speedobj.current();
-            var reduce = canvas.reduceobj.current();
-            canvas.speedobj.set(25);
-            canvas.reduceobj.set(5);
-            var j = (canvas.shiftKey || key == "pageup") ? 1 : -1;
-            menuobj.updown(context, j);
-            if (!global.swipetimeout)
-            {
-                global.swipetimeout = setInterval(function ()
-                {
-                    context.canvas.lastime = -0.0000000000101010101;
-                    menuobj.draw();
-                }, TIMEMAIN);
-            }
-
-            canvas.speedobj.set(speed);
-            canvas.reduceobj.set(reduce);
-            evt.preventDefault();
-        }
         else if (
             key == "arrowdown" ||
+            key == "pagedown" ||
+            key == "enter" ||
+            key == " " ||
             key == "s" ||
             key == "j")
         {
@@ -2667,6 +2609,8 @@ var keylst =
         var key = evt.key.toLowerCase();
         if (key == "pageup" ||
             key == "arrowup" ||
+            (canvas.shiftKey && evt.key == "enter") ||
+            (canvas.shiftKey && evt.key == " ") ||
             evt.key == "w" ||
             evt.key == "j")
 		{
@@ -2676,6 +2620,8 @@ var keylst =
         else if (
             key == "pagedown" ||
             key == "arrowdown" ||
+            evt.key == "enter" ||
+            evt.key == " " ||
             evt.key == "s" ||
             evt.key == "k")
 		{
@@ -2878,18 +2824,34 @@ var taplst =
             context.slicewidthrect.hitest(x,y))
         {
             var k = (y-context.slicewidthrect.y)/context.slicewidthrect.height;
-            slicewidthobj.setperc(1-k);
-            contextobj.reset()
+            if (slicewidthobj.debug)
+            {
+                slicewidthobj.setperc(k);
+                contextobj.reset()
+            }
+            else
+            {
+                context.canvas.speedobj.setperc(k);
+                bossobj.leftright(-1);
+            }
         }
         else if (context.stretchrect &&
             context.stretchrect.hitest(x,y))
         {
-            var stretch = stretchobj.value();
             var k = (y-context.stretchrect.y)/context.stretchrect.height;
-            stretch.setperc(1-k);
-            contextobj.reset()
+            if (slicewidthobj.debug)
+            {
+                var stretch = stretchobj.value();
+                stretch.setperc(k);
+                contextobj.reset()
+            }
+            else
+            {
+                context.canvas.reduceobj.setperc(k);
+                bossobj.leftright(-1);
+            }
         }
-        else if (galleryobj.repos && context.extentrect && context.extentrect.hitest(x,y))
+    else if (galleryobj.repos && context.extentrect && context.extentrect.hitest(x,y))
         {
             window.open(galleryobj.photographer_url,galleryobj.repos);
         }
@@ -2944,6 +2906,13 @@ var taplst =
         {
             menuobj.hide();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+        }
+        else if (!galleryobj.showboss)
+        {
+            var h = headcnv.height?0:BEXTENT;
+            headcnvctx.show(0,0,window.innerWidth,h);
+            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            context.refresh()
         }
         else
         {
@@ -3001,6 +2970,9 @@ var taplst =
             if (j.slice.rect.hitest(x,y))
                 break;
         }
+
+        if (k == visibles.length)
+            return;
 
         var n = visibles[k].n;
         var slice = canvas.sliceobj.data[n];
@@ -3084,7 +3056,7 @@ var bosslst =
                     [
                         new panel.expand(new panel.fill(THUMBFILL),3,3),
                         new panel.expand(new panel.rectangle(context.slicewidthrect),10,1),
-                        new panel.currentV(new panel.fill(NUBAR), bh/6, 1),
+                        new panel.currentV(new panel.fill(NUBAR), bh/6, 0),
                     ]),
                     0,
                 ]),
@@ -3096,7 +3068,7 @@ var bosslst =
                     [
                         new panel.expand(new panel.fill(THUMBFILL),3,3),
                         new panel.expand(new panel.rectangle(context.stretchrect),10,0),
-                        new panel.currentV(new panel.fill(NUBAR), bh/6, 1),
+                        new panel.currentV(new panel.fill(NUBAR), bh/6, 0),
                     ]),
                     0,
                 ]),
@@ -3136,9 +3108,13 @@ var bosslst =
                 [
                     [
                         0,
-                        slicewidthobj,//todo
+                        slicewidthobj.debug?
+                            slicewidthobj:
+                            context.canvas.speedobj,
                         0,
-                        stretchobj.value(),//todo
+                        slicewidthobj.debug?
+                            stretchobj.value():
+                            context.canvas.reduceobj,
                         0,
                     ],
                     [
@@ -3254,7 +3230,7 @@ bossobj.draw = function(skip=1)
 
     if (global.swipetimeout)
     {
-        if (!context.canvas.keydown)
+        if (!context.canvas.keydown && !context.canvas.panning)
             canvas.slidestop -= canvas.slidereduce;
         if (canvas.slidestop > 0)
         {
@@ -3321,9 +3297,9 @@ bossobj.draw = function(skip=1)
 
         if (slicewidthobj.debug)
         {
-            overlayobj.value().draw(offbossctx,
-               new rectangle(x,0,w,rect.height),
-                    `${n+1}of${slices.length}`, 0);
+//            overlayobj.value().draw(offbossctx,
+ //              new rectangle(x,0,w,rect.height),
+  //                  `${n+1}of${slices.length}`, 0);
         }
     }
 
@@ -3354,9 +3330,9 @@ bossobj.updown = function(type)
 {
     var context = _4cnvctx;
     var canvas = _4cnv;
-    var k = canvas.selectrect[0].height/
+    context.canvas.startupdown =
+        canvas.selectrect[0].height/
         canvas.thumbcanvas.height/100;
-    context.canvas.startupdown = k;
     if (context.canvas.updowntype == type)
         return;
     context.canvas.updowntype = type;
@@ -3868,26 +3844,27 @@ menuobj.draw = function()
     {
         infobj.reset(context.canvas.centered);
         context.canvas.bar.draw(context, rect, 0, 0);
+        context.canvas.scroll.draw(context, rect, 0, 0);
     }
 }
 
 var eventlst =
 [
-    {dblclick: "DEFAULT", updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "DEFAULT", swipe: "DEFAULT", button: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 0, width: 640},
-    {dblclick: "DEFAULT", updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
-    {dblclick: "DEFAULT", updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
-    {dblclick: "BOSS", updownmin: 30, updownmax: 60, mouse: "BOSS", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "DEFAULT", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new panel.empty(), scroll: new panel.empty(), buttonheight: 30, width: 640},
-    {dblclick: "DEFAULT", updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 150, width: 640},
-    {dblclick: "DEFAULT", updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
-    {dblclick: "DEFAULT", updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 120, width: 640},
-    {dblclick: "GALLERY", updownmin: 30, updownmax: 60, mouse: "GALLERY", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "DEFAULT", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new panel.gallerybar(), scroll: new panel.empty(), buttonheight: 320, width: iOS()?720:5160},
-    {dblclick: "DEFAULT", updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
-    {dblclick: "DEFAULT", updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {dblclick: "DEFAULT", updownmin: 30, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "DEFAULT", swipe: "MENU", button: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 0, width: 640},
+    {speed: 40, reduce: 10, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {speed: 40, reduce: 40, updownmax: 60, mouse: "BOSS", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "DEFAULT", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new panel.empty(), scroll: new panel.empty(), buttonheight: 30, width: 640},
+    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 150, width: 640},
+    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 120, width: 640},
+    {speed: 50, reduce: 10, updownmax: 60, mouse: "GALLERY", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "DEFAULT", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new panel.gallerybar(), scroll: new panel.empty(), buttonheight: 320, width: iOS()?720:5160},
+    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
 ];
 
 var contextobj = new circular_array("CTX", contextlst);
@@ -3912,12 +3889,10 @@ contextlst.forEach(function(context, n)
     canvas.imagescrollobj.set(0.5*canvas.imagescrollobj.length());
     canvas.textscrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
     canvas.speedobj = new circular_array("SPEED", 100);
-    canvas.speedobj.set(20);
+    canvas.speedobj.set(obj.speed);
     canvas.reduceobj = new circular_array("REDUCE", 100);
-    canvas.reduceobj.set(5);
-
-    canvas.updownmin = obj.updownmin;
-    canvas.updownmax = obj.updownmax;
+    canvas.reduceobj.set(obj.reduce);
+    canvas.autodirect = -1;
     canvas.modulo = obj.modulo;
     canvas.width_ = obj.width;
     canvas.bar = obj.bar;
@@ -3929,10 +3904,6 @@ contextlst.forEach(function(context, n)
     canvas.pinch_ = k.pinch;
     canvas.pinchstart_ = k.pinchstart;
     canvas.pinchend_ = k.pinchend;
-
-    var k = dblclicklst.findIndex(function (a) { return a.name == obj.dblclick });
-    k = dblclicklst[k];
-    canvas.dblclick_ = k.click;
 
     var k = droplst.findIndex(function (a) { return a.name == obj.drop });
     k = droplst[k];
@@ -4742,6 +4713,8 @@ var headlst =
 
 		this.draw = function (context, rect, user, time)
         {
+            context.canvas.helprect = new rectangle()
+            context.canvas.fitwindowrect = new rectangle()
             context.clear();
             var b = 0;
             var k = menuobj.value();
@@ -4757,14 +4730,14 @@ var headlst =
                new panel.col( [30, ALIEXTENT,0,ALIEXTENT,ALIEXTENT,0,ALIEXTENT, 30],
                [
                    0,
-                   0,//new panel.help(),
+                   0,
                    0,
 
                    new panel.previous(),
                    new panel.next(),
 
                    0,
-                   0,//e?0:new panel.fitwindow(),
+                   0,
                    0,
                 ]),
                0,
@@ -4913,8 +4886,8 @@ var headlst =
                     0,
                     new panel.help(),
                     0,
-                  0,
-                   0,
+                    0,
+                    0,
                     0,
                     e?0:new panel.fitwindow(),
                     0,
@@ -5475,7 +5448,7 @@ galleryobj.init = function (obj)
             {
                 showsearch("unsplash");
             },
-            enabled: function() { return 1; }
+            enabled: function() { return 0; }
         },
     ];
 
@@ -5904,8 +5877,8 @@ menuobj.updown = function(context, type)
     var canvas = context.canvas;
     if (type)
         canvas.autodirect = type;
-    var f = Math.lerp(0.01,1,canvas.speedobj.berp());
-    var g = Math.lerp(1,10000,canvas.reduceobj.berp());
+    var f = Math.lerp(0.01,2,canvas.speedobj.berp());
+    var g = Math.lerp(0.01,2160,canvas.reduceobj.berp());
     var lst = [1.5,1.75,2.0,2.25,2.5,3.0,3.5,4.0];
     var j = util.clamp(0,lst.length-1,canvas.sliceobj.length());
     var k = lst[j]*f;
@@ -5941,11 +5914,11 @@ menuobj.leftright = function (context, type)
     var w = thumbfittedlst[index].width;
     var h = thumbfittedlst[index].height;
     if (w != window.innerWidth)
-        context.canvas.startleftright = (window.innerWidth/w)*3;
+        context.canvas.startleftright = (window.innerWidth/w)*6;
     else
-        context.canvas.startleftright = (window.innerHeight/h)*3;
+        context.canvas.startleftright = (window.innerHeight/h)*6;
 
-    var e = context.canvas.startleftright/50;
+    var e = context.canvas.startleftright/150;
     if (type != context.canvas.leftrighttype)
     {
         clearInterval(context.canvas.leftrightime);
@@ -5953,35 +5926,36 @@ menuobj.leftright = function (context, type)
         context.canvas.leftrighttype = type;
     }
 
-    if (!context.canvas.leftrightime)
+    clearInterval(context.canvas.leftrightime)
+    context.canvas.leftrightime = setInterval(function()
     {
-        context.canvas.leftrightime = setInterval(function()
+        var obj = context.canvas.scrollobj.value();
+        obj.add(type == -1 ? context.canvas.startleftright :
+            -context.canvas.startleftright);
+        context.canvas.startleftright -= e;
+        if (context.canvas.startleftright < 0)
         {
-            var obj = context.canvas.scrollobj.value();
-            obj.add(type == -1 ? context.canvas.startleftright :
-                -context.canvas.startleftright);
-            context.canvas.startleftright -= e;
-            if (context.canvas.startleftright < 0)
-            {
-                clearInterval(context.canvas.leftrightime);
-                context.canvas.leftrightime = 0;
-            }
-            menuobj.draw();
-        }, TIMEMAIN);
-    }
+            clearInterval(context.canvas.leftrightime);
+            context.canvas.leftrightime = 0;
+        }
+        menuobj.draw();
+    }, 4);
 }
 
 bossobj.leftright = function(type)
 {
     var context = _4cnvctx;
     var canvas = _4cnv;
-    canvas.autodirect = type;
-    var slidestop = 1;
-    var slidereduce = 180;
+    if (type)
+        canvas.autodirect = type;
+    canvas.panning = 1;
+    var slidestop = Math.lerp(0.01,2,canvas.speedobj.berp());
+    var slidereduce = Math.lerp(1,1080*3,canvas.reduceobj.berp());
     canvas.slidestop += slidestop;
     canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
     canvas.slidereduce = canvas.slidestop/slidereduce;
     context.refresh();
+    canvas.panning = 0;
 }
 
 buttonobj.reset = function()
@@ -5991,14 +5965,15 @@ buttonobj.reset = function()
     var w = galleryobj.data[0].width?galleryobj.data[0].width:ww;
     var h = galleryobj.data[0].height?galleryobj.data[0].height:hh;
     var a = w/h;
-    var gheight = window.innerWidth/a;
-    var height = Math.min(window.innerHeight/3,gheight/3);
-    var bheight = Math.min(h*2,1080*6);
+    var gheight = galleryobj.minheight?
+        h*galleryobj.minheight:
+        window.innerWidth/a;
+    var bheight = Math.min(6400,
+        h*(galleryobj.maxheight?galleryobj.maxheight:1.5));
     buttonobj.data = [];
-    for (var n = height; n < bheight; ++n)
+    for (var n = gheight; n < bheight; ++n)
         buttonobj.data.push(n);
-    var k = buttonobj.data.findIndex(function(a){return a == Math.floor(gheight/2)});
-    buttonobj.set(Math.floor(gheight-height));
+    buttonobj.set(0);
 }
 
 
