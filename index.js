@@ -469,13 +469,6 @@ headcnvctx.canvas.scrollobj = new circular_array("TEXTSCROLL", window.innerWidth
 headcnvctx.font = DEFAULTFONT;
 headcnvctx.fillText("  ", 0, 0);
 
-var offmenucnv = new OffscreenCanvas(1, 1);
-var offmenuctx = offmenucnv.getContext("2d");
-offmenuctx.font = DEFAULTFONT;
-offmenuctx.fillText("  ", 0, 0);
-offmenuctx.imageSmoothingEnabled = false;
-offmenuctx.imageSmoothingQuality = "high";
-
 var offbosscnv = new OffscreenCanvas(1, 1);
 var offbossctx = offbosscnv.getContext("2d");
 offbossctx.font = DEFAULTFONT;
@@ -1422,29 +1415,26 @@ var makehammer = function (context, v, t)
         var y = evt.offsetY;
         evt.preventDefault();
 
-        if (evt.deltaY < -1)
+        if (evt.deltaY < 0)
         {
             if (typeof (ham.panel.wheelupdown) == "function")
                 ham.panel.wheelupdown(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey, "wheelup");
-            ham.panel.updown = 1;
         }
-        else if (evt.deltaY > 1)
+        else
         {
             if (typeof (ham.panel.wheelupdown) == "function")
                 ham.panel.wheelupdown(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey, "wheeldown");
         }
 
-        if (evt.deltaX < -1)
+        if (evt.deltaX < 0)//todo
         {
             if (typeof (ham.panel.wheeleftright) == "function")
                 ham.panel.wheeleftright(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey, "wheeleft");
-            ham.panel.leftright = 1;
         }
-        else if (evt.deltaX > 1)
+        else
         {
             if (typeof (ham.panel.wheeleftright) == "function")
                 ham.panel.wheeleftright(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey, "wheelright");
-            ham.panel.leftright = 1;
         }
     });
 
@@ -3768,14 +3758,6 @@ menuobj.draw = function()
     }
 
     context.canvas.visibles = [];
-    if (offmenucnv.width != rect.width)
-    {
-        offmenucnv.width = rect.width;
-        offmenucnv.height = rect.height;
-        offmenuctx.canvas.sliceobj = context.canvas.sliceobj;
-        offmenuctx.canvas.scrollobj = context.canvas.scrollobj;
-    }
-
     var ctx = context;
     var isvisiblecount = 0;
     context.canvas.centered = 0;
@@ -3850,21 +3832,21 @@ menuobj.draw = function()
 
 var eventlst =
 [
-    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "DEFAULT", swipe: "MENU", button: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 0, width: 640},
-    {speed: 40, reduce: 10, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
-    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "DEFAULT", swipe: "MENU", button: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 0, width: 640},
+    {speed: 60, reduce: 10, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
     {speed: 40, reduce: 40, updownmax: 60, mouse: "BOSS", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "DEFAULT", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new panel.empty(), scroll: new panel.empty(), buttonheight: 30, width: 640},
-    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 150, width: 640},
-    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
-    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 120, width: 640},
+    {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 150, width: 640},
+    {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 120, width: 640},
     {speed: 50, reduce: 10, updownmax: 60, mouse: "GALLERY", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "DEFAULT", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new panel.gallerybar(), scroll: new panel.empty(), buttonheight: 320, width: iOS()?720:5160},
-    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
-    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
-    {speed: 40, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
+    {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
 ];
 
 var contextobj = new circular_array("CTX", contextlst);
@@ -5201,7 +5183,8 @@ galleryobj.init = function (obj)
 
     slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:SLICEWIDTH);
 
-    headcnvctx.show(0,0,window.innerWidth,BEXTENT);
+    var h = galleryobj.showheader?BEXTENT:0;
+    headcnvctx.show(0,0,window.innerWidth,h);
     headham.panel = headobj.value();
 
     _2cnv.sliceobj.data =
@@ -5907,18 +5890,9 @@ function selectfolder()
 
 menuobj.leftright = function (context, type)
 {
-    context.canvas.slideshow = 0;
-    clearInterval(global.swipetimeout)
-    var j = context.canvas.centered;
-    var index = j%IMAGELSTSIZE;
-    var w = thumbfittedlst[index].width;
-    var h = thumbfittedlst[index].height;
-    if (w != window.innerWidth)
-        context.canvas.startleftright = (window.innerWidth/w)*6;
-    else
-        context.canvas.startleftright = (window.innerHeight/h)*6;
+    clearInterval(global.swipetimeout);
+    global.swipetimeout = 0;
 
-    var e = context.canvas.startleftright/150;
     if (type != context.canvas.leftrighttype)
     {
         clearInterval(context.canvas.leftrightime);
@@ -5926,10 +5900,20 @@ menuobj.leftright = function (context, type)
         context.canvas.leftrighttype = type;
     }
 
-    clearInterval(context.canvas.leftrightime)
+    if (context.canvas.leftrightime)
+        return;
+    var j = context.canvas.centered;
+    var index = j%IMAGELSTSIZE;
+    var w = thumbfittedlst[index].width;
+    var h = thumbfittedlst[index].height;
+    if (w != window.innerWidth)
+        context.canvas.startleftright = (window.innerWidth/w)*10;
+    else
+        context.canvas.startleftright = (window.innerHeight/h)*10;
+    var e = context.canvas.startleftright/100;
+    var obj = context.canvas.scrollobj.value();
     context.canvas.leftrightime = setInterval(function()
     {
-        var obj = context.canvas.scrollobj.value();
         obj.add(type == -1 ? context.canvas.startleftright :
             -context.canvas.startleftright);
         context.canvas.startleftright -= e;
@@ -5937,9 +5921,11 @@ menuobj.leftright = function (context, type)
         {
             clearInterval(context.canvas.leftrightime);
             context.canvas.leftrightime = 0;
+            return;
         }
+
         menuobj.draw();
-    }, 4);
+    }, TIMEMAIN);
 }
 
 bossobj.leftright = function(type)
