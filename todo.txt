@@ -1,1 +1,30 @@
-
++ goto dialog - show page number range
++ ipfs dialog - load ipfs directly
++ Batman Knightfall 
+         Page 02.jpg
+ + Text on Bottom has background
++  Shift Enter goes up
++ More agressiive zooming
++ ? shows left right scroll bars and image height and width.
++ Full screen does not hide UI.  
++ Click screen hides UI.
++ Ctrl+0  set width
++ header buttons (width) (full) (height) 
++ iframe example
++ press toggles UI mode
++ click toggles boss in non UI mode
++ Boss panning encompasses the entire window
++ Smaller movement with up down arrows
++ Comics and magazines should pan slower than images
++ backsapce the same as space but up, space down
++ Goto Menu option
++ ipfs menu option
++ Fit window menu option
++ &m=New York/Page 1.jpg
++ Share menu option that adds &m=
++ 1931 Yankees broken
++ Montage needs backbround and 100 total images
++ Ultrawide reduce to 320 height for gallery
++ boss wheel, keyboard and pan move the thumbnail
++ menu swipes in wrong direction
++ If search fails, or no items, show search box
