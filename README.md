@@ -1,37 +1,31 @@
-IPFS-View Help File
-Welcome to the IPFS-View Help File! This guide will provide you with all the information you 
-need to navigate and use IPFS-View efficiently. Whether you're using a keyboard, mouse, 
-or touch input on your desktop or mobile device, we've got you covered.
-
 Table of Contents
-Getting Started
-Accessing the Web Application
-Navigating Images
-Keyboard Support
-Mouse Support
-Touch Support
-Zooming and Panning
-Keyboard Support
-Mouse Support
-Touch Support
-Loading Images and Zip Files
-Loading IPFS Image Hierarchy
-Loading Remote Zip Files
-Drag and Drop from File Explorer
-Image Information
-Advanced Features
-Accessing Image Information
-Advanced Options
-Contact Support
 1. Getting Started
-Accessing the Web Application
-To start using IPFS-View, follow these steps:
+   + Accessing the Web Application
+2. Navigating Images
+   + Keyboard Support
+   + Mouse Support
+   + Touch Support
+3. Zooming and Panning
+   + Keyboard Support
+   + Mouse Support
+   + Touch Support
+4. Loading Images and Zip Files
+   + Loading IPFS Image Hierarchy
+   + Loading Remote Zip Files
+   + Drag and Drop from File Explorer
+5. Image Information
+6. Advanced Features
+   + Accessing Image Information
+   + Advanced Options
+7. Contact Support
 
-Open your web browser.
+1. Getting Started
+   + Accessing the Web Application
+   + To start using IPFS-View, follow these steps:
 
-In the address bar, navigate to IPFS-View using the appropriate URL, which might look like: https://www.ipfs-view.com?p=your-QID-here.
-
-Press Enter, and the IPFS-View web application will load the image hierarchy associated with the provided QID.
+   1. Open your web browser.
+   1. In the address bar, navigate to IPFS-View using the appropriate URL, which might look like: https://www.ipfs-view.com?p=your-QID-here.
+   1. Press Enter, and the IPFS-View web application will load the image hierarchy associated with the provided QID.
 
 2. Navigating Images
 Keyboard Support
