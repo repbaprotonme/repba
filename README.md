@@ -58,32 +58,12 @@ Table of Contents
      + Drag: Pan the zoomed-in image.
 
 4. IPFS and Zip Files
-   - IPFS Image Hierarchy
-   + To load an IPFS image hierarchy, set the "P" parameter of the URL to the QID (Query ID) associated with the content. Follow these steps:
-
-   1. Open your web browser.
-   1. In the address bar, navigate to IPFS-View using the appropriate URL, which might look like: https://www.ipfs-view.com?p=your-QID-here.
-   1. Press Enter, and the IPFS-View web application will load the image hierarchy associated with the provided QID.
-
-   - Loading Remote Zip Files
-   + To load a remote zip file, set the "P" parameter to the publicly accessible file location. Here's how to do it:
-   + Open web browser.
-
-In the address bar, navigate to IPFS-View using the appropriate URL, which might look like: https://www.ipfs-view.com?p=https://www.example.com/path/to/your/zipfile.zip.
-
-Press Enter, and IPFS-View will fetch and load the content from the provided URL.
-
-Drag and Drop from File Explorer
-IPFS-View also supports a user-friendly drag-and-drop feature for loading images and zip files directly from your file explorer:
-
-Open your file explorer (e.g., Windows Explorer or macOS Finder) and locate the image or zip file you want to view.
-
-Simply click on the file and drag it over your web browser's IPFS-View tab or window.
-
-Drop the file onto the IPFS-View interface.
-
-IPFS-View will automatically process and load the dragged and dropped file, allowing you to view and interact with it within the application.
-
+   - To load an IPFS image hierarchy, set the "P" parameter of the URL to the QID (Query ID) associated with the content. Follow these steps:
+     + https://www.ipfs-view.com?p=https://www.example.com/path/to/your/zipfile.zip
+   - To load a remote zip file, set the "P" parameter to the publicly accessible file location.
+     + https://www.ipfs-view.com?p=https://www.example.com/path/to/your/zipfile.zip
+   - To load a images from the desktop, use drag-and-drop and/or the file explorer:
+   
 5. Image Information
 Accessing Image Information
 To obtain image information:
