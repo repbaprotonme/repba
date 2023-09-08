@@ -19,50 +19,46 @@ Table of Contents
    + Advanced Options
 7. Contact Support
 
-1. Getting Started
-   - Accessing the Web Application
-   + To start using IPFS-View, follow these steps:
 
-   1. Open your web browser.
+1. Getting Started
+   1. Open web browser.
    1. In the address bar, navigate to IPFS-View using the appropriate URL, which might look like: https://www.ipfs-view.com?p=your-QID-here.
    1. Press Enter, and the IPFS-View web application will load the image hierarchy associated with the provided QID.
 
 2. Navigating Images
    - Keyboard Support
-   + Left Arrow: Move left.
-   + Right Arrow: Move right.
-   + Up Arrow: Move up (or use 'K').
-   + Down Arrow: Move down (or use 'Space').
-   + Enter: Next image.
-   + Home: First image.
-   + End: Last image.
-   + Esc: Exit full-screen mode.
-     
+     + Left Arrow: Move left.
+     + Right Arrow: Move right.
+     + Up Arrow: Move up (or use 'K').
+     + Down Arrow: Move down (or use 'Space').
+     + Enter: Next image.
+     + Home: First image.
+     + End: Last image.
+     + Esc: Exit full-screen mode.
    - Custom Keyboard Support
-   + H: Move left (an alternative to the Left Arrow).
-   + J: Move down (an alternative to the Down Arrow or Space).
-   + K: Move up (an alternative to the Up Arrow).
-   + L: Move right (an alternative to the Right Arrow).
-     
+     + H: Move left (an alternative to the Left Arrow).
+     + J: Move down (an alternative to the Down Arrow or Space).
+     + K: Move up (an alternative to the Up Arrow).
+     + L: Move right (an alternative to the Right Arrow)
    - Additional Actions
-   + / (Forward Slash): Toggle user interface visibility.
-   + Tab: Move left.
-
+     + / (Forward Slash): Toggle user interface visibility.
+     + Tab: Move left.
+ 
 3. Zooming and Panning
    - Keyboard Support
-   + + / -: Zoom in and out.
-   + Ctrl + 0: Reset zoom to 100%.
+     + Plus / Minus: Zoom in and out.
+     + Ctrl + 0: Reset zoom to 100%.
 
    - Mouse Support
-   + Scroll Wheel: Zoom in and out.
-   + Click and Drag: Pan the zoomed-in image.
+     + Scroll Wheel: Zoom in and out.
+     + Click and Drag: Pan the zoomed-in image.
 
    - Touch Support
-   + Pinch-Zoom: Zoom in and out.
-   + Drag: Pan the zoomed-in image.
-   + 
-4. Loading Images and Zip Files
-   - Loading IPFS Image Hierarchy
+     + Pinch-Zoom: Zoom in and out.
+     + Drag: Pan the zoomed-in image.
+
+4. IPFS and Zip Files
+   - IPFS Image Hierarchy
    + To load an IPFS image hierarchy, set the "P" parameter of the URL to the QID (Query ID) associated with the content. Follow these steps:
 
    1. Open your web browser.
@@ -71,7 +67,7 @@ Table of Contents
 
    - Loading Remote Zip Files
    + To load a remote zip file, set the "P" parameter to the publicly accessible file location. Here's how to do it:
-   + Open your web browser.
+   + Open web browser.
 
 In the address bar, navigate to IPFS-View using the appropriate URL, which might look like: https://www.ipfs-view.com?p=https://www.example.com/path/to/your/zipfile.zip.
 
