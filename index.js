@@ -3707,9 +3707,7 @@ menuobj.draw = function()
     const rect = context.rect();
     if (!rect.width || !rect.height)
         return;
-    if (!canvas.buttonheight)
-	    return;
-    if (context.canvas.slideshow > 0)
+  if (context.canvas.slideshow > 0)
     {
         var k = canvas.autodirect;
         context.canvas.timeobj.rotate(k*context.canvas.slideshow);
@@ -3726,9 +3724,9 @@ menuobj.draw = function()
     var delayinterval = TIMEOBJ / len / 1000;
     context.canvas.virtualheight = len*canvas.buttonheight;
     context.clear();
-    if (context == _8cnvctx)
+    if (!canvas.buttonheight)
     {
-        canvas.buttonheight = buttonobj.value();
+        canvas.buttonheight = 1024;//todo buttonobj.value();
         context.canvas.virtualheight = len*canvas.buttonheight*0.635;
     }
     else
