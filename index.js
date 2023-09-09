@@ -2762,9 +2762,7 @@ var keylst =
 
 CanvasRenderingContext2D.prototype.hithumb = function(x,y)
 {
-    if (typeof x !== "undefined")
-    {
-        var rect = this.canvas.thumbrect;
+        var rect = this.canvas.thumbrect;//TODO: use window if not thumbrect
         var c = (x-rect.x) % rect.width;
         var b = c/rect.width;
         var e = this.canvas.sliceobj.length();
@@ -2774,14 +2772,10 @@ CanvasRenderingContext2D.prototype.hithumb = function(x,y)
         var k = time % TIMEOBJ;
         var e = this.canvas.timeobj.length()*(k/TIMEOBJ);
         this.canvas.timeobj.set(e);
-    }
 
-    if (typeof y !== "undefined")
-    {
         var b = (y-rect.y)/rect.height;
         var e = b*rowobj.length();
         rowobj.set(e);
-    }
 }
 
 var taplst =
@@ -4864,15 +4858,16 @@ var headlst =
             var rh = 26;
             var e = _5cnv.sliceobj.length() <= 1;
             var a = new panel.col(
-                 [ 30, ALIEXTENT, 0, ALIEXTENT, ALIEXTENT, 0, ALIEXTENT, 30 ],
+                 [ 30, ALIEXTENT, 0, ALIEXTENT, ALIEXTENT, ALIEXTENT, 0, ALIEXTENT, 30 ],
                  [
                     0,
-                    new panel.help(),
+                    new panel.help(),//todo: options
                     0,
+                    0,//todo: fit width
+	            0,//todo: fullscreen
+                    0,//todo: zoomin/zoomout
                     0,
-                    0,
-                    0,
-                    e?0:new panel.fitwindow(),
+                    e?0:new panel.fitwindow(),//todo: rename folder
                     0,
                  ]);
 
