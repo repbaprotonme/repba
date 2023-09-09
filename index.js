@@ -5105,7 +5105,13 @@ galleryobj.getpath = function(index)
 {
     var gallery = this.data[index];
     var id = gallery.id;
-    if (id && id.length > 1 &&
+    if (id && id.length > 8 &&
+        id.charAt(8) == '-')
+    {
+        var template = galleryobj.variant ? galleryobj.variant : "3840x3840";
+        path = `https://reportbase.com/image/${id}/${template}`;
+    }    
+    else if (id && id.length > 1 &&
         ((id.charAt(0) == 'Q' && id.charAt(1) == 'm') ||
         (id.charAt(0) == 'b')))
     {
@@ -5113,12 +5119,6 @@ galleryobj.getpath = function(index)
         path = `https://cloudflare-ipfs.com/ipfs/${id}`;
        // path = `https://ipfs.filebase.io/ipfs/${id}`;
         //path = `https://${url.path}.ipfs.dweb.link/`;
-    }
-    else if (id && id.length > 8 &&
-        id.charAt(8) == '-')
-    {
-        var template = galleryobj.variant ? galleryobj.variant : "3840x3840";
-        path = `https://reportbase.com/image/${id}/${template}`;
     }
     else if (galleryobj.raw)
     {
