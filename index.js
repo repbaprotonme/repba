@@ -3707,7 +3707,8 @@ menuobj.draw = function()
     const rect = context.rect();
     if (!rect.width || !rect.height)
         return;
-
+    if (!canvas.buttonheight)
+	    return;
     if (context.canvas.slideshow > 0)
     {
         var k = canvas.autodirect;
@@ -5492,7 +5493,7 @@ galleryobj.init = function (obj)
     {
         var image = new Image();
         var current = galleryobj.lerp(1-_8cnv.timeobj.berp());
-        image.src = imagepath(galleryobj.data[current]);
+        image.src = imagepath(galleryobj.data[current]);//todo use fetch/
         image.onload = function()
         {
             galleryobj.width = this.width;
@@ -5507,7 +5508,7 @@ galleryobj.init = function (obj)
         }
     }
 
-    buttonobj.reset()
+    buttonobj.reset()//todo: fetch image with await
     contextobj.reset();
     if (galleryobj.length())
     {
