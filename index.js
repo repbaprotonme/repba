@@ -5947,11 +5947,11 @@ buttonobj.reset = function()
     var w = galleryobj.data[0].width?galleryobj.data[0].width:ww;
     var h = galleryobj.data[0].height?galleryobj.data[0].height:hh;
     var a = w/h;
-    var gheight = galleryobj.minheight?
+    var gheight = Math.floor(galleryobj.minheight?
         h*galleryobj.minheight:
-        window.innerWidth/a;
-    var bheight = Math.min(6400,
-        h*(galleryobj.maxheight?galleryobj.maxheight:1.5));
+        window.innerWidth/a);
+    var bheight = Math.floor(Math.min(6400,
+        h*(galleryobj.maxheight?galleryobj.maxheight:1.5)));
     buttonobj.data = [];
     for (var n = gheight; n < bheight; ++n)
         buttonobj.data.push(n);
