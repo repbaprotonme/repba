@@ -2429,14 +2429,15 @@ var swipelst =
     swipeupdown: function (context, rect, x, y, evt)
     {
         menuobj.updown(context, evt.type == "swipeup" ? -1 : 1);
-        if (!global.swipetimeout)
-        {
+        if (global.swipetimeout)
+		return;
+        
             global.swipetimeout = setInterval(function ()
             {
                 context.canvas.lastime = -0.0000000000101010101;
                 menuobj.draw();
             }, TIMEMAIN);
-        }
+        
    },
 },
 {
@@ -2446,7 +2447,7 @@ var swipelst =
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
-        menuobj.updown(context, evt.type=="swipeup"?-1:1);
+        menuobj.updown(context, evt.type=="swipeup"?1:-1);//TEST
     },
 },
 ];
