@@ -3996,6 +3996,7 @@ contextobj.reset = function ()
 
             for (var m = 0; m < rotated.length; ++m)
             {
+		continue;//todo
                 var n = rotated[m];
                 if (galleryobj.data[n].loaded)
                     continue;
