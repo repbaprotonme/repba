@@ -5484,7 +5484,7 @@ galleryobj.init = function (obj)
         _8cnv.timeobj.set(k);
     }
 
-    if (galleryobj.width)
+    if (0)//todo galleryobj.width)
     {
         buttonobj.reset();
     }
