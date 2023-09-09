@@ -1781,7 +1781,7 @@ userobj.save = function()
 {
     if (url.protocol == "https:")
     {
-        authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+        authClient = PropelAuth.createClient({authUrl: "https://auth.ipfs-view.com", enableBackgroundTokenRefresh: true})
         authClient.getAuthenticationInfoOrNull(false)
         .then(function(client)
         {
@@ -5060,7 +5060,7 @@ var galleryobj = new circular_array("", 0);
 galleryobj.getrawpath = function()
 {
     var id = galleryobj.value().id;
-    var path = `https://reportbase.com/image/${id}/blob`;
+    var path = `https://ipfs-view.pages.dev/image/${id}/blob`;
     if (galleryobj.value().full)
         path = galleryobj.value().full;
     else if (!id && galleryobj.value().url)
@@ -5071,7 +5071,12 @@ galleryobj.getrawpath = function()
 function imagepath(user)
 {
     var src;
-    if (user.id && user.id.length > 1 &&
+    if (user.id && user.id.length > 8 &&
+        user.id.charAt(8) == '-')
+    {
+        src = `https://ipfs-view.pages.dev/image/${user.id}/1080x1080`;
+    }    
+    else if (user.id && user.id.length > 1 &&
         ((user.id.charAt(0) == 'Q' && user.id.charAt(1) == 'm') ||
         (user.id.charAt(0) == 'b')))
     {
@@ -5079,11 +5084,6 @@ function imagepath(user)
         //thumbimg.src = `https://cloudflare-ipfs.com/ipfs/${user.id}`;
         //thumbimg.src = `https://ipfs.filebase.io/ipfs/${user.id}`;
         src = `https://cloudflare-ipfs.com/ipfs/${user.folder}/${user.name}`;
-    }
-    else if (user.id && user.id.length > 8 &&
-        user.id.charAt(8) == '-')
-    {
-        src = `https://reportbase.com/image/${user.id}/1080x1080`;
     }
     else if (user.full)
     {
@@ -5109,7 +5109,7 @@ galleryobj.getpath = function(index)
         id.charAt(8) == '-')
     {
         var template = galleryobj.variant ? galleryobj.variant : "3840x3840";
-        path = `https://reportbase.com/image/${id}/${template}`;
+        path = `https://ipfs-view.pages.dev/image/${id}/${template}`;
     }    
     else if (id && id.length > 1 &&
         ((id.charAt(0) == 'Q' && id.charAt(1) == 'm') ||
@@ -5122,7 +5122,7 @@ galleryobj.getpath = function(index)
     }
     else if (galleryobj.raw)
     {
-        path = `https://reportbase.com/image/${id}/blob`;
+        path = `https://ipfs-view.pages.dev.com/image/${id}/blob`;
     }
     else if (gallery.full)
     {
@@ -5211,7 +5211,7 @@ galleryobj.init = function (obj)
         },
         {title:"propelauth", func: function()
             {
-                authclient = propelauth.createclient({authurl: "https://auth.reportbase.com", enablebackgroundtokenrefresh: true})
+                authclient = propelauth.createclient({authurl: "https://auth.ipfs-view.com", enablebackgroundtokenrefresh: true})
                 authclient.getauthenticationinfoornull(false)
                 .then(function(client)
                 {
@@ -5226,7 +5226,7 @@ galleryobj.init = function (obj)
         {title:"delete image", func: function()
             {
                 var id = galleryobj.value().id;
-                fetch(`https://reportbase.com/image/${id}`, { method: 'delete' })
+                fetch(`https://ipfs-view.pages.dev.com/image/${id}`, { method: 'delete' })
                 .then(res =>
                     {
                         location.reload();
@@ -5341,7 +5341,7 @@ galleryobj.init = function (obj)
             }
         },
         {
-            title: "ipfs-view\nPanoramic Image Viewer\nhttps://ipfs-view\nimages@ipfs-view.com",
+            title: "ipfs-view.com\nPanoramic Image Viewer\nhttps://ipfs-view.com\nimages@ipfs-view.com",
             func: function() {}
         },
         {
@@ -5349,7 +5349,7 @@ galleryobj.init = function (obj)
             func: function() {}
         },
         {
-            title: "ipfs-view is a digital image viewer. Images are drawn to the interior of a cylinder for a wrap-around, full-screen and panoramic viewing experience.",
+            title: "ipfs-view.com is a digital image viewer. Images are drawn to the interior of a cylinder for a wrap-around, full-screen and panoramic viewing experience.",
             func: function() {}
         },
         {title:"Debug", func: function()
