@@ -309,16 +309,16 @@ panel.yoll = function ()
     		context.canvas.tap_(context, rect, x, y, shift, ctrl);
 	};
 
-    this.wheeleftright = function (context, x, y, ctrl, shift, alt, type)
+    this.wheeleftright = function (context, x, y, delta, ctrl, shift, alt, type)
     {
 		if (context.canvas.wheeleftright_)
-      		context.canvas.wheeleftright_(context, x, y, ctrl, shift, alt, type);
+      		context.canvas.wheeleftright_(context, x, y, delta, ctrl, shift, alt, type);
    	};
 
-    this.wheelupdown = function (context, x, y, ctrl, shift, alt, type)
+    this.wheelupdown = function (context, x, y, delta, ctrl, shift, alt, type)
     {
 		if (context.canvas.wheelupdown_)
-      		context.canvas.wheelupdown_(context, x, y, ctrl, shift, alt, type);
+      		context.canvas.wheelupdown_(context, x, y, delta, ctrl, shift, alt, type);
    	};
 
     this.drop = function (context, evt)
@@ -524,7 +524,7 @@ panel.gallerybar = function ()
                 new panel.row([0,bh,0],
                 [
                     0,
-                    new Layer(
+                    1?0:new Layer(
                     [
                         new panel.expand(new panel.fill(THUMBFILL),3,3),
                         new panel.expand(new panel.rectangle(canvas.speedrect),10,0),
@@ -536,7 +536,7 @@ panel.gallerybar = function ()
                 new panel.row([0,bh,0],
                 [
                     0,
-                    new Layer(
+                    1?0:new Layer(
                     [
                         new panel.expand(new panel.fill(THUMBFILL),3,3),
                         new panel.expand(new panel.rectangle(canvas.reducerect),10,0),
@@ -1415,27 +1415,10 @@ var makehammer = function (context, v, t)
         var y = evt.offsetY;
         evt.preventDefault();
 
-        if (evt.deltaY < 0)
-        {
-            if (typeof (ham.panel.wheelupdown) == "function")
-                ham.panel.wheelupdown(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey, "wheelup");
-        }
-        else
-        {
-            if (typeof (ham.panel.wheelupdown) == "function")
-                ham.panel.wheelupdown(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey, "wheeldown");
-        }
-
-        if (evt.deltaX < 0)//todo
-        {
-            if (typeof (ham.panel.wheeleftright) == "function")
-                ham.panel.wheeleftright(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey, "wheeleft");
-        }
-        else
-        {
-            if (typeof (ham.panel.wheeleftright) == "function")
-                ham.panel.wheeleftright(context, x, y, evt.ctrlKey, evt.shiftKey, evt.altKey, "wheelright");
-        }
+        if (typeof (ham.panel.wheeleftright) == "function")
+            ham.panel.wheeleftright(context, x, y, evt.deltaX, evt.ctrlKey, evt.shiftKey, evt.altKey, evt.deltaX<0?"wheeleft":"wheelright");
+        if (typeof (ham.panel.wheelupdown) == "function")
+            ham.panel.wheelupdown(context, x, y, evt.deltaY, evt.ctrlKey, evt.shiftKey, evt.altKey, evt.deltaY<0?"wheelup":"wheeldown");
     });
 
 	ham.on("press", function (evt)
@@ -1577,21 +1560,20 @@ var wheelst =
 [
 {
     name: "DEFAULT",
-    updown: function (context, x, y, ctrl, shift, alt, type) { },
- 	leftright: function (context, x, y, ctrl, shift, alt, type) { },
+    updown: function (context, x, y, delta, ctrl, shift, alt, type) { },
+ 	leftright: function (context, x, y, delta, ctrl, shift, alt, type) { },
 },
 {
     name: "GALLERY",
-    updown: function (context, x, y, ctrl, shift, alt, type)
+    updown: function (context, x, y, delta, ctrl, shift, alt, type)
     {
         var canvas = context.canvas;
         context.canvas.slideshow = 0;
         if (ctrl)
         {
             context.canvas.pinching = 1;
-            var k = type == "wheelup"?1:-1;
-            var j = Math.lerp(0.01,0.1,buttonobj.berp());
-            buttonobj.addperc(k*j);
+            var k = delta<0?1:-1;
+            buttonobj.addperc(k*0.04);
             context.canvas.lastime = -0.0000000000101010101;
             menuobj.draw();
             context.canvas.pinching = 0;
@@ -1599,7 +1581,7 @@ var wheelst =
         else
         {
             clearInterval(context.canvas.leftright)
-            menuobj.updown(context, type == "wheelup" ? 1 : -1);
+            menuobj.updown(context, delta)
             if (!global.swipetimeout)
             {
                 global.swipetimeout = setInterval(function ()
@@ -1610,25 +1592,25 @@ var wheelst =
             }
         }
     },
- 	leftright: function (context, x, y, ctrl, shift, alt, type)
+ 	leftright: function (context, x, y, delta, ctrl, shift, alt, type)
     {
-        menuobj.leftright(context, type == "wheelright"?-1:1);
+        menuobj.leftright(context, delta);
     },
 },
 {
     name: "MENU",
-    updown: function (context, x, y, ctrl, shift, alt, type)
+    updown: function (context, x, y, delta, ctrl, shift, alt, type)
     {
-        menuobj.updown(context, type == "wheelup" ? -1 : 1);
+        menuobj.updown(context, delta);
         context.refresh();
     },
- 	leftright: function (context, x, y, ctrl, shift, alt)
+ 	leftright: function (context, x, y, delta, ctrl, shift, alt)
     {
     },
 },
 {
     name: "BOSS",
-    updown: function (context, x, y, ctrl, shift, alt, type)
+    updown: function (context, x, y, delta, ctrl, shift, alt, type)
     {
         var canvas = context.canvas;
         if (ctrl)
@@ -1651,12 +1633,13 @@ var wheelst =
         }
         else
         {
-            bossobj.updown(type=="wheelup"?-1:1);
+            //bossobj.updown(delta);
         }
 	},
- 	leftright: function (context, x, y, ctrl, shift, alt, type)
+ 	leftright: function (context, x, y, delta, ctrl, shift, alt, type)
     {
-        bossobj.leftright(type == "wheeleft" ? -1 : 1);
+        //bossobj.leftright(delta);
+        //context.refresh();
     },
 },
 ];
@@ -1781,7 +1764,7 @@ userobj.save = function()
 {
     if (url.protocol == "https:")
     {
-        authClient = PropelAuth.createClient({authUrl: "https://auth.ipfs-view.com", enableBackgroundTokenRefresh: true})
+        authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
         authClient.getAuthenticationInfoOrNull(false)
         .then(function(client)
         {
@@ -2018,15 +2001,8 @@ var panlst =
         var obj = canvas.scrollobj.value();
         if (type == "panleft" || type == "panright")
         {
-            var obj = canvas.scrollobj.value();
-            var j = canvas.startx-x;
-            var k = panhorz(obj, j);
-            if (k == -1)
-                return;
-            if (k == obj.anchor())
-                return;
-            obj.set(k);
-            context.refresh()
+            var k = type == "panleft" ? 1 : -1;
+            menuobj.leftright(context, k*context.canvas.speedobj.value()/5);
         }
         else if (type == "panup" || type == "pandown")
         {
@@ -2035,7 +2011,7 @@ var panlst =
                 var k = (y-canvas.speedrect.y)/canvas.speedrect.height;
                 canvas.speedobj.setperc(k);
                 context.canvas.lastime = -0.0000000000101010101;
-                menuobj.updown(context);
+                menuobj.updown(context, canvas.speedobj.value());
                 if (!global.swipetimeout)
                 {
                     global.swipetimeout = setInterval(function ()
@@ -2049,7 +2025,7 @@ var panlst =
                 var k = (y-canvas.reducerect.y)/canvas.reducerect.height;
                 canvas.reduceobj.setperc(k);
                 context.canvas.lastime = -0.0000000000101010101;
-                menuobj.updown(context);
+                menuobj.updown(context, canvas.speedobj.value());
                 if (!global.swipetimeout)
                 {
                     global.swipetimeout = setInterval(function ()
@@ -2183,11 +2159,8 @@ var panlst =
         }
         else if (type == "panleft" || type == "panright")
         {
-            var e = context.canvas.startx-x;
-            var jvalue = TIMEOBJ/context.canvas.virtualwidth;
-            jvalue *= e;
-            context.canvas.timeobj.rotateanchored(jvalue);
-            context.refresh()
+            //var k = type == "panleft"?-1:1;
+            //bossobj.leftright(k*context.canvas.speedobj.value());
         }
         else if (type == "panup" || type == "pandown")
         {
@@ -2203,7 +2176,7 @@ var panlst =
                 else
                 {
                     context.canvas.speedobj.setperc(k);
-                    bossobj.leftright(-1);
+                    bossobj.leftright(-1*context.canvas.speedobj.value());
                 }
             }
             else if (context.isstretchrect)
@@ -2218,20 +2191,8 @@ var panlst =
                 else
                 {
                     context.canvas.reduceobj.setperc(k);
-                    bossobj.leftright(-1);
+                    bossobj.leftright(-1*context.canvas.speedobj.value());
                 }
-            }
-            else if (Number(zoom.value()))
-            {
-                var h = (rect.height*(1-zoom.value()/100))*2;
-                y = (y/rect.height)*h;
-                var k = panvert(rowobj, h-y);
-                if (k == -1)
-                    return;
-                if (k == rowobj.anchor())
-                    return;
-                rowobj.set(k);
-                bossobj.reset();
             }
         }
     },
@@ -2248,8 +2209,6 @@ var panlst =
         movingx = new MovingAverage();
         movingy = new MovingAverage();
         headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-        context.isheightrect = context.heightrect && context.heightrect.hitest(x,y);
-        context.iszoomrect = context.zoomrect && context.zoomrect.hitest(x,y);
         context.isstretchrect = context.stretchrect && context.stretchrect.hitest(x,y);
         context.islicewidthrect = context.slicewidthrect && context.slicewidthrect.hitest(x,y);
         contextobj.reset();
@@ -2258,6 +2217,7 @@ var panlst =
 	{
         var canvas = context.canvas;
         clearTimeout(context.timepan)
+        canvas.slidestop = 0;
         canvas.isthumb = 0;
         delete stretchobj.value().offset;
         delete zoomobj.value().offset;
@@ -2412,32 +2372,39 @@ var swipelst =
     name: "BOSS",
     swipeleftright: function (context, rect, x, y, evt)
     {
-        bossobj.leftright(evt.type == "swipeleft"?-1:1);
+        setTimeout(function()
+        {
+            //var k = evt.type == "swipeleft"?-1:1;
+            //bossobj.leftright(k*context.canvas.speedobj.value());
+            //context.refresh();
+        }, TIMEMAIN);
      },
 
     swipeupdown: function (context, rect, x, y, evt)
     {
-        bossobj.updown(evt.type == "swipeup"?-1:1);
+        //var k = evt.type == "swipeup"?-1:1;
+        //bossobj.updown(k*context.canvas.speedobj.value());
     },
 },
 {
     name: "GALLERY",
     swipeleftright: function (context, rect, x, y, evt)
     {
-        menuobj.leftright (context, evt.type == "swipeleft"?-1:1)
+        var k = evt.type == "swipeleft"?1:-1;
+        menuobj.leftright (context, k*context.canvas.speedobj.value());
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
-        menuobj.updown(context, evt.type == "swipeup" ? -1 : 1);
-        if (global.swipetimeout)
-		return;
-        
+        var k = evt.type == "swipeup"?1:-1;
+        menuobj.updown(context,  k*context.canvas.speedobj.value());
+        if (!global.swipetimeout)
+        {
             global.swipetimeout = setInterval(function ()
             {
                 context.canvas.lastime = -0.0000000000101010101;
                 menuobj.draw();
             }, TIMEMAIN);
-        
+        }
    },
 },
 {
@@ -2447,7 +2414,8 @@ var swipelst =
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
-        menuobj.updown(context, evt.type=="swipeup"?1:-1);//TEST
+        var k = evt.type == "swipeup"?-1:1;
+        menuobj.updown(context, k*context.canvas.speedobj.value());
     },
 },
 ];
@@ -2497,7 +2465,7 @@ var keylst =
             key == "w" ||
             key == "k")
         {
-            menuobj.updown(context, 1);
+            menuobj.updown(context, -canvas.speedobj.value());
             if (!global.swipetimeout)
             {
                 global.swipetimeout = setInterval(function ()
@@ -2517,7 +2485,7 @@ var keylst =
             key == "s" ||
             key == "j")
         {
-            menuobj.updown(context, -1);
+            menuobj.updown(context, canvas.speedobj.value());
             if (!global.swipetimeout)
             {
                 global.swipetimeout = setInterval(function ()
@@ -2556,7 +2524,7 @@ var keylst =
             key == "a" ||
             key == "h")
 		{
-            menuobj.leftright (context, 1)
+            menuobj.leftright (context, -canvas.speedobj.value()/3)
         }
         else if (
             (!canvas.shiftKey && key == "tab") ||
@@ -2564,7 +2532,7 @@ var keylst =
             key == "d" ||
             key == "l")
 		{
-            menuobj.leftright (context, -1)
+            menuobj.leftright (context, canvas.speedobj.value()/3)
         }
         else if (key == "f")
         {
@@ -2605,7 +2573,7 @@ var keylst =
             evt.key == "w" ||
             evt.key == "j")
 		{
-            menuobj.updown(context, 1);
+            menuobj.updown(context, canvas.speedobj.value());
             context.refresh();
         }
         else if (
@@ -2616,7 +2584,7 @@ var keylst =
             evt.key == "s" ||
             evt.key == "k")
 		{
-            menuobj.updown(context, -1);
+            menuobj.updown(context, -canvas.speedobj.value());
             context.refresh();
         }
         else if (key == "f")
@@ -2701,7 +2669,8 @@ var keylst =
             key == "a" ||
             key == "h")
         {
-            bossobj.leftright(1);
+            //bossobj.leftright(context.canvas.speedobj.value());
+            //context.refresh();
         }
         else if (
             key == "tab" ||
@@ -2709,7 +2678,8 @@ var keylst =
             key == "d" ||
             key == "l")
         {
-            bossobj.leftright(-1);
+            //bossobj.leftright(-context.canvas.speedobj.value());
+            //context.refresh();
         }
         else if (key == "/" || key == "\\")
         {
@@ -2723,13 +2693,13 @@ var keylst =
             key == "w" ||
             key == "k")
         {
-            bossobj.updown(-1);
+            //bossobj.updown(-context.canvas.speedobj.value());
         }
         else if (key == "arrowdown" ||
             key == "s" ||
             key == "j" )
         {
-            bossobj.updown(1);
+            //bossobj.updown(context.canvas.speedobj.value());
         }
         else if (key == "g")
         {
@@ -2762,7 +2732,9 @@ var keylst =
 
 CanvasRenderingContext2D.prototype.hithumb = function(x,y)
 {
-        var rect = this.canvas.thumbrect;//TODO: use window if not thumbrect
+    if (typeof x !== "undefined")
+    {
+        var rect = this.canvas.thumbrect;
         var c = (x-rect.x) % rect.width;
         var b = c/rect.width;
         var e = this.canvas.sliceobj.length();
@@ -2772,10 +2744,14 @@ CanvasRenderingContext2D.prototype.hithumb = function(x,y)
         var k = time % TIMEOBJ;
         var e = this.canvas.timeobj.length()*(k/TIMEOBJ);
         this.canvas.timeobj.set(e);
+    }
 
+    if (typeof y !== "undefined")
+    {
         var b = (y-rect.y)/rect.height;
         var e = b*rowobj.length();
         rowobj.set(e);
+    }
 }
 
 var taplst =
@@ -2817,7 +2793,7 @@ var taplst =
             else
             {
                 context.canvas.speedobj.setperc(k);
-                bossobj.leftright(-1);
+                bossobj.leftright(-1*context.canvas.speedobj.value());
             }
         }
         else if (context.stretchrect &&
@@ -2833,7 +2809,7 @@ var taplst =
             else
             {
                 context.canvas.reduceobj.setperc(k);
-                bossobj.leftright(-1);
+                bossobj.leftright(-1*context.canvas.speedobj.value());
             }
         }
     else if (galleryobj.repos && context.extentrect && context.extentrect.hitest(x,y))
@@ -2876,7 +2852,7 @@ var taplst =
             var k = (y-canvas.speedrect.y)/canvas.speedrect.height;
             canvas.speedobj.setperc(k);
             context.canvas.lastime = -0.0000000000101010101;
-            menuobj.updown(context);
+            menuobj.updown(context,canvas.speedobj.value());
             context.refresh()
         }
         else if (canvas.reducerect && canvas.reducerect.hitest(x,y))
@@ -2884,7 +2860,7 @@ var taplst =
             var k = (y-canvas.reducerect.y)/canvas.reducerect.height;
             canvas.reduceobj.setperc(k);
             context.canvas.lastime = -0.0000000000101010101;
-            menuobj.updown(context);
+            menuobj.updown(context,canvas.speedobj.value());
             context.refresh()
         }
         else if (menuobj.value() && menuobj.value() != _8cnvctx)
@@ -3037,7 +3013,7 @@ var bosslst =
                 new panel.row([0,bh,0],
                 [
                     0,
-                    new Layer(
+                    1?0:new Layer(
                     [
                         new panel.expand(new panel.fill(THUMBFILL),3,3),
                         new panel.expand(new panel.rectangle(context.slicewidthrect),10,1),
@@ -3049,7 +3025,7 @@ var bosslst =
                 new panel.row([0,bh,0],
                 [
                     0,
-                    new Layer(
+                    1?0:new Layer(
                     [
                         new panel.expand(new panel.fill(THUMBFILL),3,3),
                         new panel.expand(new panel.rectangle(context.stretchrect),10,0),
@@ -3226,6 +3202,7 @@ bossobj.draw = function(skip=1)
         {
             clearInterval(global.swipetimeout);
             global.swipetimeout = 0;
+            canvas.lastdelta = -1;
         }
     }
 
@@ -3311,21 +3288,21 @@ bossobj.draw = function(skip=1)
     }
 }
 
-bossobj.updown = function(type)
+bossobj.updown = function(delta)
 {
+    /*
     var context = _4cnvctx;
     var canvas = _4cnv;
-    context.canvas.startupdown =
-        canvas.selectrect[0].height/
-        canvas.thumbcanvas.height/100;
-    if (context.canvas.updowntype == type)
+    context.canvas.startupdown = 0.05;
+    var j = delta<0?-1:1;
+    if (context.canvas.updowntype == j)
         return;
-    context.canvas.updowntype = type;
+    context.canvas.updowntype = j;
     clearInterval(context.canvas.updown);
     context.canvas.updown = setInterval(function()
     {
         rowobj.addperc(
-            type == -1?
+            j == -1?
             context.canvas.startupdown:
             -context.canvas.startupdown);
         context.canvas.startupdown -= 0.000025;
@@ -3338,6 +3315,7 @@ bossobj.updown = function(type)
 
         contextobj.reset();
     }, TIMESECOND);
+    */
 }
 
 bossobj.reset = function()
@@ -3707,7 +3685,8 @@ menuobj.draw = function()
     const rect = context.rect();
     if (!rect.width || !rect.height)
         return;
-  if (context.canvas.slideshow > 0)
+
+    if (context.canvas.slideshow > 0)
     {
         var k = canvas.autodirect;
         context.canvas.timeobj.rotate(k*context.canvas.slideshow);
@@ -3826,14 +3805,14 @@ menuobj.draw = function()
 
 var eventlst =
 [
-    {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "DEFAULT", swipe: "MENU", button: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
+    {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "DEFAULT", swipe: "MENU", button: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 0, width: 640},
     {speed: 60, reduce: 10, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
     {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
     {speed: 40, reduce: 40, updownmax: 60, mouse: "BOSS", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "DEFAULT", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new panel.empty(), scroll: new panel.empty(), buttonheight: 30, width: 640},
     {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 150, width: 640},
     {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
     {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 120, width: 640},
-    {speed: 50, reduce: 10, updownmax: 60, mouse: "GALLERY", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "DEFAULT", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new panel.gallerybar(), scroll: new panel.empty(), buttonheight: 0, width: iOS()?720:5160},
+    {speed: 50, reduce: 10, updownmax: 60, mouse: "GALLERY", thumb: "DEFAULT", tap: "GALLERY", pan: "GALLERY", swipe: "GALLERY", button: "GALLERY", wheel: "GALLERY", drop: "DEFAULT", key: "GALLERY", press: "GALLERY", pinch: "GALLERY", bar: new panel.gallerybar(), scroll: new panel.empty(), buttonheight: 320, width: iOS()?720:5160},
     {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
     {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "MENU", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 50, width: 640},
     {speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty("Image Browser"), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
@@ -3864,7 +3843,7 @@ contextlst.forEach(function(context, n)
     canvas.imagescrollobj = new circular_array("IMAGESCROLL", window.innerWidth);
     canvas.imagescrollobj.set(0.5*canvas.imagescrollobj.length());
     canvas.textscrollobj = new circular_array("TEXTSCROLL", window.innerHeight/2);
-    canvas.speedobj = new circular_array("SPEED", 100);
+    canvas.speedobj = new circular_array("SPEED", 120);
     canvas.speedobj.set(obj.speed);
     canvas.reduceobj = new circular_array("REDUCE", 100);
     canvas.reduceobj.set(obj.reduce);
@@ -3984,7 +3963,7 @@ contextobj.reset = function ()
             contextobj.reset()
 
             if (galleryobj.autopan)
-                bossobj.leftright(-1);
+                bossobj.leftright(-1*context.canvas.speedobj.value());
 
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnvctx.refresh();
@@ -3995,7 +3974,6 @@ contextobj.reset = function ()
 
             for (var m = 0; m < rotated.length; ++m)
             {
-		continue;//todo
                 var n = rotated[m];
                 if (galleryobj.data[n].loaded)
                     continue;
@@ -4581,10 +4559,10 @@ var headlst =
       		k.canvas.wheeleftright_(k, x, y, ctrl, shift, alt, type);
         };
 
-        this.wheelupdown = function (context, x, y, ctrl, shift, alt, type)
+        this.wheelupdown = function (context, x, y, delta, ctrl, shift, alt, type)
         {
             var k = menuobj.value()?menuobj.value():_4cnvctx;
-      		k.canvas.wheelupdown_(k, x, y, ctrl, shift, alt, type);
+      		k.canvas.wheelupdown_(k, x, y, delta, ctrl, shift, alt, type);
         };
 
         this.swipeleftright = function (context, rect, x, y, type)
@@ -4732,10 +4710,10 @@ var headlst =
       		k.canvas.wheeleftright_(k, x, y, ctrl, shift, alt, type);
         };
 
-        this.wheelupdown = function (context, x, y, ctrl, shift, alt, type)
+        this.wheelupdown = function (context, x, y, delta, ctrl, shift, alt, type)
         {
             var k = menuobj.value()?menuobj.value():_8cnvctx;
-      		k.canvas.wheelupdown_(k, x, y, ctrl, shift, alt, type);
+      		k.canvas.wheelupdown_(k, x, y, delta, ctrl, shift, alt, type);
         };
 
         this.swipeleftright = function (context, rect, x, y, type)
@@ -4858,16 +4836,15 @@ var headlst =
             var rh = 26;
             var e = _5cnv.sliceobj.length() <= 1;
             var a = new panel.col(
-                 [ 30, ALIEXTENT, 0, ALIEXTENT, ALIEXTENT, ALIEXTENT, 0, ALIEXTENT, 30 ],
+                 [ 30, ALIEXTENT, 0, ALIEXTENT, ALIEXTENT, 0, ALIEXTENT, 30 ],
                  [
                     0,
-                    new panel.help(),//todo: options
+                    new panel.help(),
                     0,
-                    0,//todo: fit width
-	            0,//todo: fullscreen
-                    0,//todo: zoomin/zoomout
                     0,
-                    e?0:new panel.fitwindow(),//todo: rename folder
+                    0,
+                    0,
+                    e?0:new panel.fitwindow(),
                     0,
                  ]);
 
@@ -5060,7 +5037,7 @@ var galleryobj = new circular_array("", 0);
 galleryobj.getrawpath = function()
 {
     var id = galleryobj.value().id;
-    var path = `https://image.reportbase5836.workers.dev/image/${id}/blob`;
+    var path = `https://reportbase.com/image/${id}/blob`;
     if (galleryobj.value().full)
         path = galleryobj.value().full;
     else if (!id && galleryobj.value().url)
@@ -5074,9 +5051,9 @@ function imagepath(user)
     if (user.id && user.id.length > 8 &&
         user.id.charAt(8) == '-')
     {
-        src = `https://image.reportbase5836.workers.dev/image/${user.id}/1080x1080`;
-    }    
-    else if (user.id && user.id.length > 1 &&
+        src = `https://reportbase.com/image/${user.id}/1080x1080`;
+    }
+else if (user.id && user.id.length > 1 &&
         ((user.id.charAt(0) == 'Q' && user.id.charAt(1) == 'm') ||
         (user.id.charAt(0) == 'b')))
     {
@@ -5085,6 +5062,7 @@ function imagepath(user)
         //thumbimg.src = `https://ipfs.filebase.io/ipfs/${user.id}`;
         src = `https://cloudflare-ipfs.com/ipfs/${user.folder}/${user.name}`;
     }
+
     else if (user.full)
     {
         src = user.full;
@@ -5109,8 +5087,8 @@ galleryobj.getpath = function(index)
         id.charAt(8) == '-')
     {
         var template = galleryobj.variant ? galleryobj.variant : "3840x3840";
-        path = `https://image.reportbase5836.workers.dev/image/${id}/${template}`;
-    }    
+        path = `https://reportbase.com/image/${id}/${template}`;
+    }
     else if (id && id.length > 1 &&
         ((id.charAt(0) == 'Q' && id.charAt(1) == 'm') ||
         (id.charAt(0) == 'b')))
@@ -5120,9 +5098,10 @@ galleryobj.getpath = function(index)
        // path = `https://ipfs.filebase.io/ipfs/${id}`;
         //path = `https://${url.path}.ipfs.dweb.link/`;
     }
+    
     else if (galleryobj.raw)
     {
-        path = `https://ipfs-view.pages.dev.com/image/${id}/blob`;
+        path = `https://reportbase.com/image/${id}/blob`;
     }
     else if (gallery.full)
     {
@@ -5179,7 +5158,7 @@ galleryobj.init = function (obj)
 
     slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:SLICEWIDTH);
 
-    var h = galleryobj.showheader?BEXTENT:0;
+    var h = galleryobj.hideheader?0:BEXTENT;
     headcnvctx.show(0,0,window.innerWidth,h);
     headham.panel = headobj.value();
 
@@ -5211,7 +5190,7 @@ galleryobj.init = function (obj)
         },
         {title:"propelauth", func: function()
             {
-                authclient = propelauth.createclient({authurl: "https://auth.ipfs-view.com", enablebackgroundtokenrefresh: true})
+                authclient = propelauth.createclient({authurl: "https://auth.reportbase.com", enablebackgroundtokenrefresh: true})
                 authclient.getauthenticationinfoornull(false)
                 .then(function(client)
                 {
@@ -5226,7 +5205,7 @@ galleryobj.init = function (obj)
         {title:"delete image", func: function()
             {
                 var id = galleryobj.value().id;
-                fetch(`https://ipfs-view.pages.dev.com/image/${id}`, { method: 'delete' })
+                fetch(`https://reportbase.com/image/${id}`, { method: 'delete' })
                 .then(res =>
                     {
                         location.reload();
@@ -5341,15 +5320,15 @@ galleryobj.init = function (obj)
             }
         },
         {
-            title: "ipfs-view.com\nPanoramic Image Viewer\nhttps://ipfs-view.com\nimages@ipfs-view.com",
+            title: "ipfs-view\nPanoramic Image Viewer\nhttps://ipfs-view\nimages@ipfs-view.com",
             func: function() {}
         },
         {
-            title: "© tom brinkman\nall rights reserved",
+            title: "Â© tom brinkman\nall rights reserved",
             func: function() {}
         },
         {
-            title: "ipfs-view.com is a digital image viewer. Images are drawn to the interior of a cylinder for a wrap-around, full-screen and panoramic viewing experience.",
+            title: "ipfs-view is a digital image viewer. Images are drawn to the interior of a cylinder for a wrap-around, full-screen and panoramic viewing experience.",
             func: function() {}
         },
         {title:"Debug", func: function()
@@ -5483,7 +5462,7 @@ galleryobj.init = function (obj)
         _8cnv.timeobj.set(k);
     }
 
-    if (0)//todo galleryobj.width)
+    if (galleryobj.width)
     {
         buttonobj.reset();
     }
@@ -5491,7 +5470,7 @@ galleryobj.init = function (obj)
     {
         var image = new Image();
         var current = galleryobj.lerp(1-_8cnv.timeobj.berp());
-        image.src = imagepath(galleryobj.data[current]);//todo use fetch/
+        image.src = imagepath(galleryobj.data[current]);
         image.onload = function()
         {
             galleryobj.width = this.width;
@@ -5506,7 +5485,7 @@ galleryobj.init = function (obj)
         }
     }
 
-    buttonobj.reset()//todo: fetch image with await
+    buttonobj.reset()
     contextobj.reset();
     if (galleryobj.length())
     {
@@ -5851,16 +5830,15 @@ function importdialog()
     });
 }
 
-menuobj.updown = function(context, type)
+menuobj.updown = function(context, delta)
 {
     var canvas = context.canvas;
-    if (type)
-        canvas.autodirect = type;
-    var f = Math.lerp(0.01,2,canvas.speedobj.berp());
+    canvas.autodirect = delta<0?1:-1;
+    var f = Math.abs(delta)/canvas.speedobj.length();
     var g = Math.lerp(0.01,2160,canvas.reduceobj.berp());
     var lst = [1.5,1.75,2.0,2.25,2.5,3.0,3.5,4.0];
     var j = util.clamp(0,lst.length-1,canvas.sliceobj.length());
-    var k = lst[j]*f;
+    var k = lst[j]*f*2;
     canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*k;
     canvas.slidereduce = canvas.slideshow/g;
 }
@@ -5884,34 +5862,33 @@ function selectfolder()
     }
 }
 
-menuobj.leftright = function (context, type)
+menuobj.leftright = function (context, delta)
 {
     clearInterval(global.swipetimeout);
     global.swipetimeout = 0;
 
-    if (type != context.canvas.leftrighttype)
+    if (delta != context.canvas.leftrighttype)
     {
         clearInterval(context.canvas.leftrightime);
         context.canvas.leftrightime = 0;
-        context.canvas.leftrighttype = type;
+        context.canvas.leftrighttype = delta;
     }
 
-    if (context.canvas.leftrightime)
-        return;
     var j = context.canvas.centered;
     var index = j%IMAGELSTSIZE;
     var w = thumbfittedlst[index].width;
     var h = thumbfittedlst[index].height;
     if (w != window.innerWidth)
-        context.canvas.startleftright = (window.innerWidth/w)*10;
+        context.canvas.startleftright = (window.innerWidth/w)*Math.abs(delta/2);
     else
-        context.canvas.startleftright = (window.innerHeight/h)*10;
+        context.canvas.startleftright = (window.innerHeight/h)*Math.abs(delta/2);
     var e = context.canvas.startleftright/100;
     var obj = context.canvas.scrollobj.value();
+    clearInterval(context.canvas.leftrightime);
     context.canvas.leftrightime = setInterval(function()
     {
-        obj.add(type == -1 ? context.canvas.startleftright :
-            -context.canvas.startleftright);
+        obj.add(delta < 0 ? -context.canvas.startleftright :
+            context.canvas.startleftright);
         context.canvas.startleftright -= e;
         if (context.canvas.startleftright < 0)
         {
@@ -5924,20 +5901,16 @@ menuobj.leftright = function (context, type)
     }, TIMEMAIN);
 }
 
-bossobj.leftright = function(type)
+bossobj.leftright = function(delta)
 {
     var context = _4cnvctx;
     var canvas = _4cnv;
-    if (type)
-        canvas.autodirect = type;
-    canvas.panning = 1;
-    var slidestop = Math.lerp(0.01,2,canvas.speedobj.berp());
-    var slidereduce = Math.lerp(1,1080*3,canvas.reduceobj.berp());
-    canvas.slidestop += slidestop;
-    canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*canvas.slidestop;
+    canvas.lastdelta = delta;
+    canvas.autodirect = delta<0?-1:1;
+    var slidestop = Math.abs(delta)/10;
+    var slidereduce = Math.lerp(1,240,canvas.reduceobj.berp());
+    canvas.slidestop = (window.innerWidth/context.canvas.virtualwidth)*slidestop;
     canvas.slidereduce = canvas.slidestop/slidereduce;
-    context.refresh();
-    canvas.panning = 0;
 }
 
 buttonobj.reset = function()
@@ -5957,5 +5930,4 @@ buttonobj.reset = function()
         buttonobj.data.push(n);
     buttonobj.set(0);
 }
-
 
