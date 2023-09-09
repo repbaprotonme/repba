@@ -5060,7 +5060,7 @@ var galleryobj = new circular_array("", 0);
 galleryobj.getrawpath = function()
 {
     var id = galleryobj.value().id;
-    var path = `https://ipfs-view.pages.dev/image/${id}/blob`;
+    var path = `https://image.reportbase5836.workers.dev/image/${id}/blob`;
     if (galleryobj.value().full)
         path = galleryobj.value().full;
     else if (!id && galleryobj.value().url)
@@ -5109,7 +5109,7 @@ galleryobj.getpath = function(index)
         id.charAt(8) == '-')
     {
         var template = galleryobj.variant ? galleryobj.variant : "3840x3840";
-        path = `https://ipfs-view.pages.dev/image/${id}/${template}`;
+        path = `https://image.reportbase5836.workers.dev/image/${id}/${template}`;
     }    
     else if (id && id.length > 1 &&
         ((id.charAt(0) == 'Q' && id.charAt(1) == 'm') ||
