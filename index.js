@@ -5952,7 +5952,6 @@ buttonobj.reset = function()
         window.innerWidth/a);
     var bheight = Math.floor(Math.min(6400,
         h*(galleryobj.maxheight?galleryobj.maxheight:1.5)));
-    console.assert((gheight < bheight);
     buttonobj.data = [];
     for (var n = gheight; n < bheight; ++n)
         buttonobj.data.push(n);
