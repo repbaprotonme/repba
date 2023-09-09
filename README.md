@@ -57,7 +57,7 @@ Table of Contents
      + Drag: Pan the zoomed-in image.
 
 1. IPFS and Zip Files
-   - To load an IPFS image hierarchy, set the "P" parameter of the URL to the QID (Query ID) associated with the content. Follow these steps:
+   - To load an IPFS image hierarchy, set the "P" parameter of the URL to the QID (Query ID) associated with the content. 
      + https://www.ipfs-view.com?p=your-QID-here.
    - To load a remote zip file, set the "P" parameter to the file location.
      + https://www.ipfs-view.com?p=https://www.example.com/path/to/your/zipfile.zip
