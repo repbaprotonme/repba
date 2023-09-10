@@ -5130,7 +5130,12 @@ function imagepath(user)
     {
         src = `https://image.reportbase5836.workers.dev/image/${user.id}/1080x1080`;
     }
-else if (user.id && user.id.length > 1 &&
+    else if (id && id.length == 9 &&
+        id.charAt(4) == '.')
+    {
+        path = `https://image.reportbase5836.workers.dev/image/${id}/3840x3840`;
+    }
+    else if (user.id && user.id.length > 1 &&
         ((user.id.charAt(0) == 'Q' && user.id.charAt(1) == 'm') ||
         (user.id.charAt(0) == 'b')))
     {
@@ -5162,6 +5167,11 @@ galleryobj.getpath = function(index)
     var id = gallery.id;
     if (id && id.length > 8 &&
         id.charAt(8) == '-')
+    {
+        path = `https://image.reportbase5836.workers.dev/image/${id}/3840x3840`;
+    }
+    else if (id && id.length == 9 &&
+        id.charAt(4) == '.')
     {
         path = `https://image.reportbase5836.workers.dev/image/${id}/3840x3840`;
     }
