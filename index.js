@@ -5549,7 +5549,7 @@ if (url.searchParams.has("p"))
 }
 else
 {
-    var path = "https://ipfs-view.pages.dev/?p=res/reci.json";
+    url.path = "https://ipfs-view.pages.dev/?p=res/reci.json";
     //var path =`https://bucket.reportbase5836.workers.dev/home.json`;
     for (var n = 0; n < searchobj.length(); ++n)
     {
@@ -5558,10 +5558,10 @@ else
         if (!e)
             continue;
         var search = e.toLowerCase();
-        path = `https://${j}.reportbase5836.workers.dev/?search=${search}&page=1`;
+        url.path = `https://${j}.reportbase5836.workers.dev/?search=${search}&page=1`;
     }
 
-        fetch(path)
+	fetch(url.path)
         .then(response => jsonhandler(response))
         .then((obj) => galleryobj.init(obj))
         .catch((error) => { });
