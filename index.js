@@ -597,17 +597,18 @@ panel.gallerybar = function ()
         context.restore();
     }
 };
+
 panel.galleryscroll = function ()
 {
     this.draw = function (context, rect, user, time)
     {
         var canvas = context.canvas;
         context.save();
-       
+	var obj = context.canvas.scrollobj.value();       
         var a = new panel.col([0,SCROLLBARWIDTH,5],
             [
                 0,
-                new panel.row([5,0,5],
+                new panel.row([15,0,15],
                 [
                     0,
         	    new panel.currentV(new panel.shadow(new panel.fill("white")), 90, 1),
@@ -617,6 +618,20 @@ panel.galleryscroll = function ()
             ]);
 
         a.draw(context, rect, context.canvas.timeobj, 0);
+	    
+        var a = new panel.row([0,SCROLLBARWIDTH,5],
+            [
+                0,
+                new panel.col([15,0,15],
+                [
+                    0,
+        	    new panel.currentH(new panel.shadow(new panel.fill("white")), 90, 1),
+                    0,
+                ]),
+                0,
+            ]);
+
+        a.draw(context, rect, obj, 0);
         context.restore();
     }
 };
