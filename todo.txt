@@ -1,12 +1,5 @@
-* pump.json
-+ dont pan left right if zoom equals zero
-+ More agressiive zooming
 + header buttons (width) (full)
 + Boss panning encompasses the entire window
-+ Smaller movement with up down arrows
-+ Comics and magazines should pan slower than images
 + Share menu option that adds &m=
 + 1931 Yankees broken
-+ Montage needs backbround and 100 total images
-+ Ultrawide reduce to 320 height for gallery
 + If search fails, or no items, show search box
