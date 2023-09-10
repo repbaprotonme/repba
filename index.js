@@ -5561,10 +5561,10 @@ else
         path = `https://${j}.reportbase5836.workers.dev/?search=${search}&page=1`;
     }
 
-    fetch(path)
-    .then((response) => jsonhandler(response))
-    .then((json) => galleryobj.init(json))
-    .catch((error) => { });
+        fetch(path)
+        .then(response => jsonhandler(response))
+        .then((obj) => galleryobj.init(obj))
+        .catch((error) => { });
 }
 
 var localobj = {};
