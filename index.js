@@ -2501,6 +2501,14 @@ var keylst =
 
             evt.preventDefault();
         }
+	else if (key == "0")
+	{
+		if (canvas.ctrlKey)
+		{
+			buttonobj.reset()
+			menuobj.draw();
+		}
+	}
         else if (key == "g")
         {
             gotodialog();
@@ -5415,7 +5423,16 @@ galleryobj.init = function (obj)
                 {
                 }
             }},
-        {title:"Full Screen", path: "FULLSCREEN", func: function()
+	    
+        {title:"Fit Width", path: "", func: function()
+            {
+                buttonobj.reset();
+		    menuobj.draw();
+            },
+            enabled: function() { return 0; }
+        },
+	    
+	{title:"Full Screen", path: "FULLSCREEN", func: function()
             {
                 if (screenfull.isEnabled)
                 {
