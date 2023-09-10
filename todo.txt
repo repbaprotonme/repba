@@ -1,4 +1,3 @@
-* tap gallery scroll bars
 * pump.json
 + dont pan left right if zoom equals zero
 + More agressiive zooming
