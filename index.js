@@ -3972,19 +3972,22 @@ contextobj.reset = function ()
                 _8cnv.rotated,galleryobj.length(),
                 galleryobj.current()+1,9);
 
-            for (var m = 0; m < rotated.length; ++m)
-            {
-                var n = rotated[m];
-                if (galleryobj.data[n].loaded)
-                    continue;
-                var img = new Image();
-                img.src = galleryobj.getpath(n);
-                img.index = n;
-                img.onload = function()
-                {
-                    galleryobj.data[this.index].loaded = 1;
-                }
-            }
+		if (!menuobj.value())
+		{	
+	            for (var m = 0; m < rotated.length; ++m)
+	            {
+	                var n = rotated[m];
+	                if (galleryobj.data[n].loaded)
+	                    continue;
+	                var img = new Image();
+	                img.src = galleryobj.getpath(n);
+	                img.index = n;
+	                img.onload = function()
+	                {
+	                    galleryobj.data[this.index].loaded = 1;
+	                }
+	            }
+		}
         }
     }
 }
