@@ -5549,7 +5549,7 @@ if (url.searchParams.has("p"))
 }
 else
 {
-    var path = `https://ipfs-view.pages.dev/?p=res/reci.json`;
+    var path = "https://ipfs-view.pages.dev/?p=res/reci.json";
     //var path =`https://bucket.reportbase5836.workers.dev/home.json`;
     for (var n = 0; n < searchobj.length(); ++n)
     {
