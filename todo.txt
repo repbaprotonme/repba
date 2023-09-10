@@ -1,11 +1,6 @@
 * scroll bars for gallery bar
-+ Batman Knightfall 
-         Page 02.jpg
- + Text on Bottom has background
 + More agressiive zooming
 + header buttons (width) (full)
-+ press toggles UI mode
-+ click toggles boss in non UI mode
 + Boss panning encompasses the entire window
 + Smaller movement with up down arrows
 + Comics and magazines should pan slower than images
