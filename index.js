@@ -1730,13 +1730,16 @@ infobj.reset = function(index)
         var value = galleryobj.data[index];
         if (value && value.folder)
             infobj.data = value.folder.split("/");
-	    
-	infobj.data.push(value.name?value.name:value.id);
-	    
-        var k = index%IMAGELSTSIZE;
-        var img = thumbimglst[k];
-	infobj.data.push(`${img.width}x${img.height}`);
 
+	if (galleryobj.advanced)
+	{
+		infobj.data.push(value.name?value.name:value.id);
+		    
+	        var k = index%IMAGELSTSIZE;
+	        var img = thumbimglst[k];
+		infobj.data.push(`${img.width}x${img.height}`);
+	}
+	    
         var k = galleryobj.data[index];
         if (k && k.photographer)
             infobj.data.push(k.photographer);
@@ -5344,6 +5347,15 @@ galleryobj.init = function (obj)
             title: "ipfs-view is a digital image viewer. Images are drawn to the interior of a cylinder for a wrap-around, full-screen and panoramic viewing experience.",
             func: function() {}
         },
+
+        {title:"Advanced", func: function()
+            {
+                galleryobj.advanced = galleryobj.advanced?0:1;
+                contextobj.reset();
+              },
+            enabled: function() { return galleryobj.advanced; }
+        },
+	    
         {title:"Debug", func: function()
             {
                 slicewidthobj.debug = slicewidthobj.debug ? 0 : 1;
@@ -5357,6 +5369,7 @@ galleryobj.init = function (obj)
               },
             enabled: function() { return slicewidthobj.debug; }
         },
+	    
        {title:"Download", func: function()
             {
                 menuobj.hide();
