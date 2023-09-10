@@ -1679,7 +1679,7 @@ var wheelst =
         }
         else
         {
-            //bossobj.updown(delta);
+            bossobj.updown(delta);
         }
 	},
  	leftright: function (context, x, y, delta, ctrl, shift, alt, type)
@@ -2444,8 +2444,8 @@ var swipelst =
 
     swipeupdown: function (context, rect, x, y, evt)
     {
-        //var k = evt.type == "swipeup"?-1:1;
-        //bossobj.updown(k*context.canvas.speedobj.value());
+        var k = evt.type == "swipeup"?-1:1;
+        bossobj.updown(k*context.canvas.speedobj.value());
     },
 },
 {
@@ -2764,13 +2764,13 @@ var keylst =
             key == "w" ||
             key == "k")
         {
-            //bossobj.updown(-context.canvas.speedobj.value());
+            bossobj.updown(-context.canvas.speedobj.value());
         }
         else if (key == "arrowdown" ||
             key == "s" ||
             key == "j" )
         {
-            //bossobj.updown(context.canvas.speedobj.value());
+            bossobj.updown(context.canvas.speedobj.value());
         }
         else if (key == "g")
         {
@@ -3362,7 +3362,6 @@ bossobj.draw = function(skip=1)
 
 bossobj.updown = function(delta)
 {
-    /*
     var context = _4cnvctx;
     var canvas = _4cnv;
     context.canvas.startupdown = 0.05;
@@ -3387,7 +3386,6 @@ bossobj.updown = function(delta)
 
         contextobj.reset();
     }, TIMESECOND);
-    */
 }
 
 bossobj.reset = function()
