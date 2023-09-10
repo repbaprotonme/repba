@@ -2208,11 +2208,6 @@ var panlst =
                 context.refresh();
             context.canvas.lasty = y;
         }
-        else if (type == "panleft" || type == "panright")
-        {
-            //var k = type == "panleft"?-1:1;
-            //bossobj.leftright(k*context.canvas.speedobj.value());
-        }
         else if (type == "panup" || type == "pandown")
         {
             context.refresh()
@@ -2801,7 +2796,9 @@ CanvasRenderingContext2D.prototype.hithumb = function(thumb,x,y)
         var time = j*m;
         var k = time % TIMEOBJ;
         var e = this.canvas.timeobj.length()*(k/TIMEOBJ);
-        this.canvas.timeobj.set(e);
+	var x = Math.nub(positx.value(), positx.length(), w, rect.width);
+	var e = Math.nub(x-rect.x, rect.width, this.canvas.selectrect, rect.width);
+        this.canvas.timeobj.setperc(e);
     
         var b = (y-rect.y)/rect.height;
         var e = b*rowobj.length();
@@ -3079,24 +3076,24 @@ var bosslst =
                 new panel.row([0,bh,0],
                 [
                     0,
-                    1?0:new Layer(
+                    galleryobj.advanced?new Layer(
                     [
                         new panel.expand(new panel.fill(THUMBFILL),3,3),
                         new panel.expand(new panel.rectangle(context.slicewidthrect),10,1),
                         new panel.currentV(new panel.fill(NUBAR), bh/6, 0),
-                    ]),
+                    ]):0,
                     0,
                 ]),
                 0,
                 new panel.row([0,bh,0],
                 [
                     0,
-                    1?0:new Layer(
+                    galleryobj.advanced?new Layer(
                     [
                         new panel.expand(new panel.fill(THUMBFILL),3,3),
                         new panel.expand(new panel.rectangle(context.stretchrect),10,0),
                         new panel.currentV(new panel.fill(NUBAR), bh/6, 0),
-                    ]),
+                    ]):0,
                     0,
                 ]),
                 0,
