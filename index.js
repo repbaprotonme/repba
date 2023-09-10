@@ -4619,10 +4619,10 @@ var headlst =
             k.canvas.panstart_(k, rect, x, y);
         };
 
-        this.press = function (context, rect, x, y)
+        this.pressup = function (context, rect, x, y)
         {
 		var k = menuobj.value()?menuobj.value():_4cnvctx;
-		k.canvas.press_(k, rect, x, y);
+		k.canvas.pressup_(k, rect, x, y);
 	};
 
      	this.tap = function (context, rect, x, y)
@@ -4772,10 +4772,10 @@ var headlst =
             k.canvas.panstart_(k, rect, x, y);
         };
 
-        this.press = function (context, rect, x, y)
+        this.pressup = function (context, rect, x, y)
         {
  		var k = menuobj.value()?menuobj.value():_8cnvctx;
-            k.canvas.press_(k, rect, x, y);		
+            k.canvas.pressup_(k, rect, x, y);		
         };
 
      	this.tap = function (context, rect, x, y)
