@@ -2199,7 +2199,7 @@ var panlst =
         y = movingy.update(y);
         if (1)//context.canvas.isthumb)
         {
-            context.hithumb(x,y);
+            context.hithumb(context.canvas.isthumb,x,y);
             //if (!zoomobj.value().value())
             //    context.refresh();
             if (y != context.canvas.lasty)
@@ -2788,10 +2788,11 @@ var keylst =
 
 ];
 
-CanvasRenderingContext2D.prototype.hithumb = function(x,y)
+CanvasRenderingContext2D.prototype.hithumb = function(thumb,x,y)
 {
     
-        var rect = new rectangle(0,0,window.innerWidth,window.innerHeight);//this.canvas.thumbrect;
+        var rect = thumb?this.canvas.thumbrect:
+		new rectangle(0,0,window.innerWidth,window.innerHeight);
         var c = (x-rect.x) % rect.width;
         var b = c/rect.width;
         var e = this.canvas.sliceobj.length();
