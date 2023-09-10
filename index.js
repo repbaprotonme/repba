@@ -5133,7 +5133,7 @@ function imagepath(user)
     else if (id && id.length == 9 &&
         id.charAt(4) == '.')
     {
-        path = `https://image.reportbase5836.workers.dev/image/${id}/3840x3840`;
+        path = `https://image.reportbase5836.workers.dev/image/${id}/1080x1080`;
     }
     else if (user.id && user.id.length > 1 &&
         ((user.id.charAt(0) == 'Q' && user.id.charAt(1) == 'm') ||
