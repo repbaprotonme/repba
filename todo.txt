@@ -1,4 +1,5 @@
-* scroll bars for gallery bar
+* tap gallery scroll bars
++ dont pan left right if zoom equals zero
 + More agressiive zooming
 + header buttons (width) (full)
 + Boss panning encompasses the entire window
@@ -8,5 +9,4 @@
 + 1931 Yankees broken
 + Montage needs backbround and 100 total images
 + Ultrawide reduce to 320 height for gallery
-+ boss wheel, keyboard and pan move the thumbnail
 + If search fails, or no items, show search box
