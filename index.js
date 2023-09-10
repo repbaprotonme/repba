@@ -522,7 +522,7 @@ panel.gallerybar = function ()
                 new panel.row([0,bh,0],
                 [
                     0,
-                    gallerybar.advanced?new Layer(
+                    galleryobj.advanced?new Layer(
                     [
                         new panel.expand(new panel.fill(THUMBFILL),3,3),
                         new panel.expand(new panel.rectangle(canvas.speedrect),10,0),
@@ -534,7 +534,7 @@ panel.gallerybar = function ()
                 new panel.row([0,bh,0],
                 [
                     0,
-                    gallerybar.advanced?new Layer(
+                    galleryobj.advanced?new Layer(
                     [
                         new panel.expand(new panel.fill(THUMBFILL),3,3),
                         new panel.expand(new panel.rectangle(canvas.reducerect),10,0),
