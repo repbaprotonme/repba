@@ -1729,10 +1729,8 @@ infobj.reset = function(index)
     {
         var value = galleryobj.data[index];
         if (value && value.folder)
-        {
             infobj.data = value.folder.split("/");
-            infobj.data.push(value.name?value.name:value.id);
-        }
+	infobj.data.push(value.name?value.name:value.id);
 
         var k = galleryobj.data[index];
         if (k && k.photographer)
