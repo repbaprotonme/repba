@@ -522,24 +522,24 @@ panel.gallerybar = function ()
                 new panel.row([0,bh,0],
                 [
                     0,
-                    1?0:new Layer(
+                    gallerybar.advanced?new Layer(
                     [
                         new panel.expand(new panel.fill(THUMBFILL),3,3),
                         new panel.expand(new panel.rectangle(canvas.speedrect),10,0),
                         new panel.currentV(new panel.fill(NUBAR), bh/6, 0),
-                    ]),
+                    ]):0,
                     0,
                 ]),
                 0,
                 new panel.row([0,bh,0],
                 [
                     0,
-                    1?0:new Layer(
+                    gallerybar.advanced?new Layer(
                     [
                         new panel.expand(new panel.fill(THUMBFILL),3,3),
                         new panel.expand(new panel.rectangle(canvas.reducerect),10,0),
                         new panel.currentV(new panel.fill(NUBAR), bh/6, 0),
-                    ]),
+                    ]):0,
                     0,
                 ]),
                 0,
@@ -1752,7 +1752,6 @@ infobj.reset = function(index)
 }
 
 var slicewidthobj = new circular_array("SLICEWIDTH", SLICEWIDTHSIZE);
-slicewidthobj.debug = 0;
 
 var poomobj = new circular_array("PORTZOOM", 100);
 var loomobj = new circular_array("LANDZOOM", 100);
@@ -2172,7 +2171,7 @@ var panlst =
             if (context.islicewidthrect)
             {
                 var k = (y-context.slicewidthrect.y)/context.slicewidthrect.height;
-                if (slicewidthobj.debug)
+                if (galleryobj.debug)
                 {
                     slicewidthobj.setperc(k);
                     contextobj.reset()
@@ -2186,7 +2185,7 @@ var panlst =
             else if (context.isstretchrect)
             {
                 var k = (y-context.stretchrect.y)/context.stretchrect.height;
-                if (slicewidthobj.debug)
+                if (galleryobj.debug)
                 {
                     var stretch = stretchobj.value();
                     stretch.setperc(k);
@@ -2790,7 +2789,7 @@ var taplst =
             context.slicewidthrect.hitest(x,y))
         {
             var k = (y-context.slicewidthrect.y)/context.slicewidthrect.height;
-            if (slicewidthobj.debug)
+            if (galleryobj.debug)
             {
                 slicewidthobj.setperc(k);
                 contextobj.reset()
@@ -2805,7 +2804,7 @@ var taplst =
             context.stretchrect.hitest(x,y))
         {
             var k = (y-context.stretchrect.y)/context.stretchrect.height;
-            if (slicewidthobj.debug)
+            if (galleryobj.debugz)
             {
                 var stretch = stretchobj.value();
                 stretch.setperc(k);
@@ -3073,11 +3072,11 @@ var bosslst =
                 [
                     [
                         0,
-                        slicewidthobj.debug?
+                        galleryobj.debug?
                             slicewidthobj:
                             context.canvas.speedobj,
                         0,
-                        slicewidthobj.debug?
+                        galleryobj.debug?
                             stretchobj.value():
                             context.canvas.reduceobj,
                         0,
@@ -3222,7 +3221,7 @@ bossobj.draw = function(skip=1)
     if (!slice)
         return;
     context.save();
-    if (slicewidthobj.debug)
+    if (galleryobj.debug)
     {
         var a = new panel.fill("gray");
         a.draw(context, rect, 0, 0);
@@ -3252,7 +3251,7 @@ bossobj.draw = function(skip=1)
         var x2 = Math.berp(-1, 1, b2) * virtualpinch - virtualeft;
 
         var g = x2 > x ? x2-x : x-x2;
-        var w = slicewidthobj.debug ? colwidth : g;
+        var w = galleryobj.debug ? colwidth : g;
         w = Math.ceil(x+w)-x;
 
         if (x < -w || x >= rect.width)
@@ -3261,7 +3260,7 @@ bossobj.draw = function(skip=1)
             slice.x, 0, colwidth, rect.height,
             x, 0, w, rect.height);
 
-        if (slicewidthobj.debug)
+        if (galleryobj.debug)
         {
 //            overlayobj.value().draw(offbossctx,
  //              new rectangle(x,0,w,rect.height),
@@ -5358,7 +5357,7 @@ galleryobj.init = function (obj)
 	    
         {title:"Debug", func: function()
             {
-                slicewidthobj.debug = slicewidthobj.debug ? 0 : 1;
+                sgalleryobj.debug = galleryobj.debug ? 0 : 1;
                 overlayobj.set(overlayobj.current() == 0?1:0);
                 menuobj.hide();
                 headcnv.height = BEXTENT;
@@ -5367,7 +5366,7 @@ galleryobj.init = function (obj)
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
                 contextobj.reset();
               },
-            enabled: function() { return slicewidthobj.debug; }
+            enabled: function() { return galleryobj.debug; }
         },
 	    
        {title:"Download", func: function()
