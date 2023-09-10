@@ -4012,7 +4012,7 @@ contextobj.reset = function ()
                 j = url.searchParams.get(galleryobj.repos).split(".")[0].proper();
             else
                 j = url.path;
-            document.title = `${j};// (${this.width}x${this.height})`;
+            document.title = j;
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnv.autodirect = -_4cnv.movingpage;
             _4cnv.movingpage = 0;
@@ -6022,8 +6022,8 @@ buttonobj.reset = function()
     var gheight = Math.floor(galleryobj.minheight?
         h*galleryobj.minheight:
         window.innerWidth/a);
-    var bheight = Math.floor(Math.min(6400,
-        h*(galleryobj.maxheight?galleryobj.maxheight:1.5)));
+    var bheight = Math.floor(Math.min(4800,
+        h*(galleryobj.maxheight?galleryobj.maxheight:3)));
     buttonobj.data = [];
     for (var n = gheight; n < bheight; ++n)
         buttonobj.data.push(n);
