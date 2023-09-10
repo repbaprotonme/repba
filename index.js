@@ -2197,12 +2197,12 @@ var panlst =
             return;
         x = movingx.update(x);
         y = movingy.update(y);
-        if (context.canvas.isthumb)
+        if (1)//context.canvas.isthumb)
         {
             context.hithumb(x,y);
-            if (!zoomobj.value().value())
-                context.refresh();
-            else if (y != context.canvas.lasty)
+            //if (!zoomobj.value().value())
+            //    context.refresh();
+            if (y != context.canvas.lasty)
                 contextobj.reset()
             else
                 context.refresh();
@@ -2790,9 +2790,8 @@ var keylst =
 
 CanvasRenderingContext2D.prototype.hithumb = function(x,y)
 {
-    if (typeof x !== "undefined")
-    {
-        var rect = this.canvas.thumbrect;
+    
+        var rect = new rectangle(0,0,window.innerWidth,window.innerHeight);//this.canvas.thumbrect;
         var c = (x-rect.x) % rect.width;
         var b = c/rect.width;
         var e = this.canvas.sliceobj.length();
@@ -2802,14 +2801,10 @@ CanvasRenderingContext2D.prototype.hithumb = function(x,y)
         var k = time % TIMEOBJ;
         var e = this.canvas.timeobj.length()*(k/TIMEOBJ);
         this.canvas.timeobj.set(e);
-    }
-
-    if (typeof y !== "undefined")
-    {
+    
         var b = (y-rect.y)/rect.height;
         var e = b*rowobj.length();
         rowobj.set(e);
-    }
 }
 
 var taplst =
