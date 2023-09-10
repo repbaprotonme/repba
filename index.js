@@ -2245,6 +2245,18 @@ var panlst =
                     bossobj.leftright(-1*context.canvas.speedobj.value());
                 }
             }
+            else if (Number(zoom.value()))
+            {
+                var h = (rect.height*(1-zoom.value()/100))*2;
+                y = (y/rect.height)*h;
+                var k = panvert(rowobj, h-y);
+                if (k == -1)
+                    return;
+                if (k == rowobj.anchor())
+                    return;
+                rowobj.set(k);
+                bossobj.reset();
+            }		
         }
     },
 	panstart: function (context, rect, x, y)
