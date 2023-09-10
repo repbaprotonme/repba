@@ -2215,7 +2215,8 @@ var panlst =
         }		
         else if (type == "panup" || type == "pandown")
         {
-            context.refresh()
+ 		var zoom = zoomobj.value()
+	 	context.refresh()
             if (context.islicewidthrect)
             {
                 var k = (y-context.slicewidthrect.y)/context.slicewidthrect.height;
