@@ -5051,7 +5051,7 @@ function imagepath(user)
     if (user.id && user.id.length > 8 &&
         user.id.charAt(8) == '-')
     {
-        src = `https://ipfs-view.pages.dev/image/${user.id}/1080x1080`;
+        src = `https://image.reportbase5836.workers.dev/image/${user.id}/1080x1080`;
     }
 else if (user.id && user.id.length > 1 &&
         ((user.id.charAt(0) == 'Q' && user.id.charAt(1) == 'm') ||
@@ -5086,8 +5086,7 @@ galleryobj.getpath = function(index)
     if (id && id.length > 8 &&
         id.charAt(8) == '-')
     {
-        var template = galleryobj.variant ? galleryobj.variant : "3840x3840";
-        path = `https://ipfs-view.pages.dev/image/${id}/${template}`;
+        path = `https://image.reportbase5836.workers.dev/image/${id}/3840x3840`;
     }
     else if (id && id.length > 1 &&
         ((id.charAt(0) == 'Q' && id.charAt(1) == 'm') ||
