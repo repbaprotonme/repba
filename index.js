@@ -2906,11 +2906,11 @@ var taplst =
             window.open(galleryobj.photographer_url,galleryobj.repos);
         }
 	else if (canvas.vscrollrect  && canvas.vscrollrect.hitest(x,y))
-        {
+        {	
             var k = (y-canvas.vscrollrect.y)/canvas.vscrollrect.height;
                 var jvalue = TIMEOBJ/canvas.virtualheight
                 jvalue *= k;
-                canvas.timeobj.rotateanchored(jvalue);
+                canvas.timeobj.set(jvalue);
             context.refresh()
         }		
        else if (canvas.hscrollrect  && canvas.hscrollrect.hitest(x,y))
