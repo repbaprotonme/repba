@@ -5549,6 +5549,7 @@ if (url.searchParams.has("p"))
 }
 else
 {
+	var path = "https://ipfs-view.com/?p=res/reci.json";
     for (var n = 0; n < searchobj.length(); ++n)
     {
         var j = searchobj.data[n];
@@ -5556,10 +5557,10 @@ else
         if (!e)
             continue;
         var search = e.toLowerCase();
-        url.path = `https://${j}.reportbase5836.workers.dev/?search=${search}&page=1`;
+        path = `https://${j}.reportbase5836.workers.dev/?search=${search}&page=1`;
     }
 
-	fetch(url.path)
+	fetch(path)
         .then(response => jsonhandler(response))
         .then((obj) => galleryobj.init(obj))
         .catch((error) => { });
