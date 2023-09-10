@@ -2804,7 +2804,7 @@ var taplst =
             context.stretchrect.hitest(x,y))
         {
             var k = (y-context.stretchrect.y)/context.stretchrect.height;
-            if (galleryobj.debugz)
+            if (galleryobj.debug)
             {
                 var stretch = stretchobj.value();
                 stretch.setperc(k);
