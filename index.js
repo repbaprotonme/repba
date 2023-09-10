@@ -2248,6 +2248,7 @@ var panlst =
             }
             else if (Number(zoom.value()))
             {
+		    /*
                 var h = (rect.height*(1-zoom.value()/100))*2;
                 y = (y/rect.height)*h;
                 var k = panvert(rowobj, h-y);
@@ -2257,6 +2258,7 @@ var panlst =
                     return;
                 rowobj.set(k);
                 bossobj.reset();
+		*/
             }		
         }
     },
@@ -3362,6 +3364,7 @@ bossobj.draw = function(skip=1)
 
 bossobj.updown = function(delta)
 {
+return;
     var context = _4cnvctx;
     var canvas = _4cnv;
     context.canvas.startupdown = 0.05;
@@ -6018,6 +6021,7 @@ menuobj.leftright = function (context, delta)
 
 bossobj.leftright = function(delta)
 {
+	return;
     var context = _4cnvctx;
     var canvas = _4cnv;
     canvas.lastdelta = delta;
