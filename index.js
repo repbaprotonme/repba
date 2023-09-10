@@ -2788,16 +2788,9 @@ CanvasRenderingContext2D.prototype.hithumb = function(thumb,x,y)
     
         var rect = thumb?this.canvas.thumbrect:
 		new rectangle(0,0,window.innerWidth,window.innerHeight);
-        var c = (x-rect.x) % rect.width;
-        var b = c/rect.width;
-        var e = this.canvas.sliceobj.length();
-        var m = (1-b)*e;
-        var j = TIMEOBJ/e;
-        var time = j*m;
-        var k = time % TIMEOBJ;
-        var e = this.canvas.timeobj.length()*(k/TIMEOBJ);
-	var e = Math.nub(x-rect.x, rect.width, this.canvas.selectrect, rect.width);
+	var select = this.canvasa.selectrect;
 	var b = (x-rect.x)/rect.width;
+	var b = Math.nub(x,rect.width,select.width,rect.width)/rect.width;
 	var e = (1-b)*TIMEOBJ;
         this.canvas.timeobj.set(e);
     
