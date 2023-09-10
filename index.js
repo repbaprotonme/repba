@@ -504,8 +504,6 @@ panel.gallerybar = function ()
         canvas.vscrollrect = new rectangle();
         context.chapterect = new rectangle();
         canvas.galleryrect = new rectangle();
-        if (window.innerHeight === screen.height)
-            return;
         if (headcnv.height == 0)
             return;
         var w = Math.min(360,rect.width-100);
@@ -2414,7 +2412,7 @@ var swipelst =
     },
     swipeupdown: function (context, rect, x, y, evt)
     {
-        var k = evt.type == "swipeup"?-1:1;
+        var k = evt.type == "swipeup"?1:-1;
         menuobj.updown(context, k*context.canvas.speedobj.value());
     },
 },
@@ -2460,8 +2458,9 @@ var keylst =
         if (
             key == "arrowup" ||
             key == "pageup" ||
-            (canvas.shiftKey && evt.key == "enter") ||
-            (canvas.shiftKey && evt.key == " ") ||
+	    key == "backspace" ||
+            (canvas.shiftKey && key == "enter") ||
+            (canvas.shiftKey && key == " ") ||
             key == "w" ||
             key == "k")
         {
@@ -2984,8 +2983,7 @@ var bosslst =
             context.slicewidthrect = new rectangle();
             context.chapterect = new rectangle();
             context.heightrect = new rectangle();
-            if (window.innerHeight === screen.height)
-                return;
+
             if (headcnv.height == 0)
                 return;
             if (
@@ -5316,7 +5314,17 @@ galleryobj.init = function (obj)
                 menuobj.show();
             }
         },
-        {title:"File Explorer", func: function()
+       {title:"QID", func: function()
+            {
+                //todo
+            }
+        }, 	    
+       {title:"Goto", func: function()
+            {
+                gotodialog();
+            }
+        }, 
+	    {title:"File Explorer", func: function()
             {
                 importdialog();
             }
@@ -5326,7 +5334,7 @@ galleryobj.init = function (obj)
             func: function() {}
         },
         {
-            title: "Â© tom brinkman\nall rights reserved",
+            title: "tom brinkman\nall rights reserved",
             func: function() {}
         },
         {
