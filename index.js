@@ -4621,7 +4621,9 @@ var headlst =
 
         this.press = function (context, rect, x, y)
         {
-        };
+		var k = menuobj.value()?menuobj.value():_4cnvctx;
+		k.canvas.press_(k, rect, x, y);
+	};
 
      	this.tap = function (context, rect, x, y)
 		{
@@ -4772,6 +4774,8 @@ var headlst =
 
         this.press = function (context, rect, x, y)
         {
+ 		var k = menuobj.value()?menuobj.value():_8cnvctx;
+            k.canvas.press_(k, rect, x, y);		
         };
 
      	this.tap = function (context, rect, x, y)
