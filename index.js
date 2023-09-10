@@ -1,7 +1,7 @@
 //http://obfuscator.io
 //https://ipfsexplorer.online/
 
-/* ++ += ==
+/* 
 Copyright 2017 Tom Brinkman
 https://zip-view.com
 https://ipfs-view.com
@@ -1731,7 +1731,7 @@ infobj.reset = function(index)
         if (value && value.folder)
         {
             infobj.data = value.folder.split("/");
-            infobj.data.push(value.name);
+            infobj.data.push(value.name?value.name:value.id);
         }
 
         var k = galleryobj.data[index];
@@ -3793,7 +3793,7 @@ menuobj.draw = function()
     }
 
     infobj.data = [];
-    if (window.innerHeight !== screen.height && headcnv.height)
+    if (headcnv.height)
     {
         infobj.reset(context.canvas.centered);
         context.canvas.bar.draw(context, rect, 0, 0);
