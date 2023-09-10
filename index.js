@@ -2197,9 +2197,9 @@ var panlst =
             return;
         x = movingx.update(x);
         y = movingy.update(y);
-        if (1)//context.canvas.isthumb)
+        if (context.canvas.isthumb)
         {
-            context.hithumb(context.canvas.isthumb,x,y);
+            context.hithumb(x,y);
             //if (!zoomobj.value().value())
             //    context.refresh();
             if (y != context.canvas.lasty)
@@ -2208,6 +2208,11 @@ var panlst =
                 context.refresh();
             context.canvas.lasty = y;
         }
+        else if (type == "panleft" || type == "panright")
+        {
+            var k = type == "panleft"?-1:1;
+            bossobj.leftright(k*context.canvas.speedobj.value());
+        }		
         else if (type == "panup" || type == "pandown")
         {
             context.refresh()
@@ -2783,11 +2788,9 @@ var keylst =
 
 ];
 
-CanvasRenderingContext2D.prototype.hithumb = function(thumb,x,y)
-{
-    
-        var rect = thumb?this.canvas.thumbrect:
-		new rectangle(0,0,window.innerWidth,window.innerHeight);
+CanvasRenderingContext2D.prototype.hithumb = function(x,y)
+{    
+        var rect = this.canvas.thumbrect;
 	var select = this.canvas.selectrect[0];
 	var b = (x-rect.x)/rect.width;
 	var e = (1-b)*TIMEOBJ;
@@ -2820,7 +2823,7 @@ var taplst =
             }
             else
             {
-                context.hithumb(1,x,y);
+                context.hithumb(x,y);
                 galleryobj.transparent = 1;
                 contextobj.reset()
             }
