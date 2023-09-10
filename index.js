@@ -604,6 +604,8 @@ panel.galleryscroll = function ()
     {
         var canvas = context.canvas;
         context.save();
+	    canvas.vscrollrect = new rectangle();
+	    canvas.hscrollrect = new rectangle();
 	var obj = context.canvas.scrollobj.value();       
         var a = new panel.col([0,SCROLLBARWIDTH,5],
             [
@@ -611,7 +613,11 @@ panel.galleryscroll = function ()
                 new panel.row([15,0,15],
                 [
                     0,
-        	    new panel.currentV(new panel.shadow(new panel.fill("white")), 90, 1),
+			new Layer(
+			[
+        	    		new panel.expand(new panel.rectangle(canvas.vscrollrect),10,0),
+				new panel.currentV(new panel.shadow(new panel.fill("white")), 90, 1),
+			]),
                     0,
                 ]),
                 0,
@@ -625,7 +631,11 @@ panel.galleryscroll = function ()
                 new panel.col([15,0,15],
                 [
                     0,
-        	    new panel.currentH(new panel.shadow(new panel.fill("white")), 90, 1),
+		    new Layer(
+		    [
+        	    	new panel.expand(new panel.rectangle(canvas.hscrollrect),0,10),
+			    new panel.currentH(new panel.shadow(new panel.fill("white")), 90, 1),
+		    ]),
                     0,
                 ]),
                 0,
@@ -2895,6 +2905,21 @@ var taplst =
         {
             window.open(galleryobj.photographer_url,galleryobj.repos);
         }
+	else if (canvas.vscrollrect  && canvas.vscrollrect.hitest(x,y))
+        {
+            var k = (y-canvas.vscrollrect.y)/canvas.vscrollrect.height;
+                var jvalue = TIMEOBJ/canvas.virtualheight
+                jvalue *= k;
+                canvas.timeobj.rotateanchored(jvalue);
+            context.refresh()
+        }		
+       else if (canvas.hscrollrect  && canvas.hscrollrect.hitest(x,y))
+        {
+            var k = (x-canvas.hscrollrect.x)/canvas.hscrollrect.width;
+     	    var obj = context.canvas.scrollobj.value();
+	    obj.setperc(k);
+            context.refresh()
+        }		
         else if (canvas.speedrect  && canvas.speedrect.hitest(x,y))
         {
             var k = (y-canvas.speedrect.y)/canvas.speedrect.height;
