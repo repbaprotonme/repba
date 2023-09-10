@@ -3,10 +3,7 @@
          Page 02.jpg
  + Text on Bottom has background
 + More agressiive zooming
-+ ? shows left right scroll bars and image height and width.
-+ Ctrl+0  set width
-+ header buttons (width) (full) (height) 
-+ iframe example
++ header buttons (width) (full)
 + press toggles UI mode
 + click toggles boss in non UI mode
 + Boss panning encompasses the entire window
