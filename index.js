@@ -2309,12 +2309,10 @@ var presslst =
         }
         else if (screenfull.isEnabled)
         {
-            buttonobj.set(0);
-            if (window.innerHeight === screen.height)
-                screenfull.exit();
-            else
-                screenfull.request();
-            context.refresh();
+            var h = headcnv.height?0:BEXTENT;
+            headcnvctx.show(0,0,window.innerWidth,h);
+            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+            context.refresh()
         }
     },
     press: function (context, rect, x, y)
