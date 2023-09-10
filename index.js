@@ -1684,8 +1684,8 @@ var wheelst =
 	},
  	leftright: function (context, x, y, delta, ctrl, shift, alt, type)
     {
-        //bossobj.leftright(delta);
-        //context.refresh();
+        bossobj.leftright(delta);
+        context.refresh();
     },
 },
 ];
@@ -2436,9 +2436,9 @@ var swipelst =
     {
         setTimeout(function()
         {
-            //var k = evt.type == "swipeleft"?-1:1;
-            //bossobj.leftright(k*context.canvas.speedobj.value());
-            //context.refresh();
+            var k = evt.type == "swipeleft"?-1:1;
+            bossobj.leftright(k*context.canvas.speedobj.value());
+            context.refresh();
         }, TIMEMAIN);
      },
 
@@ -2740,8 +2740,8 @@ var keylst =
             key == "a" ||
             key == "h")
         {
-            //bossobj.leftright(context.canvas.speedobj.value());
-            //context.refresh();
+            bossobj.leftright(context.canvas.speedobj.value());
+            context.refresh();
         }
         else if (
             key == "tab" ||
@@ -2749,8 +2749,8 @@ var keylst =
             key == "d" ||
             key == "l")
         {
-            //bossobj.leftright(-context.canvas.speedobj.value());
-            //context.refresh();
+            bossobj.leftright(-context.canvas.speedobj.value());
+            context.refresh();
         }
         else if (key == "/" || key == "\\")
         {
