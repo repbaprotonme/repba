@@ -1732,6 +1732,10 @@ infobj.reset = function(index)
             infobj.data = value.folder.split("/");
 	    
 	infobj.data.push(value.name?value.name:value.id);
+	    
+        var k = index%IMAGELSTSIZE;
+        var thumbimg = thumbimglst[k];
+	infobj.data.push(`${this.width}x${this.height}`);
 
         var k = galleryobj.data[index];
         if (k && k.photographer)
@@ -3953,7 +3957,7 @@ contextobj.reset = function ()
                 j = url.searchParams.get(galleryobj.repos).split(".")[0].proper();
             else
                 j = url.path;
-            document.title = `${j} (${this.width}x${this.height})`;
+            document.title = `${j};// (${this.width}x${this.height})`;
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnv.autodirect = -_4cnv.movingpage;
             _4cnv.movingpage = 0;
