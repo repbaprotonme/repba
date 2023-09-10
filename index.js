@@ -2830,7 +2830,7 @@ var taplst =
             }
             else
             {
-                context.hithumb(context.canvas.isthumb,x,y);
+                context.hithumb(1,x,y);
                 galleryobj.transparent = 1;
                 contextobj.reset()
             }
