@@ -1734,8 +1734,8 @@ infobj.reset = function(index)
 	infobj.data.push(value.name?value.name:value.id);
 	    
         var k = index%IMAGELSTSIZE;
-        var thumbimg = thumbimglst[k];
-	infobj.data.push(`${this.width}x${this.height}`);
+        var img = thumbimglst[k];
+	infobj.data.push(`${img.width}x${img.height}`);
 
         var k = galleryobj.data[index];
         if (k && k.photographer)
