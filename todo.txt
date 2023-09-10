@@ -1,3 +1,4 @@
+* scroll bars for gallery bar
 + goto dialog - show page number range
 + ipfs dialog - load ipfs directly
 + Batman Knightfall 
