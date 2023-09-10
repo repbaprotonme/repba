@@ -5917,10 +5917,8 @@ bossobj.leftright = function(delta)
 
 buttonobj.reset = function()
 {
-    var ww = galleryobj.width?galleryobj.width:1024;
-    var hh = galleryobj.height?galleryobj.height:1024;
-    var w = galleryobj.data[0].width?galleryobj.data[0].width:ww;
-    var h = galleryobj.data[0].height?galleryobj.data[0].height:hh;
+    var w = galleryobj.width?galleryobj.width:1024;
+    var h = galleryobj.height?galleryobj.height:1024;
     var a = w/h;
     var gheight = Math.floor(galleryobj.minheight?
         h*galleryobj.minheight:
