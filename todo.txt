@@ -1,5 +1,3 @@
 + header buttons (width) (full)
-+ Boss panning encompasses the entire window
 + Share menu option that adds &m=
-+ 1931 Yankees broken
 + If search fails, or no items, show search box
