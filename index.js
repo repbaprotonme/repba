@@ -5549,7 +5549,7 @@ if (url.searchParams.has("p"))
 }
 else
 {
-	var path = "https://ipfs-view.com/?p=res/reci.json";
+	var path = "https://ipfs-view.com/res/reci.json";
     for (var n = 0; n < searchobj.length(); ++n)
     {
         var j = searchobj.data[n];
