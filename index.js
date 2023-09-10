@@ -2790,7 +2790,6 @@ CanvasRenderingContext2D.prototype.hithumb = function(thumb,x,y)
 		new rectangle(0,0,window.innerWidth,window.innerHeight);
 	var select = this.canvas.selectrect[0];
 	var b = (x-rect.x)/rect.width;
-	var b = Math.nub(x,rect.width,select.width,rect.width)/rect.width;
 	var e = (1-b)*TIMEOBJ;
         this.canvas.timeobj.set(e);
     
