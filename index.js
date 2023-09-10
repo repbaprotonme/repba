@@ -1764,7 +1764,7 @@ userobj.save = function()
 {
     if (url.protocol == "https:")
     {
-        authClient = PropelAuth.createClient({authUrl: "https://auth.reportbase.com", enableBackgroundTokenRefresh: true})
+        authClient = PropelAuth.createClient({authUrl: "https://auth.ipfs-view.pages.dev", enableBackgroundTokenRefresh: true})
         authClient.getAuthenticationInfoOrNull(false)
         .then(function(client)
         {
@@ -5037,7 +5037,7 @@ var galleryobj = new circular_array("", 0);
 galleryobj.getrawpath = function()
 {
     var id = galleryobj.value().id;
-    var path = `https://reportbase.com/image/${id}/blob`;
+    var path = `https://ipfs-view.pages.dev/image/${id}/blob`;
     if (galleryobj.value().full)
         path = galleryobj.value().full;
     else if (!id && galleryobj.value().url)
@@ -5051,7 +5051,7 @@ function imagepath(user)
     if (user.id && user.id.length > 8 &&
         user.id.charAt(8) == '-')
     {
-        src = `https://reportbase.com/image/${user.id}/1080x1080`;
+        src = `https://ipfs-view.pages.dev/image/${user.id}/1080x1080`;
     }
 else if (user.id && user.id.length > 1 &&
         ((user.id.charAt(0) == 'Q' && user.id.charAt(1) == 'm') ||
@@ -5087,7 +5087,7 @@ galleryobj.getpath = function(index)
         id.charAt(8) == '-')
     {
         var template = galleryobj.variant ? galleryobj.variant : "3840x3840";
-        path = `https://reportbase.com/image/${id}/${template}`;
+        path = `https://ipfs-view.pages.dev/image/${id}/${template}`;
     }
     else if (id && id.length > 1 &&
         ((id.charAt(0) == 'Q' && id.charAt(1) == 'm') ||
@@ -5101,7 +5101,7 @@ galleryobj.getpath = function(index)
     
     else if (galleryobj.raw)
     {
-        path = `https://reportbase.com/image/${id}/blob`;
+        path = `https://ipfs-view.pages.dev/image/${id}/blob`;
     }
     else if (gallery.full)
     {
@@ -5190,7 +5190,7 @@ galleryobj.init = function (obj)
         },
         {title:"propelauth", func: function()
             {
-                authclient = propelauth.createclient({authurl: "https://auth.reportbase.com", enablebackgroundtokenrefresh: true})
+                authclient = propelauth.createclient({authurl: "https://auth.ipfs-view.pages.dev", enablebackgroundtokenrefresh: true})
                 authclient.getauthenticationinfoornull(false)
                 .then(function(client)
                 {
@@ -5205,7 +5205,7 @@ galleryobj.init = function (obj)
         {title:"delete image", func: function()
             {
                 var id = galleryobj.value().id;
-                fetch(`https://reportbase.com/image/${id}`, { method: 'delete' })
+                fetch(`https://ipfs-view.pages.dev/image/${id}`, { method: 'delete' })
                 .then(res =>
                     {
                         location.reload();
