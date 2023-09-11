@@ -1793,7 +1793,11 @@ infobj.reset = function(index)
 	    
         var k = galleryobj.data[index];
         if (k && k.photographer)
+	{
             infobj.data.push(k.photographer);
+            infobj.data.push(galleryobj.repos);
+	}
+	    
         if (url.searchParams.has(galleryobj.repos))
             infobj.data.push(url.searchParams.get(galleryobj.repos));
     }
