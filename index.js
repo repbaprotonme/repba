@@ -1869,8 +1869,8 @@ async function loadipfs(json, folder)
         var k = json[n];
         if (k.Type != 1)
             continue;
-        //var path2 = `https://ipfs.filebase.io/ipfs/${j.id}?filename=${j.name}`;
-        //var path1 = `https://cloudflare-ipfs.com/ipf/${j.id}?filename=${j.name}`;
+	var path2 = `https://ipfs.filebase.io/ipfs/${j.id}?filename=${j.name}`;
+        var path1 = `https://cloudflare-ipfs.com/ipf/${j.id}?filename=${j.name}`;
         var path = `https://dweb.link/api/v0/ls?arg=${folder}/${k.Name}`;
         var response = await fetch(path);
         if (!response.ok)
