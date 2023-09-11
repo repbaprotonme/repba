@@ -5646,7 +5646,8 @@ if (url.searchParams.has("p"))
     {
         var path2 = `https://dweb.link/ipfs/${url.path}`;
         var path1 = `https://ipfs.filebase.io/ipfs/${url.path}`;
-        fetch(`https://dweb.link/api/v0/ls?arg=${url.path}`)
+	var path3 = `https://dweb.link/api/v0/ls?arg=${url.path}`
+        fetch(path3)
         .then(response => jsonhandler(response))
         .then(function (json)
         {
