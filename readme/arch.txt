@@ -1,5 +1,9 @@
 # packages
-pacman -S poppler imagemagick nodejs npm vim nginx kubo aws-cli libwebp ranger unrar rust wasm-pack ffmpeg libheif 
+pacman -S poppler imagemagick nodejs npm vim nginx kubo aws-cli libwebp ranger unrar rust wasm-pack ffmpeg libheif certbot
+
+#certbot (register https)
+certbot --nginx
+certbot renew
 
 # upgrade
 sudo pacman -S archlinux-keyring && sudo pacman -Syu
