@@ -5441,7 +5441,7 @@ galleryobj.init = function (obj)
 	    
         {title:"Debug", func: function()
             {
-                sgalleryobj.debug = galleryobj.debug ? 0 : 1;
+                galleryobj.debug = galleryobj.debug ? 0 : 1;
                 overlayobj.set(overlayobj.current() == 0?1:0);
                 menuobj.hide();
                 headcnv.height = BEXTENT;
@@ -5674,6 +5674,7 @@ else
             continue;
         var search = e.toLowerCase();
         path = `https://${j}.reportbase5836.workers.dev/?search=${search}&page=1`;
+	break;
     }
 
 	fetch(path)
