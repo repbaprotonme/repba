@@ -2923,7 +2923,7 @@ var taplst =
 
             if (k == visibles.length)
 		return;
-	    var j = visibles[k];
+	    var j = visibles[k].slice;
             window.open(j.photographer_url,galleryobj.repos);
         }
 	else if (canvas.vscrollrect  && canvas.vscrollrect.hitest(x,y))
