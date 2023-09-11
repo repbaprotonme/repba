@@ -5078,10 +5078,6 @@ function setfavicon()
       element.setAttribute("href","dark.svg");
 }
 
-function localsave()
-{
-}
-
 window.addEventListener("visibilitychange", (evt) =>
 {
     if (document.visibilityState === 'visible')
@@ -5709,8 +5705,8 @@ localobj.time = 0;
 try
 {
     var k = localStorage.getItem(url.path);
-    if (k)
-      localobj = JSON.parse(k);
+    //if (k)
+    //  localobj = JSON.parse(k);
 }
 catch(_)
 {
