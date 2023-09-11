@@ -1872,6 +1872,7 @@ async function loadipfs(json, folder)
 	var path2 = `https://ipfs.filebase.io/ipfs/${j.id}?filename=${j.name}`;
         var path1 = `https://cloudflare-ipfs.com/ipf/${j.id}?filename=${j.name}`;
         var path = `https://dweb.link/api/v0/ls?arg=${folder}/${k.Name}`;
+	var path4 = `https://gateway.ipfs.io/api/v0/ls?arg=${folder}/${k.Name}`;
         var response = await fetch(path);
         if (!response.ok)
             continue;
@@ -5648,7 +5649,7 @@ if (url.searchParams.has("p"))
         var path1 = `https://ipfs.filebase.io/ipfs/${url.path}`;
 	var path3 = `https://dweb.link/api/v0/ls?arg=${url.path}`
 	var path4 = `https://gateway.ipfs.io/api/v0/ls?arg=${url.path}`;
-        fetch(path4)
+        fetch(path3)
         .then(response => jsonhandler(response))
         .then(function (json)
         {
