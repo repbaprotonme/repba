@@ -5418,17 +5418,13 @@ galleryobj.init = function (obj)
 
     _7cnv.sliceobj.data =
     [
-       {title:"login", path: "login", func: function()
+       {title:"Login", path: "login", func: function()
             {
                 authclient.redirecttologinpage();
+		//authclient.logout(true)    
             }
         },
-        {title:"logout", path: "logout", func: function()
-            {
-                authclient.logout(true)
-            }
-        },
-        {title:"account", path: "account", func: function()
+        {title:"Account", path: "account", func: function()
             {
                 authclient.redirecttoaccountpage()
             }
@@ -5515,20 +5511,7 @@ galleryobj.init = function (obj)
                     });
                 }
             }},
-        {title:"Screenshot", path: "SCREENSHOT", func: function()
-            {
-                try
-                {
-                    var k = document.createElement('canvas');
-                    var link = document.createElement("a");
-                    link.href = _4cnv.toDataURL();
-                    link.download = galleryobj.value()[0] + ".jpg";
-                    link.click();
-                }
-                catch (_)
-                {
-                }
-            }},
+
 	    
         {title:"Fit Width", path: "", func: function()
             {
