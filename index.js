@@ -516,7 +516,8 @@ panel.gallerybar = function ()
         context.save();
         var a = new panel.layerA(
         [
-            new panel.colA([SCROLLMARGIN,SCROLLBARWIDTH,0,SCROLLBARWIDTH,SCROLLMARGIN],
+            new panel.colA([SCROLLMARGIN,SCROLLBARWIDTH,0,SCROLLBARWIDTH,
+			    SCROLLMARGIN,SCROLLBARWIDTH,SCROLLMARGIN],
             [
                 0,
                 new panel.row([0,bh,0],
@@ -542,7 +543,9 @@ panel.gallerybar = function ()
                     ]):0,
                     0,
                 ]),
+		0,
                 0,
+		0,
             ]),
             new panel.rowA([80,0,rows*rh,8,SCROLLBARWIDTH,4],
             [
@@ -2874,7 +2877,7 @@ var taplst =
                 bossobj.leftright(-1*context.canvas.speedobj.value());
             }
         }
-    else if (galleryobj.repos && context.extentrect && context.extentrect.hitest(x,y))
+    	else if (galleryobj.repos && context.extentrect && context.extentrect.hitest(x,y))
         {
             window.open(galleryobj.photographer_url,galleryobj.repos);
         }
@@ -2907,7 +2910,21 @@ var taplst =
             context.chapterect &&
             context.chapterect.hitest(x,y))
         {
-            window.open(galleryobj.photographer_url,galleryobj.repos);
+            var visibles = canvas.visibles;
+            var k;
+            for (k = 0; k < visibles.length; k++)
+            {
+                var j = visibles[k];
+                if (!j.slice || !j.slice.rect)
+                    continue;
+                if (j.slice.rect.hitest(x,y))
+                    break;
+            }
+
+            if (k == visibles.length)
+		return;
+	    var j = visibles[k];
+            window.open(j.photographer_url,galleryobj.repos);
         }
 	else if (canvas.vscrollrect  && canvas.vscrollrect.hitest(x,y))
         {	
