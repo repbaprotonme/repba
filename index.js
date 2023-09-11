@@ -1822,7 +1822,7 @@ userobj.save = function()
 {
     if (url.protocol == "https:")
     {
-        authClient = PropelAuth.createClient({authUrl: "https://auth.ipfs-view.pages.dev", enableBackgroundTokenRefresh: true})
+        authClient = PropelAuth.createClient({authUrl: "https://auth.ipfs-view.com", enableBackgroundTokenRefresh: true})
         authClient.getAuthenticationInfoOrNull(false)
         .then(function(client)
         {
@@ -5418,10 +5418,19 @@ galleryobj.init = function (obj)
 
     _7cnv.sliceobj.data =
     [
-        {title:"Login", path: "LOGIN", func: function()
+       {title:"login", path: "login", func: function()
             {
-                menuobj.setindex(_9cnvctx);
-                menuobj.show();
+                authclient.redirecttologinpage();
+            }
+        },
+        {title:"logout", path: "logout", func: function()
+            {
+                authclient.logout(true)
+            }
+        },
+        {title:"account", path: "account", func: function()
+            {
+                authclient.redirecttoaccountpage()
             }
         },
        {title:"QID", func: function()
