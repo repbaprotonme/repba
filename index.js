@@ -1857,7 +1857,9 @@ async function loadipfs(json, folder)
         {
              //url.path = url.searchParams.get("z");
              //var path = `https://dweb.link/ipfs/${j.id}`;
-            fetch(`https://cloudflare-ipfs.com/ipfs/${j.id}`)
+	     var path3 = `https://ipfs.filebase.io/ipfs/${j.id}`;
+	     var path2 = `https://cloudflare-ipfs.com/ipfs/${j.id}`;
+            fetch(path2)
             .then((response) => jsonhandler(response))
             .then(function (json) { Object.assign(galleryobj, json); })
             .catch((error) => { });
@@ -1872,6 +1874,7 @@ async function loadipfs(json, folder)
 	var path2 = `https://ipfs.filebase.io/ipfs/${j.id}?filename=${j.name}`;
         var path1 = `https://cloudflare-ipfs.com/ipf/${j.id}?filename=${j.name}`;
         var path = `https://dweb.link/api/v0/ls?arg=${folder}/${k.Name}`;
+	var path3 = `https://ipfs.filebase.io/api/v0/ls?arg=${folder}/${k.Name}`;    
 	var path4 = `https://gateway.ipfs.io/api/v0/ls?arg=${folder}/${k.Name}`;
         var response = await fetch(path);
         if (!response.ok)
@@ -5684,7 +5687,7 @@ if (url.searchParams.has("p"))
 }
 else
 {
-	var path = "https://ipfs-view.com/res/reci.json";
+	var path = "https://ipfs-view.pages.dev/res/reci.json";
     for (var n = 0; n < searchobj.length(); ++n)
     {
         var j = searchobj.data[n];
