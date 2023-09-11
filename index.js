@@ -5580,6 +5580,12 @@ galleryobj.init = function (obj)
         _8cnv.timeobj.set(k);
     }
 
+    if (!galleryobj.length())
+    {
+        showsearch("unsplash");
+	return;
+    }
+	
     if (galleryobj.width)
     {
         buttonobj.reset();
@@ -5605,8 +5611,6 @@ galleryobj.init = function (obj)
 
     buttonobj.reset()
     contextobj.reset();
-    if (galleryobj.length())
-    {
        menuobj.hide();
         if (galleryobj.length()>GALLERYMIN)
             menuobj.toggle(_8cnvctx);
@@ -5614,11 +5618,6 @@ galleryobj.init = function (obj)
         headobj.set(galleryobj.length()>6?GALLERY:BOSS);
         headham.panel = headobj.value();
         headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-     }
-    else
-    {
-        showsearch("unsplash");
-    }
  }
 
 url.path = "home";
