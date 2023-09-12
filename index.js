@@ -1789,10 +1789,16 @@ infobj.reset = function(index)
 	if (galleryobj.advanced)
 	{
 		infobj.data.push(value.name?value.name:value.id);
-		    
-	        var k = index%IMAGELSTSIZE;
-	        var img = thumbimglst[k];
-		infobj.data.push(`${img.width}x${img.height}`);
+		if (menuobj.value())
+		{
+	        	var k = index%IMAGELSTSIZE;
+	        	var img = thumbimglst[k];
+			infobj.data.push(`${img.width}x${img.height}`);
+		}
+		else if (photo.image)
+		{
+			infobj.data.push(photo.image.extent);
+		}
 	}
 	    
         var k = galleryobj.data[index];
@@ -4041,7 +4047,7 @@ contextobj.reset = function ()
         {
             this.aspect = this.width/this.height;
             this.size = ((this.width * this.height)/1000000).toFixed(1) + "MP";
-            this.extent = `${this.width} x ${this.height}`;
+            this.extent = `${this.width}x${this.height}`;
             extentobj.data[0] = `${galleryobj.current()+1} of ${galleryobj.length()}`;
             extentobj.data[1] = this.extent;
             extentobj.data[2] = galleryobj.value().id?galleryobj.value().id:"Undefined";
