@@ -1719,7 +1719,11 @@ var pinchlst =
     },
     pinchend: function (context)
     {
-        setTimeout(function() { context.canvas.pinching = 0; }, 100);
+        setTimeout(function() 
+	{ 
+		context.canvas.pinching = 0; 
+		menuobj.draw();
+	}, 100);
     },
 },
 {
