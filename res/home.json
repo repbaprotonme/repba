@@ -1,6 +1,8 @@
 {
   "title": "Home",
-  "width": 1080,
+  "bosstemplate":"3840x3840",
+  "gallerytemplate":"1080x1080",
+  "width": 3840,
   "height": 540,
   "showboss": 1,
   "data": [
