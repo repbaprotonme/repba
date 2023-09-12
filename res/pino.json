@@ -1,6 +1,8 @@
 {
   "title": "Ultra-wide Landscapes",
-  "showboss": 180,
+  "showboss": 1,
+  "gallerytemplate": "3840x3840",
+  "bosstemplate": "3840x3840",
   "width": 1200,
   "height":240,
   "raw": 1,
