@@ -2968,6 +2968,9 @@ var taplst =
             menuobj.hide();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         }
+	else if (!galleryobj.showboss)
+	{
+	}
         else
         {
             clearInterval(global.swipetimeout);
