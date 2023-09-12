@@ -3816,7 +3816,9 @@ menuobj.draw = function()
         1-context.canvas.timeobj.berp());
     if (canvas.pinching)
     {
-        canvas.normal = [current];
+         canvas.lastcurrent = current;
+        var size = Math.ceil(rect.height/canvas.buttonheight);
+        canvas.normal = util.rotated_list(canvas.rotated,slices.length,current,size);
     }
     else if (canvas.lastcurrent != current)
     {
