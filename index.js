@@ -3810,18 +3810,15 @@ menuobj.draw = function()
 
     var current = context.canvas.sliceobj.lerp(
         1-context.canvas.timeobj.berp());
-    if (canvas.lastcurrent != current)
+    if (canvas.pinching)
+    {
+        canvas.normal = [current];
+    }
+    else if (canvas.lastcurrent != current)
     {
         canvas.lastcurrent = current;
-        if (canvas.pinching)
-        {
-            canvas.normal = [current];
-        }
-        else
-        {
-            var size = Math.ceil(rect.height/canvas.buttonheight)+4;
-            canvas.normal = util.rotated_list(canvas.rotated,slices.length,current,size);
-        }
+        var size = Math.ceil(rect.height/canvas.buttonheight)+4;
+        canvas.normal = util.rotated_list(canvas.rotated,slices.length,current,size);
     }
 
     context.canvas.visibles = [];
