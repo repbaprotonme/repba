@@ -1,8 +1,7 @@
 {
   "title": "Home",
-  "min": 320,
-  "max": 320,
-  "showsearch": 1,
+  "width": 1080,
+  "height": 540,
   "showboss": 1,
   "data": [
     {
