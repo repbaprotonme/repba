@@ -5620,13 +5620,15 @@ galleryobj.init = function (obj)
 
     buttonobj.reset()
     contextobj.reset();
-       menuobj.hide();
-        if (galleryobj.length()>GALLERYMIN)
-            menuobj.toggle(_8cnvctx);
-        _4cnvctx.refresh();
-        headobj.set(galleryobj.length()>6?GALLERY:BOSS);
-        headham.panel = headobj.value();
-        headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+	menuobj.hide();
+	if (galleryobj.length()>GALLERYMIN)
+	    menuobj.toggle(_8cnvctx);
+	if (galleryobj.length()<=GALLERYMIN)
+	    galleryobj.showboss = 1;
+	_4cnvctx.refresh();
+	headobj.set(galleryobj.length()>6?GALLERY:BOSS);
+	headham.panel = headobj.value();
+	headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
  }
 
 url.path = "home";
@@ -5699,8 +5701,8 @@ localobj.time = 0;
 try
 {
     var k = localStorage.getItem(url.path);
-    //if (k)
-    //  localobj = JSON.parse(k);
+    if (k)
+      localobj = JSON.parse(k);
 }
 catch(_)
 {
