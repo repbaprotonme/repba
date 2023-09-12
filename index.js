@@ -5187,7 +5187,7 @@ galleryobj.getpath = function(index)
     var id = gallery.id;
    if (galleryobj.raw)
     {
-        path = `https://ipfs-view.pages.dev/image/${id}/blob`;
+        path = `https://image.reportbase5836.workers.dev/image/${id}/blob`;
     }	
     else if (id && id.length >= 5 &&
         (id.charAt(4) == '.' ||
