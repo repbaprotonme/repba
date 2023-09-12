@@ -5148,15 +5148,12 @@ galleryobj.getrawpath = function()
 function imagepath(user)
 {
     var src;
-    if (user.id && user.id.length > 8 &&
-        user.id.charAt(8) == '-')
+    if (user.id && user.id.length >= 5 &&
+        (user.id.charAt(4) == '.' ||
+	    user.id.charAt(8) == '-'))
     {
-        src = `https://image.reportbase5836.workers.dev/image/${user.id}/1080x1080`;
-    }
-    else if (user.id && user.id.length == 9 &&
-        user.id.charAt(4) == '.')
-    {
-        src = `https://image.reportbase5836.workers.dev/image/${user.id}/1080x1080`;
+	var template = galleryobj.gallerytemplate?galleryobj.gallerytemplate:"1080x1080";    
+        src = `https://image.reportbase5836.workers.dev/image/${user.id}/${template}`;
     }
     else if (user.id && user.id.length > 1 &&
         ((user.id.charAt(0) == 'Q' && user.id.charAt(1) == 'm') ||
@@ -5188,15 +5185,16 @@ galleryobj.getpath = function(index)
 {
     var gallery = this.data[index];
     var id = gallery.id;
-    if (id && id.length > 8 &&
-        id.charAt(8) == '-')
+   if (galleryobj.raw)
     {
-        path = `https://image.reportbase5836.workers.dev/image/${id}/3840x3840`;
-    }
-    else if (id && id.length == 9 &&
-        id.charAt(4) == '.')
+        path = `https://ipfs-view.pages.dev/image/${id}/blob`;
+    }	
+    else if (id && id.length >= 5 &&
+        (id.charAt(4) == '.' ||
+	    id.charAt(8) == '-'))
     {
-        path = `https://image.reportbase5836.workers.dev/image/${id}/3840x3840`;
+	var template = galleryobj.bosstemplate?galleryobj.bosstemplate:"3840x3840";    
+        path = `https://image.reportbase5836.workers.dev/image/${id}/${template}`;
     }
     else if (id && id.length > 1 &&
         ((id.charAt(0) == 'Q' && id.charAt(1) == 'm') ||
@@ -5208,10 +5206,7 @@ galleryobj.getpath = function(index)
         //path = `https://${url.path}.ipfs.dweb.link/`;
     }
     
-    else if (galleryobj.raw)
-    {
-        path = `https://ipfs-view.pages.dev/image/${id}/blob`;
-    }
+    
     else if (gallery.full)
     {
         path = gallery.full;
