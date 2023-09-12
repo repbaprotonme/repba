@@ -3090,7 +3090,8 @@ var bosslst =
             context.slicewidthrect = new rectangle();
             context.chapterect = new rectangle();
             context.heightrect = new rectangle();
-
+		if (menuobj.value())
+			return;
             if (headcnv.height == 0)
                 return;
             if (
