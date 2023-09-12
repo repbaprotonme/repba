@@ -2968,13 +2968,6 @@ var taplst =
             menuobj.hide();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         }
-        else if (!galleryobj.showboss)
-        {
-            var h = headcnv.height?0:BEXTENT;
-            headcnvctx.show(0,0,window.innerWidth,h);
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            context.refresh()
-        }
         else
         {
             clearInterval(global.swipetimeout);
