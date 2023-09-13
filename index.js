@@ -610,10 +610,10 @@ panel.galleryscroll = function ()
 	    canvas.vscrollrect = new rectangle();
 	    canvas.hscrollrect = new rectangle();
 	var obj = context.canvas.scrollobj.value();       
-        var a = new panel.col([0,SCROLLBARWIDTH,5],
+        var a = new panel.col([0,SCROLLBARWIDTH,2],
             [
                 0,
-                new panel.row([15,0,15],
+                new panel.row([5,0,5],
                 [
                     0,
 			new Layer(
@@ -628,10 +628,10 @@ panel.galleryscroll = function ()
 
         a.draw(context, rect, context.canvas.timeobj, 0);
 	    
-        var a = new panel.row([0,SCROLLBARWIDTH,5],
+        var a = new panel.row([0,SCROLLBARWIDTH,2],
             [
                 0,
-                new panel.col([15,0,15],
+                new panel.col([5,0,5],
                 [
                     0,
 		    new Layer(
