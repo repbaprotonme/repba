@@ -5399,7 +5399,7 @@ galleryobj.init = function (obj)
 
     _7cnv.sliceobj.data =
     [
-       {title:"Goto", func: function()
+       {title:"Goto (ctrl+g)", func: function()
             {
                 gotodialog();
             }
@@ -5444,7 +5444,7 @@ galleryobj.init = function (obj)
             enabled: function() { return galleryobj.debug; }
         },
 	    
-        {title:"100%", path: "", func: function()
+        {title:"Fit Width (ctrl+0)", path: "", func: function()
             {
                 buttonobj.reset();
 		    menuobj.draw();
@@ -5452,7 +5452,7 @@ galleryobj.init = function (obj)
             enabled: function() { return 0; }
         },
 	   
-	{title:"Full Screen", func: function()
+	{title:"Full Screen (ctrl+f)", func: function()
             {
                 if (screenfull.isEnabled)
                 {
