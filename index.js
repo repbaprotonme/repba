@@ -5504,7 +5504,6 @@ galleryobj.init = function (obj)
 	
 	{title:"Text2Image", func: function()
 		{
-			text2image(
 			var raw =
 			{
 			    "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
