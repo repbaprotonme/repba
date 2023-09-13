@@ -7,7 +7,7 @@ https://zip-view.com
 https://ipfs-view.com
 */
 
-
+var raw =
 {
     "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
     "prompt": "ultra realistic close up portrait ((beautiful pale cyberpunk female with heavy black eyeliner)), blue eyes, shaved side haircut, hyper detail, cinematic lighting, magic neon, dark red city, Canon EOS R3, nikon, f/1.4, ISO 200, 1/160s, 8K, RAW, unedited, symmetrical balance, in-frame, 8K",
