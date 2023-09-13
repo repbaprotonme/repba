@@ -1,7 +1,8 @@
 {
   "title": "Repba Gallery",
-      "width": 4987,
-      "height": 4088,
+      "showboss": 1,
+    "width": 1080,
+      "height": 540,
   "data": [
     {
       "id": "MAPS.0000",
