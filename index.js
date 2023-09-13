@@ -31,6 +31,10 @@ var requestOptions =
   method: 'POST',
   body: raw,
   redirect: 'follow'
+  "headers": 
+   {
+      "Content-Type": "application/json",
+    },
 };
 
 fetch("https://stablediffusionapi.com/api/v3/text2img", requestOptions)
