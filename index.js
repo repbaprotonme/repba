@@ -5156,7 +5156,7 @@ function imagepath(user)
 {
     var src;
     if (user.id && user.id.length >= 5 &&
-        (user.id.charAt(4) == '.' ||
+	  ((id.charAt(id.length-5) == '.') ||
 	    user.id.charAt(8) == '-'))
     {
 	var template = galleryobj.gallerytemplate?galleryobj.gallerytemplate:"1080x1080";    
@@ -5197,7 +5197,7 @@ galleryobj.getpath = function(index)
         path = `https://image.reportbase5836.workers.dev/image/${id}/blob`;
     }	
     else if (id && id.length >= 5 &&
-        (id.charAt(4) == '.' ||
+        ((id.charAt(id.length-5) == '.') ||
 	    id.charAt(8) == '-'))
     {
 	var template = galleryobj.bosstemplate?galleryobj.bosstemplate:"3840x3840";    
