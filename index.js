@@ -2531,7 +2531,7 @@ var keylst =
             key == "w" ||
             key == "k")
         {
-            menuobj.updown(context, -canvas.speedobj.value());
+            menuobj.updown(context, -canvas.speedobj.value()/3);
             if (!global.swipetimeout)
             {
                 global.swipetimeout = setInterval(function ()
@@ -2551,7 +2551,7 @@ var keylst =
             key == "s" ||
             key == "j")
         {
-            menuobj.updown(context, canvas.speedobj.value());
+            menuobj.updown(context, canvas.speedobj.value()/3);
             if (!global.swipetimeout)
             {
                 global.swipetimeout = setInterval(function ()
