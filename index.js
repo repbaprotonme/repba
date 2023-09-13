@@ -30,7 +30,7 @@ var requestOptions =
 {
   method: 'POST',
   body: raw,
-  redirect: 'follow'
+  redirect: 'follow',
   "headers": 
    {
       "Content-Type": "application/json",
