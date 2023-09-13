@@ -2248,39 +2248,19 @@ var panlst =
                 }
                 else
                 {
-                    context.canvas.speedobj.setperc(k);
-                    bossobj.leftright(-1*context.canvas.speedobj.value());
+	                var k = (y-context.slicewidthrect.y)/context.slicewidthrect.height;
+		    	var zoom = zoomobj.value();
+		    	zoom.setperc(k);
+		    	contextobj.reset()
                 }
             }
             else if (context.isstretchrect)
             {
                 var k = (y-context.stretchrect.y)/context.stretchrect.height;
-                if (galleryobj.debug)
-                {
-                    var stretch = stretchobj.value();
-                    stretch.setperc(k);
-                    contextobj.reset()
-                }
-                else
-                {
-                    context.canvas.reduceobj.setperc(k);
-                    bossobj.leftright(-1*context.canvas.speedobj.value());
-                }
-            }
-            else if (Number(zoom.value()))
-            {
-		    /*
-                var h = (rect.height*(1-zoom.value()/100))*2;
-                y = (y/rect.height)*h;
-                var k = panvert(rowobj, h-y);
-                if (k == -1)
-                    return;
-                if (k == rowobj.anchor())
-                    return;
-                rowobj.set(k);
-                bossobj.reset();
-		*/
-            }		
+	    	var stretch = stretchobj.value();
+	    	stretch.setperc(k);
+	    	contextobj.reset()
+            }	
         }
     },
 	panstart: function (context, rect, x, y)
@@ -3109,7 +3089,7 @@ var bosslst =
 
             var rows = lst.length;
             var rh = 26;
-            var bh = 180;
+            var bh = rect.height/4;
             var cw = rect.width-30;
         var a = new panel.layerA(
         [
@@ -3119,24 +3099,24 @@ var bosslst =
                 new panel.row([0,bh,0],
                 [
                     0,
-                    galleryobj.advanced?new Layer(
+                    new Layer(
                     [
                         new panel.expand(new panel.fill(THUMBFILL),3,3),
                         new panel.expand(new panel.rectangle(context.slicewidthrect),10,1),
                         new panel.currentV(new panel.fill(NUBAR), bh/6, 0),
-                    ]):0,
+                    ]),
                     0,
                 ]),
                 0,
                 new panel.row([0,bh,0],
                 [
                     0,
-                    galleryobj.advanced?new Layer(
+                    new Layer(
                     [
                         new panel.expand(new panel.fill(THUMBFILL),3,3),
                         new panel.expand(new panel.rectangle(context.stretchrect),10,0),
                         new panel.currentV(new panel.fill(NUBAR), bh/6, 0),
-                    ]):0,
+                    ]),
                     0,
                 ]),
                 0,
@@ -3177,11 +3157,9 @@ var bosslst =
                         0,
                         galleryobj.debug?
                             slicewidthobj:
-                            context.canvas.speedobj,
+                            zoomobj.value(),
                         0,
-                        galleryobj.debug?
-                            stretchobj.value():
-                            context.canvas.reduceobj,
+                       stretchobj.value(),
                         0,
                     ],
                     [
