@@ -32,10 +32,10 @@ var requestOptions =
 };
 
 fetch("https://stablediffusionapi.com/api/v3/text2img", requestOptions)
-      .then(response => jsonhandler(response))
-      .then(function(json)
+      .then(response => texthandler(response))
+      .then(function(text)
 	    {
-		    console.log(json)
+		    console.log(text)
 	    })
       .catch(error => console.log(error) );
 
