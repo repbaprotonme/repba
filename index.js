@@ -5156,7 +5156,7 @@ function imagepath(user)
 {
     var src;
     if (user.id && user.id.length >= 5 &&
-	  ((id.charAt(id.length-5) == '.') ||
+	  ((user.id.charAt(user.id.length-5) == '.') ||
 	    user.id.charAt(8) == '-'))
     {
 	var template = galleryobj.gallerytemplate?galleryobj.gallerytemplate:"1080x1080";    
