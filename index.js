@@ -2589,7 +2589,7 @@ var keylst =
 	{
 		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
 		var j = _8cnv.virtualheight/window.innerHeight/2/TIMEOBJ;
-	        _8cnv.timeobj.set(k+j);
+	        _8cnv.timeobj.set(k-j);
 		context.refresh();
 	}
 	else if (key == "home" || key == "/")
