@@ -2579,7 +2579,7 @@ var keylst =
 	       var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
 		var j = window.innerHeight/TIMEOBJ;
 		var e = galleryobj.height/TIMEOBJ;
-		var k = k - j/2;//top of page
+		k = k - (e-j)/2;//top of page
 	        _8cnv.timeobj.set(k);
 		context.refresh();
 	}
