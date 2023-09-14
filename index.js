@@ -2585,6 +2585,12 @@ var keylst =
 	        _8cnv.timeobj.set(TIMEOBJ);
 		context.refresh();
 	}	
+      	else if (key == "3")
+	{
+		var j = _8cnv.virtualheight/window.innerHeight/2;
+	        _8cnv.timeobj.set(TIMEOBJ+j);
+		context.refresh();
+	}
 	else if (key == "home" || key == "/")
 	{
 	       var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
