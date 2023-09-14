@@ -2587,7 +2587,8 @@ var keylst =
 	}	
       	else if (key == "3")
 	{
-		var j = _8cnv.virtualheight/window.innerHeight/2;
+		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
+		var j = _8cnv.virtualheight/window.innerHeight/2/TIMEOBJ;
 	        _8cnv.timeobj.set(TIMEOBJ+j);
 		context.refresh();
 	}
