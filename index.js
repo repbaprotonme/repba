@@ -2591,13 +2591,11 @@ var keylst =
 	{
 		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
 		_8cnv.timeobj.set(k);
-		for (var n = 0; n < TIMEOBJ; ++n)
+		for (var n = 0; n < 10; ++n)
 		{
 			_8cnv.timeobj.rotate(1);
 			var size = Math.ceil(window.innerHeight/buttonobj.value());
         		var lst = util.rotated_list(_8cnv.rotated,_8cnv.sliceobj.length(),0,size);
-			if (lst[0] != 0)
-				brea;
 			console.log(lst)
 		}
 	        
