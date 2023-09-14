@@ -2576,7 +2576,7 @@ var keylst =
         }
         else if (key == "1")
 	{
-	       var k = TIMEOBJ + TIMEOBJ/galleryobj.length()/4
+	       var k = TIMEOBJ + TIMEOBJ/galleryobj.length()/8
 	        _8cnv.timeobj.set(k);
 		context.refresh();
 	}
