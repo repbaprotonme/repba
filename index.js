@@ -2574,7 +2574,16 @@ var keylst =
         {
             gotodialog();
         }
-        else if (key == "/" || key == "\\")
+        else if (key == "/")
+	{
+	       var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
+		var j = window.innerHeight/TIMEOBJ;
+		var e = galleryobj.height/TIMEOBJ;
+		var k = j + Math.abs(j-e)/2;//top of page
+	        _8cnv.timeobj.set(k);
+		context.refresh();
+	}
+	else if (key == "\\")
         {
             var h = headcnv.height?0:BEXTENT;
             headcnvctx.show(0,0,window.innerWidth,h);
