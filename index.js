@@ -2589,9 +2589,14 @@ var keylst =
 	}	
       	else if (key == "4")
 	{
+		var j = 0;
 		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
-		var e = window.innerHeight/_8cnv.virtualheight/2;
-		var j = e*TIMEOBJ;
+		if (buttonobj.value() > window.innerHeight)
+		{
+			var e = window.innerHeight/_8cnv.virtualheight/2;
+			j = e*TIMEOBJ;
+		}
+		
 	        _8cnv.timeobj.set(k+j);
 		context.refresh();
 	}
