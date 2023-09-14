@@ -5510,6 +5510,7 @@ galleryobj.init = function (obj)
     else
     {
         var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;
+	var k = TIMEOBJ - TIMEOBJ/galleryobj.length();
         if (galleryobj.length()==1)
             k = 2700;
         _8cnv.timeobj.set(k);
