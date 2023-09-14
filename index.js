@@ -2578,7 +2578,7 @@ var keylst =
 	{
 	       var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
 		var a = window.innerHeight/window.innerWidth;
-		var h = a*galleryobj.width;
+		var h = galleryobj.width/a;
 		var j = window.innerHeight/TIMEOBJ;
 		var e = h/TIMEOBJ;
 		k = k + Math.abs(e-j)/2;//top of page
@@ -5636,8 +5636,8 @@ localobj.time = 0;
 try
 {
     var k = localStorage.getItem(url.path);
-    //if (k)
-    //  localobj = JSON.parse(k);
+    if (k)
+      localobj = JSON.parse(k);
 }
 catch(_)
 {
