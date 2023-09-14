@@ -2588,7 +2588,7 @@ var keylst =
       	else if (key == "4")
 	{
 		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
-		var j = (window.innerHeight/_8cnv.virtualheight)*TIMEOBJ/2;
+		var j = ((window.innerHeight/_8cnv.virtualheight)*TIMEOBJ)/2;
 	        _8cnv.timeobj.set(k+j);
 		context.refresh();
 	}
