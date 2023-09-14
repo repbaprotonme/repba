@@ -2588,8 +2588,8 @@ var keylst =
       	else if (key == "4")
 	{
 		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
-		var e = buttonobj.value()/_8cnv.virtualheight/2;
-		var j = e*TIMEOBJ;
+		var e = window.innerHeight/_8cnv.virtualheight;
+		var j = (e*TIMEOBJ)/2;
 	        _8cnv.timeobj.set(k+j);
 		context.refresh();
 	}
