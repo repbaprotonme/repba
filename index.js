@@ -37,7 +37,6 @@ const SCROLLMARGIN = 8;
 const MENUSELECT = "rgba(255,175,0,0.4)";
 const MENUTAP = "rgba(255,125,0,0.7)";
 const SCROLLNAB = "rgba(0,0,0,0.3)";
-const DARKNAB = "rgba(0,0,0,0.85)";
 const MENUCOLOR = "rgba(0,0,0,0.5)";
 const OPTIONFILL = "white";
 const THUMBFILP = "rgba(0,0,0,0.4)";
