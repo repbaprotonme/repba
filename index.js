@@ -28,7 +28,6 @@ const SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const FIREFOX = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 const VIRTCONST = 0.8;
 const MAXVIRTUAL = 5760*(iOS()?3:10);
-const MENUBARWIDTH = 12;
 const THUMBORDER = 5;
 const BUTTONMARGIN = 30;
 const ALIEXTENT = 60;
