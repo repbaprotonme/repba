@@ -2583,13 +2583,13 @@ var keylst =
 	else if (key == "2")
 	{
 	        _8cnv.timeobj.set(TIMEOBJ);
-		context.refresh();
+		context.refresh(); 
 	}	
       	else if (key == "4")
 	{
 		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
-		var e = window.innerHeight/_8cnv.virtualheight;
-		var j = (e*TIMEOBJ)/2;
+		var e = window.innerHeight/_8cnv.virtualheight/2;
+		var j = e*TIMEOBJ;
 	        _8cnv.timeobj.set(k+j);
 		context.refresh();
 	}
