@@ -2588,7 +2588,7 @@ var keylst =
       	else if (key == "3")
 	{
 		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
-		var j = _8cnv.virtualheight/window.innerHeight/2/TIMEOBJ;
+		var j = _8cnv.virtualheight/buttonobj.value()/2/TIMEOBJ;
 	        _8cnv.timeobj.set(k-j);
 		context.refresh();
 	}
