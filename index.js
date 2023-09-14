@@ -2578,7 +2578,7 @@ var keylst =
 	{
 	       var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
 		var a = window.innerHeight/window.innerWidth;
-		var h = galleryobj.width/a;
+		var h = buttonobj.value();
 		var j = window.innerHeight/TIMEOBJ;
 		var e = h/TIMEOBJ;
 		k = k + Math.abs(e-j)/2;//top of page
