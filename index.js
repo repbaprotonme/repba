@@ -2574,14 +2574,21 @@ var keylst =
         {
             gotodialog();
         }
-        else if (key == "/")
+        else if (key == "1")
+	{
+	       var k = TIMEOBJ + TIMEOBJ/galleryobj.length()
+	        _8cnv.timeobj.set(k);
+		context.refresh();
+	}
+	else if (key == "2")
+	{
+	       var k = TIMEOBJ + TIMEOBJ/galleryobj.length()
+	        _8cnv.timeobj.set(k);
+		context.refresh();
+	}	
+	else if (key == "/")
 	{
 	       var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
-		var a = window.innerHeight/window.innerWidth;
-		var h = buttonobj.value();
-		var j = window.innerHeight/TIMEOBJ;
-		var e = h/TIMEOBJ;
-		k = k + Math.abs(e-j)/2;//top of page
 	        _8cnv.timeobj.set(k);
 		context.refresh();
 	}
