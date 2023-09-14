@@ -2576,8 +2576,10 @@ var keylst =
         }
         else if (key == "1")
 	{
-	       var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/4
-	        _8cnv.timeobj.set(k);
+		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
+		var e = window.innerHeight/_8cnv.virtualheight/2;
+		var j = e*TIMEOBJ;
+	        _8cnv.timeobj.set(k+j);
 		context.refresh();
 	}
 	else if (key == "2")
