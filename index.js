@@ -2593,7 +2593,7 @@ var keylst =
 		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
 		if (buttonobj.value() > window.innerHeight)
 		{
-			var e = buttonobj.value()/_8cnv.virtualheight/2;
+			var e = window.innerHeight/_8cnv.virtualheight/2;
 			j = e*TIMEOBJ;
 		}
 		
