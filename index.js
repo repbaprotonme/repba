@@ -2589,16 +2589,15 @@ var keylst =
 	}	
       	else if (key == "4")
 	{
-		var j = 0;
 		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
-		if (buttonobj.value() > window.innerHeight)
+		for (var n = k; n < TIMEOBJ; ++n)
 		{
-			var m = window.innerHeight/2;
-			var e = m/_8cnv.virtualheight;
-			j = e*TIMEOBJ;
+			_8cnv.timeobj.rotate(1);
+			var size = Math.ceil(window.innerHeight/buttonobj.value());
+        		var lst = util.rotated_list(_8cnv.rotated,_8cnv.sliceobj.length(),0,size);
+			conosle.log(lst)
 		}
-		
-	        _8cnv.timeobj.set(k+j);
+	        
 		context.refresh();
 	}
      	else if (key == "3")
