@@ -2582,7 +2582,7 @@ var keylst =
 	}
 	else if (key == "2")
 	{
-	       var k = TIMEOBJ + TIMEOBJ/galleryobj.length()
+	       var k = TIMEOBJ - TIMEOBJ/galleryobj.length()
 	        _8cnv.timeobj.set(k);
 		context.refresh();
 	}	
