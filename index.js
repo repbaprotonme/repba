@@ -2595,7 +2595,7 @@ var keylst =
 			_8cnv.timeobj.rotate(1);
 			var size = Math.ceil(window.innerHeight/buttonobj.value());
         		var lst = util.rotated_list(_8cnv.rotated,_8cnv.sliceobj.length(),0,size);
-			conosle.log(lst)
+			console.log(lst)
 		}
 	        
 		context.refresh();
