@@ -5502,26 +5502,6 @@ galleryobj.init = function (obj)
     var a = Array(_11cnv.sliceobj.length()).fill().map((_, index) => index);
     _11cnv.rotated = [...a,...a,...a];
 
-    var j = Number(localobj.time);
-    if (j > 0 && j < TIMEOBJ)
-    {
-        _8cnv.timeobj.set(j);
-    }
-    else
-    {
-        var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;
-	var k = TIMEOBJ - TIMEOBJ/galleryobj.length();
-        if (galleryobj.length()==1)
-            k = 2700;
-        _8cnv.timeobj.set(k);
-    }
-
-    if (!galleryobj.length())
-    {
-        showsearch("unsplash");
-	return;
-    }
-	
     if (galleryobj.width)
     {
         buttonobj.reset();
@@ -5556,7 +5536,25 @@ galleryobj.init = function (obj)
 	headobj.set(galleryobj.length()>6?GALLERY:BOSS);
 	headham.panel = headobj.value();
 	headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
- }
+
+    var j = Number(localobj.time);
+    if (j > 0 && j < TIMEOBJ)
+    {
+        _8cnv.timeobj.set(j);
+    }
+    else if (galleryobj.length()==1)
+    {
+        _8cnv.timeobj.set(2700);
+    }
+    else
+    {
+        var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
+	var j = window.innerHeight/TIMEOBJ;
+	var e = galleryobj.height/TIMEOBJ;
+	var k = TIMEOBJ - Math.abs(j-e)/2;
+        _8cnv.timeobj.set(k);
+    }
+}
 
 url.path = "home";
 if (url.searchParams.has("p"))
@@ -5628,8 +5626,8 @@ localobj.time = 0;
 try
 {
     var k = localStorage.getItem(url.path);
-    if (k)
-      localobj = JSON.parse(k);
+    //if (k)
+    //  localobj = JSON.parse(k);
 }
 catch(_)
 {
