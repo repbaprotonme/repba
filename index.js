@@ -5527,6 +5527,7 @@ galleryobj.init = function (obj)
             galleryobj.height = this.height;
 		buttonobj.reset();
 		initime();
+		contextobj.reset();
         };
     }
 
@@ -5557,10 +5558,7 @@ function initime()
     else
     {
         var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
-	var j = window.innerHeight/TIMEOBJ;
-	var e = galleryobj.height/TIMEOBJ;
-	var k = j + Math.abs(j-e)/2;//top of page
-        _8cnv.timeobj.set(k);
+	_8cnv.timeobj.set(k);
     }
 
     menuobj.draw();
