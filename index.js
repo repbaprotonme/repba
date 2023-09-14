@@ -2577,9 +2577,11 @@ var keylst =
         else if (key == "/")
 	{
 	       var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
+		var a = window.innerHeight/window.innerWidth;
+		var h = a*galleryobj.width;
 		var j = window.innerHeight/TIMEOBJ;
-		var e = galleryobj.height/TIMEOBJ;
-		k = k + e/2;//Math.abs(e-j);// /2;//top of page
+		var e = h/TIMEOBJ;
+		k = k + Math.abs(e-j)/2;//top of page
 	        _8cnv.timeobj.set(k);
 		context.refresh();
 	}
