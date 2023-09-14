@@ -2593,7 +2593,7 @@ var keylst =
 		//_8cnv.timeobj.set(k);
 		for (var n = 0; n < 100; ++n)
 		{
-			_8cnv.timeobj.rotateper(-0.01);
+			_8cnv.timeobj.rotateperc(-0.01);
 			var size = Math.ceil(window.innerHeight/buttonobj.value());
         		var lst = util.rotated_list(_8cnv.rotated,_8cnv.sliceobj.length(),0,size);
 			console.log(lst)
