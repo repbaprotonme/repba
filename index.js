@@ -2585,10 +2585,17 @@ var keylst =
 	        _8cnv.timeobj.set(TIMEOBJ);
 		context.refresh();
 	}	
-      	else if (key == "3")
+      	else if (key == "4")
 	{
 		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
-		var j = _8cnv.virtualheight/buttonobj.value()/2/TIMEOBJ;
+		var j = (window.innerHeight/_8cnv.virtualheight)*TIMEOBJ/2;
+	        _8cnv.timeobj.set(k+j);
+		context.refresh();
+	}
+     	else if (key == "3")
+	{
+		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
+		var j = (window.innerHeight/_8cnv.virtualheight)*TIMEOBJ/2;
 	        _8cnv.timeobj.set(k-j);
 		context.refresh();
 	}
