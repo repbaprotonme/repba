@@ -2591,7 +2591,7 @@ var keylst =
 	{
 		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
 		_8cnv.timeobj.set(k);
-		for (var n = k; n < TIMEOBJ; ++n)
+		for (var n = 0; n < TIMEOBJ; ++n)
 		{
 			_8cnv.timeobj.rotate(1);
 			var size = Math.ceil(window.innerHeight/buttonobj.value());
