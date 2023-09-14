@@ -2576,13 +2576,13 @@ var keylst =
         }
         else if (key == "1")
 	{
-	       var k = TIMEOBJ + TIMEOBJ/galleryobj.length()
+	       var k = TIMEOBJ + TIMEOBJ/galleryobj.length()/4
 	        _8cnv.timeobj.set(k);
 		context.refresh();
 	}
 	else if (key == "2")
 	{
-	       var k = TIMEOBJ - TIMEOBJ/galleryobj.length()
+	       var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/4
 	        _8cnv.timeobj.set(k);
 		context.refresh();
 	}	
