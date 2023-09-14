@@ -5551,7 +5551,7 @@ galleryobj.init = function (obj)
         var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
 	var j = window.innerHeight/TIMEOBJ;
 	var e = galleryobj.height/TIMEOBJ;
-	var k = TIMEOBJ + Math.abs(j-e)/2;
+	var k = j + Math.abs(j-e)/2;
         _8cnv.timeobj.set(k);
     }
 }
