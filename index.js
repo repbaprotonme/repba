@@ -2576,17 +2576,19 @@ var keylst =
         }
         else if (key == "1")
 	{
-	       var k = TIMEOBJ + TIMEOBJ/galleryobj.length()/8
-	        _8cnv.timeobj.set(k);
+	       var k = TIMEOBJ + TIMEOBJ/galleryobj.length()/2
+		var j = TIMEOBJ - TIMEOBJ/galleryobj.length()
+		var e = TIMEOBJ - (k-j)/2;
+	        _8cnv.timeobj.set(e);
 		context.refresh();
 	}
 	else if (key == "2")
 	{
-	       var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/4
+	       var k = TIMEOBJ - TIMEOBJ/galleryobj.length()
 	        _8cnv.timeobj.set(k);
 		context.refresh();
 	}	
-	else if (key == "/")
+	else if (key == "home" || key == "/")
 	{
 	       var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
 	        _8cnv.timeobj.set(k);
