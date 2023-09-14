@@ -2576,11 +2576,8 @@ var keylst =
         }
         else if (key == "1")
 	{
-	       var k = TIMEOBJ/galleryobj.length()/2
-		var j = TIMEOBJ/galleryobj.length()
-		var e = TIMEOBJ - k;
-		e += j;
-	        _8cnv.timeobj.set(e);
+	       var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/4
+	        _8cnv.timeobj.set(k);
 		context.refresh();
 	}
 	else if (key == "2")
