@@ -2578,7 +2578,8 @@ var keylst =
 	{
 	       var k = TIMEOBJ/galleryobj.length()/2
 		var j = TIMEOBJ/galleryobj.length()
-		var e = TIMEOBJ + k - j;
+		var e = TIMEOBJ - k;
+		e += j;
 	        _8cnv.timeobj.set(e);
 		context.refresh();
 	}
