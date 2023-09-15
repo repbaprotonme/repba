@@ -7,8 +7,6 @@ https://zip-view.com
 https://ipfs-view.com
 */
 
-
-
 function iOS()
 {
     return
@@ -2432,8 +2430,7 @@ pressobj.set(3);
 
 function home()
 {
-	return;
-	var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
+	var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2; //centered
 	_8cnv.timeobj.set(k);
 	menuobj.draw();
 	if (_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
@@ -2441,14 +2438,6 @@ function home()
 		while (_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
 		{
 			_8cnv.timeobj.rotateperc(-0.001);
-			menuobj.draw();
-		}
-	}
-	else
-	{
-		while (!_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
-		{
-			_8cnv.timeobj.rotateperc(0.001);
 			menuobj.draw();
 		}
 	}
