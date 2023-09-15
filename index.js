@@ -5569,13 +5569,15 @@ function initime()
     else if (galleryobj.length()==1)
     {
         _8cnv.timeobj.set(2700);
+	menuobj.draw();    
     }
     else
     {
-	home();
+	setTimeout(function()
+	{
+		home();
+	},40)
     }
-
-    menuobj.draw();
 }
 
 url.path = "home";
