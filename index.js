@@ -4079,7 +4079,7 @@ contextobj.reset = function ()
                 _8cnv.rotated,galleryobj.length(),
                 galleryobj.current()+1,9);
 
-		if (!menuobj.value())
+		if (1)//!menuobj.value())
 		{	
 	            for (var m = 0; m < rotated.length; ++m)
 	            {
