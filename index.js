@@ -2594,9 +2594,7 @@ var keylst =
 		//for (var n = 0; n < 100; ++n)
 		{
 			_8cnv.timeobj.rotateperc(-0.0001);
-			var size = Math.ceil(window.innerHeight/buttonobj.value());
-        		var lst = util.rotated_list(_8cnv.rotated,_8cnv.sliceobj.length(),0,size);
-			console.log(lst)
+			menuobj.draw();
 		}
 	        
 		context.refresh();
