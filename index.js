@@ -2428,7 +2428,7 @@ var presslst =
 var pressobj = new circular_array("PRESS", presslst);
 pressobj.set(3);
 
-function home2()
+function home()
 {
 	var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2; //centered
 	_8cnv.timeobj.set(k);
@@ -2451,7 +2451,7 @@ function home2()
 	}
 }
 
-function home()
+function home2()//todo
 {
 	var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2; //centered
 	_8cnv.timeobj.set(k);
