@@ -5648,8 +5648,8 @@ localobj.time = 0;
 try
 {
     var k = localStorage.getItem(url.path);
-    if (k)
-      localobj = JSON.parse(k);
+    //if (k)
+     // localobj = JSON.parse(k);
 }
 catch(_)
 {
