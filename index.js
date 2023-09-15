@@ -2590,7 +2590,7 @@ var keylst =
       	else if (key == "4")
 	{
 		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/8;//centered
-		_8cnv.timeobj.set(k);
+		//_8cnv.timeobj.set(k);
 		//for (var n = 0; n < 100; ++n)
 		{
 			_8cnv.timeobj.rotateperc(-0.0001);
