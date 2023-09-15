@@ -5691,8 +5691,8 @@ function gotodialog()
         }
     }
 
-    var input = document.getElementById("page-input");
-    dialog = document.getElementById("page-dialog");
+    var input = document.getElementById("goto-input");
+    dialog = document.getElementById("goto-dialog");
     input.addEventListener("keyup", function(event)
     {
       if (event.keyCode === 13)
