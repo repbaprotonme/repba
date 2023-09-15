@@ -2593,7 +2593,7 @@ var keylst =
 		//_8cnv.timeobj.set(k);
 		//for (var n = 0; n < 100; ++n)
 		{
-			_8cnv.timeobj.rotateperc(-0.001);
+			_8cnv.timeobj.rotateperc(-0.01);
 			menuobj.draw();
 		}
 	        
