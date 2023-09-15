@@ -3866,7 +3866,7 @@ menuobj.draw = function()
                 console.log(error);
             }
         }
-        else
+        //else
         {
             var t = time + n*delayinterval;
             var bos = Math.tan(t*VIRTCONST);
@@ -5573,10 +5573,7 @@ function initime()
     }
     else
     {
-	setTimeout(function()
-	{
 		home();
-	},40)
     }
 }
 
