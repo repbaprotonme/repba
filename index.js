@@ -2548,7 +2548,6 @@ var keylst =
 	    key == "backspace" ||
             (canvas.shiftKey && key == "enter") ||
             (canvas.shiftKey && key == " ") ||
-            key == "w" ||
             key == "k")
         {
             menuobj.updown(context, -canvas.speedobj.value()/3);
@@ -2568,7 +2567,6 @@ var keylst =
             key == "pagedown" ||
             key == "enter" ||
             key == " " ||
-            key == "s" ||
             key == "j")
         {
             menuobj.updown(context, canvas.speedobj.value()/3);
@@ -2594,8 +2592,11 @@ var keylst =
         else if (key == "g")
         {
             gotodialog();
-        }
-		
+        }		
+        else if (key == "s")
+        {
+            showsearch();
+        }		
 	else if (key == "home" || key == "/")
 	{
 		home();
@@ -2620,7 +2621,6 @@ var keylst =
         else if (
             (canvas.shiftKey && key == "tab") ||
             key == "arrowleft" ||
-            key == "a" ||
             key == "h")
 		{
             menuobj.leftright (context, -canvas.speedobj.value()/3)
@@ -2628,7 +2628,6 @@ var keylst =
         else if (
             (!canvas.shiftKey && key == "tab") ||
             key == "arrowright" ||
-            key == "d" ||
             key == "l")
 		{
             menuobj.leftright (context, canvas.speedobj.value()/3)
@@ -5296,12 +5295,6 @@ galleryobj.init = function (obj)
 
     _3cnv.sliceobj.data =
     [
-        {title:"dalle prompt", func: function()
-            {
-                promptdialog();
-             },
-            enabled: function() { return false }
-        },
         {title:"propelauth", func: function()
             {
                 authclient = propelauth.createclient({authurl: "https://auth.ipfs-view.pages.dev", enablebackgroundtokenrefresh: true})
@@ -5412,9 +5405,7 @@ galleryobj.init = function (obj)
 
     _6cnv.sliceobj.data =
     [
-        {title:"unsplash\nimage search", func: function() { showsearch("unsplash"); }, enabled: function() {return false;} },
-        {title:"pexels\nimage search", func: function() { showsearch("pexels"); }, enabled: function() {return false;} },
-        {title:"pixabay\nimage search",func: function() { showsearch("pixabay"); }, enabled: function() {return false;} },
+     
     ];
 
     var a = Array(_6cnv.sliceobj.length()).fill().map((_, index) => index);
@@ -5426,12 +5417,20 @@ galleryobj.init = function (obj)
             {
                 gotodialog();
             }
-        }, 
-	    {title:"File Explorer", func: function()
+        },
+
+    {title:"Search\nctrl+s", func: function()
+            {
+                showsearch();
+            }
+        },
+	    
+     {title:"File Explorer", func: function()
             {
                 importdialog();
             }
         },
+	    
         {
             title: "ipfs-view\nImage Viewer\nhttps://ipfs-view\nimages@ipfs-view.com",
             func: function() {}
@@ -5736,7 +5735,7 @@ function gotodialog()
     dialog.showModal();
 }
 
-function showsearch(repos)
+function showsearch()
 {
     var input = document.getElementById("search-input");
     dialog = document.getElementById("search-dialog");
@@ -5748,7 +5747,7 @@ function showsearch(repos)
             var search = input.value.clean();
             if (!search)
                 return;
-            window.open(`${url.origin}?${repos}=${search}&page=1`,"_self");
+            //todo
         }
     });
 
@@ -5760,7 +5759,7 @@ function showsearch(repos)
             var search = input.value.clean();
             if (!search)
                 return;
-            window.open(`${url.origin}?${repos}=${search}&page=1`,"_self");
+            //todo
         }
         else if (!rect.hitest(event.x, event.y))
         {
@@ -5780,49 +5779,6 @@ function showsearch(repos)
     input.value = search;
     dialog.showModal();
 }
-
-function promptdialog(str)
-{
-    var button = document.getElementById ("prompt-ok");
-    button.innerHTML = "Submiit";
-    var textarea = document.getElementById ("prompt-dialog");
-    var rows = (window.innerHeight*0.50)/25;
-    textarea.rows = rows;
-    textarea.readOnly = false;
-
-    dialog = document.getElementById("prompt-dialog");
-    dialog.addEventListener("click", function(event)
-    {
-        var rect = new rectangle(input.getBoundingClientRect());
-        if (event.target.id == "prompt-ok")
-        {
-            fetch(`https://dalle.reportbase5836.workers.dev`,
-            {
-                method: 'POST',
-                body: JSON.stringify({ 'prompt': textarea.value, 'n': 1, 'size': '1024x1024' })
-            })
-            .then((response) => jsonhandler(response))
-            .then((json) =>
-                {
-                    galleryobj.data.splice(0,0,...json);
-                    _8cnv.timeobj.set(0);
-                    menuobj.setindex(_8cnvctx);
-                    menuobj.show()
-                })
-            .catch((error) => {});
-            dialog.close();
-        }
-        else if (rect.hitest(x,y))
-        {
-            dialog.close();
-        }
-    });
-
-    textarea.value = str;
-    dialog.showModal();
-    textarea.setSelectionRange(0, 0);
-}
-
 async function copytext(text)
 {
     if (navigator.clipboard)
