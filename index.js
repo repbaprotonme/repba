@@ -2613,7 +2613,7 @@ var keylst =
 		
 	else if (key == "home" || key == "/")
 	{
-		home2();
+		home();
 	}
 	else if (key == "\\")
         {
