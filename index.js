@@ -2428,6 +2428,21 @@ var presslst =
 var pressobj = new circular_array("PRESS", presslst);
 pressobj.set(3);
 
+function home2()
+{
+	var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2; //centered
+	_8cnv.timeobj.set(k);
+	menuobj.draw();
+	if (!_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
+	{
+		while (!_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
+		{
+			_8cnv.timeobj.rotateperc(0.001);
+			menuobj.draw();
+		}
+	}
+}
+
 function home()
 {
 	var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2; //centered
@@ -2590,7 +2605,7 @@ var keylst =
 		
 	else if (key == "home" || key == "/")
 	{
-		home();
+		home2();
 	}
 	else if (key == "\\")
         {
