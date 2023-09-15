@@ -5530,6 +5530,16 @@ galleryobj.init = function (obj)
     {
         buttonobj.reset();
    	initime();
+	contextobj.reset();
+	menuobj.hide();
+	if (galleryobj.length()>GALLERYMIN)
+	    menuobj.toggle(_8cnvctx);
+	if (galleryobj.length()<=GALLERYMIN)
+	    galleryobj.showboss = 1;
+	_4cnvctx.refresh();
+	headobj.set(galleryobj.length()>6?GALLERY:BOSS);
+	headham.panel = headobj.value();
+	headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);    
     }
     else
     {
@@ -5543,19 +5553,19 @@ galleryobj.init = function (obj)
 		buttonobj.reset();
 		initime();
 		contextobj.reset();
-        };
+		menuobj.hide();
+		if (galleryobj.length()>GALLERYMIN)
+		    menuobj.toggle(_8cnvctx);
+		if (galleryobj.length()<=GALLERYMIN)
+		    galleryobj.showboss = 1;
+		_4cnvctx.refresh();
+		headobj.set(galleryobj.length()>6?GALLERY:BOSS);
+		headham.panel = headobj.value();
+		headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);           
+	};
     }
 
-    contextobj.reset();
-	menuobj.hide();
-	if (galleryobj.length()>GALLERYMIN)
-	    menuobj.toggle(_8cnvctx);
-	if (galleryobj.length()<=GALLERYMIN)
-	    galleryobj.showboss = 1;
-	_4cnvctx.refresh();
-	headobj.set(galleryobj.length()>6?GALLERY:BOSS);
-	headham.panel = headobj.value();
-	headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+    
 }
 
 function initime()
