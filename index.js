@@ -5572,6 +5572,7 @@ galleryobj.init = function (obj)
 
 function initime()
 {
+	menuobj.set(_8cnvctx);
     var j = Number(localobj.time);
     if (j > 0 && j < TIMEOBJ)
     {
@@ -5588,7 +5589,6 @@ function initime()
     }
 
 	contextobj.reset();
-	menuobj.hide();
 	if (galleryobj.length()>GALLERYMIN)
 	    menuobj.toggle(_8cnvctx);
 	if (galleryobj.length()<=GALLERYMIN)
