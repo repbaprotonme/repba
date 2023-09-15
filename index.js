@@ -2430,6 +2430,18 @@ var presslst =
 var pressobj = new circular_array("PRESS", presslst);
 pressobj.set(3);
 
+function home()
+{
+	var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/8;//centered
+	_8cnv.timeobj.set(k);
+	menuobj.draw();
+	while (_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
+	{
+		_8cnv.timeobj.rotateperc(-0.001);
+		menuobj.draw();
+	}
+}
+
 var swipelst =
 [
 {
@@ -2574,42 +2586,10 @@ var keylst =
         {
             gotodialog();
         }
-        else if (key == "1")
-	{
-		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
-		var e = window.innerHeight/_8cnv.virtualheight/2;
-		var j = e*TIMEOBJ;
-	        _8cnv.timeobj.set(k+j);
-		context.refresh();
-	}
-	else if (key == "2")
-	{
-	        _8cnv.timeobj.set(TIMEOBJ);
-		context.refresh(); 
-	}	
-      	else if (key == "4")
-	{
-		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/8;//centered
-		_8cnv.timeobj.set(k);
-		while (_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
-		{
-			_8cnv.timeobj.rotateperc(-0.001);
-			menuobj.draw();
-		}
-	    
-	}
-     	else if (key == "3")
-	{
-		var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
-		var j = (window.innerHeight/_8cnv.virtualheight)*TIMEOBJ/2;
-	        _8cnv.timeobj.set(k-j);
-		context.refresh();
-	}
+		
 	else if (key == "home" || key == "/")
 	{
-	       var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
-	        _8cnv.timeobj.set(k);
-		context.refresh();
+		home();
 	}
 	else if (key == "\\")
         {
@@ -5485,6 +5465,13 @@ galleryobj.init = function (obj)
             },
             enabled: function() { return 0; }
         },
+	
+	{title:"Home\nctrl+/", func: function()
+            {
+                home();
+            },
+            enabled: function() { return 0; }
+        },    
 	   
 	{title:"Full Screen\nctrl+f", func: function()
             {
@@ -5585,8 +5572,7 @@ function initime()
     }
     else
     {
-        var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;//centered
-	_8cnv.timeobj.set(k);
+	home();
     }
 
     menuobj.draw();
