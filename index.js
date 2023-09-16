@@ -1628,7 +1628,7 @@ var wheelst =
 		{
 		    context.canvas.lastime = -0.0000000000101010101;
 		    menuobj.draw();
-		}, 80);
+		}, TIMEMAIN);
         }
     },
     leftright: function (context, x, y, delta, ctrl, shift, alt, type)
@@ -2428,7 +2428,7 @@ function home()
 	menuobj.draw();	
 	var e = buttonobj.value()/2;
 	var j = e/_8cnv.virtualheight;
-	var k = _8cnv.timeobj.current() + j*_8cnv.timeobj.length();
+	var k = _8cnv.timeobj.current() + j*_8cnv.timeobj.length();//todo
 	_8cnv.timeobj.set(k)
 	menuobj.draw();
 }
@@ -3794,6 +3794,7 @@ menuobj.draw = function()
     {
         clearInterval(global.swipetimeout)
         global.swipetimeout = 0;
+	context.canvas.slideshow = 0;    
     }
 
     var len = context.canvas.sliceobj.length()
