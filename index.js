@@ -2430,8 +2430,25 @@ pressobj.set(3);
 
 function home()
 {
-	_8cnv.timeobj.set(3926.7887739193184);//todo
+	var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2; //centered
+	_8cnv.timeobj.set(k);
 	menuobj.draw();
+	if (_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
+	{
+		while (_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
+		{
+			_8cnv.timeobj.rotateperc(-0.0001);//todo
+			menuobj.draw();
+		}
+	}
+	else
+	{
+		while (!_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
+		{
+			_8cnv.timeobj.rotateperc(0.0001);
+			menuobj.draw();
+		}
+	}
 }
 
 var swipelst =
