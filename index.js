@@ -3683,7 +3683,7 @@ var buttonlst =
                     var y = Math.nub(obj.value(), obj.length(),
                         rect.height, thumbfitted.height);
                     context.drawImage(thumbfitted,
-                        0, Mat.floor(y), Math.floor(rect.width), Math.floor(rect.height),
+                        0, Math.floor(y), Math.floor(rect.width), Math.floor(rect.height),
                         0, 0, Math.floor(rect.width), Math.floor(rect.height));
                 }
             }
