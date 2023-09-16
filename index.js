@@ -1622,7 +1622,8 @@ var wheelst =
         {
             clearInterval(context.canvas.leftright)
             menuobj.updown(context, delta)
-		clearInterval(global.swipetimeout)
+		if (global.swipetimeout)
+			return;
 		global.swipetimeout = setInterval(function ()
 		{
 		    context.canvas.lastime = -0.0000000000101010101;
