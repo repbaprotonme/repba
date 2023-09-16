@@ -2421,9 +2421,9 @@ var presslst =
 var pressobj = new circular_array("PRESS", presslst);
 pressobj.set(3);
 
-function goto(page)
+function gotoimage(n)
 {
-     var k = (page-1)/galleryobj.length();
+     var k = (n-1)/galleryobj.length();
      _8cnv.timeobj.setperc(1-k);
      _8cnvctx.refresh();
 }
@@ -5690,15 +5690,15 @@ function downloadtext(name, text)
 
 function gotodialog()
 {
-    function go(page)
+    function go(image)
     {
         if (menuobj.value() == _8cnvctx)
         {
-		goto(page-1);
+		gotoimage(image-1);
         }
         else
         {
-            galleryobj.set(page-1);
+            galleryobj.set(image-1);
             delete _4cnv.thumbcanvas;
             delete photo.image;
             contextobj.reset();
