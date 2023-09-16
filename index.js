@@ -5908,7 +5908,9 @@ menuobj.leftright = function (context, delta)
 {
     clearInterval(global.swipetimeout);
     global.swipetimeout = 0;
-
+	if (!delta)
+	    return;
+    
     if (delta != context.canvas.leftrighttype)
     {
         clearInterval(context.canvas.leftrightime);
