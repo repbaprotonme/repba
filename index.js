@@ -2429,7 +2429,7 @@ function home()
 	menuobj.draw();	
 	var e = buttonobj.value()/2;
 	var j = e/_8cnv.virtualheight;
-	var k = _8cnv.timeobj.current() - j*this.length();
+	var k = _8cnv.timeobj.current() - j*_8cnv.timeobj.length();
 	_8cnv.timeobj.set(k)
 	menuobj.draw();
 }
