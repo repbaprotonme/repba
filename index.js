@@ -2433,25 +2433,28 @@ function home()
 	var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2; //centered
 	_8cnv.timeobj.set(k);
 	menuobj.draw();
-	if (_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
-	{
+	var j = _8cnv.sliceobj.length()-1
+	var data = _8cnv.sliceobj;
 		var count = 0;
-		while (_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
+	if (data[j].isvisible)
+	{
+		while (data[j].isvisible)
 		{
 			count ++;
 			_8cnv.timeobj.rotateperc(-0.00001);//todo
 			menuobj.draw();
 		}
-		console.log(count);
 	}
 	else
 	{
-		while (!_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
+		while (!data[j].isvisible)
 		{
+			count ++;
 			_8cnv.timeobj.rotateperc(0.00001);
 			menuobj.draw();
 		}
 	}
+		console.log(count);
 }
 
 var swipelst =
