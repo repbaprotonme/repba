@@ -2437,7 +2437,7 @@ function home()
 	{
 		while (_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
 		{
-			_8cnv.timeobj.rotateperc(-0.001);
+			_8cnv.timeobj.rotateperc(-0.00001);//todo
 			menuobj.draw();
 		}
 	}
@@ -2445,7 +2445,7 @@ function home()
 	{
 		while (!_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
 		{
-			_8cnv.timeobj.rotateperc(0.001);
+			_8cnv.timeobj.rotateperc(0.00001);
 			menuobj.draw();
 		}
 	}
@@ -2583,20 +2583,24 @@ var keylst =
         }
 	else if (key == "0" && canvas.ctrlKey)
 	{
+		evt.preventDefault();
 			buttonobj.reset()
 			menuobj.draw();
 	}
         else if (key == "g" && canvas.ctrlKey)
         {
+		evt.preventDefault();
             gotodialog();
         }		
         else if (key == "s" && canvas.ctrlKey)
         {
+		evt.preventDefault();
             showsearch();
         }		
 	else if (key == "home" || key == "/")
 	{
 		home();
+		evt.preventDefault();
 	}
 	else if (key == "\\")
         {
@@ -2604,33 +2608,39 @@ var keylst =
             headcnvctx.show(0,0,window.innerWidth,h);
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             context.refresh()
-        }
+        	evt.preventDefault();
+	}
         else if (key == "-" || key == "[")
         {
             buttonobj.addperc(-1.0/100);
             context.refresh()
-        }
+        	evt.preventDefault();
+	}
         else if (key == "+" || key == "]" || key == "=")
         {
             buttonobj.addperc(1.0/100);
             context.refresh()
-        }
+        	evt.preventDefault();
+	}	
         else if (
             (canvas.shiftKey && key == "tab") ||
             key == "arrowleft" ||
             key == "h")
-		{
+	{
+		evt.preventDefault();
             menuobj.leftright (context, -canvas.speedobj.value()/3)
         }
         else if (
             (!canvas.shiftKey && key == "tab") ||
             key == "arrowright" ||
             key == "l")
-		{
+	{
+		evt.preventDefault();
             menuobj.leftright (context, canvas.speedobj.value()/3)
         }
         else if (key == "f")
         {
+		evt.preventDefault();	
             if (screenfull.isEnabled)
             {
                 if (window.innerHeight === screen.height)
@@ -2642,7 +2652,7 @@ var keylst =
             context.refresh();
             evt.preventDefault();
         }
- 	}
+ }
 },
 {
 	name: "MENU",
