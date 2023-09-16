@@ -5654,8 +5654,8 @@ localobj.time = 0;
 try
 {
     var k = localStorage.getItem(url.path);
-    //if (k)
-     // localobj = JSON.parse(k);
+    if (k)
+      	localobj = JSON.parse(k);
 }
 catch(_)
 {
@@ -5768,17 +5768,10 @@ function showsearch()
             dialog.close();
         }
     });
-
-    var search = "";
-    if (url.searchParams.has(galleryobj.repos))
-    {
-        var k = url.searchParams.get(galleryobj.repos);
-        search = k.split(".")[0];
-    }
-
-    input.value = search;
+    
     dialog.showModal();
 }
+
 async function copytext(text)
 {
     if (navigator.clipboard)
