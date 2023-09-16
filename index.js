@@ -2424,7 +2424,7 @@ pressobj.set(3);
 function home()
 {
 	var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2; 
-	//_8cnv.timeobj.set(k);
+	_8cnv.timeobj.set(k);
 	menuobj.draw();
 
 	var e = buttonobj.value()/100;
