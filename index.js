@@ -2429,12 +2429,12 @@ function home()
 
 	var e = buttonobj.value()/2;
 	var j = e/_8cnv.virtualheight;
-	
+	var b = galleryobj.length()-1;
 	var data = _8cnv.sliceobj.data;
 	var count = 0;
 	if (data[j].isvisible)
 	{
-		while (data[j].isvisible)
+		while (data[b].isvisible)
 		{
 			if (++count > galleryobj.length())
 				break;
@@ -2444,7 +2444,7 @@ function home()
 	}
 	else
 	{
-		while (!data[j].isvisible)
+		while (!data[b].isvisible)
 		{
 			if (++count > galleryobj.length())
 				break;
