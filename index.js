@@ -2581,19 +2581,16 @@ var keylst =
 
             evt.preventDefault();
         }
-	else if (key == "0")
+	else if (key == "0" && canvas.ctrlKey)
 	{
-		if (canvas.ctrlKey)
-		{
 			buttonobj.reset()
 			menuobj.draw();
-		}
 	}
-        else if (key == "g")
+        else if (key == "g" && canvas.ctrlKey)
         {
             gotodialog();
         }		
-        else if (key == "s")
+        else if (key == "s" && canvas.ctrlKey)
         {
             showsearch();
         }		
