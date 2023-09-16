@@ -2440,7 +2440,7 @@ function home()
 	{
 		while (data[j].isvisible)
 		{
-			if (++count > galleryobj.length())
+			if (++count > 10000)
 				break;
 			_8cnv.timeobj.rotateperc(-0.00001);//todo
 			menuobj.draw();
@@ -2450,7 +2450,7 @@ function home()
 	{
 		while (!data[j].isvisible)
 		{
-			if (++count > galleryobj.length())
+			if (++count > 10000)
 				break;
 			_8cnv.timeobj.rotateperc(0.00001);
 			menuobj.draw();
