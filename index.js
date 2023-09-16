@@ -2428,8 +2428,8 @@ function home()
 	menuobj.draw();
 
 	var e = buttonobj.value()/2;
-	var j = e/_8cnv.virtualheight/100;
-	_8cnv.timeobj.add(j)
+	var j = e/_8cnv.virtualheight;
+	_8cnv.timeobj.add(TIMEOBJ*j)
 	menuobj.draw();
 	return;
 	
