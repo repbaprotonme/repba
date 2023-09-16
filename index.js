@@ -2448,7 +2448,7 @@ function home()
 		{
 			if (++count > galleryobj.length())
 				break;
-			_8cnv.timeobj.add(-j);
+			_8cnv.timeobj.add(j);
 			menuobj.draw();
 		}
 	}
