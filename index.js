@@ -2440,7 +2440,8 @@ function home()
 	{
 		while (data[j].isvisible)
 		{
-			count ++;
+			if (++count > galleryobj.length())
+				break;
 			_8cnv.timeobj.rotateperc(-0.00001);//todo
 			menuobj.draw();
 		}
@@ -2449,7 +2450,8 @@ function home()
 	{
 		while (!data[j].isvisible)
 		{
-			count ++;
+			if (++count > galleryobj.length())
+				break;
 			_8cnv.timeobj.rotateperc(0.00001);
 			menuobj.draw();
 		}
@@ -3909,7 +3911,7 @@ menuobj.draw = function()
     }
 
     infobj.data = [];
-    if (!canvas.pinching && headcnv.height)
+    if (headcnv.height)
     {
         infobj.reset(context.canvas.centered);
         context.canvas.bar.draw(context, rect, 0, 0);
