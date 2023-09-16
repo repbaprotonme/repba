@@ -2432,7 +2432,7 @@ function home()
 	var b = galleryobj.length()-1;
 	var data = _8cnv.sliceobj.data;
 	var count = 0;
-	if (data[j].isvisible)
+	if (data[b].isvisible)
 	{
 		while (data[b].isvisible)
 		{
