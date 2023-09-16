@@ -1638,7 +1638,7 @@ var wheelst =
             }
         }
     },
- 	leftright: function (context, x, y, delta, ctrl, shift, alt, type)
+    leftright: function (context, x, y, delta, ctrl, shift, alt, type)
     {
         menuobj.leftright(context, delta);
     },
@@ -1650,7 +1650,7 @@ var wheelst =
         menuobj.updown(context, delta);
         context.refresh();
     },
- 	leftright: function (context, x, y, delta, ctrl, shift, alt)
+    leftright: function (context, x, y, delta, ctrl, shift, alt)
     {
     },
 },
@@ -1682,7 +1682,7 @@ var wheelst =
             bossobj.updown(delta);
         }
 	},
- 	leftright: function (context, x, y, delta, ctrl, shift, alt, type)
+    leftright: function (context, x, y, delta, ctrl, shift, alt, type)
     {
         bossobj.leftright(delta);
         context.refresh();
@@ -5906,8 +5906,8 @@ function selectfolder()
 
 menuobj.leftright = function (context, delta)
 {
-    clearInterval(global.swipetimeout);
-    global.swipetimeout = 0;
+    //clearInterval(global.swipetimeout);
+    //global.swipetimeout = 0;
 	if (!delta)
 	    return;
     
