@@ -3660,11 +3660,13 @@ var buttonlst =
                         thumbimg.count = 1;
                     }
 
+	            var hh = Math.floor(Math.min(window.innerHeight,rect.height));
+		    var ww = Math.floor(Math.min(window.innerWidth,rect.width));
                     var x = Math.nub(obj.value(), obj.length(),
-                        rect.width, thumbfitted.width);
+                        ww, thumbfitted.width);
                     context.drawImage(thumbfitted,
-                        Math.floor(x), 0, Math.floor(rect.width), Math.floor(rect.height),
-                        0, 0, Math.floor(rect.width), Math.floor(rect.height));
+                        Math.floor(x), 0, ww, hh,
+                        0, 0, ww, hh);
                 }
                 else
                 {
@@ -3680,11 +3682,13 @@ var buttonlst =
                         thumbimg.count = 1;
                     }
 
-                    var y = Math.nub(obj.value(), obj.length(),
-                        rect.height, thumbfitted.height);
+             		var hh = Math.floor(Math.min(window.innerHeight,rect.height));
+		    var ww = Math.floor(Math.min(window.innerWidth,rect.width));
+                           var y = Math.nub(obj.value(), obj.length(),
+                        hh, thumbfitted.height);
                     context.drawImage(thumbfitted,
-                        0, Math.floor(y), Math.floor(rect.width), Math.floor(rect.height),
-                        0, 0, Math.floor(rect.width), Math.floor(rect.height));
+                        0, Math.floor(y), ww, hh,
+                        0, 0, ww, hh);
                 }
             }
         }
