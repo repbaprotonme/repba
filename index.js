@@ -3652,8 +3652,8 @@ var buttonlst =
                         thumbimg.count < 1)
                     {
                         var thumbfittedctx = thumbfitted.getContext("2d");
-                        thumbfitted.height = rect.height;
-                        thumbfitted.width = rect.height*b;
+                        thumbfitted.height = Math.floor(rect.height);
+                        thumbfitted.width = Math.floor(rect.height*b);
                         thumbfittedctx.drawImage(
                             thumbimg,0,0,thumbimg.width,thumbimg.height,
                             0,0,thumbfitted.width,thumbfitted.height);
@@ -3672,8 +3672,8 @@ var buttonlst =
                         thumbimg.count < 1)
                     {
                         var thumbfittedctx = thumbfitted.getContext("2d");
-                        thumbfitted.width = rect.width;
-                        thumbfitted.height = rect.width/b;
+                        thumbfitted.width = Math.floor(rect.width);
+                        thumbfitted.height = Math.floor(rect.width/b);
                         thumbfittedctx.drawImage(
                             thumbimg,0,0,thumbimg.width,thumbimg.height,
                             0,0,thumbfitted.width,thumbfitted.height);
