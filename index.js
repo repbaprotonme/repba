@@ -2443,7 +2443,7 @@ function home()
 		{
 			if (++count > galleryobj.length())
 				break;
-			_8cnv.timeobj.rotateperc(1/_8cnv.virturalheight);//-0.00001);//todo
+			_8cnv.timeobj.rotateperc(1/buttonobj.value());//-0.00001);//todo
 			menuobj.draw();
 		}
 	}
@@ -2453,7 +2453,7 @@ function home()
 		{
 			if (++count > galleryobj.length())
 				break;
-			_8cnv.timeobj.rotateperc(1/_8cnv.virturalheight);//0.00001);
+			_8cnv.timeobj.rotateperc(1/buttonobj.value());//0.00001);
 			menuobj.draw();
 		}
 	}
