@@ -2434,7 +2434,7 @@ function home()
 	_8cnv.timeobj.set(k);
 	menuobj.draw();
 	var j = _8cnv.sliceobj.length()-1
-	var data = _8cnv.sliceobj;
+	var data = _8cnv.sliceobj.data;
 		var count = 0;
 	if (data[j].isvisible)
 	{
