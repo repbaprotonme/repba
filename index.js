@@ -2425,12 +2425,36 @@ function home()
 {
 	var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2; //centered
 	_8cnv.timeobj.set(k);
-	menuobj.draw();	
+	menuobj.draw();
+
 	var e = buttonobj.value()/2;
 	var j = e/_8cnv.virtualheight;
-	var k = _8cnv.timeobj.current() + j*_8cnv.timeobj.length();//todo
-	_8cnv.timeobj.set(k)
-	menuobj.draw();
+	var k = j*_8cnv.timeobj.length();//todo
+	
+	var data = _8cnv.sliceobj.data;
+	var count = 0;
+	if (data[j].isvisible)
+	{
+		while (data[j].isvisible)
+		{
+			if (++count > galleryobj.length())
+				break;
+			_8cnv.timeobj.add(-k);
+			menuobj.draw();
+		}
+	}
+	else
+	{
+		while (!data[j].isvisible)
+		{
+			if (++count > galleryobj.length())
+				break;
+			_8cnv.timeobj.add(k);
+			menuobj.draw();
+		}
+	}
+		console.log(count);
+	
 }
 
 var swipelst =
