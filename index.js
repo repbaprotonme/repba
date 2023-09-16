@@ -2989,10 +2989,7 @@ var taplst =
             menuobj.hide();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         }
-	else if (!galleryobj.showboss)
-	{
-	}
-        else
+	else if (galleryobj.showboss || canvas.shiftKey)
         {
             clearInterval(global.swipetimeout);
             global.swipetimeout = 0;
