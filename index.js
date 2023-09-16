@@ -2435,17 +2435,20 @@ function home()
 	menuobj.draw();
 	if (_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
 	{
+		var count = 0;
 		while (_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
 		{
-			_8cnv.timeobj.rotateperc(-0.0001);//todo
+			count ++;
+			_8cnv.timeobj.rotateperc(-0.00001);//todo
 			menuobj.draw();
 		}
+		console.log(count);
 	}
 	else
 	{
 		while (!_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
 		{
-			_8cnv.timeobj.rotateperc(0.0001);
+			_8cnv.timeobj.rotateperc(0.00001);
 			menuobj.draw();
 		}
 	}
@@ -2587,17 +2590,17 @@ var keylst =
 			buttonobj.reset()
 			menuobj.draw();
 	}
-        else if (key == "g" && canvas.ctrlKey)
+        else if (key == "g" && canvas.ctrlKey && canvas.shiftKey)
         {
 		evt.preventDefault();
             gotodialog();
         }		
-        else if (key == "s" && canvas.ctrlKey)
+        else if (key == "s" && canvas.ctrlKey && canvas.shiftKey)
         {
 		evt.preventDefault();
             showsearch();
         }		
-	else if (key == "home" || key == "/")
+	else if (key == "home" || (key == "h" && canvas.ctrlKey && canvas.shiftKey))
 	{
 		home();
 		evt.preventDefault();
@@ -5417,13 +5420,13 @@ galleryobj.init = function (obj)
 
     _7cnv.sliceobj.data =
     [
-       {title:"Goto\nctrl+g", func: function()
+       {title:"Goto\nctrl+shift+g", func: function()
             {
                 gotodialog();
             }
         },
 
-    {title:"Search\nctrl+s", func: function()
+    {title:"Search\nctrl+shift+s", func: function()
             {
                 showsearch();
             }
@@ -5478,7 +5481,7 @@ galleryobj.init = function (obj)
             enabled: function() { return 0; }
         },
 	
-	{title:"Home\nctrl+/", func: function()
+	{title:"Home\nctrl+shift+h", func: function()
             {
                 home();
             },
