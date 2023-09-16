@@ -2428,7 +2428,7 @@ function home()
 	menuobj.draw();
 
 	var e = buttonobj.value()/2;
-	var j = e/_8cnv.virtualheight;
+	var j = e/_8cnv.virtualheight/100;
 	var b = galleryobj.length()-1;
 	var data = _8cnv.sliceobj.data;
 	var count = 0;
