@@ -2423,10 +2423,8 @@ pressobj.set(3);
 
 function gotoimage(n)
 {
-     //var k = (n-1)/galleryobj.length();
-     var j = (galleryobj.length()-n);
-     var k = TIMEOBJ - j*(TIMEOBJ/galleryobj.length()/2); 
-     //_8cnv.timeobj.setperc(1-k);
+     var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;
+     k += n*(TIMEOBJ/galleryobj.length());
      _8cnv.timeobj.set(k);
      _8cnvctx.refresh();
 }
