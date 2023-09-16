@@ -3663,8 +3663,8 @@ var buttonlst =
                     var x = Math.nub(obj.value(), obj.length(),
                         rect.width, thumbfitted.width);
                     context.drawImage(thumbfitted,
-                        x, 0, rect.width, rect.height,
-                        0, 0, rect.width, rect.height);
+                        Math.floor(x), 0, Math.floor(rect.width), Math.floor(rect.height),
+                        0, 0, Math.floor(rect.width), Math.floor(rect.height));
                 }
                 else
                 {
@@ -3683,8 +3683,8 @@ var buttonlst =
                     var y = Math.nub(obj.value(), obj.length(),
                         rect.height, thumbfitted.height);
                     context.drawImage(thumbfitted,
-                        0, y, rect.width, rect.height,
-                        0, 0, rect.width, rect.height);
+                        0, Mat.floor(y), Math.floor(rect.width), Math.floor(rect.height),
+                        0, 0, Math.floor(rect.width), Math.floor(rect.height));
                 }
             }
         }
