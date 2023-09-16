@@ -3857,7 +3857,7 @@ menuobj.draw = function()
         var view = Math.floor(n/IMAGELSTSIZE);
         var thumbimg = thumbimglst[index];
         var thumbfitted = thumbfittedlst[index];
-        if (thumbimg.view != view)
+        if (!canvas.pinching && thumbimg.view != view)
         {
             thumbimg.view = view;
 
@@ -3882,7 +3882,7 @@ menuobj.draw = function()
                 console.log(error);
             }
         }
-        //else
+        else
         {
             var t = time + n*delayinterval;
             var bos = Math.tan(t*VIRTCONST);
@@ -3909,7 +3909,7 @@ menuobj.draw = function()
     }
 
     infobj.data = [];
-    if (headcnv.height)
+    if (!canvas.pinching && headcnv.height)
     {
         infobj.reset(context.canvas.centered);
         context.canvas.bar.draw(context, rect, 0, 0);
