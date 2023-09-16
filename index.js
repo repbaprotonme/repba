@@ -2427,7 +2427,7 @@ function home()
 	_8cnv.timeobj.set(k);
 	menuobj.draw();
 
-	var e = buttonobj.value()/100;
+	var e = buttonobj.value()/galleryobj.length();
 	var j = e/_8cnv.virtualheight;
 	
 	var b = galleryobj.length()-1;
