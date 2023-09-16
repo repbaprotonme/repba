@@ -3837,13 +3837,7 @@ menuobj.draw = function()
 
     var current = context.canvas.sliceobj.lerp(
         1-context.canvas.timeobj.berp());
-    if (canvas.pinching)
-    {
-         canvas.lastcurrent = current;
-        var size = Math.ceil(rect.height/canvas.buttonheight);
-        canvas.normal = util.rotated_list(canvas.rotated,slices.length,current,size);
-    }
-    else if (canvas.lastcurrent != current)
+    if (canvas.lastcurrent != current)
     {
         canvas.lastcurrent = current;
         var size = Math.ceil(rect.height/canvas.buttonheight)+4;
