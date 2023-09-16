@@ -2424,7 +2424,8 @@ pressobj.set(3);
 function gotoimage(n)
 {
      //var k = (n-1)/galleryobj.length();
-     var k = TIMEOBJ - n*(TIMEOBJ/galleryobj.length()/2); 
+     var j = (galleryobj.length()-n);
+     var k = TIMEOBJ - j*(TIMEOBJ/galleryobj.length()/2); 
      //_8cnv.timeobj.setperc(1-k);
      _8cnv.timeobj.set(k);
      _8cnvctx.refresh();
@@ -5697,6 +5698,7 @@ function gotodialog()
         if (menuobj.value() == _8cnvctx)
         {
 		gotoimage(image-1);
+		dialog.close();
         }
         else
         {
