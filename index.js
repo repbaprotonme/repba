@@ -2421,6 +2421,13 @@ var presslst =
 var pressobj = new circular_array("PRESS", presslst);
 pressobj.set(3);
 
+function goto(page)
+{
+     var k = (page-1)/galleryobj.length();
+     _8cnv.timeobj.setperc(1-k);
+     _8cnvctx.refresh();
+}
+
 function home()
 {
 	var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2; 
@@ -5687,9 +5694,7 @@ function gotodialog()
     {
         if (menuobj.value() == _8cnvctx)
         {
-            var k = (page-1)/galleryobj.length();
-            _8cnv.timeobj.setperc(1-k);
-            _8cnvctx.refresh();
+		goto(page-1);
         }
         else
         {
