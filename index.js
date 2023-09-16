@@ -2437,7 +2437,7 @@ function home()
 	{
 		while (_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
 		{
-			_8cnv.timeobj.rotateperc(-0.00001);//todo
+			_8cnv.timeobj.rotateperc(-0.01);//todo
 			menuobj.draw();
 		}
 	}
@@ -2445,7 +2445,7 @@ function home()
 	{
 		while (!_8cnv.sliceobj.data[_8cnv.sliceobj.length()-1].isvisible)
 		{
-			_8cnv.timeobj.rotateperc(0.00001);
+			_8cnv.timeobj.rotateperc(0.01);
 			menuobj.draw();
 		}
 	}
