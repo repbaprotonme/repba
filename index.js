@@ -2427,7 +2427,7 @@ function home()
 	//_8cnv.timeobj.set(k);
 	menuobj.draw();
 
-	var e = window.innerHeight/2;
+	var e = window.innerHeight/2/10;
 	var j = e/_8cnv.virtualheight;
 	_8cnv.timeobj.add(-TIMEOBJ*j)
 	menuobj.draw();
