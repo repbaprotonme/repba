@@ -2433,8 +2433,7 @@ function home()
 	var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2; //centered
 	_8cnv.timeobj.set(k);
 	menuobj.draw();
-	if (buttonobj.value() > window.innerHeight)
-		return;
+	
 	var j = _8cnv.sliceobj.length()-1
 	var data = _8cnv.sliceobj.data;
 	var count = 0;
@@ -2444,7 +2443,7 @@ function home()
 		{
 			if (++count > galleryobj.length())
 				break;
-			_8cnv.timeobj.rotateperc(-0.00001);//todo
+			_8cnv.timeobj.rotateperc(1/_8cnv.virturalheight);//-0.00001);//todo
 			menuobj.draw();
 		}
 	}
@@ -2454,7 +2453,7 @@ function home()
 		{
 			if (++count > galleryobj.length())
 				break;
-			_8cnv.timeobj.rotateperc(0.00001);
+			_8cnv.timeobj.rotateperc(1/_8cnv.virturalheight);//0.00001);
 			menuobj.draw();
 		}
 	}
