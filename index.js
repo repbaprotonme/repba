@@ -5682,9 +5682,9 @@ function gotodialog()
     dialog = document.getElementById("goto-dialog");
     input.addEventListener("keyup", function(event)
     {
+	event.preventDefault();    
       if (event.keyCode === 13)
       {
-        event.preventDefault();
         var page = input.value.clean();
         go(Number(page));
         dialog.close();
@@ -5728,9 +5728,9 @@ function showsearch()
     dialog = document.getElementById("search-dialog");
     input.addEventListener("keyup", function(event)
     {
+	event.preventDefault();    
         if (event.keyCode === 13)
         {
-            event.preventDefault();
             var search = input.value.clean();
             if (!search)
                 return;
