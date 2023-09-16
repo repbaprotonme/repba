@@ -2424,11 +2424,15 @@ pressobj.set(3);
 function home()
 {
 	var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2; 
-	_8cnv.timeobj.set(k);
+	//_8cnv.timeobj.set(k);
 	menuobj.draw();
 
 	var e = buttonobj.value()/2;
 	var j = e/_8cnv.virtualheight/100;
+	_8cnv.timeobj.add(j)
+	menuobj.draw();
+	return;
+	
 	var b = galleryobj.length()-1;
 	var data = _8cnv.sliceobj.data;
 	var count = 0;
