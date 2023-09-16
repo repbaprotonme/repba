@@ -3660,8 +3660,8 @@ var buttonlst =
                         thumbimg.count = 1;
                     }
 
-	            var hh = Math.floor(Math.min(window.innerHeight,rect.height));
-		    var ww = Math.floor(Math.min(window.innerWidth,rect.width));
+	            var hh = Math.floor(rect.height);
+		    var ww = Math.floor(rect.width);
                     var x = Math.nub(obj.value(), obj.length(),
                         ww, thumbfitted.width);
                     context.drawImage(thumbfitted,
@@ -3682,8 +3682,8 @@ var buttonlst =
                         thumbimg.count = 1;
                     }
 
-             		var hh = Math.floor(Math.min(window.innerHeight,rect.height));
-		    var ww = Math.floor(Math.min(window.innerWidth,rect.width));
+             		var hh = Math.floor(rect.height);
+		    var ww = Math.floor(rect.width);
                            var y = Math.nub(obj.value(), obj.length(),
                         hh, thumbfitted.height);
                     context.drawImage(thumbfitted,
