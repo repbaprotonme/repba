@@ -268,12 +268,6 @@ let circular_array = function (title, data)
         this.add(k);
     };
 
-    this.rotateperc = function (perc)
-    {
-        var k = this.current() + ((perc/100)*this.length());
-        this.set(k);
-    };
-
     this.setperc = function (p)
     {
         p = util.clamp(0,1,p);
@@ -2432,32 +2426,12 @@ function home()
 {
 	var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2; //centered
 	_8cnv.timeobj.set(k);
+	menuobj.draw();	
+	var e = buttonobj.value()/2;
+	var j = e/_8cnv.virtualheight;
+	var k = _8cnv.timeobj.current() - j*this.length();
+	_8cnv.timeobj.set(k)
 	menuobj.draw();
-	
-	var j = _8cnv.sliceobj.length()-1
-	var data = _8cnv.sliceobj.data;
-	var count = 0;
-	if (data[j].isvisible)
-	{
-		while (data[j].isvisible)
-		{
-			if (++count > galleryobj.length())
-				break;
-			_8cnv.timeobj.rotateperc(1/buttonobj.value());//-0.00001);//todo
-			menuobj.draw();
-		}
-	}
-	else
-	{
-		while (!data[j].isvisible)
-		{
-			if (++count > galleryobj.length())
-				break;
-			_8cnv.timeobj.rotateperc(1/buttonobj.value());//0.00001);
-			menuobj.draw();
-		}
-	}
-		console.log(count);
 }
 
 var swipelst =
