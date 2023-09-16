@@ -1622,14 +1622,12 @@ var wheelst =
         {
             clearInterval(context.canvas.leftright)
             menuobj.updown(context, delta)
-            if (!global.swipetimeout)
-            {
-                global.swipetimeout = setInterval(function ()
-                {
-                    context.canvas.lastime = -0.0000000000101010101;
-                    menuobj.draw();
-                }, TIMEMAIN);
-            }
+		clearInterval(global.swipetimeout)
+		global.swipetimeout = setInterval(function ()
+		{
+		    context.canvas.lastime = -0.0000000000101010101;
+		    menuobj.draw();
+		}, 80);
         }
     },
     leftright: function (context, x, y, delta, ctrl, shift, alt, type)
