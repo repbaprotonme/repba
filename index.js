@@ -2605,7 +2605,10 @@ var keylst =
             (canvas.shiftKey && key == " ") ||
             key == "k")
         {
-            menuobj.updown(context, -canvas.speedobj.value()/3);
+    		var e = canvas.speedobj.value()/3;
+	    if (key == "pageup" || key == "backspace")
+		e = canvas.speedobj.value();		
+            menuobj.updown(context, -e);
             if (!global.swipetimeout)
             {
                 global.swipetimeout = setInterval(function ()
@@ -2624,7 +2627,10 @@ var keylst =
             key == " " ||
             key == "j")
         {
-            menuobj.updown(context, canvas.speedobj.value()/3);
+	    var e = canvas.speedobj.value()/3;
+	    if (key == "pagedown" || key == "enter")
+		e = canvas.speedobj.value();
+            menuobj.updown(context, e);
             if (!global.swipetimeout)
             {
                 global.swipetimeout = setInterval(function ()
