@@ -5347,17 +5347,7 @@ galleryobj.init = function (obj)
 
     _2cnv.sliceobj.data =
     [
-        {title:"About", path: "ABOUT", func: function()
-            {
-            menuobj.setindex(_7cnvctx);
-            menuobj.show();
-            }
-        },
-         {title:"Advanced", path: "ADVANCED", func: function()
-            {
-                menuobj.showindex(_3cnvctx);
-            }
-        },
+
     ];
 
     var a = Array(_2cnv.sliceobj.length()).fill().map((_, index) => index);
@@ -5514,11 +5504,11 @@ galleryobj.init = function (obj)
             func: function() {}
         },
 
-        {title:"Advanced", func: function()
+        {title:"Speed / Delay", func: function()
             {
                 galleryobj.advanced = galleryobj.advanced?0:1;
                 contextobj.reset();
-              },
+            },
             enabled: function() { return galleryobj.advanced; }
         },
 	    
