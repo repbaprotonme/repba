@@ -14,11 +14,11 @@ function text2image()
 	
 	var raw = JSON.stringify({
 	  "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
-	  "prompt": "ultra realistic close up portrait ((beautiful pale cyberpunk female with heavy black eyeliner))",
+	  "prompt": "Volibear, the maniac bear is shown in some form of drawing, in the style of dark white and azure, brushwork mastery, dragoncore, james paick, frozen movement, michael malm, low resolution --ar 9:16 --v 5",
 	  "negative_prompt": null,
 	  "width": "1024",
 	  "height": "1024",
-	  "samples": "1",
+	  "samples": "4",
 	  "num_inference_steps": "20",
 	  "seed": null,
 	  "guidance_scale": 7.5,
