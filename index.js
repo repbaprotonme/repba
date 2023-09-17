@@ -2424,7 +2424,7 @@ pressobj.set(3);
 function gotoimage(n)
 {
      var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;
-     k += n*(TIMEOBJ/galleryobj.length());
+     k -= n*(TIMEOBJ/galleryobj.length());
      _8cnv.timeobj.set(k);
      _8cnvctx.refresh();
 }
@@ -5725,7 +5725,7 @@ function gotodialog()
     dialog.addEventListener("click", function(event)
     {
         var rect = new rectangle(dialog.getBoundingClientRect());
-        if (event.target.id == "page-ok")
+        if (event.target.id == "goto-ok")
         {
             var page = input.value.clean();
             go(Number(page));
