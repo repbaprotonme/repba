@@ -1654,7 +1654,7 @@ var wheelst =
         {
             context.canvas.pinching = 1;
             var k = delta<0?1:-1;
-            buttonobj.addperc(k*0.04);
+            buttonobj.addperc(k*0.02);
             context.canvas.lastime = -0.0000000000101010101;
             menuobj.draw();
             context.canvas.pinching = 0;
@@ -1736,7 +1736,7 @@ var pinchlst =
     name: "GALLERY",
     pinch: function (context, x, y, scale)
     {
-        var j = Math.lerp(0.00005,0.0002,buttonobj.berp());
+        var j = Math.lerp(0.005,0.02,buttonobj.berp());
         var k = scale<context.canvas.scale?-1:1;
         buttonobj.addperc(k*j);
         context.canvas.scale = scale;
