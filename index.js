@@ -5499,12 +5499,12 @@ galleryobj.init = function (obj)
             func: function() {}
         },
 
-        {title:"Speed-Delay", func: function()
+        {title:"Simple UI", func: function()
             {
                 galleryobj.advanced = galleryobj.advanced?0:1;
                 contextobj.reset();
             },
-            enabled: function() { return galleryobj.advanced; }
+            enabled: function() { return !galleryobj.advanced; }
         },
 	    
         {title:"Debug", func: function()
