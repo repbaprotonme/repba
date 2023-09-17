@@ -5930,8 +5930,8 @@ menuobj.updown = function(context, delta)
     var lst = [1.5,1.75,2.0,2.25,2.5,3.0,3.5,4.0];
     var j = util.clamp(0,lst.length-1,canvas.sliceobj.length());
     var k = lst[j]*f;
-    canvas.slideshow += (TIMEOBJ/canvas.virtualheight)*k;
-    canvas.slidereduce += canvas.slideshow/g;
+    canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*k;
+    canvas.slidereduce = canvas.slideshow/g;
 }
 
 function selectfolder()
