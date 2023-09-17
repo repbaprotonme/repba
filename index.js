@@ -2464,22 +2464,15 @@ pressobj.set(3);
 
 function gotoimage(n)
 {
+	var b = n == 0? galleryobj.length()-1 : n-1;
      var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2;
      k -= n*(TIMEOBJ/galleryobj.length());
      _8cnv.timeobj.set(k);
-     _8cnvctx.refresh();
-}
-
-function home()
-{
-	var k = TIMEOBJ - TIMEOBJ/galleryobj.length()/2; 
-	_8cnv.timeobj.set(k);
-	menuobj.draw();
-
+     menuobj.draw();
+	if (!galleryobj.aligntop)
+		return;
 	var e = buttonobj.value()/galleryobj.length();
 	var j = e/_8cnv.virtualheight;
-	
-	var b = galleryobj.length()-1;
 	var data = _8cnv.sliceobj.data;
 	var count = 0;
 	if (data[b].isvisible)
@@ -2502,8 +2495,6 @@ function home()
 			menuobj.draw();
 		}
 	}
-		console.log(count);
-	
 }
 
 var swipelst =
@@ -2660,7 +2651,7 @@ var keylst =
         }		
 	else if (key == "home" || (key == "h" && canvas.ctrlKey && canvas.shiftKey))
 	{
-		home();
+		gotoimage(0);
 		evt.preventDefault();
 	}
 	else if (key == "\\")
@@ -5540,7 +5531,7 @@ galleryobj.init = function (obj)
 	
 	{title:"Home\nCtrl+Shift+H", func: function()
             {
-                home();
+                gotoimage();
             },
             enabled: function() { return 0; }
         },    
@@ -5637,7 +5628,7 @@ function initime()
     }
     else
     {
-	home();
+	gotoimage(0);
     }
 
 	if (galleryobj.length()<=GALLERYMIN)
