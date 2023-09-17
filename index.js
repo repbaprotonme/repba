@@ -3016,7 +3016,13 @@ var taplst =
 	    var j = visibles[k].slice;
             window.open(j.photographer_url,galleryobj.repos);
         }
-	else if (canvas.vscrollrect  && canvas.vscrollrect.hitest(x,y))
+     	else if (
+            context.chapterect &&
+            context.chapterect.hitest(x,y))
+        {
+	    gotodialog();    			
+	}    
+	else if (canvas.vscrollrect && canvas.vscrollrect.hitest(x,y))
         {	
             var k = (y-canvas.vscrollrect.y)/canvas.vscrollrect.height;
                 canvas.timeobj.setperc(1-k);
