@@ -5504,7 +5504,7 @@ galleryobj.init = function (obj)
             func: function() {}
         },
         {
-            title: "Image viewer for webp, jpg, avif, gif, png, zip, cbz and ipfs. Continuous top-down image viewing, for a distraction free, full-screen experience.",
+            title: "Image viewer for webp, jpg, avif, gif, png, zip, cbz and ipfs. Top-down, full-screen, and wrap-around image browser.",
             func: function() {}
         },
 
