@@ -5938,10 +5938,7 @@ function selectfolder()
         var e = galleryobj.data[m];
         if (e.folder != this.folder)
             continue;
-        var j = (1-(m/galleryobj.length()))*TIMEOBJ;
-        var e = (1/galleryobj.length())*TIMEOBJ;
-        var k = j - e/2;
-        _8cnv.timeobj.set(k);
+	gotoimage(m);
         localobj.time = _8cnv.timeobj.current();
         galleryobj.width = 0;
         galleryobj.height = 0;
