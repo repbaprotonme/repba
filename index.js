@@ -5936,7 +5936,7 @@ function selectname(name)
     for (var m = 0; m < galleryobj.data.length; ++m)
     {
         var e = galleryobj.data[m];
-        if (e.name != name)
+        if (e.name.wild(name))
             continue;
 	gotoimage(m);
         localobj.time = _8cnv.timeobj.current();
