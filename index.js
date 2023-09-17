@@ -2748,20 +2748,8 @@ var keylst =
             menuobj.updown(context, -canvas.speedobj.value());
             context.refresh();
         }
-        else if (key == "f")
-        {
-            if (screenfull.isEnabled)
-            {
-                if (window.innerHeight === screen.height)
-                    screenfull.exit();
-                else
-                    screenfull.request();
-            }
-
-            context.refresh();
-            evt.preventDefault();
-        }
-  	}
+       
+     }
 },
 {
 	name: "BOSS",
@@ -2807,11 +2795,7 @@ var keylst =
             return;
         }
 
-        if (key == "control" ||
-            key == "shift")
-            return;
-
-        if (key == "f")
+        if (key == "f" && canvas.ctrlKey && canvas.shiftKey)
         {
             if (screenfull.isEnabled)
             {
@@ -2862,7 +2846,15 @@ var keylst =
         {
             bossobj.updown(context.canvas.speedobj.value());
         }
-        else if (key == "g")
+        else if (key == "s" && canvas.ctrlKey && canvas.shiftKey)
+        {
+            searchdialog();
+        }
+        else if (key == "h" && canvas.ctrlKey && canvas.shiftKey)
+        {
+            gotoimage(0);
+        }
+        else if (key == "g" && canvas.ctrlKey && canvas.shiftKey)
         {
             gotodialog();
         }
@@ -5531,7 +5523,7 @@ galleryobj.init = function (obj)
 	
 	{title:"Home\nCtrl+Shift+H", func: function()
             {
-                gotoimage();
+                gotoimage(0);
             },
             enabled: function() { return 0; }
         },    
