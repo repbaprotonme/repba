@@ -2582,7 +2582,7 @@ var keylst =
     },
 	keydown: function (evt)
 	{
-   		var context = menuobj.value()
+   	var context = menuobj.value()
         var canvas = context.canvas;
         var key = evt.key.toLowerCase();
         var keycode = evt.keyCode || evt.which;
@@ -2699,7 +2699,11 @@ var keylst =
 		evt.preventDefault();
             menuobj.leftright (context, canvas.speedobj.value()/3)
         }
-        else if (key == "f")
+     	else if (key == "x" && canvas.ctrlKey && canvas.shiftKey)
+        {		
+		importdialog();
+	}
+        else if (key == "f" && canvas.ctrlKey && canvas.shiftKey)
         {
 		evt.preventDefault();	
             if (screenfull.isEnabled)
@@ -5473,19 +5477,19 @@ galleryobj.init = function (obj)
 
     _7cnv.sliceobj.data =
     [
-       {title:"Goto\nctrl+shift+g", func: function()
+       {title:"Goto\nCtrl+Shift+G", func: function()
             {
                 gotodialog();
             }
         },
 
-    {title:"Search\nctrl+shift+s", func: function()
+    {title:"Search\nCtrl+Shift+S", func: function()
             {
                 showsearch();
             }
         },
 	    
-     {title:"File Explorer", func: function()
+     {title:"File Explorer\nCtrl+Shift+X", func: function()
             {
                 importdialog();
             }
@@ -5504,7 +5508,7 @@ galleryobj.init = function (obj)
             func: function() {}
         },
 
-        {title:"Speed / Delay", func: function()
+        {title:"Speed-Delay", func: function()
             {
                 galleryobj.advanced = galleryobj.advanced?0:1;
                 contextobj.reset();
@@ -5526,7 +5530,7 @@ galleryobj.init = function (obj)
             enabled: function() { return galleryobj.debug; }
         },
 	    
-        {title:"Fit Width\nctrl+0", path: "", func: function()
+        {title:"Fit Width\nCtrl+0", path: "", func: function()
             {
                 buttonobj.reset();
 		    menuobj.draw();
@@ -5534,14 +5538,14 @@ galleryobj.init = function (obj)
             enabled: function() { return 0; }
         },
 	
-	{title:"Home\nctrl+shift+h", func: function()
+	{title:"Home\nCtrl+Shift+H", func: function()
             {
                 home();
             },
             enabled: function() { return 0; }
         },    
 	   
-	{title:"Full Screen\nctrl+f", func: function()
+	{title:"Full Screen\nCtrl+Shift+F", func: function()
             {
                 if (screenfull.isEnabled)
                 {
