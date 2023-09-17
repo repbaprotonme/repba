@@ -5801,7 +5801,7 @@ function showsearch()
             var search = input.value.clean();
             if (!search)
                 return;
-            //todo
+            selectname(search)
         }
     });
 
@@ -5813,7 +5813,7 @@ function showsearch()
             var search = input.value.clean();
             if (!search)
                 return;
-            //todo
+            selectname(search)
         }
         else if (!rect.hitest(event.x, event.y))
         {
@@ -5929,6 +5929,22 @@ menuobj.updown = function(context, delta)
     var k = lst[j]*f;
     canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*k;
     canvas.slidereduce = canvas.slideshow/g;
+}
+
+function selectname(name)
+{
+    for (var m = 0; m < galleryobj.data.length; ++m)
+    {
+        var e = galleryobj.data[m];
+        if (e.name != name)
+            continue;
+	gotoimage(m);
+        localobj.time = _8cnv.timeobj.current();
+        galleryobj.width = 0;
+        galleryobj.height = 0;
+        galleryobj.init();
+        break;
+    }
 }
 
 function selectfolder()
