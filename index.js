@@ -46,7 +46,6 @@ function text2image()
 		   console.log(json)
 	   })
 	  .catch(error => console.log('error', error));
-	}
 }
 
 function iOS()
