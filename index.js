@@ -5802,6 +5802,7 @@ function showsearch()
             if (!search)
                 return;
             selectname(search)
+		dialog.close();
         }
     });
 
@@ -5814,6 +5815,7 @@ function showsearch()
             if (!search)
                 return;
             selectname(search)
+		dialog.close();
         }
         else if (!rect.hitest(event.x, event.y))
         {
