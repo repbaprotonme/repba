@@ -2636,8 +2636,7 @@ var keylst =
 	else if (key == "0" && canvas.ctrlKey)
 	{
 		evt.preventDefault();
-			buttonobj.reset()
-			menuobj.draw();
+			gotoimage(0);
 	}
         else if (key == "g" && canvas.ctrlKey && canvas.shiftKey)
         {
@@ -2850,6 +2849,11 @@ var keylst =
         {
             searchdialog();
         }
+	else if (key == "0" && canvas.ctrlKey)
+	{
+		evt.preventDefault();
+			gotoimage(0);
+	}		
         else if (key == "h" && canvas.ctrlKey && canvas.shiftKey)
         {
             gotoimage(0);
