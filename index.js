@@ -1736,7 +1736,7 @@ var pinchlst =
     name: "GALLERY",
     pinch: function (context, x, y, scale)
     {
-        var j = Math.lerp(0.0005,0.002,buttonobj.berp());
+        var j = Math.lerp(0.00005,0.0002,buttonobj.berp());
         var k = scale<context.canvas.scale?-1:1;
         buttonobj.addperc(k*j);
         context.canvas.scale = scale;
