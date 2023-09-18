@@ -5682,6 +5682,9 @@ if (url.searchParams.has("p"))
 }
 else if (url.searchParams.has("search"))
 {
+	galleryobj.showboss = 1;
+	galleryobj.width = 2160;
+	galleryobj.height = 2160;
 	var k = url.searchParams.get("search")
 	fetch(`https://pexels.reportbase5836.workers.dev/?search=${k}&page=1`)
         .then(response => jsonhandler(response))
