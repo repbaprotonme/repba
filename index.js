@@ -2584,14 +2584,14 @@ var keylst =
 
         clearInterval(context.canvas.leftright);
         if (
-            key == "arrowup" ||//todo: fast option
+            key == "arrowup" ||
             key == "pageup" ||
 	    key == "backspace" ||
             (canvas.shiftKey && key == "enter") ||
             (canvas.shiftKey && key == " ") ||
             key == "k")
         {
-    		var e = canvas.speedobj.value()/3;
+    		var e = canvas.speedobj.value()/2;
 	    if (key == "pageup" || key == "enter")
 		e = canvas.speedobj.value();
 	    else if (key == "backspace" || key == " " || (key == "arrowdown" && canvas.ctrlKey))
@@ -2615,7 +2615,7 @@ var keylst =
             key == " " ||
             key == "j")
         {
-	    var e = canvas.speedobj.value()/3;
+	    var e = canvas.speedobj.value()/2;
 	    if (key == "pagedown" || key == "enter")
 		e = canvas.speedobj.value();
 	    else if (key == " " || (key == "arrowdown" && canvas.ctrlKey))
@@ -2679,7 +2679,7 @@ var keylst =
             key == "h")
 	{
 		evt.preventDefault();
-            menuobj.leftright (context, -canvas.speedobj.value()/3)
+            menuobj.leftright (context, -canvas.speedobj.value()/2)
         }
         else if (
             (!canvas.shiftKey && key == "tab") ||
@@ -2687,7 +2687,7 @@ var keylst =
             key == "l")
 	{
 		evt.preventDefault();
-            menuobj.leftright (context, canvas.speedobj.value()/3)
+            menuobj.leftright (context, canvas.speedobj.value()/2)
         }
      	else if (key == "x" && canvas.ctrlKey && canvas.shiftKey)
         {		
