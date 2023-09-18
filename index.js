@@ -5495,12 +5495,12 @@ galleryobj.init = function (obj)
             func: function() {}
         },
 
-        {title:"Simple UI/nSlash", func: function()
+        {title:"More Options", func: function()
             {
                 galleryobj.advanced = galleryobj.advanced?0:1;
                 contextobj.reset();
             },
-            enabled: function() { return !galleryobj.advanced; }
+            enabled: function() { return galleryobj.advanced; }
         },
 	    
         {title:"Debug", func: function()
