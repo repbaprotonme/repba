@@ -5662,24 +5662,25 @@ function initime()
 
     if (galleryobj.length()==1)
     {
-        _8cnv.timeobj.set(2700);
+        _8cnv.timeobj.set(0);
 	menuobj.draw();    
     }
     else if (galleryobj.length()==2)
     {
-        _8cnv.timeobj.set(2700);
+        _8cnv.timeobj.set(0);
 	menuobj.draw();    
     }
     else if (galleryobj.length()==3)
     {
-        _8cnv.timeobj.set(2700);
+        _8cnv.timeobj.set(0);
 	menuobj.draw();    
     }
     else if (galleryobj.length()==4)
     {
-        _8cnv.timeobj.set(2700);
+        _8cnv.timeobj.set(0);
 	menuobj.draw();    
-    }else if (galleryobj.length()<6)
+    }
+    else if (galleryobj.length()<6)
     {
         gotoimage(0);    
     }
