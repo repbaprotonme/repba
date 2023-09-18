@@ -2584,7 +2584,7 @@ var keylst =
 
         clearInterval(context.canvas.leftright);
         if (
-            key == "arrowup" ||
+            key == "arrowup" ||//todo: fast option
             key == "pageup" ||
 	    key == "backspace" ||
             (canvas.shiftKey && key == "enter") ||
@@ -5633,7 +5633,7 @@ function initime()
 	headham.panel = headobj.value();
 	headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);  	
 }
-
+//todo: "i" "n" "m"
 url.path = "home";
 if (url.searchParams.has("p"))
 {
