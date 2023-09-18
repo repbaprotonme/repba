@@ -1797,13 +1797,8 @@ var stretchobj = new circular_array("STRETCH", [pretchobj,letchobj]);
 
 var searchlst =
 [
-    "unsplash",
-    "unsplash_user",
-    "unsplash_collection",
     "pexels",
-    "pexels_collection",
     "pixabay",
-    "sidney",
 ];
 
 var searchobj = new circular_array("SEARCH", searchlst);
