@@ -4117,13 +4117,7 @@ contextobj.reset = function ()
             extentobj.data[2] = galleryobj.value().id?galleryobj.value().id:"Undefined";
             extentobj.data[3] = `${window.innerWidth} x ${window.innerHeight}`;
             var e = galleryobj.value();
-
-            var j = "";
-            if (url.searchParams.has(galleryobj.repos))
-                j = url.searchParams.get(galleryobj.repos).split(".")[0].proper();
-            else
-                j = url.path;
-            document.title = j;
+            document.title = url.host;
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             _4cnv.autodirect = -_4cnv.movingpage;
             _4cnv.movingpage = 0;
