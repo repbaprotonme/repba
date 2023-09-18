@@ -5495,7 +5495,7 @@ galleryobj.init = function (obj)
             func: function() {}
         },
 
-        {title:"Simple UI", func: function()
+        {title:"Simple UI/nSlash", func: function()
             {
                 galleryobj.advanced = galleryobj.advanced?0:1;
                 contextobj.reset();
