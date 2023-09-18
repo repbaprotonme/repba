@@ -5605,9 +5605,10 @@ function initime()
 	contextobj.reset();
 	menuobj.toggle(_8cnvctx);
 	_4cnvctx.refresh();
-        headcnvctx.show(0,0,window.innerWidth,BEXTENT);
-        headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
 	
+	headobj.set(galleryobj.length()>1?GALLERY:BOSS);
+	headham.panel = headobj.value();
+	headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);	
 	var j = Number(localobj.time);
 
 	if (url.searchParams.has("n"))
