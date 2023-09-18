@@ -5645,6 +5645,11 @@ function initime()
 		break;
 	    }	
 	}	
+	else if (url.searchParams.has("g"))
+	{
+		var g = url.searchParams.get("g");
+		gotoimage(g);
+	}
 	else if (url.searchParams.has("i"))
 	{
 	    var id = url.searchParams.get("i");
