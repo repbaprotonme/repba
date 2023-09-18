@@ -2592,8 +2592,10 @@ var keylst =
             key == "k")
         {
     		var e = canvas.speedobj.value()/3;
-	    if (key == "pageup" || key == "backspace")
-		e = canvas.speedobj.value();		
+	    if (key == "pageup" || key == "enter")
+		e = canvas.speedobj.value();	
+	    else if (key == "backspace" || key == " ")
+		e = canvas.speedobj.value()*2;
             menuobj.updown(context, -e);
             if (!global.swipetimeout)
             {
@@ -2616,7 +2618,9 @@ var keylst =
 	    var e = canvas.speedobj.value()/3;
 	    if (key == "pagedown" || key == "enter")
 		e = canvas.speedobj.value();
-            menuobj.updown(context, e);
+	    else if (key == " ")
+		e = canvas.speedobj.value()*2;
+	menuobj.updown(context, e);
             if (!global.swipetimeout)
             {
                 global.swipetimeout = setInterval(function ()
@@ -2648,7 +2652,7 @@ var keylst =
 		gotoimage(0);
 		evt.preventDefault();
 	}
-	else if (key == "\\")
+	else if (key == "\\" || key == "/")
         {
             var h = headcnv.height?0:BEXTENT;
             headcnvctx.show(0,0,window.innerWidth,h);
