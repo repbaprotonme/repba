@@ -5627,7 +5627,7 @@ function initime()
    	    for (var m = 0; m < galleryobj.data.length; ++m)
 	    {
 	        var e = galleryobj.data[m];
-	        if (!e.name || e.name != name)
+	        if (!e.name || !e.name.wild("*"+name+"*"))
 	            continue;
 		gotoimage(m);
 		break;
@@ -5639,7 +5639,7 @@ function initime()
 	    for (var m = 0; m < galleryobj.data.length; ++m)
 	    {
 	        var e = galleryobj.data[m];
-	        if (!e.folder || e.folder != folder)
+	     if (!e.folder || !e.folder.wild("*"+folder+"*"))
 	            continue;
 		gotoimage(m);
 		break;
@@ -5651,7 +5651,7 @@ function initime()
 	    for (var m = 0; m < galleryobj.data.length; ++m)
 	    {
 	        var e = galleryobj.data[m];
-	        if (!e.id || e.id != id)
+		if (!e.id || !e.id.wild("*"+id+"*"))
 	            continue;
 		gotoimage(m);
 		break;
