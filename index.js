@@ -15,8 +15,8 @@ myHeaders.append("Content-Type", "application/json");
 var raw = JSON.stringify({
   "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
   "model_id": "sdxl",
-  "prompt": "actual 8K portrait photo of gareth person, portrait, happy colors, bright eyes, clear eyes, warm smile, smooth soft skin, big dreamy eyes, beautiful intricate colored hair, symmetrical, anime wide eyes, soft lighting, detailed face, by makoto shinkai, stanley artgerm lau, wlop, rossdraws, concept art, digital painting, looking into camera",
-  "negative_prompt": "painting, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, deformed, ugly, blurry, bad anatomy, bad proportions, extra limbs, cloned face, skinny, glitchy, double torso, extra arms, extra hands, mangled fingers, missing lips, ugly face, distorted face, extra legs, anime",
+  "prompt": "professional 3d model city. octane render, highly detailed, volumetric, dramatic lighting",
+  "negative_prompt": "ugly, deformed, noisy, low poly, blurry, painting",
   "width": "1024",
   "height": "1024",
   "samples": "1",
