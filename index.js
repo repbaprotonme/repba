@@ -2593,8 +2593,8 @@ var keylst =
         {
     		var e = canvas.speedobj.value()/3;
 	    if (key == "pageup" || key == "enter")
-		e = canvas.speedobj.value();	
-	    else if (key == "backspace" || key == " ")
+		e = canvas.speedobj.value();
+	    else if (key == "backspace" || key == " " || (key == "arrowdown" && canvas.ctrlKey))
 		e = canvas.speedobj.value()*2;
             menuobj.updown(context, -e);
             if (!global.swipetimeout)
@@ -2618,8 +2618,9 @@ var keylst =
 	    var e = canvas.speedobj.value()/3;
 	    if (key == "pagedown" || key == "enter")
 		e = canvas.speedobj.value();
-	    else if (key == " ")
+	    else if (key == " " || (key == "arrowdown" && canvas.ctrlKey))
 		e = canvas.speedobj.value()*2;
+		    
 	menuobj.updown(context, e);
             if (!global.swipetimeout)
             {
