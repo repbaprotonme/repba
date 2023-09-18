@@ -2464,7 +2464,7 @@ function gotoimage(n)
      k -= n*(TIMEOBJ/galleryobj.length());
      _8cnv.timeobj.set(k);
      menuobj.draw();
-	if (!galleryobj.aligntop)
+	if (1)//!galleryobj.aligntop)
 		return;
 	var e = buttonobj.value()/galleryobj.length();
 	var j = e/_8cnv.virtualheight;
