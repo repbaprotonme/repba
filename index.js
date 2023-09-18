@@ -5624,17 +5624,38 @@ function initime()
 	if (url.searchParams.has("n"))
 	{
 	    var name = url.searchParams.get("n");
-		selectname(name);
+   	    for (var m = 0; m < galleryobj.data.length; ++m)
+	    {
+	        var e = galleryobj.data[m];
+	        if (!e.name || e.name != name)
+	            continue;
+		gotoimage(m);
+		break;
+	    }	
 	}
 	else if (url.searchParams.has("f"))
 	{
 	    var folder = url.searchParams.get("f");
-		selectfolder(folder);
+	    for (var m = 0; m < galleryobj.data.length; ++m)
+	    {
+	        var e = galleryobj.data[m];
+	        if (!e.folder || e.folder != folder)
+	            continue;
+		gotoimage(m);
+		break;
+	    }	
 	}	
 	else if (url.searchParams.has("i"))
 	{
 	    var id = url.searchParams.get("i");
-		selectid(folder);
+	    for (var m = 0; m < galleryobj.data.length; ++m)
+	    {
+	        var e = galleryobj.data[m];
+	        if (!e.id || e.id != id)
+	            continue;
+		gotoimage(m);
+		break;
+	    }
 	}	
 	else if (j > 0 && j < TIMEOBJ)
     {
@@ -5977,12 +5998,12 @@ function selectfolder()
     }
 }
 
-function selectid()
+function selectid(id)
 {
     for (var m = 0; m < galleryobj.data.length; ++m)
     {
         var e = galleryobj.data[m];
-        if (!e.id || e.id != this.id)
+        if (!e.id || e.id != id)
             continue;
 	gotoimage(m);
         localobj.time = _8cnv.timeobj.current();
