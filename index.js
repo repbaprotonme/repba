@@ -5326,8 +5326,7 @@ galleryobj.init = function (obj)
 
     slicewidthobj.set(galleryobj.slicewidth?galleryobj.slicewidth:SLICEWIDTH);
 
-    var h = galleryobj.hideheader?0:BEXTENT;
-    headcnvctx.show(0,0,window.innerWidth,h);
+    headcnvctx.show(0,0,window.innerWidth,BEXTENT);
     headham.panel = headobj.value();
 	
     _2cnv.sliceobj.data =
@@ -5606,7 +5605,7 @@ function initime()
 	menuobj.toggle(_8cnvctx);
 	_4cnvctx.refresh();
 	
-	headobj.set(galleryobj.length()>1?GALLERY:BOSS);
+	headobj.set(GALLERY);
 	headham.panel = headobj.value();
 	headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);	
 	var j = Number(localobj.time);
@@ -5666,7 +5665,21 @@ function initime()
         _8cnv.timeobj.set(2700);
 	menuobj.draw();    
     }
-    else if (galleryobj.length()<6)
+    else if (galleryobj.length()==2)
+    {
+        _8cnv.timeobj.set(2700);
+	menuobj.draw();    
+    }
+    else if (galleryobj.length()==3)
+    {
+        _8cnv.timeobj.set(2700);
+	menuobj.draw();    
+    }
+    else if (galleryobj.length()==4)
+    {
+        _8cnv.timeobj.set(2700);
+	menuobj.draw();    
+    }else if (galleryobj.length()<6)
     {
         gotoimage(0);    
     }
