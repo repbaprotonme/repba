@@ -5660,14 +5660,19 @@ function initime()
     {
         _8cnv.timeobj.set(j);
     }
-    else if (galleryobj.length()==1)
+    else
+    {
+	gotoimage(0);
+    }
+
+    if (galleryobj.length()==1)
     {
         _8cnv.timeobj.set(2700);
 	menuobj.draw();    
     }
-    else
+    else if (galleryobj.length()<6)
     {
-	gotoimage(0);
+        gotoimage(0);    
     }
 }
 
