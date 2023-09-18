@@ -9,58 +9,51 @@ https://ipfs-view.com
 
 function text2image()
 {
-	var myHeaders = new Headers();
-	myHeaders.append("Content-Type", "application/json");
-	
-	var raw = JSON.stringify({
-	  "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
-	  "prompt": "(extremely detailed CG unity 8k wallpaper) full body photo of the most beautiful woman in the world, ((wide angle:1. 3)), beautiful racing girl driving a convertible, ((pink convertable, )) (sitting in car), white seats, tanned skin, (blush) cheekbones, (bangs), (long hair), (freckles:0. 75), ((detailed symmetrical face)), (beautiful face), (smile), open mouth, ((pink hair:1. 4)), (wavy hair), ((green eyes:1. 3)), reflective eyes, dark eyebrows, mascara, makeup, (dark lipstick), (white sclera), racing gloves, dust particles, detailed lighting, rim lighting, dramatic lighting, chiaroscuro, black crop top, ((white racing jacket:1. 4)), open jacket, white yoga pants, large pink sneakers, race track, road, bleachers, blue sky, white clouds, birds, (white leather seats), (from front), (professional majestic impressionism oil painting by Waterhouse), John Constable, Ed Blinkey, Atey Ghailan, Studio Ghibli, by Jeremy Mann, Greg Manchess, Antonio Moro, trending on ArtStation, trending on CGSociety, Intricate, High Detail, dramatic, makoto shinkai kyoto, trending on artstation, trending on CGsociety",
-	  "negative_prompt": "worst quality, low quality, blurry, pixelated, extra limb, extra fingers, bad hand, text, name, letters, out of frame, lowres, text, error, cropped, jpeg artifacts, ugly, duplicate, morbid, mutilated, out of frame, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck, username, watermark, signature",
-	  "width": "1024",
-	  "height": "1024",
-	  "samples": "4",
-	  "num_inference_steps": "70",
-	  "seed": null,
-	  "guidance_scale": 15,
-	  "safety_checker": "yes",
-	  "multi_lingual": "no",
-	  "panorama": "no",
-	  "self_attention": "no",
-	  "upscale": "no",
-	  "embeddings_model": null,
-	  "webhook": null,
-	  "track_id": null
-	});
-	
-	var requestOptions = {
-	  method: 'POST',
-	  headers: myHeaders,
-	  body: raw,
-	  redirect: 'follow'
-	};
-	
-	fetch("https://stablediffusionapi.com/api/v3/text2img", requestOptions)
-	  .then(response => response.json())
-	  .then(function(json)
-	   {
-		   console.log(json)
-	   })
-	  .catch(error => console.log('error', error));
-}
+var myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
 
-function iOS()
-{
-    return
-    [
-        'iPad Simulator',
-        'iPhone Simulator',
-        'iPod Simulator',
-        'iPad',
-        'iPhone',
-        'iPod'
-    ].includes(navigator.platform)
-    ||
-    (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+var raw = JSON.stringify({
+  "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
+  "model_id": "sdxl",
+  "prompt": "actual 8K portrait photo of gareth person, portrait, happy colors, bright eyes, clear eyes, warm smile, smooth soft skin, big dreamy eyes, beautiful intricate colored hair, symmetrical, anime wide eyes, soft lighting, detailed face, by makoto shinkai, stanley artgerm lau, wlop, rossdraws, concept art, digital painting, looking into camera",
+  "negative_prompt": "painting, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, deformed, ugly, blurry, bad anatomy, bad proportions, extra limbs, cloned face, skinny, glitchy, double torso, extra arms, extra hands, mangled fingers, missing lips, ugly face, distorted face, extra legs, anime",
+  "width": "1024",
+  "height": "1024",
+  "samples": "1",
+  "num_inference_steps": "30",
+  "safety_checker": "no",
+  "enhance_prompt": "yes",
+  "seed": null,
+  "guidance_scale": 7.5,
+  "multi_lingual": "no",
+  "panorama": "no",
+  "self_attention": "no",
+  "upscale": "no",
+  "embeddings_model": null,
+  "lora_model": null,
+  "tomesd": "yes",
+  "use_karras_sigmas": "yes",
+  "vae": null,
+  "lora_strength": null,
+  "scheduler": "UniPCMultistepScheduler",
+  "webhook": null,
+  "track_id": null
+});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch("https://stablediffusionapi.com/api/v4/dreambooth", requestOptions)
+  .then(response => response.json())
+  .then(function(json)
+   {
+	   console.log(json)
+   })
+  .catch(error => console.log('error', error));
 }
 
 const SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
