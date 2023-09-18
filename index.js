@@ -5603,15 +5603,8 @@ function initime()
 {
 	menuobj.set(_8cnvctx);
 	contextobj.reset();
-	if (galleryobj.length() > GALLERYMIN)
-	    menuobj.toggle(_8cnvctx);
-	else
-	    galleryobj.showboss = 1;
-	
+	menuobj.toggle(_8cnvctx);
 	_4cnvctx.refresh();
-	headobj.set(galleryobj.length()>1?GALLERY:BOSS);
-	headham.panel = headobj.value();
-	headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
 	
 	var j = Number(localobj.time);
 
