@@ -102,7 +102,7 @@ const GALLERY = 1;
 const MENU = 2;
 const TIMEMAIN = 4;
 const TIMESECOND = 8;
-const GALLERYMIN = 6;
+const GALLERYMIN = 1;
 
 var panel = {}
 var global = {};
@@ -5611,8 +5611,15 @@ function initime()
 	contextobj.reset();
 	if (galleryobj.length() > GALLERYMIN)
 	    menuobj.toggle(_8cnvctx);
+	else
+	    galleryobj.showboss = 1;
 	
-    var j = Number(localobj.time);
+	_4cnvctx.refresh();
+	headobj.set(galleryobj.length()>1?GALLERY:BOSS);
+	headham.panel = headobj.value();
+	headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+	
+	var j = Number(localobj.time);
     if (j > 0 && j < TIMEOBJ)
     {
         _8cnv.timeobj.set(j);
@@ -5626,14 +5633,8 @@ function initime()
     {
 	gotoimage(0);
     }
-
-	if (galleryobj.length()<=GALLERYMIN)
-	    galleryobj.showboss = 1;
-	_4cnvctx.refresh();
-	headobj.set(galleryobj.length()>6?GALLERY:BOSS);
-	headham.panel = headobj.value();
-	headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);  	
 }
+
 //todo: "i" "n" "m"
 url.path = "home";
 if (url.searchParams.has("p"))
@@ -5679,21 +5680,17 @@ if (url.searchParams.has("p"))
         loadzip(url.path)
     }
 }
+else if (url.searchParams.has("search"))
+{
+	var k = url.searchParams.get("search")
+	fetch(`https://pexels.reportbase5836.workers.dev/?search=${k}&page=1`)
+        .then(response => jsonhandler(response))
+        .then((obj) => galleryobj.init(obj))
+        .catch((error) => { });
+}
 else
 {
-	var path = "https://ipfs-view.pages.dev/res/reci.json";
-    for (var n = 0; n < searchobj.length(); ++n)
-    {
-        var j = searchobj.data[n];
-        var e = url.searchParams.get(j)
-        if (!e)
-            continue;
-        var search = e.toLowerCase();
-        path = `https://${j}.reportbase5836.workers.dev/?search=${search}&page=1`;
-	break;
-    }
-
-	fetch(path)
+	fetch("https://ipfs-view.pages.dev/res/reci.json")
         .then(response => jsonhandler(response))
         .then((obj) => galleryobj.init(obj))
         .catch((error) => { });
