@@ -5335,7 +5335,7 @@ galleryobj.init = function (obj)
     var h = galleryobj.hideheader?0:BEXTENT;
     headcnvctx.show(0,0,window.innerWidth,h);
     headham.panel = headobj.value();
-
+	
     _2cnv.sliceobj.data =
     [
 
@@ -5585,6 +5585,22 @@ galleryobj.init = function (obj)
     var a = Array(_11cnv.sliceobj.length()).fill().map((_, index) => index);
     _11cnv.rotated = [...a,...a,...a];
 
+	if (url.searchParams.has("n"))
+	{
+	    var name = url.searchParams.get("n");
+		selectname(name);
+	}
+	else if (url.searchParams.has("f"))
+	{
+	    var folder = url.searchParams.get("f");
+		selectfolder(folder);
+	}	
+	else if (url.searchParams.has("i"))
+	{
+	    var id = url.searchParams.get("i");
+		selectid(folder);
+	}	
+	
     if (galleryobj.width)
     {
         buttonobj.reset();
@@ -5635,8 +5651,8 @@ function initime()
     }
 }
 
-//todo: "i" "n" "m"
 url.path = "home";
+
 if (url.searchParams.has("p"))
 {
     url.path = url.searchParams.get("p");
@@ -5951,6 +5967,22 @@ function selectfolder()
     {
         var e = galleryobj.data[m];
         if (!e.folder || e.folder != this.folder)
+            continue;
+	gotoimage(m);
+        localobj.time = _8cnv.timeobj.current();
+        galleryobj.width = 0;
+        galleryobj.height = 0;
+        galleryobj.init();
+        break;
+    }
+}
+
+function selectid()
+{
+    for (var m = 0; m < galleryobj.data.length; ++m)
+    {
+        var e = galleryobj.data[m];
+        if (!e.id || e.id != this.id)
             continue;
 	gotoimage(m);
         localobj.time = _8cnv.timeobj.current();
