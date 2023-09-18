@@ -56,6 +56,21 @@ fetch("https://stablediffusionapi.com/api/v4/dreambooth", requestOptions)
   .catch(error => console.log('error', error));
 }
 
+function iOS()
+{
+    return
+    [
+        'iPad Simulator',
+        'iPhone Simulator',
+        'iPod Simulator',
+        'iPad',
+        'iPhone',
+        'iPod'
+    ].includes(navigator.platform)
+    ||
+    (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+}
+
 const SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const FIREFOX = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 const VIRTCONST = 0.8;
