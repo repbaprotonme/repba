@@ -5685,11 +5685,11 @@ function initime()
            _8cnv.timeobj.set(3600);
 	menuobj.draw();    
     }
-    else 
+    else if (galleryobj.length()==6)
     {
-        gotoimage(0);    
-    }
-}
+           _8cnv.timeobj.set(3700);
+	menuobj.draw();    
+    }}
 
 url.path = "home";
 
