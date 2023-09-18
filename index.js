@@ -5585,22 +5585,6 @@ galleryobj.init = function (obj)
     var a = Array(_11cnv.sliceobj.length()).fill().map((_, index) => index);
     _11cnv.rotated = [...a,...a,...a];
 
-	if (url.searchParams.has("n"))
-	{
-	    var name = url.searchParams.get("n");
-		selectname(name);
-	}
-	else if (url.searchParams.has("f"))
-	{
-	    var folder = url.searchParams.get("f");
-		selectfolder(folder);
-	}	
-	else if (url.searchParams.has("i"))
-	{
-	    var id = url.searchParams.get("i");
-		selectid(folder);
-	}	
-	
     if (galleryobj.width)
     {
         buttonobj.reset();
@@ -5636,7 +5620,23 @@ function initime()
 	headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
 	
 	var j = Number(localobj.time);
-    if (j > 0 && j < TIMEOBJ)
+
+	if (url.searchParams.has("n"))
+	{
+	    var name = url.searchParams.get("n");
+		selectname(name);
+	}
+	else if (url.searchParams.has("f"))
+	{
+	    var folder = url.searchParams.get("f");
+		selectfolder(folder);
+	}	
+	else if (url.searchParams.has("i"))
+	{
+	    var id = url.searchParams.get("i");
+		selectid(folder);
+	}	
+	else if (j > 0 && j < TIMEOBJ)
     {
         _8cnv.timeobj.set(j);
     }
