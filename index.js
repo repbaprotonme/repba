@@ -2427,7 +2427,9 @@ var presslst =
         }
         else
         {
-            //todo
+	    //todo
+        	menuobj.setindex(_8cnvctx);
+        	menuobj.show();
         }
     },
     press: function (context, rect, x, y)
@@ -3799,19 +3801,6 @@ _15ham.panel = new panel.yoll();
 let contextlst = [_1cnvctx,_2cnvctx,_3cnvctx,_4cnvctx,_5cnvctx,_6cnvctx,_7cnvctx,_8cnvctx,_9cnvctx,_10cnvctx,_11cnvctx,_12cnvctx,_13cnvctx,_14cnvctx,_15cnvctx];
 let menulst = [0, _1cnvctx, _2cnvctx,_3cnvctx,_5cnvctx,_6cnvctx,_7cnvctx,_8cnvctx,_9cnvctx,_10cnvctx,_11cnvctx,_12cnvctx,_13cnvctx,_14cnvctx,_15cnvctx];
 var menuobj = new circular_array("MENU", menulst);
-menuobj.showindex = function(context)
-{
-    if (menuobj.value() != context)
-    {
-        menuobj.setindex(context);
-        menuobj.show();
-    }
-    else
-    {
-        menuobj.toggle(context);
-    }
-}
-
 menuobj.toggle = function(context)
 {
     if (menuobj.value() == context)
@@ -4962,6 +4951,9 @@ var headlst =
             canvas.slideshow = 0;
             var timeauto = global.timeauto;
             clearInterval(global.timeauto);
+	    var current = _8cnv.sliceobj.lerp(
+	        1-_8cnv.timeobj.berp());
+	    galleryobj.set(current);
             global.timeauto = 0;
             var obj = canvas.scrollobj.value();
             context.refresh();
@@ -5526,14 +5518,13 @@ galleryobj.init = function (obj)
 			else
 			{
 		    var id = galleryobj.value().id;
-		    var path = `https://image.reportbase5836.workers.dev/image/${id}/blob`;//todo
+		    var path = `https://image.reportbase5836.workers.dev/image/${id}/blob`;
 		    if (galleryobj.value().full)
 		        path = galleryobj.value().full;
 		    else if (!id && galleryobj.value().url)
 		       path = galleryobj.value().url;
 		    window.open(path,"download");
-			}
-		
+		}
             },
             enabled: function() { return 0; }
         },
