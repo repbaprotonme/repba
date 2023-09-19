@@ -15,7 +15,7 @@ myHeaders.append("Content-Type", "application/json");
 var raw = JSON.stringify({
   "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
   "model_id": "sdxl",
-  "prompt": `ethereal fantasy concept art of ${prompt}. magnificent, celestial, ethereal, painterly, epic, majestic, magical, fantasy art, cover art, dreamy`,
+  "prompt": `${prompt}`,
   "negative_prompt": "photographic, realistic, realism, 35mm film, dslr, cropped, frame, text, deformed, glitch, noise, noisy, off-center, deformed, cross-eyed, closed eyes, bad anatomy, ugly, disfigured, sloppy, duplicate, mutated, black and white",
   "width": "1024",
   "height": "1024",
