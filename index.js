@@ -23,7 +23,7 @@ var raw = JSON.stringify({
   "num_inference_steps": steps,
   "safety_checker": "no",
   "enhance_prompt": "no",
-  "seed": `seed,
+  "seed": seed,
   "guidance_scale": cfg,
   "multi_lingual": "no",
   "panorama": "no",
