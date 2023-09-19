@@ -4951,9 +4951,7 @@ var headlst =
             canvas.slideshow = 0;
             var timeauto = global.timeauto;
             clearInterval(global.timeauto);
-	    var current = _8cnv.sliceobj.lerp(
-	        1-_8cnv.timeobj.berp());
-	    galleryobj.set(current);
+
             global.timeauto = 0;
             var obj = canvas.scrollobj.value();
             context.refresh();
