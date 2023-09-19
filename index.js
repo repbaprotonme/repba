@@ -5548,6 +5548,7 @@ galleryobj.init = function (obj)
 		    {
 		      console.error('Error downloading image:', error);
 		    });
+		}
             },
             enabled: function() { 1; }
         },
