@@ -19,7 +19,7 @@ var raw = JSON.stringify({
   "negative_prompt": `${nprompt}`,
   "width": "1024",
   "height": "1024",
-  "samples": "4",
+  "samples": "1",
   "num_inference_steps": "60",
   "safety_checker": "no",
   "enhance_prompt": "no",
@@ -56,18 +56,6 @@ fetch("https://stablediffusionapi.com/api/v4/dreambooth", requestOptions)
 	   data[0].folder = "";
 	   data[0].url = (json.output && json.output.length) ? 
 		   json.output[0] : json.future_links[0];
-	   data[1] = json.meta;
-	   data[1].folder = "";
-	   data[1].url = (json.output && json.output.length) ? 
-		   json.output[1] : json.future_links[1];
-	   data[2] = json.meta;
-	   data[2].folder = "";
-	   data[2].url = (json.output && json.output.length) ? 
-		   json.output[2] : json.future_links[2];
-	   data[3] = json.meta;
-	   data[3].folder = "";
-	   data[3].url = (json.output && json.output.length) ? 
-		   json.output[3] : json.future_links[3];
 	   var str = JSON.stringify(data);
 	   console.log(str);
    })
