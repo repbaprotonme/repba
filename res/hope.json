@@ -2,6 +2,7 @@
   "title": "Landscapes",
       "width": 3999,
       "height": 2250,
+  "showboss":1,
   "data": [
     {
       "id": "HOPE.0000",

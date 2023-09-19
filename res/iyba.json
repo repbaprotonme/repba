@@ -2,6 +2,7 @@
   "title": "Repba Gallery",
       "width": 1280,
       "height": 932,
+     "showboss":1,
   "data": [
     {
       "id": "IYBA.0000",

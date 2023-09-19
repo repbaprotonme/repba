@@ -1,9 +1,11 @@
 {
   "title": "Ultra-wide Landscapes",
-  "min": 180,
-  "max": 240,
+  "showboss": 1,
+  "gallerytemplate": "3840x3840",
+  "bosstemplate": "3840x3840",
+  "width": 2160,
+  "height":360,
   "raw": 1,
-  "zoom": 0,
   "data": [
     {
       "id": "PINO.0000",
