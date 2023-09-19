@@ -15,7 +15,7 @@ myHeaders.append("Content-Type", "application/json");
 var raw = JSON.stringify({
   "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
   "model_id": "sdxl",
-  "prompt": `professional 3d model ${prompt}. octane render, highly detailed, volumetric, dramatic lighting",
+  "prompt": `professional 3d model ${prompt}. octane render, highly detailed, volumetric, dramatic lighting`,
   "negative_prompt": "ugly, deformed, noisy, low poly, blurry, painting",
   "width": "1024",
   "height": "1024",
