@@ -5528,7 +5528,7 @@ galleryobj.init = function (obj)
 			else
 			{
 		    var id = galleryobj.value().id;
-		    var path = `https://ipfs-view.pages.dev/image/${id}/blob`;
+		    var path = `https://image.reportbase5836.workers.dev/image/${id}/blob`;
 		    if (galleryobj.value().full)
 		        path = galleryobj.value().full;
 		    else if (!id && galleryobj.value().url)
