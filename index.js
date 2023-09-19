@@ -7,7 +7,7 @@ https://zip-view.com
 https://ipfs-view.com
 */
 
-function text2image()
+function text2image(prompt, cfg, steps, seed)
 {
 var myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
@@ -15,16 +15,16 @@ myHeaders.append("Content-Type", "application/json");
 var raw = JSON.stringify({
   "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
   "model_id": "sdxl",
-  "prompt": "professional 3d model city. octane render, highly detailed, volumetric, dramatic lighting",
+  "prompt": `professional 3d model ${prompt}. octane render, highly detailed, volumetric, dramatic lighting",
   "negative_prompt": "ugly, deformed, noisy, low poly, blurry, painting",
   "width": "1024",
   "height": "1024",
   "samples": "4",
-  "num_inference_steps": "90",
+  "num_inference_steps": steps,
   "safety_checker": "no",
   "enhance_prompt": "yes",
-  "seed": null,
-  "guidance_scale": 15,
+  "seed": seed,
+  "guidance_scale": cfg,
   "multi_lingual": "no",
   "panorama": "no",
   "self_attention": "no",
