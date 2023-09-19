@@ -60,8 +60,16 @@ fetch("https://stablediffusionapi.com/api/v4/dreambooth", requestOptions)
 		   j.url = (json.output && json.output.length) ? 
 			   json.output[0] : json.future_links[0];
 		   k.data.push(j);
-		   var e = JSON.stringify(k);
-		       console.log(e);
+		
+		      fetch(`https://bucket.reportbase5836.workers.dev/toon.json`,
+	                {
+	                    method: 'POST',
+	                    body: JSON.stringify(k)
+	                })
+	              .then(response => jsonhandler(response))
+	              .then(json => console.log(json) )
+	              .catch(error => console.log(error) );
+		      
 	      })
         .catch((error) => { });
    })
