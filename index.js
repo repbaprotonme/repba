@@ -54,19 +54,19 @@ fetch("https://stablediffusionapi.com/api/v4/dreambooth", requestOptions)
 	   var data = [];
 	   data[0] = json.meta;
 	   data[0].folder = "";
-	   data[0].path = (json.output && json.output.length) ? 
+	   data[0].url = (json.output && json.output.length) ? 
 		   json.output[0] : json.future_links[0];
 	   data[1] = json.meta;
 	   data[1].folder = "";
-	   data[1].path = (json.output && json.output.length) ? 
+	   data[1].url = (json.output && json.output.length) ? 
 		   json.output[1] : json.future_links[1];
 	   data[2] = json.meta;
 	   data[2].folder = "";
-	   data[2].path = (json.output && json.output.length) ? 
+	   data[2].url = (json.output && json.output.length) ? 
 		   json.output[2] : json.future_links[2];
 	   data[3] = json.meta;
 	   data[3].folder = "";
-	   data[3].path = (json.output && json.output.length) ? 
+	   data[3].url = (json.output && json.output.length) ? 
 		   json.output[3] : json.future_links[3];
 	   var str = JSON.stringify(data);
 	   console.log(str);
