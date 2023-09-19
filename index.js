@@ -51,13 +51,19 @@ fetch("https://stablediffusionapi.com/api/v4/dreambooth", requestOptions)
   .then(response => response.json())
   .then(function(json)
    {
-	   var data = [];
-	   data[0] = json.meta;
-	   data[0].folder = "";
-	   data[0].url = (json.output && json.output.length) ? 
-		   json.output[0] : json.future_links[0];
-	   var str = JSON.stringify(data);
-	   console.log(str);
+	fetch("https://ipfs-view.pages.dev/res/toon.json")
+        .then(response => jsonhandler(response))
+        .then(function(k)
+	      {
+		   var j = json.meta;
+		   j.folder = "";
+		   j.url = (json.output && json.output.length) ? 
+			   json.output[0] : json.future_links[0];
+		   k.data.push(j);
+		   var e = JSON.stringify(k);
+		       console.log(e);
+	      })
+        .catch((error) => { });
    })
   .catch(error => console.log('error', error));
 }
