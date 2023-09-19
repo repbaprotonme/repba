@@ -51,6 +51,7 @@ fetch("https://stablediffusionapi.com/api/v4/dreambooth", requestOptions)
   .then(response => response.json())
   .then(function(json)
    {
+	   //todo load json
 	   var data = [];
 	   data[0] = json.meta;
 	   data[0].folder = "";
@@ -65,6 +66,7 @@ fetch("https://stablediffusionapi.com/api/v4/dreambooth", requestOptions)
 	   data[3].folder = "";
 	   data[3].path = json.output ? json.output[3] : json.future_links[3];
 	   console.log(j)
+	   //todo: save json
    })
   .catch(error => console.log('error', error));
 }
