@@ -24,7 +24,7 @@ var raw = JSON.stringify({
   "safety_checker": "no",
   "enhance_prompt": "no",
   "seed": `seed,
-  "guidance_scale": `cfg,
+  "guidance_scale": cfg,
   "multi_lingual": "no",
   "panorama": "no",
   "self_attention": "no",
