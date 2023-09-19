@@ -2425,12 +2425,9 @@ var presslst =
         else if (context.canvas.reducerect && context.canvas.reducerect.hitest(x,y))
         {
         }
-        else if (screenfull.isEnabled)
+        else
         {
-            var h = headcnv.height?0:BEXTENT;
-            headcnvctx.show(0,0,window.innerWidth,h);
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            context.refresh()
+            //todo
         }
     },
     press: function (context, rect, x, y)
@@ -3077,6 +3074,7 @@ var taplst =
         }
 	else if (galleryobj.showboss || canvas.shiftKey)
         {
+		//todo
             clearInterval(global.swipetimeout);
             global.swipetimeout = 0;
 
@@ -5528,7 +5526,7 @@ galleryobj.init = function (obj)
 			else
 			{
 		    var id = galleryobj.value().id;
-		    var path = `https://image.reportbase5836.workers.dev/image/${id}/blob`;
+		    var path = `https://image.reportbase5836.workers.dev/image/${id}/blob`;//todo
 		    if (galleryobj.value().full)
 		        path = galleryobj.value().full;
 		    else if (!id && galleryobj.value().url)
