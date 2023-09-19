@@ -5535,7 +5535,7 @@ galleryobj.init = function (obj)
 			}
 		
             },
-            enabled: function() { return 1; }
+            enabled: function() { return 0; }
         },
 	    
         {title:"Debug", func: function()
