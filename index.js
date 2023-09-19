@@ -5534,7 +5534,7 @@ galleryobj.init = function (obj)
 		    else if (!id && galleryobj.value().url)
 		       path = galleryobj.value().url;
 		    fetch(path)
-		    .then(response => response.blob())
+		    .then((response) => blobhandler(response))
 		    .then(blob =>
 		    {
 		      const anchor = document.createElement('a');
