@@ -5516,8 +5516,7 @@ galleryobj.init = function (obj)
 
         {title:"Download", func: function()
             {
-		 	menuobj.hide();
-			if (galleryobj.value().blob)
+		 	if (galleryobj.value().blob)
 			{
 			      const anchor = document.createElement('a');
 			      anchor.href = URL.createObjectURL(galleryobj.value().blob);
