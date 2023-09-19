@@ -5483,7 +5483,7 @@ galleryobj.init = function (obj)
         },
 	    
         {
-            title: "ipfs-view\nImage Viewer\nhttps://ipfs-view\nimages@ipfs-view.com",
+            title: "ipfs-view\nImage Viewer\nhttps://ipfs-view.com\nimages@ipfs-view.com",
             func: function() {}
         },
         {
