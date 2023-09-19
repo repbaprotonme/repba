@@ -16,7 +16,7 @@ var raw = JSON.stringify({
   "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
   "model_id": "sdxl",
   "prompt": `${prompt}`,
-  "negative_prompt": ${nprompt}",
+  "negative_prompt": `${nprompt}`,
   "width": "1024",
   "height": "1024",
   "samples": "4",
