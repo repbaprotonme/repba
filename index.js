@@ -5533,9 +5533,9 @@ galleryobj.init = function (obj)
 		       path = galleryobj.value().url;
 		    window.open(path,"download");
 			}
-		}
+		
             },
-            enabled: function() { 1; }
+            enabled: function() { return 1; }
         },
 	    
         {title:"Debug", func: function()
