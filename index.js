@@ -5531,21 +5531,8 @@ galleryobj.init = function (obj)
 		        path = galleryobj.value().full;
 		    else if (!id && galleryobj.value().url)
 		       path = galleryobj.value().url;
-		    fetch(path)
-		    .then((response) => blobhandler(response))
-		    .then(blob =>
-		    {
-		      const anchor = document.createElement('a');
-		      anchor.href = URL.createObjectURL(blob);
-		      anchor.download = galleryobj.value().id?galleryobj.value().id:'image';
-		      anchor.click();
-		      URL.revokeObjectURL(anchor.href);
-		      anchor.remove();
-		    })
-		    .catch(error =>
-		    {
-		      console.error('Error downloading image:', error);
-		    });
+		    window.open(path,"download");
+			}
 		}
             },
             enabled: function() { 1; }
