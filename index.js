@@ -5226,16 +5226,6 @@ function wraptext(ctx, text, maxWidth)
 let thumbfittedlst = [];
 let thumbimglst = [];
 var galleryobj = new circular_array("", 0);
-galleryobj.getrawpath = function()
-{
-    var id = galleryobj.value().id;
-    var path = `https://ipfs-view.pages.dev/image/${id}/blob`;
-    if (galleryobj.value().full)
-        path = galleryobj.value().full;
-    else if (!id && galleryobj.value().url)
-       path = galleryobj.value().url;
-    return path;
-}
 
 function imagepath(user)
 {
@@ -5522,6 +5512,13 @@ galleryobj.init = function (obj)
                 contextobj.reset();
             },
             enabled: function() { return galleryobj.advanced; }
+        },
+
+        {title:"Download", func: function()
+            {
+                download();
+            },
+            enabled: function() { 1; }
         },
 	    
         {title:"Debug", func: function()
@@ -6145,7 +6142,13 @@ function download()
 	}
 	else
 	{
-	    fetch(galleryobj.getrawpath())
+	    var id = galleryobj.value().id;
+	    var path = `https://ipfs-view.pages.dev/image/${id}/blob`;
+	    if (galleryobj.value().full)
+	        path = galleryobj.value().full;
+	    else if (!id && galleryobj.value().url)
+	       path = galleryobj.value().url;
+	    fetch(path)
 	    .then(response => response.blob())
 	    .then(blob =>
 	    {
