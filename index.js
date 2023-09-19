@@ -7,7 +7,7 @@ https://zip-view.com
 https://ipfs-view.com
 */
 
-function text2image(prompt, cfg, steps, seed)
+function text2image(prompt, nprompt, cfg, seed)
 {
 var myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
@@ -16,11 +16,11 @@ var raw = JSON.stringify({
   "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
   "model_id": "sdxl",
   "prompt": `${prompt}`,
-  //"negative_prompt": "photographic, realistic, realism, 35mm film, dslr, cropped, frame, text, deformed, glitch, noise, noisy, off-center, deformed, cross-eyed, closed eyes, bad anatomy, ugly, disfigured, sloppy, duplicate, mutated, black and white",
+  "negative_prompt": ${nprompt}",
   "width": "1024",
   "height": "1024",
   "samples": "4",
-  "num_inference_steps": steps,
+  "num_inference_steps": "60",
   "safety_checker": "no",
   "enhance_prompt": "no",
   "seed": seed,
