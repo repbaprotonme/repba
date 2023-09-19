@@ -2716,8 +2716,14 @@ var keylst =
 		evt.preventDefault();
             menuobj.leftright (context, canvas.speedobj.value()/2)
         }
-     	else if (key == "x" && canvas.ctrlKey && canvas.shiftKey)
+     	else if (key == "d" && canvas.ctrlKey && canvas.shiftKey)
         {		
+		evt.preventDefault();
+		download();
+	}
+     	else if (key == "x" && canvas.ctrlKey && canvas.shiftKey)
+        {
+		evt.preventDefault();
 		importdialog();
 	}
         else if (key == "f" && canvas.ctrlKey && canvas.shiftKey)
@@ -2757,7 +2763,6 @@ var keylst =
             key == "arrowup" ||
             (canvas.shiftKey && evt.key == "enter") ||
             (canvas.shiftKey && evt.key == " ") ||
-            evt.key == "w" ||
             evt.key == "j")
 		{
             menuobj.updown(context, canvas.speedobj.value());
@@ -2837,7 +2842,6 @@ var keylst =
         else if (
             (canvas.shiftKey && key == "tab") ||
             key == "arrowleft" ||
-            key == "a" ||
             key == "h")
         {
             bossobj.leftright(context.canvas.speedobj.value());
@@ -2846,7 +2850,6 @@ var keylst =
         else if (
             key == "tab" ||
             key == "arrowright" ||
-            key == "d" ||
             key == "l")
         {
             bossobj.leftright(-context.canvas.speedobj.value());
@@ -2867,7 +2870,6 @@ var keylst =
             bossobj.updown(-context.canvas.speedobj.value());
         }
         else if (key == "arrowdown" ||
-            key == "s" ||
             key == "j" )
         {
             bossobj.updown(context.canvas.speedobj.value());
@@ -5338,7 +5340,30 @@ galleryobj.init = function (obj)
 	
     _2cnv.sliceobj.data =
     [
-
+	{title:"Goto\nCtrl+Shift+G", func: function(){}},
+        {title:"Goto\nCtrl+Shift+G", func: function(){}},
+	{title:"Goto\nCtrl+Shift+G", func: function(){}},
+    	{title:"Goto\nCtrl+Shift+G", func: function(){}},
+        {title:"Goto\nCtrl+Shift+G", func: function(){}},
+	{title:"Goto\nCtrl+Shift+G", func: function(){}},    
+   	{title:"Goto\nCtrl+Shift+G", func: function(){}},
+        {title:"Goto\nCtrl+Shift+G", func: function(){}},
+	{title:"Goto\nCtrl+Shift+G", func: function(){}},
+    	{title:"Goto\nCtrl+Shift+G", func: function(){}},
+        {title:"Goto\nCtrl+Shift+G", func: function(){}},
+	{title:"Goto\nCtrl+Shift+G", func: function(){}},
+        {title:"Goto\nCtrl+Shift+G", func: function(){}},
+        {title:"Goto\nCtrl+Shift+G", func: function(){}},
+	{title:"Goto\nCtrl+Shift+G", func: function(){}},
+    	{title:"Goto\nCtrl+Shift+G", func: function(){}},
+        {title:"Goto\nCtrl+Shift+G", func: function(){}},
+	{title:"Goto\nCtrl+Shift+G", func: function(){}},    
+   	{title:"Goto\nCtrl+Shift+G", func: function(){}},
+        {title:"Goto\nCtrl+Shift+G", func: function(){}},
+	{title:"Goto\nCtrl+Shift+G", func: function(){}},
+    	{title:"Goto\nCtrl+Shift+G", func: function(){}},
+        {title:"Goto\nCtrl+Shift+G", func: function(){}},
+	{title:"Goto\nCtrl+Shift+G", func: function(){}},
     ];
 
     var a = Array(_2cnv.sliceobj.length()).fill().map((_, index) => index);
@@ -5503,7 +5528,7 @@ galleryobj.init = function (obj)
             enabled: function() { return galleryobj.advanced; }
         },
 
-        {title:"Download", func: function()
+        {title:"Download\nCtrl+Shift+D", func: function()
             {
 		 	if (galleryobj.value().blob)
 			{
