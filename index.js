@@ -4968,6 +4968,7 @@ var headlst =
             }
             else if (canvas.helprect && canvas.helprect.hitest(x,y))
             {
+ 		galleryobj.set(_8cnv.lastcurrent)
                 _5cnvctx.hide()
                 if (menuobj.value() == _7cnvctx)
                 {
@@ -4980,7 +4981,7 @@ var headlst =
                     menuobj.setindex(_7cnvctx);
                     menuobj.show();
                 }
-
+		    
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             }
             else if (
