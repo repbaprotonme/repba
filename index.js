@@ -5516,7 +5516,39 @@ galleryobj.init = function (obj)
 
         {title:"Download", func: function()
             {
-                download();
+		 	menuobj.hide();
+			if (galleryobj.value().blob)
+			{
+			      const anchor = document.createElement('a');
+			      anchor.href = URL.createObjectURL(galleryobj.value().blob);
+			      anchor.download = galleryobj.value().name;
+			      anchor.click();
+			      URL.revokeObjectURL(anchor.href);
+			      anchor.remove();
+			}
+			else
+			{
+		    var id = galleryobj.value().id;
+		    var path = `https://ipfs-view.pages.dev/image/${id}/blob`;
+		    if (galleryobj.value().full)
+		        path = galleryobj.value().full;
+		    else if (!id && galleryobj.value().url)
+		       path = galleryobj.value().url;
+		    fetch(path)
+		    .then(response => response.blob())
+		    .then(blob =>
+		    {
+		      const anchor = document.createElement('a');
+		      anchor.href = URL.createObjectURL(blob);
+		      anchor.download = galleryobj.value().id?galleryobj.value().id:'image';
+		      anchor.click();
+		      URL.revokeObjectURL(anchor.href);
+		      anchor.remove();
+		    })
+		    .catch(error =>
+		    {
+		      console.error('Error downloading image:', error);
+		    });
             },
             enabled: function() { 1; }
         },
@@ -6130,38 +6162,5 @@ buttonobj.reset = function()
 	
 function download()
 {
-	menuobj.hide();
-	if (galleryobj.value().blob)
-	{
-	      const anchor = document.createElement('a');
-	      anchor.href = URL.createObjectURL(galleryobj.value().blob);
-	      anchor.download = galleryobj.value().name;
-	      anchor.click();
-	      URL.revokeObjectURL(anchor.href);
-	      anchor.remove();
-	}
-	else
-	{
-	    var id = galleryobj.value().id;
-	    var path = `https://ipfs-view.pages.dev/image/${id}/blob`;
-	    if (galleryobj.value().full)
-	        path = galleryobj.value().full;
-	    else if (!id && galleryobj.value().url)
-	       path = galleryobj.value().url;
-	    fetch(path)
-	    .then(response => response.blob())
-	    .then(blob =>
-	    {
-	      const anchor = document.createElement('a');
-	      anchor.href = URL.createObjectURL(blob);
-	      anchor.download = galleryobj.value().id?galleryobj.value().id:'image';
-	      anchor.click();
-	      URL.revokeObjectURL(anchor.href);
-	      anchor.remove();
-	    })
-	    .catch(error =>
-	    {
-	      console.error('Error downloading image:', error);
-	    });
-	}
+
 }
