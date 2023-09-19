@@ -51,7 +51,7 @@ fetch("https://stablediffusionapi.com/api/v4/dreambooth", requestOptions)
   .then(response => response.json())
   .then(function(json)
    {
-	fetch("https://ipfs-view.pages.dev/res/toon.json")
+	fetch("https://pub-5a6796322e7b41258889605f86441520.r2.dev/toon.json")
         .then(response => jsonhandler(response))
         .then(function(k)
 	      {
