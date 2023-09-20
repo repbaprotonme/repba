@@ -4890,7 +4890,7 @@ var headlst =
         this.wheeleftright = function (context, x, y, ctrl, shift, alt, type)
         {
             var k = menuobj.value()?menuobj.value():_8cnvctx;
-      		k.canvas.wheeleftright_(k, x, y, ctrl, shift, alt, type);
+      	    k.canvas.wheeleftright_(k, x, y, ctrl, shift, alt, type);
         };
 
         this.wheelupdown = function (context, x, y, delta, ctrl, shift, alt, type)
@@ -4958,29 +4958,19 @@ var headlst =
             var obj = canvas.scrollobj.value();
             context.refresh();
 
-            if (context.fullrect && context.fullrect.hitest(x,y))
-            {
-                if (screenfull.isEnabled)
-                {
-                    if (window.innerHeight == screen.height)
-                        screenfull.exit();
-                    else
-                        screenfull.request();
-                }
-            }
-            else if (canvas.helprect && canvas.helprect.hitest(x,y))
+            if (canvas.helprect && canvas.helprect.hitest(x,y))
             {
  		galleryobj.set(_8cnv.lastcurrent)
                 _5cnvctx.hide()
-                if (menuobj.value() == _7cnvctx)
+                if (menuobj.value() == _2cnvctx)
                 {
-                    _7cnvctx.hide();
+                    _2cnvctx.hide();
                     menuobj.setindex(_8cnvctx);
                     menuobj.draw();
                 }
                 else
                 {
-                    menuobj.setindex(_7cnvctx);
+                    menuobj.setindex(_2cnvctx);
                     menuobj.show();
                 }
 		    
