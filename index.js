@@ -3116,6 +3116,22 @@ var taplst =
             menuobj.toggle(_8cnvctx);
             contextobj.reset();
         }
+	else
+	{
+              _7cnvctx.hide()
+	        _5cnvctx.hide();
+                if (menuobj.value() == _2cnvctx)
+                {
+                    _2cnvctx.hide();
+                    menuobj.setindex(_8cnvctx);
+                    menuobj.draw();
+                }
+                else
+                {
+                    menuobj.setindex(_2cnvctx);
+                    menuobj.show();
+                }
+	}
     },
 },
 {
@@ -4962,15 +4978,16 @@ var headlst =
             {
  		galleryobj.set(_8cnv.lastcurrent)
                 _5cnvctx.hide()
-                if (menuobj.value() == _2cnvctx)
+		_2cnvctx.hide();
+                if (menuobj.value() == _7cnvctx)
                 {
-                    _2cnvctx.hide();
+                    _7cnvctx.hide();
                     menuobj.setindex(_8cnvctx);
                     menuobj.draw();
                 }
                 else
                 {
-                    menuobj.setindex(_2cnvctx);
+                    menuobj.setindex(_7cnvctx);
                     menuobj.show();
                 }
 		    
@@ -4981,6 +4998,7 @@ var headlst =
                 context.canvas.fitwindowrect.hitest(x,y))
             {
                 _7cnvctx.hide()
+	        _2cnvctx.hide();
                 if (menuobj.value() == _5cnvctx)
                 {
                     _5cnvctx.hide();
