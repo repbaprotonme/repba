@@ -5358,7 +5358,7 @@ galleryobj.init = function (obj)
 	{title:"Enhanced Prompt: No", func: function(){}},
     	{title:"Seed: 1244", func: function(){}},
         {title:"Guidance Scale: 16", func: function(){}},
-	{title:"Multi Lingual\nNo", func: function(){}},
+	{title:"Multi Lingual: No", func: function(){}},
         {title:"Panorama: No", func: function(){}},
         {title:"Self Attention: No", func: function(){}},
 	{title:"Upscale: No", func: function(){}},
