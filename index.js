@@ -2670,11 +2670,6 @@ var keylst =
 		evt.preventDefault();
             gotodialog();
         }		
-        else if (key == "s" && canvas.ctrlKey && canvas.shiftKey)
-        {
-		evt.preventDefault();
-            showsearch();
-        }		
 	else if (key == "home" || (key == "h" && canvas.ctrlKey && canvas.shiftKey))
 	{
 		gotoimage(0);
@@ -5499,12 +5494,6 @@ galleryobj.init = function (obj)
        {title:"Goto\nCtrl+Shift+G", func: function()
             {
                 gotodialog();
-            }
-        },
-
-    {title:"Search\nCtrl+Shift+S", func: function()
-            {
-                showsearch();
             }
         },
 	    
