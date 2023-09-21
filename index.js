@@ -19,8 +19,8 @@ var text2promptobj =
   "num_inference_steps": "60",
   "safety_checker": "no",
   "enhance_prompt": "no",
-  "seed": seed,
-  "guidance_scale": cfg,
+  "seed": 100,
+  "guidance_scale": 16,
   "multi_lingual": "no",
   "panorama": "no",
   "self_attention": "no",
@@ -5344,7 +5344,7 @@ galleryobj.init = function (obj)
     headham.panel = headobj.value();
     _2cnv.sliceobj.data =
     [
-	    /*
+	    
 	{title: function(){return `Model ID: ${text2promptobj.model_id}`}, func: function(){}},
         {title: function(){return `Prompt: ${text2promptobj.prompt}`}, func: function(){}},
 	{title: function(){return `Negative Prompt: ${text2promptobj.negative_prompt}`}, func: function(){}},
@@ -5368,7 +5368,7 @@ galleryobj.init = function (obj)
     	{title: function(){return `Scheduler: ${text2promptobj.scheduler}`}, func: function(){}},
         {title: function(){return `webhook: ${text2promptobj.webhook}`}, func: function(){}},
 	{title: function(){return `Track Id: ${text2promptobj.track_id}`}, func: function(){}},
- */
+ 
     ];
 
     var a = Array(_2cnv.sliceobj.length()).fill().map((_, index) => index);
