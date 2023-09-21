@@ -5343,6 +5343,7 @@ galleryobj.init = function (obj)
     headham.panel = headobj.value();
     _2cnv.sliceobj.data =
     [
+	    /*
 	{title: function(){return "Model ID: sdxl"}, func: function(){}},
         {title: function(){return "Prompt: A large balloon in city"}, func: function(){}},
 	{title: function(){return "Negative Prompt: Bad images, bad hands"}, func: function(){}},
@@ -5367,6 +5368,7 @@ galleryobj.init = function (obj)
     	{title: function(){return "Scheduler: UniPCMultistepScheduler"}, func: function(){}},
         {title: function(){return "webhook: 0"}, func: function(){}},
 	{title: function(){return "Track Id: 0"}, func: function(){}},
+ */
     ];
 
     var a = Array(_2cnv.sliceobj.length()).fill().map((_, index) => index);
