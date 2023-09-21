@@ -3675,7 +3675,7 @@ var buttonlst =
             0,
         ]);
 
-        var k = user.title;
+        var k = typeof (user.title) == "function" ? user.title() user.title; 
         var d = "\n";
         if (!k)
         {
@@ -3714,7 +3714,8 @@ var buttonlst =
             0,
         ]);
 
-        a.draw(context, rect, user.title, time);
+ 	var k = typeof (user.title) == "function" ? user.title() user.title; 
+        a.draw(context, rect, k, time);
         context.restore();
     }
 },
@@ -5342,30 +5343,30 @@ galleryobj.init = function (obj)
     headham.panel = headobj.value();
     _2cnv.sliceobj.data =
     [
-	{title:"Model Id: sdxl", func: function(){}},
-        {title:"Prompt: A large balloon in city", func: function(){}},
-	{title:"Negative Prompt: Bad images, bad hands", func: function(){}},
-    	{title:"Width: 1024", func: function(){}},
-        {title:"Height: 1024", func: function(){}},
-	{title:"Samples: 1", func: function(){}},    
-   	{title:"Steps: 60", func: function(){}},
-        {title:"Safety Checker: No", func: function(){}},
-	{title:"Enhanced Prompt: No", func: function(){}},
-    	{title:"Seed: 1244", func: function(){}},
-        {title:"Guidance Scale: 16", func: function(){}},
-	{title:"Multi Lingual: No", func: function(){}},
-        {title:"Panorama: No", func: function(){}},
-        {title:"Self Attention: No", func: function(){}},
-	{title:"Upscale: No", func: function(){}},
-    	{title:"Embeddings Model: 0", func: function(){}},
-        {title:"Lora Model: 0", func: function(){}},
-	{title:"Tomesd: Yes", func: function(){}},    
-   	{title:"Use Karras Sigmas: Yes", func: function(){}},
-        {title:"Vae: 0", func: function(){}},
-	{title:"Lora Strength: 0", func: function(){}},
-    	{title:"Scheduler: UniPCMultistepScheduler", func: function(){}},
-        {title:"webhook: 0", func: function(){}},
-	{title:"Track Id: 0", func: function(){}},
+	{title: function(){return "Model ID: sdxl"}, func: function(){}},
+        {title: function(){return "Prompt: A large balloon in city"}, func: function(){}},
+	{title: function(){return "Negative Prompt: Bad images, bad hands"}, func: function(){}},
+    	{title: function(){return "Width: 1024"}, func: function(){}},
+        {title: function(){return "Height: 1024"}, func: function(){}},
+	{title: function(){return "Samples: 1"}, func: function(){}},    
+   	{title: function(){return "Steps: 60"}, func: function(){}},
+        {title: function(){return "Safety Checker: No"}, func: function(){}},
+	{title: function(){return "Enhanced Prompt: No"}, func: function(){}},
+    	{title: function(){return "Seed: 1244"}, func: function(){}},
+        {title: function(){return "Guidance Scale: 16"}, func: function(){}},
+	{title: function(){return "Multi Lingual: No"}, func: function(){}},
+        {title: function(){return "Panorama: No"}, func: function(){}},
+        {title: function(){return "Self Attention: No"}, func: function(){}},
+	{title: function(){return "Upscale: No"}, func: function(){}},
+    	{title: function(){return "Embeddings Model: 0"}, func: function(){}},
+        {title: function(){return "Lora Model: 0"}, func: function(){}},
+	{title: function(){return "Tomesd: Yes"}, func: function(){}},    
+   	{title: function(){return "Use Karras Sigmas: Yes"}, func: function(){}},
+        {title: function(){return "Vae: 0"}, func: function(){}},
+	{title: function(){return "Lora Strength: 0"}, func: function(){}},
+    	{title: function(){return "Scheduler: UniPCMultistepScheduler"}, func: function(){}},
+        {title: function(){return "webhook: 0"}, func: function(){}},
+	{title: function(){return "Track Id: 0"}, func: function(){}},
     ];
 
     var a = Array(_2cnv.sliceobj.length()).fill().map((_, index) => index);
