@@ -3675,7 +3675,7 @@ var buttonlst =
             0,
         ]);
 
-        var k = typeof (user.title) == "function" ? user.title() user.title; 
+        var k = "";//typeof (user.title) == "function" ? user.title() user.title; 
         var d = "\n";
         if (!k)
         {
@@ -3714,7 +3714,7 @@ var buttonlst =
             0,
         ]);
 
- 	var k = typeof (user.title) == "function" ? user.title() user.title; 
+ 	var k = "";//typeof (user.title) == "function" ? user.title() user.title; 
         a.draw(context, rect, k, time);
         context.restore();
     }
