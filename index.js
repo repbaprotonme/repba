@@ -7,16 +7,12 @@ https://zip-view.com
 https://ipfs-view.com
 */
 
-function text2image(prompt, nprompt, cfg, seed)
+var text2promptobj = 
 {
-var myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
-
-var raw = JSON.stringify({
   "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
   "model_id": "sdxl",
-  "prompt": `${prompt}`,
-  "negative_prompt": `${nprompt}`,
+  "prompt": "",
+  "negative_prompt": "",
   "width": "1024",
   "height": "1024",
   "samples": "1",
@@ -38,12 +34,17 @@ var raw = JSON.stringify({
   "scheduler": "UniPCMultistepScheduler",
   "webhook": null,
   "track_id": null
-});
+};
+
+function text2image(prompt, nprompt, cfg, seed)
+{
+var myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
 
 var requestOptions = {
   method: 'POST',
   headers: myHeaders,
-  body: raw,
+  body: JSON.stringify(text2promptobj),
   redirect: 'follow'
 };
 
@@ -5343,30 +5344,29 @@ galleryobj.init = function (obj)
     headham.panel = headobj.value();
     _2cnv.sliceobj.data =
     [
-	    {title: function(){return "Model ID: sdxl"}, func: function(){}},
-        {title: function(){return "Prompt: A large balloon in city"}, func: function(){}},
-	{title: function(){return "Negative Prompt: Bad images, bad hands"}, func: function(){}},
-    	{title: function(){return "Width: 1024"}, func: function(){}},
-        {title: function(){return "Height: 1024"}, func: function(){}},
-	{title: function(){return "Samples: 1"}, func: function(){}},    
-   	{title: function(){return "Steps: 60"}, func: function(){}},
-        {title: function(){return "Safety Checker: No"}, func: function(){}},
-	{title: function(){return "Enhanced Prompt: No"}, func: function(){}},
-    	{title: function(){return "Seed: 1244"}, func: function(){}},
-        {title: function(){return "Guidance Scale: 16"}, func: function(){}},
-	{title: function(){return "Multi Lingual: No"}, func: function(){}},
-        {title: function(){return "Panorama: No"}, func: function(){}},
-        {title: function(){return "Self Attention: No"}, func: function(){}},
-	{title: function(){return "Upscale: No"}, func: function(){}},
-    	{title: function(){return "Embeddings Model: 0"}, func: function(){}},
-        {title: function(){return "Lora Model: 0"}, func: function(){}},
-	{title: function(){return "Tomesd: Yes"}, func: function(){}},    
-   	{title: function(){return "Use Karras Sigmas: Yes"}, func: function(){}},
-        {title: function(){return "Vae: 0"}, func: function(){}},
-	{title: function(){return "Lora Strength: 0"}, func: function(){}},
-    	{title: function(){return "Scheduler: UniPCMultistepScheduler"}, func: function(){}},
-        {title: function(){return "webhook: 0"}, func: function(){}},
-	{title: function(){return "Track Id: 0"}, func: function(){}},
+	{title: function(){return `Model ID: ${text2promptobj.model_id}`}, func: function(){}},
+        {title: function(){return `Prompt: ${text2promptobj.prompt}`}, func: function(){}},
+	{title: function(){return `Negative Prompt: ${text2promptobj.negative_prompt}`}, func: function(){}},
+    	{title: function(){return `Width: ${text2promptobj.width}`}, func: function(){}},
+        {title: function(){return `Height: ${text2promptobj.height}`}, func: function(){}},
+	{title: function(){return `Steps: ${text2promptobj.num_inference_steps}`}, func: function(){}},
+        {title: function(){return `Safety Checker: ${text2promptobj.safety_checker}`}, func: function(){}},
+	{title: function(){return `Enhanced Prompt: ${text2promptobj.enhance_prompt}`}, func: function(){}},
+    	{title: function(){return `Seed: ${text2promptobj.seed}`}, func: function(){}},
+        {title: function(){return `Guidance Scale: ${text2promptobj.guidance_scale}`}, func: function(){}},
+	{title: function(){return `Multi Lingual: ${text2promptobj.multi_lingual}`}, func: function(){}},
+        {title: function(){return `Panorama: ${text2promptobj.panorama}`}, func: function(){}},
+        {title: function(){return `Self Attention: ${text2promptobj.self_attention}`}, func: function(){}},
+	{title: function(){return `Upscale: ${text2promptobj.upscale}`}, func: function(){}},
+    	{title: function(){return `Embeddings Model: ${text2promptobj.embeddings_model}`}, func: function(){}},
+        {title: function(){return `Lora Model: ${text2promptobj.lora_model}`}, func: function(){}},
+	{title: function(){return `Tomesd: ${text2promptobj.tomesd}`}, func: function(){}},    
+   	{title: function(){return `Use Karras Sigmas: ${text2promptobj.use_karras_sigmas}`}, func: function(){}},
+        {title: function(){return `Vae: ${text2promptobj.vae}`}, func: function(){}},
+	{title: function(){return `Lora Strength: ${text2promptobj.lora_strentgh}`}, func: function(){}},
+    	{title: function(){return `Scheduler: ${text2promptobj.scheduler}`}, func: function(){}},
+        {title: function(){return `webhook: ${text2promptobj.webhook}`}, func: function(){}},
+	{title: function(){return `Track Id: ${text2promptobj.track_id}`}, func: function(){}},
     ];
 
     var a = Array(_2cnv.sliceobj.length()).fill().map((_, index) => index);
