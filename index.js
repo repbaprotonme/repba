@@ -4911,6 +4911,7 @@ var headlst =
 	                    menuobj.setindex(_2cnvctx);
 	                    menuobj.show();
 	                }
+		 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
 		}
 	else if (
                 context.zoomrect &&
