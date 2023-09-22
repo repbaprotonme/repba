@@ -4690,9 +4690,9 @@ function resize()
     }
 
     delete _4cnv.thumbcanvas;
-    headcnvctx.show(0,0,window.innerWidth,
-        window.innerHeight === screen.height?0:BEXTENT);
-    headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+   // headcnvctx.show(0,0,window.innerWidth,
+     //   window.innerHeight === screen.height?0:BEXTENT);
+    //headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
     buttonobj.reset()
     contextobj.reset();
     menuobj.show();
