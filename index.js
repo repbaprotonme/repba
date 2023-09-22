@@ -29,7 +29,7 @@ var text2promptobj =
   "lora_model": null,
   "tomesd": "yes",
   "use_karras_sigmas": "yes",
-  "vae": "kl-f8-anime2",
+  "vae": null,
   "lora_strength": 0,
   "scheduler": "UniPCMultistepScheduler",
   "webhook": null,
