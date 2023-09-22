@@ -3249,8 +3249,7 @@ var bosslst =
             var x = Math.floor(Math.nub(positx.value(), positx.length(), w, rect.width));
             var y = Math.floor(Math.nub(posity.value(), posity.length(), h, rect.height));
             canvas.thumbrect = new rectangle(x,y,w,h);
-		if (context.hidethumb)
-			return;
+		
             var r = canvas.thumbrect;
             context.save();
             context.shadowOffsetX = 0;
@@ -3258,6 +3257,7 @@ var bosslst =
             if (galleryobj.transparent)
             {
                 var blackfill = new panel.fill(THUMBFILP);
+		    if (!context.hidethumb)
                 blackfill.draw(context, canvas.thumbrect, 0, 0);
             }
             else
@@ -3268,13 +3268,16 @@ var bosslst =
                     canvas.thumbcanvas.width = w;
                     canvas.thumbcanvas.height = h;
                     var thumbcontext = canvas.thumbcanvas.getContext('2d');
-                    thumbcontext.drawImage(photo.image,0,0,w,h);
+                    if (!context.hidethumb)
+			    thumbcontext.drawImage(photo.image,0,0,w,h);
                 }
-
-                context.drawImage(canvas.thumbcanvas, x, y, w, h);
+		    
+		if (!context.hidethumb)
+                	context.drawImage(canvas.thumbcanvas, x, y, w, h);
             }
 
             var whitestroke = new panel.stroke(THUMBSTROKE,THUMBORDER);
+	if (!context.hidethumb)	
             whitestroke.draw(context, r, 0, 0);
             var region = new Path2D();
             region.rect(x,y,w,h);
@@ -3301,21 +3304,27 @@ var bosslst =
             canvas.selectrect = []
             canvas.selectrect.push(r);
             var blackfill = new panel.fill(THUMBFILL);
-            blackfill.draw(context, r, 0, 0);
-            whitestroke.draw(context, r, 0, 0);
+           if (!context.hidethumb)
+		   blackfill.draw(context, r, 0, 0);
+            if (!context.hidethumb)
+		    whitestroke.draw(context, r, 0, 0);
             if (xx > x)//leftside
             {
                 var r = new rectangle(xx-w,yy,ww,hh);
                 canvas.selectrect.push(r);
-                blackfill.draw(context, r, 0, 0);
-                whitestroke.draw(context, r, 0, 0);
+                if (!context.hidethumb)
+			blackfill.draw(context, r, 0, 0);
+                if (!context.hidethumb)
+			whitestroke.draw(context, r, 0, 0);
             }
             else if (xx < x)//right side
             {
                 var r = new rectangle(w+xx,yy,ww,hh);
                 canvas.selectrect.push(r);
-                blackfill.draw(context, r, 0, 0);
-                whitestroke.draw(context, r, 0, 0);
+                if (!context.hidethumb)
+			blackfill.draw(context, r, 0, 0);
+                if (!context.hidethumb)
+			whitestroke.draw(context, r, 0, 0);
             }
 
             context.restore();
