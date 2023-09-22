@@ -5351,7 +5351,12 @@ galleryobj.init = function (obj)
     	{title: function(){return `Width: ${text2promptobj.width}`}, func: function(){}},
         {title: function(){return `Height: ${text2promptobj.height}`}, func: function(){}},
 	{title: function(){return `Steps: ${text2promptobj.num_inference_steps}`}, func: function(){}},
-        {title: function(){return `Safety Checker: ${text2promptobj.safety_checker}`}, func: function(){}},
+        {title: function(){return `Safety Checker: ${text2promptobj.safety_checker}`}, 
+	 	func: function()
+		{
+			text2promptobj.safety_checker = text2promptobj.safety_checker == "yes" ? "no" : "yes";
+			menuobj.draw();
+		}},
 	{title: function(){return `Enhanced Prompt: ${text2promptobj.enhance_prompt}`}, func: function(){}},
     	{title: function(){return `Seed: ${text2promptobj.seed}`}, func: function(){}},
         {title: function(){return `Guidance Scale: ${text2promptobj.guidance_scale}`}, func: function(){}},
@@ -5364,13 +5369,30 @@ galleryobj.init = function (obj)
 	{title: function(){return `Tomesd: ${text2promptobj.tomesd}`}, func: function(){}},    
    	{title: function(){return `Use Karras Sigmas: ${text2promptobj.use_karras_sigmas}`}, func: function(){}},
         {title: function(){return `Vae: ${text2promptobj.vae}`}, func: function(){}},
-	{title: function(){return `Lora Strength: ${text2promptobj.lora_strentgh}`}, func: function(){}},
+	{title: function(){return `Lora Strength: ${text2promptobj.lora_strength}`}, func: function(){}},
     	{title: function(){return `Scheduler: ${text2promptobj.scheduler}`}, func: function(){}},
         {title: function(){return `webhook: ${text2promptobj.webhook}`}, func: function(){}},
 	{title: function(){return `Track Id: ${text2promptobj.track_id}`}, func: function(){}},
- 
     ];
-
+	
+  "safety_checker": "no",
+  "enhance_prompt": "no",
+  "seed": 100,
+  "guidance_scale": 16,
+  "multi_lingual": "no",
+  "panorama": "no",
+  "self_attention": "no",
+  "upscale": "no",
+  "embeddings_model": null,
+  "lora_model": null,
+  "tomesd": "yes",
+  "use_karras_sigmas": "yes",
+  "vae": null,
+  "lora_strength": null,
+  "scheduler": "UniPCMultistepScheduler",
+  "webhook": null,
+  "track_id": null
+	
     var a = Array(_2cnv.sliceobj.length()).fill().map((_, index) => index);
     _2cnv.rotated = [...a,...a,...a];
 
