@@ -4917,8 +4917,7 @@ var headlst =
                 context.fullrect &&
                 context.fullrect.hitest(x,y))
 		{
-			evt.preventDefault();	
-		            if (screenfull.isEnabled)
+			    if (screenfull.isEnabled)
 		            {
 		                if (window.innerHeight === screen.height)
 		                    screenfull.exit();
