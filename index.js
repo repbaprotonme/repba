@@ -2421,7 +2421,6 @@ var presslst =
         else if (context.canvas.thumbrect &&
             context.canvas.thumbrect.hitest(x,y))
         {
-         //   galleryobj.transparent = 0;
             menuobj.hide();
             var positx = positxobj.value();
             var posity = posityobj.value();
@@ -2429,6 +2428,10 @@ var presslst =
             posity.set((y/rect.height)*100);
             context.refresh();
         }
+	    else
+	{
+		context.hidethumb = context.hidethumb?0:1;
+	}
 
         context.refresh();
     }
@@ -3137,6 +3140,8 @@ var bosslst =
             context.chapterect = new rectangle();
             context.heightrect = new rectangle();
 		if (menuobj.value())
+			return;
+		if (context.hidethumb)
 			return;
             if (headcnv.height == 0)
                 return;
