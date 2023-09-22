@@ -5375,24 +5375,6 @@ galleryobj.init = function (obj)
 	{title: function(){return `Track Id: ${text2promptobj.track_id}`}, func: function(){}},
     ];
 	
-  "safety_checker": "no",
-  "enhance_prompt": "no",
-  "seed": 100,
-  "guidance_scale": 16,
-  "multi_lingual": "no",
-  "panorama": "no",
-  "self_attention": "no",
-  "upscale": "no",
-  "embeddings_model": null,
-  "lora_model": null,
-  "tomesd": "yes",
-  "use_karras_sigmas": "yes",
-  "vae": null,
-  "lora_strength": null,
-  "scheduler": "UniPCMultistepScheduler",
-  "webhook": null,
-  "track_id": null
-	
     var a = Array(_2cnv.sliceobj.length()).fill().map((_, index) => index);
     _2cnv.rotated = [...a,...a,...a];
 
