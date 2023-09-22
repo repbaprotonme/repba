@@ -4975,7 +4975,7 @@ var headlst =
                     0,
                     new panel.fullscreen(),
 	            new panel.thumb(),
-		    new panel.search(),		 
+		    new panel.zoom(),		 
                     0,
                     e?0:new panel.folders(),
                     0,
