@@ -4989,13 +4989,12 @@ var headlst =
             var rh = 26;
             var e = _5cnv.sliceobj.length() <= 1;
             var a = new panel.col(
-                 [ 30, ALIEXTENT, 0, ALIEXTENT, ALIEXTENT, 0, ALIEXTENT, 30 ],
+                 [ 30, ALIEXTENT, 0, ALIEXTENT, 0, ALIEXTENT, 30 ],
                  [
                     0,
                     new panel.help(),
                     0,
-                    0,
-                    0,
+                    new panel.fullscreen(),
                     0,
                     e?0:new panel.fitwindow(),
                     0,
