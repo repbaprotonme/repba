@@ -5353,23 +5353,42 @@ galleryobj.init = function (obj)
     	{title: function(){return `Width: ${text2promptobj.width}`}, func: function(){}},
         {title: function(){return `Height: ${text2promptobj.height}`}, func: function(){}},
 	{title: function(){return `Steps: ${text2promptobj.num_inference_steps}`}, func: function(){}},
-        {title: function(){return `Safety Checker: ${text2promptobj.safety_checker}`}, 
-	 	func: function()
+        {title: function(){return `Safety Checker: ${text2promptobj.safety_checker}`}, func: function()
 		{
 			text2promptobj.safety_checker = text2promptobj.safety_checker == "yes" ? "no" : "yes";
-			menuobj.draw();
 		}},
-	{title: function(){return `Enhanced Prompt: ${text2promptobj.enhance_prompt}`}, func: function(){}},
+	{title: function(){return `Enhanced Prompt: ${text2promptobj.enhance_prompt}`}, func: function()
+		{
+			text2promptobj.enhance_prompt = text2promptobj.enhance_prompt == "yes" ? "no" : "yes";			
+		}},
     	{title: function(){return `Seed: ${text2promptobj.seed}`}, func: function(){}},
         {title: function(){return `Guidance Scale: ${text2promptobj.guidance_scale}`}, func: function(){}},
-	{title: function(){return `Multi Lingual: ${text2promptobj.multi_lingual}`}, func: function(){}},
-        {title: function(){return `Panorama: ${text2promptobj.panorama}`}, func: function(){}},
-        {title: function(){return `Self Attention: ${text2promptobj.self_attention}`}, func: function(){}},
-	{title: function(){return `Upscale: ${text2promptobj.upscale}`}, func: function(){}},
+	{title: function(){return `Multi Lingual: ${text2promptobj.multi_lingual}`}, func: function()
+		{
+			text2promptobj.multi_lingual = text2promptobj.multi_lingual == "yes" ? "no" : "yes";	
+		}},
+        {title: function(){return `Panorama: ${text2promptobj.panorama}`}, func: function()
+		{
+			text2promptobj.panorama = text2promptobj.panorama == "yes" ? "no" : "yes";
+		}},
+        {title: function(){return `Self Attention: ${text2promptobj.self_attention}`}, func: function()
+		{
+			text2promptobj.self_attention = text2promptobj.self_attention == "yes" ? "no" : "yes";
+		}},
+	{title: function(){return `Upscale: ${text2promptobj.upscale}`}, func: function()
+		{
+			text2promptobj.upscale = text2promptobj.upscale == "yes" ? "no" : "yes";
+		}},
     	{title: function(){return `Embeddings Model: ${text2promptobj.embeddings_model}`}, func: function(){}},
         {title: function(){return `Lora Model: ${text2promptobj.lora_model}`}, func: function(){}},
-	{title: function(){return `Tomesd: ${text2promptobj.tomesd}`}, func: function(){}},    
-   	{title: function(){return `Use Karras Sigmas: ${text2promptobj.use_karras_sigmas}`}, func: function(){}},
+	{title: function(){return `Tomesd: ${text2promptobj.tomesd}`}, func: function()
+		{
+			text2promptobj.tomesd = text2promptobj.tomesd == "yes" ? "no" : "yes";
+		}},    
+   	{title: function(){return `Use Karras Sigmas: ${text2promptobj.use_karras_sigmas}`}, func: function()
+		{
+			text2promptobj.use_karras_sigmas = text2promptobj.use_karras_sigmas == "yes" ? "no" : "yes";	
+		}},
         {title: function(){return `Vae: ${text2promptobj.vae}`}, func: function(){}},
 	{title: function(){return `Lora Strength: ${text2promptobj.lora_strength}`}, func: function(){}},
     	{title: function(){return `Scheduler: ${text2promptobj.scheduler}`}, func: function(){}},
