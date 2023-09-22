@@ -3027,8 +3027,8 @@ var taplst =
         {
 	    clearInterval(global.swipetimeout);
             global.swipetimeout = 0;
-	    context.hidethumb = 0;
-		context.refresh();
+	    _4cnvctx.hidethumb = 0;
+	    _4cnvctx.refresh();
 		
             var visibles = canvas.visibles;
             var k;
