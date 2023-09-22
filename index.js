@@ -3070,22 +3070,6 @@ var taplst =
             menuobj.toggle(_8cnvctx);
             contextobj.reset();
         }
-	else if (0)
-	{
-              _7cnvctx.hide()
-	        _5cnvctx.hide();
-                if (menuobj.value() == _2cnvctx)
-                {
-                    _2cnvctx.hide();
-                    menuobj.setindex(_8cnvctx);
-                    menuobj.draw();
-                }
-                else
-                {
-                    menuobj.setindex(_2cnvctx);
-                    menuobj.show();
-                }
-	}
     },
 },
 {
@@ -4911,6 +4895,24 @@ var headlst =
 		    
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             }
+	 else if (
+                context.thumbpanel &&
+                context.thumbpanel.hitest(x,y))	
+	 {
+		             _7cnvctx.hide()
+		        _5cnvctx.hide();
+	                if (menuobj.value() == _2cnvctx)
+	                {
+	                    _2cnvctx.hide();
+	                    menuobj.setindex(_8cnvctx);
+	                    menuobj.draw();
+	                }
+	                else
+	                {
+	                    menuobj.setindex(_2cnvctx);
+	                    menuobj.show();
+	                }
+		}
 	else if (
                 context.zoomrect &&
                 context.zoomrect.hitest(x,y))
