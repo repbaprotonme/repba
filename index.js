@@ -5345,7 +5345,7 @@ galleryobj.init = function (obj)
 		        .catch((error) => { });
 		   })
 		  .catch(error => console.log('error', error));
-					
+			}		
 	},
         {title: function(){return `Model ID: ${text2promptobj.model_id}`}, func: function(){}},
         {title: function(){return `Prompt: ${text2promptobj.prompt}`}, func: function(){}},
