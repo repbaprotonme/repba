@@ -1059,14 +1059,13 @@ panel.thumb = function ()
 {
     this.draw = function (context, rect, user, time)
     {
-        var j = 0;
+        var s = menuobj.value() == _2cnvctx;
         context.save();
         context.thumbpanel = new rectangle()
         var a = new Layer(
         [
             new panel.rectangle(context.thumbpanel),
-            j ? 0 :
-                new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),19,19),
+            s ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),19,19) : 0,
             new panel.shrink(new panel.circle(j?SCROLLNAB:TRANSPARENT,SEARCHFRAME,4),15,15),
             new panel.shrink(new panel.rounded(TRANSPARENT, 3, "white", 4, 4),16,30),
         ]);
