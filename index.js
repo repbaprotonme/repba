@@ -2720,7 +2720,7 @@ var keylst =
             (canvas.shiftKey && evt.key == " ") ||
             evt.key == "j")
 		{
-            menuobj.updown(context, canvas.speedobj.value());
+            menuobj.updown(context, -canvas.speedobj.value());
             context.refresh();
         }
         else if (
@@ -2731,7 +2731,7 @@ var keylst =
             evt.key == "s" ||
             evt.key == "k")
 		{
-            menuobj.updown(context, -canvas.speedobj.value());
+            menuobj.updown(context, canvas.speedobj.value());
             context.refresh();
         }
        
@@ -5321,28 +5321,22 @@ galleryobj.init = function (obj)
 		  .then(response => response.json())
 		  .then(function(json)
 		   {
-			fetch("https://bucket.reportbase5836.workers.dev/toon.json")
-		        .then(response => jsonhandler(response))
-		        .then(function(k)
-			      {
 				   var j = json.meta;
 				   j.folder = "";
 				   j.url = (json.output && json.output.length) ? 
 					   json.output[0] : json.future_links[0];
-				   k.data.push(j);
+				   galleryobj.data.push(j);
 				   menuobj.hide();
 				      
 				      fetch(`https://bucket.reportbase5836.workers.dev/toon.json`,
 			                {
 			                    method: 'POST',
-			                    body: JSON.stringify(k)
+			                    body: JSON.stringify(galleryobj)
 			                })
 			              .then(response => jsonhandler(response))
 			              .then(json => console.log(json) )
 			              .catch(error => console.log(error) );
-				      
-			      })
-		        .catch((error) => { });
+			
 		   })
 		  .catch(error => console.log('error', error));
 			}		
@@ -5390,7 +5384,7 @@ galleryobj.init = function (obj)
 			text2promptobj.use_karras_sigmas = text2promptobj.use_karras_sigmas == "yes" ? "no" : "yes";	
 		}},
         {title: function(){return `Variational Autoencoder: ${text2promptobj.vae}`}, func: function(){}},
-	{title: function(){return `Lora Strength (0-1: ${text2promptobj.lora_strength}`}, func: function(){}},
+	{title: function(){return `Lora Strength (0-1): ${text2promptobj.lora_strength}`}, func: function(){}},
     	{title: function(){return `Scheduler: ${text2promptobj.scheduler}`}, func: function(){}},
         {title: function(){return `Track Id: ${text2promptobj.track_id}`}, func: function(){}},
     ];
