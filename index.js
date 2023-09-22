@@ -11,7 +11,7 @@ var text2promptobj =
 {
   "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
   "model_id": "sdxl",
-  "prompt": "",
+  "prompt": "A cat sitting upright begging for food",
   "negative_prompt": "",
   "width": "1024",
   "height": "1024",
@@ -35,47 +35,6 @@ var text2promptobj =
   "webhook": null,
   "track_id": 0
 };
-
-function text2image(prompt, nprompt, cfg, seed)
-{
-var myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
-
-var requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: JSON.stringify(text2promptobj),
-  redirect: 'follow'
-};
-
-fetch("https://stablediffusionapi.com/api/v4/dreambooth", requestOptions)
-  .then(response => response.json())
-  .then(function(json)
-   {
-	fetch("https://bucket.reportbase5836.workers.dev/toon.json")
-        .then(response => jsonhandler(response))
-        .then(function(k)
-	      {
-		   var j = json.meta;
-		   j.folder = "";
-		   j.url = (json.output && json.output.length) ? 
-			   json.output[0] : json.future_links[0];
-		   k.data.push(j);
-		
-		      fetch(`https://bucket.reportbase5836.workers.dev/toon.json`,
-	                {
-	                    method: 'POST',
-	                    body: JSON.stringify(k)
-	                })
-	              .then(response => jsonhandler(response))
-	              .then(json => console.log(json) )
-	              .catch(error => console.log(error) );
-		      
-	      })
-        .catch((error) => { });
-   })
-  .catch(error => console.log('error', error));
-}
 
 function iOS()
 {
@@ -5346,8 +5305,49 @@ galleryobj.init = function (obj)
     headham.panel = headobj.value();
     _2cnv.sliceobj.data =
     [
-	    
-	{title: function(){return `Model ID: ${text2promptobj.model_id}`}, func: function(){}},
+	{title: "Create Image", func: function()
+	{
+		var myHeaders = new Headers();
+		myHeaders.append("Content-Type", "application/json");
+		
+		var requestOptions = {
+		  method: 'POST',
+		  headers: myHeaders,
+		  body: JSON.stringify(text2promptobj),
+		  redirect: 'follow'
+		};
+		
+		fetch("https://stablediffusionapi.com/api/v4/dreambooth", requestOptions)
+		  .then(response => response.json())
+		  .then(function(json)
+		   {
+			fetch("https://bucket.reportbase5836.workers.dev/toon.json")
+		        .then(response => jsonhandler(response))
+		        .then(function(k)
+			      {
+				   var j = json.meta;
+				   j.folder = "";
+				   j.url = (json.output && json.output.length) ? 
+					   json.output[0] : json.future_links[0];
+				   k.data.push(j);
+				   menuobj.hide();
+				      
+				      fetch(`https://bucket.reportbase5836.workers.dev/toon.json`,
+			                {
+			                    method: 'POST',
+			                    body: JSON.stringify(k)
+			                })
+			              .then(response => jsonhandler(response))
+			              .then(json => console.log(json) )
+			              .catch(error => console.log(error) );
+				      
+			      })
+		        .catch((error) => { });
+		   })
+		  .catch(error => console.log('error', error));
+		}			
+	}},
+        {title: function(){return `Model ID: ${text2promptobj.model_id}`}, func: function(){}},
         {title: function(){return `Prompt: ${text2promptobj.prompt}`}, func: function(){}},
 	{title: function(){return `Negative Prompt: ${text2promptobj.negative_prompt}`}, func: function(){}},
     	{title: function(){return `Width: ${text2promptobj.width}`}, func: function(){}},
