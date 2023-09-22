@@ -1368,7 +1368,7 @@ var makehammer = function (context, v, t)
     ham.get("swipe").set({ direction: Hammer.DIRECTION_ALL });
     ham.get('swipe').set({ velocity: 0.6});//0.40
 	ham.get('swipe').set({ threshold: 20});//10
-	ham.get('press').set({ time: 500 });//251
+	ham.get('press').set({ time: 250 });//251
 
 	ham.on("pinch", function (evt)
 	{
@@ -2385,13 +2385,12 @@ var presslst =
         }
         else
         {
-	    //todo
-        	menuobj.setindex(_8cnvctx);
-        	menuobj.show();
         }
     },
     press: function (context, rect, x, y)
     {
+	//    	menuobj.setindex(_8cnvctx);
+        //	menuobj.show();    
     }
 },
 {
@@ -2407,6 +2406,8 @@ var presslst =
     name: "BOSS",
     pressup: function (context, rect, x, y)
     {
+	    context.hidethumb = context.hidethumb?0:1;
+	    context.refresh();
     },
     press: function (context, rect, x, y)
     {
@@ -2428,12 +2429,6 @@ var presslst =
             posity.set((y/rect.height)*100);
             context.refresh();
         }
-	    else
-	{
-		context.hidethumb = context.hidethumb?0:1;
-	}
-
-        context.refresh();
     }
 },
 ];
