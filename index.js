@@ -1076,19 +1076,19 @@ panel.thumb = function ()
     }
 };
 
-panel.fitwindow = function ()
+panel.folders = function ()
 {
     this.draw = function (context, rect, user, time)
     {
         context.save();
-        context.canvas.fitwindowrect = new rectangle();
+        context.foldersrect = new rectangle();
         var s = menuobj.value() == _5cnvctx;
         var j = 5;
         var k = j/2;
         var e = new panel.fill(OPTIONFILL);
         var a = new Layer(
         [
-            new panel.rectangle(context.canvas.fitwindowrect),
+            new panel.rectangle(context.foldersrect),
             s ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),22,22) : 0,
             new panel.shrink(new panel.circle(s?TRANSPARENT:FILLBAR,SEARCHFRAME,4),17,17),
             new panel.row( [0, rect.height*0.20, 0],
@@ -4770,50 +4770,14 @@ var headlst =
 
      	this.tap = function (context, rect, x, y)
 		{
-            if (context.canvas.helprect && context.canvas.helprect.hitest(x,y))
-            {
-                _5cnvctx.hide()
-                var menu = _7cnvctx;
-                if (menuobj.value() == menu)
-                {
-                    menu.hide();
-                    menuobj.setindex(0);
-                    menuobj.draw();
-                }
-                else
-                {
-                    menuobj.setindex(menu);
-                    menuobj.show();
-                }
-
-                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            }
-            else if (context.moveprev && context.moveprev.hitest(x,y))
+        
+            if (context.moveprev && context.moveprev.hitest(x,y))
             {
                 _4cnvctx.movepage(-1);
             }
             else if (context.movenext && context.movenext.hitest(x,y))
             {
                 _4cnvctx.movepage(1);
-            }
-            else if (
-                context.canvas.fitwindowrect &&
-                context.canvas.fitwindowrect.hitest(x,y))
-            {
-                _7cnvctx.hide()
-                if (menuobj.value() == _5cnvctx)
-                {
-                    _5cnvctx.hide();
-                    menuobj.setindex(0);
-                    menuobj.draw();
-                }
-                else
-                {
-                    menuobj.setindex(_5cnvctx);
-                    menuobj.show();
-                }
-
-                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             }
             else
             {
@@ -4825,8 +4789,6 @@ var headlst =
 
 	this.draw = function (context, rect, user, time)
         {
-            context.canvas.helprect = new rectangle()
-            context.canvas.fitwindowrect = new rectangle()
             context.clear();
             var b = 0;
             var k = menuobj.value();
@@ -4952,8 +4914,8 @@ var headlst =
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             }
 	else if (
-                context.canvas.fullrect &&
-                context.canvas.fullrect.hitest(x,y))
+                context.fullrect &&
+                context.fullrect.hitest(x,y))
 		{
 			evt.preventDefault();	
 		            if (screenfull.isEnabled)
@@ -4965,8 +4927,8 @@ var headlst =
 		            }
 		}
             else if (
-                context.canvas.fitwindowrect &&
-                context.canvas.fitwindowrect.hitest(x,y))
+                context.foldersrect &&
+                context.foldersrect.hitest(x,y))
             {
                 _7cnvctx.hide()
 	        _2cnvctx.hide();
@@ -5011,7 +4973,7 @@ var headlst =
 			 new panel.thumb(),
 		    new panel.upload(),		 
                     0,
-                    e?0:new panel.fitwindow(),
+                    e?0:new panel.folders(),
                     0,
                  ]);
 
