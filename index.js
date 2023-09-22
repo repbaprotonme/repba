@@ -29,11 +29,11 @@ var text2promptobj =
   "lora_model": null,
   "tomesd": "yes",
   "use_karras_sigmas": "yes",
-  "vae": null,
-  "lora_strength": null,
+  "vae": "kl-f8-anime2",
+  "lora_strength": 0,
   "scheduler": "UniPCMultistepScheduler",
   "webhook": null,
-  "track_id": null
+  "track_id": 0
 };
 
 function text2image(prompt, nprompt, cfg, seed)
@@ -5389,11 +5389,10 @@ galleryobj.init = function (obj)
 		{
 			text2promptobj.use_karras_sigmas = text2promptobj.use_karras_sigmas == "yes" ? "no" : "yes";	
 		}},
-        {title: function(){return `Vae: ${text2promptobj.vae}`}, func: function(){}},
-	{title: function(){return `Lora Strength: ${text2promptobj.lora_strength}`}, func: function(){}},
+        {title: function(){return `Variational Autoencoder: ${text2promptobj.vae}`}, func: function(){}},
+	{title: function(){return `Lora Strength (0-1: ${text2promptobj.lora_strength}`}, func: function(){}},
     	{title: function(){return `Scheduler: ${text2promptobj.scheduler}`}, func: function(){}},
-        {title: function(){return `webhook: ${text2promptobj.webhook}`}, func: function(){}},
-	{title: function(){return `Track Id: ${text2promptobj.track_id}`}, func: function(){}},
+        {title: function(){return `Track Id: ${text2promptobj.track_id}`}, func: function(){}},
     ];
 	
     var a = Array(_2cnv.sliceobj.length()).fill().map((_, index) => index);
