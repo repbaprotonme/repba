@@ -1148,14 +1148,14 @@ panel.next = function ()
     }
 };
 
-panel.search = function ()
+panel.zoom = function ()
 {
     this.draw = function (context, rect, user, time)
     {
         context.save();
 		context.strokeStyle = "white";
 		context.shadowColor = "black";
-        context.canvas.searchrect = new rectangle();
+        context.zoomrect = new rectangle();
         var Panel = function ()
         {
             this.draw = function (context, rect, user, time)
@@ -1178,7 +1178,7 @@ panel.search = function ()
             menuobj.value() == _7cnvctx;
         var a = new Layer(
         [
-            new panel.rectangle(context.canvas.searchrect),
+            new panel.rectangle(context.zoomrect),
             s ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),19,19) : 0,
             new panel.shrink(new panel.circle(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),15,15),
             new panel.shrink(new Panel(),15,20),
@@ -3154,7 +3154,6 @@ var bosslst =
         {
             var canvas = context.canvas;
             context.extentrect = new rectangle();
-            context.zoomrect = new rectangle();
             context.stretchrect = new rectangle();
             context.slicewidthrect = new rectangle();
             context.chapterect = new rectangle();
@@ -3447,8 +3446,7 @@ bossobj.draw = function(skip=1)
     delete context.slicerect;
     delete context.slicewidthrect;
     delete context.stretchrect;
-    delete context.zoomrect;
-
+   
     if (menuobj.value())
     {
         var a = new panel.fill("rgba(0,0,0,0.6)");
@@ -4914,6 +4912,13 @@ var headlst =
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             }
 	else if (
+                context.zoomrect &&
+                context.zoomrect.hitest(x,y))
+		{
+			buttonobj.reset();
+		    menuobj.draw();
+		}
+	else if (
                 context.fullrect &&
                 context.fullrect.hitest(x,y))
 		{
@@ -4969,8 +4974,8 @@ var headlst =
                     new panel.help(),
                     0,
                     new panel.fullscreen(),
-			 new panel.thumb(),
-		    new panel.upload(),		 
+	            new panel.thumb(),
+		    new panel.search(),		 
                     0,
                     e?0:new panel.folders(),
                     0,
@@ -5559,7 +5564,7 @@ galleryobj.init = function (obj)
             enabled: function() { return galleryobj.debug; }
         },
 	    
-        {title:"Fit Width\nCtrl+0", path: "", func: function()
+        {title:"Zoom\nCtrl+[0-9]", path: "", func: function()
             {
                 buttonobj.reset();
 		    menuobj.draw();
