@@ -3138,8 +3138,7 @@ var bosslst =
             context.heightrect = new rectangle();
 		if (menuobj.value())
 			return;
-		if (context.hidethumb)
-			return;
+	
             if (headcnv.height == 0)
                 return;
             if (
@@ -3169,9 +3168,9 @@ var bosslst =
                     0,
                     new Layer(
                     [
-                        new panel.expand(new panel.fill(THUMBFILL),3,3),
+                        context.hidethumb?0:new panel.expand(new panel.fill(THUMBFILL),3,3),
                         new panel.expand(new panel.rectangle(context.slicewidthrect),10,1),
-                        new panel.currentV(new panel.fill(NUBAR), bh/6, 0),
+                        context.hidethumb?0:new panel.currentV(new panel.fill(NUBAR), bh/6, 0),
                     ]),
                     0,
                 ]),
@@ -3181,9 +3180,9 @@ var bosslst =
                     0,
                     new Layer(
                     [
-                        new panel.expand(new panel.fill(THUMBFILL),3,3),
+                        context.hidethumb?0:new panel.expand(new panel.fill(THUMBFILL),3,3),
                         new panel.expand(new panel.rectangle(context.stretchrect),10,0),
-                        new panel.currentV(new panel.fill(NUBAR), bh/6, 0),
+                        context.hidethumb?0:new panel.currentV(new panel.fill(NUBAR), bh/6, 0),
                     ]),
                     0,
                 ]),
@@ -3198,7 +3197,7 @@ var bosslst =
                   new Layer(
                   [
                     new panel.rectangle(context.chapterect),
-                    new panel.gridA(1, rows, 1,
+                    context.hidethumb?0:new panel.gridA(1, rows, 1,
                         new panel.shadow(new panel.text(
                             NUBAR, "center", "middle",0, 0))),
                   ]),
@@ -3211,7 +3210,7 @@ var bosslst =
                     1?0:new Layer(
                     [
                         new panel.expand(new panel.rectangle(context.heightrect),0,10),
-                        new panel.currentH(new panel.fill(NUBAR), bh/5, 1),
+                        context.hidethumb?0:new panel.currentH(new panel.fill(NUBAR), bh/5, 1),
                     ]),
                     0,
                 ]),
@@ -3219,7 +3218,7 @@ var bosslst =
             ])
         ]);
 
-            a.draw(context, rect,
+        	a.draw(context, rect,
                 [
                     [
                         0,
@@ -3250,6 +3249,8 @@ var bosslst =
             var x = Math.floor(Math.nub(positx.value(), positx.length(), w, rect.width));
             var y = Math.floor(Math.nub(posity.value(), posity.length(), h, rect.height));
             canvas.thumbrect = new rectangle(x,y,w,h);
+		if (context.hidethumb)
+			return;
             var r = canvas.thumbrect;
             context.save();
             context.shadowOffsetX = 0;
