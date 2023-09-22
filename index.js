@@ -3000,7 +3000,7 @@ var taplst =
 	else if (canvas.vscrollrect && canvas.vscrollrect.hitest(x,y))
         {	
             var k = (y-canvas.vscrollrect.y)/canvas.vscrollrect.height;
-                canvas.timeobj.setperc(1-k);
+            canvas.timeobj.setperc(1-k);
             context.refresh()
         }		
        else if (canvas.hscrollrect  && canvas.hscrollrect.hitest(x,y))
@@ -3070,7 +3070,7 @@ var taplst =
             menuobj.toggle(_8cnvctx);
             contextobj.reset();
         }
-	else
+	else if (0)
 	{
               _7cnvctx.hide()
 	        _5cnvctx.hide();
@@ -4823,7 +4823,7 @@ var headlst =
             }
 		};
 
-		this.draw = function (context, rect, user, time)
+	this.draw = function (context, rect, user, time)
         {
             context.canvas.helprect = new rectangle()
             context.canvas.fitwindowrect = new rectangle()
@@ -4922,7 +4922,7 @@ var headlst =
         };
 
      	this.tap = function (context, rect, x, y)
-		{
+	{
             var canvas = context.canvas;
             canvas.slideshow = 0;
             var timeauto = global.timeauto;
@@ -4951,6 +4951,19 @@ var headlst =
 		    
                 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
             }
+	else if (
+                context.canvas.fullrect &&
+                context.canvas.fullrect.hitest(x,y))
+		{
+			evt.preventDefault();	
+		            if (screenfull.isEnabled)
+		            {
+		                if (window.innerHeight === screen.height)
+		                    screenfull.exit();
+		                else
+		                    screenfull.request();
+		            }
+		}
             else if (
                 context.canvas.fitwindowrect &&
                 context.canvas.fitwindowrect.hitest(x,y))
@@ -4989,12 +5002,14 @@ var headlst =
             var rh = 26;
             var e = _5cnv.sliceobj.length() <= 1;
             var a = new panel.col(
-                 [ 30, ALIEXTENT, 0, ALIEXTENT, 0, ALIEXTENT, 30 ],
+                 [ 30, ALIEXTENT, 0, ALIEXTENT,ALIEXTENT,ALIEXTENT, 0, ALIEXTENT, 30 ],
                  [
                     0,
                     new panel.help(),
                     0,
                     new panel.fullscreen(),
+			 new panel.thumb(),
+		    new panel.fitwindow,		 
                     0,
                     e?0:new panel.fitwindow(),
                     0,
@@ -5695,9 +5710,9 @@ function initime()
 		break;
 	    }	
 	}
-	else if (url.searchParams.has("f"))
+	else if (url.searchParams.has("e"))
 	{
-	    var folder = url.searchParams.get("f");
+	    var folder = url.searchParams.get("e");
 	    for (var m = 0; m < galleryobj.data.length; ++m)
 	    {
 	        var e = galleryobj.data[m];
