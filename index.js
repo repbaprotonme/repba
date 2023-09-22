@@ -2282,7 +2282,6 @@ var panlst =
         canvas.slidestop = 0;
         canvas.startx = x;
         canvas.starty = y;
-        galleryobj.hidefocus = 0;
         canvas.isthumb = canvas.thumbrect &&
             canvas.thumbrect.hitest(x,y);
         canvas.timeobj.setanchor(canvas.timeobj.current());
@@ -2415,19 +2414,15 @@ var presslst =
             context.canvas.thumbrect.hitest(x,y))
         {
         }
-        else if (context.cnavas.slicewidthrect &&
+        else if (context.canvas.slicewidthrect &&
             context.canvas.slicewidthrect.hitest(x,y))
         {
         }
-        else
+        else if (context.canvas.thumbrect &&
+            context.canvas.thumbrect.hitest(x,y))
         {
-            headobj.set(GALLERY);
-            headham.panel = headobj.value();
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            galleryobj.transparent = 0;
-            galleryobj.hidefocus = 0;
+         //   galleryobj.transparent = 0;
             menuobj.hide();
-            galleryobj.hidefocus = 1;
             var positx = positxobj.value();
             var posity = posityobj.value();
             positx.set((x/rect.width)*100);
@@ -3030,7 +3025,7 @@ var taplst =
             menuobj.hide();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         }
-	else if (galleryobj.showboss || canvas.shiftKey)
+	else if (!galleryobj.noshowboss || canvas.shiftKey)
         {
 	    clearInterval(global.swipetimeout);
             global.swipetimeout = 0;
