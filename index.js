@@ -5009,7 +5009,7 @@ var headlst =
                     0,
                     new panel.fullscreen(),
 			 new panel.thumb(),
-		    new panel.fitwindow,		 
+		    new panel.upload(),		 
                     0,
                     e?0:new panel.fitwindow(),
                     0,
