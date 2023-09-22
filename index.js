@@ -3027,7 +3027,8 @@ var taplst =
         {
 	    clearInterval(global.swipetimeout);
             global.swipetimeout = 0;
-
+	    context.hidethumb = 0;
+		
             var visibles = canvas.visibles;
             var k;
             for (k = 0; k < visibles.length; k++)
