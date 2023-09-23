@@ -5289,6 +5289,7 @@ galleryobj.init = function (obj)
 					   json.output[0] : json.future_links[0];
 				   galleryobj.data.push(j);
 				   menuobj.hide();
+			   		gotoimage(galleryobj.length()-1);
 				      
 				      fetch(`https://bucket.reportbase5836.workers.dev/toon.json`,
 			                {
