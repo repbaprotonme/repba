@@ -16,7 +16,7 @@ var text2promptobj =
   "width": "1024",
   "height": "1024",
   "samples": "1",
-  "num_inference_steps": "60",
+  "num_inference_steps": "50",
   "safety_checker": "no",
   "enhance_prompt": "no",
   "seed": 100,
@@ -5333,7 +5333,14 @@ galleryobj.init = function (obj)
 				text2promptobj.height += 64;
 			text2promptobj.height  = util.clamp(512,1024,text2promptobj.height);	
 		}},
-	{title: function(){return `Steps: ${text2promptobj.num_inference_steps}`}, func: function(){}},
+	{title: function(){return `-   Steps: ${text2promptobj.num_inference_steps}   +`}, func: function()
+		{
+			if (x < 0.5)
+				text2promptobj.num_inference_steps -= 10;
+			else
+				text2promptobj.num_inference_steps += 10;
+			text2promptobj.num_inference_steps  = util.clamp(10,150,text2promptobj.num_inference_steps);	
+		}},
         {title: function(){return `Safety Checker: ${text2promptobj.safety_checker}`}, func: function()
 		{
 			text2promptobj.safety_checker = text2promptobj.safety_checker == "yes" ? "no" : "yes";
@@ -5342,8 +5349,22 @@ galleryobj.init = function (obj)
 		{
 			text2promptobj.enhance_prompt = text2promptobj.enhance_prompt == "yes" ? "no" : "yes";			
 		}},
-    	{title: function(){return `Seed: ${text2promptobj.seed}`}, func: function(){}},
-        {title: function(){return `Guidance Scale: ${text2promptobj.guidance_scale}`}, func: function(){}},
+    	{title: function(){return `-   Seed: ${text2promptobj.seed}   +`}, func: function()
+		{
+			if (x < 0.5)
+				text2promptobj.seed -= 1;
+			else
+				text2promptobj.seed += 1;
+			text2promptobj.seed  = util.clamp(0,4294967295,text2promptobj.seed);	
+		}},
+        {title: function(){return `-   Guidance Scale: ${text2promptobj.guidance_scale}   +`}, func: function()
+		{
+			if (x < 0.5)
+				text2promptobj.guidance_scale -= 1;
+			else
+				text2promptobj.guidance_scale += 1;
+			text2promptobj.guidance_scale  = util.clamp(1,20,text2promptobj.guidance_scale);	
+		}},
 	{title: function(){return `Multi Lingual: ${text2promptobj.multi_lingual}`}, func: function()
 		{
 			text2promptobj.multi_lingual = text2promptobj.multi_lingual == "yes" ? "no" : "yes";	
