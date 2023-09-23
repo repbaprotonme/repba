@@ -5880,7 +5880,7 @@ function gotodialog()
     });
 
     dialog.classList.add('dialog');
-    dialog.style.width = window.innerWidth*0.85;
+    //dialog.style.width = window.innerWidth*0.85;
     dialog.addEventListener("click", function(event)
     {
         var rect = new rectangle(dialog.getBoundingClientRect());
