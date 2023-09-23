@@ -5307,8 +5307,14 @@ galleryobj.init = function (obj)
 		  .catch(error => console.log('error', error));
 			}		
 	},
-        {title: function(){return `Model ID: ${text2promptobj.model_id}`}, func: function(){}},
-        {title: function(){return `Prompt: ${text2promptobj.prompt}`}, func: function(){}},
+        {title: function(){return `Model ID: ${text2promptobj.model_id}`}, func: function()
+		{
+			searchdialog();
+		}},
+        {title: function(){return `Prompt: ${text2promptobj.prompt}`}, func: function()
+		{
+			searchdialog();
+		}},
 	{title: function(){return `Negative Prompt: ${text2promptobj.negative_prompt}`}, func: function(){}},
     	{title: function(){return `-   Width: ${text2promptobj.width}   +`}, func: function(x)
 		{
@@ -5910,7 +5916,7 @@ function gotodialog()
     dialog.showModal();
 }
 
-function showsearch()
+function searchdialog()
 {
     var input = document.getElementById("search-input");
     dialog = document.getElementById("search-dialog");
