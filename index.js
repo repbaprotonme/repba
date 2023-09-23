@@ -5305,13 +5305,16 @@ galleryobj.init = function (obj)
 	},
         {title: function(){return `Model ID: ${text2imageobj.model_id}`}, func: function()
 		{
-			promptdialog();
+			
 		}},
         {title: function(){return `Prompt: ${text2imageobj.prompt}`}, func: function()
 		{
 			promptdialog();
 		}},
-	{title: function(){return `Negative Prompt: ${text2imageobj.negative_prompt}`}, func: function(){}},
+	{title: function(){return `Negative Prompt: ${text2imageobj.negative_prompt}`}, func: function()
+		{
+			negativepromptdialog();
+		}},
     	{title: function(){return `-   Width: ${text2imageobj.width}   +`}, func: function(x)
 		{
 			if (x < 0.5)
@@ -5909,6 +5912,31 @@ function gotodialog()
         input.value = galleryobj.current()+1
     }
 
+    dialog.showModal();
+}
+
+function negativepromptdialog()
+{
+    var input = document.getElementById("negative-prompt-input");
+    dialog = document.getElementById("negative-prompt-dialog");
+    
+    dialog.addEventListener("click", function(event)
+    {
+        var rect = new rectangle(input.getBoundingClientRect());
+        if (event.target.id == "negative-prompt-ok")
+        {
+		if (input.value)
+			input.value = input.value.clean();
+            if (!input.value)
+                return;
+		text2imageobj.negative_prompt = input.value;
+            	dialog.close();
+		menuobj.draw();
+        }
+
+    });
+
+    input.value = text2imageobj.negative_prompt;
     dialog.showModal();
 }
 
