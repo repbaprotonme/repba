@@ -5946,9 +5946,9 @@ function searchdialog()
         }
         else if (!rect.hitest(event.x, event.y))
         {
-            if (!galleryobj.length())
-                return;
-            dialog.close();
+           // if (!galleryobj.length())
+             //   return;
+            //dialog.close();
         }
     });
     
