@@ -2810,7 +2810,7 @@ var keylst =
         }
         else if (key == "s" && canvas.ctrlKey && canvas.shiftKey)
         {
-            searchdialog();
+            promptdialog();
         }
 	else if (key == "0" && canvas.ctrlKey)
 	{
@@ -5309,11 +5309,11 @@ galleryobj.init = function (obj)
 	},
         {title: function(){return `Model ID: ${text2promptobj.model_id}`}, func: function()
 		{
-			searchdialog();
+			promptdialog();
 		}},
         {title: function(){return `Prompt: ${text2promptobj.prompt}`}, func: function()
 		{
-			searchdialog();
+			promptdialog();
 		}},
 	{title: function(){return `Negative Prompt: ${text2promptobj.negative_prompt}`}, func: function(){}},
     	{title: function(){return `-   Width: ${text2promptobj.width}   +`}, func: function(x)
@@ -5916,25 +5916,28 @@ function gotodialog()
     dialog.showModal();
 }
 
-function searchdialog()
+function promptdialog()
 {
-    var input = document.getElementById("search-input");
-    dialog = document.getElementById("search-dialog");
+    var input = document.getElementById("prompt-input");
+    dialog = document.getElementById("prompt-dialog");
     
     dialog.addEventListener("click", function(event)
     {
         var rect = new rectangle(input.getBoundingClientRect());
-        if (event.target.id == "search-ok")
+        if (event.target.id == "prompt-ok")
         {
-            var search = input.value.clean();
-            if (!search)
+		if (input.value)
+			input.value = input.value.clean();
+            if (!input.value)
                 return;
-            selectname(search)
-		dialog.close();
+		text2imageobj.prompt = input.value;
+            	dialog.close();
+		menuobj.draw();
         }
 
     });
-    
+
+    input.value = text2imageobj.prompt;
     dialog.showModal();
 }
 
