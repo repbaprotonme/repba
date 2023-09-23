@@ -2676,16 +2676,7 @@ var keylst =
         else if (key == "f" && canvas.ctrlKey && canvas.shiftKey)
         {
 		evt.preventDefault();	
-            if (screenfull.isEnabled)
-            {
-                if (window.innerHeight === screen.height)
-                    screenfull.exit();
-                else
-                    screenfull.request();
-            }
-
-            context.refresh();
-            evt.preventDefault();
+		screenfull.toggle();
         }
  }
 },
@@ -4931,13 +4922,7 @@ var headlst =
                 context.fullrect &&
                 context.fullrect.hitest(x,y))
 		{
-			    if (screenfull.isEnabled)
-		            {
-		                if (window.innerHeight === screen.height)
-		                    screenfull.exit();
-		                else
-		                    screenfull.request();
-		            }
+			    screenfull.toggle()
 		}
             else if (
                 context.foldersrect &&
@@ -4977,15 +4962,14 @@ var headlst =
             var rh = 26;
             var e = _5cnv.sliceobj.length() <= 1;
             var a = new panel.col(
-                 [ 30, ALIEXTENT, 0, ALIEXTENT,ALIEXTENT,ALIEXTENT, 0, ALIEXTENT, 30 ],
+                 [ 30, ALIEXTENT, 0, ALIEXTENT,ALIEXTENT,ALIEXTENT, ALIEXTENT, 30 ],
                  [
                     0,
                     new panel.help(),
                     0,
                     new panel.fullscreen(),
-	            new panel.thumb(),
-		    new panel.zoom(),		 
-                    0,
+	            iOS()?0:new panel.thumb(),
+		    0,
                     e?0:new panel.folders(),
                     0,
                  ]);
