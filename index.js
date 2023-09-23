@@ -5271,6 +5271,7 @@ galleryobj.init = function (obj)
 	{
 		var myHeaders = new Headers();
 		myHeaders.append("Content-Type", "application/json");
+		menuobj.hide();
 		
 		var requestOptions = {
 		  method: 'POST',
@@ -5288,7 +5289,8 @@ galleryobj.init = function (obj)
 				   j.url = (json.output && json.output.length) ? 
 					   json.output[0] : json.future_links[0];
 				   galleryobj.data.push(j);
-				   menuobj.hide();
+				   
+			   contextobj.reset();
 			   		gotoimage(galleryobj.length()-1);
 				      
 				      fetch(`https://bucket.reportbase5836.workers.dev/${url.path}.json`,
