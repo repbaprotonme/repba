@@ -5291,7 +5291,7 @@ galleryobj.init = function (obj)
 				   menuobj.hide();
 			   		gotoimage(galleryobj.length()-1);
 				      
-				      fetch(`https://bucket.reportbase5836.workers.dev/toon.json`,
+				      fetch(`https://bucket.reportbase5836.workers.dev/${url.path}.json`,
 			                {
 			                    method: 'POST',
 			                    body: JSON.stringify(galleryobj)
