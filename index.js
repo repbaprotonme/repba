@@ -5326,7 +5326,7 @@ galleryobj.init = function (obj)
 				text2promptobj.height += 64;
 			text2promptobj.height  = util.clamp(512,1024,text2promptobj.height);	
 		}},
-	{title: function(){return `-   Steps: ${text2promptobj.num_inference_steps}   +`}, func: function()
+	{title: function(){return `-   Steps: ${text2promptobj.num_inference_steps}   +`}, func: function(x)
 		{
 			if (x < 0.5)
 				text2promptobj.num_inference_steps -= 10;
@@ -5342,7 +5342,7 @@ galleryobj.init = function (obj)
 		{
 			text2promptobj.enhance_prompt = text2promptobj.enhance_prompt == "yes" ? "no" : "yes";			
 		}},
-    	{title: function(){return `-   Seed: ${text2promptobj.seed}   +`}, func: function()
+    	{title: function(){return `-   Seed: ${text2promptobj.seed}   +`}, func: function(x)
 		{
 			if (x < 0.5)
 				text2promptobj.seed -= 1;
@@ -5350,7 +5350,7 @@ galleryobj.init = function (obj)
 				text2promptobj.seed += 1;
 			text2promptobj.seed  = util.clamp(0,4294967295,text2promptobj.seed);	
 		}},
-        {title: function(){return `-   Guidance Scale: ${text2promptobj.guidance_scale}   +`}, func: function()
+        {title: function(){return `-   Guidance Scale: ${text2promptobj.guidance_scale}   +`}, func: function(x)
 		{
 			if (x < 0.5)
 				text2promptobj.guidance_scale -= 1;
