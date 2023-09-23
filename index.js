@@ -5323,7 +5323,7 @@ galleryobj.init = function (obj)
 				text2promptobj.width -= 64;
 			else
 				text2promptobj.width += 64;
-			text2promptobj.width  = Math.clamp(512,1024,text2promptobj.width);
+			text2promptobj.width  = util.clamp(512,1024,text2promptobj.width);
 		}},
         {title: function(){return `Height: ${text2promptobj.height}`}, func: function(x)
 		{
@@ -5331,7 +5331,7 @@ galleryobj.init = function (obj)
 				text2promptobj.height -= 64;
 			else
 				text2promptobj.height += 64;
-			text2promptobj.height  = Math.clamp(512,1024,text2promptobj.height);	
+			text2promptobj.height  = util.clamp(512,1024,text2promptobj.height);	
 		}},
 	{title: function(){return `Steps: ${text2promptobj.num_inference_steps}`}, func: function(){}},
         {title: function(){return `Safety Checker: ${text2promptobj.safety_checker}`}, func: function()
