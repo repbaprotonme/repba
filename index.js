@@ -5768,52 +5768,57 @@ function initime()
 
 url.path = "home";
 
-if (url.searchParams.has("p"))
+if (url.searchParams.has("ipfs"))
 {
-    url.path = url.searchParams.get("p");
-    if ((url.path.charAt(0) == 'Q' && url.path.charAt(1) == 'm') ||
-        (url.path.charAt(0) == 'b'))
-    {
-        var path2 = `https://dweb.link/ipfs/${url.path}`;
-        var path1 = `https://ipfs.filebase.io/ipfs/${url.path}`;
-	var path3 = `https://dweb.link/api/v0/ls?arg=${url.path}`
-	var path4 = `https://gateway.ipfs.io/api/v0/ls?arg=${url.path}`;
-        fetch(path3)
-        .then(response => jsonhandler(response))
-        .then(function (json)
-        {
-            var k = json.Objects[0];
-            if (k.Links.length == 0)
-            {
-                fetch(`https://cloudflare-ipfs.com/ipfs/${url.path}`)
-                .then((response) => blobhandler(response))
-                .then(function (blob) { loadblob(blob); })
-                .catch((error) => { });
-            }
-            else
-            {
-                galleryobj.data = [];
-                var k = json.Objects[0];
-                loadipfs(k.Links,url.path);
-            }
-        })
-        .catch((error) => { });
-    }
-    else if (url.path.isjson())
-    {
-        fetch(url.path)
-        .then(response => jsonhandler(response))
-        .then((obj) => galleryobj.init(obj))
-        .catch((error) => { });
-    }
-    else
-    {
-        loadzip(url.path)
-    }
+    url.path = url.searchParams.get("ipfs");
+var path2 = `https://dweb.link/ipfs/${url.path}`;
+var path1 = `https://ipfs.filebase.io/ipfs/${url.path}`;
+var path3 = `https://dweb.link/api/v0/ls?arg=${url.path}`
+var path4 = `https://gateway.ipfs.io/api/v0/ls?arg=${url.path}`;
+fetch(path3)
+.then(response => jsonhandler(response))
+.then(function (json)
+{
+	    var k = json.Objects[0];
+	    if (k.Links.length == 0)
+	    {
+		fetch(`https://cloudflare-ipfs.com/ipfs/${url.path}`)
+		.then((response) => blobhandler(response))
+		.then(function (blob) { loadblob(blob); })
+		.catch((error) => { });
+	    }
+	    else
+	    {
+		galleryobj.data = [];
+		var k = json.Objects[0];
+		loadipfs(k.Links,url.path);
+	    }
+	})
+	.catch((error) => { });
 }
+else if (url.searchParams.has("json"))
+{
+	url.path = url.searchParams.get("json");
+	fetch(url.path)
+	.then(response => jsonhandler(response))
+	.then((obj) => galleryobj.init(obj))
+	.catch((error) => { });
+}
+else if (url.searchParams.has("zip"))
+{
+	url.path = url.searchParams.get("zip");
+	loadzip(url.path)
+}	
+else if (url.searchParams.has("r2"))
+{
+	url.path = url.searchParams.get("r2");
+	fetch(`https://bucket.reportbase5836.workers.dev/${url.path}.json`)
+                    .then((response) => jsonhandler(response))
+                    .then((obj) => galleryobj.init(obj))
+                    .catch((error) => {});
+}	
 else if (url.searchParams.has("search"))
 {
-	galleryobj.showboss = 1;
 	galleryobj.width = 2160;
 	galleryobj.height = 2160;
 	var k = url.searchParams.get("search")
@@ -5824,7 +5829,8 @@ else if (url.searchParams.has("search"))
 }
 else
 {
-	fetch("https://ipfs-view.pages.dev/res/reci.json")
+	url.path = url.searchParams.get("res/reci.json");
+	fetch("res/reci.json")
         .then(response => jsonhandler(response))
         .then((obj) => galleryobj.init(obj))
         .catch((error) => { });
