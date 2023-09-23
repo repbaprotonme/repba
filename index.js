@@ -4962,7 +4962,7 @@ var headlst =
             var rh = 26;
             var e = _5cnv.sliceobj.length() <= 1;
             var a = new panel.col(
-                 [ 30, ALIEXTENT, 0, ALIEXTENT,ALIEXTENT,ALIEXTENT, ALIEXTENT, 30 ],
+                 [ 30, ALIEXTENT, 0, (iOS()?-1:ALIEXTENT),ALIEXTENT, 0, ALIEXTENT, 30 ],
                  [
                     0,
                     new panel.help(),
