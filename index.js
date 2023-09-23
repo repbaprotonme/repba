@@ -23,7 +23,7 @@ var text2promptobj =
   "guidance_scale": 16,
   "multi_lingual": "no",
   "panorama": "no",
-  "self_attention": "no",
+  "self_attention": "yes",
   "upscale": "no",
   "embeddings_model": null,
   "lora_model": null,
