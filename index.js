@@ -891,12 +891,14 @@ panel.fullscreen = function ()
     {
         context.save();
         context.fullrect = new rectangle()
-
         var a = new Layer(
         [
             new panel.rectangle(context.fullrect),
-            window.innerHeight === screen.height ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),22,22) : 0,
-            new panel.shrink(new panel.circle(window.innerHeight === screen.height ? TRANSPARENT : SCROLLNAB, SEARCHFRAME,4),17,17),
+            screenfull.isFullscreen ? 
+		new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),19,19) : 0,
+            new panel.shrink(new 
+		panel.circle(screenfull.isFullscreen ? 
+			TRANSPARENT : SCROLLNAB, SEARCHFRAME,4),15,15),
         ]);
 
         a.draw(context, rect, user, time);
@@ -2766,14 +2768,8 @@ var keylst =
 
         if (key == "f" && canvas.ctrlKey && canvas.shiftKey)
         {
-            if (screenfull.isEnabled)
-            {
-                if (window.innerHeight === screen.height)
-                    screenfull.exit();
-                else
-                    screenfull.request();
-            }
-
+		screenfull.toggle()
+            
             context.refresh();
             evt.preventDefault();
         }
@@ -4669,9 +4665,6 @@ function resize()
     }
 
     delete _4cnv.thumbcanvas;
-   // headcnvctx.show(0,0,window.innerWidth,
-     //   window.innerHeight === screen.height?0:BEXTENT);
-    //headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
     buttonobj.reset()
     contextobj.reset();
     menuobj.show();
@@ -5609,15 +5602,9 @@ galleryobj.init = function (obj)
 	   
 	{title:"Full Screen\nCtrl+Shift+F", func: function()
             {
-                if (screenfull.isEnabled)
-                {
-                    if (window.innerHeight == screen.height)
-                        screenfull.exit();
-                    else
-                        screenfull.request();
-                }
+                screenfull.toggle()
             },
-            enabled: function() { return window.innerHeight == screen.height; }
+            enabled: function() { return screenfull.isFullscreen; }
         },
     ];
 
