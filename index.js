@@ -5289,7 +5289,11 @@ galleryobj.init = function (obj)
 				   j.url = (json.output && json.output.length) ? 
 					   json.output[0] : json.future_links[0];
 				   galleryobj.data.push(j);
-				   
+		    for (var n = 0; n < IMAGELSTSIZE; ++n)
+		    {
+		        thumbfittedlst[n] = document.createElement("canvas");
+		        thumbimglst[n] = new Image();
+		    }		   
 			   contextobj.reset();
 			   		gotoimage(galleryobj.length()-1);
 				      
