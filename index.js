@@ -3090,7 +3090,7 @@ var taplst =
 	    else
 		menuobj.draw();    
             delete slice.tap;
-            slice.func(k)
+            slice.func(x/rect.width)
             context.refresh();
             _4cnvctx.refresh();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
@@ -5317,8 +5317,22 @@ galleryobj.init = function (obj)
         {title: function(){return `Model ID: ${text2promptobj.model_id}`}, func: function(){}},
         {title: function(){return `Prompt: ${text2promptobj.prompt}`}, func: function(){}},
 	{title: function(){return `Negative Prompt: ${text2promptobj.negative_prompt}`}, func: function(){}},
-    	{title: function(){return `Width: ${text2promptobj.width}`}, func: function(){}},
-        {title: function(){return `Height: ${text2promptobj.height}`}, func: function(){}},
+    	{title: function(){return `Width: ${text2promptobj.width}`}, func: function(x)
+		{
+			if (x < 0.5)
+				text2promptobj.width -= 64;
+			else
+				text2promptobj.width += 64;
+			text2promptobj.width  = Math.clamp(512,1024,text2promptobj.width);
+		}},
+        {title: function(){return `Height: ${text2promptobj.height}`}, func: function(x)
+		{
+			if (x < 0.5)
+				text2promptobj.height -= 64;
+			else
+				text2promptobj.height += 64;
+			text2promptobj.height  = Math.clamp(512,1024,text2promptobj.height);	
+		}},
 	{title: function(){return `Steps: ${text2promptobj.num_inference_steps}`}, func: function(){}},
         {title: function(){return `Safety Checker: ${text2promptobj.safety_checker}`}, func: function()
 		{
