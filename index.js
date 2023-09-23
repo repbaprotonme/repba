@@ -18,7 +18,7 @@ var text2promptobj =
   "samples": "1",
   "num_inference_steps": "50",
   "safety_checker": "no",
-  "enhance_prompt": "no",
+  "enhance_prompt": "yes",
   "seed": 100,
   "guidance_scale": 16,
   "multi_lingual": "no",
