@@ -5892,7 +5892,7 @@ function gotodialog()
         }
         else if (!rect.hitest(event.x,event.y))
         {
-            dialog.close();
+            //dialog.close();
         }
     });
 
