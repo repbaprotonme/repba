@@ -5920,19 +5920,7 @@ function searchdialog()
 {
     var input = document.getElementById("search-input");
     dialog = document.getElementById("search-dialog");
-    input.addEventListener("keyup", function(event)
-    {
-	event.preventDefault();    
-        if (event.keyCode === 13)
-        {
-            var search = input.value.clean();
-            if (!search)
-                return;
-            selectname(search)
-		dialog.close();
-        }
-    });
-
+    
     dialog.addEventListener("click", function(event)
     {
         var rect = new rectangle(input.getBoundingClientRect());
@@ -5944,12 +5932,7 @@ function searchdialog()
             selectname(search)
 		dialog.close();
         }
-        else if (!rect.hitest(event.x, event.y))
-        {
-           // if (!galleryobj.length())
-             //   return;
-            //dialog.close();
-        }
+
     });
     
     dialog.showModal();
