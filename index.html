@@ -180,12 +180,21 @@ button
     </div>
 </dialog>
 
-<dialog id="search-dialog" style="max-width: 90%; width: 720px;">
+<dialog id="prompt-dialog" style="max-width: 90%; width: 720px;">
     <div class="earth">
-      <textarea id="search-input" rows=5 autocapitalize="off" placeholder="Prompt"></textarea>
+      <textarea id="prompt-input" rows=5 autocapitalize="off" placeholder="Prompt"></textarea>
     </div>
     <div class="footer">
-      <button class="fade" id="search-ok" style="" type="button">Prompt</button>
+      <button class="fade" id="prompt-ok" style="" type="button">Prompt</button>
+    </div>
+</dialog>
+
+  <dialog id="negative-prompt-dialog" style="max-width: 90%; width: 720px;">
+    <div class="earth">
+      <textarea id="negative-prompt-input" rows=5 autocapitalize="off" placeholder="Negative Prompt"></textarea>
+    </div>
+    <div class="footer">
+      <button class="fade" id="negative-prompt-ok" style="" type="button">Negative Prompt</button>
     </div>
 </dialog>
 
