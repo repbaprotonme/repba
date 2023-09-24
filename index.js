@@ -4665,7 +4665,7 @@ function resize()
     contextobj.reset();
     menuobj.show();
     _4cnvctx.refresh();
-	headcnvctx.show(0,0,window.innerWidth,h);
+	headcnvctx.show(0,0,window.innerWidth,headcnv.height);
 	headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
 }
 
