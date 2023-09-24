@@ -4665,6 +4665,7 @@ function resize()
     contextobj.reset();
     menuobj.show();
     _4cnvctx.refresh();
+	headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
 }
 
 window.addEventListener("focus", (evt) => { });
