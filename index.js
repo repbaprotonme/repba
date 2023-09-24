@@ -1069,8 +1069,8 @@ panel.thumb = function ()
         var a = new Layer(
         [
             new panel.rectangle(context.thumbpanel),
-            s ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),19,19) : 0,
-            new panel.shrink(new panel.circle(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),15,15),
+            s ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),CIRCLEIN,CIRCLEIN) : 0,
+            new panel.shrink(new panel.circle(s?TRANSPARENT:SCROLLNAB,SEARCHFRAME,4),CIRCLEOUT,CIRCLEOUT),
             new panel.shrink(new panel.rounded(TRANSPARENT, 3, "white", 4, 4),16,30),
         ]);
 
@@ -1092,8 +1092,8 @@ panel.folders = function ()
         var a = new Layer(
         [
             new panel.rectangle(context.foldersrect),
-            s ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),22,22) : 0,
-            new panel.shrink(new panel.circle(s?TRANSPARENT:FILLBAR,SEARCHFRAME,4),17,17),
+            s ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),CIRCLEIN,CIRCLEIN) : 0,
+            new panel.shrink(new panel.circle(s?TRANSPARENT:FILLBAR,SEARCHFRAME,4),CIRCLEOUT,CIRCLEOUT),
             new panel.row( [0, rect.height*0.20, 0],
             [
                 0,
@@ -1119,8 +1119,8 @@ panel.previous = function ()
         var a = new Layer(
         [
             new panel.rectangle(context.moveprev),
-            _4cnv.movingpage == -1 ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),22,22) : 0,
-            new panel.shrink(new panel.circle(_4cnv.movingpage == -1?TRANSPARENT:FILLBAR,SEARCHFRAME,4),17,17),
+            _4cnv.movingpage == -1 ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),CIRCLEIN,CIRCLEIN) : 0,
+            new panel.shrink(new panel.circle(_4cnv.movingpage == -1?TRANSPARENT:FILLBAR,SEARCHFRAME,4),CIRCLEOUT,CIRCLEOUT),
             new panel.shrink(new panel.arrow(ARROWFILL,270),20,30),
         ]);
 
@@ -1141,8 +1141,8 @@ panel.next = function ()
         var a = new Layer(
         [
             new panel.rectangle(context.movenext),
-            _4cnv.movingpage == 1 ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),22,22) : 0,
-            new panel.shrink(new panel.circle(_4cnv.movingpage == 1?TRANSPARENT:FILLBAR,SEARCHFRAME,4),17,17),
+            _4cnv.movingpage == 1 ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),CIRCLEIN,CIRCLEIN) : 0,
+            new panel.shrink(new panel.circle(_4cnv.movingpage == 1?TRANSPARENT:FILLBAR,SEARCHFRAME,4),CIRCLEOUT,CIRCLEOUT),
             new panel.shrink(new panel.arrow(ARROWFILL,90),20,30),
         ]);
 
@@ -5051,8 +5051,8 @@ panel.help = function ()
         var a = new Layer(
         [
             new panel.rectangle(context.canvas.helprect),
-            s ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),22,22) : 0,
-            new panel.shrink(new panel.circle(s?TRANSPARENT:FILLBAR,SEARCHFRAME,4),17,17),
+            s ? new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),CIRCLEIN,CIRCLEIN) : 0,
+            new panel.shrink(new panel.circle(s?TRANSPARENT:FILLBAR,SEARCHFRAME,4),CIRCLEOUT,CIRCLEOUT),
             new panel.col( [0,rect.height*0.20,0],
             [
                 0,
