@@ -91,6 +91,8 @@ const MENU = 2;
 const TIMEMAIN = 4;
 const TIMESECOND = 8;
 const GALLERYMIN = 1;
+const CIRCLEIN = 19;
+const CIRCLEOUT = 15;
 
 var panel = {}
 var global = {};
@@ -895,10 +897,10 @@ panel.fullscreen = function ()
         [
             new panel.rectangle(context.fullrect),
             screenfull.isFullscreen ? 
-		new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),19,19) : 0,
+		new panel.shrink(new panel.circle(MENUTAP,TRANSPARENT,4),CIRCLEIN,CIRCLEIN) : 0,
             new panel.shrink(new 
 		panel.circle(screenfull.isFullscreen ? 
-			TRANSPARENT : SCROLLNAB, SEARCHFRAME,4),15,15),
+			TRANSPARENT : SCROLLNAB, SEARCHFRAME,4),CIRCLEOUT,CIRCLEOUT),
         ]);
 
         a.draw(context, rect, user, time);
