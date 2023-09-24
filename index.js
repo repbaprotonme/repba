@@ -3874,14 +3874,14 @@ menuobj.draw = function()
         var thumbfitted = thumbfittedlst[index];
         if (!canvas.pinching && thumbimg.view != view)
         {
-            
+            thumbimg.view = view;
+        		
             try
             {
                 thumbimg.src = imagepath(slice);
                 thumbimg.onload = function()
                 {
-            		this.view = view;
-        		this.count = 0;
+            		this.count = 0;
                     if (!canvas.panning && !canvas.slideshow)
                         menuobj.draw();
                 }
@@ -3889,6 +3889,7 @@ menuobj.draw = function()
                 thumbimg.onerror =
                     thumbimg.onabort = function(error)
                 {
+		thumbimg.view = 0;
                     console.log(error);
                 }
             }
