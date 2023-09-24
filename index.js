@@ -5511,6 +5511,8 @@ galleryobj.init = function (obj)
     for (var n = 0; n < galleryobj.data.length; ++n)
     {
         var k = galleryobj.data[n];
+	if (!k.folder)
+		continue;
         k.func = selectfolder;
         var j = _5cnv.sliceobj.data.findIndex(function(a) { return a.folder == k.folder; });
         if (j == -1)
