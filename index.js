@@ -4667,7 +4667,7 @@ function resize()
 	    var k = menuobj.value();
 	 menuobj.setindex(_8cnvctx);   
 	menuobj.show();
-	    menuobj.setindex(_8cnvctx); 
+	    menuobj.setindex(k); 
 	    menuobj.show();
     }
 }
