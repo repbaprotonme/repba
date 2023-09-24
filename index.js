@@ -5309,7 +5309,10 @@ galleryobj.init = function (obj)
 			                    body: JSON.stringify(galleryobj)
 			                })
 			              .then(response => jsonhandler(response))
-			              .then(json => console.log(json) )
+			              .then(function()
+					    {
+						    location.reload()
+					    })
 			              .catch(error => console.log(error) );
 			
 		   })
