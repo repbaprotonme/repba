@@ -3872,7 +3872,7 @@ menuobj.draw = function()
         var view = Math.floor(n/IMAGELSTSIZE);
         var thumbimg = thumbimglst[index];
         var thumbfitted = thumbfittedlst[index];
-        if (!canvas.pinching && thumbimg.view != view)
+        if (context == _8cnvctx && !canvas.pinching && thumbimg.view != view)
         {
             thumbimg.view = view;
         		
