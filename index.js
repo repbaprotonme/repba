@@ -4652,18 +4652,22 @@ function rotate(pointX, pointY, originX, originY, angle)
 
 function resize()
 {
-    var h = _8cnv.height;
-    menuobj.hide();
-    if (h)
+    if (menuobj.value() == _8cnvctx)
     {
-        menuobj.setindex(_8cnvctx);
         menuobj.show();
+    }
+    else if (menuobj.value() && menuobj.value() != _8cnvctx)
+    {
+	    var k = menuobj.value();
+	 menuobj.setindex(_8cnvctx);   
+	menuobj.show();
+	    menuobj.setindex(_8cnvctx); 
+	    menuobj.show();
     }
 
     delete _4cnv.thumbcanvas;
     buttonobj.reset()
     contextobj.reset();
-    menuobj.show();
     _4cnvctx.refresh();
 	headcnvctx.show(0,0,window.innerWidth,BEXTENT);
 	headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
