@@ -2614,11 +2614,7 @@ var keylst =
 
             evt.preventDefault();
         }
-	else if (key == "0" && canvas.ctrlKey)
-	{
-		evt.preventDefault();
-			gotoimage(0);
-	}
+	
         else if (key == "g" && canvas.ctrlKey && canvas.shiftKey)
         {
 		evt.preventDefault();
@@ -4981,7 +4977,7 @@ var headlst =
             var rh = 26;
             var e = _5cnv.sliceobj.length() <= 1;
             var a = new panel.col(
-                 [ 30, ALIEXTENT, 0, (iOS()?-1:ALIEXTENT),ALIEXTENT, 0, ALIEXTENT, 30 ],
+                 [ 30, ALIEXTENT, 0, -1,-1, 0, ALIEXTENT, 30 ],
                  [
                     0,
                     new panel.help(),
@@ -5617,7 +5613,7 @@ galleryobj.init = function (obj)
             },
             enabled: function() { return 0; }
         },
-	    
+	/*    
         {title:"Debug", func: function()
             {
                 galleryobj.debug = galleryobj.debug ? 0 : 1;
@@ -5631,25 +5627,7 @@ galleryobj.init = function (obj)
               },
             enabled: function() { return galleryobj.debug; }
         },
-	    
-        {title:"Fit Width\nCtrl+0", path: "", func: function()
-            {
-		    if (menuobj.value() != _8cnvctx)
-			    menuobj.hide();
-		    buttonobj.set(buttonobj.current() == 0 ? 
-				      Math.floor(buttonobj.length()/2) : buttonobj.current())
-		     	menuobj.draw();
-            },
-            enabled: function() { return 0; }
-        },
-	
-	{title:"Home", func: function()
-            {
-                gotoimage(0);
-            },
-            enabled: function() { return 0; }
-        },    
-	   
+	  */ 
 	{title:"Full Screen\nCtrl+Shift+F", func: function()
             {
                 screenfull.toggle()
