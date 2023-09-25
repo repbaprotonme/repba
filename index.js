@@ -3028,18 +3028,13 @@ var taplst =
 
             var n = visibles[k].n;
 		galleryobj.set(n);
-	menuobj.setindex(_2cnvctx);
-	text2imageobj = galleryobj.data[n];	
-	menuobj.show();		
         
-		var slice = galleryobj.data[n];
 	    if (galleryobj.howboss || canvas.shiftKey)
 	    {
 	            headcnv.height = BEXTENT;
 	            headobj.set(BOSS);
 	            headham.panel = headobj.value();
 	            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-	            galleryobj.set(n);
 	            delete _4cnv.thumbcanvas;
 	            delete photo.image;
 	            menuobj.toggle(_8cnvctx);
