@@ -2674,7 +2674,10 @@ var keylst =
 			
 			fetch("https://stablediffusionapi.com/api/v4/dreambooth", requestOptions)
 			  .then(response => response.json())
-			  .then(function(json) {})
+			  .then(function(json) 
+				{
+					console.log(json);
+				})
 			  .catch(error => console.log('error', error));
 		}		
 	}
