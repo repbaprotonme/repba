@@ -5637,7 +5637,7 @@ galleryobj.init = function (obj)
             enabled: function() { return galleryobj.debug; }
         },
 	    
-        {title:"Zoom\nCtrl+[0-9]", path: "", func: function()
+        {title:"Fit Width\nCtrl+0", path: "", func: function()
             {
 		    buttonobj.set(buttonobj.current() == 0 ? 
 				      Math.floor(buttonobj.length()/2) : buttonobj.current())
