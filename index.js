@@ -2633,8 +2633,8 @@ var keylst =
 		{
 		  "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
 		  "model_id": "sdxl",
-		  "prompt": "professional 3d model glass skyscraper city. octane render, highly detailed, volumetric, dramatic lighting",
-		  "negative_prompt": "ugly, deformed, noisy, low poly, blurry, painting",
+		  "prompt": "dystopian style {prompt} . bleak, post-apocalyptic, somber, dramatic, highly detailed",
+		  "negative_prompt": "ugly, deformed, noisy, blurry, low contrast, cheerful, optimistic, vibrant, colorful",
 		  "width": 1024,
 		  "height": 1024,
 		  "samples": 1,
@@ -2661,7 +2661,7 @@ var keylst =
 		var myHeaders = new Headers();
 		myHeaders.append("Content-Type", "application/json");
 
-		for (var n = 100; n < 105; ++n)
+		for (var n = 1009; n < 1005; ++n)
 		{
 			pause(100);
 			text2imageobj.seed = n;
