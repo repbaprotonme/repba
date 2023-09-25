@@ -3627,7 +3627,7 @@ var buttonlst =
     draw: function (context, rect, user, time)
     {
         context.save()
-        var clr = FILLBAR;
+        var clr = "rgba(0,0,0,0)";
         if (user.tap)
         {
             clr = MENUTAP;
