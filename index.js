@@ -3937,11 +3937,11 @@ menuobj.draw = function()
             var t = time + n*delayinterval;
             var bos = Math.tan(t*VIRTCONST);
             var j = Math.berp(-1, 1, bos);
-            var y = Math.floor(j * context.canvas.virtualheight);
+            var y = j * context.canvas.virtualheight;
             var e = (canvas.virtualheight-rect.height)/2;
             y -= e;
             var x = rect.width/2;
-            var j = {slice, x, y, n};
+            var j = {slice, x, Math.floor(y), n};
             slice.rect = new rectangle(0,y,rect.width,canvas.buttonheight);
             slice.isvisible = y > -canvas.buttonheight && y < window.innerHeight;
             if (slice.isvisible || (!canvas.pinching && !canvas.panning && !canvas.slideshow))
