@@ -2633,7 +2633,7 @@ var keylst =
 		{
 		  "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
 		  "model_id": "sdxl",
-		  "prompt": "dystopian style {prompt} . bleak, post-apocalyptic, somber, dramatic, highly detailed",
+		  "prompt": "dystopian style city . bleak, post-apocalyptic, somber, dramatic, highly detailed",
 		  "negative_prompt": "ugly, deformed, noisy, blurry, low contrast, cheerful, optimistic, vibrant, colorful",
 		  "width": 1024,
 		  "height": 1024,
