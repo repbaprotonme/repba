@@ -2656,7 +2656,7 @@ var keylst =
 		evt.preventDefault();
             menuobj.leftright (context, canvas.speedobj.value()/2)
         }
-     	else if (key == "2" && canvas.ctrlKey && canvas.shiftKey)
+     	else if (key == "2")
         {		
 		menuobj.set(_2cnvctx);
 		menuobj.show();
