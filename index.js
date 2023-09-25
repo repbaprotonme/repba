@@ -3006,7 +3006,7 @@ var taplst =
             menuobj.hide();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         }
-	else if (canvas.shiftKey)
+	else 
         {
 	    clearInterval(global.swipetimeout);
             global.swipetimeout = 0;
@@ -3042,7 +3042,7 @@ var taplst =
 	menuobj.show();		
         
 		var slice = galleryobj.data[n];
-	    if (galleryobj.howboss)
+	    if (galleryobj.howboss || canvas.shiftKey)
 	    {
 	            headcnv.height = BEXTENT;
 	            headobj.set(BOSS);
