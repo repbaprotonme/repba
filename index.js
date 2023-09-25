@@ -2656,7 +2656,12 @@ var keylst =
 		evt.preventDefault();
             menuobj.leftright (context, canvas.speedobj.value()/2)
         }
-     	else if (key == "d" && canvas.ctrlKey && canvas.shiftKey)
+     	else if (key == "2" && canvas.ctrlKey && canvas.shiftKey)
+        {		
+		menuobj.set(_2cnvctx);
+		menuobj.show();
+	}
+	else if (key == "d" && canvas.ctrlKey && canvas.shiftKey)
         {		
 		evt.preventDefault();
 		download();
@@ -5292,7 +5297,6 @@ galleryobj.init = function (obj)
 	{
 		var myHeaders = new Headers();
 		myHeaders.append("Content-Type", "application/json");
-		menuobj.hide();
 		
 		var requestOptions = {
 		  method: 'POST',
@@ -5309,16 +5313,7 @@ galleryobj.init = function (obj)
 				   j.folder = "";
 				   j.url = (json.output && json.output.length) ? 
 					   json.output[0] : json.future_links[0];
-				   galleryobj.data.push(j);
-		    for (var n = 0; n < IMAGELSTSIZE; ++n)
-		    {
-		        thumbfittedlst[n] = document.createElement("canvas");
-		        thumbimglst[n] = new Image();
-		    }		   
-			   contextobj.reset();
-			   		gotoimage(galleryobj.length()-1);
-
-			   		//todo move to worker
+				   	galleryobj.data.push(j);
 				      fetch(`https://bucket.reportbase5836.workers.dev/${url.path}.json`,
 			                {
 			                    method: 'POST',
@@ -5327,7 +5322,6 @@ galleryobj.init = function (obj)
 			              .then(response => jsonhandler(response))
 			              .then(function()
 					    {
-						    location.reload()
 					    })
 			              .catch(error => console.log(error) );
 		   })
