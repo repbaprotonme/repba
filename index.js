@@ -6124,8 +6124,8 @@ menuobj.updown = function(context, delta)
     var j = util.clamp(0,lst.length-1,canvas.sliceobj.length());
     var k = lst[j]*f;
     canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*k*1.5;
-    if (canvas.slideshow < 0.5)
-	    canvas.slideshow = 0.5;
+    //if (canvas.slideshow < 0.5)
+	//    canvas.slideshow = 0.5;
     canvas.slidereduce = canvas.slideshow/g;
 }
 
