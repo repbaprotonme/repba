@@ -3641,7 +3641,7 @@ var buttonlst =
             0,
             new Layer(
             [
-                new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 10, 20),
+                new panel.expand(new panel.rounded(clr, 4, SEARCHFRAME, 8, 8), 10, 10),
                 new panel.shrink(new panel.text("white", "center", "middle",0, 0), 20, 0),
             ]),
             0,
@@ -6122,7 +6122,7 @@ menuobj.updown = function(context, delta)
     var lst = [1.5,1.75,2.0,2.25,2.5,3.0,3.5,4.0];
     var j = util.clamp(0,lst.length-1,canvas.sliceobj.length());
     var k = lst[j]*f;
-    canvas.slideshow = (TIMEOBJ/canvas.virtualheight)*k*1.5;
+    canvas.slideshow = Math.max(1,(TIMEOBJ/canvas.virtualheight)*k*1.5);
     canvas.slidereduce = canvas.slideshow/g;
 }
 
