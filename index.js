@@ -2633,8 +2633,8 @@ var keylst =
 		{
 		  "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
 		  "model_id": "sdxl",
-		  "prompt": "A cat sitting upright begging for food",
-		  "negative_prompt": "",
+		  "prompt": "professional 3d model glass skyscraper city. octane render, highly detailed, volumetric, dramatic lighting",
+		  "negative_prompt": "ugly, deformed, noisy, low poly, blurry, painting",
 		  "width": 1024,
 		  "height": 1024,
 		  "samples": 1,
@@ -2663,6 +2663,7 @@ var keylst =
 
 		for (var n = 100; n < 105; ++n)
 		{
+			pause(100);
 			text2imageobj.seed = n;
 			var requestOptions = {
 			  method: 'POST',
