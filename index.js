@@ -4391,7 +4391,7 @@ panel.text = function (color,  align="center", baseline="middle",
             x = rect.x + rect.width / 2;
         else if (align == "right")
             x = rect.x + rect.width - 1;
-        var y = rect.y + rect.height/2 + 1;
+        var y = rect.y + 1;//rect.height/2 + 1;
 
         if (reverse)
             str = str.split("").reverse().join("");
