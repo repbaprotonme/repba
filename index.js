@@ -3041,22 +3041,13 @@ var taplst =
             }
 
             if (k == visibles.length)
-            {
-                menuobj.hide();
-                headcnv.height = BEXTENT;
-                headobj.set(BOSS);
-                headham.panel = headobj.value();
-                headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-                contextobj.reset();
-                return;
-            }
-
-            var n = visibles[k].n;
-		galleryobj.set(n);
-        
-	    if (galleryobj.howboss || canvas.shiftKey)
+		    return;
+           
+	    if (galleryobj.showboss || canvas.shiftKey)
 	    {
-	            headcnv.height = BEXTENT;
+		    var n = visibles[k].n;
+			galleryobj.set(n);
+	                 headcnv.height = BEXTENT;
 	            headobj.set(BOSS);
 	            headham.panel = headobj.value();
 	            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
