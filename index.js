@@ -2238,8 +2238,6 @@ var panlst =
         if (context.canvas.isthumb)
         {
             context.hithumb(x,y);
-            //if (!zoomobj.value().value())
-            //    context.refresh();
             if (y != context.canvas.lasty)
                 contextobj.reset()
             else
@@ -3941,7 +3939,7 @@ menuobj.draw = function()
             var e = (canvas.virtualheight-rect.height)/2;
             y -= e;
             var x = rect.width/2;
-            var j = {slice, x, Math.floor(y), n};
+            var j = {slice, x, y, n};
             slice.rect = new rectangle(0,y,rect.width,canvas.buttonheight);
             slice.isvisible = y > -canvas.buttonheight && y < window.innerHeight;
             if (slice.isvisible || (!canvas.pinching && !canvas.panning && !canvas.slideshow))
