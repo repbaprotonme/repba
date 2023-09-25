@@ -2658,8 +2658,24 @@ var keylst =
         }
      	else if (key == "2")
         {		
-		menuobj.set(_2cnvctx);
-		menuobj.show();
+		var myHeaders = new Headers();
+		myHeaders.append("Content-Type", "application/json");
+		
+		var requestOptions = {
+		  method: 'POST',
+		  headers: myHeaders,
+		  body: JSON.stringify(text2imageobj),
+		  redirect: 'follow'
+		};
+		
+		fetch("https://stablediffusionapi.com/api/v4/dreambooth", requestOptions)
+		  .then(response => response.json())
+		  .then(function(json)
+		   {
+			
+		   })
+		  .catch(error => console.log('error', error));
+			
 	}
 	else if (key == "d" && canvas.ctrlKey && canvas.shiftKey)
         {		
@@ -5293,131 +5309,6 @@ galleryobj.init = function (obj)
     headham.panel = headobj.value();
     _2cnv.sliceobj.data =
     [
-	{title: "Create Image", func: function()
-	{
-		var myHeaders = new Headers();
-		myHeaders.append("Content-Type", "application/json");
-		
-		var requestOptions = {
-		  method: 'POST',
-		  headers: myHeaders,
-		  body: JSON.stringify(text2imageobj),
-		  redirect: 'follow'
-		};
-		
-		fetch("https://stablediffusionapi.com/api/v4/dreambooth", requestOptions)
-		  .then(response => response.json())
-		  .then(function(json)
-		   {
-				   var j = json.meta;
-				   j.folder = "";
-				   j.url = (json.output && json.output.length) ? 
-					   json.output[0] : json.future_links[0];
-				   	galleryobj.data.push(j);
-				      fetch(`https://bucket.reportbase5836.workers.dev/${url.path}.json`,
-			                {
-			                    method: 'POST',
-			                    body: JSON.stringify(galleryobj)
-			                })
-			              .then(response => jsonhandler(response))
-			              .then(function()
-					    {
-					    })
-			              .catch(error => console.log(error) );
-		   })
-		  .catch(error => console.log('error', error));
-			}		
-	},
-        {title: function(){return `Model ID: ${text2imageobj.model_id}`}, func: function()
-		{
-			
-		}},
-        {title: function(){return `Prompt: ${text2imageobj.prompt}`}, func: function()
-		{
-			promptdialog();
-		}},
-	{title: function(){return `Negative Prompt: ${text2imageobj.negative_prompt}`}, func: function()
-		{
-			negativepromptdialog();
-		}},
-    	{title: function(){return `-   Width: ${text2imageobj.width}   +`}, func: function(x)
-		{
-			if (x < 0.5)
-				text2imageobj.width -= 64;
-			else
-				text2imageobj.width += 64;
-			text2imageobj.width  = util.clamp(512,1024,text2imageobj.width);
-		}},
-        {title: function(){return `-   Height: ${text2imageobj.height}   +`}, func: function(x)
-		{
-			if (x < 0.5)
-				text2imageobj.height -= 64;
-			else
-				text2imageobj.height += 64;
-			text2imageobj.height  = util.clamp(512,1024,text2imageobj.height);	
-		}},
-	{title: function(){return `-   Steps: ${text2imageobj.num_inference_steps}   +`}, func: function(x)
-		{
-			if (x < 0.5)
-				text2imageobj.num_inference_steps -= 10;
-			else
-				text2imageobj.num_inference_steps += 10;
-			text2imageobj.num_inference_steps  = util.clamp(10,150,text2imageobj.num_inference_steps);	
-		}},
-        {title: function(){return `Safety Checker: ${text2imageobj.safety_checker}`}, func: function()
-		{
-			text2imageobj.safety_checker = text2imageobj.safety_checker == "yes" ? "no" : "yes";
-		}},
-	{title: function(){return `Enhanced Prompt: ${text2imageobj.enhance_prompt}`}, func: function()
-		{
-			text2imageobj.enhance_prompt = text2imageobj.enhance_prompt == "yes" ? "no" : "yes";			
-		}},
-    	{title: function(){return `-   Seed: ${text2imageobj.seed}   +`}, func: function(x)
-		{
-			if (x < 0.5)
-				text2imageobj.seed -= 1;
-			else
-				text2imageobj.seed += 1;
-			text2imageobj.seed  = util.clamp(0,4294967295,text2imageobj.seed);	
-		}},
-        {title: function(){return `-   Guidance Scale: ${text2imageobj.guidance_scale}   +`}, func: function(x)
-		{
-			if (x < 0.5)
-				text2imageobj.guidance_scale -= 1;
-			else
-				text2imageobj.guidance_scale += 1;
-			text2imageobj.guidance_scale  = util.clamp(1,20,text2imageobj.guidance_scale);	
-		}},
-	{title: function(){return `Multi Lingual: ${text2imageobj.multi_lingual}`}, func: function()
-		{
-			text2imageobj.multi_lingual = text2imageobj.multi_lingual == "yes" ? "no" : "yes";	
-		}},
-        {title: function(){return `Panorama: ${text2imageobj.panorama}`}, func: function()
-		{
-			text2imageobj.panorama = text2imageobj.panorama == "yes" ? "no" : "yes";
-		}},
-        {title: function(){return `Self Attention: ${text2imageobj.self_attention}`}, func: function()
-		{
-			text2imageobj.self_attention = text2imageobj.self_attention == "yes" ? "no" : "yes";
-		}},
-	{title: function(){return `Upscale: ${text2imageobj.upscale}`}, func: function()
-		{
-			text2imageobj.upscale = text2imageobj.upscale == "yes" ? "no" : "yes";
-		}},
-    	{title: function(){return `Embeddings Model: ${text2imageobj.embeddings_model}`}, func: function(){}},
-        {title: function(){return `Lora Model: ${text2imageobj.lora_model}`}, func: function(){}},
-	{title: function(){return `Tomesd: ${text2imageobj.tomesd}`}, func: function()
-		{
-			text2imageobj.tomesd = text2imageobj.tomesd == "yes" ? "no" : "yes";
-		}},    
-   	{title: function(){return `Use Karras Sigmas: ${text2imageobj.use_karras_sigmas}`}, func: function()
-		{
-			text2imageobj.use_karras_sigmas = text2imageobj.use_karras_sigmas == "yes" ? "no" : "yes";	
-		}},
-        {title: function(){return `Variational Autoencoder: ${text2imageobj.vae}`}, func: function(){}},
-	{title: function(){return `Lora Strength (0-1): ${text2imageobj.lora_strength}`}, func: function(){}},
-    	{title: function(){return `Scheduler: ${text2imageobj.scheduler}`}, func: function(){}},
-        {title: function(){return `Track Id: ${text2imageobj.track_id}`}, func: function(){}},
     ];
 	
     var a = Array(_2cnv.sliceobj.length()).fill().map((_, index) => index);
