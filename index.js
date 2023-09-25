@@ -4345,7 +4345,7 @@ panel.rotated_text = function()
     }
 };
 
-panel.text = function (color,  align="center", baseline="middle",
+panel.text = function (color,  align="center", baseline="alphabetic",
     reverse=0, noclip=0, font=DEFAULTFONT)
 {
     this.draw = function (context, rect, user, time)
@@ -4391,7 +4391,7 @@ panel.text = function (color,  align="center", baseline="middle",
             x = rect.x + rect.width / 2;
         else if (align == "right")
             x = rect.x + rect.width - 1;
-        var y = rect.y + 1;//rect.height/2 + 1;
+        var y = rect.y;// + 1;//rect.height/2 + 1;
 
         if (reverse)
             str = str.split("").reverse().join("");
