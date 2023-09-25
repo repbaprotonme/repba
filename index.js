@@ -3042,7 +3042,8 @@ var taplst =
 
             if (k == visibles.length)
 		    return;
-           
+		menuobj.hide();
+		
 	    if (galleryobj.showboss || canvas.shiftKey)
 	    {
 		    var n = visibles[k].n;
