@@ -3088,11 +3088,8 @@ var taplst =
         context.refresh();
         setTimeout(function ()
         {
-	    if (context.hideontap)
-            	menuobj.hide();
-	    else
-		menuobj.draw();    
-            delete slice.tap;
+	    menuobj.hide();
+	    delete slice.tap;
             slice.func(x/rect.width)
             context.refresh();
             _4cnvctx.refresh();
