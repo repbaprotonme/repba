@@ -5639,6 +5639,8 @@ galleryobj.init = function (obj)
 	    
         {title:"Fit Width\nCtrl+0", path: "", func: function()
             {
+		    if (menuobj.value() != _8cnvctx)
+			    menuobj.hide();
 		    buttonobj.set(buttonobj.current() == 0 ? 
 				      Math.floor(buttonobj.length()/2) : buttonobj.current())
 		     	menuobj.draw();
