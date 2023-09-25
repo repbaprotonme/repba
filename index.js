@@ -5334,8 +5334,8 @@ galleryobj.init = function (obj)
 		    }		   
 			   contextobj.reset();
 			   		gotoimage(galleryobj.length()-1);
-				      galleryobj.track_id = `${url.path}: ${galleryobj.length()}`;
-			   
+
+			   		//todo move to worker
 				      fetch(`https://bucket.reportbase5836.workers.dev/${url.path}.json`,
 			                {
 			                    method: 'POST',
@@ -5347,7 +5347,6 @@ galleryobj.init = function (obj)
 						    location.reload()
 					    })
 			              .catch(error => console.log(error) );
-			
 		   })
 		  .catch(error => console.log('error', error));
 			}		
