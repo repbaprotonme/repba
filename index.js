@@ -7,35 +7,6 @@ https://zip-view.com
 https://ipfs-view.com
 */
 
-var text2imageobj = 
-{
-  "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
-  "model_id": "sdxl",
-  "prompt": "A cat sitting upright begging for food",
-  "negative_prompt": "",
-  "width": 1024,
-  "height": 1024,
-  "samples": 1,
-  "num_inference_steps": 50,
-  "safety_checker": "no",
-  "enhance_prompt": "yes",
-  "seed": 100,
-  "guidance_scale": 16,
-  "multi_lingual": "no",
-  "panorama": "no",
-  "self_attention": "yes",
-  "upscale": "no",
-  "embeddings_model": null,
-  "lora_model": null,
-  "tomesd": "yes",
-  "use_karras_sigmas": "yes",
-  "vae": null,
-  "lora_strength": 0,
-  "scheduler": "UniPCMultistepScheduler",
-  "webhook": null,
-  "track_id": 0
-};
-
 function iOS()
 {
     return
@@ -2657,25 +2628,54 @@ var keylst =
             menuobj.leftright (context, canvas.speedobj.value()/2)
         }
      	else if (key == "2")
-        {		
-		var myHeaders = new Headers();
-		myHeaders.append("Content-Type", "application/json");
-		
-		var requestOptions = {
-		  method: 'POST',
-		  headers: myHeaders,
-		  body: JSON.stringify(text2imageobj),
-		  redirect: 'follow'
+        {	
+		var text2imageobj = 
+		{
+		  "key": "rlQ8Oid4VByAEC7pRh6Ilx1lnnv9VCL6eReAQyWNWDnMQB8V9mainfTRFmCs",
+		  "model_id": "sdxl",
+		  "prompt": "A cat sitting upright begging for food",
+		  "negative_prompt": "",
+		  "width": 1024,
+		  "height": 1024,
+		  "samples": 1,
+		  "num_inference_steps": 50,
+		  "safety_checker": "no",
+		  "enhance_prompt": "yes",
+		  "seed": 100,
+		  "guidance_scale": 16,
+		  "multi_lingual": "no",
+		  "panorama": "no",
+		  "self_attention": "yes",
+		  "upscale": "no",
+		  "embeddings_model": null,
+		  "lora_model": null,
+		  "tomesd": "yes",
+		  "use_karras_sigmas": "yes",
+		  "vae": null,
+		  "lora_strength": 0,
+		  "scheduler": "UniPCMultistepScheduler",
+		  "webhook": null,
+		  "track_id": 0
 		};
 		
-		fetch("https://stablediffusionapi.com/api/v4/dreambooth", requestOptions)
-		  .then(response => response.json())
-		  .then(function(json)
-		   {
+		var myHeaders = new Headers();
+		myHeaders.append("Content-Type", "application/json");
+
+		for (var n = 100; n < 105; ++n)
+		{
+			text2imageobj.seed = n;
+			var requestOptions = {
+			  method: 'POST',
+			  headers: myHeaders,
+			  body: JSON.stringify(text2imageobj),
+			  redirect: 'follow'
+			};
 			
-		   })
-		  .catch(error => console.log('error', error));
-			
+			fetch("https://stablediffusionapi.com/api/v4/dreambooth", requestOptions)
+			  .then(response => response.json())
+			  .then(function(json) {})
+			  .catch(error => console.log('error', error));
+		}		
 	}
 	else if (key == "d" && canvas.ctrlKey && canvas.shiftKey)
         {		
