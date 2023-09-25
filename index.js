@@ -5334,7 +5334,8 @@ galleryobj.init = function (obj)
 		    }		   
 			   contextobj.reset();
 			   		gotoimage(galleryobj.length()-1);
-				      
+				      galleryobj.track_id = `${url.path}: ${galleryobj.length()}`;
+			   
 				      fetch(`https://bucket.reportbase5836.workers.dev/${url.path}.json`,
 			                {
 			                    method: 'POST',
