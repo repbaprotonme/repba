@@ -3006,7 +3006,7 @@ var taplst =
             menuobj.hide();
             headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
         }
-	else if (!galleryobj.noshowboss || canvas.shiftKey)
+	else if (canvas.shiftKey)
         {
 	    clearInterval(global.swipetimeout);
             global.swipetimeout = 0;
@@ -3036,16 +3036,24 @@ var taplst =
             }
 
             var n = visibles[k].n;
-            var slice = galleryobj.data[n];
-            headcnv.height = BEXTENT;
-            headobj.set(BOSS);
-            headham.panel = headobj.value();
-            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-            galleryobj.set(n);
-            delete _4cnv.thumbcanvas;
-            delete photo.image;
-            menuobj.toggle(_8cnvctx);
-            contextobj.reset();
+		galleryobj.set(n);
+	menuobj.setindex(_2cnvctx);
+	text2imageobj = galleryobj.data[n];	
+	menuobj.show();		
+        
+		var slice = galleryobj.data[n];
+	    if (galleryobj.howboss)
+	    {
+	            headcnv.height = BEXTENT;
+	            headobj.set(BOSS);
+	            headham.panel = headobj.value();
+	            headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+	            galleryobj.set(n);
+	            delete _4cnv.thumbcanvas;
+	            delete photo.image;
+	            menuobj.toggle(_8cnvctx);
+	            contextobj.reset();
+	    }
         }
     },
 },
@@ -3968,7 +3976,7 @@ menuobj.draw = function()
 var eventlst =
 [
     {hideontap: 1, speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "DEFAULT", swipe: "MENU", button: "DEFAULT", wheel: "DEFAULT", drop: "DEFAULT", key: "MENU", press: "DEFAULT", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 0, width: 640},
-    {hideontap: 0, speed: 60, reduce: 10, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "SETUP", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 60, width: 640},
+    {hideontap: 0, speed: 60, reduce: 10, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "SETUP", wheel: "MENU",  drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 900, width: 640},
     {hideontap: 1, speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel: "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 90, width: 640},
     {hideontap: 1, speed: 40, reduce: 40, updownmax: 60, mouse: "BOSS", thumb: "BOSS",  tap: "BOSS", pan: "BOSS", swipe: "BOSS", button: "BOSS", wheel: "BOSS", drop: "DEFAULT", key: "BOSS", press: "BOSS", pinch: "BOSS", bar: new panel.empty(), scroll: new panel.empty(), buttonheight: 30, width: 640},
     {hideontap: 1, speed: 60, reduce: 5, updownmax: 60, mouse: "DEFAULT", thumb: "DEFAULT", tap: "MENU", pan: "MENU", swipe: "MENU", button: "OPTION", wheel:  "MENU", drop: "DEFAULT", key: "MENU", press: "MENU", pinch: "DEFAULT", bar: new panel.empty(), scroll: new panel.scrollbar(), buttonheight: 150, width: 640},
