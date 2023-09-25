@@ -1063,7 +1063,7 @@ panel.thumb = function ()
 {
     this.draw = function (context, rect, user, time)
     {
-        var s = menuobj.value() == _2cnvctx;
+        var s = buttonobj.current() == 0;
         context.save();
         context.thumbpanel = new rectangle()
         var a = new Layer(
@@ -4930,21 +4930,10 @@ var headlst =
 	 else if (
                 context.thumbpanel &&
                 context.thumbpanel.hitest(x,y))	
-	 {
-		             _7cnvctx.hide()
-		        _5cnvctx.hide();
-	                if (menuobj.value() == _2cnvctx)
-	                {
-	                    _2cnvctx.hide();
-	                    menuobj.setindex(_8cnvctx);
-	                    menuobj.draw();
-	                }
-	                else
-	                {
-	                    menuobj.setindex(_2cnvctx);
-	                    menuobj.show();
-	                }
-		 headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+	 	{
+		 	buttonobj.set(buttonobj.current() == 0 ? 
+				      Math.floor(buttonobj.length()/2) : buttonobj.current())
+		     	menuobj.draw();
 		}
 	else if (
                 context.zoomrect &&
@@ -5650,8 +5639,9 @@ galleryobj.init = function (obj)
 	    
         {title:"Zoom\nCtrl+[0-9]", path: "", func: function()
             {
-                buttonobj.reset();
-		    menuobj.draw();
+		    buttonobj.set(buttonobj.current() == 0 ? 
+				      Math.floor(buttonobj.length()/2) : buttonobj.current())
+		     	menuobj.draw();
             },
             enabled: function() { return 0; }
         },
