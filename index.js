@@ -2624,11 +2624,6 @@ var keylst =
 		evt.preventDefault();
             gotodialog();
         }		
-	else if (key == "home" || (key == "h" && canvas.ctrlKey && canvas.shiftKey))
-	{
-		gotoimage(0);
-		evt.preventDefault();
-	}
 	else if (key == "\\" || key == "/")
         {
             var h = headcnv.height?0:BEXTENT;
@@ -5648,7 +5643,7 @@ galleryobj.init = function (obj)
             enabled: function() { return 0; }
         },
 	
-	{title:"Home\nCtrl+Shift+H", func: function()
+	{title:"Home", func: function()
             {
                 gotoimage(0);
             },
