@@ -3962,7 +3962,7 @@ menuobj.draw = function()
             var j = {slice, x, y, n};
             slice.rect = new rectangle(0,y,rect.width,canvas.buttonheight);
             slice.isvisible = y > -canvas.buttonheight && y < window.innerHeight;
-            if (slice.isvisible || (!canvas.pinching && !canvas.panning && !canvas.slideshow))
+            if (slice.isvisible)// || (!canvas.pinching && !canvas.panning && !canvas.slideshow))
             {
                 if (j.slice.rect.hitest(window.innerWidth/2,window.innerHeight/2))
                     context.canvas.centered = j.n;
