@@ -6077,7 +6077,6 @@ menuobj.leftright = function (context, delta)
 
 bossobj.leftright = function(delta)
 {
-	return;
     var context = _4cnvctx;
     var canvas = _4cnv;
     canvas.lastdelta = delta;
