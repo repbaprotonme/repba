@@ -2839,7 +2839,7 @@ var bosslst = [
 						])
 				])
 						
-			a.draw(context, rect, context.timeobj, 0);
+			a.draw(context, rect, context.canvas.timeobj, 0);
 			
 			var he = heightobj.value();
 			var b = Math.berp(0, he.length() - 1, he.current());
