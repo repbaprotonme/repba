@@ -2392,11 +2392,13 @@ var keylst = [{
 	},
 	{
 		name: "MENU",
-		keyup: function(evt) {
+		keyup: function(evt) 
+		{
 			var context = menuobj.value()
 			var canvas = context.canvas;
 		},
-		keydown: function(evt) {
+		keydown: function(evt) 
+		{
 			var context = menuobj.value()
 			var canvas = context.canvas;
 
@@ -2653,6 +2655,34 @@ var taplst = [{
 			{
 				menuobj.hide();
 				headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+			}
+			else if (y < rect.height/3)
+			{
+				menuobj.updown(context, -canvas.speedobj.value());
+				if (!global.swipetimeout) {
+					global.swipetimeout = setInterval(function() {
+						context.canvas.lastime = -0.0000000000101010101;
+						menuobj.draw();
+					}, TIMEMAIN);
+				}				
+			}
+			else if (y > (2/3)*rect.height)
+			{
+				menuobj.updown(context, canvas.speedobj.value());
+				if (!global.swipetimeout) {
+					global.swipetimeout = setInterval(function() {
+						context.canvas.lastime = -0.0000000000101010101;
+						menuobj.draw();
+					}, TIMEMAIN);
+				}				
+			}
+			else if (x < rect.width/2)
+			{
+				menuobj.leftright(context, -canvas.speedobj.value() / 2)
+			}
+			else if (x > rect.width/2)
+			{
+				menuobj.leftright(context, canvas.speedobj.value() / 2)
 			}
 		},
 	},
