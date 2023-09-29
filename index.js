@@ -2717,6 +2717,7 @@ var bosslst = [
 			context.extentrect = new rectangle();
 			context.zoomrect = new rectangle();
 			context.stretchrect = new rectangle();
+			context.timerect = new rectangle();
 			context.slicewidthrect = new rectangle();
 			context.chapterect = new rectangle();
 			context.heightrect = new rectangle();
@@ -2820,6 +2821,26 @@ var bosslst = [
 						0,
 					]
 				]);
+
+			var bw = rect.width/2;
+			var a = new panel.row([0, SCROLLBARWIDTH, 4],
+				[
+					0,
+					new panel.col([0, bw, 0],
+						[
+							0,
+							new Layer(
+								[
+									new panel.fill(NUBACK),
+									new panel.expand(new panel.rectangle(context.timerect), 0, 10),
+									new panel.shrink(new panel.currentH(new panel.fill("white"), ALIEXTENT, 1), 3, 3)
+								]),
+							0,
+						])
+				])
+						
+			a.draw(context, rect, context.timeobj, 0);
+			
 			var he = heightobj.value();
 			var b = Math.berp(0, he.length() - 1, he.current());
 			var height = Math.lerp(90, rect.height - 180, b);
