@@ -2155,11 +2155,16 @@ var presslst = [{
 	{
 		name: "GALLERY",
 		pressup: function(context, rect, x, y) {
-			
+
+				headcnv.height = headcnv.height?0:BEXTENT;
+				headobj.set(GALLERY);
+				headham.panel = headobj.value();
+				headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+				menuobj.draw();
+						
 		},
 		press: function(context, rect, x, y) {
-			//    	menuobj.setindex(_8cnvctx);
-			//	menuobj.show();    
+			   
 		}
 	},
 	{
@@ -2169,15 +2174,21 @@ var presslst = [{
 	},
 	{
 		name: "BOSS",
-		pressup: function(context, rect, x, y) {
-			//context.hidethumb = context.hidethumb?0:1;
-			context.refresh();
-		},
-		press: function(context, rect, x, y) {
+		pressup: function(context, rect, x, y) 
+		{
 			if (context.canvas.thumbrect &&
-				context.canvas.thumbrect.hitest(x, y)) {} else if (context.canvas.slicewidthrect &&
-				context.canvas.slicewidthrect.hitest(x, y)) {} else if (context.canvas.thumbrect &&
-				context.canvas.thumbrect.hitest(x, y)) {
+				context.canvas.thumbrect.hitest(x, y))
+				return;
+			headcnv.height = headcnv.height?0:BEXTENT;
+			headobj.set(BOSS);
+			headham.panel = headobj.value();
+			headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+		},
+		press: function(context, rect, x, y) 
+		{
+			if (context.canvas.thumbrect &&
+				context.canvas.thumbrect.hitest(x, y)) 
+			{
 				menuobj.hide();
 				var positx = positxobj.value();
 				var posity = posityobj.value();
@@ -2571,13 +2582,7 @@ var taplst = [{
 			{
 				window.open(galleryobj.photographer_url, galleryobj.repos);
 			}
-			else
-			{
-				headcnv.height = headcnv.height?0:BEXTENT;
-				headobj.set(BOSS);
-				headham.panel = headobj.value();
-				headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-			}
+			
 
 			_4cnvctx.refresh();
 		}
@@ -2647,14 +2652,6 @@ var taplst = [{
 			{
 				menuobj.hide();
 				headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-			}
-			else
-			{
-				headcnv.height = headcnv.height?0:BEXTENT;
-				headobj.set(GALLERY);
-				headham.panel = headobj.value();
-				headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
-				menuobj.draw();
 			}
 		},
 	},
