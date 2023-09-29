@@ -2183,6 +2183,7 @@ var presslst = [{
 			headobj.set(BOSS);
 			headham.panel = headobj.value();
 			headobj.value().draw(headcnvctx, headcnvctx.rect(), 0);
+			context.refresh();
 		},
 		press: function(context, rect, x, y) 
 		{
