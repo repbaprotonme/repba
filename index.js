@@ -1868,65 +1868,6 @@ var pinchobj = new circular_array("PINCH", [heightobj, zoomobj]);
 
 var userobj = {}
 
-if (url.protocol == "https:") 
-{
-	authClient = PropelAuth.createClient({
-		authUrl: "https://auth.ipfs-view.com",
-		enableBackgroundTokenRefresh: true
-	})
-	authClient.getAuthenticationInfoOrNull(false)
-		.then(function(client) 
-		{
-			console.log(client);
-		})
-}
-
-
-async function loadipfs(json, folder) {
-	for (var n = 0; n < json.length; ++n) {
-		var k = json[n];
-		var j = {}
-		j.id = k.Hash;
-		j.name = k.Name;
-		if (k.Type != 2)
-			continue;
-		if (j.name.isimage()) {
-			j.folder = folder;
-			galleryobj.data.push(j);
-		} else if (j.name.isjson()) {
-			//url.path = url.searchParams.get("z");
-			//var path = `https://dweb.link/ipfs/${j.id}`;
-			var path3 = `https://ipfs.filebase.io/ipfs/${j.id}`;
-			var path2 = `https://cloudflare-ipfs.com/ipfs/${j.id}`;
-			fetch(path2)
-				.then((response) => jsonhandler(response))
-				.then(function(json) {
-					Object.assign(galleryobj, json);
-				})
-				.catch((error) => {});
-		}
-	}
-
-	for (var n = 0; n < json.length; ++n) {
-		var k = json[n];
-		if (k.Type != 1)
-			continue;
-		var path2 = `https://ipfs.filebase.io/ipfs/${j.id}?filename=${j.name}`;
-		var path1 = `https://cloudflare-ipfs.com/ipf/${j.id}?filename=${j.name}`;
-		var path = `https://dweb.link/api/v0/ls?arg=${folder}/${k.Name}`;
-		var path3 = `https://ipfs.filebase.io/api/v0/ls?arg=${folder}/${k.Name}`;
-		var path4 = `https://gateway.ipfs.io/api/v0/ls?arg=${folder}/${k.Name}`;
-		var response = await fetch(path);
-		if (!response.ok)
-			continue;
-		var f = await response.json()
-		var e = f.Objects[0];
-		var b = `${folder}/${k.Name}`
-		loadipfs(e.Links, b);
-		galleryobj.init()
-	}
-}
-
 async function loadzip(path) {
 	const {
 		entries
@@ -5743,32 +5684,6 @@ function initime()
 }
 
 url.path = "home";
-
-function qid(path)
-{
-	var path2 = `https://dweb.link/ipfs/${path}`;
-	var path1 = `https://ipfs.filebase.io/ipfs/${path}`;
-	var path3 = `https://dweb.link/api/v0/ls?arg=${path}`
-	var path4 = `https://gateway.ipfs.io/api/v0/ls?arg=${path}`;
-	fetch(path3)
-		.then(response => jsonhandler(response))
-		.then(function(json) {
-			var k = json.Objects[0];
-			if (k.Links.length == 0) {
-				fetch(`https://cloudflare-ipfs.com/ipfs/${path}`)
-					.then((response) => blobhandler(response))
-					.then(function(blob) {
-						loadblob(blob);
-					})
-					.catch((error) => {});
-			} else {
-				galleryobj.data = [];
-				var k = json.Objects[0];
-				loadipfs(k.Links, path);
-			}
-		})
-		.catch((error) => {});
-}
 
 if (url.searchParams.has("data")) {
 	url.path = url.searchParams.get("data");
