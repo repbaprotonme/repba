@@ -30,7 +30,7 @@ const BUTTONMARGIN = 30;
 const IFRAME = window.self !== window.top;
 const ALIEXTENT = 60;
 const BEXTENT = 80;
-const BOSSMIN = 6;
+const BOSSMIN = 3;
 const HEADHEIGHT = IFRAME ? 0 : 80;
 const TIMEOBJ = 3927;
 const DELAYCENTER = TIMEOBJ/1000;
@@ -1868,24 +1868,19 @@ var pinchobj = new circular_array("PINCH", [heightobj, zoomobj]);
 
 var userobj = {}
 
-userobj.save = function() {
-	if (url.protocol == "https:") {
-		authClient = PropelAuth.createClient({
-			authUrl: "https://auth.ipfs-view.com",
-			enableBackgroundTokenRefresh: true
+if (url.protocol == "https:") 
+{
+	authClient = PropelAuth.createClient({
+		authUrl: "https://auth.ipfs-view.com",
+		enableBackgroundTokenRefresh: true
+	})
+	authClient.getAuthenticationInfoOrNull(false)
+		.then(function(client) 
+		{
+			console.log(client);
 		})
-		authClient.getAuthenticationInfoOrNull(false)
-			.then(function(client) {
-				fetch(`https://bucket.reportbase5836.workers.dev/${client.user.userId}.json`, {
-						method: 'POST',
-						body: JSON.stringify(userobj)
-					})
-					.then(response => jsonhandler(response))
-					.then(json => console.log(json))
-					.catch(error => console.log(error));
-			})
-	}
 }
+
 
 async function loadipfs(json, folder) {
 	for (var n = 0; n < json.length; ++n) {
@@ -2095,8 +2090,18 @@ var panlst =
 				}
 				else
 				{
-					var k = type == "panleft" ? 1 : -1;
-					galleryobj.leftright(context, k * context.canvas.speedobj.value() / 5);
+					//var k = type == "panleft" ? 1 : -1;
+					//galleryobj.leftright(context, k * context.canvas.speedobj.value() / 5);
+
+					var obj = context.canvas.scrollobj.value();
+					var e = canvas.startx - x;
+					var k = panhorz(obj, e);
+					if (k == -1)
+						return;
+					if (k == obj.anchor())
+						return;
+					obj.set(k);
+					context.refresh()
 				}
 			} 
 			else if (type == "panup" || type == "pandown") 
@@ -5409,25 +5414,8 @@ galleryobj.init = function(obj)
 	var a = Array(_2cnv.sliceobj.length()).fill().map((_, index) => index);
 	_2cnv.rotated = [...a, ...a, ...a];
 
-	_3cnv.sliceobj.data = [{
-			title: "propelauth",
-			func: function() {
-				authclient = propelauth.createclient({
-					authurl: "https://auth.ipfs-view.pages.dev",
-					enablebackgroundtokenrefresh: true
-				})
-				authclient.getauthenticationinfoornull(false)
-					.then(function(client) {
-						fetch(`https://bucket.reportbase5836.workers.dev/${client.user.userid}.json`)
-							.then((response) => jsonhandler(response))
-							.then(function(json) {})
-							.catch((error) => {});
-					})
-			},
-			enabled: function() {
-				return false
-			}
-		},
+	_3cnv.sliceobj.data = 
+		[
 		{
 			title: "delete image",
 			func: function() {
@@ -5447,22 +5435,7 @@ galleryobj.init = function(obj)
 			enabled: function() {
 				return false
 			}
-		},
-
-		{
-			title: "search pexels",
-			func: function() {
-
-				var search = "cow"
-				fetch(`https://pexels.reportbase5836.workers.dev/?search=${search}&page=1`)
-					.then(response => jsonhandler(response))
-					.then((obj) => galleryobj.init(obj))
-					.catch((error) => {});
-
-				
-			},
-			enabled: function() {return false}
-		},
+		},		
 
 		{
 			title: "Debug",
@@ -5605,6 +5578,20 @@ galleryobj.init = function(obj)
 			title: "Image and Document Viewer\nWebp, Jpg, Avif, Gif, and Png\nZip, Cbz, and Ipfs\nNewspapers, Magazines and Graphic Novels",
 			func: function() {}
 		},
+		{
+			title: "Login",
+			func: function() 
+			{
+				//authclient.logout(true)
+				authclient.redirecttologinpage();
+			}
+		},
+		{
+			title: "Account",
+			func: function() {
+				authclient.redirecttoaccountpage()
+			}
+		},
 
 		{
 			title: "Download\nkey+d",
@@ -5651,27 +5638,6 @@ galleryobj.init = function(obj)
 
 	_9cnv.sliceobj.data = 
 	[
-		{
-			title: "login",
-			path: "login",
-			func: function() {
-				authclient.redirecttologinpage();
-			}
-		},
-		{
-			title: "logout",
-			path: "logout",
-			func: function() {
-				authclient.logout(true)
-			}
-		},
-		{
-			title: "account",
-			path: "account",
-			func: function() {
-				authclient.redirecttoaccountpage()
-			}
-		},
 	];
 
 	var a = Array(_9cnv.sliceobj.length()).fill().map((_, index) => index);
@@ -5813,7 +5779,21 @@ if (url.searchParams.has("data")) {
 } else if (url.searchParams.has("zip")) {
 	url.path = url.searchParams.get("zip");
 	loadzip(url.path)
-} else if (url.searchParams.has("r2")) {
+
+} else if (url.searchParams.has("pexels")) {
+	url.path = url.searchParams.get("pexels");
+	fetch(`https://pexels.reportbase5836.workers.dev/?search=${url.path}`)
+		.then((response) => jsonhandler(response))
+		.then((obj) => galleryobj.init(obj))
+		.catch((error) => {});
+	
+} else if (url.searchParams.has("sidney")) {
+	url.path = "sidney";
+	fetch(`https://sidney.reportbase5836.workers.dev`)
+		.then((response) => jsonhandler(response))
+		.then((obj) => galleryobj.init(obj))
+		.catch((error) => {});
+}  else if (url.searchParams.has("r2")) {
 	url.path = url.searchParams.get("r2");
 	fetch(`https://bucket.reportbase5836.workers.dev/${url.path}.json`)
 		.then((response) => jsonhandler(response))
@@ -6132,7 +6112,7 @@ galleryobj.leftright = function(context, delta)
 		context.canvas.startleftright = (window.innerWidth / w) * Math.abs(delta / 2);
 	else
 		context.canvas.startleftright = (window.innerHeight / h) * Math.abs(delta / 2);
-	var e = context.canvas.startleftright / 100;
+	var e = context.canvas.startleftright/40;
 	var obj = context.canvas.scrollobj.value();
 	clearInterval(context.canvas.leftrightime);
 	context.canvas.leftrightime = setInterval(function() {
