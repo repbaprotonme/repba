@@ -1,2 +1,0 @@
-export MAGICK_TMPDIR=TMP
-mkdir TMP
