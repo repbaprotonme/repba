@@ -1,8 +1,0 @@
-name = "img-color"
-type = "webpack"
-node_compat = true
-compatibility_date = "2023-01-27"
-account_id = ""
-workers_dev = true
-route = ""
-zone_id = ""
