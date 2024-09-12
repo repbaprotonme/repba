@@ -1,7 +1,7 @@
 <!DOCTYPE html> <html lang="en" style='height: 100%; position: fixed; width: 100%;'>
 <head> 
 <meta charset='UTF-8'>
-<title>Image Browser</title>
+<title> </title>
 <meta name="Keywords" content="Topographic Maps, Aerial Photos, Satellite Photos, World Atlas, Sports Photography, Digital Art, 360 Panoramas, VR Projections, Political Cartoons, Comic Books, Portraits, Landscapes, Cityscapes, Infographics, Real Estate, Automobiles, Anime and Vintage Paintings."/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
@@ -27,17 +27,17 @@ A:hover { COLOR: blue; TEXT-DECORATION: none; font-weight: none; cursor: pointer
 
 dialog
 {
-  max-width: 640px; 
+  max-width: 90%; 
   position: absolute; 
   left: 50%; 
   top: 50%; 
   transform: translate(-50%, -50%); 
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgb(225,225,225);
   padding: 20px 20px 20px 20px; 
   border-radius: 20px;
   max-height: 80vh;
   border-width: 5px; 
-  border-color: rgba(255,255,255,0.7); 
+  border-color: #DB1F48; 
   overflow-y: scroll;
 }
 
@@ -61,11 +61,11 @@ input
 {
   height: 54px;
   resize: none;
-  background-color: rgba(0,0,0,0);
+  background-color: white;
   border-radius: 0px;
   border-width: 0px;
   outline: none; 
-  color: white;
+  color: black;
   text-align: center;
   font-weight: bold;
   font-family: sans-serif; 
@@ -86,7 +86,7 @@ textarea
 {
   height: 100%;
   resize: none;
-  background-color: rgba(0,0,0,0);
+  background-color: white;
   border-style: inset; 
   border-radius: 0px;
   border-width: 0px;
@@ -96,7 +96,7 @@ textarea
   width: 100%; 
   padding: 10px; 
   font-size: 1em; 
-  color: white;
+  color: black;
   text-align: left;
   font-weight: bold;
 }
@@ -118,26 +118,6 @@ button
   flex-direction: column; 
   width: 100%; 
   justify-content: center;
-}
-
-.header
-{
-  padding: 10px 0px 0px 0px; 
-  display: flex; 
-  flex-direction: column; 
-  width: 100%; 
-  justify-content: center;
-}
-
-.footer
-{
-  padding: 10px 0px 0px 0px; 
-  display: grid; 
-  flex-direction: column; 
-  width: 100%; 
-  justify-content: center;
-  grid-auto-flow: column;
-  grid-column-gap: 10px
 }
 
 .fade 
@@ -181,40 +161,36 @@ button
 
 <script type="text/javascript" src="js/screenfull.min.js"></script>
 <script type="text/javascript" src="js/hammer.min.js"></script>
-
-<script src="https://www.unpkg.com/@propelauth/javascript@2.0.0/dist/javascript.min.js" 
-         integrity="sha384-CnMW/GT96q1vxl3xq1fIbUrmXpDIsXVtY+/FpJW+rMSCgjlOWpbVfs5G0dg2bMN5" 
-         crossorigin="anonymous"></script>
 <script src="https://unpkg.com/unzipit@1.4.0/dist/unzipit.js"></script>
 <script src='index.js'></script>
 
 </head>
 <body ondragstart="return false;" ondrop="return false"; oncontextmenu='return false;'>
 
-<dialog id="page-dialog" style="max-width: 480px;">
+<dialog id="goto-dialog" style="max-width: 80%; width: 720px;">
     <div class="earth">
-      <input type="number" id="page-input" autocapitalize="off" placeholder="Goto"></input>
+      <input type="number" id="goto-input" autocapitalize="off" placeholder="Goto"></input>
     </div>
     <div class="footer">
-      <button class="fade" id="page-ok" style="" type="button">Image</button>
+      <button class="fade" id="goto-ok" style="" type="button">Goto</button>
     </div>
 </dialog>
 
-<dialog id="search-dialog" style="max-width: 480px;">
+<dialog id="prompt-dialog" style="max-width: 80%; width: 720px;">
     <div class="earth">
-      <input id="search-input" autocapitalize="off" placeholder="Search"></input>
+      <textarea id="prompt-input" rows=5 autocapitalize="off" placeholder="Prompt"></textarea>
     </div>
     <div class="footer">
-      <button class="fade" id="search-ok" style="" type="button">Search</button>
+      <button class="fade" id="prompt-ok" style="" type="button">Prompt</button>
     </div>
 </dialog>
 
-<dialog id="prompt-dialog" style="max-width: 720px;">
+  <dialog id="negative-prompt-dialog" style="max-width: 80%; width: 720px;">
     <div class="earth">
-      <textarea id="prompt-input" autocapitalize="off" placeholder="Prompt" rows=8 style=""></textarea>
+      <textarea id="negative-prompt-input" rows=5 autocapitalize="off" placeholder="Negative Prompt"></textarea>
     </div>
     <div class="footer">
-      <button class="fade" id="prompt-ok" style="" type="button"></button>
+      <button class="fade" id="negative-prompt-ok" style="" type="button">Negative Prompt</button>
     </div>
 </dialog>
 
